@@ -40,14 +40,54 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      // Create ripple effect
+      const button = e.currentTarget;
+      const rect = button.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const ripple = document.createElement('span');
+      ripple.style.position = 'absolute';
+      ripple.style.borderRadius = '50%';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.animation = 'ripple 0.6s linear';
+      ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x - size / 2 + 'px';
+      ripple.style.top = y - size / 2 + 'px';
+
+      button.appendChild(ripple);
+
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+
+      if (onClick) onClick(e);
+    };
+
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
+      <>
+        <style>{`
+          @keyframes ripple {
+            to {
+              transform: scale(4);
+              opacity: 0;
+            }
+          }
+        `}</style>
+        <Comp
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          onClick={asChild ? onClick : handleClick}
+          {...props}
+        />
+      </>
     );
   },
 );
