@@ -77,5 +77,43 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-aethex-400 via-neon-blue to-aethex-600 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-purple {
+    @apply bg-gradient-to-r from-neon-purple via-aethex-500 to-neon-blue bg-clip-text text-transparent;
+  }
+
+  .bg-aethex-gradient {
+    @apply bg-gradient-to-br from-aethex-900 via-background to-aethex-800;
+  }
+
+  .border-gradient {
+    @apply relative overflow-hidden;
+  }
+
+  .border-gradient::before {
+    content: '';
+    @apply absolute inset-0 rounded-[inherit] p-[1px] bg-gradient-to-r from-aethex-400 via-neon-blue to-aethex-600;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
 }
