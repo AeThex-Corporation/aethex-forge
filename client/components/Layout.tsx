@@ -26,7 +26,7 @@ export default function Layout({ children }: LayoutProps) {
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
                 alt="AeThex Logo"
-                className="h-10 w-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 animate-float"
+                className="h-10 w-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
               />
               <span className="text-xl font-bold text-gradient group-hover:animate-pulse">AeThex</span>
             </div>
