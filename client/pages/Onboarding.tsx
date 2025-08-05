@@ -105,37 +105,72 @@ export default function Onboarding() {
       <div className="min-h-screen bg-aethex-gradient py-12">
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Progress Bar */}
-          <div className="mb-8">
+          <div className="mb-8 animate-slide-down">
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-gradient">Join AeThex</h1>
-              <span className="text-sm text-muted-foreground">
+              <h1 className="text-2xl font-bold text-gradient animate-pulse-glow">Join AeThex</h1>
+              <span className="text-sm text-muted-foreground animate-fade-in">
                 Step {currentStep + 1} of {steps.length}
               </span>
             </div>
-            <div className="w-full bg-muted rounded-full h-2">
-              <div 
-                className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-500 ease-out"
+            <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-700 ease-out glow-blue"
                 style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
               />
+            </div>
+            {/* Step Indicators */}
+            <div className="flex justify-between mt-2">
+              {steps.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index <= currentStep
+                      ? 'bg-aethex-400 glow-blue animate-pulse'
+                      : 'bg-muted'
+                  }`}
+                />
+              ))}
             </div>
           </div>
 
           {/* Step Content */}
-          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-8 shadow-2xl">
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-500 animate-scale-in">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-foreground mb-2">
+              <h2 className="text-xl font-semibold text-foreground mb-2 animate-slide-right">
                 {steps[currentStep].title}
               </h2>
             </div>
 
-            <CurrentStepComponent
-              data={data}
-              updateData={updateData}
-              nextStep={nextStep}
-              prevStep={prevStep}
-              currentStep={currentStep}
-              totalSteps={steps.length}
-            />
+            {isTransitioning ? (
+              <SkeletonOnboardingStep />
+            ) : (
+              <div className="animate-fade-in">
+                <CurrentStepComponent
+                  data={data}
+                  updateData={updateData}
+                  nextStep={nextStep}
+                  prevStep={prevStep}
+                  currentStep={currentStep}
+                  totalSteps={steps.length}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Floating particles effect */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
+            {[...Array(15)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-aethex-400 rounded-full animate-float"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  animationDuration: `${3 + Math.random() * 2}s`
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
