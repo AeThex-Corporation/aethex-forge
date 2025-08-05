@@ -149,24 +149,32 @@ export default function Index() {
       {/* Stats Section */}
       <section className="py-16 border-y border-border/40">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div key={index} className="text-center space-y-3">
-                  <div className="flex justify-center">
-                    <div className="p-3 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border border-aethex-400/20">
-                      <Icon className="h-6 w-6 text-aethex-400" />
+          {!statsVisible ? (
+            <SkeletonStats />
+          ) : (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              {stats.map((stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={index}
+                    className="text-center space-y-3 animate-scale-in hover-lift interactive-scale"
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    <div className="flex justify-center">
+                      <div className="p-3 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border border-aethex-400/20 hover:border-aethex-400/50 transition-all duration-300 hover-glow">
+                        <Icon className="h-6 w-6 text-aethex-400 animate-pulse-glow" />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold text-gradient animate-bounce-gentle">{stat.value}</div>
+                      <p className="text-sm text-muted-foreground uppercase tracking-wide">{stat.label}</p>
                     </div>
                   </div>
-                  <div>
-                    <div className="text-3xl font-bold text-gradient">{stat.value}</div>
-                    <p className="text-sm text-muted-foreground uppercase tracking-wide">{stat.label}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
