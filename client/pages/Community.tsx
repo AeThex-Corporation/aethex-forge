@@ -158,7 +158,7 @@ export default function Community() {
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift">
                   <Link to="/discord" className="flex items-center space-x-2">
-                    <Discord className="h-5 w-5" />
+                    <MessageSquare className="h-5 w-5" />
                     <span>Join Discord</span>
                     <ArrowRight className="h-5 w-5" />
                   </Link>
