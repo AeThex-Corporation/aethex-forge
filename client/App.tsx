@@ -26,12 +26,12 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
 
             {/* Placeholder routes for navigation links */}
             <Route path="/about" element={<Placeholder title="About AeThex" description="Learn more about our company, mission, and team." />} />
             <Route path="/contact" element={<Placeholder title="Contact Us" description="Get in touch with our team for support or inquiries." />} />
-            <Route path="/login" element={<Placeholder title="Sign In" description="Access your AeThex account." />} />
-            <Route path="/dashboard" element={<Placeholder title="Dashboard" description="Your personalized AeThex dashboard." />} />
             <Route path="/get-started" element={<Placeholder title="Get Started" description="Begin your journey with AeThex tools and services." />} />
 
             {/* Service routes */}
