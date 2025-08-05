@@ -34,7 +34,7 @@ export default function LoadingScreen({
 
   useEffect(() => {
     const messages = [
-      "Initializing AeThex systems...",
+      "Initializing AeThex OS...",
       "Loading quantum processors...",
       "Calibrating neural networks...",
       "Synchronizing data streams...",
