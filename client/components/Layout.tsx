@@ -18,42 +18,46 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-aethex-gradient">
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 hover-glow group">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-aethex-400 to-neon-blue flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-aethex-400 to-neon-blue flex items-center justify-center transition-all duration-300 group-hover:scale-110 glow-blue">
                 <span className="text-sm font-bold text-white">Ae</span>
               </div>
-              <span className="text-xl font-bold text-gradient">AeThex</span>
+              <span className="text-xl font-bold text-gradient group-hover:animate-pulse">AeThex</span>
             </div>
           </Link>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
+            {navigation.map((item, index) => (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-aethex-400",
+                  "text-sm font-medium transition-all duration-300 hover:text-aethex-400 hover:scale-105 relative animate-fade-in",
                   location.pathname === item.href
-                    ? "text-aethex-500"
+                    ? "text-aethex-500 animate-pulse-glow"
                     : "text-muted-foreground"
                 )}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {item.name}
+                {location.pathname === item.href && (
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue animate-scale-in" />
+                )}
               </Link>
             ))}
           </nav>
 
           {/* CTA */}
-          <div className="flex items-center space-x-4">
-            <Button asChild variant="outline" className="hidden sm:inline-flex">
+          <div className="flex items-center space-x-4 animate-slide-left">
+            <Button asChild variant="outline" className="hidden sm:inline-flex hover-lift interactive-scale">
               <Link to="/login">Sign In</Link>
             </Button>
-            <Button asChild className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90">
+            <Button asChild className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue">
               <Link to="/onboarding">Join AeThex</Link>
             </Button>
           </div>
