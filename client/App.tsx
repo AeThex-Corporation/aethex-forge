@@ -37,23 +37,23 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
 
+            {/* Service routes */}
+            <Route path="/game-development" element={<GameDevelopment />} />
+            <Route path="/consulting" element={<DevelopmentConsulting />} />
+            <Route path="/mentorship" element={<MentorshipPrograms />} />
+            <Route path="/research" element={<ResearchLabs />} />
+            <Route path="/labs" element={<ResearchLabs />} />
+
+            {/* Resource routes */}
+            <Route path="/docs" element={<Documentation />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/support" element={<Support />} />
+
             {/* Placeholder routes for navigation links */}
             <Route path="/about" element={<Placeholder title="About AeThex" description="Learn more about our company, mission, and team." />} />
             <Route path="/contact" element={<Placeholder title="Contact Us" description="Get in touch with our team for support or inquiries." />} />
             <Route path="/get-started" element={<Placeholder title="Get Started" description="Begin your journey with AeThex tools and services." />} />
-
-            {/* Service routes */}
-            <Route path="/game-development" element={<Placeholder title="Game Development" description="Custom game development services and solutions." />} />
-            <Route path="/consulting" element={<Placeholder title="Development Consulting" description="Expert technical consulting for your projects." />} />
-            <Route path="/mentorship" element={<Placeholder title="Mentorship Programs" description="Learn from industry experts through our mentorship programs." />} />
-            <Route path="/research" element={<Placeholder title="Research & Labs" description="Access cutting-edge research and experimental projects." />} />
-            <Route path="/labs" element={<Placeholder title="AeThex Labs" description="Visit our research and experimental division." />} />
-
-            {/* Resource routes */}
-            <Route path="/docs" element={<Placeholder title="Documentation" description="Comprehensive guides and API documentation." />} />
-            <Route path="/blog" element={<Placeholder title="Blog" description="Latest news, insights, and updates from AeThex." />} />
-            <Route path="/community" element={<Placeholder title="Community" description="Connect with other developers and innovators." />} />
-            <Route path="/support" element={<Placeholder title="Support" description="Get help with AeThex products and services." />} />
 
             {/* Legal routes */}
             <Route path="/privacy" element={<Placeholder title="Privacy Policy" description="Our commitment to protecting your privacy." />} />
