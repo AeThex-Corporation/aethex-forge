@@ -59,7 +59,8 @@ export default function Index() {
       description: 'Join our development community with access to tools, mentorship, and collaborative projects.',
       icon: GamepadIcon,
       features: ['Development Tools', 'Expert Mentorship', 'Project Collaboration', 'Technical Workshops'],
-      color: 'from-neon-purple to-aethex-500'
+      color: 'from-neon-purple to-aethex-500',
+      glowClass: 'glow-purple'
     },
     {
       id: 'client',
@@ -67,7 +68,8 @@ export default function Index() {
       description: 'Partner with us for custom game development and technical consulting services.',
       icon: BriefcaseIcon,
       features: ['Custom Development', 'Technical Consulting', 'Project Management', 'End-to-End Solutions'],
-      color: 'from-neon-blue to-aethex-400'
+      color: 'from-neon-blue to-aethex-400',
+      glowClass: 'glow-blue'
     },
     {
       id: 'member',
@@ -75,7 +77,8 @@ export default function Index() {
       description: 'Access cutting-edge research, networking opportunities, and exclusive content.',
       icon: UsersIcon,
       features: ['Research Access', 'Professional Network', 'Exclusive Events', 'Innovation Labs'],
-      color: 'from-neon-green to-aethex-600'
+      color: 'from-neon-green to-aethex-600',
+      glowClass: 'glow-green'
     },
     {
       id: 'customer',
@@ -83,7 +86,8 @@ export default function Index() {
       description: 'Explore our games, tools, and products designed for enhanced experiences.',
       icon: ShoppingCartIcon,
       features: ['Premium Games', 'Development Tools', 'Beta Access', 'Community Support'],
-      color: 'from-neon-yellow to-aethex-700'
+      color: 'from-neon-yellow to-aethex-700',
+      glowClass: 'glow-yellow'
     }
   ];
 
