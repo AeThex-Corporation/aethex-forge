@@ -73,10 +73,12 @@ export default function Layout({ children }: LayoutProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Company Info */}
             <div className="space-y-4 animate-fade-in">
-              <div className="flex items-center space-x-2 group">
-                <div className="h-6 w-6 rounded bg-gradient-to-br from-aethex-400 to-neon-blue flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:glow-blue">
-                  <span className="text-xs font-bold text-white">Ae</span>
-                </div>
+              <div className="flex items-center space-x-3 group">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
+                  alt="AeThex Logo"
+                  className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
+                />
                 <span className="font-bold text-gradient group-hover:animate-pulse">AeThex</span>
               </div>
               <p className="text-sm text-muted-foreground hover:text-muted-foreground/80 transition-colors">
