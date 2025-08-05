@@ -181,7 +181,7 @@ export default function Index() {
       {/* User Paths Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
+          <div className="text-center space-y-4 mb-16 animate-slide-up">
             <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
               Choose Your Path
             </h2>
@@ -191,47 +191,56 @@ export default function Index() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-            {userPaths.map((path) => {
-              const Icon = path.icon;
-              return (
-                <Card
-                  key={path.id}
-                  className="group hover:scale-105 transition-all duration-300 bg-card/50 border-border/50 hover:border-aethex-400/50 hover:glow-purple"
-                >
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-3 rounded-lg bg-gradient-to-r ${path.color}`}>
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-xl">{path.title}</CardTitle>
-                        <CardDescription className="mt-1">
-                          {path.description}
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-2">
-                      {path.features.map((feature, index) => (
-                        <div key={index} className="flex items-center space-x-2 text-sm text-muted-foreground">
-                          <CheckCircle className="h-3 w-3 text-aethex-400 flex-shrink-0" />
-                          <span>{feature}</span>
+          {!pathsVisible ? (
+            <SkeletonUserPath />
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+              {userPaths.map((path, index) => {
+                const Icon = path.icon;
+                return (
+                  <Card
+                    key={path.id}
+                    className={`group hover-lift interactive-scale transition-all duration-500 bg-card/50 border-border/50 hover:border-aethex-400/50 hover:${path.glowClass} animate-slide-up`}
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center space-x-4">
+                        <div className={`p-3 rounded-lg bg-gradient-to-r ${path.color} transition-all duration-300 group-hover:scale-110 animate-pulse-glow`}>
+                          <Icon className="h-6 w-6 text-white" />
                         </div>
-                      ))}
-                    </div>
-                    <Button asChild className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90">
-                      <Link to="/onboarding" className="flex items-center justify-center space-x-2">
-                        <span>Get Started as {path.title}</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+                        <div>
+                          <CardTitle className="text-xl group-hover:text-gradient transition-all duration-300">{path.title}</CardTitle>
+                          <CardDescription className="mt-1 group-hover:text-muted-foreground/80 transition-all duration-300">
+                            {path.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-2 gap-2">
+                        {path.features.map((feature, featureIndex) => (
+                          <div
+                            key={featureIndex}
+                            className="flex items-center space-x-2 text-sm text-muted-foreground opacity-0 animate-slide-left"
+                            style={{ animationDelay: `${(index * 0.2) + (featureIndex * 0.1)}s`, animationFillMode: 'forwards' }}
+                          >
+                            <CheckCircle className="h-3 w-3 text-aethex-400 flex-shrink-0 animate-bounce-gentle" />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <Button asChild className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 interactive-scale glow-blue">
+                        <Link to="/onboarding" className="flex items-center justify-center space-x-2 group">
+                          <span>Get Started as {path.title}</span>
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
