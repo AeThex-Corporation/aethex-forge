@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,11 +29,15 @@ import {
 export default function Support() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const toastShownRef = useRef(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      aethexToast.system("Support center loaded successfully");
+      if (!toastShownRef.current) {
+        aethexToast.system("Support center loaded successfully");
+        toastShownRef.current = true;
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
