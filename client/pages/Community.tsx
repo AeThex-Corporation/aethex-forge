@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import { 
   Users, 
   MessageCircle, 
-  Github, 
-  Discord, 
+  Github,
+  MessageSquare,
   Twitter, 
   ArrowRight,
   Star,
