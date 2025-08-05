@@ -75,7 +75,7 @@ export default function Index() {
   ];
 
   if (isLoading) {
-    return <LoadingScreen message="Initializing AeThex Systems..." showProgress={true} duration={1200} />;
+    return <LoadingScreen message="Initializing AeThex OS..." showProgress={true} duration={1200} />;
   }
 
   return (
