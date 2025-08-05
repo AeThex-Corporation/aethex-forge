@@ -74,45 +74,54 @@ export default function UserTypeSelection({ data, updateData, nextStep }: UserTy
 
   return (
     <div className="space-y-6">
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-2 animate-fade-in">
         <p className="text-muted-foreground">
           Choose the option that best describes your relationship with AeThex
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {userTypes.map((type) => {
+        {userTypes.map((type, index) => {
           const Icon = type.icon;
           const isSelected = data.userType === type.id;
-          
+
           return (
-            <Card 
+            <Card
               key={type.id}
-              className={`cursor-pointer transition-all duration-300 hover:scale-105 border-2 ${
-                isSelected 
-                  ? 'border-aethex-500 glow-purple' 
+              className={`cursor-pointer transition-all duration-500 hover-lift interactive-scale border-2 animate-scale-in ${
+                isSelected
+                  ? 'border-aethex-500 glow-purple animate-pulse-glow'
                   : 'border-border/50 hover:border-aethex-400/50'
               }`}
+              style={{ animationDelay: `${index * 0.1}s` }}
               onClick={() => handleSelectType(type.id)}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-lg bg-gradient-to-r ${type.color}`}>
+                  <div className={`p-2 rounded-lg bg-gradient-to-r ${type.color} transition-all duration-300 hover:scale-110 ${isSelected ? 'animate-bounce-gentle' : ''}`}>
                     <Icon className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg">{type.title}</CardTitle>
+                    <CardTitle className={`text-lg transition-all duration-300 ${isSelected ? 'text-gradient animate-pulse' : ''}`}>
+                      {type.title}
+                    </CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription className="mb-4 text-sm">
+                <CardDescription className="mb-4 text-sm transition-all duration-300 hover:text-muted-foreground/80">
                   {type.description}
                 </CardDescription>
                 <ul className="space-y-1">
-                  {type.benefits.map((benefit, index) => (
-                    <li key={index} className="text-xs text-muted-foreground flex items-start">
-                      <span className="text-aethex-400 mr-2">•</span>
+                  {type.benefits.map((benefit, benefitIndex) => (
+                    <li
+                      key={benefitIndex}
+                      className={`text-xs text-muted-foreground flex items-start transition-all duration-300 animate-slide-left ${
+                        isSelected ? 'text-aethex-300' : ''
+                      }`}
+                      style={{ animationDelay: `${(index * 0.1) + (benefitIndex * 0.05)}s` }}
+                    >
+                      <span className={`mr-2 transition-all duration-300 ${isSelected ? 'text-aethex-400 animate-pulse' : 'text-aethex-400'}`}>•</span>
                       {benefit}
                     </li>
                   ))}
@@ -123,7 +132,7 @@ export default function UserTypeSelection({ data, updateData, nextStep }: UserTy
         })}
       </div>
 
-      <div className="flex justify-center pt-6">
+      <div className="flex justify-center pt-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
         <p className="text-sm text-muted-foreground text-center max-w-lg">
           Don't worry - you can always change your preferences later or access multiple areas of our platform.
         </p>
