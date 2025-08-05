@@ -104,23 +104,23 @@ export default function PersonalInfo({ data, updateData, nextStep, prevStep }: P
         )}
       </div>
 
-      <div className="flex justify-between pt-6">
-        <Button 
-          variant="outline" 
+      <div className="flex justify-between pt-6 animate-slide-up">
+        <Button
+          variant="outline"
           onClick={prevStep}
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2 hover-lift interactive-scale group"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
           <span>Back</span>
         </Button>
-        
-        <Button 
+
+        <Button
           onClick={nextStep}
           disabled={!isValid || (data.userType === 'client' && !data.personalInfo.company)}
-          className="flex items-center space-x-2 bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+          className="flex items-center space-x-2 bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue group disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span>Continue</span>
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>
       </div>
 
