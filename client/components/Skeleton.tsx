@@ -2,29 +2,30 @@ import { cn } from "@/lib/utils";
 
 interface SkeletonProps {
   className?: string;
-  variant?: 'text' | 'avatar' | 'card' | 'button' | 'image';
+  variant?: "text" | "avatar" | "card" | "button" | "image";
   lines?: number;
   animate?: boolean;
 }
 
-export function Skeleton({ className, variant = 'text', lines = 1, animate = true }: SkeletonProps) {
-  const baseClasses = cn(
-    "bg-muted rounded",
-    animate && "skeleton",
-    className
-  );
+export function Skeleton({
+  className,
+  variant = "text",
+  lines = 1,
+  animate = true,
+}: SkeletonProps) {
+  const baseClasses = cn("bg-muted rounded", animate && "skeleton", className);
 
   switch (variant) {
-    case 'avatar':
+    case "avatar":
       return <div className={cn(baseClasses, "h-12 w-12 rounded-full")} />;
-    
-    case 'button':
+
+    case "button":
       return <div className={cn(baseClasses, "h-10 w-24")} />;
-    
-    case 'image':
+
+    case "image":
       return <div className={cn(baseClasses, "h-48 w-full")} />;
-    
-    case 'card':
+
+    case "card":
       return (
         <div className={cn("space-y-3 p-4 border rounded-lg", className)}>
           <div className={cn(baseClasses, "h-6 w-3/4")} />
@@ -32,8 +33,8 @@ export function Skeleton({ className, variant = 'text', lines = 1, animate = tru
           <div className={cn(baseClasses, "h-4 w-2/3")} />
         </div>
       );
-    
-    case 'text':
+
+    case "text":
     default:
       return (
         <div className="space-y-2">
@@ -43,7 +44,7 @@ export function Skeleton({ className, variant = 'text', lines = 1, animate = tru
               className={cn(
                 baseClasses,
                 "h-4",
-                i === lines - 1 ? "w-2/3" : "w-full"
+                i === lines - 1 ? "w-2/3" : "w-full",
               )}
             />
           ))}
@@ -93,7 +94,10 @@ export function SkeletonUserPath() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="bg-card/50 border border-border/50 rounded-xl p-6 space-y-4">
+        <div
+          key={i}
+          className="bg-card/50 border border-border/50 rounded-xl p-6 space-y-4"
+        >
           <div className="flex items-center space-x-4">
             <Skeleton className="h-12 w-12 rounded-lg" />
             <div className="space-y-2 flex-1">
@@ -120,18 +124,21 @@ export function SkeletonOnboardingStep() {
         <Skeleton className="h-8 w-64 mx-auto" />
         <Skeleton className="h-4 w-96 mx-auto" />
       </div>
-      
+
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="p-4 border-2 border-border/50 rounded-lg space-y-2">
+            <div
+              key={i}
+              className="p-4 border-2 border-border/50 rounded-lg space-y-2"
+            >
               <Skeleton className="h-5 w-32" />
               <Skeleton className="h-4 w-full" />
             </div>
           ))}
         </div>
       </div>
-      
+
       <div className="flex justify-between pt-6">
         <Skeleton variant="button" className="w-20" />
         <Skeleton variant="button" className="w-24" />
@@ -161,7 +168,7 @@ export function SkeletonLayout() {
           </div>
         </div>
       </div>
-      
+
       {/* Content Skeleton */}
       <div className="py-20">
         <div className="container mx-auto px-4 space-y-16">
@@ -173,7 +180,7 @@ export function SkeletonLayout() {
               <Skeleton variant="button" className="w-32 h-12" />
             </div>
           </div>
-          
+
           <SkeletonStats />
           <SkeletonUserPath />
         </div>

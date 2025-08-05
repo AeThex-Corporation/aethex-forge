@@ -51,13 +51,53 @@ const App = () => (
             <Route path="/support" element={<Support />} />
 
             {/* Placeholder routes for navigation links */}
-            <Route path="/about" element={<Placeholder title="About AeThex" description="Learn more about our company, mission, and team." />} />
-            <Route path="/contact" element={<Placeholder title="Contact Us" description="Get in touch with our team for support or inquiries." />} />
-            <Route path="/get-started" element={<Placeholder title="Get Started" description="Begin your journey with AeThex tools and services." />} />
+            <Route
+              path="/about"
+              element={
+                <Placeholder
+                  title="About AeThex"
+                  description="Learn more about our company, mission, and team."
+                />
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <Placeholder
+                  title="Contact Us"
+                  description="Get in touch with our team for support or inquiries."
+                />
+              }
+            />
+            <Route
+              path="/get-started"
+              element={
+                <Placeholder
+                  title="Get Started"
+                  description="Begin your journey with AeThex tools and services."
+                />
+              }
+            />
 
             {/* Legal routes */}
-            <Route path="/privacy" element={<Placeholder title="Privacy Policy" description="Our commitment to protecting your privacy." />} />
-            <Route path="/terms" element={<Placeholder title="Terms of Service" description="Terms and conditions for using AeThex services." />} />
+            <Route
+              path="/privacy"
+              element={
+                <Placeholder
+                  title="Privacy Policy"
+                  description="Our commitment to protecting your privacy."
+                />
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                <Placeholder
+                  title="Terms of Service"
+                  description="Terms and conditions for using AeThex services."
+                />
+              }
+            />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

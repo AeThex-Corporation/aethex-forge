@@ -8,7 +8,7 @@ import Experience from "@/components/onboarding/Experience";
 import Interests from "@/components/onboarding/Interests";
 import Welcome from "@/components/onboarding/Welcome";
 
-export type UserType = 'game-developer' | 'client' | 'member' | 'customer';
+export type UserType = "game-developer" | "client" | "member" | "customer";
 
 export interface OnboardingData {
   userType: UserType | null;
@@ -32,15 +32,15 @@ export interface OnboardingData {
 const initialData: OnboardingData = {
   userType: null,
   personalInfo: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    company: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
   },
   experience: {
-    level: '',
+    level: "",
     skills: [],
-    previousProjects: '',
+    previousProjects: "",
   },
   interests: {
     primaryGoals: [],
@@ -71,14 +71,14 @@ export default function Onboarding() {
   }, []);
 
   const updateData = (newData: Partial<OnboardingData>) => {
-    setData(prev => ({ ...prev, ...newData }));
+    setData((prev) => ({ ...prev, ...newData }));
   };
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
       setIsTransitioning(true);
       setTimeout(() => {
-        setCurrentStep(prev => prev + 1);
+        setCurrentStep((prev) => prev + 1);
         setIsTransitioning(false);
       }, 300);
     }
@@ -88,7 +88,7 @@ export default function Onboarding() {
     if (currentStep > 0) {
       setIsTransitioning(true);
       setTimeout(() => {
-        setCurrentStep(prev => prev - 1);
+        setCurrentStep((prev) => prev - 1);
         setIsTransitioning(false);
       }, 300);
     }
@@ -97,7 +97,13 @@ export default function Onboarding() {
   const CurrentStepComponent = steps[currentStep].component;
 
   if (isLoading) {
-    return <LoadingScreen message="Preparing your onboarding experience..." showProgress={true} duration={1200} />;
+    return (
+      <LoadingScreen
+        message="Preparing your onboarding experience..."
+        showProgress={true}
+        duration={1200}
+      />
+    );
   }
 
   return (
@@ -107,7 +113,9 @@ export default function Onboarding() {
           {/* Progress Bar */}
           <div className="mb-8 animate-slide-down">
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-gradient animate-pulse-glow">Join AeThex</h1>
+              <h1 className="text-2xl font-bold text-gradient animate-pulse-glow">
+                Join AeThex
+              </h1>
               <span className="text-sm text-muted-foreground animate-fade-in">
                 Step {currentStep + 1} of {steps.length}
               </span>
@@ -115,7 +123,9 @@ export default function Onboarding() {
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
               <div
                 className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-700 ease-out glow-blue"
-                style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+                style={{
+                  width: `${((currentStep + 1) / steps.length) * 100}%`,
+                }}
               />
             </div>
             {/* Step Indicators */}
@@ -125,8 +135,8 @@ export default function Onboarding() {
                   key={index}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     index <= currentStep
-                      ? 'bg-aethex-400 glow-blue animate-pulse'
-                      : 'bg-muted'
+                      ? "bg-aethex-400 glow-blue animate-pulse"
+                      : "bg-muted"
                   }`}
                 />
               ))}
@@ -167,7 +177,7 @@ export default function Onboarding() {
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${3 + Math.random() * 2}s`
+                  animationDuration: `${3 + Math.random() * 2}s`,
                 }}
               />
             ))}

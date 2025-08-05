@@ -9,7 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25",
+        default:
+          "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-lg hover:shadow-destructive/25",
         outline:
@@ -50,17 +51,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      const ripple = document.createElement('span');
-      ripple.style.position = 'absolute';
-      ripple.style.borderRadius = '50%';
-      ripple.style.transform = 'scale(0)';
-      ripple.style.animation = 'ripple 0.6s linear';
-      ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+      const ripple = document.createElement("span");
+      ripple.style.position = "absolute";
+      ripple.style.borderRadius = "50%";
+      ripple.style.transform = "scale(0)";
+      ripple.style.animation = "ripple 0.6s linear";
+      ripple.style.backgroundColor = "rgba(255, 255, 255, 0.3)";
 
       const size = Math.max(rect.width, rect.height);
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x - size / 2 + 'px';
-      ripple.style.top = y - size / 2 + 'px';
+      ripple.style.width = ripple.style.height = size + "px";
+      ripple.style.left = x - size / 2 + "px";
+      ripple.style.top = y - size / 2 + "px";
 
       button.appendChild(ripple);
 

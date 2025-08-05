@@ -11,25 +11,38 @@ interface PersonalInfoProps {
   prevStep: () => void;
 }
 
-export default function PersonalInfo({ data, updateData, nextStep, prevStep }: PersonalInfoProps) {
+export default function PersonalInfo({
+  data,
+  updateData,
+  nextStep,
+  prevStep,
+}: PersonalInfoProps) {
   const handleInputChange = (field: string, value: string) => {
     updateData({
       personalInfo: {
         ...data.personalInfo,
-        [field]: value
-      }
+        [field]: value,
+      },
     });
   };
 
-  const isValid = data.personalInfo.firstName && data.personalInfo.lastName && data.personalInfo.email;
+  const isValid =
+    data.personalInfo.firstName &&
+    data.personalInfo.lastName &&
+    data.personalInfo.email;
 
   const getUserTypeLabel = () => {
     switch (data.userType) {
-      case 'game-developer': return 'Game Developer';
-      case 'client': return 'Client';
-      case 'member': return 'Community Member';
-      case 'customer': return 'Customer';
-      default: return 'User';
+      case "game-developer":
+        return "Game Developer";
+      case "client":
+        return "Client";
+      case "member":
+        return "Community Member";
+      case "customer":
+        return "Customer";
+      default:
+        return "User";
     }
   };
 
@@ -50,7 +63,7 @@ export default function PersonalInfo({ data, updateData, nextStep, prevStep }: P
             <Input
               id="firstName"
               value={data.personalInfo.firstName}
-              onChange={(e) => handleInputChange('firstName', e.target.value)}
+              onChange={(e) => handleInputChange("firstName", e.target.value)}
               placeholder="Enter your first name"
               className="bg-background/50 border-border/50 focus:border-aethex-400"
             />
@@ -62,7 +75,7 @@ export default function PersonalInfo({ data, updateData, nextStep, prevStep }: P
             <Input
               id="lastName"
               value={data.personalInfo.lastName}
-              onChange={(e) => handleInputChange('lastName', e.target.value)}
+              onChange={(e) => handleInputChange("lastName", e.target.value)}
               placeholder="Enter your last name"
               className="bg-background/50 border-border/50 focus:border-aethex-400"
             />
@@ -77,25 +90,25 @@ export default function PersonalInfo({ data, updateData, nextStep, prevStep }: P
             id="email"
             type="email"
             value={data.personalInfo.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
+            onChange={(e) => handleInputChange("email", e.target.value)}
             placeholder="Enter your email address"
             className="bg-background/50 border-border/50 focus:border-aethex-400"
           />
         </div>
 
-        {(data.userType === 'client' || data.userType === 'game-developer') && (
+        {(data.userType === "client" || data.userType === "game-developer") && (
           <div className="space-y-2">
             <Label htmlFor="company" className="text-sm font-medium">
               Company / Organization
-              {data.userType === 'client' && ' *'}
+              {data.userType === "client" && " *"}
             </Label>
             <Input
               id="company"
-              value={data.personalInfo.company || ''}
-              onChange={(e) => handleInputChange('company', e.target.value)}
+              value={data.personalInfo.company || ""}
+              onChange={(e) => handleInputChange("company", e.target.value)}
               placeholder={
-                data.userType === 'client' 
-                  ? "Enter your company name" 
+                data.userType === "client"
+                  ? "Enter your company name"
                   : "Enter your company/organization (optional)"
               }
               className="bg-background/50 border-border/50 focus:border-aethex-400"
@@ -116,7 +129,10 @@ export default function PersonalInfo({ data, updateData, nextStep, prevStep }: P
 
         <Button
           onClick={nextStep}
-          disabled={!isValid || (data.userType === 'client' && !data.personalInfo.company)}
+          disabled={
+            !isValid ||
+            (data.userType === "client" && !data.personalInfo.company)
+          }
           className="flex items-center space-x-2 bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue group disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span>Continue</span>
@@ -125,9 +141,7 @@ export default function PersonalInfo({ data, updateData, nextStep, prevStep }: P
       </div>
 
       <div className="text-center">
-        <p className="text-xs text-muted-foreground">
-          * Required fields
-        </p>
+        <p className="text-xs text-muted-foreground">* Required fields</p>
       </div>
     </div>
   );

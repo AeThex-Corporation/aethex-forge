@@ -2,7 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Home,
@@ -19,7 +25,7 @@ import {
   ChevronUp,
   ChevronDown,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 
 interface GameState {
@@ -52,10 +58,19 @@ const NotFound = () => {
     "Error 404: This page is in another castle.",
     "404: The page you seek is in another universe.",
     "404: Lost in cyberspace? We'll guide you home.",
-    "404: Page not found, but great adventures await."
+    "404: Page not found, but great adventures await.",
   ];
 
-  const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+  const konamiCode = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+  ];
 
   // Game state
   const [gameState, setGameState] = useState<GameState>({
@@ -65,7 +80,7 @@ const NotFound = () => {
     playerPosition: { x: 5, y: 5 },
     collectibles: [],
     gameActive: false,
-    gameWon: false
+    gameWon: false,
   });
 
   // Initialize collectibles
@@ -76,28 +91,28 @@ const NotFound = () => {
         x: Math.floor(Math.random() * 10),
         y: Math.floor(Math.random() * 10),
         id: i,
-        collected: false
+        collected: false,
       });
     }
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
       collectibles: newCollectibles,
       gameActive: true,
       score: 0,
       lives: 3,
       playerPosition: { x: 5, y: 5 },
-      gameWon: false
+      gameWon: false,
     }));
   }, []);
 
   // Timer and quote rotation
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeSpent(prev => prev + 1);
+      setTimeSpent((prev) => prev + 1);
     }, 1000);
 
     const quoteTimer = setInterval(() => {
-      setCurrentQuote(prev => (prev + 1) % quotes.length);
+      setCurrentQuote((prev) => (prev + 1) % quotes.length);
     }, 3000);
 
     return () => {
@@ -118,8 +133,8 @@ const NotFound = () => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
   }, [konami, konamiCode]);
 
   // Game controls
@@ -132,37 +147,42 @@ const NotFound = () => {
       let newY = gameState.playerPosition.y;
 
       switch (e.key) {
-        case 'ArrowUp':
-        case 'w':
+        case "ArrowUp":
+        case "w":
           newY = Math.max(0, newY - 1);
           break;
-        case 'ArrowDown':
-        case 's':
+        case "ArrowDown":
+        case "s":
           newY = Math.min(9, newY + 1);
           break;
-        case 'ArrowLeft':
-        case 'a':
+        case "ArrowLeft":
+        case "a":
           newX = Math.max(0, newX - 1);
           break;
-        case 'ArrowRight':
-        case 'd':
+        case "ArrowRight":
+        case "d":
           newX = Math.min(9, newX + 1);
           break;
         default:
           return;
       }
 
-      setGameState(prev => {
+      setGameState((prev) => {
         const newPosition = { x: newX, y: newY };
-        const updatedCollectibles = prev.collectibles.map(collectible => {
-          if (collectible.x === newX && collectible.y === newY && !collectible.collected) {
+        const updatedCollectibles = prev.collectibles.map((collectible) => {
+          if (
+            collectible.x === newX &&
+            collectible.y === newY &&
+            !collectible.collected
+          ) {
             return { ...collectible, collected: true };
           }
           return collectible;
         });
 
-        const newScore = updatedCollectibles.filter(c => c.collected).length * 10;
-        const gameWon = updatedCollectibles.every(c => c.collected);
+        const newScore =
+          updatedCollectibles.filter((c) => c.collected).length * 10;
+        const gameWon = updatedCollectibles.every((c) => c.collected);
 
         return {
           ...prev,
@@ -170,14 +190,14 @@ const NotFound = () => {
           collectibles: updatedCollectibles,
           score: newScore,
           gameWon: gameWon,
-          gameActive: !gameWon
+          gameActive: !gameWon,
         };
       });
     };
 
     if (gameState.gameActive) {
-      window.addEventListener('keydown', handleGameControls);
-      return () => window.removeEventListener('keydown', handleGameControls);
+      window.addEventListener("keydown", handleGameControls);
+      return () => window.removeEventListener("keydown", handleGameControls);
     }
   }, [gameState.gameActive, gameState.playerPosition]);
 
@@ -185,19 +205,26 @@ const NotFound = () => {
     const grid = [];
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
-        const isPlayer = gameState.playerPosition.x === x && gameState.playerPosition.y === y;
-        const collectible = gameState.collectibles.find(c => c.x === x && c.y === y && !c.collected);
+        const isPlayer =
+          gameState.playerPosition.x === x && gameState.playerPosition.y === y;
+        const collectible = gameState.collectibles.find(
+          (c) => c.x === x && c.y === y && !c.collected,
+        );
 
         grid.push(
           <div
             key={`${x}-${y}`}
             className={`w-6 h-6 border border-border/20 flex items-center justify-center text-xs transition-all duration-200 ${
-              isPlayer ? 'bg-aethex-500 animate-pulse' : collectible ? 'bg-yellow-500/50 animate-bounce' : 'bg-background/30'
+              isPlayer
+                ? "bg-aethex-500 animate-pulse"
+                : collectible
+                  ? "bg-yellow-500/50 animate-bounce"
+                  : "bg-background/30"
             }`}
           >
-            {isPlayer && '🚀'}
-            {collectible && '⭐'}
-          </div>
+            {isPlayer && "🚀"}
+            {collectible && "⭐"}
+          </div>,
         );
       }
     }
@@ -219,7 +246,7 @@ const NotFound = () => {
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 3}s`,
                   animationDuration: `${3 + Math.random() * 2}s`,
-                  fontSize: `${12 + Math.random() * 8}px`
+                  fontSize: `${12 + Math.random() * 8}px`,
                 }}
               >
                 404
@@ -253,11 +280,17 @@ const NotFound = () => {
               </div>
 
               <div className="flex justify-center space-x-4">
-                <Badge variant="outline" className="border-aethex-400/50 text-aethex-400 animate-pulse">
+                <Badge
+                  variant="outline"
+                  className="border-aethex-400/50 text-aethex-400 animate-pulse"
+                >
                   <Zap className="h-3 w-3 mr-1" />
                   Time Lost: {timeSpent}s
                 </Badge>
-                <Badge variant="outline" className="border-neon-blue/50 text-neon-blue animate-bounce-gentle">
+                <Badge
+                  variant="outline"
+                  className="border-neon-blue/50 text-neon-blue animate-bounce-gentle"
+                >
                   <Target className="h-3 w-3 mr-1" />
                   Location: {location.pathname}
                 </Badge>
@@ -272,7 +305,8 @@ const NotFound = () => {
                   <span>404 Rescue Mission</span>
                 </CardTitle>
                 <CardDescription>
-                  Help the rocket collect all stars to unlock the way home! Use WASD or arrow keys.
+                  Help the rocket collect all stars to unlock the way home! Use
+                  WASD or arrow keys.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -290,10 +324,16 @@ const NotFound = () => {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <div className="text-sm">
-                        Score: <span className="text-gradient font-bold">{gameState.score}</span>
+                        Score:{" "}
+                        <span className="text-gradient font-bold">
+                          {gameState.score}
+                        </span>
                       </div>
                       <div className="text-sm">
-                        Lives: <span className="text-red-400">{'❤️'.repeat(gameState.lives)}</span>
+                        Lives:{" "}
+                        <span className="text-red-400">
+                          {"❤️".repeat(gameState.lives)}
+                        </span>
                       </div>
                     </div>
 
@@ -302,7 +342,9 @@ const NotFound = () => {
                     </div>
 
                     <div className="text-xs text-muted-foreground">
-                      Collected: {gameState.collectibles.filter(c => c.collected).length} / {gameState.collectibles.length}
+                      Collected:{" "}
+                      {gameState.collectibles.filter((c) => c.collected).length}{" "}
+                      / {gameState.collectibles.length}
                     </div>
                   </div>
                 )}
@@ -311,9 +353,12 @@ const NotFound = () => {
                   <div className="space-y-4 animate-scale-in">
                     <div className="text-center space-y-2">
                       <Trophy className="h-12 w-12 text-yellow-500 mx-auto animate-bounce" />
-                      <h3 className="text-xl font-bold text-gradient">Mission Complete!</h3>
+                      <h3 className="text-xl font-bold text-gradient">
+                        Mission Complete!
+                      </h3>
                       <p className="text-muted-foreground">
-                        You've rescued the lost page! Final Score: {gameState.score}
+                        You've rescued the lost page! Final Score:{" "}
+                        {gameState.score}
                       </p>
                     </div>
                     <Button
@@ -337,7 +382,8 @@ const NotFound = () => {
                     🎉 Konami Code Activated! 🎉
                   </h3>
                   <p className="text-muted-foreground mb-4">
-                    You've unlocked the secret developer mode! You're clearly a person of culture.
+                    You've unlocked the secret developer mode! You're clearly a
+                    person of culture.
                   </p>
                   <Button
                     onClick={() => navigate("/dashboard")}

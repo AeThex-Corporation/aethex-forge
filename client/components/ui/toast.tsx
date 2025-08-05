@@ -34,8 +34,7 @@ const toastVariants = cva(
           "border-green-500/50 bg-green-500/10 text-green-400 shadow-2xl shadow-green-500/20",
         warning:
           "border-yellow-500/50 bg-yellow-500/10 text-yellow-400 shadow-2xl shadow-yellow-500/20",
-        info:
-          "border-aethex-400/50 bg-aethex-500/10 text-aethex-300 shadow-2xl shadow-aethex-500/20 glow-blue",
+        info: "border-aethex-400/50 bg-aethex-500/10 text-aethex-300 shadow-2xl shadow-aethex-500/20 glow-blue",
         aethex:
           "border-aethex-400/50 bg-gradient-to-r from-aethex-500/20 via-neon-blue/20 to-aethex-600/20 text-aethex-300 shadow-2xl shadow-aethex-500/30 glow-purple animate-pulse-glow",
       },

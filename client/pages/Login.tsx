@@ -2,20 +2,26 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import LoadingScreen from "@/components/LoadingScreen";
-import { 
-  LogIn, 
-  ArrowRight, 
-  Shield, 
-  Sparkles, 
-  Github, 
+import {
+  LogIn,
+  ArrowRight,
+  Shield,
+  Sparkles,
+  Github,
   Mail,
   Lock,
-  User
+  User,
 } from "lucide-react";
 
 export default function Login() {
@@ -27,7 +33,7 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // Simulate login process
     setTimeout(() => {
       setIsLoading(false);
@@ -45,7 +51,13 @@ export default function Login() {
   };
 
   if (isLoading) {
-    return <LoadingScreen message="Authenticating your account..." showProgress={true} duration={2000} />;
+    return (
+      <LoadingScreen
+        message="Authenticating your account..."
+        showProgress={true}
+        duration={2000}
+      />
+    );
   }
 
   return (
@@ -62,7 +74,7 @@ export default function Login() {
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${3 + Math.random() * 2}s`
+                  animationDuration: `${3 + Math.random() * 2}s`,
                 }}
               />
             ))}
@@ -76,30 +88,35 @@ export default function Login() {
                 </div>
               </div>
               <div className="space-y-2">
-                <CardTitle className="text-2xl text-gradient-purple">Welcome Back</CardTitle>
+                <CardTitle className="text-2xl text-gradient-purple">
+                  Welcome Back
+                </CardTitle>
                 <CardDescription>
                   Sign in to your AeThex account to access the dashboard
                 </CardDescription>
               </div>
-              <Badge variant="outline" className="border-aethex-400/50 text-aethex-400">
+              <Badge
+                variant="outline"
+                className="border-aethex-400/50 text-aethex-400"
+              >
                 <Sparkles className="h-3 w-3 mr-1" />
                 Secure Login
               </Badge>
             </CardHeader>
-            
+
             <CardContent className="space-y-6">
               {/* Social Login Buttons */}
               <div className="space-y-3">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full hover-lift interactive-scale"
                   onClick={() => handleSocialLogin("github")}
                 >
                   <Github className="h-4 w-4 mr-2" />
                   Continue with GitHub
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full hover-lift interactive-scale"
                   onClick={() => handleSocialLogin("google")}
                 >
@@ -113,7 +130,9 @@ export default function Login() {
                   <div className="w-full border-t border-border/50" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Or continue with email</span>
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with email
+                  </span>
                 </div>
               </div>
 
@@ -157,16 +176,22 @@ export default function Login() {
 
                 <div className="flex items-center justify-between text-sm">
                   <label className="flex items-center space-x-2 cursor-pointer">
-                    <input type="checkbox" className="rounded border-border/50" />
+                    <input
+                      type="checkbox"
+                      className="rounded border-border/50"
+                    />
                     <span className="text-muted-foreground">Remember me</span>
                   </label>
-                  <button type="button" className="text-aethex-400 hover:underline">
+                  <button
+                    type="button"
+                    className="text-aethex-400 hover:underline"
+                  >
                     Forgot password?
                   </button>
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue"
                   disabled={!email || !password}
                 >
@@ -179,7 +204,7 @@ export default function Login() {
               <div className="text-center pt-4">
                 <p className="text-sm text-muted-foreground">
                   Don't have an account?{" "}
-                  <button 
+                  <button
                     onClick={() => navigate("/onboarding")}
                     className="text-aethex-400 hover:underline font-medium"
                   >

@@ -3,18 +3,18 @@ import { cn } from "@/lib/utils";
 
 interface LoadingScreenProps {
   message?: string;
-  variant?: 'full' | 'overlay' | 'inline';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: "full" | "overlay" | "inline";
+  size?: "sm" | "md" | "lg";
   showProgress?: boolean;
   duration?: number;
 }
 
-export default function LoadingScreen({ 
-  message = "Loading...", 
-  variant = 'full',
-  size = 'md',
+export default function LoadingScreen({
+  message = "Loading...",
+  variant = "full",
+  size = "md",
   showProgress = false,
-  duration = 3000
+  duration = 3000,
 }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [currentMessage, setCurrentMessage] = useState(message);
@@ -22,8 +22,8 @@ export default function LoadingScreen({
   useEffect(() => {
     if (showProgress) {
       const interval = setInterval(() => {
-        setProgress(prev => {
-          const newProgress = prev + (100 / (duration / 100));
+        setProgress((prev) => {
+          const newProgress = prev + 100 / (duration / 100);
           return newProgress > 100 ? 100 : newProgress;
         });
       }, 100);
@@ -38,10 +38,10 @@ export default function LoadingScreen({
       "Loading quantum processors...",
       "Calibrating neural networks...",
       "Synchronizing data streams...",
-      "Preparing your experience..."
+      "Preparing your experience...",
     ];
 
-    if (variant === 'full') {
+    if (variant === "full") {
       let index = 0;
       const interval = setInterval(() => {
         setCurrentMessage(messages[index % messages.length]);
@@ -53,26 +53,29 @@ export default function LoadingScreen({
   }, [variant]);
 
   const sizeClasses = {
-    sm: 'h-4 w-4',
-    md: 'h-8 w-8',
-    lg: 'h-12 w-12'
+    sm: "h-4 w-4",
+    md: "h-8 w-8",
+    lg: "h-12 w-12",
   };
 
-  if (variant === 'inline') {
+  if (variant === "inline") {
     return (
       <div className="flex items-center space-x-3">
         <div className={cn("relative", sizeClasses[size])}>
           <div className="absolute inset-0 rounded-full border-2 border-aethex-400/30"></div>
           <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-aethex-400 animate-spin"></div>
         </div>
-        <span className="text-sm text-muted-foreground animate-pulse">{message}</span>
+        <span className="text-sm text-muted-foreground animate-pulse">
+          {message}
+        </span>
       </div>
     );
   }
 
-  const containerClasses = variant === 'full' 
-    ? "fixed inset-0 bg-background/95 backdrop-blur-sm z-50"
-    : "absolute inset-0 bg-background/80 backdrop-blur-sm z-40";
+  const containerClasses =
+    variant === "full"
+      ? "fixed inset-0 bg-background/95 backdrop-blur-sm z-50"
+      : "absolute inset-0 bg-background/80 backdrop-blur-sm z-40";
 
   return (
     <div className={containerClasses}>
@@ -100,9 +103,9 @@ export default function LoadingScreen({
                   key={i}
                   className="w-1 bg-aethex-400 rounded-full animate-pulse"
                   style={{
-                    height: `${20 + (i * 10)}px`,
+                    height: `${20 + i * 10}px`,
                     animationDelay: `${i * 0.2}s`,
-                    animationDuration: '1s'
+                    animationDuration: "1s",
                   }}
                 />
               ))}
@@ -113,12 +116,14 @@ export default function LoadingScreen({
           {showProgress && (
             <div className="space-y-2">
               <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-aethex-500 to-neon-blue transition-all duration-300 ease-out"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <div className="text-xs text-muted-foreground">{Math.round(progress)}%</div>
+              <div className="text-xs text-muted-foreground">
+                {Math.round(progress)}%
+              </div>
             </div>
           )}
 
@@ -142,7 +147,7 @@ export default function LoadingScreen({
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 2}s`,
-                  animationDuration: `${2 + Math.random() * 3}s`
+                  animationDuration: `${2 + Math.random() * 3}s`,
                 }}
               >
                 {Math.random().toString(2).substr(2, 1)}

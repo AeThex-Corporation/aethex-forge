@@ -1,16 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { Link } from "react-router-dom";
-import { 
-  BookOpen, 
-  Code, 
-  Terminal, 
-  Download, 
+import {
+  BookOpen,
+  Code,
+  Terminal,
+  Download,
   ExternalLink,
   ArrowRight,
   Search,
@@ -18,7 +24,7 @@ import {
   Video,
   Headphones,
   Github,
-  Play
+  Play,
 } from "lucide-react";
 
 export default function Documentation() {
@@ -45,7 +51,12 @@ export default function Documentation() {
       icon: Play,
       docs: 12,
       color: "from-green-500 to-emerald-600",
-      sections: ["Installation", "First Steps", "Basic Concepts", "Hello World"]
+      sections: [
+        "Installation",
+        "First Steps",
+        "Basic Concepts",
+        "Hello World",
+      ],
     },
     {
       title: "API Reference",
@@ -53,7 +64,7 @@ export default function Documentation() {
       icon: Code,
       docs: 45,
       color: "from-blue-500 to-cyan-600",
-      sections: ["Authentication", "Endpoints", "SDKs", "Rate Limits"]
+      sections: ["Authentication", "Endpoints", "SDKs", "Rate Limits"],
     },
     {
       title: "Tutorials",
@@ -61,7 +72,12 @@ export default function Documentation() {
       icon: BookOpen,
       docs: 28,
       color: "from-purple-500 to-indigo-600",
-      sections: ["Game Development", "Web Apps", "Mobile Apps", "AI Integration"]
+      sections: [
+        "Game Development",
+        "Web Apps",
+        "Mobile Apps",
+        "AI Integration",
+      ],
     },
     {
       title: "CLI Tools",
@@ -69,26 +85,26 @@ export default function Documentation() {
       icon: Terminal,
       docs: 15,
       color: "from-orange-500 to-red-600",
-      sections: ["Installation", "Commands", "Configuration", "Scripts"]
-    }
+      sections: ["Installation", "Commands", "Configuration", "Scripts"],
+    },
   ];
 
   const quickStart = [
     {
       title: "Install AeThex SDK",
       command: "npm install @aethex/sdk",
-      description: "Get started with our JavaScript SDK"
+      description: "Get started with our JavaScript SDK",
     },
     {
       title: "Initialize Project",
       command: "aethex init my-project",
-      description: "Create a new AeThex project"
+      description: "Create a new AeThex project",
     },
     {
       title: "Deploy to Cloud",
       command: "aethex deploy --env production",
-      description: "Deploy your application to AeThex Cloud"
-    }
+      description: "Deploy your application to AeThex Cloud",
+    },
   ];
 
   const resources = [
@@ -98,7 +114,7 @@ export default function Documentation() {
       icon: Video,
       count: "50+ videos",
       link: "/tutorials",
-      color: "from-red-500 to-pink-600"
+      color: "from-red-500 to-pink-600",
     },
     {
       title: "Podcast Series",
@@ -106,7 +122,7 @@ export default function Documentation() {
       icon: Headphones,
       count: "20+ episodes",
       link: "/podcast",
-      color: "from-purple-500 to-indigo-600"
+      color: "from-purple-500 to-indigo-600",
     },
     {
       title: "Code Examples",
@@ -114,7 +130,7 @@ export default function Documentation() {
       icon: Github,
       count: "100+ repos",
       link: "/examples",
-      color: "from-green-500 to-emerald-600"
+      color: "from-green-500 to-emerald-600",
     },
     {
       title: "Downloads",
@@ -122,12 +138,18 @@ export default function Documentation() {
       icon: Download,
       count: "Latest releases",
       link: "/downloads",
-      color: "from-blue-500 to-cyan-600"
-    }
+      color: "from-blue-500 to-cyan-600",
+    },
   ];
 
   if (isLoading) {
-    return <LoadingScreen message="Loading Documentation..." showProgress={true} duration={1000} />;
+    return (
+      <LoadingScreen
+        message="Loading Documentation..."
+        showProgress={true}
+        duration={1000}
+      />
+    );
   }
 
   return (
@@ -137,18 +159,23 @@ export default function Documentation() {
         <section className="relative py-20 lg:py-32">
           <div className="container mx-auto px-4 text-center relative z-10">
             <div className="max-w-4xl mx-auto space-y-8">
-              <Badge variant="outline" className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle">
+              <Badge
+                variant="outline"
+                className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle"
+              >
                 <FileText className="h-3 w-3 mr-1" />
                 Documentation Center
               </Badge>
-              
+
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient-purple">Developer Documentation</span>
+                <span className="text-gradient-purple">
+                  Developer Documentation
+                </span>
               </h1>
-              
+
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Comprehensive guides, API references, and tutorials to help you build 
-                amazing applications with AeThex technologies.
+                Comprehensive guides, API references, and tutorials to help you
+                build amazing applications with AeThex technologies.
               </p>
 
               {/* Search Bar */}
@@ -182,20 +209,26 @@ export default function Documentation() {
               {docCategories.map((category, index) => {
                 const Icon = category.icon;
                 return (
-                  <Card 
+                  <Card
                     key={index}
                     className="border-border/50 hover:border-aethex-400/50 transition-all duration-500 hover-lift animate-scale-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <CardHeader>
                       <div className="flex items-center space-x-4">
-                        <div className={`p-3 rounded-lg bg-gradient-to-r ${category.color}`}>
+                        <div
+                          className={`p-3 rounded-lg bg-gradient-to-r ${category.color}`}
+                        >
                           <Icon className="h-6 w-6 text-white" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
-                            <CardTitle className="text-xl">{category.title}</CardTitle>
-                            <Badge variant="outline">{category.docs} docs</Badge>
+                            <CardTitle className="text-xl">
+                              {category.title}
+                            </CardTitle>
+                            <Badge variant="outline">
+                              {category.docs} docs
+                            </Badge>
                           </div>
                           <CardDescription className="mt-1">
                             {category.description}
@@ -216,9 +249,11 @@ export default function Documentation() {
                           </Button>
                         ))}
                       </div>
-                      
+
                       <Button asChild className="w-full">
-                        <Link to={`/docs/${category.title.toLowerCase().replace(' ', '-')}`}>
+                        <Link
+                          to={`/docs/${category.title.toLowerCase().replace(" ", "-")}`}
+                        >
                           View {category.title}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Link>
@@ -245,7 +280,7 @@ export default function Documentation() {
 
             <div className="max-w-3xl mx-auto space-y-6">
               {quickStart.map((step, index) => (
-                <Card 
+                <Card
                   key={index}
                   className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 animate-slide-right"
                   style={{ animationDelay: `${index * 0.2}s` }}
@@ -256,11 +291,17 @@ export default function Documentation() {
                         {index + 1}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-lg text-gradient mb-2">{step.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-3">{step.description}</p>
+                        <h3 className="font-semibold text-lg text-gradient mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {step.description}
+                        </p>
                         <div className="bg-background/50 border border-border/30 rounded-lg p-3 font-mono text-sm">
                           <span className="text-muted-foreground">$ </span>
-                          <span className="text-aethex-400">{step.command}</span>
+                          <span className="text-aethex-400">
+                            {step.command}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -287,20 +328,26 @@ export default function Documentation() {
               {resources.map((resource, index) => {
                 const Icon = resource.icon;
                 return (
-                  <Card 
+                  <Card
                     key={index}
                     className="text-center border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <CardHeader>
-                      <div className={`mx-auto w-16 h-16 rounded-lg bg-gradient-to-r ${resource.color} flex items-center justify-center mb-4`}>
+                      <div
+                        className={`mx-auto w-16 h-16 rounded-lg bg-gradient-to-r ${resource.color} flex items-center justify-center mb-4`}
+                      >
                         <Icon className="h-8 w-8 text-white" />
                       </div>
-                      <CardTitle className="text-lg">{resource.title}</CardTitle>
+                      <CardTitle className="text-lg">
+                        {resource.title}
+                      </CardTitle>
                       <CardDescription>{resource.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Badge variant="outline" className="mb-4">{resource.count}</Badge>
+                      <Badge variant="outline" className="mb-4">
+                        {resource.count}
+                      </Badge>
                       <Button asChild size="sm" className="w-full">
                         <Link to={resource.link}>
                           Explore
@@ -323,19 +370,28 @@ export default function Documentation() {
                 Need Help Getting Started?
               </h2>
               <p className="text-xl text-muted-foreground">
-                Our documentation is continuously updated. Can't find what you're looking for? 
-                Our support team is here to help.
+                Our documentation is continuously updated. Can't find what
+                you're looking for? Our support team is here to help.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
+                >
                   <Link to="/support" className="flex items-center space-x-2">
                     <BookOpen className="h-5 w-5" />
                     <span>Get Support</span>
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                >
                   <Link to="/community">Join Community</Link>
                 </Button>
               </div>

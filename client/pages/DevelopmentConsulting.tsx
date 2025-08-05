@@ -1,18 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { Link } from "react-router-dom";
-import { 
-  BriefcaseIcon, 
-  Code, 
-  Sparkles, 
-  Zap, 
-  Users, 
-  Trophy, 
+import {
+  BriefcaseIcon,
+  Code,
+  Sparkles,
+  Zap,
+  Users,
+  Trophy,
   Target,
   ArrowRight,
   CheckCircle,
@@ -27,7 +33,7 @@ import {
   Lightbulb,
   Puzzle,
   Rocket,
-  Globe
+  Globe,
 } from "lucide-react";
 
 export default function DevelopmentConsulting() {
@@ -51,48 +57,50 @@ export default function DevelopmentConsulting() {
   const consultingServices = [
     {
       title: "Technical Architecture Review",
-      description: "Comprehensive analysis of your system architecture and scalability",
+      description:
+        "Comprehensive analysis of your system architecture and scalability",
       icon: Database,
       duration: "2-4 weeks",
       price: "Starting at $8,000",
       features: [
         "System architecture audit",
-        "Performance bottleneck analysis", 
+        "Performance bottleneck analysis",
         "Scalability recommendations",
         "Security assessment",
-        "Technology stack evaluation"
+        "Technology stack evaluation",
       ],
-      color: "from-blue-500 to-cyan-600"
+      color: "from-blue-500 to-cyan-600",
     },
     {
       title: "DevOps & Infrastructure",
-      description: "Streamline your development pipeline and cloud infrastructure",
+      description:
+        "Streamline your development pipeline and cloud infrastructure",
       icon: Cloud,
-      duration: "3-6 weeks", 
+      duration: "3-6 weeks",
       price: "Starting at $12,000",
       features: [
         "CI/CD pipeline setup",
         "Cloud migration strategy",
         "Monitoring & alerting",
         "Container orchestration",
-        "Infrastructure as code"
+        "Infrastructure as code",
       ],
-      color: "from-green-500 to-emerald-600"
+      color: "from-green-500 to-emerald-600",
     },
     {
       title: "Code Quality & Optimization",
       description: "Improve code quality, performance, and maintainability",
       icon: Code,
       duration: "2-8 weeks",
-      price: "Starting at $6,000", 
+      price: "Starting at $6,000",
       features: [
         "Code review & refactoring",
         "Performance optimization",
         "Testing strategy",
         "Documentation improvement",
-        "Best practices implementation"
+        "Best practices implementation",
       ],
-      color: "from-purple-500 to-indigo-600"
+      color: "from-purple-500 to-indigo-600",
     },
     {
       title: "Team & Process Consulting",
@@ -105,37 +113,57 @@ export default function DevelopmentConsulting() {
         "Team structure optimization",
         "Workflow automation",
         "Knowledge transfer",
-        "Leadership coaching"
+        "Leadership coaching",
       ],
-      color: "from-orange-500 to-red-600"
-    }
+      color: "from-orange-500 to-red-600",
+    },
   ];
 
   const expertise = [
     {
       category: "Frontend Technologies",
-      technologies: ["React", "Vue.js", "Angular", "TypeScript", "Next.js", "Tailwind CSS"],
+      technologies: [
+        "React",
+        "Vue.js",
+        "Angular",
+        "TypeScript",
+        "Next.js",
+        "Tailwind CSS",
+      ],
       icon: Puzzle,
-      projects: "200+ projects"
+      projects: "200+ projects",
     },
     {
       category: "Backend & APIs",
       technologies: ["Node.js", "Python", "Java", "Go", "GraphQL", "REST APIs"],
       icon: Settings,
-      projects: "150+ systems"
+      projects: "150+ systems",
     },
     {
       category: "Cloud & Infrastructure",
-      technologies: ["AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform"],
+      technologies: [
+        "AWS",
+        "Azure",
+        "GCP",
+        "Docker",
+        "Kubernetes",
+        "Terraform",
+      ],
       icon: Cloud,
-      projects: "100+ deployments"
+      projects: "100+ deployments",
     },
     {
       category: "Databases & Analytics",
-      technologies: ["PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "BigQuery"],
+      technologies: [
+        "PostgreSQL",
+        "MongoDB",
+        "Redis",
+        "Elasticsearch",
+        "BigQuery",
+      ],
       icon: Database,
-      projects: "80+ implementations"
-    }
+      projects: "80+ implementations",
+    },
   ];
 
   const packages = [
@@ -149,10 +177,10 @@ export default function DevelopmentConsulting() {
         "Key recommendations",
         "Priority action items",
         "Executive summary",
-        "30-min follow-up call"
+        "30-min follow-up call",
       ],
       popular: false,
-      color: "from-gray-500 to-gray-600"
+      color: "from-gray-500 to-gray-600",
     },
     {
       name: "Comprehensive Audit",
@@ -165,10 +193,10 @@ export default function DevelopmentConsulting() {
         "Implementation roadmap",
         "Risk assessment",
         "Team presentation",
-        "3 months email support"
+        "3 months email support",
       ],
       popular: true,
-      color: "from-aethex-500 to-neon-blue"
+      color: "from-aethex-500 to-neon-blue",
     },
     {
       name: "Strategic Partnership",
@@ -181,11 +209,11 @@ export default function DevelopmentConsulting() {
         "Implementation support",
         "Team training",
         "Priority support",
-        "Quarterly reviews"
+        "Quarterly reviews",
       ],
       popular: false,
-      color: "from-purple-500 to-pink-600"
-    }
+      color: "from-purple-500 to-pink-600",
+    },
   ];
 
   const caseStudies = [
@@ -194,8 +222,12 @@ export default function DevelopmentConsulting() {
       client: "Fortune 500 Retailer",
       challenge: "10x traffic growth causing system failures",
       solution: "Microservices architecture with auto-scaling",
-      results: ["99.99% uptime achieved", "50% cost reduction", "3x faster load times"],
-      tech: ["Kubernetes", "Redis", "CDN"]
+      results: [
+        "99.99% uptime achieved",
+        "50% cost reduction",
+        "3x faster load times",
+      ],
+      tech: ["Kubernetes", "Redis", "CDN"],
     },
     {
       title: "FinTech Security Overhaul",
@@ -203,20 +235,30 @@ export default function DevelopmentConsulting() {
       challenge: "Security compliance for banking regulations",
       solution: "Zero-trust architecture with enhanced monitoring",
       results: ["SOC 2 compliance", "Zero breaches", "40% faster audits"],
-      tech: ["OAuth 2.0", "Vault", "Istio"]
+      tech: ["OAuth 2.0", "Vault", "Istio"],
     },
     {
       title: "Legacy System Modernization",
       client: "Healthcare Provider",
       challenge: "20-year-old system blocking innovation",
       solution: "Gradual migration to cloud-native architecture",
-      results: ["6 months migration", "60% performance boost", "Modern API ecosystem"],
-      tech: ["Docker", "GraphQL", "Postgres"]
-    }
+      results: [
+        "6 months migration",
+        "60% performance boost",
+        "Modern API ecosystem",
+      ],
+      tech: ["Docker", "GraphQL", "Postgres"],
+    },
   ];
 
   if (isLoading) {
-    return <LoadingScreen message="Loading Development Consulting..." showProgress={true} duration={1000} />;
+    return (
+      <LoadingScreen
+        message="Loading Development Consulting..."
+        showProgress={true}
+        duration={1000}
+      />
+    );
   }
 
   return (
@@ -234,39 +276,54 @@ export default function DevelopmentConsulting() {
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 3}s`,
                   animationDuration: `${3 + Math.random() * 2}s`,
-                  fontSize: `${8 + Math.random() * 6}px`
+                  fontSize: `${8 + Math.random() * 6}px`,
                 }}
               >
-                {'⚡🔧📊💡'.charAt(Math.floor(Math.random() * 4))}
+                {"⚡🔧📊💡".charAt(Math.floor(Math.random() * 4))}
               </div>
             ))}
           </div>
 
           <div className="container mx-auto px-4 text-center relative z-10">
             <div className="max-w-4xl mx-auto space-y-8">
-              <Badge variant="outline" className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle">
+              <Badge
+                variant="outline"
+                className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle"
+              >
                 <BriefcaseIcon className="h-3 w-3 mr-1" />
                 Development Consulting Division
               </Badge>
-              
+
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient-purple">Strategic Technology Consulting</span>
+                <span className="text-gradient-purple">
+                  Strategic Technology Consulting
+                </span>
               </h1>
-              
+
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Expert guidance to optimize your development processes, scale your systems, 
-                and accelerate your digital transformation journey.
+                Expert guidance to optimize your development processes, scale
+                your systems, and accelerate your digital transformation
+                journey.
               </p>
 
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift"
+                >
                   <Link to="/contact" className="flex items-center space-x-2">
                     <Target className="h-5 w-5" />
                     <span>Get Free Assessment</span>
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-border/50 hover-lift">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-border/50 hover-lift"
+                >
                   <Link to="/docs">Case Studies</Link>
                 </Button>
               </div>
@@ -290,18 +347,22 @@ export default function DevelopmentConsulting() {
               {consultingServices.map((service, index) => {
                 const Icon = service.icon;
                 return (
-                  <Card 
+                  <Card
                     key={index}
                     className="relative overflow-hidden border-border/50 hover:border-aethex-400/50 transition-all duration-500 hover-lift animate-scale-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <CardHeader>
                       <div className="flex items-center space-x-4">
-                        <div className={`p-3 rounded-lg bg-gradient-to-r ${service.color}`}>
+                        <div
+                          className={`p-3 rounded-lg bg-gradient-to-r ${service.color}`}
+                        >
                           <Icon className="h-6 w-6 text-white" />
                         </div>
                         <div className="flex-1">
-                          <CardTitle className="text-xl">{service.title}</CardTitle>
+                          <CardTitle className="text-xl">
+                            {service.title}
+                          </CardTitle>
                           <CardDescription className="mt-1">
                             {service.description}
                           </CardDescription>
@@ -311,13 +372,16 @@ export default function DevelopmentConsulting() {
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 gap-2">
                         {service.features.map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-center space-x-2 text-sm">
+                          <div
+                            key={featureIndex}
+                            className="flex items-center space-x-2 text-sm"
+                          >
                             <CheckCircle className="h-3 w-3 text-aethex-400 flex-shrink-0" />
                             <span>{feature}</span>
                           </div>
                         ))}
                       </div>
-                      
+
                       <div className="flex justify-between items-center pt-4 border-t border-border/30">
                         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                           <Clock className="h-4 w-4" />
@@ -352,7 +416,7 @@ export default function DevelopmentConsulting() {
               {expertise.map((area, index) => {
                 const Icon = area.icon;
                 return (
-                  <Card 
+                  <Card
                     key={index}
                     className="bg-card/30 border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
@@ -360,12 +424,18 @@ export default function DevelopmentConsulting() {
                     <CardHeader className="text-center">
                       <Icon className="h-12 w-12 text-aethex-400 mx-auto mb-3" />
                       <CardTitle className="text-lg">{area.category}</CardTitle>
-                      <Badge variant="outline" className="text-xs">{area.projects}</Badge>
+                      <Badge variant="outline" className="text-xs">
+                        {area.projects}
+                      </Badge>
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-1">
                         {area.technologies.map((tech, techIndex) => (
-                          <Badge key={techIndex} variant="secondary" className="text-xs">
+                          <Badge
+                            key={techIndex}
+                            variant="secondary"
+                            className="text-xs"
+                          >
                             {tech}
                           </Badge>
                         ))}
@@ -392,12 +462,12 @@ export default function DevelopmentConsulting() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {packages.map((pkg, index) => (
-                <Card 
+                <Card
                   key={index}
                   className={`relative overflow-hidden transition-all duration-500 hover-lift animate-scale-in ${
-                    pkg.popular 
-                      ? 'border-aethex-500 glow-blue scale-105' 
-                      : 'border-border/50 hover:border-aethex-400/50'
+                    pkg.popular
+                      ? "border-aethex-500 glow-blue scale-105"
+                      : "border-border/50 hover:border-aethex-400/50"
                   }`}
                   style={{ animationDelay: `${index * 0.2}s` }}
                   onClick={() => setActivePackage(index)}
@@ -407,36 +477,45 @@ export default function DevelopmentConsulting() {
                       MOST POPULAR
                     </div>
                   )}
-                  
+
                   <CardHeader className="text-center">
                     <CardTitle className="text-2xl">{pkg.name}</CardTitle>
-                    <CardDescription className="mt-2">{pkg.description}</CardDescription>
+                    <CardDescription className="mt-2">
+                      {pkg.description}
+                    </CardDescription>
                     <div className="mt-4">
-                      <div className={`text-3xl font-bold bg-gradient-to-r ${pkg.color} bg-clip-text text-transparent`}>
+                      <div
+                        className={`text-3xl font-bold bg-gradient-to-r ${pkg.color} bg-clip-text text-transparent`}
+                      >
                         {pkg.price}
                       </div>
-                      <div className="text-sm text-muted-foreground">{pkg.duration}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {pkg.duration}
+                      </div>
                     </div>
                   </CardHeader>
-                  
+
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       {pkg.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center space-x-2 text-sm">
+                        <div
+                          key={featureIndex}
+                          className="flex items-center space-x-2 text-sm"
+                        >
                           <CheckCircle className="h-4 w-4 text-aethex-400 flex-shrink-0" />
                           <span>{feature}</span>
                         </div>
                       ))}
                     </div>
-                    
-                    <Button 
-                      asChild 
+
+                    <Button
+                      asChild
                       className={`w-full ${
-                        pkg.popular 
-                          ? 'bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90' 
-                          : ''
+                        pkg.popular
+                          ? "bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+                          : ""
                       }`}
-                      variant={pkg.popular ? 'default' : 'outline'}
+                      variant={pkg.popular ? "default" : "outline"}
                     >
                       <Link to="/contact">Get Started</Link>
                     </Button>
@@ -461,40 +540,51 @@ export default function DevelopmentConsulting() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {caseStudies.map((study, index) => (
-                <Card 
+                <Card
                   key={index}
                   className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-up"
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   <CardHeader>
-                    <Badge variant="outline" className="w-fit mb-2">{study.client}</Badge>
+                    <Badge variant="outline" className="w-fit mb-2">
+                      {study.client}
+                    </Badge>
                     <CardTitle className="text-lg">{study.title}</CardTitle>
                     <CardDescription className="text-sm">
                       <strong>Challenge:</strong> {study.challenge}
                     </CardDescription>
                   </CardHeader>
-                  
+
                   <CardContent className="space-y-4">
                     <div>
                       <h4 className="font-semibold text-sm mb-2">Solution:</h4>
-                      <p className="text-sm text-muted-foreground">{study.solution}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {study.solution}
+                      </p>
                     </div>
-                    
+
                     <div>
                       <h4 className="font-semibold text-sm mb-2">Results:</h4>
                       <ul className="space-y-1">
                         {study.results.map((result, resultIndex) => (
-                          <li key={resultIndex} className="flex items-center space-x-2 text-sm">
+                          <li
+                            key={resultIndex}
+                            className="flex items-center space-x-2 text-sm"
+                          >
                             <TrendingUp className="h-3 w-3 text-green-400 flex-shrink-0" />
                             <span>{result}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-                    
+
                     <div className="flex flex-wrap gap-1">
                       {study.tech.map((tech, techIndex) => (
-                        <Badge key={techIndex} variant="secondary" className="text-xs">
+                        <Badge
+                          key={techIndex}
+                          variant="secondary"
+                          className="text-xs"
+                        >
                           {tech}
                         </Badge>
                       ))}
@@ -514,18 +604,28 @@ export default function DevelopmentConsulting() {
                 Ready to Accelerate Your Development?
               </h2>
               <p className="text-xl text-muted-foreground">
-                Let our experts analyze your current setup and provide a roadmap for optimal performance and scalability.
+                Let our experts analyze your current setup and provide a roadmap
+                for optimal performance and scalability.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
+                >
                   <Link to="/contact" className="flex items-center space-x-2">
                     <Lightbulb className="h-5 w-5" />
                     <span>Get Free Consultation</span>
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                >
                   <Link to="/docs">Download Case Studies</Link>
                 </Button>
               </div>
@@ -534,17 +634,23 @@ export default function DevelopmentConsulting() {
                 <div className="text-center">
                   <Shield className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Confidential</h3>
-                  <p className="text-sm text-muted-foreground">NDAs & security first</p>
+                  <p className="text-sm text-muted-foreground">
+                    NDAs & security first
+                  </p>
                 </div>
                 <div className="text-center">
                   <Globe className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Global Expertise</h3>
-                  <p className="text-sm text-muted-foreground">World-class consultants</p>
+                  <p className="text-sm text-muted-foreground">
+                    World-class consultants
+                  </p>
                 </div>
                 <div className="text-center">
                   <Trophy className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Proven Results</h3>
-                  <p className="text-sm text-muted-foreground">500+ successful projects</p>
+                  <p className="text-sm text-muted-foreground">
+                    500+ successful projects
+                  </p>
                 </div>
               </div>
             </div>

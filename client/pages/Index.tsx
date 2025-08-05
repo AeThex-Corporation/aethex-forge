@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import LoadingScreen from "@/components/LoadingScreen";
 import { SkeletonStats, SkeletonUserPath } from "@/components/Skeleton";
@@ -17,7 +23,7 @@ import {
   Zap,
   Target,
   Users,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 
 export default function Index() {
@@ -34,7 +40,7 @@ export default function Index() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveSection(prev => (prev + 1) % 4);
+      setActiveSection((prev) => (prev + 1) % 4);
     }, 4000);
 
     return () => clearInterval(interval);
@@ -45,37 +51,43 @@ export default function Index() {
       title: "Neural Networks",
       description: "Advanced AI-powered development tools",
       icon: Zap,
-      color: "from-blue-500 to-purple-600"
+      color: "from-blue-500 to-purple-600",
     },
     {
       title: "Quantum Computing",
       description: "Next-generation processing capabilities",
       icon: Target,
-      color: "from-purple-500 to-pink-600"
+      color: "from-purple-500 to-pink-600",
     },
     {
       title: "Blockchain Integration",
       description: "Secure, decentralized solutions",
       icon: Users,
-      color: "from-green-500 to-blue-600"
+      color: "from-green-500 to-blue-600",
     },
     {
       title: "Cloud Infrastructure",
       description: "Scalable, global deployment systems",
       icon: TrendingUp,
-      color: "from-orange-500 to-red-600"
-    }
+      color: "from-orange-500 to-red-600",
+    },
   ];
 
   const achievements = [
     { metric: "10K+", label: "Active Developers" },
     { metric: "500+", label: "Projects Deployed" },
     { metric: "99.99%", label: "System Uptime" },
-    { metric: "24/7", label: "Global Support" }
+    { metric: "24/7", label: "Global Support" },
   ];
 
   if (isLoading) {
-    return <LoadingScreen message="Initializing AeThex OS..." showProgress={true} duration={1200} />;
+    return (
+      <LoadingScreen
+        message="Initializing AeThex OS..."
+        showProgress={true}
+        duration={1200}
+      />
+    );
   }
 
   return (
@@ -109,7 +121,7 @@ export default function Index() {
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 5}s`,
                   animationDuration: `${4 + Math.random() * 3}s`,
-                  clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
+                  clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
                 }}
               />
             ))}
@@ -129,8 +141,9 @@ export default function Index() {
                   Crafting Digital Realities
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up">
-                  Where innovation meets execution. We build the future through advanced
-                  technology, creative solutions, and limitless possibilities.
+                  Where innovation meets execution. We build the future through
+                  advanced technology, creative solutions, and limitless
+                  possibilities.
                 </p>
               </div>
             </div>
@@ -145,13 +158,15 @@ export default function Index() {
                     key={index}
                     className={`relative overflow-hidden border-2 transition-all duration-500 hover-lift cursor-pointer group ${
                       isActive
-                        ? 'border-aethex-500 glow-blue scale-105'
-                        : 'border-border/30 hover:border-aethex-400/50'
+                        ? "border-aethex-500 glow-blue scale-105"
+                        : "border-border/30 hover:border-aethex-400/50"
                     }`}
                     onClick={() => setActiveSection(index)}
                   >
                     <CardContent className="p-6 text-center space-y-3">
-                      <div className={`mx-auto w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}>
+                      <div
+                        className={`mx-auto w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}
+                      >
                         <Icon className="h-6 w-6 text-white" />
                       </div>
                       <h3 className="font-semibold text-sm">{feature.title}</h3>
@@ -166,14 +181,26 @@ export default function Index() {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row justify-center gap-6 animate-slide-up">
-              <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6">
-                <Link to="/onboarding" className="flex items-center space-x-2 group">
+              <Button
+                asChild
+                size="lg"
+                className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
+              >
+                <Link
+                  to="/onboarding"
+                  className="flex items-center space-x-2 group"
+                >
                   <Sparkles className="h-5 w-5" />
                   <span>Start Your Journey</span>
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+              >
                 <Link to="/dashboard">Explore Dashboard</Link>
               </Button>
             </div>
@@ -228,19 +255,44 @@ export default function Index() {
                 Next-Generation Technology Stack
               </h2>
               <p className="text-lg text-muted-foreground">
-                Built on cutting-edge frameworks and powered by advanced algorithms
+                Built on cutting-edge frameworks and powered by advanced
+                algorithms
               </p>
             </div>
 
             {/* Interactive Technology Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
               {[
-                { name: "Quantum AI", status: "Active", color: "from-purple-500 to-blue-600" },
-                { name: "Neural Networks", status: "Optimizing", color: "from-blue-500 to-green-600" },
-                { name: "Blockchain Core", status: "Secure", color: "from-green-500 to-yellow-600" },
-                { name: "Cloud Matrix", status: "Scaling", color: "from-yellow-500 to-red-600" },
-                { name: "Data Fusion", status: "Processing", color: "from-red-500 to-purple-600" },
-                { name: "Edge Computing", status: "Deployed", color: "from-purple-500 to-pink-600" }
+                {
+                  name: "Quantum AI",
+                  status: "Active",
+                  color: "from-purple-500 to-blue-600",
+                },
+                {
+                  name: "Neural Networks",
+                  status: "Optimizing",
+                  color: "from-blue-500 to-green-600",
+                },
+                {
+                  name: "Blockchain Core",
+                  status: "Secure",
+                  color: "from-green-500 to-yellow-600",
+                },
+                {
+                  name: "Cloud Matrix",
+                  status: "Scaling",
+                  color: "from-yellow-500 to-red-600",
+                },
+                {
+                  name: "Data Fusion",
+                  status: "Processing",
+                  color: "from-red-500 to-purple-600",
+                },
+                {
+                  name: "Edge Computing",
+                  status: "Deployed",
+                  color: "from-purple-500 to-pink-600",
+                },
               ].map((tech, index) => (
                 <Card
                   key={index}
@@ -252,9 +304,13 @@ export default function Index() {
                       <h3 className="font-semibold text-gradient group-hover:animate-pulse">
                         {tech.name}
                       </h3>
-                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${tech.color} animate-pulse`} />
+                      <div
+                        className={`w-3 h-3 rounded-full bg-gradient-to-r ${tech.color} animate-pulse`}
+                      />
                     </div>
-                    <p className="text-sm text-muted-foreground">{tech.status}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {tech.status}
+                    </p>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-aethex-400/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   </CardContent>
                 </Card>
@@ -267,14 +323,26 @@ export default function Index() {
                 Ready to Build the Future?
               </h3>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift interactive-scale">
-                  <Link to="/onboarding" className="flex items-center space-x-2 group">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift interactive-scale"
+                >
+                  <Link
+                    to="/onboarding"
+                    className="flex items-center space-x-2 group"
+                  >
                     <Sparkles className="h-5 w-5" />
                     <span>Join AeThex</span>
                     <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-aethex-400/50 hover:border-aethex-400 hover-lift interactive-scale">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-aethex-400/50 hover:border-aethex-400 hover-lift interactive-scale"
+                >
                   <Link to="/dashboard">Explore Platform</Link>
                 </Button>
               </div>

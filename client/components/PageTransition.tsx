@@ -14,7 +14,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
   useEffect(() => {
     setIsLoading(true);
     setIsVisible(false);
-    
+
     const timer = setTimeout(() => {
       setIsLoading(false);
       setIsVisible(true);
@@ -26,13 +26,11 @@ export default function PageTransition({ children }: PageTransitionProps) {
   return (
     <>
       {isLoading && (
-        <LoadingScreen 
-          message="Transitioning..." 
-          variant="overlay" 
-          size="md"
-        />
+        <LoadingScreen message="Transitioning..." variant="overlay" size="md" />
       )}
-      <div className={`transition-all duration-500 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+      <div
+        className={`transition-all duration-500 ${isVisible ? "animate-fade-in" : "opacity-0"}`}
+      >
         {children}
       </div>
     </>
