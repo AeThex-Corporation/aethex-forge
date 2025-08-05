@@ -21,11 +21,13 @@ export default function Layout({ children }: LayoutProps) {
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 hover-glow group">
-            <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-aethex-400 to-neon-blue flex items-center justify-center transition-all duration-300 group-hover:scale-110 glow-blue">
-                <span className="text-sm font-bold text-white">Ae</span>
-              </div>
+          <Link to="/" className="flex items-center space-x-3 hover-glow group">
+            <div className="flex items-center space-x-3">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
+                alt="AeThex Logo"
+                className="h-10 w-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 animate-float"
+              />
               <span className="text-xl font-bold text-gradient group-hover:animate-pulse">AeThex</span>
             </div>
           </Link>
