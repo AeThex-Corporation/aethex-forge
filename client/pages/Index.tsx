@@ -189,184 +189,104 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 border-y border-border/40">
+      {/* Achievements Section */}
+      <section className="py-20 bg-background/30">
         <div className="container mx-auto px-4">
-          {!statsVisible ? (
-            <SkeletonStats />
-          ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <div
-                    key={index}
-                    className="text-center space-y-3 animate-scale-in hover-lift interactive-scale"
-                    style={{ animationDelay: `${index * 0.2}s` }}
-                  >
-                    <div className="flex justify-center">
-                      <div className="p-3 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border border-aethex-400/20 hover:border-aethex-400/50 transition-all duration-300 hover-glow">
-                        <Icon className="h-6 w-6 text-aethex-400 animate-pulse-glow" />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-gradient animate-bounce-gentle">{stat.value}</div>
-                      <p className="text-sm text-muted-foreground uppercase tracking-wide">{stat.label}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* User Paths Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16 animate-slide-up">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
-              Choose Your Path
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Whether you're a developer, client, community member, or customer,
-              we have a tailored experience designed just for you.
-            </p>
-          </div>
-
-          {!pathsVisible ? (
-            <SkeletonUserPath />
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-              {userPaths.map((path, index) => {
-                const Icon = path.icon;
-                return (
-                  <Card
-                    key={path.id}
-                    className={`group hover-lift interactive-scale transition-all duration-500 bg-card/50 border-border/50 hover:border-aethex-400/50 hover:${path.glowClass} animate-slide-up`}
-                    style={{ animationDelay: `${index * 0.2}s` }}
-                  >
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center space-x-4">
-                        <div className={`p-3 rounded-lg bg-gradient-to-r ${path.color} transition-all duration-300 group-hover:scale-110 animate-pulse-glow`}>
-                          <Icon className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-xl group-hover:text-gradient transition-all duration-300">{path.title}</CardTitle>
-                          <CardDescription className="mt-1 group-hover:text-muted-foreground/80 transition-all duration-300">
-                            {path.description}
-                          </CardDescription>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-2 gap-2">
-                        {path.features.map((feature, featureIndex) => (
-                          <div
-                            key={featureIndex}
-                            className="flex items-center space-x-2 text-sm text-muted-foreground opacity-0 animate-slide-left"
-                            style={{ animationDelay: `${(index * 0.2) + (featureIndex * 0.1)}s`, animationFillMode: 'forwards' }}
-                          >
-                            <CheckCircle className="h-3 w-3 text-aethex-400 flex-shrink-0 animate-bounce-gentle" />
-                            <span>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <Button asChild className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 interactive-scale glow-blue">
-                        <Link to="/onboarding" className="flex items-center justify-center space-x-2 group">
-                          <span>Get Started as {path.title}</span>
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Research & Labs Section */}
-      <section className="py-20 bg-background/50 relative overflow-hidden">
-        {/* Background Matrix Effect */}
-        <div className="absolute inset-0 opacity-5">
-          {[...Array(30)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute text-neon-yellow text-xs font-mono animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 3}s`
-              }}
-            >
-              {Math.random().toString(36).substring(2, 8)}
-            </div>
-          ))}
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-4 animate-slide-up">
-              <Badge variant="outline" className="border-neon-yellow/50 text-neon-yellow hover-glow animate-bounce-gentle">
-                Research & Experimental Division
-              </Badge>
-              <h2 className="text-3xl lg:text-4xl font-bold">
-                <span className="text-gradient animate-pulse-glow">AeThex | L.A.B.S.</span>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16 animate-slide-up">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
+                Powering Innovation Worldwide
               </h2>
-              <p className="text-xl text-muted-foreground animate-fade-in">
-                Pushing the boundaries of technology through cutting-edge research
-                and breakthrough discoveries that shape the future.
+              <p className="text-lg text-muted-foreground">
+                Our impact across the digital landscape
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up">
-              <Button asChild variant="outline" size="lg" className="border-neon-yellow/50 text-neon-yellow hover:bg-neon-yellow/10 hover-lift interactive-scale glow-yellow">
-                <Link to="/research">Access Research</Link>
-              </Button>
-              <Button asChild size="lg" className="bg-gradient-to-r from-neon-yellow to-aethex-600 hover:from-neon-yellow/90 hover:to-aethex-700 hover-lift interactive-scale glow-yellow">
-                <Link to="/labs">Visit Mainframe</Link>
-              </Button>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              {achievements.map((achievement, index) => (
+                <div
+                  key={index}
+                  className="text-center space-y-4 animate-scale-in hover-lift"
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  <div className="relative">
+                    <div className="text-4xl lg:text-5xl font-bold text-gradient-purple animate-pulse-glow">
+                      {achievement.metric}
+                    </div>
+                    <div className="absolute -inset-2 bg-gradient-to-r from-aethex-400/20 to-neon-blue/20 rounded-lg blur-xl opacity-50" />
+                  </div>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wider">
+                    {achievement.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 relative">
-        {/* Animated Background Particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-gradient-to-r from-aethex-400 to-neon-blue rounded-full animate-float opacity-20"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 4}s`,
-                animationDuration: `${4 + Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
+      {/* Technology Showcase */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/20 via-transparent to-neon-blue/20" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center space-y-8 animate-scale-in">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple animate-pulse-glow">
-              Ready to Start Your Journey?
-            </h2>
-            <p className="text-xl text-muted-foreground animate-fade-in">
-              Join thousands of developers, clients, and innovators who are already
-              part of the AeThex ecosystem. Your future in technology starts here.
-            </p>
-            <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue text-lg px-8 py-6 hover-lift interactive-scale animate-bounce-gentle">
-              <Link to="/onboarding" className="flex items-center space-x-2 group">
-                <span>Begin Onboarding</span>
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-2" />
-              </Link>
-            </Button>
+          <div className="max-w-4xl mx-auto text-center space-y-12">
+            <div className="animate-slide-up">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-6">
+                Next-Generation Technology Stack
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Built on cutting-edge frameworks and powered by advanced algorithms
+              </p>
+            </div>
+
+            {/* Interactive Technology Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+              {[
+                { name: "Quantum AI", status: "Active", color: "from-purple-500 to-blue-600" },
+                { name: "Neural Networks", status: "Optimizing", color: "from-blue-500 to-green-600" },
+                { name: "Blockchain Core", status: "Secure", color: "from-green-500 to-yellow-600" },
+                { name: "Cloud Matrix", status: "Scaling", color: "from-yellow-500 to-red-600" },
+                { name: "Data Fusion", status: "Processing", color: "from-red-500 to-purple-600" },
+                { name: "Edge Computing", status: "Deployed", color: "from-purple-500 to-pink-600" }
+              ].map((tech, index) => (
+                <Card
+                  key={index}
+                  className="relative overflow-hidden bg-card/30 border-border/50 hover:border-aethex-400/50 transition-all duration-500 hover-lift group animate-scale-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-gradient group-hover:animate-pulse">
+                        {tech.name}
+                      </h3>
+                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${tech.color} animate-pulse`} />
+                    </div>
+                    <p className="text-sm text-muted-foreground">{tech.status}</p>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-aethex-400/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Call to Action */}
+            <div className="space-y-6 animate-slide-up">
+              <h3 className="text-2xl font-bold text-gradient-purple">
+                Ready to Build the Future?
+              </h3>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift interactive-scale">
+                  <Link to="/onboarding" className="flex items-center space-x-2 group">
+                    <Sparkles className="h-5 w-5" />
+                    <span>Join AeThex</span>
+                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="border-aethex-400/50 hover:border-aethex-400 hover-lift interactive-scale">
+                  <Link to="/dashboard">Explore Platform</Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
