@@ -24,11 +24,15 @@ import {
 export default function Documentation() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const toastShownRef = useRef(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      aethexToast.system("Documentation center loaded");
+      if (!toastShownRef.current) {
+        aethexToast.system("Documentation center loaded");
+        toastShownRef.current = true;
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
