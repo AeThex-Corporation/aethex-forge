@@ -81,8 +81,12 @@ export default function LoadingScreen({
           {/* Logo Animation */}
           <div className="flex justify-center">
             <div className="relative">
-              <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-aethex-400 to-neon-blue flex items-center justify-center animate-pulse-glow">
-                <span className="text-2xl font-bold text-white">Ae</span>
+              <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-aethex-400 to-neon-blue flex items-center justify-center animate-pulse-glow p-2">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
+                  alt="AeThex Logo"
+                  className="h-full w-full object-contain"
+                />
               </div>
               <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-aethex-400 via-neon-blue to-aethex-600 opacity-30 blur animate-pulse"></div>
             </div>
