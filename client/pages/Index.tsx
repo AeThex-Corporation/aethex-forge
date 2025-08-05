@@ -91,34 +91,54 @@ export default function Index() {
     }
   ];
 
+  if (isLoading) {
+    return <LoadingScreen message="Initializing AeThex Corporation..." showProgress={true} duration={1500} />;
+  }
+
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative py-20 lg:py-32 overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-10">
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-aethex-400 rounded-full animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${3 + Math.random() * 2}s`
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
           <div className="max-w-4xl mx-auto space-y-8">
-            <div className="space-y-4">
-              <Badge variant="outline" className="border-aethex-400/50 text-aethex-400">
-                <Sparkles className="h-3 w-3 mr-1" />
+            <div className="space-y-4 animate-slide-down">
+              <Badge variant="outline" className="border-aethex-400/50 text-aethex-400 hover-glow animate-bounce-gentle">
+                <Sparkles className="h-3 w-3 mr-1 animate-pulse" />
                 Innovation & Technology
               </Badge>
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient-purple">The Home of Innovation</span>
+                <span className="text-gradient-purple animate-typing">The Home of Innovation</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-fade-in">
                 Welcome to AeThex Corporation, the central hub for our family of companies
                 dedicated to pushing the boundaries of development, automation, and technology.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up">
+              <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift interactive-scale">
                 <Link to="/onboarding" className="flex items-center space-x-2">
                   <span>Join AeThex</span>
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-border/50">
+              <Button asChild variant="outline" size="lg" className="border-border/50 hover-lift interactive-scale">
                 <Link to="/about">Learn More About Us</Link>
               </Button>
             </div>
