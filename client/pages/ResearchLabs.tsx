@@ -163,7 +163,7 @@ export default function ResearchLabs() {
           <div className="container mx-auto px-4 text-center relative z-10">
             <div className="max-w-4xl mx-auto space-y-8">
               <Badge variant="outline" className="border-neon-yellow/50 text-neon-yellow animate-bounce-gentle">
-                <Flask className="h-3 w-3 mr-1" />
+                <Beaker className="h-3 w-3 mr-1" />
                 Research & Experimental Division
               </Badge>
               
