@@ -40,7 +40,7 @@ export default function Community() {
     {
       name: "Discord Server",
       description: "Real-time chat with developers and get instant help",
-      icon: Discord,
+      icon: MessageSquare,
       members: "15K+ members",
       activity: "500+ daily active",
       link: "/discord",
