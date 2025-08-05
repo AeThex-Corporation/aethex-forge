@@ -22,73 +22,56 @@ import {
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
-  const [statsVisible, setStatsVisible] = useState(false);
-  const [pathsVisible, setPathsVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 1200);
 
-    const statsTimer = setTimeout(() => {
-      setStatsVisible(true);
-    }, 2000);
-
-    const pathsTimer = setTimeout(() => {
-      setPathsVisible(true);
-    }, 2500);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(statsTimer);
-      clearTimeout(pathsTimer);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
-  const stats = [
-    { value: "3", label: "Subsidiaries", icon: Target },
-    { value: "1M+", label: "Community Members", icon: Users },
-    { value: "50+", label: "Active Projects", icon: TrendingUp },
-    { value: "99.9%", label: "Uptime Guarantee", icon: Zap },
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSection(prev => (prev + 1) % 4);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const features = [
+    {
+      title: "Neural Networks",
+      description: "Advanced AI-powered development tools",
+      icon: Zap,
+      color: "from-blue-500 to-purple-600"
+    },
+    {
+      title: "Quantum Computing",
+      description: "Next-generation processing capabilities",
+      icon: Target,
+      color: "from-purple-500 to-pink-600"
+    },
+    {
+      title: "Blockchain Integration",
+      description: "Secure, decentralized solutions",
+      icon: Users,
+      color: "from-green-500 to-blue-600"
+    },
+    {
+      title: "Cloud Infrastructure",
+      description: "Scalable, global deployment systems",
+      icon: TrendingUp,
+      color: "from-orange-500 to-red-600"
+    }
   ];
 
-  const userPaths = [
-    {
-      id: 'game-developer',
-      title: 'Game Developer',
-      description: 'Join our development community with access to tools, mentorship, and collaborative projects.',
-      icon: GamepadIcon,
-      features: ['Development Tools', 'Expert Mentorship', 'Project Collaboration', 'Technical Workshops'],
-      color: 'from-neon-purple to-aethex-500',
-      glowClass: 'glow-purple'
-    },
-    {
-      id: 'client',
-      title: 'Client',
-      description: 'Partner with us for custom game development and technical consulting services.',
-      icon: BriefcaseIcon,
-      features: ['Custom Development', 'Technical Consulting', 'Project Management', 'End-to-End Solutions'],
-      color: 'from-neon-blue to-aethex-400',
-      glowClass: 'glow-blue'
-    },
-    {
-      id: 'member',
-      title: 'Community Member',
-      description: 'Access cutting-edge research, networking opportunities, and exclusive content.',
-      icon: UsersIcon,
-      features: ['Research Access', 'Professional Network', 'Exclusive Events', 'Innovation Labs'],
-      color: 'from-neon-green to-aethex-600',
-      glowClass: 'glow-green'
-    },
-    {
-      id: 'customer',
-      title: 'Customer',
-      description: 'Explore our games, tools, and products designed for enhanced experiences.',
-      icon: ShoppingCartIcon,
-      features: ['Premium Games', 'Development Tools', 'Beta Access', 'Community Support'],
-      color: 'from-neon-yellow to-aethex-700',
-      glowClass: 'glow-yellow'
-    }
+  const achievements = [
+    { metric: "10K+", label: "Active Developers" },
+    { metric: "500+", label: "Projects Deployed" },
+    { metric: "99.99%", label: "System Uptime" },
+    { metric: "24/7", label: "Global Support" }
   ];
 
   if (isLoading) {
