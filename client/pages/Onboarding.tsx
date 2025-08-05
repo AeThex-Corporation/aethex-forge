@@ -51,6 +51,8 @@ const initialData: OnboardingData = {
 export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(initialData);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const steps = [
     { title: "Choose Your Path", component: UserTypeSelection },
@@ -60,23 +62,43 @@ export default function Onboarding() {
     { title: "Welcome to AeThex", component: Welcome },
   ];
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const updateData = (newData: Partial<OnboardingData>) => {
     setData(prev => ({ ...prev, ...newData }));
   };
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
-      setCurrentStep(prev => prev + 1);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentStep(prev => prev + 1);
+        setIsTransitioning(false);
+      }, 300);
     }
   };
 
   const prevStep = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentStep(prev => prev - 1);
+        setIsTransitioning(false);
+      }, 300);
     }
   };
 
   const CurrentStepComponent = steps[currentStep].component;
+
+  if (isLoading) {
+    return <LoadingScreen message="Preparing your onboarding experience..." showProgress={true} duration={1200} />;
+  }
 
   return (
     <Layout>
