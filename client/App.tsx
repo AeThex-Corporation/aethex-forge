@@ -9,6 +9,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PageTransition from "./components/PageTransition";
 import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
