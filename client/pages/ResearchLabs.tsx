@@ -19,7 +19,7 @@ import {
   Eye,
   Download,
   ExternalLink,
-  Flask,
+  Beaker,
   Microscope,
   Beaker
 } from "lucide-react";
