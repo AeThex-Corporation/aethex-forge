@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,10 +34,15 @@ export default function DevelopmentConsulting() {
   const [isLoading, setIsLoading] = useState(true);
   const [activePackage, setActivePackage] = useState(0);
 
+  const toastShownRef = useRef(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      aethexToast.system("Development Consulting services loaded");
+      if (!toastShownRef.current) {
+        aethexToast.system("Development Consulting services loaded");
+        toastShownRef.current = true;
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
