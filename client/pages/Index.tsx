@@ -119,16 +119,8 @@ export default function Index() {
         {/* Main Content */}
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center space-y-12">
-            {/* Logo and Title */}
+            {/* Title */}
             <div className="space-y-6 animate-scale-in">
-              <div className="flex justify-center">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
-                  alt="AeThex Logo"
-                  className="h-32 w-32 animate-pulse-glow hover:animate-bounce-gentle transition-all duration-500"
-                />
-              </div>
-
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-7xl font-bold">
                   <span className="text-gradient-purple">AeThex</span>
