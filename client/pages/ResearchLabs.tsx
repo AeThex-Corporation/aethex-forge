@@ -20,8 +20,7 @@ import {
   Download,
   ExternalLink,
   Beaker,
-  Microscope,
-  Beaker
+  Microscope
 } from "lucide-react";
 
 export default function ResearchLabs() {
