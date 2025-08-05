@@ -21,6 +21,30 @@ import {
 } from "lucide-react";
 
 export default function Index() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [pathsVisible, setPathsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    const statsTimer = setTimeout(() => {
+      setStatsVisible(true);
+    }, 2000);
+
+    const pathsTimer = setTimeout(() => {
+      setPathsVisible(true);
+    }, 2500);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(statsTimer);
+      clearTimeout(pathsTimer);
+    };
+  }, []);
+
   const stats = [
     { value: "3", label: "Subsidiaries", icon: Target },
     { value: "1M+", label: "Community Members", icon: Users },
