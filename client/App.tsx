@@ -11,6 +11,14 @@ import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import GameDevelopment from "./pages/GameDevelopment";
+import DevelopmentConsulting from "./pages/DevelopmentConsulting";
+import MentorshipPrograms from "./pages/MentorshipPrograms";
+import ResearchLabs from "./pages/ResearchLabs";
+import Documentation from "./pages/Documentation";
+import Blog from "./pages/Blog";
+import Community from "./pages/Community";
+import Support from "./pages/Support";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
