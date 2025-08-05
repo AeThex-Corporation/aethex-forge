@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,11 +23,15 @@ import {
 export default function Blog() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const toastShownRef = useRef(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      aethexToast.system("AeThex Blog loaded successfully");
+      if (!toastShownRef.current) {
+        aethexToast.system("AeThex Blog loaded successfully");
+        toastShownRef.current = true;
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
