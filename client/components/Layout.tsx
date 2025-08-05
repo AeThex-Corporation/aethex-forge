@@ -94,10 +94,10 @@ export default function Layout({ children }: LayoutProps) {
             <div className="space-y-4 animate-slide-up" style={{ animationDelay: '0.1s' }}>
               <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">Services</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="/game-development" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Game Development</Link></li>
-                <li><Link to="/consulting" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Development Consulting</Link></li>
-                <li><Link to="/mentorship" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Mentorship Programs</Link></li>
-                <li><Link to="/research" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Research & Labs</Link></li>
+                <li><Link to="/game-development" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Game Development</Link></li>
+                <li><Link to="/consulting" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Development Consulting</Link></li>
+                <li><Link to="/mentorship" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Mentorship Programs</Link></li>
+                <li><Link to="/research" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Research & Labs</Link></li>
               </ul>
             </div>
 
@@ -105,10 +105,10 @@ export default function Layout({ children }: LayoutProps) {
             <div className="space-y-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">Resources</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="/docs" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Documentation</Link></li>
-                <li><Link to="/blog" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Blog</Link></li>
-                <li><Link to="/community" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Community</Link></li>
-                <li><Link to="/support" className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Support</Link></li>
+                <li><Link to="/docs" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Documentation</Link></li>
+                <li><Link to="/blog" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Blog</Link></li>
+                <li><Link to="/community" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Community</Link></li>
+                <li><Link to="/support" onClick={scrollToTop} className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block">Support</Link></li>
               </ul>
             </div>
 
@@ -128,10 +128,10 @@ export default function Layout({ children }: LayoutProps) {
               © 2024 AeThex Corporation. All rights reserved.
             </p>
             <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-              <Link to="/privacy" className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105">
+              <Link to="/privacy" onClick={scrollToTop} className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105">
+              <Link to="/terms" onClick={scrollToTop} className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105">
                 Terms of Service
               </Link>
             </div>
