@@ -245,27 +245,45 @@ export default function Index() {
       </section>
 
       {/* Research & Labs Section */}
-      <section className="py-20 bg-background/50">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-background/50 relative overflow-hidden">
+        {/* Background Matrix Effect */}
+        <div className="absolute inset-0 opacity-5">
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-neon-yellow text-xs font-mono animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${2 + Math.random() * 3}s`
+              }}
+            >
+              {Math.random().toString(36).substring(2, 8)}
+            </div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-4">
-              <Badge variant="outline" className="border-neon-yellow/50 text-neon-yellow">
+            <div className="space-y-4 animate-slide-up">
+              <Badge variant="outline" className="border-neon-yellow/50 text-neon-yellow hover-glow animate-bounce-gentle">
                 Research & Experimental Division
               </Badge>
               <h2 className="text-3xl lg:text-4xl font-bold">
-                <span className="text-gradient">AeThex | L.A.B.S.</span>
+                <span className="text-gradient animate-pulse-glow">AeThex | L.A.B.S.</span>
               </h2>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-xl text-muted-foreground animate-fade-in">
                 Pushing the boundaries of technology through cutting-edge research
                 and breakthrough discoveries that shape the future.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button asChild variant="outline" size="lg" className="border-neon-yellow/50 text-neon-yellow hover:bg-neon-yellow/10">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up">
+              <Button asChild variant="outline" size="lg" className="border-neon-yellow/50 text-neon-yellow hover:bg-neon-yellow/10 hover-lift interactive-scale glow-yellow">
                 <Link to="/research">Access Research</Link>
               </Button>
-              <Button asChild size="lg" className="bg-gradient-to-r from-neon-yellow to-aethex-600 hover:from-neon-yellow/90 hover:to-aethex-700">
+              <Button asChild size="lg" className="bg-gradient-to-r from-neon-yellow to-aethex-600 hover:from-neon-yellow/90 hover:to-aethex-700 hover-lift interactive-scale glow-yellow">
                 <Link to="/labs">Visit Mainframe</Link>
               </Button>
             </div>
@@ -274,20 +292,36 @@ export default function Index() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple">
+      <section className="py-20 relative">
+        {/* Animated Background Particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-gradient-to-r from-aethex-400 to-neon-blue rounded-full animate-float opacity-20"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 4}s`,
+                animationDuration: `${4 + Math.random() * 2}s`
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center space-y-8 animate-scale-in">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple animate-pulse-glow">
               Ready to Start Your Journey?
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground animate-fade-in">
               Join thousands of developers, clients, and innovators who are already
               part of the AeThex ecosystem. Your future in technology starts here.
             </p>
-            <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue text-lg px-8 py-6">
-              <Link to="/onboarding" className="flex items-center space-x-2">
+            <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue text-lg px-8 py-6 hover-lift interactive-scale animate-bounce-gentle">
+              <Link to="/onboarding" className="flex items-center space-x-2 group">
                 <span>Begin Onboarding</span>
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-2" />
               </Link>
             </Button>
           </div>
