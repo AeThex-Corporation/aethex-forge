@@ -75,54 +75,114 @@ export default function Index() {
   ];
 
   if (isLoading) {
-    return <LoadingScreen message="Initializing AeThex Corporation..." showProgress={true} duration={1500} />;
+    return <LoadingScreen message="Initializing AeThex Systems..." showProgress={true} duration={1200} />;
   }
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-10">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-aethex-400 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${3 + Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="space-y-4 animate-slide-down">
-              <Badge variant="outline" className="border-aethex-400/50 text-aethex-400 hover-glow animate-bounce-gentle">
-                <Sparkles className="h-3 w-3 mr-1 animate-pulse" />
-                Innovation & Technology
-              </Badge>
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient-purple animate-typing">The Home of Innovation</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-fade-in">
-                Welcome to AeThex Corporation, the central hub for our family of companies
-                dedicated to pushing the boundaries of development, automation, and technology.
-              </p>
+      {/* Hero Section - Geometric Design */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Geometric Background Pattern */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-aethex-900/50 via-background to-aethex-800/50" />
+          <div className="absolute inset-0">
+            {/* Large Logo-inspired Geometric Shape */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="relative w-96 h-96 opacity-5">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
+                  alt="Background"
+                  className="w-full h-full animate-float"
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up">
-              <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift interactive-scale">
-                <Link to="/onboarding" className="flex items-center space-x-2">
-                  <span>Join AeThex</span>
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+            {/* Floating Geometric Elements */}
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute bg-aethex-400/20 animate-float"
+                style={{
+                  width: `${10 + Math.random() * 20}px`,
+                  height: `${10 + Math.random() * 20}px`,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 5}s`,
+                  animationDuration: `${4 + Math.random() * 3}s`,
+                  clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center space-y-12">
+            {/* Logo and Title */}
+            <div className="space-y-6 animate-scale-in">
+              <div className="flex justify-center">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
+                  alt="AeThex Logo"
+                  className="h-32 w-32 animate-pulse-glow hover:animate-bounce-gentle transition-all duration-500"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <h1 className="text-5xl lg:text-7xl font-bold">
+                  <span className="text-gradient-purple">AeThex</span>
+                </h1>
+                <h2 className="text-2xl lg:text-3xl text-gradient animate-fade-in">
+                  Crafting Digital Realities
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up">
+                  Where innovation meets execution. We build the future through advanced
+                  technology, creative solutions, and limitless possibilities.
+                </p>
+              </div>
+            </div>
+
+            {/* Interactive Features Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                const isActive = activeSection === index;
+                return (
+                  <Card
+                    key={index}
+                    className={`relative overflow-hidden border-2 transition-all duration-500 hover-lift cursor-pointer group ${
+                      isActive
+                        ? 'border-aethex-500 glow-blue scale-105'
+                        : 'border-border/30 hover:border-aethex-400/50'
+                    }`}
+                    onClick={() => setActiveSection(index)}
+                  >
+                    <CardContent className="p-6 text-center space-y-3">
+                      <div className={`mx-auto w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}>
+                        <Icon className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="font-semibold text-sm">{feature.title}</h3>
+                      <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {feature.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center gap-6 animate-slide-up">
+              <Button asChild size="lg" className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6">
+                <Link to="/onboarding" className="flex items-center space-x-2 group">
+                  <Sparkles className="h-5 w-5" />
+                  <span>Start Your Journey</span>
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-border/50 hover-lift interactive-scale">
-                <Link to="/about">Learn More About Us</Link>
+              <Button asChild variant="outline" size="lg" className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6">
+                <Link to="/dashboard">Explore Dashboard</Link>
               </Button>
             </div>
           </div>
