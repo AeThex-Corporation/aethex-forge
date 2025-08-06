@@ -271,7 +271,7 @@ export default function Login() {
                     onClick={() => setIsSignUp(!isSignUp)}
                     className="text-aethex-400 hover:underline font-medium"
                   >
-                    Join AeThex
+                    {isSignUp ? "Sign In" : "Join AeThex"}
                   </button>
                 </p>
               </div>
