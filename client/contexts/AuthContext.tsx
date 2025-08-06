@@ -113,20 +113,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = async (userId: string): Promise<AethexUserProfile | null> => {
     if (!isSupabaseConfigured) {
       // Initialize demo data and get profile
       DemoStorageService.initializeDemoData();
       const demoProfile = DemoStorageService.getUserProfile();
       setProfile(demoProfile as AethexUserProfile);
-      return;
+      return demoProfile as AethexUserProfile;
     }
 
     try {
       const userProfile = await aethexUserService.getCurrentUser();
       setProfile(userProfile);
+      return userProfile;
     } catch (error) {
       console.error('Error fetching user profile:', error);
+      return null;
     }
   };
 
