@@ -4,6 +4,7 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { UserProfile } from '@/lib/database.types';
 import { aethexToast } from '@/lib/aethex-toast';
 import { DemoStorageService } from '@/lib/demo-storage';
+import { aethexUserService, type AethexUserProfile } from '@/lib/aethex-database-adapter';
 
 interface AuthContextType {
   user: User | null;
