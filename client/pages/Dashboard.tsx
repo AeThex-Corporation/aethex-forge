@@ -409,7 +409,9 @@ export default function Dashboard() {
                         <div>
                           <h4 className="font-semibold">{project.title}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {project.status?.replace('_', ' ').toUpperCase()} • {project.technologies?.slice(0, 2).join(', ') || 'No tech specified'}
+                            {project.status?.replace("_", " ").toUpperCase()} •{" "}
+                            {project.technologies?.slice(0, 2).join(", ") ||
+                              "No tech specified"}
                           </p>
                         </div>
                       </div>
@@ -421,13 +423,16 @@ export default function Dashboard() {
                           <div className="w-20 bg-muted rounded-full h-2 mt-1">
                             <div
                               className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full"
-                              style={{ width: `${getProgressPercentage(project)}%` }}
+                              style={{
+                                width: `${getProgressPercentage(project)}%`,
+                              }}
                             />
                           </div>
                         </div>
                         <Badge
                           variant={
-                            getPriorityFromTech(project.technologies || []) === "High"
+                            getPriorityFromTech(project.technologies || []) ===
+                            "High"
                               ? "destructive"
                               : "secondary"
                           }
