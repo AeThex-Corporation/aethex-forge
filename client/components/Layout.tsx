@@ -2,6 +2,16 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import SupabaseStatus from "./SupabaseStatus";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User, Settings, LogOut, Bell } from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,6 +19,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const { user, profile, signOut, loading } = useAuth();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -61,21 +72,92 @@ export default function Layout({ children }: LayoutProps) {
             ))}
           </nav>
 
-          {/* CTA */}
+          {/* Auth Section */}
           <div className="flex items-center space-x-4 animate-slide-left">
-            <Button
-              asChild
-              variant="outline"
-              className="hidden sm:inline-flex hover-lift interactive-scale"
-            >
-              <Link to="/login">Sign In</Link>
-            </Button>
-            <Button
-              asChild
-              className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue"
-            >
-              <Link to="/onboarding">Join AeThex</Link>
-            </Button>
+            {!loading && (
+              <>
+                {user && profile ? (
+                  // Logged in user menu
+                  <div className="flex items-center space-x-3">
+                    <Button variant="ghost" size="sm" className="hover-lift">
+                      <Bell className="h-4 w-4" />
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="relative h-8 w-8 rounded-full hover-lift"
+                        >
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage
+                              src={profile.avatar_url || undefined}
+                              alt={profile.full_name || profile.username}
+                            />
+                            <AvatarFallback>
+                              {(profile.full_name || profile.username || "U")
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")
+                                .toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-56" align="end">
+                        <div className="flex items-center justify-start gap-2 p-2">
+                          <div className="flex flex-col space-y-1 leading-none">
+                            <p className="font-medium">
+                              {profile.full_name || profile.username}
+                            </p>
+                            <p className="w-[200px] truncate text-sm text-muted-foreground">
+                              {profile.email}
+                            </p>
+                          </div>
+                        </div>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link to="/dashboard" className="cursor-pointer">
+                            <User className="mr-2 h-4 w-4" />
+                            Dashboard
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/profile" className="cursor-pointer">
+                            <Settings className="mr-2 h-4 w-4" />
+                            Profile Settings
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => signOut()}
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Sign out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                ) : (
+                  // Not logged in - show sign in/join buttons
+                  <>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="hidden sm:inline-flex hover-lift interactive-scale"
+                    >
+                      <Link to="/login">Sign In</Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue"
+                    >
+                      <Link to="/onboarding">Join AeThex</Link>
+                    </Button>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
       </header>
