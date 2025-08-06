@@ -13,6 +13,7 @@ interface AuthContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, userData?: Partial<AethexUserProfile>) => Promise<void>;
+  signInWithOAuth: (provider: 'github' | 'google') => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<AethexUserProfile>) => Promise<void>;
 }
