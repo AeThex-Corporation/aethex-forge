@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Database, ExternalLink, Info } from 'lucide-react';
 
 export default function SupabaseStatus() {
+  // Only show if Supabase is not configured (demo mode)
   if (isSupabaseConfigured) {
-    return null; // Don't show anything if Supabase is properly configured
+    return null;
   }
 
   return (
