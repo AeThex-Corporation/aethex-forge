@@ -416,12 +416,12 @@ export default function Dashboard() {
                       <div className="flex items-center space-x-4">
                         <div className="text-right">
                           <p className="text-sm font-medium">
-                            {project.progress}%
+                            {getProgressPercentage(project)}%
                           </p>
                           <div className="w-20 bg-muted rounded-full h-2 mt-1">
                             <div
                               className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full"
-                              style={{ width: `${project.progress}%` }}
+                              style={{ width: `${getProgressPercentage(project)}%` }}
                             />
                           </div>
                         </div>
