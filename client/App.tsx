@@ -20,6 +20,7 @@ import Documentation from "./pages/Documentation";
 import Blog from "./pages/Blog";
 import Community from "./pages/Community";
 import Support from "./pages/Support";
+import Profile from "./pages/Profile";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
 
