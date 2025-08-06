@@ -22,48 +22,26 @@ export default function SupabaseStatus() {
             <Button
               size="sm"
               variant="outline"
-              className="border-amber-500/50 text-amber-300 hover:bg-amber-500/20"
+              className="border-blue-500/50 text-blue-300 hover:bg-blue-500/20"
               onClick={() => {
-                const setupContent = `# Quick Supabase Setup for AeThex
-
-## 1. Get Your Credentials
-1. Go to your Supabase dashboard: https://app.supabase.com/projects/etzlqcghfdrkdqqfvzac
-2. Go to Settings > API
-3. Copy your Project URL and anon key
-
-## 2. Update Environment Variables
-Use the DevServerControl or set these values:
-
-VITE_SUPABASE_URL=https://etzlqcghfdrkdqqfvzac.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
-
-## 3. Run Database Migration
-Go to Database > SQL Editor in Supabase and run the migration from the full setup guide.
-
-## 4. Restart Dev Server
-After setting variables, restart your development server.`;
-
-                navigator.clipboard.writeText(setupContent).then(() => {
-                  alert('Setup instructions copied to clipboard!');
-                }).catch(() => {
-                  const newWindow = window.open('', '_blank');
-                  if (newWindow) {
-                    newWindow.document.write('<pre>' + setupContent + '</pre>');
-                  }
-                });
+                // Hide the status notification
+                const notification = document.querySelector('[data-supabase-status]');
+                if (notification) {
+                  notification.style.display = 'none';
+                }
               }}
             >
               <Info className="h-3 w-3 mr-1" />
-              Setup Guide
+              Got it!
             </Button>
             <Button
               size="sm"
               variant="outline"
-              className="border-amber-500/50 text-amber-300 hover:bg-amber-500/20"
-              onClick={() => window.open('https://supabase.com', '_blank')}
+              className="border-blue-500/50 text-blue-300 hover:bg-blue-500/20"
+              onClick={() => window.open('/login', '_self')}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
-              Supabase
+              Try Demo
             </Button>
           </div>
         </AlertDescription>
