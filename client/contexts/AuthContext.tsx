@@ -210,12 +210,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user) throw new Error('No user logged in');
 
     if (!isSupabaseConfigured) {
-      aethexToast.info({
-        title: 'Demo Mode',
-        description: 'Profile updates are simulated in demo mode'
+      // Use demo storage
+      const updatedProfile = DemoStorageService.updateUserProfile(updates);
+      setProfile(updatedProfile);
+      aethexToast.success({
+        title: 'Profile updated',
+        description: 'Your profile has been updated successfully'
       });
-      // Simulate profile update
-      setProfile(prev => prev ? { ...prev, ...updates } : null);
       return;
     }
 
