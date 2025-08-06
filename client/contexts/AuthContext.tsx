@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { UserProfile } from "@/lib/database.types";
 import { aethexToast } from "@/lib/aethex-toast";
-import { DemoStorageService } from "@/lib/demo-storage";
 import {
   aethexUserService,
   aethexAchievementService,
@@ -45,15 +44,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if Supabase is configured
-    if (!isSupabaseConfigured) {
-      console.warn(
-        "Supabase is not configured. Please set up your environment variables.",
-      );
-      setLoading(false);
-      return;
-    }
-
     // Get initial session
     supabase.auth
       .getSession()
@@ -135,14 +125,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchUserProfile = async (
     userId: string,
   ): Promise<AethexUserProfile | null> => {
-    if (!isSupabaseConfigured) {
-      // Initialize demo data and get profile
-      DemoStorageService.initializeDemoData();
-      const demoProfile = DemoStorageService.getUserProfile();
-      setProfile(demoProfile as AethexUserProfile);
-      return demoProfile as AethexUserProfile;
-    }
-
     try {
       const userProfile = await aethexUserService.getCurrentUser();
       setProfile(userProfile);
@@ -154,20 +136,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const signIn = async (email: string, password: string) => {
-    if (!isSupabaseConfigured) {
-      aethexToast.warning({
-        title: "Demo Mode",
-        description:
-          "Supabase not configured. This is a demo - please set up your Supabase project.",
-      });
-      // Simulate successful login for demo
-      setTimeout(() => {
-        setUser({ id: "demo-user", email } as User);
-        setSession({ user: { id: "demo-user", email } } as Session);
-      }, 500);
-      return;
-    }
-
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -189,15 +157,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     password: string,
     userData?: Partial<AethexUserProfile>,
   ) => {
-    if (!isSupabaseConfigured) {
-      aethexToast.warning({
-        title: "Demo Mode",
-        description:
-          "Supabase not configured. This is a demo - please set up your Supabase project.",
-      });
-      return;
-    }
-
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -228,15 +187,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const signInWithOAuth = async (provider: "github" | "google") => {
-    if (!isSupabaseConfigured) {
-      aethexToast.warning({
-        title: "Demo Mode",
-        description:
-          "OAuth login requires Supabase to be configured. Currently in demo mode.",
-      });
-      return;
-    }
-
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -261,17 +211,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const signOut = async () => {
-    if (!isSupabaseConfigured) {
-      setUser(null);
-      setSession(null);
-      setProfile(null);
-      aethexToast.info({
-        title: "Signed out",
-        description: "Demo session ended",
-      });
-      return;
-    }
-
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
@@ -286,19 +225,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateProfile = async (updates: Partial<AethexUserProfile>) => {
     if (!user) throw new Error("No user logged in");
-
-    if (!isSupabaseConfigured) {
-      // Use demo storage
-      const updatedProfile = DemoStorageService.updateUserProfile(
-        updates as any,
-      );
-      setProfile(updatedProfile as AethexUserProfile);
-      aethexToast.success({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully",
-      });
-      return;
-    }
 
     try {
       const updatedProfile = await aethexUserService.updateProfile(
