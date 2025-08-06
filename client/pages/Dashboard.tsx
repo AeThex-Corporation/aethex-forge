@@ -132,10 +132,10 @@ export default function Dashboard() {
     );
   }
 
-  const stats = [
+  const statsDisplay = [
     {
       label: "Active Projects",
-      value: activeProjects,
+      value: stats.activeProjects,
       icon: Rocket,
       color: "from-blue-500 to-purple-600",
     },
