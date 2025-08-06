@@ -33,7 +33,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
-  const { signIn, signUp, user, loading } = useAuth();
+  const { signIn, signUp, signInWithOAuth, user, loading } = useAuth();
 
   // Redirect if already logged in
   useEffect(() => {
