@@ -4,29 +4,20 @@ import type { Database } from "./database.types";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Check if Supabase is configured
-export const isSupabaseConfigured = !!(
-  supabaseUrl &&
-  supabaseAnonKey &&
-  supabaseUrl !== "https://your-project-ref.supabase.co" &&
-  supabaseAnonKey !== "your-anon-key-here"
-);
+// Validate required environment variables
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    "Missing Supabase environment variables. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY"
+  );
+}
 
-// Use fallback values for development if not configured
-const fallbackUrl = "https://demo.supabase.co";
-const fallbackKey = "demo-key";
-
-export const supabase = createClient<Database>(
-  supabaseUrl || fallbackUrl,
-  supabaseAnonKey || fallbackKey,
-  {
-    auth: {
-      autoRefreshToken: isSupabaseConfigured,
-      persistSession: isSupabaseConfigured,
-      detectSessionInUrl: isSupabaseConfigured,
-    },
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
   },
-);
+});
 
 // Auth helpers
 export const auth = supabase.auth;
