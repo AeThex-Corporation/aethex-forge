@@ -23,6 +23,15 @@ export default function SupabaseStatus() {
               size="sm"
               variant="outline"
               className="border-blue-500/50 text-blue-300 hover:bg-blue-500/20"
+              onClick={() => window.open('https://app.supabase.com/project/kmdeisowhtsalsekkzqd/auth/providers', '_blank')}
+            >
+              <Info className="h-3 w-3 mr-1" />
+              Setup OAuth
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-blue-500/50 text-blue-300 hover:bg-blue-500/20"
               onClick={() => {
                 // Hide the status notification
                 const notification = document.querySelector('[data-supabase-status]');
@@ -31,17 +40,8 @@ export default function SupabaseStatus() {
                 }
               }}
             >
-              <Info className="h-3 w-3 mr-1" />
-              Got it!
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="border-blue-500/50 text-blue-300 hover:bg-blue-500/20"
-              onClick={() => window.open('/login', '_self')}
-            >
               <ExternalLink className="h-3 w-3 mr-1" />
-              Try Demo
+              Dismiss
             </Button>
           </div>
         </AlertDescription>
