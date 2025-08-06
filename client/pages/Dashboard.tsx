@@ -349,7 +349,7 @@ export default function Dashboard() {
             <div className="lg:col-span-9 space-y-6">
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-slide-up">
-                {stats.map((stat, index) => {
+                {statsDisplay.map((stat, index) => {
                   const Icon = stat.icon;
                   return (
                     <Card
