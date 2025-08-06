@@ -10,7 +10,7 @@ export default function SupabaseStatus() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 max-w-md">
+    <div className="fixed bottom-4 right-4 z-50 max-w-md" data-supabase-status>
       <Alert className="border-blue-500/50 bg-blue-500/10 text-blue-300">
         <Info className="h-4 w-4" />
         <AlertDescription className="space-y-3">
