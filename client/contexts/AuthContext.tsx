@@ -90,22 +90,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Initialize demo data and get profile
       DemoStorageService.initializeDemoData();
       const demoProfile = DemoStorageService.getUserProfile();
-      setProfile(demoProfile);
+      setProfile(demoProfile as AethexUserProfile);
       return;
     }
 
     try {
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        throw error;
-      }
-
-      setProfile(data);
+      const userProfile = await aethexUserService.getCurrentUser();
+      setProfile(userProfile);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
