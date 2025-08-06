@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import SupabaseStatus from "./SupabaseStatus";
 
 interface LayoutProps {
   children: React.ReactNode;
