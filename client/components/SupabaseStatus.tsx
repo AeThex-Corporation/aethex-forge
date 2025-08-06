@@ -15,8 +15,8 @@ export default function SupabaseStatus() {
         <Info className="h-4 w-4" />
         <AlertDescription className="space-y-3">
           <div>
-            <strong>Demo Mode:</strong> Full functionality with simulated data.
-            All features are available for testing!
+            <strong>Connected:</strong> Supabase is configured! To enable GitHub/Google login,
+            configure OAuth providers in your Supabase dashboard.
           </div>
           <div className="flex gap-2">
             <Button
