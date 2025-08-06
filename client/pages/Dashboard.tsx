@@ -161,6 +161,34 @@ export default function Dashboard() {
 
 
 
+  const getProgressPercentage = (project: any) => {
+    switch (project.status) {
+      case 'planning': return 20;
+      case 'in_progress': return 60;
+      case 'completed': return 100;
+      default: return 0;
+    }
+  };
+
+  const getPriorityFromTech = (technologies: string[]) => {
+    if (technologies.some(tech => tech.toLowerCase().includes('ai') || tech.toLowerCase().includes('blockchain'))) {
+      return 'High';
+    }
+    return 'Medium';
+  };
+
+  const getAchievementIcon = (iconName: string) => {
+    switch (iconName.toLowerCase()) {
+      case 'code': return Code;
+      case 'users': return Users;
+      case 'rocket': return Rocket;
+      case 'database': return Database;
+      case 'shield': return Shield;
+      case 'trophy': return Trophy;
+      default: return Star;
+    }
+  };
+
   const quickActions = [
     {
       title: "Start New Project",
