@@ -200,6 +200,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateProfile = async (updates: Partial<UserProfile>) => {
     if (!user) throw new Error('No user logged in');
 
+    if (!isSupabaseConfigured) {
+      aethexToast.info({
+        title: 'Demo Mode',
+        description: 'Profile updates are simulated in demo mode'
+      });
+      // Simulate profile update
+      setProfile(prev => prev ? { ...prev, ...updates } : null);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('user_profiles')
@@ -211,14 +221,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
 
       setProfile(data);
-      aethexToast.success({ 
-        title: 'Profile updated', 
-        description: 'Your profile has been updated successfully' 
+      aethexToast.success({
+        title: 'Profile updated',
+        description: 'Your profile has been updated successfully'
       });
     } catch (error: any) {
-      aethexToast.error({ 
-        title: 'Update failed', 
-        description: error.message 
+      aethexToast.error({
+        title: 'Update failed',
+        description: error.message
       });
       throw error;
     }
