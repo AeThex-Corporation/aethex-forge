@@ -16,6 +16,5 @@ export function createServer() {
     res.json({ message: ping });
   });
 
-
   return app;
 }
