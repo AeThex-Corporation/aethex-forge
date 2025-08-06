@@ -11,12 +11,12 @@ export default function SupabaseStatus() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50 max-w-md">
-      <Alert className="border-amber-500/50 bg-amber-500/10 text-amber-300">
-        <Database className="h-4 w-4" />
+      <Alert className="border-blue-500/50 bg-blue-500/10 text-blue-300">
+        <Info className="h-4 w-4" />
         <AlertDescription className="space-y-3">
           <div>
-            <strong>Demo Mode:</strong> Supabase is not configured. 
-            Set up your database to enable full functionality.
+            <strong>Demo Mode:</strong> Full functionality with simulated data.
+            All features are available for testing!
           </div>
           <div className="flex gap-2">
             <Button
