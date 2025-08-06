@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { aethexToast } from "@/lib/aethex-toast";
+import { aethexProjectService, aethexAchievementService } from "@/lib/aethex-database-adapter";
 import {
   Card,
   CardContent,
