@@ -60,7 +60,7 @@ export default function Layout({ children }: LayoutProps) {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navigation.map((item, index) => (
+            {(user && profile ? userNavigation : navigation).map((item, index) => (
               <Link
                 key={item.name}
                 to={item.href}
