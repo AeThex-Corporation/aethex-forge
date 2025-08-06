@@ -63,7 +63,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        await fetchUserProfile(session.user.id);
+        const profile = await fetchUserProfile(session.user.id);
+
+        // Create profile for new OAuth users
+        if (!profile && session.user.app_metadata?.provider) {
+          try {
+            await aethexUserService.createInitialProfile(session.user.id, {
+              username: session.user.user_metadata?.user_name ||
+                       session.user.user_metadata?.preferred_username ||
+                       session.user.email?.split('@')[0] ||
+                       `user_${Date.now()}`,
+              full_name: session.user.user_metadata?.full_name ||
+                        session.user.user_metadata?.name ||
+                        session.user.email?.split('@')[0],
+              email: session.user.email,
+              avatar_url: session.user.user_metadata?.avatar_url,
+              user_type: 'community_member', // Default for OAuth users
+              experience_level: 'beginner',
+            });
+
+            // Fetch the newly created profile
+            await fetchUserProfile(session.user.id);
+
+            // Award onboarding achievement for OAuth users
+            await aethexAchievementService.checkAndAwardOnboardingAchievement(session.user.id);
+          } catch (error) {
+            console.error('Error creating OAuth user profile:', error);
+          }
+        }
       } else {
         setProfile(null);
       }
