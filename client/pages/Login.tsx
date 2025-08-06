@@ -28,28 +28,58 @@ import {
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
+  const { signIn, signUp, user, loading } = useAuth();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && !loading) {
+      navigate("/dashboard");
+    }
+  }, [user, loading, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate login process
-    setTimeout(() => {
+    try {
+      if (isSignUp) {
+        await signUp(email, password, {
+          id: "", // Will be set by Supabase
+          full_name: fullName,
+          user_type: "game_developer", // Default, can be changed in onboarding
+          username: email.split("@")[0], // Generate username from email
+        });
+        aethexToast.success({
+          title: "Account created!",
+          description: "Please check your email to verify your account, then sign in."
+        });
+        setIsSignUp(false);
+      } else {
+        await signIn(email, password);
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.error("Authentication error:", error);
+    } finally {
       setIsLoading(false);
-      navigate("/dashboard");
-    }, 2000);
+    }
   };
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = async (provider: string) => {
     setIsLoading(true);
-    // Simulate social login
-    setTimeout(() => {
+    try {
+      aethexToast.info({
+        title: "Social login",
+        description: `${provider} login will be implemented in your Supabase setup`
+      });
+    } finally {
       setIsLoading(false);
-      navigate("/dashboard");
-    }, 1500);
+    }
   };
 
   if (isLoading) {
