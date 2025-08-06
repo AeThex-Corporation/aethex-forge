@@ -28,6 +28,14 @@ export default function Layout({ children }: LayoutProps) {
     { name: "Contact", href: "/contact" },
   ];
 
+  const userNavigation = [
+    { name: "Dashboard", href: "/dashboard" },
+    { name: "Profile", href: "/profile" },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ];
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
