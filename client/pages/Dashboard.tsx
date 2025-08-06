@@ -39,8 +39,17 @@ import {
 } from "lucide-react";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+  const { user, profile, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [activeProjects, setActiveProjects] = useState(3);
+  const [projects, setProjects] = useState([]);
+  const [achievements, setAchievements] = useState([]);
+  const [stats, setStats] = useState({
+    activeProjects: 0,
+    completedTasks: 0,
+    teamMembers: 0,
+    performanceScore: '0%'
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
