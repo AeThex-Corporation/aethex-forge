@@ -70,13 +70,12 @@ export default function Login() {
     }
   };
 
-  const handleSocialLogin = async (provider: string) => {
+  const handleSocialLogin = async (provider: 'github' | 'google') => {
     setIsLoading(true);
     try {
-      aethexToast.info({
-        title: "Social login",
-        description: `${provider} login will be implemented in your Supabase setup`
-      });
+      await signInWithOAuth(provider);
+    } catch (error: any) {
+      console.error(`${provider} authentication error:`, error);
     } finally {
       setIsLoading(false);
     }
