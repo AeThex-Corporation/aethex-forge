@@ -56,7 +56,8 @@ export default function Login() {
         });
         aethexToast.success({
           title: "Account created!",
-          description: "Please check your email to verify your account, then sign in."
+          description:
+            "Please check your email to verify your account, then sign in.",
         });
         setIsSignUp(false);
       } else {
@@ -70,7 +71,7 @@ export default function Login() {
     }
   };
 
-  const handleSocialLogin = async (provider: 'github' | 'google') => {
+  const handleSocialLogin = async (provider: "github" | "google") => {
     setIsLoading(true);
     try {
       await signInWithOAuth(provider);
@@ -125,8 +126,7 @@ export default function Login() {
                 <CardDescription>
                   {isSignUp
                     ? "Create your AeThex account to get started"
-                    : "Sign in to your AeThex account to access the dashboard"
-                  }
+                    : "Sign in to your AeThex account to access the dashboard"}
                 </CardDescription>
               </div>
               <Badge
@@ -221,7 +221,9 @@ export default function Login() {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder={isSignUp ? "Create a password" : "Enter your password"}
+                      placeholder={
+                        isSignUp ? "Create a password" : "Enter your password"
+                      }
                       className="pl-10 bg-background/50 border-border/50 focus:border-aethex-400"
                       required
                       minLength={isSignUp ? 6 : undefined}
@@ -255,7 +257,9 @@ export default function Login() {
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue"
-                  disabled={!email || !password || (isSignUp && !fullName) || isLoading}
+                  disabled={
+                    !email || !password || (isSignUp && !fullName) || isLoading
+                  }
                 >
                   <LogIn className="h-4 w-4 mr-2" />
                   {isSignUp ? "Create Account" : "Sign In to Dashboard"}
@@ -265,7 +269,9 @@ export default function Login() {
 
               <div className="text-center pt-4">
                 <p className="text-sm text-muted-foreground">
-                  {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+                  {isSignUp
+                    ? "Already have an account?"
+                    : "Don't have an account?"}{" "}
                   <button
                     onClick={() => setIsSignUp(!isSignUp)}
                     className="text-aethex-400 hover:underline font-medium"

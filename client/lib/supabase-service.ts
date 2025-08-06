@@ -1,27 +1,36 @@
-import { supabase } from './supabase';
-import type { Database, UserProfile, Project, Achievement, CommunityPost } from './database.types';
+import { supabase } from "./supabase";
+import type {
+  Database,
+  UserProfile,
+  Project,
+  Achievement,
+  CommunityPost,
+} from "./database.types";
 
 // User Profile Services
 export const userProfileService = {
   async getProfile(userId: string): Promise<UserProfile | null> {
     const { data, error } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('id', userId)
+      .from("user_profiles")
+      .select("*")
+      .eq("id", userId)
       .single();
 
-    if (error && error.code !== 'PGRST116') {
+    if (error && error.code !== "PGRST116") {
       throw error;
     }
 
     return data;
   },
 
-  async updateProfile(userId: string, updates: Partial<UserProfile>): Promise<UserProfile> {
+  async updateProfile(
+    userId: string,
+    updates: Partial<UserProfile>,
+  ): Promise<UserProfile> {
     const { data, error } = await supabase
-      .from('user_profiles')
+      .from("user_profiles")
       .update(updates)
-      .eq('id', userId)
+      .eq("id", userId)
       .select()
       .single();
 
@@ -29,9 +38,11 @@ export const userProfileService = {
     return data;
   },
 
-  async createProfile(profile: Omit<UserProfile, 'created_at' | 'updated_at'>): Promise<UserProfile> {
+  async createProfile(
+    profile: Omit<UserProfile, "created_at" | "updated_at">,
+  ): Promise<UserProfile> {
     const { data, error } = await supabase
-      .from('user_profiles')
+      .from("user_profiles")
       .insert(profile)
       .select()
       .single();
@@ -41,13 +52,13 @@ export const userProfileService = {
   },
 
   async addInterests(userId: string, interests: string[]): Promise<void> {
-    const interestRows = interests.map(interest => ({
+    const interestRows = interests.map((interest) => ({
       user_id: userId,
       interest,
     }));
 
     const { error } = await supabase
-      .from('user_interests')
+      .from("user_interests")
       .insert(interestRows);
 
     if (error) throw error;
@@ -55,12 +66,12 @@ export const userProfileService = {
 
   async getUserInterests(userId: string): Promise<string[]> {
     const { data, error } = await supabase
-      .from('user_interests')
-      .select('interest')
-      .eq('user_id', userId);
+      .from("user_interests")
+      .select("interest")
+      .eq("user_id", userId);
 
     if (error) throw error;
-    return data.map(item => item.interest);
+    return data.map((item) => item.interest);
   },
 };
 
@@ -68,18 +79,20 @@ export const userProfileService = {
 export const projectService = {
   async getUserProjects(userId: string): Promise<Project[]> {
     const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+      .from("projects")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
 
     if (error) throw error;
     return data;
   },
 
-  async createProject(project: Omit<Project, 'id' | 'created_at' | 'updated_at'>): Promise<Project> {
+  async createProject(
+    project: Omit<Project, "id" | "created_at" | "updated_at">,
+  ): Promise<Project> {
     const { data, error } = await supabase
-      .from('projects')
+      .from("projects")
       .insert(project)
       .select()
       .single();
@@ -88,11 +101,14 @@ export const projectService = {
     return data;
   },
 
-  async updateProject(projectId: string, updates: Partial<Project>): Promise<Project> {
+  async updateProject(
+    projectId: string,
+    updates: Partial<Project>,
+  ): Promise<Project> {
     const { data, error } = await supabase
-      .from('projects')
+      .from("projects")
       .update(updates)
-      .eq('id', projectId)
+      .eq("id", projectId)
       .select()
       .single();
 
@@ -102,26 +118,28 @@ export const projectService = {
 
   async deleteProject(projectId: string): Promise<void> {
     const { error } = await supabase
-      .from('projects')
+      .from("projects")
       .delete()
-      .eq('id', projectId);
+      .eq("id", projectId);
 
     if (error) throw error;
   },
 
   async getAllProjects(limit = 10): Promise<Project[]> {
     const { data, error } = await supabase
-      .from('projects')
-      .select(`
+      .from("projects")
+      .select(
+        `
         *,
         user_profiles (
           username,
           full_name,
           avatar_url
         )
-      `)
-      .eq('status', 'completed')
-      .order('created_at', { ascending: false })
+      `,
+      )
+      .eq("status", "completed")
+      .order("created_at", { ascending: false })
       .limit(limit);
 
     if (error) throw error;
@@ -133,9 +151,9 @@ export const projectService = {
 export const achievementService = {
   async getAllAchievements(): Promise<Achievement[]> {
     const { data, error } = await supabase
-      .from('achievements')
-      .select('*')
-      .order('xp_reward', { ascending: false });
+      .from("achievements")
+      .select("*")
+      .order("xp_reward", { ascending: false });
 
     if (error) throw error;
     return data;
@@ -143,27 +161,30 @@ export const achievementService = {
 
   async getUserAchievements(userId: string): Promise<Achievement[]> {
     const { data, error } = await supabase
-      .from('user_achievements')
-      .select(`
+      .from("user_achievements")
+      .select(
+        `
         earned_at,
         achievements (*)
-      `)
-      .eq('user_id', userId)
-      .order('earned_at', { ascending: false });
+      `,
+      )
+      .eq("user_id", userId)
+      .order("earned_at", { ascending: false });
 
     if (error) throw error;
-    return data.map(item => item.achievements).filter(Boolean) as Achievement[];
+    return data
+      .map((item) => item.achievements)
+      .filter(Boolean) as Achievement[];
   },
 
   async awardAchievement(userId: string, achievementId: string): Promise<void> {
-    const { error } = await supabase
-      .from('user_achievements')
-      .insert({
-        user_id: userId,
-        achievement_id: achievementId,
-      });
+    const { error } = await supabase.from("user_achievements").insert({
+      user_id: userId,
+      achievement_id: achievementId,
+    });
 
-    if (error && error.code !== '23505') { // Ignore duplicate key error
+    if (error && error.code !== "23505") {
+      // Ignore duplicate key error
       throw error;
     }
   },
@@ -172,14 +193,16 @@ export const achievementService = {
     // Check for various achievement conditions
     const profile = await userProfileService.getProfile(userId);
     const projects = await projectService.getUserProjects(userId);
-    
+
     if (!profile) return;
 
     const achievements = await this.getAllAchievements();
 
     // Welcome achievement
     if (profile.full_name && profile.user_type) {
-      const welcomeAchievement = achievements.find(a => a.name === 'Welcome to AeThex');
+      const welcomeAchievement = achievements.find(
+        (a) => a.name === "Welcome to AeThex",
+      );
       if (welcomeAchievement) {
         await this.awardAchievement(userId, welcomeAchievement.id);
       }
@@ -187,16 +210,20 @@ export const achievementService = {
 
     // First project achievement
     if (projects.length >= 1) {
-      const firstProjectAchievement = achievements.find(a => a.name === 'First Project');
+      const firstProjectAchievement = achievements.find(
+        (a) => a.name === "First Project",
+      );
       if (firstProjectAchievement) {
         await this.awardAchievement(userId, firstProjectAchievement.id);
       }
     }
 
     // Experienced developer achievement
-    const completedProjects = projects.filter(p => p.status === 'completed');
+    const completedProjects = projects.filter((p) => p.status === "completed");
     if (completedProjects.length >= 5) {
-      const experiencedAchievement = achievements.find(a => a.name === 'Experienced Developer');
+      const experiencedAchievement = achievements.find(
+        (a) => a.name === "Experienced Developer",
+      );
       if (experiencedAchievement) {
         await this.awardAchievement(userId, experiencedAchievement.id);
       }
@@ -208,26 +235,33 @@ export const achievementService = {
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
     const { data, error } = await supabase
-      .from('community_posts')
-      .select(`
+      .from("community_posts")
+      .select(
+        `
         *,
         user_profiles (
           username,
           full_name,
           avatar_url
         )
-      `)
-      .eq('is_published', true)
-      .order('created_at', { ascending: false })
+      `,
+      )
+      .eq("is_published", true)
+      .order("created_at", { ascending: false })
       .limit(limit);
 
     if (error) throw error;
     return data;
   },
 
-  async createPost(post: Omit<CommunityPost, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'comments_count'>): Promise<CommunityPost> {
+  async createPost(
+    post: Omit<
+      CommunityPost,
+      "id" | "created_at" | "updated_at" | "likes_count" | "comments_count"
+    >,
+  ): Promise<CommunityPost> {
     const { data, error } = await supabase
-      .from('community_posts')
+      .from("community_posts")
       .insert(post)
       .select()
       .single();
@@ -238,10 +272,10 @@ export const communityService = {
 
   async getUserPosts(userId: string): Promise<CommunityPost[]> {
     const { data, error } = await supabase
-      .from('community_posts')
-      .select('*')
-      .eq('author_id', userId)
-      .order('created_at', { ascending: false });
+      .from("community_posts")
+      .select("*")
+      .eq("author_id", userId)
+      .order("created_at", { ascending: false });
 
     if (error) throw error;
     return data;
@@ -252,10 +286,10 @@ export const communityService = {
 export const notificationService = {
   async getUserNotifications(userId: string): Promise<any[]> {
     const { data, error } = await supabase
-      .from('notifications')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+      .from("notifications")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
       .limit(10);
 
     if (error) throw error;
@@ -264,22 +298,25 @@ export const notificationService = {
 
   async markAsRead(notificationId: string): Promise<void> {
     const { error } = await supabase
-      .from('notifications')
+      .from("notifications")
       .update({ read: true })
-      .eq('id', notificationId);
+      .eq("id", notificationId);
 
     if (error) throw error;
   },
 
-  async createNotification(userId: string, title: string, message?: string, type = 'info'): Promise<void> {
-    const { error } = await supabase
-      .from('notifications')
-      .insert({
-        user_id: userId,
-        title,
-        message,
-        type,
-      });
+  async createNotification(
+    userId: string,
+    title: string,
+    message?: string,
+    type = "info",
+  ): Promise<void> {
+    const { error } = await supabase.from("notifications").insert({
+      user_id: userId,
+      title,
+      message,
+      type,
+    });
 
     if (error) throw error;
   },
@@ -287,34 +324,37 @@ export const notificationService = {
 
 // Real-time subscriptions
 export const realtimeService = {
-  subscribeToUserNotifications(userId: string, callback: (notification: any) => void) {
+  subscribeToUserNotifications(
+    userId: string,
+    callback: (notification: any) => void,
+  ) {
     return supabase
       .channel(`notifications:${userId}`)
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
           filter: `user_id=eq.${userId}`,
         },
-        callback
+        callback,
       )
       .subscribe();
   },
 
   subscribeToCommunityPosts(callback: (post: any) => void) {
     return supabase
-      .channel('community_posts')
+      .channel("community_posts")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'community_posts',
-          filter: 'is_published=eq.true',
+          event: "INSERT",
+          schema: "public",
+          table: "community_posts",
+          filter: "is_published=eq.true",
         },
-        callback
+        callback,
       )
       .subscribe();
   },

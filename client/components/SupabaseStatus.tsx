@@ -1,8 +1,8 @@
-import React from 'react';
-import { isSupabaseConfigured } from '@/lib/supabase';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Database, ExternalLink, Info } from 'lucide-react';
+import React from "react";
+import { isSupabaseConfigured } from "@/lib/supabase";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Database, ExternalLink, Info } from "lucide-react";
 
 export default function SupabaseStatus() {
   // Only show if Supabase is not configured (demo mode)
@@ -26,9 +26,11 @@ export default function SupabaseStatus() {
               className="border-blue-500/50 text-blue-300 hover:bg-blue-500/20"
               onClick={() => {
                 // Hide the status notification
-                const notification = document.querySelector('[data-supabase-status]');
+                const notification = document.querySelector(
+                  "[data-supabase-status]",
+                );
                 if (notification) {
-                  notification.style.display = 'none';
+                  notification.style.display = "none";
                 }
               }}
             >
@@ -39,7 +41,7 @@ export default function SupabaseStatus() {
               size="sm"
               variant="outline"
               className="border-blue-500/50 text-blue-300 hover:bg-blue-500/20"
-              onClick={() => window.open('/login', '_self')}
+              onClick={() => window.open("/login", "_self")}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
               Try Login

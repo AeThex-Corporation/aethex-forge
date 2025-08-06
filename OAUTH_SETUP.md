@@ -5,11 +5,13 @@ This guide will help you configure GitHub and Google OAuth login for your AeThex
 ## 🔧 Supabase OAuth Configuration
 
 ### 1. Access Your Supabase Dashboard
+
 1. Go to [app.supabase.com](https://app.supabase.com)
 2. Select your project: `kmdeisowhtsalsekkzqd`
 3. Navigate to **Authentication** > **Providers**
 
 ### 2. Configure Site URL
+
 1. Go to **Authentication** > **Settings**
 2. Set your Site URL to: `https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef.fly.dev`
 3. Add Redirect URLs:
@@ -19,6 +21,7 @@ This guide will help you configure GitHub and Google OAuth login for your AeThex
 ## 🐙 GitHub OAuth Setup
 
 ### 1. Create GitHub OAuth App
+
 1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
 2. Click **New OAuth App**
 3. Fill in the details:
@@ -29,6 +32,7 @@ This guide will help you configure GitHub and Google OAuth login for your AeThex
 5. Copy the **Client ID** and **Client Secret**
 
 ### 2. Configure in Supabase
+
 1. In Supabase dashboard, go to **Authentication** > **Providers**
 2. Find **GitHub** and click to configure
 3. Enable GitHub provider
@@ -38,6 +42,7 @@ This guide will help you configure GitHub and Google OAuth login for your AeThex
 ## 🌐 Google OAuth Setup
 
 ### 1. Create Google OAuth Credentials
+
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing one
 3. Enable **Google+ API** and **Google Identity API**
@@ -49,6 +54,7 @@ This guide will help you configure GitHub and Google OAuth login for your AeThex
 8. Copy the **Client ID** and **Client Secret**
 
 ### 2. Configure in Supabase
+
 1. In Supabase dashboard, go to **Authentication** > **Providers**
 2. Find **Google** and click to configure
 3. Enable Google provider
@@ -74,6 +80,7 @@ Once configured:
 ## 🚀 Features Enabled
 
 With OAuth configured, users can:
+
 - **One-click login** with GitHub or Google
 - **Automatic profile setup** with avatar and name from OAuth provider
 - **Seamless integration** with existing AeThex community platform

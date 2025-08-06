@@ -218,11 +218,13 @@ CREATE TRIGGER update_community_posts_updated_at BEFORE UPDATE ON community_post
 Once set up, your AeThex app will have:
 
 ### 🔐 Authentication
+
 - Email/password sign up and sign in
 - User session management
 - Profile creation and updates
 
 ### 🗄️ Database Features
+
 - User profiles with extended information
 - Project portfolio management
 - Achievement system with XP and levels
@@ -230,16 +232,19 @@ Once set up, your AeThex app will have:
 - Real-time notifications
 
 ### 🎮 Gamification
+
 - User levels and XP tracking
 - Achievement system
 - Progress tracking
 
 ### 💬 Community
+
 - User-generated content
 - Real-time updates
 - Comment system
 
 ### 📊 Dashboard
+
 - Personalized user dashboard
 - Project tracking
 - Achievement display
@@ -255,6 +260,7 @@ Once set up, your AeThex app will have:
 ## 7. Production Deployment
 
 For production:
+
 1. Update your site URL in Supabase Authentication settings
 2. Add your production domain to redirect URLs
 3. Update your environment variables in your hosting platform
