@@ -247,6 +247,9 @@ export default function Layout({ children }: LayoutProps) {
           </div>
         </div>
       </footer>
+
+      {/* Supabase Configuration Status */}
+      <SupabaseStatus />
     </div>
   );
 }
