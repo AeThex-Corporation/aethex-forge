@@ -102,6 +102,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signIn = async (email: string, password: string) => {
+    if (!isSupabaseConfigured) {
+      aethexToast.warning({
+        title: 'Demo Mode',
+        description: 'Supabase not configured. This is a demo - please set up your Supabase project.'
+      });
+      // Simulate successful login for demo
+      setTimeout(() => {
+        setUser({ id: 'demo-user', email } as User);
+        setSession({ user: { id: 'demo-user', email } } as Session);
+      }, 500);
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -110,15 +123,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) throw error;
     } catch (error: any) {
-      aethexToast.error({ 
-        title: 'Sign in failed', 
-        description: error.message 
+      aethexToast.error({
+        title: 'Sign in failed',
+        description: error.message
       });
       throw error;
     }
   };
 
   const signUp = async (email: string, password: string, userData?: Partial<UserProfile>) => {
+    if (!isSupabaseConfigured) {
+      aethexToast.warning({
+        title: 'Demo Mode',
+        description: 'Supabase not configured. This is a demo - please set up your Supabase project.'
+      });
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -138,28 +159,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (profileError) throw profileError;
 
-        aethexToast.success({ 
-          title: 'Account created!', 
-          description: 'Please check your email to verify your account' 
+        aethexToast.success({
+          title: 'Account created!',
+          description: 'Please check your email to verify your account'
         });
       }
     } catch (error: any) {
-      aethexToast.error({ 
-        title: 'Sign up failed', 
-        description: error.message 
+      aethexToast.error({
+        title: 'Sign up failed',
+        description: error.message
       });
       throw error;
     }
   };
 
   const signOut = async () => {
+    if (!isSupabaseConfigured) {
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+      aethexToast.info({
+        title: 'Signed out',
+        description: 'Demo session ended'
+      });
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
     } catch (error: any) {
-      aethexToast.error({ 
-        title: 'Sign out failed', 
-        description: error.message 
+      aethexToast.error({
+        title: 'Sign out failed',
+        description: error.message
       });
       throw error;
     }
