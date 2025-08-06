@@ -121,10 +121,13 @@ export default function Login() {
               </div>
               <div className="space-y-2">
                 <CardTitle className="text-2xl text-gradient-purple">
-                  Welcome Back
+                  {isSignUp ? "Create Account" : "Welcome Back"}
                 </CardTitle>
                 <CardDescription>
-                  Sign in to your AeThex account to access the dashboard
+                  {isSignUp
+                    ? "Create your AeThex account to get started"
+                    : "Sign in to your AeThex account to access the dashboard"
+                  }
                 </CardDescription>
               </div>
               <Badge
