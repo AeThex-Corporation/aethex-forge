@@ -121,18 +121,16 @@ export default function Dashboard() {
     }
   };
 
-  // Mock user data
-  const user = {
-    name: "Alex Thompson",
-    role: "Game Developer",
-    level: 15,
-    xp: 2450,
-    nextLevelXp: 3000,
-    avatar:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-    joinDate: "March 2024",
-    streak: 12,
-  };
+  // Return early if not authenticated
+  if (authLoading || !user || !profile) {
+    return (
+      <LoadingScreen
+        message="Loading your dashboard..."
+        showProgress={true}
+        duration={2000}
+      />
+    );
+  }
 
   const stats = [
     {
