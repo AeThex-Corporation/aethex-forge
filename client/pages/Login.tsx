@@ -235,38 +235,40 @@ export default function Login() {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between text-sm">
-                  <label className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="rounded border-border/50"
-                    />
-                    <span className="text-muted-foreground">Remember me</span>
-                  </label>
-                  <button
-                    type="button"
-                    className="text-aethex-400 hover:underline"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
+                {!isSignUp && (
+                  <div className="flex items-center justify-between text-sm">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="rounded border-border/50"
+                      />
+                      <span className="text-muted-foreground">Remember me</span>
+                    </label>
+                    <button
+                      type="button"
+                      className="text-aethex-400 hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                )}
 
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue"
-                  disabled={!email || !password}
+                  disabled={!email || !password || (isSignUp && !fullName) || isLoading}
                 >
                   <LogIn className="h-4 w-4 mr-2" />
-                  Sign In to Dashboard
+                  {isSignUp ? "Create Account" : "Sign In to Dashboard"}
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </form>
 
               <div className="text-center pt-4">
                 <p className="text-sm text-muted-foreground">
-                  Don't have an account?{" "}
+                  {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
                   <button
-                    onClick={() => navigate("/onboarding")}
+                    onClick={() => setIsSignUp(!isSignUp)}
                     className="text-aethex-400 hover:underline font-medium"
                   >
                     Join AeThex
