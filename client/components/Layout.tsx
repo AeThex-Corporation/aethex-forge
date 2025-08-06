@@ -60,24 +60,26 @@ export default function Layout({ children }: LayoutProps) {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {(user && profile ? userNavigation : navigation).map((item, index) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "text-sm font-medium transition-all duration-300 hover:text-aethex-400 hover:scale-105 relative animate-fade-in",
-                  location.pathname === item.href
-                    ? "text-aethex-500 animate-pulse-glow"
-                    : "text-muted-foreground",
-                )}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {item.name}
-                {location.pathname === item.href && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue animate-scale-in" />
-                )}
-              </Link>
-            ))}
+            {(user && profile ? userNavigation : navigation).map(
+              (item, index) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    "text-sm font-medium transition-all duration-300 hover:text-aethex-400 hover:scale-105 relative animate-fade-in",
+                    location.pathname === item.href
+                      ? "text-aethex-500 animate-pulse-glow"
+                      : "text-muted-foreground",
+                  )}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {item.name}
+                  {location.pathname === item.href && (
+                    <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue animate-scale-in" />
+                  )}
+                </Link>
+              ),
+            )}
           </nav>
 
           {/* Auth Section */}
