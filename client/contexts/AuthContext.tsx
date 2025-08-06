@@ -3,6 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { UserProfile } from '@/lib/database.types';
 import { aethexToast } from '@/lib/aethex-toast';
+import { DemoStorageService } from '@/lib/demo-storage';
 
 interface AuthContextType {
   user: User | null;
