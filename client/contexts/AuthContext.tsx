@@ -171,6 +171,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const signInWithOAuth = async (provider: 'github' | 'google') => {
+    if (!isSupabaseConfigured) {
+      aethexToast.warning({
+        title: 'Demo Mode',
+        description: 'OAuth login requires Supabase to be configured. Currently in demo mode.'
+      });
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+
+      if (error) throw error;
+
+      aethexToast.success({
+        title: 'Redirecting...',
+        description: `Signing in with ${provider}`
+      });
+    } catch (error: any) {
+      aethexToast.error({
+        title: `${provider} sign in failed`,
+        description: error.message
+      });
+      throw error;
+    }
+  };
+
   const signOut = async () => {
     if (!isSupabaseConfigured) {
       setUser(null);
