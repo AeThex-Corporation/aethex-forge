@@ -132,7 +132,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUp = async (email: string, password: string, userData?: Partial<UserProfile>) => {
+  const signUp = async (email: string, password: string, userData?: Partial<AethexUserProfile>) => {
     if (!isSupabaseConfigured) {
       aethexToast.warning({
         title: 'Demo Mode',
@@ -150,15 +150,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
 
       if (data.user && userData) {
-        // Create user profile after successful signup
-        const { error: profileError } = await supabase
-          .from('user_profiles')
-          .insert({
-            id: data.user.id,
-            ...userData,
-          });
-
-        if (profileError) throw profileError;
+        // Create user profile using AeThex adapter
+        await aethexUserService.createInitialProfile(data.user.id, {
+          ...userData,
+          email,
+        });
 
         aethexToast.success({
           title: 'Account created!',
