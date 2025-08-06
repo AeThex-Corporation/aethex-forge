@@ -396,7 +396,7 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {recentProjects.map((project, index) => (
+                  {projects.slice(0, 3).map((project: any, index) => (
                     <div
                       key={index}
                       className="flex items-center justify-between p-4 rounded-lg border border-border/30 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-right"
