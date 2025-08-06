@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { aethexToast } from "@/lib/aethex-toast";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
