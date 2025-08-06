@@ -84,6 +84,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const fetchUserProfile = async (userId: string) => {
+    if (!isSupabaseConfigured) {
+      // Set demo profile
+      setProfile({
+        id: userId,
+        username: 'demo-user',
+        full_name: 'Demo User',
+        user_type: 'game_developer',
+        experience_level: 'intermediate',
+        total_xp: 150,
+        level: 3,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        avatar_url: null,
+        bio: 'Demo user profile',
+        location: null,
+        website_url: null,
+        github_url: null,
+        twitter_url: null,
+        linkedin_url: null,
+      });
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('user_profiles')
