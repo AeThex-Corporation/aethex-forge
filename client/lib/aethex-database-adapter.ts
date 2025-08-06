@@ -41,7 +41,7 @@ export interface AethexProject {
   status: "planning" | "in_progress" | "completed" | "on_hold";
   technologies?: string[];
   github_url?: string;
-  demo_url?: string;
+  live_url?: string;
   image_url?: string;
   start_date?: string;
   end_date?: string;
