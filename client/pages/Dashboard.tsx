@@ -4,7 +4,10 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { aethexToast } from "@/lib/aethex-toast";
-import { aethexProjectService, aethexAchievementService } from "@/lib/aethex-database-adapter";
+import {
+  aethexProjectService,
+  aethexAchievementService,
+} from "@/lib/aethex-database-adapter";
 import {
   Card,
   CardContent,
@@ -48,12 +51,12 @@ export default function Dashboard() {
     activeProjects: 0,
     completedTasks: 0,
     teamMembers: 0,
-    performanceScore: '0%'
+    performanceScore: "0%",
   });
 
   useEffect(() => {
     if (!authLoading && !user) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -71,25 +74,29 @@ export default function Dashboard() {
       setProjects(userProjects);
 
       // Load user's achievements
-      const userAchievements = await aethexAchievementService.getUserAchievements(user!.id);
+      const userAchievements =
+        await aethexAchievementService.getUserAchievements(user!.id);
       setAchievements(userAchievements);
 
       // Calculate stats
-      const activeCount = userProjects.filter(p => p.status === 'in_progress').length;
-      const completedCount = userProjects.filter(p => p.status === 'completed').length;
+      const activeCount = userProjects.filter(
+        (p) => p.status === "in_progress",
+      ).length;
+      const completedCount = userProjects.filter(
+        (p) => p.status === "completed",
+      ).length;
 
       setStats({
         activeProjects: activeCount,
         completedTasks: completedCount,
         teamMembers: 8, // Mock for now
-        performanceScore: `${Math.min(95, 70 + (completedCount * 5))}%`
+        performanceScore: `${Math.min(95, 70 + completedCount * 5)}%`,
       });
-
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      console.error("Error loading dashboard data:", error);
       aethexToast.error({
-        title: 'Failed to load dashboard',
-        description: 'Please try refreshing the page'
+        title: "Failed to load dashboard",
+        description: "Please try refreshing the page",
       });
     } finally {
       setIsLoading(false);
@@ -98,25 +105,25 @@ export default function Dashboard() {
 
   const handleQuickAction = async (actionTitle: string) => {
     switch (actionTitle) {
-      case 'Start New Project':
-        navigate('/projects/new');
+      case "Start New Project":
+        navigate("/projects/new");
         break;
-      case 'Join Team':
-        navigate('/teams');
+      case "Join Team":
+        navigate("/teams");
         break;
-      case 'Access Labs':
-        navigate('/research');
+      case "Access Labs":
+        navigate("/research");
         break;
-      case 'View Analytics':
+      case "View Analytics":
         aethexToast.info({
-          title: 'Analytics',
-          description: 'Analytics dashboard coming soon!'
+          title: "Analytics",
+          description: "Analytics dashboard coming soon!",
         });
         break;
       default:
         aethexToast.info({
           title: actionTitle,
-          description: 'Feature coming soon!'
+          description: "Feature coming soon!",
         });
     }
   };
@@ -159,33 +166,48 @@ export default function Dashboard() {
     },
   ];
 
-
-
   const getProgressPercentage = (project: any) => {
     switch (project.status) {
-      case 'planning': return 20;
-      case 'in_progress': return 60;
-      case 'completed': return 100;
-      default: return 0;
+      case "planning":
+        return 20;
+      case "in_progress":
+        return 60;
+      case "completed":
+        return 100;
+      default:
+        return 0;
     }
   };
 
   const getPriorityFromTech = (technologies: string[]) => {
-    if (technologies.some(tech => tech.toLowerCase().includes('ai') || tech.toLowerCase().includes('blockchain'))) {
-      return 'High';
+    if (
+      technologies.some(
+        (tech) =>
+          tech.toLowerCase().includes("ai") ||
+          tech.toLowerCase().includes("blockchain"),
+      )
+    ) {
+      return "High";
     }
-    return 'Medium';
+    return "Medium";
   };
 
   const getAchievementIcon = (iconName: string) => {
     switch (iconName.toLowerCase()) {
-      case 'code': return Code;
-      case 'users': return Users;
-      case 'rocket': return Rocket;
-      case 'database': return Database;
-      case 'shield': return Shield;
-      case 'trophy': return Trophy;
-      default: return Star;
+      case "code":
+        return Code;
+      case "users":
+        return Users;
+      case "rocket":
+        return Rocket;
+      case "database":
+        return Database;
+      case "shield":
+        return Shield;
+      case "trophy":
+        return Trophy;
+      default:
+        return Star;
     }
   };
 
