@@ -8,13 +8,13 @@ import { aethexUserService, type AethexUserProfile } from '@/lib/aethex-database
 
 interface AuthContextType {
   user: User | null;
-  profile: UserProfile | null;
+  profile: AethexUserProfile | null;
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, userData?: Partial<UserProfile>) => Promise<void>;
+  signUp: (email: string, password: string, userData?: Partial<AethexUserProfile>) => Promise<void>;
   signOut: () => Promise<void>;
-  updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
+  updateProfile: (updates: Partial<AethexUserProfile>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
