@@ -11,6 +11,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+// Always true in production mode - Supabase is required
+export const isSupabaseConfigured = true;
+
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
