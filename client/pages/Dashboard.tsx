@@ -186,32 +186,6 @@ export default function Dashboard() {
     },
   ];
 
-  const achievements = [
-    {
-      title: "Code Master",
-      description: "Completed 50+ coding challenges",
-      icon: Code,
-      earned: true,
-    },
-    {
-      title: "Team Player",
-      description: "Collaborated on 10+ projects",
-      icon: Users,
-      earned: true,
-    },
-    {
-      title: "Innovation Leader",
-      description: "Led 5+ innovative projects",
-      icon: Rocket,
-      earned: false,
-    },
-    {
-      title: "Database Wizard",
-      description: "Optimized 20+ databases",
-      icon: Database,
-      earned: false,
-    },
-  ];
 
   const quickActions = [
     {
