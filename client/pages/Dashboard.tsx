@@ -52,12 +52,74 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    if (!authLoading && !user) {
+      navigate('/login');
+      return;
+    }
 
-    return () => clearTimeout(timer);
-  }, []);
+    if (user && profile) {
+      loadDashboardData();
+    }
+  }, [user, profile, authLoading, navigate]);
+
+  const loadDashboardData = async () => {
+    try {
+      setIsLoading(true);
+
+      // Load user's projects
+      const userProjects = await aethexProjectService.getUserProjects(user!.id);
+      setProjects(userProjects);
+
+      // Load user's achievements
+      const userAchievements = await aethexAchievementService.getUserAchievements(user!.id);
+      setAchievements(userAchievements);
+
+      // Calculate stats
+      const activeCount = userProjects.filter(p => p.status === 'in_progress').length;
+      const completedCount = userProjects.filter(p => p.status === 'completed').length;
+
+      setStats({
+        activeProjects: activeCount,
+        completedTasks: completedCount,
+        teamMembers: 8, // Mock for now
+        performanceScore: `${Math.min(95, 70 + (completedCount * 5))}%`
+      });
+
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+      aethexToast.error({
+        title: 'Failed to load dashboard',
+        description: 'Please try refreshing the page'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleQuickAction = async (actionTitle: string) => {
+    switch (actionTitle) {
+      case 'Start New Project':
+        navigate('/projects/new');
+        break;
+      case 'Join Team':
+        navigate('/teams');
+        break;
+      case 'Access Labs':
+        navigate('/research');
+        break;
+      case 'View Analytics':
+        aethexToast.info({
+          title: 'Analytics',
+          description: 'Analytics dashboard coming soon!'
+        });
+        break;
+      default:
+        aethexToast.info({
+          title: actionTitle,
+          description: 'Feature coming soon!'
+        });
+    }
+  };
 
   // Mock user data
   const user = {
