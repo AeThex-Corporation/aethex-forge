@@ -407,9 +407,9 @@ export default function Dashboard() {
                           <Rocket className="h-6 w-6 text-aethex-400" />
                         </div>
                         <div>
-                          <h4 className="font-semibold">{project.name}</h4>
+                          <h4 className="font-semibold">{project.title}</h4>
                           <p className="text-sm text-muted-foreground">
-                            Due {project.dueDate} • {project.team} team members
+                            {project.status?.replace('_', ' ').toUpperCase()} • {project.technologies?.slice(0, 2).join(', ') || 'No tech specified'}
                           </p>
                         </div>
                       </div>
