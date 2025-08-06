@@ -159,32 +159,6 @@ export default function Dashboard() {
     },
   ];
 
-  const recentProjects = [
-    {
-      name: "Neural Network AI",
-      progress: 75,
-      status: "In Progress",
-      dueDate: "Dec 15",
-      team: 4,
-      priority: "High",
-    },
-    {
-      name: "Blockchain Integration",
-      progress: 60,
-      status: "Development",
-      dueDate: "Dec 20",
-      team: 3,
-      priority: "Medium",
-    },
-    {
-      name: "Cloud Infrastructure",
-      progress: 90,
-      status: "Testing",
-      dueDate: "Dec 10",
-      team: 6,
-      priority: "High",
-    },
-  ];
 
 
   const quickActions = [
