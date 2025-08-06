@@ -32,6 +32,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if Supabase is configured
+    if (!isSupabaseConfigured) {
+      console.warn('Supabase is not configured. Please set up your environment variables.');
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -39,6 +46,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (session?.user) {
         fetchUserProfile(session.user.id);
       }
+      setLoading(false);
+    }).catch((error) => {
+      console.error('Error getting session:', error);
       setLoading(false);
     });
 
@@ -48,7 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
         await fetchUserProfile(session.user.id);
       } else {
@@ -58,14 +68,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Show toast notifications for auth events
       if (event === 'SIGNED_IN') {
-        aethexToast.success({ 
-          title: 'Welcome back!', 
-          description: 'Successfully signed in to AeThex OS' 
+        aethexToast.success({
+          title: 'Welcome back!',
+          description: 'Successfully signed in to AeThex OS'
         });
       } else if (event === 'SIGNED_OUT') {
-        aethexToast.info({ 
-          title: 'Signed out', 
-          description: 'Come back soon!' 
+        aethexToast.info({
+          title: 'Signed out',
+          description: 'Come back soon!'
         });
       }
     });
