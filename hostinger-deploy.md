@@ -24,6 +24,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
 Then rebuild with production environment:
+
 ```bash
 npm run build:client
 ```
@@ -31,8 +32,9 @@ npm run build:client
 ## **Step 3: Upload to Hostinger**
 
 1. **Access Hostinger File Manager:**
+
    - Login to your Hostinger control panel
-   - Go to "File Manager" 
+   - Go to "File Manager"
    - Navigate to `public_html` folder
 
 2. **Upload Files:**
@@ -52,6 +54,7 @@ npm run build:client
 ## **Step 4: Configure DNS for core.aethex.biz**
 
 ### Option A: Use Hostinger DNS (Recommended)
+
 1. In Hostinger control panel, go to DNS Zone Editor
 2. Update/Add these records:
    ```
@@ -62,6 +65,7 @@ npm run build:client
    ```
 
 ### Option B: Update at Domain Registrar
+
 1. Go to your domain registrar (where you bought aethex.biz)
 2. Update DNS to point `core.aethex.biz` to your Hostinger hosting
 
@@ -115,10 +119,13 @@ RewriteRule . /index.html [L]
 Your current Netlify functions won't work on Hostinger. You have two options:
 
 ### Option A: Remove Server Functions (Simplest)
+
 Since you're using Supabase, you may not need the Express server. Simply remove server-side code.
 
 ### Option B: Use Hostinger Node.js Hosting
+
 If you need server functions:
+
 1. Upgrade to Hostinger plan that supports Node.js
 2. Deploy your Express server separately
 3. Update API endpoints in your React app
@@ -128,7 +135,7 @@ If you need server functions:
 ✅ **Direct DNS control** - No more DNS propagation issues  
 ✅ **Better domain management** - Full control over core.aethex.biz  
 ✅ **Lower cost** - Often cheaper than Netlify Pro  
-✅ **Traditional hosting** - More familiar cPanel interface  
+✅ **Traditional hosting** - More familiar cPanel interface
 
 ## **Potential Issues & Solutions:**
 
@@ -136,7 +143,7 @@ If you need server functions:
 **Solution:** Use Supabase Edge Functions or upgrade to Node.js hosting
 
 **Issue:** Environment variables not loading  
-**Solution:** Ensure VITE_ prefix and rebuild application
+**Solution:** Ensure VITE\_ prefix and rebuild application
 
 **Issue:** 404 errors on routes  
 **Solution:** Ensure .htaccess file is uploaded and configured
@@ -144,6 +151,7 @@ If you need server functions:
 ## **Rollback Plan:**
 
 If issues occur, you can quickly revert:
+
 1. Update DNS back to Netlify
 2. Your Netlify deployment remains active
 3. Switch takes 5-15 minutes
