@@ -194,13 +194,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const updateProfile = async (updates: Partial<UserProfile>) => {
+  const updateProfile = async (updates: Partial<AethexUserProfile>) => {
     if (!user) throw new Error('No user logged in');
 
     if (!isSupabaseConfigured) {
       // Use demo storage
-      const updatedProfile = DemoStorageService.updateUserProfile(updates);
-      setProfile(updatedProfile);
+      const updatedProfile = DemoStorageService.updateUserProfile(updates as any);
+      setProfile(updatedProfile as AethexUserProfile);
       aethexToast.success({
         title: 'Profile updated',
         description: 'Your profile has been updated successfully'
@@ -209,16 +209,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .update(updates)
-        .eq('id', user.id)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      setProfile(data);
+      const updatedProfile = await aethexUserService.updateProfile(user.id, updates);
+      setProfile(updatedProfile);
       aethexToast.success({
         title: 'Profile updated',
         description: 'Your profile has been updated successfully'
