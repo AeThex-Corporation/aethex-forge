@@ -427,13 +427,13 @@ export default function Dashboard() {
                         </div>
                         <Badge
                           variant={
-                            project.priority === "High"
+                            getPriorityFromTech(project.technologies || []) === "High"
                               ? "destructive"
                               : "secondary"
                           }
                           className="animate-pulse"
                         >
-                          {project.priority}
+                          {getPriorityFromTech(project.technologies || [])}
                         </Badge>
                         <Button
                           variant="ghost"
