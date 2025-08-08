@@ -116,9 +116,20 @@ export default function Onboarding() {
               <h1 className="text-2xl font-bold text-gradient animate-pulse-glow">
                 Join AeThex
               </h1>
-              <span className="text-sm text-muted-foreground animate-fade-in">
-                Step {currentStep + 1} of {steps.length}
-              </span>
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-muted-foreground animate-fade-in">
+                  Step {currentStep + 1} of {steps.length}
+                </span>
+                <div className="text-sm text-muted-foreground">
+                  Already have an account?{" "}
+                  <a
+                    href="/login"
+                    className="text-aethex-400 hover:text-aethex-300 underline transition-colors"
+                  >
+                    Sign In
+                  </a>
+                </div>
+              </div>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
               <div
