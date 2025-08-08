@@ -161,14 +161,36 @@ export default function UserTypeSelection({
         })}
       </div>
 
-      <div
-        className="flex justify-center pt-6 animate-fade-in"
-        style={{ animationDelay: "0.5s" }}
-      >
-        <p className="text-sm text-muted-foreground text-center max-w-lg">
-          Don't worry - you can always change your preferences later or access
-          multiple areas of our platform.
-        </p>
+      <div className="space-y-4 pt-6">
+        <div
+          className="flex justify-center animate-fade-in"
+          style={{ animationDelay: "0.5s" }}
+        >
+          <p className="text-sm text-muted-foreground text-center max-w-lg">
+            Don't worry - you can always change your preferences later or access
+            multiple areas of our platform.
+          </p>
+        </div>
+
+        <div
+          className="flex justify-center animate-fade-in"
+          style={{ animationDelay: "0.6s" }}
+        >
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground mb-2">
+              Already have an AeThex account?
+            </p>
+            <Button
+              asChild
+              variant="outline"
+              className="bg-transparent border-aethex-400/30 text-aethex-400 hover:bg-aethex-400/10 hover:border-aethex-400 hover-lift transition-all duration-300"
+            >
+              <a href="/login">
+                Sign In to Your Account
+              </a>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
