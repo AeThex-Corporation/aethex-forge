@@ -186,9 +186,9 @@ export default function UserTypeSelection({
               variant="outline"
               className="bg-transparent border-aethex-400/30 text-aethex-400 hover:bg-aethex-400/10 hover:border-aethex-400 hover-lift transition-all duration-300"
             >
-              <a href="/login">
+              <Link to="/login">
                 Sign In to Your Account
-              </a>
+              </Link>
             </Button>
           </div>
         </div>
