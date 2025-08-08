@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
@@ -26,16 +32,17 @@ const quickStartCards = [
     icon: Rocket,
     href: "/docs/getting-started",
     duration: "5 min read",
-    difficulty: "Beginner"
+    difficulty: "Beginner",
   },
   {
     title: "First Tutorial",
-    description: "Follow your first interactive tutorial to build something amazing",
+    description:
+      "Follow your first interactive tutorial to build something amazing",
     icon: Play,
     href: "/docs/tutorials",
     duration: "15 min",
     difficulty: "Beginner",
-    isNew: true
+    isNew: true,
   },
   {
     title: "API Integration",
@@ -43,7 +50,7 @@ const quickStartCards = [
     icon: Code,
     href: "/docs/api",
     duration: "10 min read",
-    difficulty: "Intermediate"
+    difficulty: "Intermediate",
   },
   {
     title: "CLI Tools",
@@ -51,8 +58,8 @@ const quickStartCards = [
     icon: Terminal,
     href: "/docs/cli",
     duration: "8 min read",
-    difficulty: "Intermediate"
-  }
+    difficulty: "Intermediate",
+  },
 ];
 
 const resourceSections = [
@@ -61,8 +68,13 @@ const resourceSections = [
     description: "Step-by-step tutorials and comprehensive guides",
     icon: Video,
     href: "/docs/tutorials",
-    items: ["Platform Quick Start", "Game Development", "AI Integration", "Performance Optimization"],
-    badge: "6 tutorials"
+    items: [
+      "Platform Quick Start",
+      "Game Development",
+      "AI Integration",
+      "Performance Optimization",
+    ],
+    badge: "6 tutorials",
   },
   {
     title: "API Reference",
@@ -70,16 +82,21 @@ const resourceSections = [
     icon: Code,
     href: "/docs/api",
     items: ["Authentication", "Project Management", "User APIs", "Webhooks"],
-    badge: "40+ endpoints"
+    badge: "40+ endpoints",
   },
   {
     title: "Examples",
     description: "Ready-to-use code examples and templates",
     icon: FileText,
     href: "/docs/examples",
-    items: ["React Components", "Game Templates", "API Integration", "Deployment Scripts"],
-    badge: "25+ examples"
-  }
+    items: [
+      "React Components",
+      "Game Templates",
+      "API Integration",
+      "Deployment Scripts",
+    ],
+    badge: "25+ examples",
+  },
 ];
 
 const featuredUpdates = [
@@ -88,20 +105,20 @@ const featuredUpdates = [
     description: "Learn how to integrate cutting-edge AI features",
     date: "2 days ago",
     type: "Tutorial",
-    isNew: true
+    isNew: true,
   },
   {
     title: "API v2.1 Documentation",
     description: "Updated API docs with new endpoints and features",
     date: "1 week ago",
-    type: "API"
+    type: "API",
   },
   {
     title: "Performance Best Practices",
     description: "New guide on optimizing application performance",
     date: "2 weeks ago",
-    type: "Guide"
-  }
+    type: "Guide",
+  },
 ];
 
 export default function DocsOverview() {
@@ -113,18 +130,28 @@ export default function DocsOverview() {
           Welcome to AeThex Documentation
         </h2>
         <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-          Everything you need to build, deploy, and scale amazing projects with AeThex. 
-          Get started with our guides, explore our APIs, and learn from comprehensive tutorials.
+          Everything you need to build, deploy, and scale amazing projects with
+          AeThex. Get started with our guides, explore our APIs, and learn from
+          comprehensive tutorials.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-700">
+          <Button
+            asChild
+            size="lg"
+            className="bg-purple-600 hover:bg-purple-700"
+          >
             <Link to="/docs/getting-started">
               <Rocket className="h-5 w-5 mr-2" />
               Get Started
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="border-slate-600 text-white hover:bg-slate-800">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="border-slate-600 text-white hover:bg-slate-800"
+          >
             <Link to="/docs/tutorials">
               <Play className="h-5 w-5 mr-2" />
               Watch Tutorials
@@ -140,7 +167,10 @@ export default function DocsOverview() {
           {quickStartCards.map((card, index) => {
             const Icon = card.icon;
             return (
-              <Card key={index} className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 cursor-pointer group">
+              <Card
+                key={index}
+                className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 cursor-pointer group"
+              >
                 <Link to={card.href}>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between mb-2">
@@ -175,19 +205,22 @@ export default function DocsOverview() {
 
       {/* Resource Sections */}
       <div className="mb-12">
-        <h3 className="text-2xl font-bold text-white mb-6">Documentation Sections</h3>
+        <h3 className="text-2xl font-bold text-white mb-6">
+          Documentation Sections
+        </h3>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {resourceSections.map((section, index) => {
             const Icon = section.icon;
             return (
-              <Card key={index} className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group">
+              <Card
+                key={index}
+                className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group"
+              >
                 <Link to={section.href}>
                   <CardHeader>
                     <div className="flex items-center justify-between mb-2">
                       <Icon className="h-8 w-8 text-purple-400" />
-                      <Badge variant="outline">
-                        {section.badge}
-                      </Badge>
+                      <Badge variant="outline">{section.badge}</Badge>
                     </div>
                     <CardTitle className="text-white group-hover:text-purple-400 transition-colors">
                       {section.title}
@@ -199,7 +232,10 @@ export default function DocsOverview() {
                   <CardContent>
                     <ul className="space-y-2 mb-4">
                       {section.items.map((item, itemIndex) => (
-                        <li key={itemIndex} className="text-sm text-gray-400 flex items-center">
+                        <li
+                          key={itemIndex}
+                          className="text-sm text-gray-400 flex items-center"
+                        >
                           <ArrowRight className="h-3 w-3 mr-2 text-purple-400" />
                           {item}
                         </li>
@@ -221,13 +257,20 @@ export default function DocsOverview() {
       <div className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-2xl font-bold text-white">Recent Updates</h3>
-          <Button variant="outline" size="sm" className="border-slate-600 text-white hover:bg-slate-800">
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-slate-600 text-white hover:bg-slate-800"
+          >
             View All Updates
           </Button>
         </div>
         <div className="space-y-4">
           {featuredUpdates.map((update, index) => (
-            <Card key={index} className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer">
+            <Card
+              key={index}
+              className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer"
+            >
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -242,7 +285,9 @@ export default function DocsOverview() {
                         {update.type}
                       </Badge>
                     </div>
-                    <p className="text-gray-400 text-sm">{update.description}</p>
+                    <p className="text-gray-400 text-sm">
+                      {update.description}
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-gray-500">{update.date}</p>
@@ -267,7 +312,10 @@ export default function DocsOverview() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="border-slate-600 text-white hover:bg-slate-800">
+            <Button
+              variant="outline"
+              className="border-slate-600 text-white hover:bg-slate-800"
+            >
               <ExternalLink className="h-4 w-4 mr-2" />
               View on GitHub
             </Button>
@@ -285,7 +333,10 @@ export default function DocsOverview() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="border-slate-600 text-white hover:bg-slate-800">
+            <Button
+              variant="outline"
+              className="border-slate-600 text-white hover:bg-slate-800"
+            >
               <ExternalLink className="h-4 w-4 mr-2" />
               Join Community
             </Button>

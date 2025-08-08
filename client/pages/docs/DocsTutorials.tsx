@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +33,7 @@ interface DocsTutorial {
   title: string;
   description: string;
   category: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: "beginner" | "intermediate" | "advanced";
   duration: string;
   author: string;
   rating: number;
@@ -35,7 +41,7 @@ interface DocsTutorial {
   likes: number;
   tags: string[];
   isNew?: boolean;
-  type: 'video' | 'article' | 'interactive';
+  type: "video" | "article" | "interactive";
   path: string;
 }
 
@@ -43,7 +49,8 @@ const docsTutorials: DocsTutorial[] = [
   {
     id: "1",
     title: "AeThex Platform Quick Start",
-    description: "Get up and running with AeThex in under 10 minutes. Learn the basics of project creation, navigation, and core features.",
+    description:
+      "Get up and running with AeThex in under 10 minutes. Learn the basics of project creation, navigation, and core features.",
     category: "Getting Started",
     difficulty: "beginner",
     duration: "8 min",
@@ -54,12 +61,13 @@ const docsTutorials: DocsTutorial[] = [
     tags: ["platform", "basics", "quickstart"],
     isNew: true,
     type: "video",
-    path: "/docs/tutorials/quickstart"
+    path: "/docs/tutorials/quickstart",
   },
   {
     id: "2",
     title: "Project Setup and Configuration",
-    description: "Deep dive into project configuration, environment setup, and best practices for organizing your AeThex projects.",
+    description:
+      "Deep dive into project configuration, environment setup, and best practices for organizing your AeThex projects.",
     category: "Setup",
     difficulty: "beginner",
     duration: "15 min",
@@ -69,12 +77,13 @@ const docsTutorials: DocsTutorial[] = [
     likes: 287,
     tags: ["setup", "configuration", "projects"],
     type: "article",
-    path: "/docs/tutorials/project-setup"
+    path: "/docs/tutorials/project-setup",
   },
   {
     id: "3",
     title: "Working with the AeThex API",
-    description: "Comprehensive guide to integrating with AeThex APIs, authentication, rate limiting, and error handling.",
+    description:
+      "Comprehensive guide to integrating with AeThex APIs, authentication, rate limiting, and error handling.",
     category: "API Integration",
     difficulty: "intermediate",
     duration: "25 min",
@@ -84,12 +93,13 @@ const docsTutorials: DocsTutorial[] = [
     likes: 198,
     tags: ["api", "integration", "authentication"],
     type: "interactive",
-    path: "/docs/tutorials/api-integration"
+    path: "/docs/tutorials/api-integration",
   },
   {
     id: "4",
     title: "Building Games with AeThex Tools",
-    description: "Step-by-step tutorial for creating your first game using AeThex development tools and frameworks.",
+    description:
+      "Step-by-step tutorial for creating your first game using AeThex development tools and frameworks.",
     category: "Game Development",
     difficulty: "intermediate",
     duration: "45 min",
@@ -99,12 +109,13 @@ const docsTutorials: DocsTutorial[] = [
     likes: 523,
     tags: ["games", "development", "tools"],
     type: "video",
-    path: "/docs/tutorials/game-development"
+    path: "/docs/tutorials/game-development",
   },
   {
     id: "5",
     title: "Advanced Database Patterns",
-    description: "Learn advanced database design patterns, optimization techniques, and performance tuning for AeThex applications.",
+    description:
+      "Learn advanced database design patterns, optimization techniques, and performance tuning for AeThex applications.",
     category: "Database",
     difficulty: "advanced",
     duration: "35 min",
@@ -114,12 +125,13 @@ const docsTutorials: DocsTutorial[] = [
     likes: 165,
     tags: ["database", "optimization", "patterns"],
     type: "article",
-    path: "/docs/tutorials/database-patterns"
+    path: "/docs/tutorials/database-patterns",
   },
   {
     id: "6",
     title: "AI Integration Workshop",
-    description: "Hands-on workshop for integrating AI and machine learning capabilities into your AeThex projects.",
+    description:
+      "Hands-on workshop for integrating AI and machine learning capabilities into your AeThex projects.",
     category: "AI/ML",
     difficulty: "advanced",
     duration: "60 min",
@@ -130,8 +142,8 @@ const docsTutorials: DocsTutorial[] = [
     tags: ["ai", "machine-learning", "integration"],
     isNew: true,
     type: "interactive",
-    path: "/docs/tutorials/ai-integration"
-  }
+    path: "/docs/tutorials/ai-integration",
+  },
 ];
 
 const categories = [
@@ -152,40 +164,60 @@ export default function DocsTutorials() {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'beginner': return 'bg-green-500';
-      case 'intermediate': return 'bg-yellow-500';
-      case 'advanced': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case "beginner":
+        return "bg-green-500";
+      case "intermediate":
+        return "bg-yellow-500";
+      case "advanced":
+        return "bg-red-500";
+      default:
+        return "bg-gray-500";
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'video': return Play;
-      case 'article': return BookOpen;
-      case 'interactive': return Code;
-      default: return BookOpen;
+      case "video":
+        return Play;
+      case "article":
+        return BookOpen;
+      case "interactive":
+        return Code;
+      default:
+        return BookOpen;
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'video': return 'text-red-400';
-      case 'article': return 'text-blue-400';
-      case 'interactive': return 'text-green-400';
-      default: return 'text-gray-400';
+      case "video":
+        return "text-red-400";
+      case "article":
+        return "text-blue-400";
+      case "interactive":
+        return "text-green-400";
+      default:
+        return "text-gray-400";
     }
   };
 
-  const filteredTutorials = docsTutorials.filter(tutorial => {
-    const matchesSearch = tutorial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tutorial.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tutorial.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = selectedCategory === "all" || 
-                           tutorial.category.toLowerCase().replace(/[\/\s]/g, '-') === selectedCategory;
-    const matchesDifficulty = selectedDifficulty === "all" || tutorial.difficulty === selectedDifficulty;
-    const matchesType = selectedType === "all" || tutorial.type === selectedType;
-    
+  const filteredTutorials = docsTutorials.filter((tutorial) => {
+    const matchesSearch =
+      tutorial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tutorial.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tutorial.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+    const matchesCategory =
+      selectedCategory === "all" ||
+      tutorial.category.toLowerCase().replace(/[\/\s]/g, "-") ===
+        selectedCategory;
+    const matchesDifficulty =
+      selectedDifficulty === "all" ||
+      tutorial.difficulty === selectedDifficulty;
+    const matchesType =
+      selectedType === "all" || tutorial.type === selectedType;
+
     return matchesSearch && matchesCategory && matchesDifficulty && matchesType;
   });
 
@@ -197,9 +229,10 @@ export default function DocsTutorials() {
           Documentation Tutorials
         </h2>
         <p className="text-gray-300 mb-6">
-          Step-by-step guides and interactive tutorials to help you master AeThex
+          Step-by-step guides and interactive tutorials to help you master
+          AeThex
         </p>
-        
+
         {/* Filters */}
         <div className="flex flex-col lg:flex-row gap-4 mb-6">
           <div className="flex-1">
@@ -257,8 +290,8 @@ export default function DocsTutorials() {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-all ${
                       selectedCategory === category.id
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-slate-900/50 text-gray-300 hover:bg-slate-700/50'
+                        ? "bg-purple-600 text-white"
+                        : "bg-slate-900/50 text-gray-300 hover:bg-slate-700/50"
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -282,16 +315,23 @@ export default function DocsTutorials() {
             {filteredTutorials.map((tutorial) => {
               const TypeIcon = getTypeIcon(tutorial.type);
               return (
-                <Card key={tutorial.id} className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group">
+                <Card
+                  key={tutorial.id}
+                  className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group"
+                >
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-3">
-                          <TypeIcon className={`h-5 w-5 ${getTypeColor(tutorial.type)}`} />
+                          <TypeIcon
+                            className={`h-5 w-5 ${getTypeColor(tutorial.type)}`}
+                          />
                           <Badge variant="outline" className="text-xs">
                             {tutorial.category}
                           </Badge>
-                          <Badge className={`${getDifficultyColor(tutorial.difficulty)} text-white text-xs`}>
+                          <Badge
+                            className={`${getDifficultyColor(tutorial.difficulty)} text-white text-xs`}
+                          >
                             {tutorial.difficulty}
                           </Badge>
                           {tutorial.isNew && (
@@ -300,15 +340,15 @@ export default function DocsTutorials() {
                             </Badge>
                           )}
                         </div>
-                        
+
                         <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
                           {tutorial.title}
                         </h3>
-                        
+
                         <p className="text-gray-400 mb-4">
                           {tutorial.description}
                         </p>
-                        
+
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-4 text-sm text-gray-500">
                             <div className="flex items-center">
@@ -332,7 +372,7 @@ export default function DocsTutorials() {
                               {tutorial.likes}
                             </div>
                           </div>
-                          
+
                           <Button className="bg-purple-600 hover:bg-purple-700">
                             Start Tutorial
                             <ChevronRight className="h-4 w-4 ml-2" />
@@ -354,7 +394,8 @@ export default function DocsTutorials() {
                   No tutorials found
                 </h3>
                 <p className="text-gray-400">
-                  Try adjusting your search terms or filters to find what you're looking for.
+                  Try adjusting your search terms or filters to find what you're
+                  looking for.
                 </p>
               </CardContent>
             </Card>

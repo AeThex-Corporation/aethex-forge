@@ -30,7 +30,7 @@ const navigation = [
   },
   {
     name: "Tutorials",
-    href: "/docs/tutorials", 
+    href: "/docs/tutorials",
     icon: Video,
     badge: "New",
   },
@@ -65,24 +65,27 @@ export default function DocsLayout() {
 
   const getBreadcrumb = () => {
     const path = location.pathname;
-    const segments = path.split('/').filter(Boolean);
-    
+    const segments = path.split("/").filter(Boolean);
+
     if (segments.length <= 1) return [];
-    
+
     const breadcrumbs = [];
-    let currentPath = '';
-    
+    let currentPath = "";
+
     segments.forEach((segment, index) => {
       currentPath += `/${segment}`;
-      if (index > 0) { // Skip the first 'docs' segment
+      if (index > 0) {
+        // Skip the first 'docs' segment
         breadcrumbs.push({
-          name: segment.charAt(0).toUpperCase() + segment.slice(1).replace('-', ' '),
+          name:
+            segment.charAt(0).toUpperCase() +
+            segment.slice(1).replace("-", " "),
           href: currentPath,
-          isLast: index === segments.length - 1
+          isLast: index === segments.length - 1,
         });
       }
     });
-    
+
     return breadcrumbs;
   };
 
@@ -107,7 +110,11 @@ export default function DocsLayout() {
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="lg:hidden p-2 text-white bg-slate-800 rounded-md"
               >
-                {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {sidebarOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </button>
             </div>
 
@@ -123,7 +130,7 @@ export default function DocsLayout() {
                     {crumb.isLast ? (
                       <span className="text-white">{crumb.name}</span>
                     ) : (
-                      <Link 
+                      <Link
                         to={crumb.href}
                         className="hover:text-white transition-colors"
                       >
@@ -149,21 +156,23 @@ export default function DocsLayout() {
 
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar */}
-            <div className={`w-full lg:w-64 ${sidebarOpen ? 'block' : 'hidden lg:block'}`}>
+            <div
+              className={`w-full lg:w-64 ${sidebarOpen ? "block" : "hidden lg:block"}`}
+            >
               <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sticky top-4">
                 <nav className="space-y-2">
                   {navigation.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(item.href, item.exact);
-                    
+
                     return (
                       <Link
                         key={item.name}
                         to={item.href}
                         className={`flex items-center justify-between px-3 py-2 rounded-md text-sm transition-all ${
                           active
-                            ? 'bg-purple-600 text-white'
-                            : 'text-gray-300 hover:bg-slate-700/50 hover:text-white'
+                            ? "bg-purple-600 text-white"
+                            : "text-gray-300 hover:bg-slate-700/50 hover:text-white"
                         }`}
                         onClick={() => setSidebarOpen(false)}
                       >
