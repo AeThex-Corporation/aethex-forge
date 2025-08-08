@@ -55,15 +55,16 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    if (!authLoading && !user) {
+    // Force redirect immediately if no user
+    if (!user) {
       setIsLoading(false);
-      navigate("/login");
+      navigate("/login", { replace: true });
       return;
     }
 
     if (user && profile) {
       loadDashboardData();
-    } else if (!authLoading) {
+    } else if (user && !profile && !authLoading) {
       setIsLoading(false);
     }
   }, [user, profile, authLoading, navigate]);
