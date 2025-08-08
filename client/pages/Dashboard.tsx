@@ -58,7 +58,14 @@ export default function Dashboard() {
     // Force redirect immediately if no user
     if (!user) {
       setIsLoading(false);
+      // Use both React Router and window location as fallback
       navigate("/login", { replace: true });
+      // Fallback in case React Router fails
+      setTimeout(() => {
+        if (!user) {
+          window.location.href = "/login";
+        }
+      }, 500);
       return;
     }
 
