@@ -54,7 +54,14 @@ const App = () => (
               <Route path="/labs" element={<ResearchLabs />} />
 
               {/* Resource routes */}
-              <Route path="/docs" element={<Documentation />} />
+              <Route path="/docs" element={<DocsLayout />}>
+                <Route index element={<DocsOverview />} />
+                <Route path="tutorials" element={<DocsTutorials />} />
+                <Route path="getting-started" element={<Documentation />} />
+                <Route path="api" element={<Documentation />} />
+                <Route path="cli" element={<Documentation />} />
+                <Route path="examples" element={<Documentation />} />
+              </Route>
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/community" element={<Community />} />
