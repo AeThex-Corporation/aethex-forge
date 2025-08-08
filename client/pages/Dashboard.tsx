@@ -132,19 +132,24 @@ export default function Dashboard() {
     }
   };
 
-  // Return early if auth is still loading
-  if (authLoading) {
+  // Don't show loading screen if no user - just redirect
+  if (!user) {
+    return null;
+  }
+
+  // Show loading only if we have a user but are still loading data
+  if (authLoading || isLoading) {
     return (
       <LoadingScreen
         message="Loading your dashboard..."
         showProgress={true}
-        duration={2000}
+        duration={1500}
       />
     );
   }
 
-  // If auth is complete but no user, the useEffect will handle redirect
-  if (!user || !profile) {
+  // Don't render if no profile
+  if (!profile) {
     return null;
   }
 
