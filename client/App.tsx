@@ -52,6 +52,7 @@ const App = () => (
 
               {/* Resource routes */}
               <Route path="/docs" element={<Documentation />} />
+              <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/community" element={<Community />} />
               <Route path="/support" element={<Support />} />
