@@ -123,12 +123,12 @@ export default function Onboarding() {
                 </span>
                 <div className="text-sm text-muted-foreground">
                   Already have an account?{" "}
-                  <a
-                    href="/login"
+                  <Link
+                    to="/login"
                     className="text-aethex-400 hover:text-aethex-300 underline transition-colors"
                   >
                     Sign In
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
