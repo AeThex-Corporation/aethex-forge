@@ -17,6 +17,7 @@ import DevelopmentConsulting from "./pages/DevelopmentConsulting";
 import MentorshipPrograms from "./pages/MentorshipPrograms";
 import ResearchLabs from "./pages/ResearchLabs";
 import Documentation from "./pages/Documentation";
+import Tutorials from "./pages/Tutorials";
 import Blog from "./pages/Blog";
 import Community from "./pages/Community";
 import Support from "./pages/Support";
