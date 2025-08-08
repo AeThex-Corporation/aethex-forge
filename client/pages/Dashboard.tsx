@@ -131,8 +131,8 @@ export default function Dashboard() {
     }
   };
 
-  // Return early if not authenticated
-  if (authLoading || !user || !profile) {
+  // Return early if auth is still loading
+  if (authLoading) {
     return (
       <LoadingScreen
         message="Loading your dashboard..."
@@ -140,6 +140,11 @@ export default function Dashboard() {
         duration={2000}
       />
     );
+  }
+
+  // If auth is complete but no user, the useEffect will handle redirect
+  if (!user || !profile) {
+    return null;
   }
 
   const statsDisplay = [
