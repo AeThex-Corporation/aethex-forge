@@ -56,12 +56,15 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!authLoading && !user) {
+      setIsLoading(false);
       navigate("/login");
       return;
     }
 
     if (user && profile) {
       loadDashboardData();
+    } else if (!authLoading) {
+      setIsLoading(false);
     }
   }, [user, profile, authLoading, navigate]);
 
