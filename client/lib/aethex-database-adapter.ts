@@ -346,7 +346,7 @@ export const aethexAchievementService = {
 
     // Update profile
     await supabase
-      .from("profiles")
+      .from("user_profiles")
       .update({
         total_xp: newTotalXP,
         level: newLevel,
