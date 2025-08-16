@@ -112,7 +112,7 @@ export const aethexUserService = {
     profileData: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
     const { data, error } = await supabase
-      .from("profiles")
+      .from("user_profiles")
       .insert({
         id: userId,
         username: profileData.username || `user_${Date.now()}`,
