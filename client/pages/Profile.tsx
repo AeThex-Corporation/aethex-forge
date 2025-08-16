@@ -170,11 +170,11 @@ export default function Profile() {
       setProfileData({
         displayName: profile.full_name || '',
         bio: profile.bio || '',
-        company: profile.company || '',
+        company: (profile as any).company || '',
         location: profile.location || '',
-        website: profile.website || '',
-        githubUsername: profile.github_username || '',
-        twitterUsername: profile.twitter_username || '',
+        website: (profile as any).website || '',
+        githubUsername: (profile as any).github_username || '',
+        twitterUsername: (profile as any).twitter_username || '',
         linkedinUrl: profile.linkedin_url || '',
       });
     }
