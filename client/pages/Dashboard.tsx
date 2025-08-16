@@ -461,7 +461,20 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {projects.slice(0, 3).map((project: any, index) => (
+                  {projects.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Rocket className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No projects yet. Start your first project!</p>
+                      <Button
+                        variant="outline"
+                        className="mt-4"
+                        onClick={() => handleQuickAction("Start New Project")}
+                      >
+                        Create Project
+                      </Button>
+                    </div>
+                  ) : (
+                    projects.slice(0, 3).map((project: any, index) => (
                     <div
                       key={index}
                       className="flex items-center justify-between p-4 rounded-lg border border-border/30 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-right"
@@ -514,7 +527,8 @@ export default function Dashboard() {
                         </Button>
                       </div>
                     </div>
-                  ))}
+                    ))
+                  )}
                 </CardContent>
               </Card>
 
@@ -528,7 +542,13 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {achievements.map((achievement: any, index) => {
+                    {achievements.length === 0 ? (
+                      <div className="col-span-full text-center py-8 text-muted-foreground">
+                        <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No achievements unlocked yet. Complete projects to earn achievements!</p>
+                      </div>
+                    ) : (
+                      achievements.map((achievement: any, index) => {
                       const Icon = getAchievementIcon(achievement.icon || 'star');
                       return (
                         <div
@@ -568,7 +588,8 @@ export default function Dashboard() {
                           </div>
                         </div>
                       );
-                    })}
+                      })
+                    )}
                   </div>
                 </CardContent>
               </Card>
