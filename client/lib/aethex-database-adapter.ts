@@ -93,7 +93,7 @@ export const aethexUserService = {
     updates: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
     const { data, error } = await supabase
-      .from("profiles")
+      .from("user_profiles")
       .update(updates)
       .eq("id", userId)
       .select()
