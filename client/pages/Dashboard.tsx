@@ -257,6 +257,42 @@ export default function Dashboard() {
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-8">
         <div className="container mx-auto px-4 max-w-7xl">
+          {/* Profile Setup Banner */}
+          {showProfileSetup && (
+            <div className="mb-6">
+              <Card className="bg-orange-500/10 border-orange-500/30">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <User className="h-5 w-5 text-orange-400" />
+                      <div>
+                        <h3 className="text-white font-semibold">Complete Your Profile</h3>
+                        <p className="text-orange-200 text-sm">Set up your profile to unlock all features</p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button
+                        size="sm"
+                        onClick={() => navigate("/profile")}
+                        className="bg-orange-600 hover:bg-orange-700"
+                      >
+                        Setup Profile
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => navigate("/onboarding")}
+                        className="border-orange-500 text-orange-400 hover:bg-orange-500/10"
+                      >
+                        Full Onboarding
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
           {/* Header */}
           <div className="mb-8 animate-slide-down">
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
