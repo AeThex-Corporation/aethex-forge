@@ -55,23 +55,21 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
+    console.log("Dashboard useEffect:", { user: !!user, profile: !!profile, authLoading });
+
     // Force redirect immediately if no user
     if (!user) {
+      console.log("No user, redirecting to login");
       setIsLoading(false);
-      // Use both React Router and window location as fallback
       navigate("/login", { replace: true });
-      // Fallback in case React Router fails
-      setTimeout(() => {
-        if (!user) {
-          window.location.href = "/login";
-        }
-      }, 500);
       return;
     }
 
     if (user && profile) {
+      console.log("User and profile exist, loading dashboard data");
       loadDashboardData();
     } else if (user && !profile && !authLoading) {
+      console.log("User exists but no profile, clearing loading");
       setIsLoading(false);
     }
   }, [user, profile, authLoading, navigate]);
