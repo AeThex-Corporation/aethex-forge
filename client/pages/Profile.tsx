@@ -199,10 +199,9 @@ export default function Profile() {
         description: "Your profile has been successfully updated.",
       });
     } catch (error) {
-      aethexToast({
+      toastError({
         title: "Update Failed",
         description: "Failed to update profile. Please try again.",
-        type: "error",
       });
     } finally {
       setIsSaving(false);
