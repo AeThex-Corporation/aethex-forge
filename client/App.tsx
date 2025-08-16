@@ -25,6 +25,7 @@ import Blog from "./pages/Blog";
 import Community from "./pages/Community";
 import Support from "./pages/Support";
 import Status from "./pages/Status";
+import Changelog from "./pages/Changelog";
 import Profile from "./pages/Profile";
 import Placeholder from "./pages/Placeholder";
 import NotFound from "./pages/NotFound";
