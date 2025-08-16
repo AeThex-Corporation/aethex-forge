@@ -517,8 +517,8 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {achievements.map((achievement, index) => {
-                      const Icon = achievement.icon;
+                    {achievements.map((achievement: any, index) => {
+                      const Icon = getAchievementIcon(achievement.icon || 'star');
                       return (
                         <div
                           key={index}
