@@ -267,7 +267,7 @@ export const aethexAchievementService = {
     const { data, error } = await supabase
       .from("achievements")
       .select("*")
-      .order("points_reward", { ascending: false });
+      .order("xp_reward", { ascending: false });
 
     if (error) {
       console.error("Error fetching achievements:", error);
