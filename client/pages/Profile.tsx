@@ -190,18 +190,13 @@ export default function Profile() {
       await updateProfile({
         full_name: profileData.displayName,
         bio: profileData.bio,
-        company: profileData.company,
         location: profileData.location,
-        website: profileData.website,
-        github_username: profileData.githubUsername,
-        twitter_username: profileData.twitterUsername,
         linkedin_url: profileData.linkedinUrl,
-      });
+      } as any);
 
-      aethexToast({
+      toastSuccess({
         title: "Profile Updated",
         description: "Your profile has been successfully updated.",
-        type: "success",
       });
     } catch (error) {
       aethexToast({
