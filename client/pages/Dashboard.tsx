@@ -311,7 +311,7 @@ export default function Dashboard() {
                         variant="outline"
                         className="mt-2 border-aethex-400/50 text-aethex-400"
                       >
-                        Level {user.level}
+                        Level {profile?.level || 1}
                       </Badge>
                     </div>
 
@@ -320,14 +320,14 @@ export default function Dashboard() {
                       <div className="flex justify-between text-sm">
                         <span>XP Progress</span>
                         <span>
-                          {user.xp} / {user.nextLevelXp}
+                          {profile?.total_xp || 0} / {((profile?.level || 1) * 1000)}
                         </span>
                       </div>
                       <div className="w-full bg-muted rounded-full h-2">
                         <div
                           className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-500 glow-blue"
                           style={{
-                            width: `${(user.xp / user.nextLevelXp) * 100}%`,
+                            width: `${Math.min(100, ((profile?.total_xp || 0) % 1000) / 10)}%`,
                           }}
                         />
                       </div>
