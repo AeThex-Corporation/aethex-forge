@@ -333,7 +333,7 @@ export const aethexAchievementService = {
   async updateUserXPAndLevel(userId: string, xpGained: number): Promise<void> {
     // Get current user data
     const { data: profile } = await supabase
-      .from("profiles")
+      .from("user_profiles")
       .select("total_xp, level, loyalty_points")
       .eq("id", userId)
       .single();
