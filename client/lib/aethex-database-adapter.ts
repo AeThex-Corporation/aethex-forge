@@ -75,7 +75,7 @@ export const aethexUserService = {
     if (!user) return null;
 
     const { data, error } = await supabase
-      .from("profiles")
+      .from("user_profiles")
       .select("*")
       .eq("id", user.id)
       .single();
