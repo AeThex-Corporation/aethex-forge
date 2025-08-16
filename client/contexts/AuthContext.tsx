@@ -44,18 +44,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Add timeout to ensure loading doesn't get stuck
+    const loadingTimeout = setTimeout(() => {
+      console.log("Auth loading timeout - forcing loading to false");
+      setLoading(false);
+    }, 5000);
+
     // Get initial session
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => {
+        clearTimeout(loadingTimeout);
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
           fetchUserProfile(session.user.id);
+        } else {
+          setLoading(false);
         }
-        setLoading(false);
       })
       .catch((error) => {
+        clearTimeout(loadingTimeout);
         console.error("Error getting session:", error);
         setLoading(false);
       });
