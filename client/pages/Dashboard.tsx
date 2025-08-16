@@ -78,14 +78,25 @@ export default function Dashboard() {
     try {
       setIsLoading(true);
 
-      // Load user's projects
-      const userProjects = await aethexProjectService.getUserProjects(user!.id);
-      setProjects(userProjects);
+      // Load user's projects with error handling
+      let userProjects = [];
+      try {
+        userProjects = await aethexProjectService.getUserProjects(user!.id);
+        setProjects(userProjects);
+      } catch (projectError) {
+        console.warn("Could not load projects:", projectError);
+        setProjects([]);
+      }
 
-      // Load user's achievements
-      const userAchievements =
-        await aethexAchievementService.getUserAchievements(user!.id);
-      setAchievements(userAchievements);
+      // Load user's achievements with error handling
+      let userAchievements = [];
+      try {
+        userAchievements = await aethexAchievementService.getUserAchievements(user!.id);
+        setAchievements(userAchievements);
+      } catch (achievementError) {
+        console.warn("Could not load achievements:", achievementError);
+        setAchievements([]);
+      }
 
       // Calculate stats
       const activeCount = userProjects.filter(
