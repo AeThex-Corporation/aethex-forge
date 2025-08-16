@@ -19,6 +19,9 @@ interface UserTypeSelectionProps {
   data: OnboardingData;
   updateData: (data: Partial<OnboardingData>) => void;
   nextStep: () => void;
+  prevStep?: () => void;
+  currentStep?: number;
+  totalSteps?: number;
 }
 
 const userTypes = [
