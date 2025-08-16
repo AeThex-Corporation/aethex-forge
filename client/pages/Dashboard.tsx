@@ -155,9 +155,42 @@ export default function Dashboard() {
     );
   }
 
-  // Don't render if no profile
+  // Show profile setup if no profile exists
   if (!profile) {
-    return null;
+    return (
+      <Layout>
+        <div className="min-h-screen bg-aethex-gradient py-8 flex items-center justify-center">
+          <Card className="bg-card/50 border-border/50 max-w-md w-full mx-4">
+            <CardHeader className="text-center">
+              <CardTitle className="text-white">Welcome to AeThex!</CardTitle>
+              <CardDescription className="text-gray-300">
+                Let's set up your profile to get started
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-300 text-center">
+                We need to create your profile to access the dashboard.
+              </p>
+              <div className="flex flex-col gap-3">
+                <Button
+                  onClick={() => navigate("/onboarding")}
+                  className="bg-purple-600 hover:bg-purple-700 w-full"
+                >
+                  Complete Profile Setup
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/profile")}
+                  className="border-slate-600 text-white hover:bg-slate-800 w-full"
+                >
+                  Quick Setup
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </Layout>
+    );
   }
 
   const statsDisplay = [
