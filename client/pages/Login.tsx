@@ -34,6 +34,7 @@ export default function Login() {
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
   const { signIn, signUp, signInWithOAuth, user, loading } = useAuth();
+  const { success: toastSuccess, error: toastError } = useAethexToast();
 
   // Redirect if already logged in
   useEffect(() => {
