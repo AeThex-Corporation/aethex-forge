@@ -382,6 +382,7 @@ export default function Dashboard() {
                         variant="outline"
                         className="w-full justify-start hover-lift interactive-scale"
                         style={{ animationDelay: `${index * 0.1}s` }}
+                        onClick={() => handleQuickAction(action.title)}
                       >
                         <div
                           className={`p-1 rounded bg-gradient-to-r ${action.color} mr-3`}
