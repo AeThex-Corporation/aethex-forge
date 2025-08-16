@@ -79,8 +79,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (session?.user) {
         const profile = await fetchUserProfile(session.user.id);
 
-        // Create profile for new OAuth users
-        if (!profile && session.user.app_metadata?.provider) {
+        // Create profile for any user that doesn't have one
+        if (!profile) {
           try {
             await aethexUserService.createInitialProfile(session.user.id, {
               username:
@@ -94,19 +94,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                 session.user.email?.split("@")[0],
               email: session.user.email,
               avatar_url: session.user.user_metadata?.avatar_url,
-              user_type: "community_member", // Default for OAuth users
+              user_type: "community_member", // Default type
               experience_level: "beginner",
             });
 
             // Fetch the newly created profile
             await fetchUserProfile(session.user.id);
 
-            // Award onboarding achievement for OAuth users
+            // Award onboarding achievement
             await aethexAchievementService.checkAndAwardOnboardingAchievement(
               session.user.id,
             );
           } catch (error) {
-            console.error("Error creating OAuth user profile:", error);
+            console.error("Error creating user profile:", error);
           }
         }
       } else {
