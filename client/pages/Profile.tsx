@@ -66,6 +66,7 @@ interface CrossSiteCommunication {
 export default function Profile() {
   const navigate = useNavigate();
   const { user, profile, loading: authLoading, updateProfile } = useAuth();
+  const { success: toastSuccess, error: toastError } = useAethexToast();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   
