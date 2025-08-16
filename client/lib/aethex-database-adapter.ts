@@ -54,7 +54,7 @@ export interface AethexAchievement {
   name: string;
   description: string;
   icon?: string;
-  points_reward: number;
+  xp_reward: number;
   badge_color?: string;
   created_at: string;
 }
