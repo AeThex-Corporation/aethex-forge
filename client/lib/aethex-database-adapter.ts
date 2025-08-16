@@ -331,27 +331,33 @@ export const aethexAchievementService = {
 
   async updateUserXPAndLevel(userId: string, xpGained: number): Promise<void> {
     // Get current user data
-    const { data: profile } = await supabase
+    const { data: profile, error } = await supabase
       .from("user_profiles")
       .select("total_xp, level, loyalty_points")
       .eq("id", userId)
       .single();
 
-    if (!profile) return;
+    if (error || !profile) {
+      console.log("Profile not found or missing XP fields, skipping XP update");
+      return;
+    }
 
     const newTotalXP = (profile.total_xp || 0) + xpGained;
     const newLevel = Math.floor(newTotalXP / 1000) + 1; // 1000 XP per level
     const newLoyaltyPoints = (profile.loyalty_points || 0) + xpGained;
 
-    // Update profile
-    await supabase
-      .from("user_profiles")
-      .update({
-        total_xp: newTotalXP,
-        level: newLevel,
-        loyalty_points: newLoyaltyPoints,
-      })
-      .eq("id", userId);
+    // Update profile (only update existing fields)
+    const updates: any = {};
+    if ('total_xp' in profile) updates.total_xp = newTotalXP;
+    if ('level' in profile) updates.level = newLevel;
+    if ('loyalty_points' in profile) updates.loyalty_points = newLoyaltyPoints;
+
+    if (Object.keys(updates).length > 0) {
+      await supabase
+        .from("user_profiles")
+        .update(updates)
+        .eq("id", userId);
+    }
 
     // Check for level-up achievements
     if (newLevel > (profile.level || 1)) {
