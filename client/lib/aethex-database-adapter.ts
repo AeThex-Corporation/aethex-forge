@@ -282,12 +282,11 @@ export const aethexAchievementService = {
       .from("user_achievements")
       .select(
         `
-        unlocked_at,
+        achievement_id,
         achievements (*)
       `,
       )
-      .eq("user_id", userId)
-      .order("unlocked_at", { ascending: false });
+      .eq("user_id", userId);
 
     if (error) {
       console.error("Error fetching user achievements:", error);
