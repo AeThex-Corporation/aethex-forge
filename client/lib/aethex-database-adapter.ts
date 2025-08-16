@@ -326,7 +326,7 @@ export const aethexAchievementService = {
       });
 
       // Update user's total XP and level
-      await this.updateUserXPAndLevel(userId, achievement.points_reward);
+      await this.updateUserXPAndLevel(userId, achievement.xp_reward);
     }
   },
 
