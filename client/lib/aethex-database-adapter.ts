@@ -342,9 +342,9 @@ export const aethexAchievementService = {
       return;
     }
 
-    const newTotalXP = (profile.total_xp || 0) + xpGained;
+    const newTotalXP = ((profile as any).total_xp || 0) + xpGained;
     const newLevel = Math.floor(newTotalXP / 1000) + 1; // 1000 XP per level
-    const newLoyaltyPoints = (profile.loyalty_points || 0) + xpGained;
+    const newLoyaltyPoints = ((profile as any).loyalty_points || 0) + xpGained;
 
     // Update profile (only update existing fields)
     const updates: any = {};
@@ -360,7 +360,7 @@ export const aethexAchievementService = {
     }
 
     // Check for level-up achievements
-    if (newLevel > (profile.level || 1)) {
+    if (newLevel > ((profile as any).level || 1)) {
       if (newLevel >= 5) {
         const levelUpAchievement = await supabase
           .from("achievements")
