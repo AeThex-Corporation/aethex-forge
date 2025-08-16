@@ -27,6 +27,7 @@ import {
   ArrowUpRight,
   Github,
   ExternalLink,
+  Bell,
 } from "lucide-react";
 
 interface ChangelogEntry {
