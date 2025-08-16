@@ -266,10 +266,10 @@ export default function Dashboard() {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-gradient-purple">
-                  Welcome back, {user.name}
+                  Welcome back, {profile?.full_name || user.email?.split('@')[0]}
                 </h1>
                 <p className="text-muted-foreground">
-                  {user.role} • Level {user.level} • {user.streak} day streak 🔥
+                  {profile?.role || 'Member'} • Level {profile?.level || 1} • 7 day streak 🔥
                 </p>
               </div>
               <div className="flex items-center space-x-4">
