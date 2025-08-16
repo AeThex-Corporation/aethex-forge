@@ -440,19 +440,21 @@ export const aethexNotificationService = {
   async markAsRead(notificationId: string): Promise<void> {
     await supabase
       .from("notifications")
-      .update({ is_read: true })
+      .update({ read: true })
       .eq("id", notificationId);
   },
 
   async createNotification(
     userId: string,
     type: string,
-    data: any,
+    title: string,
+    message: string,
   ): Promise<void> {
     await supabase.from("notifications").insert({
       user_id: userId,
       type,
-      data,
+      title,
+      message,
     });
   },
 };
