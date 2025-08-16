@@ -294,7 +294,7 @@ export default function Dashboard() {
                   <div className="text-center space-y-4">
                     <div className="relative">
                       <img
-                        src={user.avatar}
+                        src={profile?.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'}
                         alt="User Avatar"
                         className="w-20 h-20 rounded-full mx-auto ring-4 ring-aethex-400/20 hover:ring-aethex-400/50 transition-all duration-300"
                       />
@@ -302,10 +302,10 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gradient">
-                        {user.name}
+                        {profile?.full_name || user.email?.split('@')[0]}
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        {user.role}
+                        {profile?.role || 'Member'}
                       </p>
                       <Badge
                         variant="outline"
