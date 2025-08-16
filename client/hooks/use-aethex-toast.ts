@@ -1,5 +1,4 @@
 import { toast as baseToast } from "@/components/ui/use-toast";
-import { Zap, CheckCircle, AlertTriangle, Info, Sparkles } from "lucide-react";
 
 interface AethexToastOptions {
   title?: string;
@@ -10,12 +9,7 @@ interface AethexToastOptions {
 export const useAethexToast = () => {
   const success = (options: AethexToastOptions) => {
     return baseToast({
-      title: (
-        <div className="flex items-center space-x-2">
-          <CheckCircle className="h-4 w-4" />
-          <span>{options.title || "Success"}</span>
-        </div>
-      ),
+      title: `✅ ${options.title || "Success"}`,
       description: options.description,
       duration: options.duration || 5000,
       variant: "success" as any,
@@ -24,12 +18,7 @@ export const useAethexToast = () => {
 
   const error = (options: AethexToastOptions) => {
     return baseToast({
-      title: (
-        <div className="flex items-center space-x-2">
-          <Zap className="h-4 w-4" />
-          <span>{options.title || "Error"}</span>
-        </div>
-      ),
+      title: `⚡ ${options.title || "Error"}`,
       description: options.description,
       duration: options.duration || 5000,
       variant: "destructive",
@@ -38,12 +27,7 @@ export const useAethexToast = () => {
 
   const warning = (options: AethexToastOptions) => {
     return baseToast({
-      title: (
-        <div className="flex items-center space-x-2">
-          <AlertTriangle className="h-4 w-4" />
-          <span>{options.title || "Warning"}</span>
-        </div>
-      ),
+      title: `⚠️ ${options.title || "Warning"}`,
       description: options.description,
       duration: options.duration || 5000,
       variant: "warning" as any,
@@ -52,12 +36,7 @@ export const useAethexToast = () => {
 
   const info = (options: AethexToastOptions) => {
     return baseToast({
-      title: (
-        <div className="flex items-center space-x-2">
-          <Info className="h-4 w-4" />
-          <span>{options.title || "Information"}</span>
-        </div>
-      ),
+      title: `ℹ️ ${options.title || "Information"}`,
       description: options.description,
       duration: options.duration || 5000,
       variant: "info" as any,
@@ -66,14 +45,18 @@ export const useAethexToast = () => {
 
   const aethex = (options: AethexToastOptions) => {
     return baseToast({
-      title: (
-        <div className="flex items-center space-x-2">
-          <Sparkles className="h-4 w-4 animate-pulse" />
-          <span className="text-gradient font-semibold">{options.title || "AeThex OS"}</span>
-        </div>
-      ),
+      title: `✨ ${options.title || "AeThex OS"}`,
       description: options.description,
       duration: options.duration || 6000,
+      variant: "aethex" as any,
+    });
+  };
+
+  const system = (message: string) => {
+    return baseToast({
+      title: "🔧 AeThex OS",
+      description: message,
+      duration: 4000,
       variant: "aethex" as any,
     });
   };
@@ -84,6 +67,7 @@ export const useAethexToast = () => {
     warning,
     info,
     aethex,
-    toast: baseToast, // Fallback to original toast
+    system,
+    toast: baseToast,
   };
 };
