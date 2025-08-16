@@ -83,12 +83,24 @@ export default function Login() {
     }
   };
 
-  if (isLoading) {
+  // Show loading screen only during form submission, not during auth context loading
+  if (isLoading && !loading) {
     return (
       <LoadingScreen
         message="Authenticating your account..."
         showProgress={true}
         duration={2000}
+      />
+    );
+  }
+
+  // If auth context is still loading, show a different loading state
+  if (loading) {
+    return (
+      <LoadingScreen
+        message="Initializing AeThex OS..."
+        showProgress={true}
+        duration={3000}
       />
     );
   }
