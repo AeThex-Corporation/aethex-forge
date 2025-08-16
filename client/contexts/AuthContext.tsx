@@ -137,9 +137,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const userProfile = await aethexUserService.getCurrentUser();
       setProfile(userProfile);
+      setLoading(false);
       return userProfile;
     } catch (error) {
       console.error("Error fetching user profile:", error);
+      setLoading(false);
       return null;
     }
   };
