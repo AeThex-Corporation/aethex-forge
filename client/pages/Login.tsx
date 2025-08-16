@@ -55,7 +55,7 @@ export default function Login() {
           user_type: "game_developer", // Default, can be changed in onboarding
           username: email.split("@")[0], // Generate username from email
         });
-        aethexToast.success({
+        toastSuccess({
           title: "Account created!",
           description:
             "Please check your email to verify your account, then sign in.",
