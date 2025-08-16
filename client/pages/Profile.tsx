@@ -186,22 +186,68 @@ export default function Profile() {
     if (!user) return;
 
     setIsSaving(true);
+    console.log("Starting profile save...", {
+      user: user.id,
+      profile: !!profile,
+      profileData
+    });
+
     try {
-      await updateProfile({
-        full_name: profileData.displayName,
-        bio: profileData.bio,
-        location: profileData.location,
-        linkedin_url: profileData.linkedinUrl,
-      } as any);
+      // Check if profile exists, create if it doesn't
+      if (!profile) {
+        console.log("No profile exists, creating one...");
+        // Create initial profile if it doesn't exist
+        const { data, error } = await supabase
+          .from("user_profiles")
+          .insert({
+            id: user.id,
+            username: profileData.displayName || user.email?.split('@')[0] || `user_${Date.now()}`,
+            email: user.email,
+            role: "member",
+            onboarded: true,
+            full_name: profileData.displayName,
+            bio: profileData.bio,
+            location: profileData.location,
+            linkedin_url: profileData.linkedinUrl,
+            github_url: profileData.githubUsername ? `https://github.com/${profileData.githubUsername}` : null,
+            twitter_url: profileData.twitterUsername ? `https://twitter.com/${profileData.twitterUsername}` : null,
+            loyalty_points: 0,
+            level: 1,
+            total_xp: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error("Error creating profile:", error);
+          throw error;
+        }
+
+        console.log("Profile created successfully:", data);
+      } else {
+        console.log("Updating existing profile...");
+        await updateProfile({
+          full_name: profileData.displayName,
+          bio: profileData.bio,
+          location: profileData.location,
+          linkedin_url: profileData.linkedinUrl,
+          github_url: profileData.githubUsername ? `https://github.com/${profileData.githubUsername}` : null,
+          twitter_url: profileData.twitterUsername ? `https://twitter.com/${profileData.twitterUsername}` : null,
+          updated_at: new Date().toISOString(),
+        } as any);
+      }
 
       toastSuccess({
         title: "Profile Updated",
         description: "Your profile has been successfully updated.",
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Profile save error:", error);
       toastError({
         title: "Update Failed",
-        description: "Failed to update profile. Please try again.",
+        description: error.message || "Failed to update profile. Please try again.",
       });
     } finally {
       setIsSaving(false);
