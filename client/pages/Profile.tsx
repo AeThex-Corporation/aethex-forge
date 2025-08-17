@@ -197,36 +197,56 @@ export default function Profile() {
       // Check if profile exists, create if it doesn't
       if (!profile) {
         console.log("No profile exists, creating one...");
-        // Create initial profile if it doesn't exist
-        const { data, error } = await supabase
-          .from("user_profiles")
-          .insert({
-            id: user.id,
+
+        try {
+          // Try using the AuthContext updateProfile (which works with mock too)
+          await updateProfile({
             username: profileData.displayName || user.email?.split('@')[0] || `user_${Date.now()}`,
-            email: user.email,
-            role: "member",
-            onboarded: true,
             full_name: profileData.displayName,
             bio: profileData.bio,
             location: profileData.location,
             linkedin_url: profileData.linkedinUrl,
             github_url: profileData.githubUsername ? `https://github.com/${profileData.githubUsername}` : null,
             twitter_url: profileData.twitterUsername ? `https://twitter.com/${profileData.twitterUsername}` : null,
-            loyalty_points: 0,
+            user_type: "community_member",
+            experience_level: "beginner",
             level: 1,
             total_xp: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          })
-          .select()
-          .single();
+          } as any);
 
-        if (error) {
-          console.error("Error creating profile:", error);
-          throw error;
+          console.log("Profile created successfully via AuthContext");
+        } catch (authError) {
+          console.warn("AuthContext creation failed, trying direct database:", authError);
+
+          // Fallback to direct database call
+          const { data, error } = await supabase
+            .from("user_profiles")
+            .insert({
+              id: user.id,
+              username: profileData.displayName || user.email?.split('@')[0] || `user_${Date.now()}`,
+              user_type: "community_member",
+              experience_level: "beginner",
+              full_name: profileData.displayName,
+              bio: profileData.bio,
+              location: profileData.location,
+              linkedin_url: profileData.linkedinUrl,
+              github_url: profileData.githubUsername ? `https://github.com/${profileData.githubUsername}` : null,
+              twitter_url: profileData.twitterUsername ? `https://twitter.com/${profileData.twitterUsername}` : null,
+              level: 1,
+              total_xp: 0,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            })
+            .select()
+            .single();
+
+          if (error) {
+            console.error("Error creating profile:", error);
+            throw error;
+          }
+
+          console.log("Profile created successfully via direct DB:", data);
         }
-
-        console.log("Profile created successfully:", data);
       } else {
         console.log("Updating existing profile...");
         await updateProfile({
