@@ -70,7 +70,7 @@ export const supabase = new Proxy(supabaseClient || {}, {
           }
         },
         signOut: async () => {
-          if (isSupabaseConfigured && target.auth) {
+          if (isSupabaseConfigured && target && target.auth) {
             try {
               return await target.auth.signOut();
             } catch (error) {
@@ -80,7 +80,7 @@ export const supabase = new Proxy(supabaseClient || {}, {
           return await mockAuth.signOut();
         },
         getUser: async () => {
-          if (isSupabaseConfigured && target.auth) {
+          if (isSupabaseConfigured && target && target.auth) {
             try {
               return await target.auth.getUser();
             } catch (error) {
@@ -90,7 +90,7 @@ export const supabase = new Proxy(supabaseClient || {}, {
           return await mockAuth.getUser();
         },
         getSession: async () => {
-          if (isSupabaseConfigured && target.auth) {
+          if (isSupabaseConfigured && target && target.auth) {
             try {
               return await target.auth.getSession();
             } catch (error) {
