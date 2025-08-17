@@ -8,7 +8,9 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 console.log("Supabase Config:", {
   hasUrl: !!supabaseUrl,
   hasKey: !!supabaseAnonKey,
-  url: supabaseUrl?.substring(0, 30) + "..."
+  url: supabaseUrl,
+  keyPrefix: supabaseAnonKey?.substring(0, 20) + "...",
+  isSupabaseConfigured
 });
 
 // Check if we have valid environment variables
