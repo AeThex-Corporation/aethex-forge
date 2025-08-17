@@ -5,32 +5,19 @@ import { supabase } from "./supabase";
 import type { Database } from "./database.types";
 import { aethexToast } from "./aethex-toast";
 
-// Extended user profile type that matches existing + new schema
-export interface AethexUserProfile {
-  id: string;
-  username: string;
+// Use the existing database user profile type directly
+import type { UserProfile } from "./database.types";
+
+// Extended type that matches the existing shared database
+export interface AethexUserProfile extends UserProfile {
   email?: string;
-  role: string;
-  onboarded: boolean;
-  bio?: string;
-  skills?: string[];
-  avatar_url?: string;
+  username: string | null;
+  onboarded?: boolean;
+  role?: string;
+  loyalty_points?: number;
   banner_url?: string;
   social_links?: any;
-  loyalty_points: number;
-  created_at: string;
-  updated_at: string;
-  // New AeThex app fields
-  user_type?: "game_developer" | "client" | "community_member" | "customer";
-  experience_level?: "beginner" | "intermediate" | "advanced" | "expert";
-  full_name?: string;
-  location?: string;
-  website_url?: string;
-  github_url?: string;
-  twitter_url?: string;
-  linkedin_url?: string;
-  total_xp?: number;
-  level?: number;
+  skills?: string[];
 }
 
 export interface AethexProject {
