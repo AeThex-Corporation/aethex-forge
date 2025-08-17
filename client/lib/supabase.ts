@@ -6,21 +6,38 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Validate required environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    "Missing Supabase environment variables. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY",
-  );
+  console.error("Missing Supabase environment variables. Using demo mode.");
+  // Use demo values for development
+  const demoUrl = "https://demo.supabase.co";
+  const demoKey = "demo-key";
+
+  export const isSupabaseConfigured = false;
+  export const supabase = createClient<Database>(demoUrl, demoKey);
+} else {
+  console.log("Supabase configured with URL:", supabaseUrl);
+  export const isSupabaseConfigured = true;
+
+  export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+    },
+  });
+
+  // Test the connection
+  supabase.from('user_profiles').select('count', { count: 'exact', head: true })
+    .then(({ error }) => {
+      if (error) {
+        console.error("Supabase connection test failed:", error);
+      } else {
+        console.log("Supabase connection test successful");
+      }
+    })
+    .catch((err) => {
+      console.error("Supabase connection error:", err);
+    });
 }
-
-// Always true in production mode - Supabase is required
-export const isSupabaseConfigured = true;
-
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-  },
-});
 
 // Auth helpers
 export const auth = supabase.auth;
