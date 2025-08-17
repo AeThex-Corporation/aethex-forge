@@ -5,6 +5,9 @@ import { mockAuth } from "./mock-auth";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Check if we have valid environment variables
+export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
+
 console.log("Supabase Config:", {
   hasUrl: !!supabaseUrl,
   hasKey: !!supabaseAnonKey,
@@ -12,9 +15,6 @@ console.log("Supabase Config:", {
   keyPrefix: supabaseAnonKey?.substring(0, 20) + "...",
   isSupabaseConfigured
 });
-
-// Check if we have valid environment variables
-export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
 
 let supabaseClient: any = null;
 
