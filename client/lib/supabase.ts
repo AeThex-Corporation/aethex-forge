@@ -12,8 +12,7 @@ console.log("Supabase Config:", {
 });
 
 // Check if we have valid environment variables
-export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey &&
-  !supabaseUrl.includes('demo') && !supabaseAnonKey.includes('demo'));
+export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
 
 let supabaseClient: any = null;
 
