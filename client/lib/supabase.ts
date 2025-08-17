@@ -150,3 +150,27 @@ export const storage = supabase.storage;
 
 // Real-time helpers
 export const channel = supabase.channel;
+
+// Test function for debugging
+(window as any).testSupabase = async () => {
+  console.log("🧪 Manual Supabase Test");
+  console.log("URL:", supabaseUrl);
+  console.log("Key configured:", !!supabaseAnonKey);
+
+  try {
+    const testLogin = await supabase.auth.signInWithPassword({
+      email: "test@example.com",
+      password: "test123"
+    });
+    console.log("Auth test result:", testLogin);
+  } catch (error) {
+    console.error("Auth test error:", error);
+  }
+
+  try {
+    const { data, error } = await supabase.from('user_profiles').select('*').limit(1);
+    console.log("Database test - data:", data, "error:", error);
+  } catch (dbError) {
+    console.error("Database test error:", dbError);
+  }
+};
