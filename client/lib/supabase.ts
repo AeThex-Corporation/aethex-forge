@@ -128,15 +128,3 @@ export const storage = supabase.storage;
 
 // Real-time helpers
 export const channel = supabase.channel;
-
-// Auth helpers
-export const auth = supabase.auth;
-
-// Database helpers
-export const db = supabase.from;
-
-// Storage helpers
-export const storage = supabase.storage;
-
-// Real-time helpers
-export const channel = supabase.channel;
