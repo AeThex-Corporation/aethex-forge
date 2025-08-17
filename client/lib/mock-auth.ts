@@ -89,7 +89,10 @@ class MockAuthService {
     this.currentSession = null;
     localStorage.removeItem('mock_user');
     localStorage.removeItem('mock_profile');
-    
+
+    // Notify auth state change
+    setTimeout(() => this.notifyAuthChange('SIGNED_OUT'), 50);
+
     return { error: null };
   }
 
