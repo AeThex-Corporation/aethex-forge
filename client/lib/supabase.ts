@@ -100,7 +100,7 @@ export const supabase = new Proxy(supabaseClient || {}, {
           return await mockAuth.getSession();
         },
         onAuthStateChange: (callback: any) => {
-          if (isSupabaseConfigured && target.auth) {
+          if (isSupabaseConfigured && target && target.auth) {
             try {
               return target.auth.onAuthStateChange(callback);
             } catch (error) {
