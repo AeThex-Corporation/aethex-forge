@@ -155,11 +155,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (error) throw error;
     } catch (error: any) {
+      console.error("SignIn error details:", error);
+
+      let errorMessage = error.message;
+      if (error.message?.includes("Failed to fetch") || error.name === "AuthRetryableFetchError") {
+        errorMessage = "Unable to connect to authentication service. Please check your internet connection and try again.";
+      }
+
       aethexToast.error({
         title: "Sign in failed",
-        description: error.message,
+        description: errorMessage,
       });
-      throw error;
+      throw new Error(errorMessage);
     }
   };
 
