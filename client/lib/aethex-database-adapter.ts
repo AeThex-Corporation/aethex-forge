@@ -106,16 +106,25 @@ export const aethexUserService = {
     userId: string,
     profileData: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
+    // Only insert fields that exist in the actual database schema
     const { data, error } = await supabase
       .from("user_profiles")
       .insert({
         id: userId,
         username: profileData.username || `user_${Date.now()}`,
-        user_type: profileData.user_type || "community_member",
-        experience_level: profileData.experience_level || "beginner",
+        user_type: (profileData.user_type as any) || "community_member",
+        experience_level: (profileData.experience_level as any) || "beginner",
         full_name: profileData.full_name,
-        email: profileData.email,
-        ...profileData,
+        bio: profileData.bio,
+        location: profileData.location,
+        website_url: profileData.website_url,
+        github_url: profileData.github_url,
+        twitter_url: profileData.twitter_url,
+        linkedin_url: profileData.linkedin_url,
+        level: 1,
+        total_xp: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       })
       .select()
       .single();
@@ -125,7 +134,12 @@ export const aethexUserService = {
       throw error;
     }
 
-    return data as AethexUserProfile;
+    return {
+      ...data,
+      onboarded: true,
+      role: 'member',
+      loyalty_points: 0,
+    } as AethexUserProfile;
   },
 
   async addUserInterests(userId: string, interests: string[]): Promise<void> {
