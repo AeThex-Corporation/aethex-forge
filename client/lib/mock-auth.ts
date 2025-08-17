@@ -142,19 +142,36 @@ class MockAuthService {
   }
 
   onAuthStateChange(callback: (event: string, session: MockSession | null) => void) {
+    // Store callback for later use
+    this.authCallback = callback;
+
     // Immediately call with current state
     setTimeout(() => {
-      callback(this.currentSession ? 'SIGNED_IN' : 'SIGNED_OUT', this.currentSession);
+      if (this.currentSession) {
+        callback('SIGNED_IN', this.currentSession);
+      } else {
+        callback('SIGNED_OUT', null);
+      }
     }, 100);
 
     // Return unsubscribe function
     return {
       data: {
         subscription: {
-          unsubscribe: () => {}
+          unsubscribe: () => {
+            this.authCallback = null;
+          }
         }
       }
     };
+  }
+
+  private authCallback: ((event: string, session: MockSession | null) => void) | null = null;
+
+  private notifyAuthChange(event: string) {
+    if (this.authCallback) {
+      this.authCallback(event, this.currentSession);
+    }
   }
 }
 
