@@ -72,7 +72,15 @@ export const aethexUserService = {
       return null;
     }
 
-    return data as AethexUserProfile;
+    // Map the existing database fields to our interface
+    return {
+      ...data,
+      email: user.email,
+      username: data.username || user.email?.split('@')[0] || 'user',
+      onboarded: true, // Assume existing users are onboarded
+      role: 'member', // Default role
+      loyalty_points: 0, // Default value
+    } as AethexUserProfile;
   },
 
   async updateProfile(
