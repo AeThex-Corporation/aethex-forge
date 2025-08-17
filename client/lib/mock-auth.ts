@@ -72,6 +72,9 @@ class MockAuthService {
     // Save to localStorage
     localStorage.setItem('mock_user', JSON.stringify(user));
 
+    // Notify auth state change
+    setTimeout(() => this.notifyAuthChange('SIGNED_IN'), 50);
+
     return {
       data: {
         user,
