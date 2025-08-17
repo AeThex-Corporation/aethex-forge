@@ -28,16 +28,30 @@ if (isSupabaseConfigured) {
   // Test connection
   setTimeout(async () => {
     try {
-      const { error } = await supabaseClient.from('user_profiles').select('count', { count: 'exact', head: true });
+      console.log("🔍 Testing Supabase connection to:", supabaseUrl);
+      const { data, error } = await supabaseClient.from('user_profiles').select('count', { count: 'exact', head: true });
       if (error) {
         console.warn("⚠️ Supabase connection test failed:", error.message);
         console.log("🔄 Falling back to mock authentication for development");
       } else {
-        console.log("✅ Supabase connection successful");
+        console.log("✅ Supabase connection successful - found", data, "user profiles");
       }
     } catch (err: any) {
       console.warn("⚠️ Supabase connection error:", err.message);
       console.log("🔄 Using mock authentication for development");
+    }
+
+    // Also test auth endpoint specifically
+    try {
+      console.log("🔍 Testing Supabase auth endpoint...");
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error) {
+        console.warn("⚠️ Supabase auth test failed:", error.message);
+      } else {
+        console.log("✅ Supabase auth endpoint accessible");
+      }
+    } catch (authErr: any) {
+      console.warn("⚠️ Supabase auth endpoint error:", authErr.message);
     }
   }, 1000);
 }
