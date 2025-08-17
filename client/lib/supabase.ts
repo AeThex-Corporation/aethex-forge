@@ -48,18 +48,26 @@ export const supabase = new Proxy(supabaseClient || {}, {
     if (prop === 'auth') {
       return {
         signInWithPassword: async (credentials: any) => {
-          if (isSupabaseConfigured && target.auth) {
+          if (isSupabaseConfigured && target && target.auth) {
             try {
-              return await target.auth.signInWithPassword(credentials);
+              console.log("Attempting Supabase authentication...");
+              const result = await target.auth.signInWithPassword(credentials);
+              console.log("✅ Supabase authentication successful");
+              return result;
             } catch (error: any) {
-              if (error.message?.includes('Failed to fetch')) {
-                console.log("🔄 Supabase failed, using mock auth");
+              console.warn("⚠️ Supabase authentication failed:", error.message);
+              if (error.message?.includes('Failed to fetch') ||
+                  error.name === 'AuthRetryableFetchError' ||
+                  error.message?.includes('fetch')) {
+                console.log("🔄 Falling back to mock authentication");
                 return await mockAuth.signInWithPassword(credentials.email, credentials.password);
               }
               throw error;
             }
+          } else {
+            console.log("🔄 Using mock authentication (Supabase not configured)");
+            return await mockAuth.signInWithPassword(credentials.email, credentials.password);
           }
-          return await mockAuth.signInWithPassword(credentials.email, credentials.password);
         },
         signOut: async () => {
           if (isSupabaseConfigured && target.auth) {
