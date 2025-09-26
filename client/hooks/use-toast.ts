@@ -3,7 +3,8 @@ import * as React from "react";
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
-const TOAST_REMOVE_DELAY = 6000;
+const TOAST_REMOVE_DELAY = 4000;
+const TOAST_MIN_INTERVAL = 800;
 
 type ToasterToast = ToastProps & {
   id: string;
@@ -20,6 +21,8 @@ const actionTypes = {
 } as const;
 
 let count = 0;
+let lastToastTimestamp = 0;
+let lastToastSignature = "";
 
 function genId() {
   count = (count + 1) % Number.MAX_SAFE_INTEGER;
@@ -137,6 +140,18 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, "id">;
 
 function toast({ ...props }: Toast) {
+  const now = Date.now();
+  const signature = `${props.variant ?? "default"}|${String(props.title ?? "")}|${String(props.description ?? "")}`;
+  if (now - lastToastTimestamp < TOAST_MIN_INTERVAL && signature === lastToastSignature) {
+    return {
+      id: "-1",
+      dismiss: () => undefined,
+      update: () => undefined,
+    };
+  }
+  lastToastTimestamp = now;
+  lastToastSignature = signature;
+
   const id = genId();
 
   const update = (props: ToasterToast) =>
