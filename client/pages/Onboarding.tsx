@@ -117,13 +117,20 @@ export default function Onboarding() {
         customer: "customer",
       };
 
-      await aethexUserService.createInitialProfile(user.id, {
+      const existing = await aethexUserService.getCurrentUser();
+      const payload = {
         username: `${data.personalInfo.firstName || user.email?.split("@")[0] || "user"}`,
         full_name: `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
         user_type: (userTypeMap[data.userType || "member"] as any) || "community_member",
         experience_level: (data.experience.level as any) || "beginner",
         bio: data.experience.previousProjects || undefined,
-      });
+      } as any;
+
+      if (existing) {
+        await aethexUserService.updateProfile(user.id, payload);
+      } else {
+        await aethexUserService.createInitialProfile(user.id, payload);
+      }
 
       const interests = Array.from(
         new Set([...(data.interests.primaryGoals || []), ...(data.interests.preferredServices || [])]),
