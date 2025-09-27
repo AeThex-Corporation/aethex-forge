@@ -25,6 +25,9 @@ export default function Admin() {
   const { user, loading, roles } = useAuth();
   const navigate = useNavigate();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
+  const demoProfiles: any[] = (function(){
+    try { return JSON.parse(localStorage.getItem("demo_profiles")||"[]"); } catch { return []; }
+  })();
 
   useEffect(() => {
     if (!loading) {
@@ -215,6 +218,32 @@ export default function Admin() {
                 <div className="text-sm text-muted-foreground">
                   You have full administrative access.
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-cyan-400" />
+                  <CardTitle className="text-lg">Demo Accounts</CardTitle>
+                </div>
+                <CardDescription>
+                  Managed by <span className="text-foreground">mrpiglr@gmail.com</span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {demoProfiles.length === 0 && (
+                  <div className="text-sm text-muted-foreground">No demo accounts seeded yet.</div>
+                )}
+                {demoProfiles.map((p) => (
+                  <div key={p.id} className="flex items-center justify-between p-2 rounded border border-border/40">
+                    <div>
+                      <div className="font-medium">{p.full_name || p.username}</div>
+                      <div className="text-xs text-muted-foreground">{p.email}</div>
+                    </div>
+                    <Badge variant="outline">Managed</Badge>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </div>
