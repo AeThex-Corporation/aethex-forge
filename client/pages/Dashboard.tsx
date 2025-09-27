@@ -49,6 +49,14 @@ import {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user, profile, loading: authLoading, updateProfile } = useAuth();
+  const [displayName, setDisplayName] = useState("");
+  const [locationInput, setLocationInput] = useState("");
+  const [bio, setBio] = useState("");
+  const [website, setWebsite] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [github, setGithub] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [savingProfile, setSavingProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [achievements, setAchievements] = useState([]);
@@ -88,6 +96,35 @@ export default function Dashboard() {
       setIsLoading(false);
     }
   }, [user, profile, authLoading, navigate]);
+
+  // Sync local settings form with profile
+  useEffect(() => {
+    setDisplayName(profile?.full_name || "");
+    setLocationInput(profile?.location || "");
+    setBio(profile?.bio || "");
+    setWebsite((profile as any)?.website_url || "");
+    setLinkedin(profile?.linkedin_url || "");
+    setGithub(profile?.github_url || "");
+    setTwitter(profile?.twitter_url || "");
+  }, [profile]);
+
+  const saveProfile = async () => {
+    if (!user) return;
+    setSavingProfile(true);
+    try {
+      await updateProfile({
+        full_name: displayName,
+        location: locationInput,
+        bio,
+        website_url: website as any,
+        linkedin_url: linkedin,
+        github_url: github,
+        twitter_url: twitter,
+      } as any);
+    } finally {
+      setSavingProfile(false);
+    }
+  };
 
   const loadDashboardData = async () => {
     try {
@@ -499,32 +536,37 @@ export default function Dashboard() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="displayName">Display Name</Label>
-                          <Input id="displayName" value={profile?.full_name || ""} onChange={(e) => updateProfile({ full_name: e.target.value } as any)} />
+                          <Input id="displayName" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                         </div>
                         <div>
                           <Label htmlFor="location">Location</Label>
-                          <Input id="location" value={profile?.location || ""} onChange={(e) => updateProfile({ location: e.target.value } as any)} />
+                          <Input id="location" value={locationInput} onChange={(e) => setLocationInput(e.target.value)} />
                         </div>
                         <div className="md:col-span-2">
                           <Label htmlFor="bio">Bio</Label>
-                          <Textarea id="bio" value={profile?.bio || ""} onChange={(e) => updateProfile({ bio: e.target.value } as any)} />
+                          <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} />
                         </div>
                         <div>
                           <Label htmlFor="website">Website</Label>
-                          <Input id="website" value={(profile as any)?.website_url || ""} onChange={(e) => updateProfile({ website_url: e.target.value } as any)} />
+                          <Input id="website" value={website} onChange={(e) => setWebsite(e.target.value)} />
                         </div>
                         <div>
                           <Label htmlFor="linkedin">LinkedIn URL</Label>
-                          <Input id="linkedin" value={profile?.linkedin_url || ""} onChange={(e) => updateProfile({ linkedin_url: e.target.value } as any)} />
+                          <Input id="linkedin" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
                         </div>
                         <div>
                           <Label htmlFor="github">GitHub URL</Label>
-                          <Input id="github" value={profile?.github_url || ""} onChange={(e) => updateProfile({ github_url: e.target.value } as any)} />
+                          <Input id="github" value={github} onChange={(e) => setGithub(e.target.value)} />
                         </div>
                         <div>
                           <Label htmlFor="twitter">Twitter URL</Label>
-                          <Input id="twitter" value={profile?.twitter_url || ""} onChange={(e) => updateProfile({ twitter_url: e.target.value } as any)} />
+                          <Input id="twitter" value={twitter} onChange={(e) => setTwitter(e.target.value)} />
                         </div>
+                      </div>
+                      <div className="flex justify-end">
+                        <Button onClick={saveProfile} disabled={savingProfile} className="hover-lift">
+                          {savingProfile ? "Saving..." : "Save Changes"}
+                        </Button>
                       </div>
                     </TabsContent>
 
