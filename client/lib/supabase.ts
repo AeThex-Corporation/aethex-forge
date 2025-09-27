@@ -129,6 +129,9 @@ export const supabase = new Proxy(supabaseClient || {}, {
     }
 
     if (prop === 'from') {
+      if (isSupabaseConfigured && target && typeof target.from === 'function') {
+        return target.from.bind(target);
+      }
       return (table: string) => ({
         select: () => ({ error: null, data: [] }),
         insert: () => ({ error: null, data: [] }),
