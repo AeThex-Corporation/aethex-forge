@@ -33,13 +33,23 @@ interface FeedItem {
   comments: number;
 }
 
-function parseContent(content: string): { text?: string; mediaUrl?: string | null; mediaType: "video" | "image" | "none" } {
+function parseContent(content: string): {
+  text?: string;
+  mediaUrl?: string | null;
+  mediaType: "video" | "image" | "none";
+} {
   try {
     const obj = JSON.parse(content || "{}");
     return {
       text: obj.text || content,
       mediaUrl: obj.mediaUrl || null,
-      mediaType: obj.mediaType || (obj.mediaUrl ? (/(mp4|webm|mov)$/i.test(obj.mediaUrl) ? "video" : "image") : "none"),
+      mediaType:
+        obj.mediaType ||
+        (obj.mediaUrl
+          ? /(mp4|webm|mov)$/i.test(obj.mediaUrl)
+            ? "video"
+            : "image"
+          : "none"),
     };
   } catch {
     return { text: content, mediaUrl: null, mediaType: "none" };
@@ -108,7 +118,9 @@ export default function Feed() {
 
     const sub = realtimeService.subscribeToCommunityPosts(() => load());
     return () => {
-      try { sub.unsubscribe(); } catch {}
+      try {
+        sub.unsubscribe();
+      } catch {}
     };
   }, [user, loading]);
 
@@ -128,7 +140,11 @@ export default function Feed() {
     const url = `${location.origin}/feed#post-${id}`;
     try {
       if ((navigator as any).share) {
-        await (navigator as any).share({ title: "AeThex", text: "Check this post", url });
+        await (navigator as any).share({
+          title: "AeThex",
+          text: "Check this post",
+          url,
+        });
       } else {
         await navigator.clipboard.writeText(url);
         toast({ description: "Link copied" });
@@ -139,7 +155,11 @@ export default function Feed() {
   if (!user && !loading) return <Navigate to="/login" replace />;
   if (loading || isLoading) {
     return (
-      <LoadingScreen message="Loading your feed..." showProgress duration={1000} />
+      <LoadingScreen
+        message="Loading your feed..."
+        showProgress
+        duration={1000}
+      />
     );
   }
 
@@ -156,13 +176,28 @@ export default function Feed() {
             </div>
           )}
           {items.map((item) => (
-            <section id={`post-${item.id}`} key={item.id} className="snap-start h-[calc(100vh-64px)] relative flex items-center justify-center">
+            <section
+              id={`post-${item.id}`}
+              key={item.id}
+              className="snap-start h-[calc(100vh-64px)] relative flex items-center justify-center"
+            >
               <Card className="w-full h-full bg-black/60 border-border/30 overflow-hidden">
                 <CardContent className="w-full h-full p-0 relative">
                   {item.mediaType === "video" && item.mediaUrl ? (
-                    <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay loop muted={muted} playsInline />
+                    <video
+                      src={item.mediaUrl}
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      loop
+                      muted={muted}
+                      playsInline
+                    />
                   ) : item.mediaType === "image" && item.mediaUrl ? (
-                    <img src={item.mediaUrl} alt={item.caption || item.authorName} className="w-full h-full object-cover" />
+                    <img
+                      src={item.mediaUrl}
+                      alt={item.caption || item.authorName}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-aethex-500/20 to-neon-blue/20" />
                   )}
@@ -170,16 +205,38 @@ export default function Feed() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
 
                   <div className="absolute right-4 bottom-24 flex flex-col items-center gap-4">
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30" onClick={() => setMuted((m) => !m)}>
-                      {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                      onClick={() => setMuted((m) => !m)}
+                    >
+                      {muted ? (
+                        <VolumeX className="h-5 w-5" />
+                      ) : (
+                        <Volume2 className="h-5 w-5" />
+                      )}
                     </Button>
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30">
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                    >
                       <Heart className="h-5 w-5" />
                     </Button>
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30">
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                    >
                       <MessageCircle className="h-5 w-5" />
                     </Button>
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30" onClick={() => share(item.id)}>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                      onClick={() => share(item.id)}
+                    >
                       <Share2 className="h-5 w-5" />
                     </Button>
                   </div>
@@ -188,20 +245,36 @@ export default function Feed() {
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={item.authorAvatar || undefined} />
-                        <AvatarFallback>{item.authorName[0] || "U"}</AvatarFallback>
+                        <AvatarFallback>
+                          {item.authorName[0] || "U"}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-semibold text-white">{item.authorName}</div>
+                        <div className="font-semibold text-white">
+                          {item.authorName}
+                        </div>
                         {item.caption && (
-                          <div className="text-xs text-white/80 max-w-[60vw] line-clamp-2">{item.caption}</div>
+                          <div className="text-xs text-white/80 max-w-[60vw] line-clamp-2">
+                            {item.caption}
+                          </div>
                         )}
                       </div>
                     </div>
-                    <Button size="sm" variant={isFollowingAuthor(item.authorId) ? "outline" : "default"} onClick={() => toggleFollow(item.authorId)}>
+                    <Button
+                      size="sm"
+                      variant={
+                        isFollowingAuthor(item.authorId) ? "outline" : "default"
+                      }
+                      onClick={() => toggleFollow(item.authorId)}
+                    >
                       {isFollowingAuthor(item.authorId) ? (
-                        <span className="flex items-center gap-1"><UserCheck className="h-4 w-4" /> Following</span>
+                        <span className="flex items-center gap-1">
+                          <UserCheck className="h-4 w-4" /> Following
+                        </span>
                       ) : (
-                        <span className="flex items-center gap-1"><UserPlus className="h-4 w-4" /> Follow</span>
+                        <span className="flex items-center gap-1">
+                          <UserPlus className="h-4 w-4" /> Follow
+                        </span>
                       )}
                     </Button>
                   </div>

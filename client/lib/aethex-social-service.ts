@@ -13,8 +13,10 @@ export const aethexSocialService = {
     try {
       const raw = localStorage.getItem("demo_profiles");
       const profiles = raw ? JSON.parse(raw) : [];
-      return profiles.filter((p:any)=>p.id!==userId).slice(0, limit);
-    } catch { return [] as any[]; }
+      return profiles.filter((p: any) => p.id !== userId).slice(0, limit);
+    } catch {
+      return [] as any[];
+    }
   },
 
   async getFollowing(userId: string): Promise<string[]> {

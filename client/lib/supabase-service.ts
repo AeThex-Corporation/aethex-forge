@@ -257,7 +257,9 @@ export const communityService = {
       const raw = localStorage.getItem("demo_posts");
       const posts = raw ? JSON.parse(raw) : [];
       return posts.slice(0, limit);
-    } catch { return []; }
+    } catch {
+      return [];
+    }
   },
 
   async createPost(
@@ -282,12 +284,16 @@ export const communityService = {
       updated_at: new Date().toISOString(),
       likes_count: 0,
       comments_count: 0,
-      user_profiles: (function(){
-        try{
-          const profiles = JSON.parse(localStorage.getItem("demo_profiles")||"[]");
-          return profiles.find((p:any)=>p.id===post.author_id) || null;
-        }catch{ return null; }
-      })()
+      user_profiles: (function () {
+        try {
+          const profiles = JSON.parse(
+            localStorage.getItem("demo_profiles") || "[]",
+          );
+          return profiles.find((p: any) => p.id === post.author_id) || null;
+        } catch {
+          return null;
+        }
+      })(),
     };
     const raw = localStorage.getItem("demo_posts");
     const list = raw ? JSON.parse(raw) : [];
@@ -308,8 +314,10 @@ export const communityService = {
     try {
       const raw = localStorage.getItem("demo_posts");
       const posts = raw ? JSON.parse(raw) : [];
-      return posts.filter((p:any)=>p.author_id===userId);
-    } catch { return []; }
+      return posts.filter((p: any) => p.author_id === userId);
+    } catch {
+      return [];
+    }
   },
 };
 

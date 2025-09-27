@@ -53,7 +53,10 @@ export default function PostComposer({ onPosted }: { onPosted?: () => void }) {
 
   const handlePost = async () => {
     if (!user) {
-      toast({ title: "Sign in required", description: "Please sign in to post" });
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to post",
+      });
       return;
     }
     if (!text.trim() && !mediaFile && !mediaUrlInput.trim()) {
@@ -75,15 +78,31 @@ export default function PostComposer({ onPosted }: { onPosted?: () => void }) {
       }
 
       if (mediaUrl) {
-        if (/\.(mp4|webm|mov)(\?.*)?$/i.test(mediaUrl) || /video\//.test(mediaFile?.type || "")) {
+        if (
+          /\.(mp4|webm|mov)(\?.*)?$/i.test(mediaUrl) ||
+          /video\//.test(mediaFile?.type || "")
+        ) {
           mediaType = "video";
-        } else if (/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(mediaUrl) || /image\//.test(mediaFile?.type || "")) {
+        } else if (
+          /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(mediaUrl) ||
+          /image\//.test(mediaFile?.type || "")
+        ) {
           mediaType = "image";
         }
       }
 
-      const content = JSON.stringify({ text: text.trim(), mediaUrl, mediaType });
-      const title = text.trim().slice(0, 80) || (mediaType === "video" ? "New video" : mediaType === "image" ? "New photo" : "Update");
+      const content = JSON.stringify({
+        text: text.trim(),
+        mediaUrl,
+        mediaType,
+      });
+      const title =
+        text.trim().slice(0, 80) ||
+        (mediaType === "video"
+          ? "New video"
+          : mediaType === "image"
+            ? "New photo"
+            : "Update");
 
       await communityService.createPost({
         author_id: user.id,
@@ -98,7 +117,11 @@ export default function PostComposer({ onPosted }: { onPosted?: () => void }) {
       reset();
       onPosted?.();
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Could not post", description: e?.message || "Try again later" });
+      toast({
+        variant: "destructive",
+        title: "Could not post",
+        description: e?.message || "Try again later",
+      });
     } finally {
       setSubmitting(false);
     }

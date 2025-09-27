@@ -19,8 +19,7 @@ export function ensureDemoSeed() {
         username: "TestSubject",
         full_name: "Test Subject",
         email: "testsubject@demo.local",
-        avatar_url:
-          "https://i.pravatar.cc/150?img=1",
+        avatar_url: "https://i.pravatar.cc/150?img=1",
         bio: "Trying features, sharing experiments, and stress-testing the feed.",
         managed_by: "mrpiglr@gmail.com",
       },
