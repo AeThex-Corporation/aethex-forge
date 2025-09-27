@@ -123,37 +123,37 @@ export default function Onboarding() {
       const existing = await aethexUserService.getCurrentUser();
       const payload = {
         username: `${data.personalInfo.firstName || user.email?.split("@")[0] || "user"}`,
-        full_name:
-          `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
-        user_type:
-          (userTypeMap[data.userType || "member"] as any) || "community_member",
+        full_name: `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
+        user_type: (userTypeMap[data.userType || "member"] as any) || "community_member",
         experience_level: (data.experience.level as any) || "beginner",
         bio: data.experience.previousProjects || undefined,
       } as any;
 
+      // Ensure profile exists first; this is the only blocking step
       if (existing) {
         await aethexUserService.updateProfile(user.id, payload);
       } else {
         await aethexUserService.createInitialProfile(user.id, payload);
       }
 
+      // Fire-and-forget non-critical tasks so UI isn't blocked
       const interests = Array.from(
         new Set([
           ...(data.interests.primaryGoals || []),
           ...(data.interests.preferredServices || []),
         ]),
       );
-      if (interests.length) {
-        await aethexUserService.addUserInterests(user.id, interests);
-      }
 
-      await aethexAchievementService.checkAndAwardOnboardingAchievement(
-        user.id,
-      );
+      Promise.allSettled([
+        interests.length
+          ? aethexUserService.addUserInterests(user.id, interests)
+          : Promise.resolve(),
+        aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
+      ]).catch(() => undefined);
 
+      // Navigate immediately after profile success
       navigate("/dashboard", { replace: true });
     } catch (e) {
-      // Create a readable error message for logging and UI
       function formatError(err: any) {
         if (!err) return "Unknown error";
         if (typeof err === "string") return err;
