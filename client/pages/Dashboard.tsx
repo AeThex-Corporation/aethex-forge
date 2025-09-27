@@ -383,6 +383,7 @@ export default function Dashboard() {
                 </p>
               </div>
               <div className="flex items-center space-x-4">
+                <div className="text-sm text-muted-foreground">Profile {profileCompletion}% complete</div>
                 <Button variant="outline" size="sm" className="hover-lift">
                   <Bell className="h-4 w-4 mr-2" />
                   Notifications
