@@ -62,12 +62,8 @@ export default function Login() {
         setIsSignUp(false);
       } else {
         await signIn(email, password);
-        const current = await aethexUserService.getCurrentUser();
-        if (current) {
-          navigate("/dashboard", { replace: true });
-        } else {
-          navigate("/onboarding", { replace: true });
-        }
+        // Navigate immediately; Dashboard will handle profile/onboarding state
+        navigate("/dashboard", { replace: true });
       }
     } catch (error: any) {
       console.error("Authentication error:", error);
