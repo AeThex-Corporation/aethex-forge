@@ -20,6 +20,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const { user, profile, roles, signOut, loading } = useAuth();
+  const isOwner = Array.isArray(roles) && roles.includes("owner");
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -61,12 +62,7 @@ export default function Layout({ children }: LayoutProps) {
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {(() => {
-              const isOwner = Array.isArray(roles) && roles.includes("owner");
-              const navItems = user
-                ? isOwner
-                  ? [{ name: "Admin", href: "/admin" }, ...userNavigation]
-                  : userNavigation
-                : navigation;
+              const navItems = user ? userNavigation : navigation;
               return navItems.map((item, index) => (
                 <Link
                   key={item.name}
@@ -152,6 +148,14 @@ export default function Layout({ children }: LayoutProps) {
                               Settings
                             </Link>
                           </DropdownMenuItem>
+                          {isOwner && (
+                            <DropdownMenuItem asChild>
+                              <Link to="/admin" className="cursor-pointer">
+                                <Settings className="mr-2 h-4 w-4" />
+                                Admin Panel
+                              </Link>
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             className="cursor-pointer"
