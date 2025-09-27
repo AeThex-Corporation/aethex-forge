@@ -16,6 +16,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Link } from "react-router-dom";
 import {
@@ -43,7 +48,7 @@ import {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user, profile, loading: authLoading } = useAuth();
+  const { user, profile, loading: authLoading, updateProfile } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [achievements, setAchievements] = useState([]);
@@ -338,7 +343,12 @@ export default function Dashboard() {
                   <Bell className="h-4 w-4 mr-2" />
                   Notifications
                 </Button>
-                <Button variant="outline" size="sm" className="hover-lift">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hover-lift"
+                  onClick={() => document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" })}
+                >
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
                 </Button>
@@ -463,6 +473,90 @@ export default function Dashboard() {
                   );
                 })}
               </div>
+
+              {/* Settings Section */}
+              <Card className="bg-card/50 border-border/50 animate-fade-in" id="settings">
+                <CardHeader>
+                  <CardTitle className="text-gradient">Account Settings</CardTitle>
+                  <CardDescription>Manage your profile, notifications, and privacy</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Tabs defaultValue="profile">
+                    <TabsList className="mb-4">
+                      <TabsTrigger value="profile">Profile</TabsTrigger>
+                      <TabsTrigger value="notifications">Notifications</TabsTrigger>
+                      <TabsTrigger value="privacy">Privacy</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="profile" className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="displayName">Display Name</Label>
+                          <Input id="displayName" value={profile?.full_name || ""} onChange={(e) => updateProfile({ full_name: e.target.value } as any)} />
+                        </div>
+                        <div>
+                          <Label htmlFor="location">Location</Label>
+                          <Input id="location" value={profile?.location || ""} onChange={(e) => updateProfile({ location: e.target.value } as any)} />
+                        </div>
+                        <div className="md:col-span-2">
+                          <Label htmlFor="bio">Bio</Label>
+                          <Textarea id="bio" value={profile?.bio || ""} onChange={(e) => updateProfile({ bio: e.target.value } as any)} />
+                        </div>
+                        <div>
+                          <Label htmlFor="website">Website</Label>
+                          <Input id="website" value={(profile as any)?.website_url || ""} onChange={(e) => updateProfile({ website_url: e.target.value } as any)} />
+                        </div>
+                        <div>
+                          <Label htmlFor="linkedin">LinkedIn URL</Label>
+                          <Input id="linkedin" value={profile?.linkedin_url || ""} onChange={(e) => updateProfile({ linkedin_url: e.target.value } as any)} />
+                        </div>
+                        <div>
+                          <Label htmlFor="github">GitHub URL</Label>
+                          <Input id="github" value={profile?.github_url || ""} onChange={(e) => updateProfile({ github_url: e.target.value } as any)} />
+                        </div>
+                        <div>
+                          <Label htmlFor="twitter">Twitter URL</Label>
+                          <Input id="twitter" value={profile?.twitter_url || ""} onChange={(e) => updateProfile({ twitter_url: e.target.value } as any)} />
+                        </div>
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="notifications" className="space-y-4">
+                      <div className="flex items-center justify-between border rounded-lg p-3">
+                        <div>
+                          <div className="font-medium">Email notifications</div>
+                          <div className="text-sm text-muted-foreground">Get updates in your inbox</div>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between border rounded-lg p-3">
+                        <div>
+                          <div className="font-medium">Push notifications</div>
+                          <div className="text-sm text-muted-foreground">Receive alerts in the app</div>
+                        </div>
+                        <Switch />
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="privacy" className="space-y-4">
+                      <div className="flex items-center justify-between border rounded-lg p-3">
+                        <div>
+                          <div className="font-medium">Public profile</div>
+                          <div className="text-sm text-muted-foreground">Show your profile to everyone</div>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between border rounded-lg p-3">
+                        <div>
+                          <div className="font-medium">Show email</div>
+                          <div className="text-sm text-muted-foreground">Display email on your profile</div>
+                        </div>
+                        <Switch />
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
 
               {/* Recent Projects */}
               <Card className="bg-card/50 border-border/50 animate-fade-in">
