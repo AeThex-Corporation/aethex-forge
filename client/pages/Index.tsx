@@ -48,36 +48,36 @@ export default function Index() {
 
   const features = [
     {
-      title: "Neural Networks",
-      description: "Advanced AI-powered development tools",
+      title: "Game Development",
+      description: "Full‑cycle production and tooling",
       icon: Zap,
       color: "from-blue-500 to-purple-600",
     },
     {
-      title: "Quantum Computing",
-      description: "Next-generation processing capabilities",
+      title: "Product Design",
+      description: "UX/UI, prototyping, and branding",
       icon: Target,
       color: "from-purple-500 to-pink-600",
     },
     {
-      title: "Blockchain Integration",
-      description: "Secure, decentralized solutions",
+      title: "Platform Engineering",
+      description: "Web, mobile, and backend foundations",
       icon: Users,
       color: "from-green-500 to-blue-600",
     },
     {
-      title: "Cloud Infrastructure",
-      description: "Scalable, global deployment systems",
+      title: "Community & Growth",
+      description: "Programs, content, and engagement",
       icon: TrendingUp,
       color: "from-orange-500 to-red-600",
     },
   ];
 
   const achievements = [
-    { metric: "10K+", label: "Active Developers" },
-    { metric: "500+", label: "Projects Deployed" },
-    { metric: "99.99%", label: "System Uptime" },
-    { metric: "24/7", label: "Global Support" },
+    { metric: "10K+", label: "Active Creators" },
+    { metric: "500+", label: "Projects Shipped" },
+    { metric: "99.99%", label: "Feature Quality" },
+    { metric: "24/7", label: "Global Community" },
   ];
 
   if (isLoading) {
@@ -141,10 +141,9 @@ export default function Index() {
                   Crafting Digital Realities
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up">
-                  Where innovation meets execution. We build the future through
-                  advanced technology, creative solutions, and limitless
-                  possibilities.
-                </p>
+                Where vision meets execution. We craft experiences through
+                design, development, and community.
+              </p>
               </div>
             </div>
 
@@ -345,7 +344,7 @@ export default function Index() {
           <div className="max-w-4xl mx-auto text-center space-y-12">
             <div className="animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-6">
-                Next-Generation Technology Stack
+                What We Build
               </h2>
               <p className="text-lg text-muted-foreground">
                 Built on cutting-edge frameworks and powered by advanced
@@ -356,36 +355,12 @@ export default function Index() {
             {/* Interactive Technology Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
               {[
-                {
-                  name: "Quantum AI",
-                  status: "Active",
-                  color: "from-purple-500 to-blue-600",
-                },
-                {
-                  name: "Neural Networks",
-                  status: "Optimizing",
-                  color: "from-blue-500 to-green-600",
-                },
-                {
-                  name: "Blockchain Core",
-                  status: "Secure",
-                  color: "from-green-500 to-yellow-600",
-                },
-                {
-                  name: "Cloud Matrix",
-                  status: "Scaling",
-                  color: "from-yellow-500 to-red-600",
-                },
-                {
-                  name: "Data Fusion",
-                  status: "Processing",
-                  color: "from-red-500 to-purple-600",
-                },
-                {
-                  name: "Edge Computing",
-                  status: "Deployed",
-                  color: "from-purple-500 to-pink-600",
-                },
+                { name: "Game Studios", status: "Active", color: "from-purple-500 to-blue-600" },
+                { name: "Design Systems", status: "Evolving", color: "from-blue-500 to-green-600" },
+                { name: "Creator Tools", status: "Live", color: "from-green-500 to-yellow-600" },
+                { name: "Launch Ops", status: "Scaling", color: "from-yellow-500 to-red-600" },
+                { name: "Content Pipeline", status: "In Progress", color: "from-red-500 to-purple-600" },
+                { name: "Edge Experiences", status: "Deployed", color: "from-purple-500 to-pink-600" },
               ].map((tech, index) => (
                 <Card
                   key={index}
