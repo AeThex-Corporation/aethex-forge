@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Shield, UserCog, Rocket, Settings, Users, Activity } from "lucide-react";
 
 export default function Admin() {
-  const { user, loading } = useAuth();
+  const { user, loading, roles } = useAuth();
   const navigate = useNavigate();
-  const isOwner = !!user?.email && user.email.toLowerCase() === "mrpiglr@gmail.com";
+  const isOwner = Array.isArray(roles) && roles.includes("owner");
 
   useEffect(() => {
     if (!loading) {
