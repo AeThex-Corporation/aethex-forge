@@ -77,38 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        const profile = await fetchUserProfile(session.user.id);
-
-        // Create profile for any user that doesn't have one
-        if (!profile) {
-          try {
-            await aethexUserService.createInitialProfile(session.user.id, {
-              username:
-                session.user.user_metadata?.user_name ||
-                session.user.user_metadata?.preferred_username ||
-                session.user.email?.split("@")[0] ||
-                `user_${Date.now()}`,
-              full_name:
-                session.user.user_metadata?.full_name ||
-                session.user.user_metadata?.name ||
-                session.user.email?.split("@")[0],
-              email: session.user.email,
-              avatar_url: session.user.user_metadata?.avatar_url,
-              user_type: "community_member", // Default type
-              experience_level: "beginner",
-            });
-
-            // Fetch the newly created profile
-            await fetchUserProfile(session.user.id);
-
-            // Award onboarding achievement
-            await aethexAchievementService.checkAndAwardOnboardingAchievement(
-              session.user.id,
-            );
-          } catch (error) {
-            console.error("Error creating user profile:", error);
-          }
-        }
+        await fetchUserProfile(session.user.id);
       } else {
         setProfile(null);
       }
@@ -183,16 +152,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (error) throw error;
 
-      if (data.user && userData) {
-        // Create user profile using AeThex adapter
-        await aethexUserService.createInitialProfile(data.user.id, {
-          ...userData,
-          email,
-        });
-
+      if (data.user) {
         aethexToast.success({
           title: "Account created!",
-          description: "Please check your email to verify your account",
+          description: "Please check your email to verify your account, then sign in.",
         });
       }
     } catch (error: any) {
