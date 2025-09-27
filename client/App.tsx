@@ -27,7 +27,11 @@ import Support from "./pages/Support";
 import Status from "./pages/Status";
 import Changelog from "./pages/Changelog";
 import Profile from "./pages/Profile";
-import Placeholder from "./pages/Placeholder";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import GetStarted from "./pages/GetStarted";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -69,54 +73,14 @@ const App = () => (
               <Route path="/status" element={<Status />} />
               <Route path="/changelog" element={<Changelog />} />
 
-              {/* Placeholder routes for navigation links */}
-              <Route
-                path="/about"
-                element={
-                  <Placeholder
-                    title="About AeThex"
-                    description="Learn more about our company, mission, and team."
-                  />
-                }
-              />
-              <Route
-                path="/contact"
-                element={
-                  <Placeholder
-                    title="Contact Us"
-                    description="Get in touch with our team for support or inquiries."
-                  />
-                }
-              />
-              <Route
-                path="/get-started"
-                element={
-                  <Placeholder
-                    title="Get Started"
-                    description="Begin your journey with AeThex tools and services."
-                  />
-                }
-              />
+              {/* Informational routes */}
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/get-started" element={<GetStarted />} />
 
               {/* Legal routes */}
-              <Route
-                path="/privacy"
-                element={
-                  <Placeholder
-                    title="Privacy Policy"
-                    description="Our commitment to protecting your privacy."
-                  />
-                }
-              />
-              <Route
-                path="/terms"
-                element={
-                  <Placeholder
-                    title="Terms of Service"
-                    description="Terms and conditions for using AeThex services."
-                  />
-                }
-              />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
