@@ -154,13 +154,8 @@ export default function Dashboard() {
     }
   };
 
-  // Don't show loading screen if no user - just redirect
-  if (!user) {
-    return null;
-  }
-
-  // Show loading only if we have a user but are still loading data
-  if (authLoading || isLoading) {
+  // While auth is resolving or data is loading, show loading screen
+  if (authLoading || isLoading || !user) {
     return (
       <LoadingScreen
         message="Loading your dashboard..."
