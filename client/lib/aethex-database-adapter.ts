@@ -77,8 +77,8 @@ export const aethexUserService = {
       .eq("id", user.id)
       .single();
 
-    if (error) {
-      console.warn("Error fetching user profile, falling back to mock:", error);
+    if (error || !data || Object.keys(data || {}).length === 0) {
+      if (error) console.warn("Error fetching user profile, falling back to mock:", error);
       const mock = await mockAuth.getUserProfile(user.id as any);
       if (mock) {
         return {
@@ -123,9 +123,9 @@ export const aethexUserService = {
       .select()
       .single();
 
-    if (error) {
-      console.warn("Error updating profile, attempting mock fallback:", error);
-      if (isTableMissing(error)) {
+    if (error || !data || Object.keys(data || {}).length === 0) {
+      console.warn("Updating profile fallback to mock (error or empty):", error?.message);
+      if (!error || isTableMissing(error)) {
         const mock = await mockAuth.updateProfile(
           userId as any,
           updates as any,
