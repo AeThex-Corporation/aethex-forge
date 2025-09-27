@@ -33,15 +33,19 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
-  const { signIn, signUp, signInWithOAuth, user, loading } = useAuth();
+  const { signIn, signUp, signInWithOAuth, user, loading, profile } = useAuth();
   const { success: toastSuccess, error: toastError } = useAethexToast();
 
   // Redirect if already logged in
   useEffect(() => {
     if (user && !loading) {
-      navigate("/dashboard");
+      if (profile) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/onboarding", { replace: true });
+      }
     }
-  }, [user, loading, navigate]);
+  }, [user, profile, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +67,7 @@ export default function Login() {
         setIsSignUp(false);
       } else {
         await signIn(email, password);
-        navigate("/dashboard");
+        // Navigation is handled by the auth redirect effect based on profile existence
       }
     } catch (error: any) {
       console.error("Authentication error:", error);
