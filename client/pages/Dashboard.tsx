@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { aethexToast } from "@/lib/aethex-toast";
+import { supabase } from "@/lib/supabase";
 import {
   aethexProjectService,
   aethexAchievementService,
@@ -60,6 +61,7 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [achievements, setAchievements] = useState([]);
+  const [profileCompletion, setProfileCompletion] = useState(0);
   const [stats, setStats] = useState({
     activeProjects: 0,
     completedTasks: 0,
@@ -124,6 +126,18 @@ export default function Dashboard() {
     } finally {
       setSavingProfile(false);
     }
+  };
+
+  const computeProfileCompletion = (p: any) => {
+    const checks = [
+      !!p?.full_name,
+      !!p?.bio,
+      !!p?.location,
+      !!p?.avatar_url,
+      !!(p?.website_url || p?.github_url || p?.linkedin_url || p?.twitter_url),
+    ];
+    const pct = Math.round((checks.filter(Boolean).length / checks.length) * 100);
+    setProfileCompletion(pct);
   };
 
   const loadDashboardData = async () => {
@@ -226,7 +240,7 @@ export default function Dashboard() {
   }
 
   // Show profile setup if no profile exists, but allow dashboard to continue
-  const showProfileSetup = !profile;
+  const showProfileSetup = !profile || profileCompletion < 80;
 
   const statsDisplay = [
     {
@@ -542,6 +556,24 @@ export default function Dashboard() {
                         <div>
                           <Label htmlFor="location">Location</Label>
                           <Input id="location" value={locationInput} onChange={(e) => setLocationInput(e.target.value)} />
+                        </div>
+                        <div className="md:col-span-2">
+                          <Label htmlFor="avatar">Profile Image</Label>
+                          <Input id="avatar" type="file" accept="image/*" onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file || !user) return;
+                            try {
+                              const path = `${user.id}/avatar-${Date.now()}-${file.name}`;
+                              const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
+                              if (error) throw error;
+                              const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+                              await updateProfile({ avatar_url: data.publicUrl } as any);
+                              computeProfileCompletion({ ...(profile as any), avatar_url: data.publicUrl });
+                              aethexToast.success({ title: "Avatar updated" });
+                            } catch (err: any) {
+                              aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                            }
+                          }} />
                         </div>
                         <div className="md:col-span-2">
                           <Label htmlFor="bio">Bio</Label>
