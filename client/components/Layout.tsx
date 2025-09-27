@@ -30,7 +30,6 @@ export default function Layout({ children }: LayoutProps) {
 
   const userNavigation = [
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Profile", href: "/profile" },
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
@@ -140,10 +139,10 @@ export default function Layout({ children }: LayoutProps) {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link to="/profile" className="cursor-pointer">
-                              <Settings className="mr-2 h-4 w-4" />
-                              Profile Settings
-                            </Link>
+                            <Link to="/dashboard" className="cursor-pointer">
+                            <Settings className="mr-2 h-4 w-4" />
+                            Settings
+                          </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
