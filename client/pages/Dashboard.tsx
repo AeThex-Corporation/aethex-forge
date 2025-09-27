@@ -103,6 +103,13 @@ export default function Dashboard() {
         setProjects([]);
       }
 
+      // Check and award project-related achievements, then load achievements
+      try {
+        await aethexAchievementService.checkAndAwardProjectAchievements(user!.id);
+      } catch (e) {
+        console.warn("checkAndAwardProjectAchievements failed:", e);
+      }
+
       // Load user's achievements with error handling
       let userAchievements = [];
       try {
@@ -115,9 +122,9 @@ export default function Dashboard() {
         setAchievements([]);
       }
 
-      // Calculate stats
+      // Calculate stats (treat planning and in_progress as active)
       const activeCount = userProjects.filter(
-        (p) => p.status === "in_progress",
+        (p) => p.status === "in_progress" || p.status === "planning",
       ).length;
       const completedCount = userProjects.filter(
         (p) => p.status === "completed",
