@@ -39,9 +39,13 @@ export default function Login() {
   // Redirect if already logged in
   useEffect(() => {
     if (user && !loading) {
-      navigate("/onboarding", { replace: true });
+      if (profile) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/onboarding", { replace: true });
+      }
     }
-  }, [user, loading, navigate]);
+  }, [user, profile, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
