@@ -39,13 +39,9 @@ export default function Login() {
   // Redirect if already logged in
   useEffect(() => {
     if (user && !loading) {
-      if (profile) {
-        navigate("/dashboard", { replace: true });
-      } else {
-        navigate("/onboarding", { replace: true });
-      }
+      navigate("/onboarding", { replace: true });
     }
-  }, [user, profile, loading, navigate]);
+  }, [user, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -279,7 +275,7 @@ export default function Login() {
                   }
                 >
                   <LogIn className="h-4 w-4 mr-2" />
-                  {isSignUp ? "Create Account" : "Sign In to Dashboard"}
+                  {isSignUp ? "Create Account" : "Sign In"}
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </form>
