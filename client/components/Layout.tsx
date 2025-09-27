@@ -19,7 +19,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const { user, profile, signOut, loading } = useAuth();
+  const { user, profile, roles, signOut, loading } = useAuth();
 
   const navigation = [
     { name: "Home", href: "/" },
