@@ -216,16 +216,18 @@ export default function Onboarding() {
               <SkeletonOnboardingStep />
             ) : (
               <div className="animate-fade-in">
-                <CurrentStepComponent
-                  data={data}
-                  updateData={updateData}
-                  nextStep={nextStep}
-                  prevStep={prevStep}
-                  currentStep={currentStep}
-                  totalSteps={steps.length}
-                  onFinish={finishOnboarding}
-                  isFinishing={isFinishing}
-                />
+                {currentStep === steps.length - 1 ? (
+                  <Welcome data={data} onFinish={finishOnboarding} isFinishing={isFinishing} />
+                ) : (
+                  <CurrentStepComponent
+                    data={data}
+                    updateData={updateData}
+                    nextStep={nextStep}
+                    prevStep={prevStep}
+                    currentStep={currentStep}
+                    totalSteps={steps.length}
+                  />
+                )}
               </div>
             )}
           </div>
