@@ -57,6 +57,9 @@ export default function ProjectsNew() {
       } as any);
 
       if (project) {
+        try {
+          await aethexAchievementService.checkAndAwardProjectAchievements(user.id);
+        } catch {}
         aethexToast.success({ title: "Project created", description: "Your project has been created." });
         navigate("/dashboard");
       } else {
