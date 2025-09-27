@@ -61,7 +61,7 @@ export default function Layout({ children }: LayoutProps) {
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {(() => {
-              const isOwner = user?.email?.toLowerCase() === "mrpiglr@gmail.com";
+              const isOwner = Array.isArray(roles) && roles.includes("owner");
               const navItems = user
                 ? (isOwner ? [{ name: "Admin", href: "/admin" }, ...userNavigation] : userNavigation)
                 : navigation;
