@@ -2,16 +2,19 @@ import { supabase } from "./supabase";
 
 export const aethexSocialService = {
   async listRecommended(userId: string, limit = 10) {
-    const { data, error } = await supabase
-      .from("user_profiles")
-      .select("id, username, full_name, avatar_url, bio")
-      .neq("id", userId)
-      .limit(limit);
-    if (error) {
-      console.warn("listRecommended error:", error);
-      return [] as any[];
-    }
-    return data as any[];
+    try {
+      const { data, error } = await supabase
+        .from("user_profiles")
+        .select("id, username, full_name, avatar_url, bio")
+        .neq("id", userId)
+        .limit(limit);
+      if (!error && data) return data as any[];
+    } catch {}
+    try {
+      const raw = localStorage.getItem("demo_profiles");
+      const profiles = raw ? JSON.parse(raw) : [];
+      return profiles.filter((p:any)=>p.id!==userId).slice(0, limit);
+    } catch { return [] as any[]; }
   },
 
   async getFollowing(userId: string): Promise<string[]> {
