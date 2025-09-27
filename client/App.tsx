@@ -53,7 +53,10 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/feed" element={<Feed />} />
-              <Route path="/network" element={<Navigate to="/feed" replace />} />
+              <Route
+                path="/network"
+                element={<Navigate to="/feed" replace />}
+              />
               <Route path="/projects/new" element={<ProjectsNew />} />
               <Route
                 path="/profile"

@@ -7,7 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { aethexSocialService } from "@/lib/aethex-social-service";
-import { Heart, MessageCircle, Share2, UserPlus, UserCheck, Volume2, VolumeX } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  Share2,
+  UserPlus,
+  UserCheck,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 
 interface FeedItem {
   id: string;
@@ -45,7 +53,11 @@ export default function Feed() {
           authorAvatar: r.avatar_url,
           caption: r.bio || "",
           mediaUrl: r.banner_url || r.avatar_url || null,
-          mediaType: r.banner_url?.match(/\.(mp4|webm|mov)(\?.*)?$/i) ? "video" : r.banner_url || r.avatar_url ? "image" : "none",
+          mediaType: r.banner_url?.match(/\.(mp4|webm|mov)(\?.*)?$/i)
+            ? "video"
+            : r.banner_url || r.avatar_url
+              ? "image"
+              : "none",
           likes: Math.floor(Math.random() * 200) + 5,
           comments: Math.floor(Math.random() * 30),
         }));
@@ -72,7 +84,11 @@ export default function Feed() {
   if (!user && !loading) return <Navigate to="/login" replace />;
   if (loading || isLoading) {
     return (
-      <LoadingScreen message="Loading your feed..." showProgress duration={1000} />
+      <LoadingScreen
+        message="Loading your feed..."
+        showProgress
+        duration={1000}
+      />
     );
   }
 
@@ -81,17 +97,33 @@ export default function Feed() {
       <div className="min-h-screen bg-aethex-gradient">
         <div className="h-[calc(100vh-64px)] overflow-y-auto snap-y snap-mandatory no-scrollbar">
           {items.length === 0 && (
-            <div className="flex items-center justify-center h-full text-muted-foreground">No posts yet. Follow people to populate your feed.</div>
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+              No posts yet. Follow people to populate your feed.
+            </div>
           )}
           {items.map((item) => (
-            <section key={item.id} className="snap-start h-[calc(100vh-64px)] relative flex items-center justify-center">
+            <section
+              key={item.id}
+              className="snap-start h-[calc(100vh-64px)] relative flex items-center justify-center"
+            >
               <Card className="w-full h-full bg-black/60 border-border/30 overflow-hidden">
                 <CardContent className="w-full h-full p-0 relative">
                   {/* Media */}
                   {item.mediaType === "video" && item.mediaUrl ? (
-                    <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay loop muted={muted} playsInline />
+                    <video
+                      src={item.mediaUrl}
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      loop
+                      muted={muted}
+                      playsInline
+                    />
                   ) : item.mediaType === "image" && item.mediaUrl ? (
-                    <img src={item.mediaUrl} alt={item.caption || item.authorName} className="w-full h-full object-cover" />
+                    <img
+                      src={item.mediaUrl}
+                      alt={item.caption || item.authorName}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-aethex-500/20 to-neon-blue/20" />
                   )}
@@ -101,16 +133,37 @@ export default function Feed() {
 
                   {/* Right rail actions */}
                   <div className="absolute right-4 bottom-24 flex flex-col items-center gap-4">
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30" onClick={() => setMuted((m) => !m)}>
-                      {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                      onClick={() => setMuted((m) => !m)}
+                    >
+                      {muted ? (
+                        <VolumeX className="h-5 w-5" />
+                      ) : (
+                        <Volume2 className="h-5 w-5" />
+                      )}
                     </Button>
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30">
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                    >
                       <Heart className="h-5 w-5" />
                     </Button>
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30">
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                    >
                       <MessageCircle className="h-5 w-5" />
                     </Button>
-                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30">
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="rounded-full bg-white/20 hover:bg-white/30"
+                    >
                       <Share2 className="h-5 w-5" />
                     </Button>
                   </div>
@@ -120,15 +173,37 @@ export default function Feed() {
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={item.authorAvatar || undefined} />
-                        <AvatarFallback>{item.authorName[0] || "U"}</AvatarFallback>
+                        <AvatarFallback>
+                          {item.authorName[0] || "U"}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-semibold text-white">{item.authorName}</div>
-                        {item.caption && <div className="text-xs text-white/80 max-w-[60vw] line-clamp-2">{item.caption}</div>}
+                        <div className="font-semibold text-white">
+                          {item.authorName}
+                        </div>
+                        {item.caption && (
+                          <div className="text-xs text-white/80 max-w-[60vw] line-clamp-2">
+                            {item.caption}
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <Button size="sm" variant={isFollowingAuthor(item.authorId) ? "outline" : "default"} onClick={() => toggleFollow(item.authorId)}>
-                      {isFollowingAuthor(item.authorId) ? (<span className="flex items-center gap-1"><UserCheck className="h-4 w-4" /> Following</span>) : (<span className="flex items-center gap-1"><UserPlus className="h-4 w-4" /> Follow</span>)}
+                    <Button
+                      size="sm"
+                      variant={
+                        isFollowingAuthor(item.authorId) ? "outline" : "default"
+                      }
+                      onClick={() => toggleFollow(item.authorId)}
+                    >
+                      {isFollowingAuthor(item.authorId) ? (
+                        <span className="flex items-center gap-1">
+                          <UserCheck className="h-4 w-4" /> Following
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <UserPlus className="h-4 w-4" /> Follow
+                        </span>
+                      )}
                     </Button>
                   </div>
                 </CardContent>

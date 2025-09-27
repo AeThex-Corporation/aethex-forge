@@ -81,13 +81,17 @@ export const aethexUserService = {
       // If table missing, fall back to mock for local dev only
       if (isTableMissing(error)) {
         const mock = await mockAuth.getUserProfile(user.id as any);
-        if (mock) return { ...(mock as any), email: user.email } as AethexUserProfile;
-        const created = await mockAuth.updateProfile(user.id as any, {
-          username: user.email?.split("@")[0] || "user",
-          email: user.email || "",
-          role: "member",
-          onboarded: true,
-        } as any);
+        if (mock)
+          return { ...(mock as any), email: user.email } as AethexUserProfile;
+        const created = await mockAuth.updateProfile(
+          user.id as any,
+          {
+            username: user.email?.split("@")[0] || "user",
+            email: user.email || "",
+            role: "member",
+            onboarded: true,
+          } as any,
+        );
         return { ...(created as any), email: user.email } as AethexUserProfile;
       }
       // If no row, create initial DB profile instead of mock
@@ -132,13 +136,19 @@ export const aethexUserService = {
 
     if (error) {
       if (isTableMissing(error)) {
-        const mock = await mockAuth.updateProfile(userId as any, updates as any);
+        const mock = await mockAuth.updateProfile(
+          userId as any,
+          updates as any,
+        );
         return mock as unknown as AethexUserProfile;
       }
       if ((error as any)?.code === "PGRST116") {
         const { data: upserted, error: upsertError } = await supabase
           .from("user_profiles")
-          .upsert({ id: userId, user_type: "community_member", ...updates } as any, { onConflict: "id" })
+          .upsert(
+            { id: userId, user_type: "community_member", ...updates } as any,
+            { onConflict: "id" },
+          )
           .select()
           .single();
         if (upsertError) throw upsertError;

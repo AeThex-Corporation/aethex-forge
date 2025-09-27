@@ -137,7 +137,9 @@ export default function Dashboard() {
       !!p?.banner_url,
       !!(p?.website_url || p?.github_url || p?.linkedin_url || p?.twitter_url),
     ];
-    const pct = Math.round((checks.filter(Boolean).length / checks.length) * 100);
+    const pct = Math.round(
+      (checks.filter(Boolean).length / checks.length) * 100,
+    );
     setProfileCompletion(pct);
   };
 
@@ -157,7 +159,9 @@ export default function Dashboard() {
 
       // Check and award project-related achievements, then load achievements
       try {
-        await aethexAchievementService.checkAndAwardProjectAchievements(user!.id);
+        await aethexAchievementService.checkAndAwardProjectAchievements(
+          user!.id,
+        );
       } catch (e) {
         console.warn("checkAndAwardProjectAchievements failed:", e);
       }
@@ -364,7 +368,11 @@ export default function Dashboard() {
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        onClick={() => document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" })}
+                        onClick={() =>
+                          document
+                            .getElementById("settings")
+                            ?.scrollIntoView({ behavior: "smooth" })
+                        }
                         className="bg-orange-600 hover:bg-orange-700"
                       >
                         Setup Profile
@@ -398,7 +406,9 @@ export default function Dashboard() {
                 </p>
               </div>
               <div className="flex items-center space-x-4">
-                <div className="text-sm text-muted-foreground">Profile {profileCompletion}% complete</div>
+                <div className="text-sm text-muted-foreground">
+                  Profile {profileCompletion}% complete
+                </div>
                 <Button variant="outline" size="sm" className="hover-lift">
                   <Bell className="h-4 w-4 mr-2" />
                   Notifications
@@ -407,7 +417,11 @@ export default function Dashboard() {
                   variant="outline"
                   size="sm"
                   className="hover-lift"
-                  onClick={() => document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() =>
+                    document
+                      .getElementById("settings")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
@@ -535,16 +549,25 @@ export default function Dashboard() {
               </div>
 
               {/* Settings Section */}
-              <Card className="bg-card/50 border-border/50 animate-fade-in" id="settings">
+              <Card
+                className="bg-card/50 border-border/50 animate-fade-in"
+                id="settings"
+              >
                 <CardHeader>
-                  <CardTitle className="text-gradient">Account Settings</CardTitle>
-                  <CardDescription>Manage your profile, notifications, and privacy</CardDescription>
+                  <CardTitle className="text-gradient">
+                    Account Settings
+                  </CardTitle>
+                  <CardDescription>
+                    Manage your profile, notifications, and privacy
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="profile">
                     <TabsList className="mb-4">
                       <TabsTrigger value="profile">Profile</TabsTrigger>
-                      <TabsTrigger value="notifications">Notifications</TabsTrigger>
+                      <TabsTrigger value="notifications">
+                        Notifications
+                      </TabsTrigger>
                       <TabsTrigger value="privacy">Privacy</TabsTrigger>
                     </TabsList>
 
@@ -552,97 +575,189 @@ export default function Dashboard() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="displayName">Display Name</Label>
-                          <Input id="displayName" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                          <Input
+                            id="displayName"
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label htmlFor="location">Location</Label>
-                          <Input id="location" value={locationInput} onChange={(e) => setLocationInput(e.target.value)} />
+                          <Input
+                            id="location"
+                            value={locationInput}
+                            onChange={(e) => setLocationInput(e.target.value)}
+                          />
                         </div>
                         <div className="md:col-span-2">
                           <Label htmlFor="avatar">Profile Image</Label>
-                          <Input id="avatar" type="file" accept="image/*" onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file || !user) return;
-                            const storeDataUrl = () => new Promise<string>((resolve, reject) => {
-                              const reader = new FileReader();
-                              reader.onload = () => resolve(reader.result as string);
-                              reader.onerror = () => reject(new Error("Failed to read file"));
-                              reader.readAsDataURL(file);
-                            });
-                            try {
-                              const path = `${user.id}/avatar-${Date.now()}-${file.name}`;
-                              const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
-                              if (error) throw error;
-                              const { data } = supabase.storage.from("avatars").getPublicUrl(path);
-                              await updateProfile({ avatar_url: data.publicUrl } as any);
-                              computeProfileCompletion({ ...(profile as any), avatar_url: data.publicUrl });
-                              aethexToast.success({ title: "Avatar updated" });
-                            } catch (err: any) {
+                          <Input
+                            id="avatar"
+                            type="file"
+                            accept="image/*"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file || !user) return;
+                              const storeDataUrl = () =>
+                                new Promise<string>((resolve, reject) => {
+                                  const reader = new FileReader();
+                                  reader.onload = () =>
+                                    resolve(reader.result as string);
+                                  reader.onerror = () =>
+                                    reject(new Error("Failed to read file"));
+                                  reader.readAsDataURL(file);
+                                });
                               try {
-                                const dataUrl = await storeDataUrl();
-                                await updateProfile({ avatar_url: dataUrl } as any);
-                                computeProfileCompletion({ ...(profile as any), avatar_url: dataUrl });
-                                aethexToast.success({ title: "Avatar saved (local)" });
-                              } catch (e:any) {
-                                aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                                const path = `${user.id}/avatar-${Date.now()}-${file.name}`;
+                                const { error } = await supabase.storage
+                                  .from("avatars")
+                                  .upload(path, file, { upsert: true });
+                                if (error) throw error;
+                                const { data } = supabase.storage
+                                  .from("avatars")
+                                  .getPublicUrl(path);
+                                await updateProfile({
+                                  avatar_url: data.publicUrl,
+                                } as any);
+                                computeProfileCompletion({
+                                  ...(profile as any),
+                                  avatar_url: data.publicUrl,
+                                });
+                                aethexToast.success({
+                                  title: "Avatar updated",
+                                });
+                              } catch (err: any) {
+                                try {
+                                  const dataUrl = await storeDataUrl();
+                                  await updateProfile({
+                                    avatar_url: dataUrl,
+                                  } as any);
+                                  computeProfileCompletion({
+                                    ...(profile as any),
+                                    avatar_url: dataUrl,
+                                  });
+                                  aethexToast.success({
+                                    title: "Avatar saved (local)",
+                                  });
+                                } catch (e: any) {
+                                  aethexToast.error({
+                                    title: "Upload failed",
+                                    description:
+                                      err?.message || "Unable to upload image",
+                                  });
+                                }
                               }
-                            }
-                          }} />
+                            }}
+                          />
                         </div>
                         <div className="md:col-span-2">
                           <Label htmlFor="banner">Banner Image</Label>
-                          <Input id="banner" type="file" accept="image/*" onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file || !user) return;
-                            const storeDataUrl = () => new Promise<string>((resolve, reject) => {
-                              const reader = new FileReader();
-                              reader.onload = () => resolve(reader.result as string);
-                              reader.onerror = () => reject(new Error("Failed to read file"));
-                              reader.readAsDataURL(file);
-                            });
-                            try {
-                              const path = `${user.id}/banner-${Date.now()}-${file.name}`;
-                              const { error } = await supabase.storage.from("banners").upload(path, file, { upsert: true });
-                              if (error) throw error;
-                              const { data } = supabase.storage.from("banners").getPublicUrl(path);
-                              await updateProfile({ banner_url: data.publicUrl } as any);
-                              computeProfileCompletion({ ...(profile as any), banner_url: data.publicUrl });
-                              aethexToast.success({ title: "Banner updated" });
-                            } catch (err: any) {
+                          <Input
+                            id="banner"
+                            type="file"
+                            accept="image/*"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file || !user) return;
+                              const storeDataUrl = () =>
+                                new Promise<string>((resolve, reject) => {
+                                  const reader = new FileReader();
+                                  reader.onload = () =>
+                                    resolve(reader.result as string);
+                                  reader.onerror = () =>
+                                    reject(new Error("Failed to read file"));
+                                  reader.readAsDataURL(file);
+                                });
                               try {
-                                const dataUrl = await storeDataUrl();
-                                await updateProfile({ banner_url: dataUrl } as any);
-                                computeProfileCompletion({ ...(profile as any), banner_url: dataUrl });
-                                aethexToast.success({ title: "Banner saved (local)" });
-                              } catch (e:any) {
-                                aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                                const path = `${user.id}/banner-${Date.now()}-${file.name}`;
+                                const { error } = await supabase.storage
+                                  .from("banners")
+                                  .upload(path, file, { upsert: true });
+                                if (error) throw error;
+                                const { data } = supabase.storage
+                                  .from("banners")
+                                  .getPublicUrl(path);
+                                await updateProfile({
+                                  banner_url: data.publicUrl,
+                                } as any);
+                                computeProfileCompletion({
+                                  ...(profile as any),
+                                  banner_url: data.publicUrl,
+                                });
+                                aethexToast.success({
+                                  title: "Banner updated",
+                                });
+                              } catch (err: any) {
+                                try {
+                                  const dataUrl = await storeDataUrl();
+                                  await updateProfile({
+                                    banner_url: dataUrl,
+                                  } as any);
+                                  computeProfileCompletion({
+                                    ...(profile as any),
+                                    banner_url: dataUrl,
+                                  });
+                                  aethexToast.success({
+                                    title: "Banner saved (local)",
+                                  });
+                                } catch (e: any) {
+                                  aethexToast.error({
+                                    title: "Upload failed",
+                                    description:
+                                      err?.message || "Unable to upload image",
+                                  });
+                                }
                               }
-                            }
-                          }} />
+                            }}
+                          />
                         </div>
                         <div className="md:col-span-2">
                           <Label htmlFor="bio">Bio</Label>
-                          <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} />
+                          <Textarea
+                            id="bio"
+                            value={bio}
+                            onChange={(e) => setBio(e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label htmlFor="website">Website</Label>
-                          <Input id="website" value={website} onChange={(e) => setWebsite(e.target.value)} />
+                          <Input
+                            id="website"
+                            value={website}
+                            onChange={(e) => setWebsite(e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label htmlFor="linkedin">LinkedIn URL</Label>
-                          <Input id="linkedin" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
+                          <Input
+                            id="linkedin"
+                            value={linkedin}
+                            onChange={(e) => setLinkedin(e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label htmlFor="github">GitHub URL</Label>
-                          <Input id="github" value={github} onChange={(e) => setGithub(e.target.value)} />
+                          <Input
+                            id="github"
+                            value={github}
+                            onChange={(e) => setGithub(e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label htmlFor="twitter">Twitter URL</Label>
-                          <Input id="twitter" value={twitter} onChange={(e) => setTwitter(e.target.value)} />
+                          <Input
+                            id="twitter"
+                            value={twitter}
+                            onChange={(e) => setTwitter(e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="flex justify-end">
-                        <Button onClick={saveProfile} disabled={savingProfile} className="hover-lift">
+                        <Button
+                          onClick={saveProfile}
+                          disabled={savingProfile}
+                          className="hover-lift"
+                        >
                           {savingProfile ? "Saving..." : "Save Changes"}
                         </Button>
                       </div>
@@ -652,14 +767,18 @@ export default function Dashboard() {
                       <div className="flex items-center justify-between border rounded-lg p-3">
                         <div>
                           <div className="font-medium">Email notifications</div>
-                          <div className="text-sm text-muted-foreground">Get updates in your inbox</div>
+                          <div className="text-sm text-muted-foreground">
+                            Get updates in your inbox
+                          </div>
                         </div>
                         <Switch defaultChecked />
                       </div>
                       <div className="flex items-center justify-between border rounded-lg p-3">
                         <div>
                           <div className="font-medium">Push notifications</div>
-                          <div className="text-sm text-muted-foreground">Receive alerts in the app</div>
+                          <div className="text-sm text-muted-foreground">
+                            Receive alerts in the app
+                          </div>
                         </div>
                         <Switch />
                       </div>
@@ -669,14 +788,18 @@ export default function Dashboard() {
                       <div className="flex items-center justify-between border rounded-lg p-3">
                         <div>
                           <div className="font-medium">Public profile</div>
-                          <div className="text-sm text-muted-foreground">Show your profile to everyone</div>
+                          <div className="text-sm text-muted-foreground">
+                            Show your profile to everyone
+                          </div>
                         </div>
                         <Switch defaultChecked />
                       </div>
                       <div className="flex items-center justify-between border rounded-lg p-3">
                         <div>
                           <div className="font-medium">Show email</div>
-                          <div className="text-sm text-muted-foreground">Display email on your profile</div>
+                          <div className="text-sm text-muted-foreground">
+                            Display email on your profile
+                          </div>
                         </div>
                         <Switch />
                       </div>
