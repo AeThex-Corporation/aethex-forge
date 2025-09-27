@@ -77,31 +77,38 @@ export const aethexUserService = {
       .eq("id", user.id)
       .single();
 
-    if (error || !data || Object.keys(data || {}).length === 0) {
-      if (error) console.warn("Error fetching user profile, falling back to mock:", error);
-      const mock = await mockAuth.getUserProfile(user.id as any);
-      if (mock) {
-        return {
-          ...(mock as any),
-          email: user.email,
-        } as AethexUserProfile;
-      }
-      const created = await mockAuth.updateProfile(
-        user.id as any,
-        {
+    if (error) {
+      // If table missing, fall back to mock for local dev only
+      if (isTableMissing(error)) {
+        const mock = await mockAuth.getUserProfile(user.id as any);
+        if (mock) return { ...(mock as any), email: user.email } as AethexUserProfile;
+        const created = await mockAuth.updateProfile(user.id as any, {
           username: user.email?.split("@")[0] || "user",
           email: user.email || "",
           role: "member",
           onboarded: true,
-        } as any,
-      );
-      return {
-        ...(created as any),
-        email: user.email,
-      } as AethexUserProfile;
+        } as any);
+        return { ...(created as any), email: user.email } as AethexUserProfile;
+      }
+      // If no row, create initial DB profile instead of mock
+      if ((error as any)?.code === "PGRST116") {
+        const created = await this.createInitialProfile(user.id, {
+          username: user.email?.split("@")[0] || "user",
+          full_name: user.email?.split("@")[0] || "user",
+        });
+        return created;
+      }
+      throw error;
     }
 
-    // Map the existing database fields to our interface
+    if (!data || Object.keys(data || {}).length === 0) {
+      const created = await this.createInitialProfile(user.id, {
+        username: user.email?.split("@")[0] || "user",
+        full_name: user.email?.split("@")[0] || "user",
+      });
+      return created;
+    }
+
     return {
       ...data,
       email: user.email,
@@ -123,13 +130,9 @@ export const aethexUserService = {
       .select()
       .single();
 
-    if (error || !data || Object.keys(data || {}).length === 0) {
-      console.warn("Updating profile fallback to mock (error or empty):", error?.message);
-      if (!error || isTableMissing(error)) {
-        const mock = await mockAuth.updateProfile(
-          userId as any,
-          updates as any,
-        );
+    if (error) {
+      if (isTableMissing(error)) {
+        const mock = await mockAuth.updateProfile(userId as any, updates as any);
         return mock as unknown as AethexUserProfile;
       }
       throw error;
@@ -243,128 +246,68 @@ export const aethexUserService = {
 // Project Services
 export const aethexProjectService = {
   async getUserProjects(userId: string): Promise<AethexProject[]> {
-    try {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
 
-      if (!error && Array.isArray(data)) {
-        return data as AethexProject[];
-      }
-
-      if (error) console.warn("Error fetching projects:", error);
-    } catch (err) {
-      console.warn("Exception fetching projects, using local fallback:", err);
+    if (error) {
+      if (isTableMissing(error)) return [];
+      throw error;
     }
 
-    try {
-      const raw = localStorage.getItem("mock_projects");
-      const all = raw ? (JSON.parse(raw) as AethexProject[]) : [];
-      return all.filter((p) => p.user_id === userId).sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""));
-    } catch {
-      return [];
-    }
+    return (data as AethexProject[]) || [];
   },
 
   async createProject(
     project: Omit<AethexProject, "id" | "created_at" | "updated_at">,
   ): Promise<AethexProject | null> {
-    try {
-      const supabasePromise = supabase
-        .from("projects")
-        .insert(project)
-        .select()
-        .single();
+    const { data, error } = await supabase
+      .from("projects")
+      .insert(project)
+      .select()
+      .single();
 
-      const timeout = new Promise<any>((resolve) =>
-        setTimeout(() => resolve({ data: null, error: new Error("timeout") }), 6000)
-      );
-
-      const { data, error } = await (Promise.race([supabasePromise as any, timeout]) as Promise<any>);
-
-      if (!error && data) {
-        return data as AethexProject;
-      }
-
-      if (error) console.warn("Create project failed or timed out, using local fallback:", error?.message || error);
-    } catch (err: any) {
-      console.warn("Create project exception, using local fallback:", err?.message || err);
+    if (error) {
+      if (isTableMissing(error)) return null;
+      throw error;
     }
 
-    const now = new Date().toISOString();
-    const localProject: AethexProject = {
-      ...(project as any),
-      id: `local_${Date.now()}_${Math.random().toString(36).slice(2)}`,
-      created_at: now,
-      updated_at: now,
-    } as AethexProject;
-
-    try {
-      const raw = localStorage.getItem("mock_projects");
-      const list: AethexProject[] = raw ? JSON.parse(raw) : [];
-      list.unshift(localProject);
-      localStorage.setItem("mock_projects", JSON.stringify(list));
-    } catch {}
-
-    return localProject;
+    return data as AethexProject;
   },
 
   async updateProject(
     projectId: string,
     updates: Partial<AethexProject>,
   ): Promise<AethexProject | null> {
-    try {
-      const { data, error } = await supabase
-        .from("projects")
-        .update(updates)
-        .eq("id", projectId)
-        .select()
-        .single();
+    const { data, error } = await supabase
+      .from("projects")
+      .update(updates)
+      .eq("id", projectId)
+      .select()
+      .single();
 
-      if (!error && data) return data as AethexProject;
-      if (error) console.warn("Error updating project:", error);
-    } catch (err) {
-      console.warn("Exception updating project, using local fallback:", err);
+    if (error) {
+      if (isTableMissing(error)) return null;
+      throw error;
     }
 
-    try {
-      const raw = localStorage.getItem("mock_projects");
-      const list: AethexProject[] = raw ? JSON.parse(raw) : [];
-      const idx = list.findIndex((p) => (p as any).id === projectId);
-      if (idx >= 0) {
-        const updated = { ...list[idx], ...updates, updated_at: new Date().toISOString() } as AethexProject;
-        list[idx] = updated;
-        localStorage.setItem("mock_projects", JSON.stringify(list));
-        return updated;
-      }
-    } catch {}
-
-    return null;
+    return data as AethexProject;
   },
 
   async deleteProject(projectId: string): Promise<boolean> {
-    try {
-      const { error } = await supabase
-        .from("projects")
-        .delete()
-        .eq("id", projectId);
-      if (!error) return true;
-      if (error) console.warn("Error deleting project:", error);
-    } catch (err) {
-      console.warn("Exception deleting project, using local fallback:", err);
+    const { error } = await supabase
+      .from("projects")
+      .delete()
+      .eq("id", projectId);
+
+    if (error) {
+      if (isTableMissing(error)) return false;
+      throw error;
     }
 
-    try {
-      const raw = localStorage.getItem("mock_projects");
-      const list: AethexProject[] = raw ? JSON.parse(raw) : [];
-      const next = list.filter((p) => (p as any).id !== projectId);
-      localStorage.setItem("mock_projects", JSON.stringify(next));
-      return true;
-    } catch {}
-
-    return false;
+    return true;
   },
 
   async getAllProjects(limit = 10): Promise<AethexProject[]> {
