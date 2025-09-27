@@ -5,12 +5,14 @@ import { UserProfile } from "@/lib/database.types";
 import { aethexToast } from "@/lib/aethex-toast";
 import {
   aethexUserService,
+  aethexRoleService,
   type AethexUserProfile,
 } from "@/lib/aethex-database-adapter";
 
 interface AuthContextType {
   user: User | null;
   profile: AethexUserProfile | null;
+  roles: string[];
   session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
@@ -39,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<AethexUserProfile | null>(null);
+  const [roles, setRoles] = useState<string[]>([]);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -79,6 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         await fetchUserProfile(session.user.id);
       } else {
         setProfile(null);
+        setRoles([]);
       }
       setLoading(false);
 
@@ -105,6 +109,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const userProfile = await aethexUserService.getCurrentUser();
       setProfile(userProfile);
+      try {
+        const r = await aethexRoleService.getUserRoles(userId);
+        setRoles(r);
+      } catch {
+        setRoles([]);
+      }
       setLoading(false);
       return userProfile;
     } catch (error) {
@@ -233,6 +243,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const value = {
     user,
     profile,
+    roles,
     session,
     loading,
     signIn,
