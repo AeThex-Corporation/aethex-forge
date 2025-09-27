@@ -154,13 +154,18 @@ export default function Dashboard() {
     }
   };
 
-  // While auth is resolving or data is loading, show loading screen
-  if (authLoading || isLoading || !user) {
+  // If no user and auth is resolved, let the redirect happen without flashing a loader
+  if (!user && !authLoading) {
+    return null;
+  }
+
+  // Show loading only while auth or data is loading
+  if (authLoading || isLoading) {
     return (
       <LoadingScreen
         message="Loading your dashboard..."
         showProgress={true}
-        duration={1500}
+        duration={1200}
       />
     );
   }
