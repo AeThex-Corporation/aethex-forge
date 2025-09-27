@@ -563,6 +563,12 @@ export default function Dashboard() {
                           <Input id="avatar" type="file" accept="image/*" onChange={async (e) => {
                             const file = e.target.files?.[0];
                             if (!file || !user) return;
+                            const storeDataUrl = () => new Promise<string>((resolve, reject) => {
+                              const reader = new FileReader();
+                              reader.onload = () => resolve(reader.result as string);
+                              reader.onerror = () => reject(new Error("Failed to read file"));
+                              reader.readAsDataURL(file);
+                            });
                             try {
                               const path = `${user.id}/avatar-${Date.now()}-${file.name}`;
                               const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
@@ -572,7 +578,14 @@ export default function Dashboard() {
                               computeProfileCompletion({ ...(profile as any), avatar_url: data.publicUrl });
                               aethexToast.success({ title: "Avatar updated" });
                             } catch (err: any) {
-                              aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                              try {
+                                const dataUrl = await storeDataUrl();
+                                await updateProfile({ avatar_url: dataUrl } as any);
+                                computeProfileCompletion({ ...(profile as any), avatar_url: dataUrl });
+                                aethexToast.success({ title: "Avatar saved (local)" });
+                              } catch (e:any) {
+                                aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                              }
                             }
                           }} />
                         </div>
@@ -581,6 +594,12 @@ export default function Dashboard() {
                           <Input id="banner" type="file" accept="image/*" onChange={async (e) => {
                             const file = e.target.files?.[0];
                             if (!file || !user) return;
+                            const storeDataUrl = () => new Promise<string>((resolve, reject) => {
+                              const reader = new FileReader();
+                              reader.onload = () => resolve(reader.result as string);
+                              reader.onerror = () => reject(new Error("Failed to read file"));
+                              reader.readAsDataURL(file);
+                            });
                             try {
                               const path = `${user.id}/banner-${Date.now()}-${file.name}`;
                               const { error } = await supabase.storage.from("banners").upload(path, file, { upsert: true });
@@ -590,7 +609,14 @@ export default function Dashboard() {
                               computeProfileCompletion({ ...(profile as any), banner_url: data.publicUrl });
                               aethexToast.success({ title: "Banner updated" });
                             } catch (err: any) {
-                              aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                              try {
+                                const dataUrl = await storeDataUrl();
+                                await updateProfile({ banner_url: dataUrl } as any);
+                                computeProfileCompletion({ ...(profile as any), banner_url: dataUrl });
+                                aethexToast.success({ title: "Banner saved (local)" });
+                              } catch (e:any) {
+                                aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                              }
                             }
                           }} />
                         </div>
