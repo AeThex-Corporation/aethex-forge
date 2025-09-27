@@ -123,8 +123,10 @@ export default function Onboarding() {
       const existing = await aethexUserService.getCurrentUser();
       const payload = {
         username: `${data.personalInfo.firstName || user.email?.split("@")[0] || "user"}`,
-        full_name: `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
-        user_type: (userTypeMap[data.userType || "member"] as any) || "community_member",
+        full_name:
+          `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
+        user_type:
+          (userTypeMap[data.userType || "member"] as any) || "community_member",
         experience_level: (data.experience.level as any) || "beginner",
         bio: data.experience.previousProjects || undefined,
       } as any;
@@ -157,7 +159,8 @@ export default function Onboarding() {
       function formatError(err: any) {
         if (!err) return "Unknown error";
         if (typeof err === "string") return err;
-        if (err instanceof Error) return err.message + (err.stack ? `\n${err.stack}` : "");
+        if (err instanceof Error)
+          return err.message + (err.stack ? `\n${err.stack}` : "");
         if ((err as any).message) return (err as any).message;
         try {
           return JSON.stringify(err);

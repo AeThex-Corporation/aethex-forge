@@ -3,7 +3,10 @@ import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { UserProfile } from "@/lib/database.types";
 import { aethexToast } from "@/lib/aethex-toast";
-import { aethexUserService, type AethexUserProfile } from "@/lib/aethex-database-adapter";
+import {
+  aethexUserService,
+  type AethexUserProfile,
+} from "@/lib/aethex-database-adapter";
 
 interface AuthContextType {
   user: User | null;
@@ -123,8 +126,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("SignIn error details:", error);
 
       let errorMessage = error.message;
-      if (error.message?.includes("Failed to fetch") || error.name === "AuthRetryableFetchError") {
-        errorMessage = "Unable to connect to authentication service. Please check your internet connection and try again.";
+      if (
+        error.message?.includes("Failed to fetch") ||
+        error.name === "AuthRetryableFetchError"
+      ) {
+        errorMessage =
+          "Unable to connect to authentication service. Please check your internet connection and try again.";
       }
 
       aethexToast.error({
@@ -151,7 +158,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (data.user) {
         aethexToast.success({
           title: "Account created!",
-          description: "Please check your email to verify your account, then sign in.",
+          description:
+            "Please check your email to verify your account, then sign in.",
         });
       }
     } catch (error: any) {

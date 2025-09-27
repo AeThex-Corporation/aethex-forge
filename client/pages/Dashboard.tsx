@@ -55,7 +55,11 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    console.log("Dashboard useEffect:", { user: !!user, profile: !!profile, authLoading });
+    console.log("Dashboard useEffect:", {
+      user: !!user,
+      profile: !!profile,
+      authLoading,
+    });
 
     // Only redirect to login when auth is resolved and there's no user
     if (!user && !authLoading) {
@@ -97,7 +101,9 @@ export default function Dashboard() {
       // Load user's achievements with error handling
       let userAchievements = [];
       try {
-        userAchievements = await aethexAchievementService.getUserAchievements(user!.id);
+        userAchievements = await aethexAchievementService.getUserAchievements(
+          user!.id,
+        );
         setAchievements(userAchievements);
       } catch (achievementError) {
         console.warn("Could not load achievements:", achievementError);
@@ -283,8 +289,12 @@ export default function Dashboard() {
                     <div className="flex items-center space-x-3">
                       <User className="h-5 w-5 text-orange-400" />
                       <div>
-                        <h3 className="text-white font-semibold">Complete Your Profile</h3>
-                        <p className="text-orange-200 text-sm">Set up your profile to unlock all features</p>
+                        <h3 className="text-white font-semibold">
+                          Complete Your Profile
+                        </h3>
+                        <p className="text-orange-200 text-sm">
+                          Set up your profile to unlock all features
+                        </p>
                       </div>
                     </div>
                     <div className="flex space-x-2">
@@ -315,10 +325,12 @@ export default function Dashboard() {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-gradient-purple">
-                  Welcome back, {profile?.full_name || user.email?.split('@')[0]}
+                  Welcome back,{" "}
+                  {profile?.full_name || user.email?.split("@")[0]}
                 </h1>
                 <p className="text-muted-foreground">
-                  {profile?.role || 'Member'} • Level {profile?.level || 1} • 7 day streak 🔥
+                  {profile?.role || "Member"} • Level {profile?.level || 1} • 7
+                  day streak 🔥
                 </p>
               </div>
               <div className="flex items-center space-x-4">
@@ -343,7 +355,10 @@ export default function Dashboard() {
                   <div className="text-center space-y-4">
                     <div className="relative">
                       <img
-                        src={profile?.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face'}
+                        src={
+                          profile?.avatar_url ||
+                          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
+                        }
                         alt="User Avatar"
                         className="w-20 h-20 rounded-full mx-auto ring-4 ring-aethex-400/20 hover:ring-aethex-400/50 transition-all duration-300"
                       />
@@ -351,10 +366,10 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gradient">
-                        {profile?.full_name || user.email?.split('@')[0]}
+                        {profile?.full_name || user.email?.split("@")[0]}
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        {profile?.role || 'Member'}
+                        {profile?.role || "Member"}
                       </p>
                       <Badge
                         variant="outline"
@@ -369,7 +384,8 @@ export default function Dashboard() {
                       <div className="flex justify-between text-sm">
                         <span>XP Progress</span>
                         <span>
-                          {profile?.total_xp || 0} / {((profile?.level || 1) * 1000)}
+                          {profile?.total_xp || 0} /{" "}
+                          {(profile?.level || 1) * 1000}
                         </span>
                       </div>
                       <div className="w-full bg-muted rounded-full h-2">
@@ -481,58 +497,60 @@ export default function Dashboard() {
                     </div>
                   ) : (
                     projects.slice(0, 3).map((project: any, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-4 rounded-lg border border-border/30 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-right"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 flex items-center justify-center">
-                          <Rocket className="h-6 w-6 text-aethex-400" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold">{project.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {project.status?.replace("_", " ").toUpperCase()} •{" "}
-                            {project.technologies?.slice(0, 2).join(", ") ||
-                              "No tech specified"}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <div className="text-right">
-                          <p className="text-sm font-medium">
-                            {getProgressPercentage(project)}%
-                          </p>
-                          <div className="w-20 bg-muted rounded-full h-2 mt-1">
-                            <div
-                              className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full"
-                              style={{
-                                width: `${getProgressPercentage(project)}%`,
-                              }}
-                            />
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-4 rounded-lg border border-border/30 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-right"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 flex items-center justify-center">
+                            <Rocket className="h-6 w-6 text-aethex-400" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold">{project.title}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {project.status?.replace("_", " ").toUpperCase()}{" "}
+                              •{" "}
+                              {project.technologies?.slice(0, 2).join(", ") ||
+                                "No tech specified"}
+                            </p>
                           </div>
                         </div>
-                        <Badge
-                          variant={
-                            getPriorityFromTech(project.technologies || []) ===
-                            "High"
-                              ? "destructive"
-                              : "secondary"
-                          }
-                          className="animate-pulse"
-                        >
-                          {getPriorityFromTech(project.technologies || [])}
-                        </Badge>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="hover-lift"
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center space-x-4">
+                          <div className="text-right">
+                            <p className="text-sm font-medium">
+                              {getProgressPercentage(project)}%
+                            </p>
+                            <div className="w-20 bg-muted rounded-full h-2 mt-1">
+                              <div
+                                className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full"
+                                style={{
+                                  width: `${getProgressPercentage(project)}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <Badge
+                            variant={
+                              getPriorityFromTech(
+                                project.technologies || [],
+                              ) === "High"
+                                ? "destructive"
+                                : "secondary"
+                            }
+                            className="animate-pulse"
+                          >
+                            {getPriorityFromTech(project.technologies || [])}
+                          </Badge>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="hover-lift"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
-                    </div>
                     ))
                   )}
                 </CardContent>
@@ -551,49 +569,54 @@ export default function Dashboard() {
                     {achievements.length === 0 ? (
                       <div className="col-span-full text-center py-8 text-muted-foreground">
                         <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>No achievements unlocked yet. Complete projects to earn achievements!</p>
+                        <p>
+                          No achievements unlocked yet. Complete projects to
+                          earn achievements!
+                        </p>
                       </div>
                     ) : (
                       achievements.map((achievement: any, index) => {
-                      const Icon = getAchievementIcon(achievement.icon || 'star');
-                      return (
-                        <div
-                          key={index}
-                          className={`p-4 rounded-lg border transition-all duration-300 hover-lift animate-scale-in ${
-                            achievement.earned
-                              ? "border-aethex-400/50 bg-aethex-500/10"
-                              : "border-border/30 opacity-60"
-                          }`}
-                          style={{ animationDelay: `${index * 0.1}s` }}
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div
-                              className={`p-2 rounded-lg ${
-                                achievement.earned
-                                  ? "bg-gradient-to-r from-aethex-500 to-neon-blue"
-                                  : "bg-muted"
-                              }`}
-                            >
-                              <Icon
-                                className={`h-5 w-5 ${achievement.earned ? "text-white" : "text-muted-foreground"}`}
-                              />
-                            </div>
-                            <div>
-                              <h4
-                                className={`font-semibold ${achievement.earned ? "text-gradient" : ""}`}
+                        const Icon = getAchievementIcon(
+                          achievement.icon || "star",
+                        );
+                        return (
+                          <div
+                            key={index}
+                            className={`p-4 rounded-lg border transition-all duration-300 hover-lift animate-scale-in ${
+                              achievement.earned
+                                ? "border-aethex-400/50 bg-aethex-500/10"
+                                : "border-border/30 opacity-60"
+                            }`}
+                            style={{ animationDelay: `${index * 0.1}s` }}
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div
+                                className={`p-2 rounded-lg ${
+                                  achievement.earned
+                                    ? "bg-gradient-to-r from-aethex-500 to-neon-blue"
+                                    : "bg-muted"
+                                }`}
                               >
-                                {achievement.title}
-                              </h4>
-                              <p className="text-sm text-muted-foreground">
-                                {achievement.description}
-                              </p>
+                                <Icon
+                                  className={`h-5 w-5 ${achievement.earned ? "text-white" : "text-muted-foreground"}`}
+                                />
+                              </div>
+                              <div>
+                                <h4
+                                  className={`font-semibold ${achievement.earned ? "text-gradient" : ""}`}
+                                >
+                                  {achievement.title}
+                                </h4>
+                                <p className="text-sm text-muted-foreground">
+                                  {achievement.description}
+                                </p>
+                              </div>
+                              {achievement.earned && (
+                                <Star className="h-5 w-5 text-yellow-500 animate-pulse" />
+                              )}
                             </div>
-                            {achievement.earned && (
-                              <Star className="h-5 w-5 text-yellow-500 animate-pulse" />
-                            )}
                           </div>
-                        </div>
-                      );
+                        );
                       })
                     )}
                   </div>

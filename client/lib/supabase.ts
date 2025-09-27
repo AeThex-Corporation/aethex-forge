@@ -13,7 +13,7 @@ console.log("Supabase Config:", {
   hasKey: !!supabaseAnonKey,
   url: supabaseUrl,
   keyPrefix: supabaseAnonKey?.substring(0, 20) + "...",
-  isSupabaseConfigured
+  isSupabaseConfigured,
 });
 
 let supabaseClient: any = null;
@@ -31,12 +31,18 @@ if (isSupabaseConfigured) {
   setTimeout(async () => {
     try {
       console.log("🔍 Testing Supabase connection to:", supabaseUrl);
-      const { data, error } = await supabaseClient.from('user_profiles').select('count', { count: 'exact', head: true });
+      const { data, error } = await supabaseClient
+        .from("user_profiles")
+        .select("count", { count: "exact", head: true });
       if (error) {
         console.warn("⚠️ Supabase connection test failed:", error.message);
         console.log("🔄 Falling back to mock authentication for development");
       } else {
-        console.log("✅ Supabase connection successful - found", data, "user profiles");
+        console.log(
+          "✅ Supabase connection successful - found",
+          data,
+          "user profiles",
+        );
       }
     } catch (err: any) {
       console.warn("⚠️ Supabase connection error:", err.message);
@@ -61,7 +67,7 @@ if (isSupabaseConfigured) {
 // Create a proxy that falls back to mock when Supabase fails
 export const supabase = new Proxy(supabaseClient || {}, {
   get(target, prop) {
-    if (prop === 'auth') {
+    if (prop === "auth") {
       return {
         signInWithPassword: async (credentials: any) => {
           if (isSupabaseConfigured && target && target.auth) {
@@ -72,17 +78,27 @@ export const supabase = new Proxy(supabaseClient || {}, {
               return result;
             } catch (error: any) {
               console.warn("⚠️ Supabase authentication failed:", error.message);
-              if (error.message?.includes('Failed to fetch') ||
-                  error.name === 'AuthRetryableFetchError' ||
-                  error.message?.includes('fetch')) {
+              if (
+                error.message?.includes("Failed to fetch") ||
+                error.name === "AuthRetryableFetchError" ||
+                error.message?.includes("fetch")
+              ) {
                 console.log("🔄 Falling back to mock authentication");
-                return await mockAuth.signInWithPassword(credentials.email, credentials.password);
+                return await mockAuth.signInWithPassword(
+                  credentials.email,
+                  credentials.password,
+                );
               }
               throw error;
             }
           } else {
-            console.log("🔄 Using mock authentication (Supabase not configured)");
-            return await mockAuth.signInWithPassword(credentials.email, credentials.password);
+            console.log(
+              "🔄 Using mock authentication (Supabase not configured)",
+            );
+            return await mockAuth.signInWithPassword(
+              credentials.email,
+              credentials.password,
+            );
           }
         },
         signOut: async () => {
@@ -124,12 +140,12 @@ export const supabase = new Proxy(supabaseClient || {}, {
             }
           }
           return mockAuth.onAuthStateChange(callback);
-        }
+        },
       };
     }
 
-    if (prop === 'from') {
-      if (isSupabaseConfigured && target && typeof target.from === 'function') {
+    if (prop === "from") {
+      if (isSupabaseConfigured && target && typeof target.from === "function") {
         return target.from.bind(target);
       }
 
@@ -147,16 +163,20 @@ export const supabase = new Proxy(supabaseClient || {}, {
           single: async () => ({ data: rows[0] ?? {}, error: null }),
           then: (resolve: any) => resolve({ data: rows, error: null }),
           catch: () => builder,
-          finally: (cb: any) => { cb?.(); return builder; },
+          finally: (cb: any) => {
+            cb?.();
+            return builder;
+          },
         };
         return builder;
       };
 
       const createMockTable = (table: string) => ({
         select: (_cols?: any, _opts?: any) => createMockBuilder([]),
-        insert: (payload?: any) => createMockBuilder(
-          Array.isArray(payload) ? payload : payload ? [payload] : [],
-        ),
+        insert: (payload?: any) =>
+          createMockBuilder(
+            Array.isArray(payload) ? payload : payload ? [payload] : [],
+          ),
         update: (payload?: any) => createMockBuilder(payload || {}),
         delete: () => createMockBuilder([]),
       });
@@ -165,7 +185,7 @@ export const supabase = new Proxy(supabaseClient || {}, {
     }
 
     return target[prop];
-  }
+  },
 });
 
 // Auth helpers
@@ -189,7 +209,7 @@ export const channel = supabase.channel;
   try {
     const testLogin = await supabase.auth.signInWithPassword({
       email: "test@example.com",
-      password: "test123"
+      password: "test123",
     });
     console.log("Auth test result:", testLogin);
   } catch (error) {
@@ -197,7 +217,10 @@ export const channel = supabase.channel;
   }
 
   try {
-    const { data, error } = await supabase.from('user_profiles').select('*').limit(1);
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .limit(1);
     console.log("Database test - data:", data, "error:", error);
   } catch (dbError) {
     console.error("Database test error:", dbError);
