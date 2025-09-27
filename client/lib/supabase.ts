@@ -132,12 +132,34 @@ export const supabase = new Proxy(supabaseClient || {}, {
       if (isSupabaseConfigured && target && typeof target.from === 'function') {
         return target.from.bind(target);
       }
-      return (table: string) => ({
-        select: () => ({ error: null, data: [] }),
-        insert: () => ({ error: null, data: [] }),
-        update: () => ({ error: null, data: [] }),
-        delete: () => ({ error: null, data: [] })
+
+      // Chainable mock query builder to prevent runtime errors when Supabase is unavailable
+      const createMockBuilder = (initialData: any[] | any = []) => {
+        let rows = Array.isArray(initialData) ? initialData : [initialData];
+        const builder: any = {
+          select: () => builder,
+          insert: () => builder,
+          update: () => builder,
+          delete: () => builder,
+          eq: () => builder,
+          order: () => builder,
+          limit: () => builder,
+          single: async () => ({ data: rows[0] ?? null, error: null }),
+          then: undefined, // prevent accidental Promise behavior
+        };
+        return builder;
+      };
+
+      const createMockTable = (table: string) => ({
+        select: (_cols?: any, _opts?: any) => createMockBuilder([]),
+        insert: (payload?: any) => createMockBuilder(
+          Array.isArray(payload) ? payload : payload ? [payload] : [],
+        ),
+        update: (payload?: any) => createMockBuilder(payload || {}),
+        delete: () => createMockBuilder([]),
       });
+
+      return (table: string) => createMockTable(table);
     }
 
     return target[prop];
