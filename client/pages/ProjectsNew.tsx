@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { aethexToast } from "@/lib/aethex-toast";
-import { aethexProjectService } from "@/lib/aethex-database-adapter";
+import { aethexProjectService, aethexAchievementService } from "@/lib/aethex-database-adapter";
 
 export default function ProjectsNew() {
   const navigate = useNavigate();
