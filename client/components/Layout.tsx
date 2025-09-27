@@ -60,93 +60,96 @@ export default function Layout({ children }: LayoutProps) {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {(user && profile ? userNavigation : navigation).map(
-              (item, index) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    "text-sm font-medium transition-all duration-300 hover:text-aethex-400 hover:scale-105 relative animate-fade-in",
-                    location.pathname === item.href
-                      ? "text-aethex-500 animate-pulse-glow"
-                      : "text-muted-foreground",
-                  )}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  {item.name}
-                  {location.pathname === item.href && (
-                    <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue animate-scale-in" />
-                  )}
-                </Link>
-              ),
-            )}
+            {(user ? userNavigation : navigation).map((item, index) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  "text-sm font-medium transition-all duration-300 hover:text-aethex-400 hover:scale-105 relative animate-fade-in",
+                  location.pathname === item.href
+                    ? "text-aethex-500 animate-pulse-glow"
+                    : "text-muted-foreground",
+                )}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {item.name}
+                {location.pathname === item.href && (
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue animate-scale-in" />
+                )}
+              </Link>
+            ))}
           </nav>
 
           {/* Auth Section */}
           <div className="flex items-center space-x-4 animate-slide-left">
             {!loading && (
               <>
-                {user && profile ? (
-                  // Logged in user menu
+                {user ? (
+                  // Logged in - always show Dashboard button; show avatar menu if profile exists
                   <div className="flex items-center space-x-3">
+                    <Button asChild variant="outline" size="sm" className="hover-lift">
+                      <Link to="/dashboard">Dashboard</Link>
+                    </Button>
                     <Button variant="ghost" size="sm" className="hover-lift">
                       <Bell className="h-4 w-4" />
                     </Button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          className="relative h-8 w-8 rounded-full hover-lift"
-                        >
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage
-                              src={profile.avatar_url || undefined}
-                              alt={profile.full_name || profile.username}
-                            />
-                            <AvatarFallback>
-                              {(profile.full_name || profile.username || "U")
-                                .split(" ")
-                                .map((n) => n[0])
-                                .join("")
-                                .toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-56" align="end">
-                        <div className="flex items-center justify-start gap-2 p-2">
-                          <div className="flex flex-col space-y-1 leading-none">
-                            <p className="font-medium">
-                              {profile.full_name || profile.username}
-                            </p>
-                            <p className="w-[200px] truncate text-sm text-muted-foreground">
-                              {profile.email}
-                            </p>
+                    {profile && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="relative h-8 w-8 rounded-full hover-lift"
+                          >
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage
+                                src={profile.avatar_url || undefined}
+                                alt={profile.full_name || profile.username}
+                              />
+                              <AvatarFallback>
+                                {(profile.full_name || profile.username || "U")
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")
+                                  .toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56" align="end">
+                          <div className="flex items-center justify-start gap-2 p-2">
+                            <div className="flex flex-col space-y-1 leading-none">
+                              <p className="font-medium">
+                                {profile.full_name || profile.username}
+                              </p>
+                              <p className="w-[200px] truncate text-sm text-muted-foreground">
+                                {profile.email}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                          <Link to="/dashboard" className="cursor-pointer">
-                            <User className="mr-2 h-4 w-4" />
-                            Dashboard
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link to="/profile" className="cursor-pointer">
-                            <Settings className="mr-2 h-4 w-4" />
-                            Profile Settings
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="cursor-pointer"
-                          onClick={() => signOut()}
-                        >
-                          <LogOut className="mr-2 h-4 w-4" />
-                          Sign out
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem asChild>
+                            <Link to="/dashboard" className="cursor-pointer">
+                              <User className="mr-2 h-4 w-4" />
+                              Dashboard
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link to="/profile" className="cursor-pointer">
+                              <Settings className="mr-2 h-4 w-4" />
+                              Profile Settings
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => signOut()}
+                          >
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Sign out
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </div>
                 ) : (
                   // Not logged in - show sign in/join buttons
