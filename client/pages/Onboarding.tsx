@@ -9,7 +9,10 @@ import Experience from "@/components/onboarding/Experience";
 import Interests from "@/components/onboarding/Interests";
 import Welcome from "@/components/onboarding/Welcome";
 import { useAuth } from "@/contexts/AuthContext";
-import { aethexUserService, aethexAchievementService } from "@/lib/aethex-database-adapter";
+import {
+  aethexUserService,
+  aethexAchievementService,
+} from "@/lib/aethex-database-adapter";
 import { aethexToast } from "@/lib/aethex-toast";
 
 export type UserType = "game-developer" | "client" | "member" | "customer";
@@ -120,8 +123,10 @@ export default function Onboarding() {
       const existing = await aethexUserService.getCurrentUser();
       const payload = {
         username: `${data.personalInfo.firstName || user.email?.split("@")[0] || "user"}`,
-        full_name: `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
-        user_type: (userTypeMap[data.userType || "member"] as any) || "community_member",
+        full_name:
+          `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
+        user_type:
+          (userTypeMap[data.userType || "member"] as any) || "community_member",
         experience_level: (data.experience.level as any) || "beginner",
         bio: data.experience.previousProjects || undefined,
       } as any;
@@ -133,13 +138,18 @@ export default function Onboarding() {
       }
 
       const interests = Array.from(
-        new Set([...(data.interests.primaryGoals || []), ...(data.interests.preferredServices || [])]),
+        new Set([
+          ...(data.interests.primaryGoals || []),
+          ...(data.interests.preferredServices || []),
+        ]),
       );
       if (interests.length) {
         await aethexUserService.addUserInterests(user.id, interests);
       }
 
-      await aethexAchievementService.checkAndAwardOnboardingAchievement(user.id);
+      await aethexAchievementService.checkAndAwardOnboardingAchievement(
+        user.id,
+      );
 
       navigate("/dashboard", { replace: true });
     } catch (e) {
@@ -224,7 +234,11 @@ export default function Onboarding() {
             ) : (
               <div className="animate-fade-in">
                 {currentStep === steps.length - 1 ? (
-                  <Welcome data={data} onFinish={finishOnboarding} isFinishing={isFinishing} />
+                  <Welcome
+                    data={data}
+                    onFinish={finishOnboarding}
+                    isFinishing={isFinishing}
+                  />
                 ) : (
                   <CurrentStepComponent
                     data={data}
