@@ -135,6 +135,15 @@ export const aethexUserService = {
         const mock = await mockAuth.updateProfile(userId as any, updates as any);
         return mock as unknown as AethexUserProfile;
       }
+      if ((error as any)?.code === "PGRST116") {
+        const { data: upserted, error: upsertError } = await supabase
+          .from("user_profiles")
+          .upsert({ id: userId, user_type: "community_member", ...updates } as any, { onConflict: "id" })
+          .select()
+          .single();
+        if (upsertError) throw upsertError;
+        return upserted as AethexUserProfile;
+      }
       throw error;
     }
 
@@ -160,6 +169,7 @@ export const aethexUserService = {
         github_url: profileData.github_url,
         twitter_url: profileData.twitter_url,
         linkedin_url: profileData.linkedin_url,
+        banner_url: (profileData as any).banner_url,
         level: 1,
         total_xp: 0,
         created_at: new Date().toISOString(),
