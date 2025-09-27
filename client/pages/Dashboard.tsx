@@ -134,6 +134,7 @@ export default function Dashboard() {
       !!p?.bio,
       !!p?.location,
       !!p?.avatar_url,
+      !!p?.banner_url,
       !!(p?.website_url || p?.github_url || p?.linkedin_url || p?.twitter_url),
     ];
     const pct = Math.round((checks.filter(Boolean).length / checks.length) * 100);
@@ -570,6 +571,24 @@ export default function Dashboard() {
                               await updateProfile({ avatar_url: data.publicUrl } as any);
                               computeProfileCompletion({ ...(profile as any), avatar_url: data.publicUrl });
                               aethexToast.success({ title: "Avatar updated" });
+                            } catch (err: any) {
+                              aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
+                            }
+                          }} />
+                        </div>
+                        <div className="md:col-span-2">
+                          <Label htmlFor="banner">Banner Image</Label>
+                          <Input id="banner" type="file" accept="image/*" onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file || !user) return;
+                            try {
+                              const path = `${user.id}/banner-${Date.now()}-${file.name}`;
+                              const { error } = await supabase.storage.from("banners").upload(path, file, { upsert: true });
+                              if (error) throw error;
+                              const { data } = supabase.storage.from("banners").getPublicUrl(path);
+                              await updateProfile({ banner_url: data.publicUrl } as any);
+                              computeProfileCompletion({ ...(profile as any), banner_url: data.publicUrl });
+                              aethexToast.success({ title: "Banner updated" });
                             } catch (err: any) {
                               aethexToast.error({ title: "Upload failed", description: err?.message || "Unable to upload image" });
                             }
