@@ -57,11 +57,17 @@ export default function Dashboard() {
   useEffect(() => {
     console.log("Dashboard useEffect:", { user: !!user, profile: !!profile, authLoading });
 
-    // Force redirect immediately if no user
-    if (!user) {
-      console.log("No user, redirecting to login");
+    // Only redirect to login when auth is resolved and there's no user
+    if (!user && !authLoading) {
+      console.log("No user after auth resolved, redirecting to login");
       setIsLoading(false);
       navigate("/login", { replace: true });
+      return;
+    }
+
+    // While auth is still resolving, keep showing loading state
+    if (!user && authLoading) {
+      setIsLoading(true);
       return;
     }
 
