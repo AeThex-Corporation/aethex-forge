@@ -30,7 +30,7 @@ export default function Layout({ children }: LayoutProps) {
 
   const userNavigation = [
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Network", href: "/network" },
+    { name: "Feed", href: "/feed" },
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
