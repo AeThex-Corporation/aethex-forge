@@ -169,3 +169,20 @@ $$ language 'plpgsql';
 CREATE TRIGGER update_user_profiles_updated_at BEFORE UPDATE ON user_profiles FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 CREATE TRIGGER update_projects_updated_at BEFORE UPDATE ON projects FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 CREATE TRIGGER update_community_posts_updated_at BEFORE UPDATE ON community_posts FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+-- Create user_roles table for RBAC
+CREATE TABLE IF NOT EXISTS user_roles (
+    user_id UUID REFERENCES user_profiles(id) ON DELETE CASCADE,
+    role TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    PRIMARY KEY (user_id, role)
+);
+
+-- Enable RLS and add policies for user_roles
+ALTER TABLE user_roles ENABLE ROW LEVEL SECURITY;
+
+-- Users can view and manage their own roles
+CREATE POLICY IF NOT EXISTS "Users can view own roles" ON user_roles
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "Users can manage own roles" ON user_roles
+  FOR ALL USING (auth.uid() = user_id);
