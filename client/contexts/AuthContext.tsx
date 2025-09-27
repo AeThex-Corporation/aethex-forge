@@ -235,12 +235,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         user.id,
         updates,
       );
-      setProfile(updatedProfile);
+      setProfile((prev) => ({ ...(prev || {} as any), ...(updatedProfile || {} as any), ...updates } as any));
       aethexToast.success({
         title: "Profile updated",
         description: "Your profile has been updated successfully",
       });
     } catch (error: any) {
+      setProfile((prev) => ({ ...(prev || {} as any), ...updates } as any));
       aethexToast.error({
         title: "Update failed",
         description: error.message,
