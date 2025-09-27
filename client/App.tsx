@@ -32,6 +32,7 @@ import Contact from "./pages/Contact";
 import GetStarted from "./pages/GetStarted";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
