@@ -20,7 +20,8 @@ export const aethexSocialService = {
         .from("user_follows")
         .select("following_id")
         .eq("follower_id", userId);
-      if (!error && data) return (data as any[]).map((r: any) => r.following_id);
+      if (!error && data)
+        return (data as any[]).map((r: any) => r.following_id);
     } catch {}
     try {
       const raw = localStorage.getItem("mock_follows");
@@ -40,7 +41,9 @@ export const aethexSocialService = {
     } catch {}
     const raw = localStorage.getItem("mock_follows");
     const map = raw ? JSON.parse(raw) : {};
-    const set: string[] = Array.from(new Set([...(map[followerId] || []), followingId]));
+    const set: string[] = Array.from(
+      new Set([...(map[followerId] || []), followingId]),
+    );
     map[followerId] = set;
     localStorage.setItem("mock_follows", JSON.stringify(map));
   },
@@ -56,7 +59,9 @@ export const aethexSocialService = {
     } catch {}
     const raw = localStorage.getItem("mock_follows");
     const map = raw ? JSON.parse(raw) : {};
-    const list: string[] = (map[followerId] || []).filter((id: string) => id !== followingId);
+    const list: string[] = (map[followerId] || []).filter(
+      (id: string) => id !== followingId,
+    );
     map[followerId] = list;
     localStorage.setItem("mock_follows", JSON.stringify(map));
   },

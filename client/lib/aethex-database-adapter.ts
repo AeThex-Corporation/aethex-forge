@@ -57,7 +57,7 @@ function isTableMissing(err: any): boolean {
   const msg = String(err?.message || err?.hint || err?.details || "");
   return (
     err?.code === "42P01" || // undefined_table
-    msg.includes("relation \"") ||
+    msg.includes('relation "') ||
     msg.includes("does not exist") ||
     msg.includes("table")
   );
@@ -86,12 +86,15 @@ export const aethexUserService = {
           email: user.email,
         } as AethexUserProfile;
       }
-      const created = await mockAuth.updateProfile(user.id as any, {
-        username: user.email?.split("@")[0] || "user",
-        email: user.email || "",
-        role: "member",
-        onboarded: true,
-      } as any);
+      const created = await mockAuth.updateProfile(
+        user.id as any,
+        {
+          username: user.email?.split("@")[0] || "user",
+          email: user.email || "",
+          role: "member",
+          onboarded: true,
+        } as any,
+      );
       return {
         ...(created as any),
         email: user.email,
@@ -123,7 +126,10 @@ export const aethexUserService = {
     if (error) {
       console.warn("Error updating profile, attempting mock fallback:", error);
       if (isTableMissing(error)) {
-        const mock = await mockAuth.updateProfile(userId as any, updates as any);
+        const mock = await mockAuth.updateProfile(
+          userId as any,
+          updates as any,
+        );
         return mock as unknown as AethexUserProfile;
       }
       throw error;
@@ -162,17 +168,20 @@ export const aethexUserService = {
     if (error) {
       console.warn("Error creating profile, attempting mock fallback:", error);
       if (isTableMissing(error)) {
-        const mock = await mockAuth.updateProfile(userId as any, {
-          username: profileData.username || `user_${Date.now()}`,
-          full_name: profileData.full_name,
-          bio: profileData.bio,
-          location: profileData.location,
-          linkedin_url: profileData.linkedin_url as any,
-          github_url: profileData.github_url as any,
-          twitter_url: profileData.twitter_url as any,
-          level: 1,
-          total_xp: 0,
-        } as any);
+        const mock = await mockAuth.updateProfile(
+          userId as any,
+          {
+            username: profileData.username || `user_${Date.now()}`,
+            full_name: profileData.full_name,
+            bio: profileData.bio,
+            location: profileData.location,
+            linkedin_url: profileData.linkedin_url as any,
+            github_url: profileData.github_url as any,
+            twitter_url: profileData.twitter_url as any,
+            level: 1,
+            total_xp: 0,
+          } as any,
+        );
 
         return {
           ...(mock as any),
@@ -206,7 +215,9 @@ export const aethexUserService = {
       interest,
     }));
 
-    const { error } = await supabase.from("user_interests").insert(interestRows);
+    const { error } = await supabase
+      .from("user_interests")
+      .insert(interestRows);
 
     if (error) {
       if (isTableMissing(error)) return;
@@ -283,7 +294,10 @@ export const aethexProjectService = {
   },
 
   async deleteProject(projectId: string): Promise<boolean> {
-    const { error } = await supabase.from("projects").delete().eq("id", projectId);
+    const { error } = await supabase
+      .from("projects")
+      .delete()
+      .eq("id", projectId);
 
     if (error) {
       console.warn("Error deleting project:", error);
@@ -410,7 +424,8 @@ export const aethexAchievementService = {
     const updates: any = {};
     if ("total_xp" in (profile as any)) updates.total_xp = newTotalXP;
     if ("level" in (profile as any)) updates.level = newLevel;
-    if ("loyalty_points" in (profile as any)) updates.loyalty_points = newLoyaltyPoints;
+    if ("loyalty_points" in (profile as any))
+      updates.loyalty_points = newLoyaltyPoints;
 
     if (Object.keys(updates).length > 0) {
       await supabase.from("user_profiles").update(updates).eq("id", userId);
@@ -426,7 +441,10 @@ export const aethexAchievementService = {
           .single();
 
         if (levelUpAchievement.data) {
-          await this.awardAchievement(userId, (levelUpAchievement.data as any).id);
+          await this.awardAchievement(
+            userId,
+            (levelUpAchievement.data as any).id,
+          );
         }
       }
     }
@@ -588,9 +606,12 @@ export const aethexRoleService = {
   async setUserRoles(userId: string, roles: string[]): Promise<void> {
     try {
       const rows = roles.map((role) => ({ user_id: userId, role }));
-      const { error } = await supabase.from("user_roles").upsert(rows as any, {
-        onConflict: "user_id,role",
-      } as any);
+      const { error } = await supabase.from("user_roles").upsert(
+        rows as any,
+        {
+          onConflict: "user_id,role",
+        } as any,
+      );
       if (!error) return;
     } catch {}
 

@@ -3,10 +3,23 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, UserCog, Rocket, Settings, Users, Activity } from "lucide-react";
+import {
+  Shield,
+  UserCog,
+  Rocket,
+  Settings,
+  Users,
+  Activity,
+} from "lucide-react";
 
 export default function Admin() {
   const { user, loading, roles } = useAuth();
@@ -23,7 +36,11 @@ export default function Admin() {
 
   if (loading || !user) {
     return (
-      <LoadingScreen message="Verifying admin access..." showProgress duration={1000} />
+      <LoadingScreen
+        message="Verifying admin access..."
+        showProgress
+        duration={1000}
+      />
     );
   }
 
@@ -35,10 +52,14 @@ export default function Admin() {
             <Card className="bg-red-500/10 border-red-500/30">
               <CardHeader>
                 <CardTitle className="text-red-400">Access Denied</CardTitle>
-                <CardDescription>You dont have permission to access the admin panel.</CardDescription>
+                <CardDescription>
+                  You dont have permission to access the admin panel.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button onClick={() => navigate("/dashboard")}>Go to Dashboard</Button>
+                <Button onClick={() => navigate("/dashboard")}>
+                  Go to Dashboard
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -54,16 +75,37 @@ export default function Admin() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gradient">Admin Panel</h1>
-              <p className="text-muted-foreground">Site Owner • Admin • Founder</p>
+              <p className="text-muted-foreground">
+                Site Owner • Admin • Founder
+              </p>
               <div className="flex gap-2 mt-2">
-                <Badge variant="outline" className="border-green-500/50 text-green-400">Site Owner</Badge>
-                <Badge variant="outline" className="border-blue-500/50 text-blue-400">Admin</Badge>
-                <Badge variant="outline" className="border-purple-500/50 text-purple-400">Founder</Badge>
+                <Badge
+                  variant="outline"
+                  className="border-green-500/50 text-green-400"
+                >
+                  Site Owner
+                </Badge>
+                <Badge
+                  variant="outline"
+                  className="border-blue-500/50 text-blue-400"
+                >
+                  Admin
+                </Badge>
+                <Badge
+                  variant="outline"
+                  className="border-purple-500/50 text-purple-400"
+                >
+                  Founder
+                </Badge>
               </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => navigate("/dashboard")}>Dashboard</Button>
-              <Button variant="outline" onClick={() => navigate("/profile")}>Profile</Button>
+              <Button variant="outline" onClick={() => navigate("/dashboard")}>
+                Dashboard
+              </Button>
+              <Button variant="outline" onClick={() => navigate("/profile")}>
+                Profile
+              </Button>
             </div>
           </div>
 
@@ -74,12 +116,15 @@ export default function Admin() {
                   <Shield className="h-5 w-5 text-green-400" />
                   <CardTitle className="text-lg">Access Control</CardTitle>
                 </div>
-                <CardDescription>Owner-only access is enforced by email</CardDescription>
+                <CardDescription>
+                  Owner-only access is enforced by email
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="text-sm space-y-1 text-muted-foreground">
                   <li>
-                    Owner: <span className="text-foreground">mrpiglr@gmail.com</span>
+                    Owner:{" "}
+                    <span className="text-foreground">mrpiglr@gmail.com</span>
                   </li>
                   <li>All other users are denied access</li>
                 </ul>
@@ -92,7 +137,9 @@ export default function Admin() {
                   <Users className="h-5 w-5 text-blue-400" />
                   <CardTitle className="text-lg">Users & Roles</CardTitle>
                 </div>
-                <CardDescription>Future: manage roles, invitations, and status</CardDescription>
+                <CardDescription>
+                  Future: manage roles, invitations, and status
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">Coming soon</p>
@@ -108,7 +155,12 @@ export default function Admin() {
                 <CardDescription>Branding, legal, integrations</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" onClick={() => navigate("/get-started")}>Open Settings</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/get-started")}
+                >
+                  Open Settings
+                </Button>
               </CardContent>
             </Card>
 
@@ -138,8 +190,16 @@ export default function Admin() {
                 <CardDescription>Common admin operations</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-2">
-                <Button size="sm" onClick={() => navigate("/dashboard")}>View Dashboard</Button>
-                <Button size="sm" variant="outline" onClick={() => navigate("/onboarding")}>Run Onboarding</Button>
+                <Button size="sm" onClick={() => navigate("/dashboard")}>
+                  View Dashboard
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigate("/onboarding")}
+                >
+                  Run Onboarding
+                </Button>
               </CardContent>
             </Card>
 

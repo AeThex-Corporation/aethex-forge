@@ -3,7 +3,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "@/components/LoadingScreen";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -52,7 +58,13 @@ export default function Network() {
   };
 
   if (loading || isLoading) {
-    return <LoadingScreen message="Loading your network..." showProgress duration={1000} />;
+    return (
+      <LoadingScreen
+        message="Loading your network..."
+        showProgress
+        duration={1000}
+      />
+    );
   }
 
   if (!user) return null;
@@ -68,14 +80,28 @@ export default function Network() {
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
                     <AvatarImage src={profile?.avatar_url} />
-                    <AvatarFallback>{profile?.full_name?.[0] || user.email?.[0]?.toUpperCase()}</AvatarFallback>
+                    <AvatarFallback>
+                      {profile?.full_name?.[0] ||
+                        user.email?.[0]?.toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="text-xl font-semibold">{profile?.full_name || user.email?.split("@")[0]}</h2>
-                    <p className="text-sm text-muted-foreground">{profile?.role || "Member"}</p>
+                    <h2 className="text-xl font-semibold">
+                      {profile?.full_name || user.email?.split("@")[0]}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {profile?.role || "Member"}
+                    </p>
                     <div className="mt-2 flex gap-2">
-                      <Badge variant="outline" className="border-aethex-400/50 text-aethex-400">Level {profile?.level || 1}</Badge>
-                      <Badge variant="outline">{(profile as any)?.experience_level || "beginner"}</Badge>
+                      <Badge
+                        variant="outline"
+                        className="border-aethex-400/50 text-aethex-400"
+                      >
+                        Level {profile?.level || 1}
+                      </Badge>
+                      <Badge variant="outline">
+                        {(profile as any)?.experience_level || "beginner"}
+                      </Badge>
                     </div>
                   </div>
                 </div>
@@ -83,8 +109,18 @@ export default function Network() {
                   <p className="text-sm text-muted-foreground">{profile.bio}</p>
                 )}
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => navigate("/dashboard")}>Edit Profile</Button>
-                  <Button variant="outline" onClick={() => navigate("/onboarding")}>Improve Profile</Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    Edit Profile
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/onboarding")}
+                  >
+                    Improve Profile
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -92,25 +128,50 @@ export default function Network() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader>
                 <CardTitle>Recommendations</CardTitle>
-                <CardDescription>People who align with your interests</CardDescription>
+                <CardDescription>
+                  People who align with your interests
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {recommended.slice(0, 3).map((r) => (
                   <div key={r.id} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10"><AvatarImage src={r.avatar_url} /><AvatarFallback>{(r.full_name || r.username || "U")[0]}</AvatarFallback></Avatar>
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={r.avatar_url} />
+                        <AvatarFallback>
+                          {(r.full_name || r.username || "U")[0]}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
-                        <div className="font-medium">{r.full_name || r.username}</div>
-                        <div className="text-xs text-muted-foreground">{r.bio?.slice(0, 40) || "Member"}</div>
+                        <div className="font-medium">
+                          {r.full_name || r.username}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {r.bio?.slice(0, 40) || "Member"}
+                        </div>
                       </div>
                     </div>
-                    <Button size="sm" variant={isFollowing(r.id) ? "outline" : "default"} onClick={() => toggleFollow(r.id)}>
-                      {isFollowing(r.id) ? (<span className="flex items-center gap-1"><UserCheck className="h-4 w-4" /> Following</span>) : (<span className="flex items-center gap-1"><UserPlus className="h-4 w-4" /> Follow</span>)}
+                    <Button
+                      size="sm"
+                      variant={isFollowing(r.id) ? "outline" : "default"}
+                      onClick={() => toggleFollow(r.id)}
+                    >
+                      {isFollowing(r.id) ? (
+                        <span className="flex items-center gap-1">
+                          <UserCheck className="h-4 w-4" /> Following
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <UserPlus className="h-4 w-4" /> Follow
+                        </span>
+                      )}
                     </Button>
                   </div>
                 ))}
                 {recommended.length === 0 && (
-                  <div className="text-sm text-muted-foreground">No recommendations yet.</div>
+                  <div className="text-sm text-muted-foreground">
+                    No recommendations yet.
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -121,25 +182,53 @@ export default function Network() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader>
                 <CardTitle>Discover People</CardTitle>
-                <CardDescription>Connect with creators, clients, and members</CardDescription>
+                <CardDescription>
+                  Connect with creators, clients, and members
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {recommended.map((r) => (
-                  <div key={r.id} className="flex items-center justify-between p-3 rounded-lg border border-border/50 hover:border-aethex-400/50 transition-all">
+                  <div
+                    key={r.id}
+                    className="flex items-center justify-between p-3 rounded-lg border border-border/50 hover:border-aethex-400/50 transition-all"
+                  >
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-12 w-12"><AvatarImage src={r.avatar_url} /><AvatarFallback>{(r.full_name || r.username || "U")[0]}</AvatarFallback></Avatar>
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src={r.avatar_url} />
+                        <AvatarFallback>
+                          {(r.full_name || r.username || "U")[0]}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
-                        <div className="font-semibold">{r.full_name || r.username}</div>
-                        <div className="text-xs text-muted-foreground">{r.bio?.slice(0, 80) || "Member"}</div>
+                        <div className="font-semibold">
+                          {r.full_name || r.username}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {r.bio?.slice(0, 80) || "Member"}
+                        </div>
                       </div>
                     </div>
-                    <Button size="sm" variant={isFollowing(r.id) ? "outline" : "default"} onClick={() => toggleFollow(r.id)}>
-                      {isFollowing(r.id) ? (<span className="flex items-center gap-1"><UserCheck className="h-4 w-4" /> Following</span>) : (<span className="flex items-center gap-1"><UserPlus className="h-4 w-4" /> Follow</span>)}
+                    <Button
+                      size="sm"
+                      variant={isFollowing(r.id) ? "outline" : "default"}
+                      onClick={() => toggleFollow(r.id)}
+                    >
+                      {isFollowing(r.id) ? (
+                        <span className="flex items-center gap-1">
+                          <UserCheck className="h-4 w-4" /> Following
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <UserPlus className="h-4 w-4" /> Follow
+                        </span>
+                      )}
                     </Button>
                   </div>
                 ))}
                 {recommended.length === 0 && (
-                  <div className="text-sm text-muted-foreground">No people found yet.</div>
+                  <div className="text-sm text-muted-foreground">
+                    No people found yet.
+                  </div>
                 )}
               </CardContent>
             </Card>

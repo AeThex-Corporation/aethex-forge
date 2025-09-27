@@ -63,7 +63,9 @@ export default function Layout({ children }: LayoutProps) {
             {(() => {
               const isOwner = Array.isArray(roles) && roles.includes("owner");
               const navItems = user
-                ? (isOwner ? [{ name: "Admin", href: "/admin" }, ...userNavigation] : userNavigation)
+                ? isOwner
+                  ? [{ name: "Admin", href: "/admin" }, ...userNavigation]
+                  : userNavigation
                 : navigation;
               return navItems.map((item, index) => (
                 <Link
@@ -93,7 +95,12 @@ export default function Layout({ children }: LayoutProps) {
                 {user ? (
                   // Logged in - always show Dashboard button; show avatar menu if profile exists
                   <div className="flex items-center space-x-3">
-                    <Button asChild variant="outline" size="sm" className="hover-lift">
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
+                      className="hover-lift"
+                    >
                       <Link to="/dashboard">Dashboard</Link>
                     </Button>
                     <Button variant="ghost" size="sm" className="hover-lift">
@@ -141,9 +148,9 @@ export default function Layout({ children }: LayoutProps) {
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link to="/dashboard" className="cursor-pointer">
-                            <Settings className="mr-2 h-4 w-4" />
-                            Settings
-                          </Link>
+                              <Settings className="mr-2 h-4 w-4" />
+                              Settings
+                            </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
