@@ -1,0 +1,22 @@
+{
+  "name": "AeThex",
+  "short_name": "AeThex",
+  "description": "AeThex: advanced development platform and community for builders.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0a0aff",
+  "icons": [
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=png&width=192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=png&width=512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
