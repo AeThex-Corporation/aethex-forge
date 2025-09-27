@@ -312,7 +312,7 @@ export default function Dashboard() {
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        onClick={() => navigate("/profile")}
+                        onClick={() => document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" })}
                         className="bg-orange-600 hover:bg-orange-700"
                       >
                         Setup Profile
