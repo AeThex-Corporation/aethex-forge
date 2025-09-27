@@ -1,9 +1,10 @@
-// Database adapter for existing AeThex community platform
+// AeThex Database Adapter
 // Maps existing schema to our application needs
 
 import { supabase } from "./supabase";
 import type { Database } from "./database.types";
 import { aethexToast } from "./aethex-toast";
+import { mockAuth } from "./mock-auth";
 
 // Use the existing database user profile type directly
 import type { UserProfile } from "./database.types";
@@ -53,6 +54,16 @@ export interface AethexUserAchievement {
   unlocked_at: string;
 }
 
+function isTableMissing(err: any): boolean {
+  const msg = String(err?.message || err?.hint || err?.details || "");
+  return (
+    err?.code === "42P01" || // undefined_table
+    msg.includes("relation \"") ||
+    msg.includes("does not exist") ||
+    msg.includes("table")
+  );
+}
+
 // User Profile Services
 export const aethexUserService = {
   async getCurrentUser(): Promise<AethexUserProfile | null> {
@@ -68,18 +79,34 @@ export const aethexUserService = {
       .single();
 
     if (error) {
-      console.error("Error fetching user profile:", error);
-      return null;
+      console.warn("Error fetching user profile, falling back to mock:", error);
+      const mock = await mockAuth.getUserProfile(user.id as any);
+      if (mock) {
+        return {
+          ...(mock as any),
+          email: user.email,
+        } as AethexUserProfile;
+      }
+      const created = await mockAuth.updateProfile(user.id as any, {
+        username: user.email?.split("@")[0] || "user",
+        email: user.email || "",
+        role: "member",
+        onboarded: true,
+      } as any);
+      return {
+        ...(created as any),
+        email: user.email,
+      } as AethexUserProfile;
     }
 
     // Map the existing database fields to our interface
     return {
       ...data,
       email: user.email,
-      username: data.username || user.email?.split('@')[0] || 'user',
-      onboarded: true, // Assume existing users are onboarded
-      role: 'member', // Default role
-      loyalty_points: 0, // Default value
+      username: (data as any).username || user.email?.split("@")[0] || "user",
+      onboarded: true,
+      role: "member",
+      loyalty_points: 0,
     } as AethexUserProfile;
   },
 
@@ -95,7 +122,11 @@ export const aethexUserService = {
       .single();
 
     if (error) {
-      console.error("Error updating profile:", error);
+      console.warn("Error updating profile, attempting mock fallback:", error);
+      if (isTableMissing(error)) {
+        const mock = await mockAuth.updateProfile(userId as any, updates as any);
+        return mock as unknown as AethexUserProfile;
+      }
       throw error;
     }
 
@@ -112,12 +143,12 @@ export const aethexUserService = {
       .insert({
         id: userId,
         username: profileData.username || `user_${Date.now()}`,
-        user_type: (profileData.user_type as any) || "community_member",
-        experience_level: (profileData.experience_level as any) || "beginner",
+        user_type: (profileData as any).user_type || "community_member",
+        experience_level: (profileData as any).experience_level || "beginner",
         full_name: profileData.full_name,
         bio: profileData.bio,
         location: profileData.location,
-        website_url: profileData.website_url,
+        website_url: (profileData as any).website_url,
         github_url: profileData.github_url,
         twitter_url: profileData.twitter_url,
         linkedin_url: profileData.linkedin_url,
@@ -130,21 +161,45 @@ export const aethexUserService = {
       .single();
 
     if (error) {
-      console.error("Error creating profile:", error);
+      console.warn("Error creating profile, attempting mock fallback:", error);
+      if (isTableMissing(error)) {
+        const mock = await mockAuth.updateProfile(userId as any, {
+          username: profileData.username || `user_${Date.now()}`,
+          full_name: profileData.full_name,
+          bio: profileData.bio,
+          location: profileData.location,
+          linkedin_url: profileData.linkedin_url as any,
+          github_url: profileData.github_url as any,
+          twitter_url: profileData.twitter_url as any,
+          level: 1,
+          total_xp: 0,
+        } as any);
+
+        return {
+          ...(mock as any),
+          onboarded: true,
+          role: "member",
+          loyalty_points: 0,
+        } as any;
+      }
       throw error;
     }
 
     return {
       ...data,
       onboarded: true,
-      role: 'member',
+      role: "member",
       loyalty_points: 0,
     } as AethexUserProfile;
   },
 
   async addUserInterests(userId: string, interests: string[]): Promise<void> {
-    // First, delete existing interests
-    await supabase.from("user_interests").delete().eq("user_id", userId);
+    // First, delete existing interests (ignore failures when table missing)
+    await supabase
+      .from("user_interests")
+      .delete()
+      .eq("user_id", userId)
+      .catch(() => undefined);
 
     // Insert new interests
     const interestRows = interests.map((interest) => ({
@@ -152,12 +207,10 @@ export const aethexUserService = {
       interest,
     }));
 
-    const { error } = await supabase
-      .from("user_interests")
-      .insert(interestRows);
+    const { error } = await supabase.from("user_interests").insert(interestRows);
 
     if (error) {
-      console.error("Error adding interests:", error);
+      if (isTableMissing(error)) return;
       throw error;
     }
   },
@@ -169,11 +222,11 @@ export const aethexUserService = {
       .eq("user_id", userId);
 
     if (error) {
-      console.error("Error fetching interests:", error);
+      console.warn("Error fetching interests:", error);
       return [];
     }
 
-    return data.map((item) => item.interest);
+    return data.map((item: any) => item.interest);
   },
 };
 
@@ -187,7 +240,7 @@ export const aethexProjectService = {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Error fetching projects:", error);
+      console.warn("Error fetching projects:", error);
       return [];
     }
 
@@ -204,7 +257,7 @@ export const aethexProjectService = {
       .single();
 
     if (error) {
-      console.error("Error creating project:", error);
+      console.warn("Error creating project:", error);
       throw error;
     }
 
@@ -223,7 +276,7 @@ export const aethexProjectService = {
       .single();
 
     if (error) {
-      console.error("Error updating project:", error);
+      console.warn("Error updating project:", error);
       throw error;
     }
 
@@ -231,13 +284,10 @@ export const aethexProjectService = {
   },
 
   async deleteProject(projectId: string): Promise<boolean> {
-    const { error } = await supabase
-      .from("projects")
-      .delete()
-      .eq("id", projectId);
+    const { error } = await supabase.from("projects").delete().eq("id", projectId);
 
     if (error) {
-      console.error("Error deleting project:", error);
+      console.warn("Error deleting project:", error);
       return false;
     }
 
@@ -262,7 +312,7 @@ export const aethexProjectService = {
       .limit(limit);
 
     if (error) {
-      console.error("Error fetching all projects:", error);
+      console.warn("Error fetching all projects:", error);
       return [];
     }
 
@@ -279,7 +329,7 @@ export const aethexAchievementService = {
       .order("xp_reward", { ascending: false });
 
     if (error) {
-      console.error("Error fetching achievements:", error);
+      console.warn("Error fetching achievements:", error);
       return [];
     }
 
@@ -298,12 +348,12 @@ export const aethexAchievementService = {
       .eq("user_id", userId);
 
     if (error) {
-      console.error("Error fetching user achievements:", error);
+      console.warn("Error fetching user achievements:", error);
       return [];
     }
 
-    return data
-      .map((item) => item.achievements)
+    return (data as any[])
+      .map((item) => (item as any).achievements)
       .filter(Boolean) as AethexAchievement[];
   },
 
@@ -315,7 +365,8 @@ export const aethexAchievementService = {
 
     if (error && error.code !== "23505") {
       // Ignore duplicate key error
-      console.error("Error awarding achievement:", error);
+      if (isTableMissing(error)) return;
+      console.warn("Error awarding achievement:", error);
       throw error;
     }
 
@@ -329,12 +380,12 @@ export const aethexAchievementService = {
     if (achievement) {
       aethexToast.aethex({
         title: "Achievement Unlocked! 🎉",
-        description: `${achievement.icon} ${achievement.name} - ${achievement.description}`,
+        description: `${(achievement as any).icon} ${(achievement as any).name} - ${(achievement as any).description}`,
         duration: 8000,
       });
 
       // Update user's total XP and level
-      await this.updateUserXPAndLevel(userId, achievement.xp_reward);
+      await this.updateUserXPAndLevel(userId, (achievement as any).xp_reward);
     }
   },
 
@@ -347,6 +398,7 @@ export const aethexAchievementService = {
       .single();
 
     if (error || !profile) {
+      if (isTableMissing(error)) return;
       console.log("Profile not found or missing XP fields, skipping XP update");
       return;
     }
@@ -357,15 +409,12 @@ export const aethexAchievementService = {
 
     // Update profile (only update existing fields)
     const updates: any = {};
-    if ('total_xp' in profile) updates.total_xp = newTotalXP;
-    if ('level' in profile) updates.level = newLevel;
-    if ('loyalty_points' in profile) updates.loyalty_points = newLoyaltyPoints;
+    if ("total_xp" in (profile as any)) updates.total_xp = newTotalXP;
+    if ("level" in (profile as any)) updates.level = newLevel;
+    if ("loyalty_points" in (profile as any)) updates.loyalty_points = newLoyaltyPoints;
 
     if (Object.keys(updates).length > 0) {
-      await supabase
-        .from("user_profiles")
-        .update(updates)
-        .eq("id", userId);
+      await supabase.from("user_profiles").update(updates).eq("id", userId);
     }
 
     // Check for level-up achievements
@@ -378,7 +427,7 @@ export const aethexAchievementService = {
           .single();
 
         if (levelUpAchievement.data) {
-          await this.awardAchievement(userId, levelUpAchievement.data.id);
+          await this.awardAchievement(userId, (levelUpAchievement.data as any).id);
         }
       }
     }
@@ -392,7 +441,7 @@ export const aethexAchievementService = {
       .single();
 
     if (achievement) {
-      await this.awardAchievement(userId, achievement.id);
+      await this.awardAchievement(userId, (achievement as any).id);
     }
   },
 
@@ -408,7 +457,7 @@ export const aethexAchievementService = {
         .single();
 
       if (achievement) {
-        await this.awardAchievement(userId, achievement.id);
+        await this.awardAchievement(userId, (achievement as any).id);
       }
     }
 
@@ -422,7 +471,7 @@ export const aethexAchievementService = {
         .single();
 
       if (achievement) {
-        await this.awardAchievement(userId, achievement.id);
+        await this.awardAchievement(userId, (achievement as any).id);
       }
     }
   },
@@ -439,18 +488,20 @@ export const aethexNotificationService = {
       .limit(10);
 
     if (error) {
-      console.error("Error fetching notifications:", error);
+      console.warn("Error fetching notifications:", error);
       return [];
     }
 
-    return data;
+    return data as any[];
   },
 
   async markAsRead(notificationId: string): Promise<void> {
-    await supabase
-      .from("notifications")
-      .update({ read: true })
-      .eq("id", notificationId);
+    try {
+      await supabase
+        .from("notifications")
+        .update({ read: true })
+        .eq("id", notificationId);
+    } catch {}
   },
 
   async createNotification(
@@ -459,12 +510,14 @@ export const aethexNotificationService = {
     title: string,
     message: string,
   ): Promise<void> {
-    await supabase.from("notifications").insert({
-      user_id: userId,
-      type,
-      title,
-      message,
-    });
+    try {
+      await supabase.from("notifications").insert({
+        user_id: userId,
+        type,
+        title,
+        message,
+      });
+    } catch {}
   },
 };
 
