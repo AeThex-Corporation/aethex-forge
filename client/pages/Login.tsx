@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { aethexUserService } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import Layout from "@/components/Layout";
@@ -36,16 +37,10 @@ export default function Login() {
   const { signIn, signUp, signInWithOAuth, user, loading, profile } = useAuth();
   const { success: toastSuccess, error: toastError } = useAethexToast();
 
-  // Redirect if already logged in
+  // Keep users on the login page; navigate only after successful auth
   useEffect(() => {
-    if (user && !loading) {
-      if (profile) {
-        navigate("/dashboard", { replace: true });
-      } else {
-        navigate("/onboarding", { replace: true });
-      }
-    }
-  }, [user, profile, loading, navigate]);
+    // no-op
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +62,12 @@ export default function Login() {
         setIsSignUp(false);
       } else {
         await signIn(email, password);
-        // Navigation is handled by the auth redirect effect based on profile existence
+        const current = await aethexUserService.getCurrentUser();
+        if (current) {
+          navigate("/dashboard", { replace: true });
+        } else {
+          navigate("/onboarding", { replace: true });
+        }
       }
     } catch (error: any) {
       console.error("Authentication error:", error);
