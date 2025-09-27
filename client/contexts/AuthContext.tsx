@@ -110,7 +110,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const userProfile = await aethexUserService.getCurrentUser();
       setProfile(userProfile);
       try {
-        const r = await aethexRoleService.getUserRoles(userId);
+        let r = await aethexRoleService.getUserRoles(userId);
+        // Auto-seed owner roles if logging in as site owner
+        const ownerEmail = userProfile?.email?.toLowerCase();
+        if (ownerEmail === "mrpiglr@gmail.com" && !r.includes("owner")) {
+          const seeded = Array.from(new Set(["owner", "admin", "founder", ...r]));
+          await aethexRoleService.setUserRoles(userId, seeded);
+          r = seeded;
+        }
         setRoles(r);
       } catch {
         setRoles([]);
