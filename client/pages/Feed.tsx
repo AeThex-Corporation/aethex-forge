@@ -1,12 +1,16 @@
 import Layout from "@/components/Layout";
+import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { aethexSocialService } from "@/lib/aethex-social-service";
+import { communityService, realtimeService } from "@/lib/supabase-service";
+import PostComposer from "@/components/social/PostComposer";
+import { useToast } from "@/hooks/use-toast";
 import {
   Heart,
   MessageCircle,
@@ -29,44 +33,82 @@ interface FeedItem {
   comments: number;
 }
 
+function parseContent(content: string): { text?: string; mediaUrl?: string | null; mediaType: "video" | "image" | "none" } {
+  try {
+    const obj = JSON.parse(content || "{}");
+    return {
+      text: obj.text || content,
+      mediaUrl: obj.mediaUrl || null,
+      mediaType: obj.mediaType || (obj.mediaUrl ? (/(mp4|webm|mov)$/i.test(obj.mediaUrl) ? "video" : "image") : "none"),
+    };
+  } catch {
+    return { text: content, mediaUrl: null, mediaType: "none" };
+  }
+}
+
 export default function Feed() {
-  const { user, profile, loading } = useAuth();
-  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [following, setFollowing] = useState<string[]>([]);
   const [items, setItems] = useState<FeedItem[]>([]);
   const [muted, setMuted] = useState(true);
 
   useEffect(() => {
-    if (!loading && !user) return;
     if (!user) return;
     const load = async () => {
       setIsLoading(true);
       try {
-        const recs = await aethexSocialService.listRecommended(user.id, 12);
+        const posts = await communityService.getPosts(20);
         const flw = await aethexSocialService.getFollowing(user.id);
         setFollowing(flw);
-        const mapped: FeedItem[] = recs.map((r, idx) => ({
-          id: r.id,
-          authorId: r.id,
-          authorName: r.full_name || r.username || "User",
-          authorAvatar: r.avatar_url,
-          caption: r.bio || "",
-          mediaUrl: r.banner_url || r.avatar_url || null,
-          mediaType: r.banner_url?.match(/\.(mp4|webm|mov)(\?.*)?$/i)
-            ? "video"
-            : r.banner_url || r.avatar_url
-              ? "image"
-              : "none",
-          likes: Math.floor(Math.random() * 200) + 5,
-          comments: Math.floor(Math.random() * 30),
-        }));
-        setItems(mapped);
+        const mapped: FeedItem[] = posts.map((p: any) => {
+          const meta = parseContent(p.content);
+          const author = p.user_profiles || {};
+          return {
+            id: p.id,
+            authorId: p.author_id,
+            authorName: author.full_name || author.username || "User",
+            authorAvatar: author.avatar_url,
+            caption: meta.text,
+            mediaUrl: meta.mediaUrl,
+            mediaType: meta.mediaType,
+            likes: p.likes_count ?? 0,
+            comments: p.comments_count ?? 0,
+          };
+        });
+        // If no posts yet, fall back to recommended people as placeholders
+        if (mapped.length === 0) {
+          const recs = await aethexSocialService.listRecommended(user.id, 12);
+          const placeholders: FeedItem[] = recs.map((r: any) => ({
+            id: r.id,
+            authorId: r.id,
+            authorName: r.full_name || r.username || "User",
+            authorAvatar: r.avatar_url,
+            caption: r.bio || "",
+            mediaUrl: r.banner_url || r.avatar_url || null,
+            mediaType: r.banner_url?.match(/\.(mp4|webm|mov)(\?.*)?$/i)
+              ? "video"
+              : r.banner_url || r.avatar_url
+                ? "image"
+                : "none",
+            likes: Math.floor(Math.random() * 200) + 5,
+            comments: Math.floor(Math.random() * 30),
+          }));
+          setItems(placeholders);
+        } else {
+          setItems(mapped);
+        }
       } finally {
         setIsLoading(false);
       }
     };
     load();
+
+    const sub = realtimeService.subscribeToCommunityPosts(() => load());
+    return () => {
+      try { sub.unsubscribe(); } catch {}
+    };
   }, [user, loading]);
 
   const isFollowingAuthor = (id: string) => following.includes(id);
@@ -81,128 +123,84 @@ export default function Feed() {
     }
   };
 
+  const share = async (id: string) => {
+    const url = `${location.origin}/feed#post-${id}`;
+    try {
+      if ((navigator as any).share) {
+        await (navigator as any).share({ title: "AeThex", text: "Check this post", url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast({ description: "Link copied" });
+      }
+    } catch {}
+  };
+
   if (!user && !loading) return <Navigate to="/login" replace />;
   if (loading || isLoading) {
     return (
-      <LoadingScreen
-        message="Loading your feed..."
-        showProgress
-        duration={1000}
-      />
+      <LoadingScreen message="Loading your feed..." showProgress duration={1000} />
     );
   }
 
   return (
     <Layout>
       <div className="min-h-screen bg-aethex-gradient">
-        <div className="h-[calc(100vh-64px)] overflow-y-auto snap-y snap-mandatory no-scrollbar">
+        <div className="max-w-2xl mx-auto p-4">
+          <PostComposer onPosted={() => setIsLoading(true)} />
+        </div>
+        <div className="h-[calc(100vh-64px-140px)] overflow-y-auto snap-y snap-mandatory no-scrollbar">
           {items.length === 0 && (
             <div className="flex items-center justify-center h-full text-muted-foreground">
-              No posts yet. Follow people to populate your feed.
+              No posts yet. Share something to start the feed.
             </div>
           )}
           {items.map((item) => (
-            <section
-              key={item.id}
-              className="snap-start h-[calc(100vh-64px)] relative flex items-center justify-center"
-            >
+            <section id={`post-${item.id}`} key={item.id} className="snap-start h-[calc(100vh-64px)] relative flex items-center justify-center">
               <Card className="w-full h-full bg-black/60 border-border/30 overflow-hidden">
                 <CardContent className="w-full h-full p-0 relative">
-                  {/* Media */}
                   {item.mediaType === "video" && item.mediaUrl ? (
-                    <video
-                      src={item.mediaUrl}
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      loop
-                      muted={muted}
-                      playsInline
-                    />
+                    <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay loop muted={muted} playsInline />
                   ) : item.mediaType === "image" && item.mediaUrl ? (
-                    <img
-                      src={item.mediaUrl}
-                      alt={item.caption || item.authorName}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={item.mediaUrl} alt={item.caption || item.authorName} className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-aethex-500/20 to-neon-blue/20" />
                   )}
 
-                  {/* Overlay UI */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
 
-                  {/* Right rail actions */}
                   <div className="absolute right-4 bottom-24 flex flex-col items-center gap-4">
-                    <Button
-                      size="icon"
-                      variant="secondary"
-                      className="rounded-full bg-white/20 hover:bg-white/30"
-                      onClick={() => setMuted((m) => !m)}
-                    >
-                      {muted ? (
-                        <VolumeX className="h-5 w-5" />
-                      ) : (
-                        <Volume2 className="h-5 w-5" />
-                      )}
+                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30" onClick={() => setMuted((m) => !m)}>
+                      {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
                     </Button>
-                    <Button
-                      size="icon"
-                      variant="secondary"
-                      className="rounded-full bg-white/20 hover:bg-white/30"
-                    >
+                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30">
                       <Heart className="h-5 w-5" />
                     </Button>
-                    <Button
-                      size="icon"
-                      variant="secondary"
-                      className="rounded-full bg-white/20 hover:bg-white/30"
-                    >
+                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30">
                       <MessageCircle className="h-5 w-5" />
                     </Button>
-                    <Button
-                      size="icon"
-                      variant="secondary"
-                      className="rounded-full bg-white/20 hover:bg-white/30"
-                    >
+                    <Button size="icon" variant="secondary" className="rounded-full bg-white/20 hover:bg-white/30" onClick={() => share(item.id)}>
                       <Share2 className="h-5 w-5" />
                     </Button>
                   </div>
 
-                  {/* Bottom author bar */}
                   <div className="absolute left-0 right-0 bottom-0 p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={item.authorAvatar || undefined} />
-                        <AvatarFallback>
-                          {item.authorName[0] || "U"}
-                        </AvatarFallback>
+                        <AvatarFallback>{item.authorName[0] || "U"}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-semibold text-white">
-                          {item.authorName}
-                        </div>
+                        <div className="font-semibold text-white">{item.authorName}</div>
                         {item.caption && (
-                          <div className="text-xs text-white/80 max-w-[60vw] line-clamp-2">
-                            {item.caption}
-                          </div>
+                          <div className="text-xs text-white/80 max-w-[60vw] line-clamp-2">{item.caption}</div>
                         )}
                       </div>
                     </div>
-                    <Button
-                      size="sm"
-                      variant={
-                        isFollowingAuthor(item.authorId) ? "outline" : "default"
-                      }
-                      onClick={() => toggleFollow(item.authorId)}
-                    >
+                    <Button size="sm" variant={isFollowingAuthor(item.authorId) ? "outline" : "default"} onClick={() => toggleFollow(item.authorId)}>
                       {isFollowingAuthor(item.authorId) ? (
-                        <span className="flex items-center gap-1">
-                          <UserCheck className="h-4 w-4" /> Following
-                        </span>
+                        <span className="flex items-center gap-1"><UserCheck className="h-4 w-4" /> Following</span>
                       ) : (
-                        <span className="flex items-center gap-1">
-                          <UserPlus className="h-4 w-4" /> Follow
-                        </span>
+                        <span className="flex items-center gap-1"><UserPlus className="h-4 w-4" /> Follow</span>
                       )}
                     </Button>
                   </div>
