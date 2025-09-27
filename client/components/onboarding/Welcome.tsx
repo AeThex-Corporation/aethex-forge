@@ -9,12 +9,15 @@ import {
 } from "@/components/ui/card";
 import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import type { OnboardingData } from "@/pages/Onboarding";
 
 interface WelcomeProps {
   data: OnboardingData;
+  onFinish?: () => void;
+  isFinishing?: boolean;
 }
 
-export default function Welcome({ data }: WelcomeProps) {
+export default function Welcome({ data, onFinish, isFinishing }: WelcomeProps) {
   const getUserTypeLabel = () => {
     switch (data.userType) {
       case "game-developer":
@@ -197,13 +200,15 @@ export default function Welcome({ data }: WelcomeProps) {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-        <Button asChild variant="outline" className="border-border/50">
-          <Link to="/dashboard">Go to Dashboard</Link>
-        </Button>
         <Button
-          asChild
+          onClick={onFinish}
+          disabled={isFinishing}
+          variant="default"
           className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
         >
+          {isFinishing ? "Finishing..." : "Finish & Go to Dashboard"}
+        </Button>
+        <Button asChild variant="outline" className="border-border/50">
           <Link to="/get-started" className="flex items-center space-x-2">
             <span>Get Started</span>
             <ArrowRight className="h-4 w-4" />
