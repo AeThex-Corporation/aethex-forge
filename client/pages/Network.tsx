@@ -3,7 +3,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "@/components/LoadingScreen";
-import Layout from "@/components/Layout";
 import {
   Card,
   CardContent,
