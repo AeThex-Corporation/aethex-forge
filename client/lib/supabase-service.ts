@@ -234,24 +234,30 @@ export const achievementService = {
 // Community Services
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
-    const { data, error } = await supabase
-      .from("community_posts")
-      .select(
-        `
-        *,
-        user_profiles (
-          username,
-          full_name,
-          avatar_url
+    try {
+      const { data, error } = await supabase
+        .from("community_posts")
+        .select(
+          `
+          *,
+          user_profiles (
+            username,
+            full_name,
+            avatar_url
+          )
+        `,
         )
-      `,
-      )
-      .eq("is_published", true)
-      .order("created_at", { ascending: false })
-      .limit(limit);
-
-    if (error) throw error;
-    return data;
+        .eq("is_published", true)
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (!error && data && data.length) return data;
+    } catch {}
+    // Fallback to demo posts
+    try {
+      const raw = localStorage.getItem("demo_posts");
+      const posts = raw ? JSON.parse(raw) : [];
+      return posts.slice(0, limit);
+    } catch { return []; }
   },
 
   async createPost(
@@ -260,25 +266,50 @@ export const communityService = {
       "id" | "created_at" | "updated_at" | "likes_count" | "comments_count"
     >,
   ): Promise<CommunityPost> {
-    const { data, error } = await supabase
-      .from("community_posts")
-      .insert(post)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
+    try {
+      const { data, error } = await supabase
+        .from("community_posts")
+        .insert(post)
+        .select()
+        .single();
+      if (!error && data) return data;
+    } catch {}
+    // Fallback to local demo store
+    const fallback: any = {
+      ...post,
+      id: `demo_${Date.now()}`,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      likes_count: 0,
+      comments_count: 0,
+      user_profiles: (function(){
+        try{
+          const profiles = JSON.parse(localStorage.getItem("demo_profiles")||"[]");
+          return profiles.find((p:any)=>p.id===post.author_id) || null;
+        }catch{ return null; }
+      })()
+    };
+    const raw = localStorage.getItem("demo_posts");
+    const list = raw ? JSON.parse(raw) : [];
+    list.unshift(fallback);
+    localStorage.setItem("demo_posts", JSON.stringify(list));
+    return fallback;
   },
 
   async getUserPosts(userId: string): Promise<CommunityPost[]> {
-    const { data, error } = await supabase
-      .from("community_posts")
-      .select("*")
-      .eq("author_id", userId)
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
-    return data;
+    try {
+      const { data, error } = await supabase
+        .from("community_posts")
+        .select("*")
+        .eq("author_id", userId)
+        .order("created_at", { ascending: false });
+      if (!error && data) return data;
+    } catch {}
+    try {
+      const raw = localStorage.getItem("demo_posts");
+      const posts = raw ? JSON.parse(raw) : [];
+      return posts.filter((p:any)=>p.author_id===userId);
+    } catch { return []; }
   },
 };
 
