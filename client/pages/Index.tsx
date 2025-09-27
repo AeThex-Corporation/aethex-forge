@@ -244,6 +244,99 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Offerings Overview */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gradient">Everything We Offer</h2>
+            <p className="text-muted-foreground mt-2">Explore services, programs, resources, and community</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
+              <CardHeader>
+                <CardTitle>Game Development</CardTitle>
+                <CardDescription>Studios and indie support</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild className="w-full"><Link to="/game-development">Learn More</Link></Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
+              <CardHeader>
+                <CardTitle>Consulting</CardTitle>
+                <CardDescription>Architecture & delivery</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild className="w-full"><Link to="/consulting">Learn More</Link></Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
+              <CardHeader>
+                <CardTitle>Mentorship</CardTitle>
+                <CardDescription>Programs and guidance</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild className="w-full"><Link to="/mentorship">Learn More</Link></Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
+              <CardHeader>
+                <CardTitle>Research Labs</CardTitle>
+                <CardDescription>Innovation and R&D</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild className="w-full"><Link to="/research">Learn More</Link></Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader>
+                <CardTitle>Documentation</CardTitle>
+                <CardDescription>Guides and tutorials</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2">
+                  <Button asChild variant="outline"><Link to="/docs">Docs</Link></Button>
+                  <Button asChild variant="outline"><Link to="/docs/tutorials">Tutorials</Link></Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader>
+                <CardTitle>Community</CardTitle>
+                <CardDescription>News and discussions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2">
+                  <Button asChild variant="outline"><Link to="/community">Community</Link></Button>
+                  <Button asChild variant="outline"><Link to="/blog">Blog</Link></Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader>
+                <CardTitle>Company</CardTitle>
+                <CardDescription>About and contact</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-2">
+                  <Button asChild variant="outline"><Link to="/about">About</Link></Button>
+                  <Button asChild variant="outline"><Link to="/contact">Contact</Link></Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Technology Showcase */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/20 via-transparent to-neon-blue/20" />
