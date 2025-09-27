@@ -33,6 +33,7 @@ import GetStarted from "./pages/GetStarted";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Admin from "./pages/Admin";
+import Network from "./pages/Network";
 import { Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 
@@ -50,7 +51,8 @@ const App = () => (
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin" element={<Admin />} />
-              <Route path="/profile" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/network" element={<Network />} />
+              <Route path="/profile" element={<Navigate to="/network" replace />} />
               <Route path="/login" element={<Login />} />
 
               {/* Service routes */}
