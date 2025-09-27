@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { SkeletonOnboardingStep } from "@/components/Skeleton";
@@ -8,6 +8,9 @@ import PersonalInfo from "@/components/onboarding/PersonalInfo";
 import Experience from "@/components/onboarding/Experience";
 import Interests from "@/components/onboarding/Interests";
 import Welcome from "@/components/onboarding/Welcome";
+import { useAuth } from "@/contexts/AuthContext";
+import { aethexUserService, aethexAchievementService } from "@/lib/aethex-database-adapter";
+import { aethexToast } from "@/lib/aethex-toast";
 
 export type UserType = "game-developer" | "client" | "member" | "customer";
 
@@ -54,6 +57,9 @@ export default function Onboarding() {
   const [data, setData] = useState<OnboardingData>(initialData);
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isFinishing, setIsFinishing] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const steps = [
     { title: "Choose Your Path", component: UserTypeSelection },
@@ -96,6 +102,49 @@ export default function Onboarding() {
   };
 
   const CurrentStepComponent = steps[currentStep].component;
+
+  const finishOnboarding = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setIsFinishing(true);
+    try {
+      const userTypeMap: Record<string, string> = {
+        "game-developer": "game_developer",
+        client: "client",
+        member: "community_member",
+        customer: "customer",
+      };
+
+      await aethexUserService.createInitialProfile(user.id, {
+        username: `${data.personalInfo.firstName || user.email?.split("@")[0] || "user"}`,
+        full_name: `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
+        user_type: (userTypeMap[data.userType || "member"] as any) || "community_member",
+        experience_level: (data.experience.level as any) || "beginner",
+        bio: data.experience.previousProjects || undefined,
+      });
+
+      const interests = Array.from(
+        new Set([...(data.interests.primaryGoals || []), ...(data.interests.preferredServices || [])]),
+      );
+      if (interests.length) {
+        await aethexUserService.addUserInterests(user.id, interests);
+      }
+
+      await aethexAchievementService.checkAndAwardOnboardingAchievement(user.id);
+
+      navigate("/dashboard", { replace: true });
+    } catch (e) {
+      console.error("Finalize onboarding failed:", e);
+      aethexToast.error({
+        title: "Onboarding failed",
+        description: (e as any)?.message || "Please try again",
+      });
+    } finally {
+      setIsFinishing(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -174,6 +223,8 @@ export default function Onboarding() {
                   prevStep={prevStep}
                   currentStep={currentStep}
                   totalSteps={steps.length}
+                  onFinish={finishOnboarding}
+                  isFinishing={isFinishing}
                 />
               </div>
             )}
