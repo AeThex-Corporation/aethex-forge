@@ -66,13 +66,16 @@ export default function Feed() {
 
   useEffect(() => {
     ensureDemoSeed();
-    if (!user) return;
     const load = async () => {
       setIsLoading(true);
       try {
         const posts = await communityService.getPosts(20);
-        const flw = await aethexSocialService.getFollowing(user.id);
-        setFollowing(flw);
+        if (user?.id) {
+          const flw = await aethexSocialService.getFollowing(user.id);
+          setFollowing(flw);
+        } else {
+          setFollowing([]);
+        }
         const mapped: FeedItem[] = posts.map((p: any) => {
           const meta = parseContent(p.content);
           const author = p.user_profiles || {};
@@ -90,7 +93,7 @@ export default function Feed() {
         });
         // If no posts yet, fall back to recommended people as placeholders
         if (mapped.length === 0) {
-          const recs = await aethexSocialService.listRecommended(user.id, 12);
+          const recs = await aethexSocialService.listRecommended(user?.id || "guest", 12);
           const placeholders: FeedItem[] = recs.map((r: any) => ({
             id: r.id,
             authorId: r.id,
@@ -116,12 +119,12 @@ export default function Feed() {
     };
     load();
 
-    const sub = realtimeService.subscribeToCommunityPosts(() => load());
-    return () => {
-      try {
-        sub.unsubscribe();
-      } catch {}
-    };
+    let cleanup: any = null;
+    try {
+      const sub = realtimeService.subscribeToCommunityPosts(() => load());
+      cleanup = () => { try { sub.unsubscribe?.(); } catch {} };
+    } catch {}
+    return () => { cleanup?.(); };
   }, [user, loading]);
 
   const isFollowingAuthor = (id: string) => following.includes(id);
@@ -152,7 +155,7 @@ export default function Feed() {
     } catch {}
   };
 
-  if (!user && !loading) return <Navigate to="/login" replace />;
+  // Guests can view the feed with demo content
   if (loading || isLoading) {
     return (
       <LoadingScreen
