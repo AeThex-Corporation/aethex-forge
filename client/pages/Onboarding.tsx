@@ -153,10 +153,24 @@ export default function Onboarding() {
 
       navigate("/dashboard", { replace: true });
     } catch (e) {
-      console.error("Finalize onboarding failed:", e);
+      // Create a readable error message for logging and UI
+      function formatError(err: any) {
+        if (!err) return "Unknown error";
+        if (typeof err === "string") return err;
+        if (err instanceof Error) return err.message + (err.stack ? `\n${err.stack}` : "");
+        if ((err as any).message) return (err as any).message;
+        try {
+          return JSON.stringify(err);
+        } catch {
+          return String(err);
+        }
+      }
+
+      const formatted = formatError(e as any);
+      console.error("Finalize onboarding failed:", formatted, e);
       aethexToast.error({
         title: "Onboarding failed",
-        description: (e as any)?.message || "Please try again",
+        description: formatted || "Please try again",
       });
     } finally {
       setIsFinishing(false);
