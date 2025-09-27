@@ -144,7 +144,7 @@ export const supabase = new Proxy(supabaseClient || {}, {
           eq: () => builder,
           order: () => builder,
           limit: () => builder,
-          single: async () => ({ data: rows[0] ?? null, error: null }),
+          single: async () => ({ data: rows[0] ?? {}, error: null }),
           then: undefined, // prevent accidental Promise behavior
         };
         return builder;
