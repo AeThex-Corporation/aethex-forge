@@ -51,7 +51,7 @@ import {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user, profile, loading: authLoading, updateProfile } = useAuth();
+  const { user, profile, loading: authLoading, updateProfile, profileComplete } = useAuth();
   const [displayName, setDisplayName] = useState("");
   const [locationInput, setLocationInput] = useState("");
   const [bio, setBio] = useState("");
@@ -273,8 +273,8 @@ export default function Dashboard() {
     );
   }
 
-  // Show profile setup if no profile exists, but allow dashboard to continue
-  const showProfileSetup = !profile || profileCompletion < 80;
+  // Hide setup banner once onboarding is complete
+  const showProfileSetup = !profileComplete;
 
   const statsDisplay = [
     {
@@ -490,6 +490,9 @@ export default function Dashboard() {
                       >
                         Level {profile?.level || 1}
                       </Badge>
+                      {profileComplete && (
+                        <Badge className="mt-2 ml-2 bg-green-600 text-white border-green-500">Profile Complete</Badge>
+                      )}
                     </div>
 
                     {/* XP Progress */}
