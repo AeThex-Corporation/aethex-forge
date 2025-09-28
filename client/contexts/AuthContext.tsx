@@ -26,6 +26,7 @@ interface AuthContextType {
   signInWithOAuth: (provider: "github" | "google") => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<AethexUserProfile>) => Promise<void>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -259,6 +260,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const refreshProfile = async () => {
+    if (user?.id) await fetchUserProfile(user.id);
+  };
+
   const value = {
     user,
     profile,
@@ -271,6 +276,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     signInWithOAuth,
     signOut,
     updateProfile,
+    refreshProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
