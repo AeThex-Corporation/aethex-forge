@@ -264,13 +264,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (user?.id) await fetchUserProfile(user.id);
   };
 
+  const computedComplete =
+    checkProfileComplete(profile) ||
+    (typeof window !== "undefined" &&
+      window.localStorage.getItem("onboarding_complete") === "1");
+
   const value = {
     user,
     profile,
     roles,
     session,
     loading,
-    profileComplete: checkProfileComplete(profile),
+    profileComplete: computedComplete,
     signIn,
     signUp,
     signInWithOAuth,
