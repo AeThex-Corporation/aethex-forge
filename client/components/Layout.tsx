@@ -119,6 +119,17 @@ export default function Layout({ children }: LayoutProps) {
                     <Button variant="ghost" size="sm" className="hover-lift">
                       <Bell className="h-4 w-4" />
                     </Button>
+                    {!profile && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="hover-lift"
+                        onClick={() => signOut()}
+                      >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Sign out
+                      </Button>
+                    )}
                     {profile && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
