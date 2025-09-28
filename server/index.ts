@@ -84,16 +84,26 @@ export function createServer() {
 
     app.post("/api/profile/ensure", async (req, res) => {
       const { id, profile } = req.body || {};
+      console.log("[API] /api/profile/ensure called", { id, profile });
       if (!id) return res.status(400).json({ error: "missing id" });
       try {
-        const { data, error } = await adminSupabase
+        const resp = await adminSupabase
           .from("user_profiles")
           .upsert({ id, ...profile }, { onConflict: "id" })
-          .select()
-          .single();
-        if (error) return res.status(500).json({ error: error.message });
-        res.json(data);
+          .select();
+        // Supabase may return { data, error } or throw. Normalize response
+        const data = (resp as any).data ?? null;
+        const error = (resp as any).error ?? null;
+        if (error) {
+          console.error("[API] /api/profile/ensure supabase error:", error);
+          return res.status(500).json({ error: error.message || String(error) });
+        }
+        // If data is an array, pick the first
+        const row = Array.isArray(data) ? data[0] : data;
+        console.log("[API] /api/profile/ensure success", { row });
+        res.json(row || {});
       } catch (e: any) {
+        console.error("[API] /api/profile/ensure exception:", e);
         res.status(500).json({ error: e?.message || String(e) });
       }
     });
