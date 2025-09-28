@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ensureDemoSeed } from "@/lib/demo-feed";
 import { useNavigate } from "react-router-dom";
 import {
@@ -26,18 +26,17 @@ export default function Admin() {
   const { user, loading, roles } = useAuth();
   const navigate = useNavigate();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
+  const [demoProfiles, setDemoProfiles] = useState<any[]>([]);
+
   useEffect(() => {
     try {
       ensureDemoSeed();
-    } catch {}
-  }, []);
-  const demoProfiles: any[] = (function () {
-    try {
-      return JSON.parse(localStorage.getItem("demo_profiles") || "[]");
+      const list = JSON.parse(localStorage.getItem("demo_profiles") || "[]");
+      setDemoProfiles(Array.isArray(list) ? list : []);
     } catch {
-      return [];
+      setDemoProfiles([]);
     }
-  })();
+  }, []);
 
   useEffect(() => {
     if (!loading) {
