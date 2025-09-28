@@ -16,7 +16,9 @@ export default function PageTransition({ children }: PageTransitionProps) {
   }, [location.pathname]);
 
   return (
-    <div className={`transition-opacity duration-300 ease-out transform-gpu will-change-[opacity] ${visible ? "opacity-100" : "opacity-0"}`}>
+    <div
+      className={`transition-opacity duration-300 ease-out transform-gpu will-change-[opacity] ${visible ? "opacity-100" : "opacity-0"}`}
+    >
       {children}
     </div>
   );

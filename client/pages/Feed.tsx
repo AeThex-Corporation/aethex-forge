@@ -93,7 +93,10 @@ export default function Feed() {
         });
         // If no posts yet, fall back to recommended people as placeholders
         if (mapped.length === 0) {
-          const recs = await aethexSocialService.listRecommended(user?.id || "guest", 12);
+          const recs = await aethexSocialService.listRecommended(
+            user?.id || "guest",
+            12,
+          );
           const placeholders: FeedItem[] = recs.map((r: any) => ({
             id: r.id,
             authorId: r.id,
@@ -122,9 +125,15 @@ export default function Feed() {
     let cleanup: any = null;
     try {
       const sub = realtimeService.subscribeToCommunityPosts(() => load());
-      cleanup = () => { try { sub.unsubscribe?.(); } catch {} };
+      cleanup = () => {
+        try {
+          sub.unsubscribe?.();
+        } catch {}
+      };
     } catch {}
-    return () => { cleanup?.(); };
+    return () => {
+      cleanup?.();
+    };
   }, [user, loading]);
 
   const isFollowingAuthor = (id: string) => following.includes(id);
