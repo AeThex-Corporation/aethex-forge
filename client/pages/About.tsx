@@ -73,10 +73,17 @@ export default function About() {
                 About AeThex
               </h1>
               <p className="text-muted-foreground text-lg">
-                We craft reliable, scalable software—shipping fast without
-                compromising quality. From prototypes to global platforms, we
-                partner end-to-end: strategy, design, engineering, and growth.
+                AeThex is a community-driven platform for builders, game
+                developers, and clients to create together. We craft reliable,
+                scalable software—shipping fast without compromising quality.
+                From prototypes to global platforms, we partner end-to-end:
+                strategy, design, engineering, and growth.
               </p>
+              <div className="mt-2 p-3 rounded-lg border border-aethex-500/30 bg-aethex-500/10 text-sm text-aethex-200">
+                What this site is about: a social, collaborative hub to share
+                work, post updates, discover projects, and level up through
+                mentorship, open-source, and real-time community features.
+              </div>
               <div className="flex flex-wrap gap-2">
                 <Badge variant="outline">TypeScript</Badge>
                 <Badge variant="outline">React</Badge>
@@ -86,10 +93,10 @@ export default function About() {
               </div>
               <div className="flex gap-3 pt-2">
                 <Button asChild>
-                  <a href="/contact">Start a project</a>
+                  <a href="/community">Join the community</a>
                 </Button>
                 <Button asChild variant="outline">
-                  <a href="/dashboard">Explore dashboard</a>
+                  <a href="/feed">Explore the feed</a>
                 </Button>
               </div>
             </div>
@@ -166,30 +173,65 @@ export default function About() {
                 <GitBranch className="h-5 w-5" /> Timeline
               </CardTitle>
               <CardDescription>
-                Highlights from recent builds and launches.
+                From humble beginnings to a thriving community (2011 → today).
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full bg-aethex-400 mt-2" />
-                <div>
-                  <div className="font-medium">2024 • Network + Dashboard</div>
-                  <div className="text-sm text-muted-foreground">
-                    Shipped a creator-centric dashboard and social graph
-                    foundations.
+              {[
+                {
+                  year: "2011",
+                  title: "First open-source experiments",
+                  desc: "Indie tools and game mods shared with small dev circles.",
+                },
+                {
+                  year: "2013",
+                  title: "Early indie projects",
+                  desc: "Shipped community prototypes; grew a network of collaborators.",
+                },
+                {
+                  year: "2015",
+                  title: "Community hub v1",
+                  desc: "Forums, showcases, and lightweight collaboration features.",
+                },
+                {
+                  year: "2017",
+                  title: "Cloud-native foundations",
+                  desc: "Scaled infra, observability, and CI/CD to support growth.",
+                },
+                {
+                  year: "2019",
+                  title: "Realtime systems",
+                  desc: "Live updates, notifications, and multiplayer primitives.",
+                },
+                {
+                  year: "2021",
+                  title: "Open-source toolkit",
+                  desc: "Reusable UI, data, and deployment patterns for rapid builds.",
+                },
+                {
+                  year: "2023",
+                  title: "Community events",
+                  desc: "Mentorship programs, workshops, and collaborative sprints.",
+                },
+                {
+                  year: "2024",
+                  title: "Network + Dashboard",
+                  desc: "Creator-centric dashboard and social graph foundations.",
+                },
+                {
+                  year: "2025",
+                  title: "Realtime feed",
+                  desc: "Vertical feed with follows, reactions, and guided onboarding.",
+                },
+              ].map((item) => (
+                <div key={item.year} className="flex items-start gap-3">
+                  <div className="h-2 w-2 rounded-full bg-aethex-400 mt-2" />
+                  <div>
+                    <div className="font-medium">{item.year} • {item.title}</div>
+                    <div className="text-sm text-muted-foreground">{item.desc}</div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full bg-aethex-400 mt-2" />
-                <div>
-                  <div className="font-medium">2025 • Realtime Feed</div>
-                  <div className="text-sm text-muted-foreground">
-                    Vertical feed with follow, reactions, and frictionless
-                    profile onboarding.
-                  </div>
-                </div>
-              </div>
+              ))}
             </CardContent>
           </Card>
         </div>
