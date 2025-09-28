@@ -172,8 +172,13 @@ export default function Onboarding() {
         description: "Profile setup complete. Welcome to your dashboard.",
       });
 
-      // Navigate after success
+      // Navigate after success (with hard redirect fallback)
       navigate("/dashboard", { replace: true });
+      setTimeout(() => {
+        if (location.pathname.includes("onboarding")) {
+          window.location.assign("/dashboard");
+        }
+      }, 400);
     } catch (e) {
       function formatError(err: any) {
         if (!err) return "Unknown error";
