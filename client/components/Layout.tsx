@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Settings, LogOut, Bell } from "lucide-react";
+import { useEffect } from "react";
+import { ensureDemoSeed } from "@/lib/demo-feed";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -40,6 +42,8 @@ export default function Layout({ children }: LayoutProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => { try { ensureDemoSeed(); } catch {} }, []);
 
   return (
     <div className="min-h-screen bg-aethex-gradient">
