@@ -21,7 +21,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const { user, profile, roles, signOut, loading } = useAuth();
+  const { user, profile, roles, signOut, loading, profileComplete } = useAuth();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
 
   const navigation = [
