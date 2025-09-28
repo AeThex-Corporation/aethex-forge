@@ -577,7 +577,7 @@ export const aethexRealtimeService = {
         "postgres_changes",
         {
           event: "INSERT",
-        	schema: "public",
+          schema: "public",
           table: "notifications",
           filter: `user_id=eq.${userId}`,
         },
