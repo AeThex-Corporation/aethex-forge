@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect } from "react";
+import { ensureDemoSeed } from "@/lib/demo-feed";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -25,6 +26,7 @@ export default function Admin() {
   const { user, loading, roles } = useAuth();
   const navigate = useNavigate();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
+  useEffect(() => { try { ensureDemoSeed(); } catch {} }, []);
   const demoProfiles: any[] = (function () {
     try {
       return JSON.parse(localStorage.getItem("demo_profiles") || "[]");
