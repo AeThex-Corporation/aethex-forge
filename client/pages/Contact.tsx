@@ -18,6 +18,8 @@ import { useState } from "react";
 export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [topic, setTopic] = useState("general");
+  const [urgency, setUrgency] = useState("normal");
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
 
