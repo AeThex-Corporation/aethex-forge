@@ -69,6 +69,32 @@ export default function About() {
     { kpi: "<30d", label: "MVP timelines" },
   ];
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [topic, setTopic] = useState("community");
+  const [message, setMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      aethexToast.error({ title: "Missing info", description: "Please fill out all fields." });
+      return;
+    }
+    setIsSending(true);
+    try {
+      aethexToast.success({ title: "Thanks!", description: "We’ll follow up about your request." });
+      setName("");
+      setEmail("");
+      setMessage("");
+      setTopic("community");
+    } catch (err: any) {
+      aethexToast.error({ title: "Failed to send", description: err?.message || "Try again." });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12">
