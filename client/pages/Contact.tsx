@@ -125,6 +125,33 @@ export default function Contact() {
                       placeholder="you@example.com"
                     />
                   </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <Label>Topic</Label>
+                      <Select value={topic} onValueChange={setTopic}>
+                        <SelectTrigger className="w-full"><SelectValue placeholder="Choose a topic" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="general">General</SelectItem>
+                          <SelectItem value="sales">Sales</SelectItem>
+                          <SelectItem value="support">Support</SelectItem>
+                          <SelectItem value="community">Community</SelectItem>
+                          <SelectItem value="collaboration">Collaboration</SelectItem>
+                          <SelectItem value="press">Press/Media</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Urgency</Label>
+                      <Select value={urgency} onValueChange={setUrgency}>
+                        <SelectTrigger className="w-full"><SelectValue placeholder="Urgency" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="low">Low</SelectItem>
+                          <SelectItem value="normal">Normal</SelectItem>
+                          <SelectItem value="high">High</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
                   <div>
                     <Label htmlFor="message">Message</Label>
                     <Textarea
