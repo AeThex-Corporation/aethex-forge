@@ -145,7 +145,11 @@ export const supabase = new Proxy(supabaseClient || {}, {
     }
 
     if (prop === "channel") {
-      if (isSupabaseConfigured && target && typeof target.channel === "function") {
+      if (
+        isSupabaseConfigured &&
+        target &&
+        typeof target.channel === "function"
+      ) {
         return target.channel.bind(target);
       }
       return function () {

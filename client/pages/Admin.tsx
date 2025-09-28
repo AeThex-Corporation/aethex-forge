@@ -26,7 +26,11 @@ export default function Admin() {
   const { user, loading, roles } = useAuth();
   const navigate = useNavigate();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
-  useEffect(() => { try { ensureDemoSeed(); } catch {} }, []);
+  useEffect(() => {
+    try {
+      ensureDemoSeed();
+    } catch {}
+  }, []);
   const demoProfiles: any[] = (function () {
     try {
       return JSON.parse(localStorage.getItem("demo_profiles") || "[]");

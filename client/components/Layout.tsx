@@ -43,7 +43,11 @@ export default function Layout({ children }: LayoutProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  useEffect(() => { try { ensureDemoSeed(); } catch {} }, []);
+  useEffect(() => {
+    try {
+      ensureDemoSeed();
+    } catch {}
+  }, []);
 
   return (
     <div className="min-h-screen bg-aethex-gradient">
