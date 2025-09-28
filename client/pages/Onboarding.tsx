@@ -120,7 +120,6 @@ export default function Onboarding() {
         customer: "customer",
       };
 
-      const existing = await aethexUserService.getCurrentUser();
       const payload = {
         username: `${data.personalInfo.firstName || user.email?.split("@")[0] || "user"}`,
         full_name:
@@ -131,14 +130,18 @@ export default function Onboarding() {
         bio: data.experience.previousProjects || undefined,
       } as any;
 
-      // Ensure profile exists first; this is the only blocking step
-      if (existing) {
-        await aethexUserService.updateProfile(user.id, payload);
-      } else {
-        await aethexUserService.createInitialProfile(user.id, payload);
+      // Ensure profile via server (uses service role)
+      const ensureResp = await fetch(`/api/profile/ensure`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: user.id, profile: payload }),
+      });
+      if (!ensureResp.ok) {
+        const j = await ensureResp.json().catch(() => ({}));
+        throw new Error(j.error || "Failed to save profile");
       }
 
-      // Fire-and-forget non-critical tasks so UI isn't blocked
+      // Fire-and-forget interests via server
       const interests = Array.from(
         new Set([
           ...(data.interests.primaryGoals || []),
@@ -148,7 +151,11 @@ export default function Onboarding() {
 
       Promise.allSettled([
         interests.length
-          ? aethexUserService.addUserInterests(user.id, interests)
+          ? fetch(`/api/interests`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ user_id: user.id, interests }),
+            })
           : Promise.resolve(),
         aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
       ]).catch(() => undefined);
