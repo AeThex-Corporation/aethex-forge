@@ -9,6 +9,8 @@ import {
   aethexProjectService,
   aethexAchievementService,
 } from "@/lib/aethex-database-adapter";
+import { communityService } from "@/lib/supabase-service";
+import PostComposer from "@/components/social/PostComposer";
 import {
   Card,
   CardContent,
@@ -68,6 +70,8 @@ export default function Dashboard() {
     teamMembers: 0,
     performanceScore: "0%",
   });
+  const [userPosts, setUserPosts] = useState<any[]>([]);
+  const [applications, setApplications] = useState<any[]>([]);
 
   useEffect(() => {
     console.log("Dashboard useEffect:", {
@@ -108,6 +112,7 @@ export default function Dashboard() {
     setLinkedin(profile?.linkedin_url || "");
     setGithub(profile?.github_url || "");
     setTwitter(profile?.twitter_url || "");
+    if (profile) computeProfileCompletion(profile);
   }, [profile]);
 
   const saveProfile = async () => {
@@ -155,6 +160,32 @@ export default function Dashboard() {
       } catch (projectError) {
         console.warn("Could not load projects:", projectError);
         setProjects([]);
+      }
+
+      // Load user's recent posts
+      try {
+        const posts = await communityService.getUserPosts(user!.id);
+        setUserPosts(posts.slice(0, 5));
+      } catch (e) {
+        console.warn("Could not load user posts:", e);
+        setUserPosts([]);
+      }
+
+      // Load project applications (if table exists)
+      try {
+        const { data, error } = await supabase
+          .from("project_applications")
+          .select(
+            `*, projects!inner(id, title, user_id)`
+          )
+          .eq("projects.user_id", user!.id)
+          .order("created_at", { ascending: false })
+          .limit(10);
+        if (!error && Array.isArray(data)) setApplications(data);
+        else setApplications([]);
+      } catch (e) {
+        console.warn("Applications fetch skipped or failed:", e);
+        setApplications([]);
       }
 
       // Check and award project-related achievements, then load achievements
@@ -548,6 +579,17 @@ export default function Dashboard() {
                 })}
               </div>
 
+              {/* Central Post Composer */}
+              <Card className="bg-card/50 border-border/50 animate-fade-in">
+                <CardHeader>
+                  <CardTitle className="text-gradient">Create a Post</CardTitle>
+                  <CardDescription>Share updates, images, or videos</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <PostComposer onPosted={loadDashboardData} />
+                </CardContent>
+              </Card>
+
               {/* Settings Section */}
               <Card
                 className="bg-card/50 border-border/50 animate-fade-in"
@@ -808,6 +850,36 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
 
+              {/* Your Recent Posts */}
+              <Card className="bg-card/50 border-border/50 animate-fade-in">
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="text-gradient">Your Recent Posts</CardTitle>
+                      <CardDescription>Your latest activity</CardDescription>
+                    </div>
+                    <Button variant="outline" size="sm" className="hover-lift" onClick={() => navigate("/feed")}>Go to Feed</Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {userPosts.length === 0 ? (
+                    <div className="text-sm text-muted-foreground">No posts yet. Share something above.</div>
+                  ) : (
+                    userPosts.map((p: any) => {
+                      let text = "";
+                      try { const obj = JSON.parse(p.content||"{}"); text = obj.text || p.content; } catch { text = p.content; }
+                      return (
+                        <div key={p.id} className="p-3 rounded border border-border/40 hover:border-aethex-400/50 transition-all">
+                          <div className="text-sm font-medium">{p.title}</div>
+                          {text && <div className="text-xs text-muted-foreground line-clamp-2">{text}</div>}
+                          <div className="text-[11px] text-muted-foreground mt-1">{new Date(p.created_at).toLocaleString()}</div>
+                        </div>
+                      );
+                    })
+                  )}
+                </CardContent>
+              </Card>
+
               {/* Recent Projects */}
               <Card className="bg-card/50 border-border/50 animate-fade-in">
                 <CardHeader>
@@ -894,6 +966,36 @@ export default function Dashboard() {
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </div>
+                      </div>
+                    ))
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Applications to Your Projects */}
+              <Card className="bg-card/50 border-border/50 animate-fade-in">
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="text-gradient">Project Applications</CardTitle>
+                      <CardDescription>People who applied to your projects</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {applications.length === 0 ? (
+                    <div className="text-sm text-muted-foreground">No applications yet.</div>
+                  ) : (
+                    applications.map((a: any) => (
+                      <div key={a.id} className="p-3 rounded border border-border/40 hover:border-aethex-400/50 transition-all">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-medium text-sm">{a.applicant_name || a.applicant_email || "Applicant"}</div>
+                            <div className="text-xs text-muted-foreground">Applied to: {a.projects?.title || a.project_title || "Project"}</div>
+                          </div>
+                          <div className="text-xs text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</div>
+                        </div>
+                        {a.message && <div className="text-xs text-muted-foreground mt-1 line-clamp-2">{a.message}</div>}
                       </div>
                     ))
                   )}
