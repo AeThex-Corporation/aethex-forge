@@ -107,6 +107,15 @@ export default function Layout({ children }: LayoutProps) {
                     >
                       <Link to="/dashboard">Dashboard</Link>
                     </Button>
+                    {!profileComplete && (
+                      <Button
+                        asChild
+                        size="sm"
+                        className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift glow-blue"
+                      >
+                        <Link to="/onboarding">Complete Setup</Link>
+                      </Button>
+                    )}
                     <Button variant="ghost" size="sm" className="hover-lift">
                       <Bell className="h-4 w-4" />
                     </Button>
