@@ -27,6 +27,12 @@ export default function Admin() {
   const navigate = useNavigate();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
   const [demoProfiles, setDemoProfiles] = useState<any[]>([]);
+  type Studio = { name: string; tagline?: string; metrics?: string; specialties?: string[] };
+  const [studios, setStudios] = useState<Studio[]>([
+    { name: "Lone Star Studio", tagline: "Indie craftsmanship with AAA polish", metrics: "Top-rated indie hits", specialties: ["Unity", "Unreal", "Pixel Art"] },
+    { name: "AeThex | GameForge", tagline: "High-performance cross-platform experiences", metrics: "Billions of player sessions", specialties: ["Roblox", "Backend", "LiveOps"] },
+    { name: "Gaming Control", tagline: "Strategy, simulation, and systems-first design", metrics: "Award-winning franchises", specialties: ["Simulation", "AI/ML", "Economy"] },
+  ]);
 
   useEffect(() => {
     try {
