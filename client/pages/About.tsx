@@ -8,13 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { aethexToast } from "@/lib/aethex-toast";
-import { Rocket, Cpu, Users, Shield, Zap, GitBranch, MessageSquare } from "lucide-react";
-import { useState } from "react";
+import { Rocket, Cpu, Users, Shield, Zap, GitBranch } from "lucide-react";
 
 export default function About() {
   const values = [
@@ -69,31 +63,6 @@ export default function About() {
     { kpi: "<30d", label: "MVP timelines" },
   ];
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [topic, setTopic] = useState("community");
-  const [message, setMessage] = useState("");
-  const [isSending, setIsSending] = useState(false);
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) {
-      aethexToast.error({ title: "Missing info", description: "Please fill out all fields." });
-      return;
-    }
-    setIsSending(true);
-    try {
-      aethexToast.success({ title: "Thanks!", description: "We’ll follow up about your request." });
-      setName("");
-      setEmail("");
-      setMessage("");
-      setTopic("community");
-    } catch (err: any) {
-      aethexToast.error({ title: "Failed to send", description: err?.message || "Try again." });
-    } finally {
-      setIsSending(false);
-    }
-  };
 
   return (
     <Layout>
@@ -267,68 +236,6 @@ export default function About() {
             </CardContent>
           </Card>
 
-          <div className="grid md:grid-cols-2 gap-8 items-start">
-            <Card className="bg-card/50 border-border/50 order-2 md:order-1">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" /> Get involved
-                </CardTitle>
-                <CardDescription>
-                  Reach out about community, collaboration, or mentorship.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={submit} className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div>
-                      <Label htmlFor="name">Name</Label>
-                      <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
-                    </div>
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label>Topic</Label>
-                    <Select value={topic} onValueChange={setTopic}>
-                      <SelectTrigger className="w-full"><SelectValue placeholder="Choose a topic" /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="community">Community</SelectItem>
-                        <SelectItem value="collaboration">Collaboration</SelectItem>
-                        <SelectItem value="mentorship">Mentorship</SelectItem>
-                        <SelectItem value="press">Press/Media</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea id="message" rows={6} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="How would you like to get involved?" />
-                  </div>
-                  <div className="flex justify-end">
-                    <Button type="submit" disabled={isSending} className="hover-lift">
-                      {isSending ? "Sending..." : "Send"}
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 order-1 md:order-2">
-              <CardHeader>
-                <CardTitle>Related resources</CardTitle>
-                <CardDescription>Everything you need to explore AeThex.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid sm:grid-cols-2 gap-3 text-sm">
-                <a href="/community" className="underline text-aethex-300">Community hub</a>
-                <a href="/feed" className="underline text-aethex-300">Live feed</a>
-                <a href="/docs" className="underline text-aethex-300">Documentation</a>
-                <a href="/changelog" className="underline text-aethex-300">Changelog</a>
-                <a href="/blog" className="underline text-aethex-300">Blog</a>
-                <a href="/careers" className="underline text-aethex-300">Careers</a>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </div>
     </Layout>
