@@ -315,34 +315,20 @@ export default function Onboarding() {
           </div>
 
           {/* Floating particles effect (performance-friendly) */}
-          {(() => {
-            const particles = useMemo(
-              () =>
-                Array.from({ length: 8 }).map(() => ({
-                  left: `${Math.floor(Math.random() * 100)}%`,
-                  top: `${Math.floor(Math.random() * 100)}%`,
-                  delay: `${Math.random().toFixed(2)}s`,
-                  duration: `${3 + Math.floor(Math.random() * 2)}s`,
-                })),
-              [],
-            );
-            return (
-              <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10 hidden md:block motion-reduce:hidden">
-                {particles.map((p, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1 h-1 bg-aethex-400 rounded-full animate-float motion-reduce:animate-none"
-                    style={{
-                      left: p.left,
-                      top: p.top,
-                      animationDelay: p.delay,
-                      animationDuration: p.duration,
-                    }}
-                  />
-                ))}
-              </div>
-            );
-          })()}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10 hidden md:block motion-reduce:hidden">
+            {particles.map((p, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-aethex-400 rounded-full animate-float motion-reduce:animate-none"
+                style={{
+                  left: p.left,
+                  top: p.top,
+                  animationDelay: p.delay,
+                  animationDuration: p.duration,
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </Layout>
