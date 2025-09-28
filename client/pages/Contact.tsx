@@ -41,6 +41,8 @@ export default function Contact() {
       });
       setName("");
       setEmail("");
+      setTopic("general");
+      setUrgency("normal");
       setMessage("");
     } catch (err: any) {
       aethexToast.error({
