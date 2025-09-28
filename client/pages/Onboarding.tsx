@@ -107,6 +107,17 @@ export default function Onboarding() {
 
   const CurrentStepComponent = steps[currentStep].component;
 
+  // Precompute decorative particles using useMemo at top-level to avoid hooks in JSX
+  const particles = useMemo(() => {
+    if (typeof window === "undefined") return [];
+    return Array.from({ length: 8 }).map(() => ({
+      left: `${Math.floor(Math.random() * 100)}%`,
+      top: `${Math.floor(Math.random() * 100)}%`,
+      delay: `${Math.random().toFixed(2)}s`,
+      duration: `${3 + Math.floor(Math.random() * 2)}s`,
+    }));
+  }, []);
+
   const finishOnboarding = async () => {
     if (!user) {
       navigate("/login");
