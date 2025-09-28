@@ -489,21 +489,28 @@ export const aethexAchievementService = {
   },
 
   async checkAndAwardOnboardingAchievement(userId: string): Promise<void> {
-    // Support either seeded name or legacy name
-    const { data: achList, error } = await supabase
-      .from("achievements")
-      .select("id, name")
-      .in("name", ["Welcome to AeThex", "AeThex Explorer"])
-      .limit(1);
-
-    if (error) {
-      console.warn("Onboarding achievement lookup failed:", error);
-      return;
-    }
-
-    const achievement = Array.isArray(achList) ? achList[0] : null;
-    if (achievement) {
-      await this.awardAchievement(userId, (achievement as any).id);
+    try {
+      const resp = await fetch(`/api/achievements/award`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: userId,
+          achievement_names: ["Welcome to AeThex", "AeThex Explorer"],
+        }),
+      });
+      if (!resp.ok) {
+        const text = await resp.text().catch(() => "");
+        console.warn("Award onboarding achievement failed:", text);
+        return;
+      }
+      // Show celebratory toast
+      aethexToast.aethex({
+        title: "Achievement Unlocked! 🎉",
+        description: "Welcome to AeThex - Profile setup complete",
+        duration: 8000,
+      });
+    } catch (e) {
+      console.warn("Award onboarding achievement exception:", e);
     }
   },
 
