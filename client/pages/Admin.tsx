@@ -42,6 +42,13 @@ export default function Admin() {
     } catch {
       setDemoProfiles([]);
     }
+    try {
+      const raw = localStorage.getItem("featured_studios");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) setStudios(parsed);
+      }
+    } catch {}
   }, []);
 
   useEffect(() => {
