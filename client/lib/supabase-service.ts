@@ -367,7 +367,11 @@ export const realtimeService = {
     userId: string,
     callback: (notification: any) => void,
   ) {
-    return supabase
+    const client: any = supabase as any;
+    if (!client || typeof client.channel !== "function") {
+      return { unsubscribe: () => {} } as any;
+    }
+    return client
       .channel(`notifications:${userId}`)
       .on(
         "postgres_changes",
@@ -383,7 +387,11 @@ export const realtimeService = {
   },
 
   subscribeToCommunityPosts(callback: (post: any) => void) {
-    return supabase
+    const client: any = supabase as any;
+    if (!client || typeof client.channel !== "function") {
+      return { unsubscribe: () => {} } as any;
+    }
+    return client
       .channel("community_posts")
       .on(
         "postgres_changes",
