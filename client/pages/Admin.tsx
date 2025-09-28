@@ -27,11 +27,31 @@ export default function Admin() {
   const navigate = useNavigate();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
   const [demoProfiles, setDemoProfiles] = useState<any[]>([]);
-  type Studio = { name: string; tagline?: string; metrics?: string; specialties?: string[] };
+  type Studio = {
+    name: string;
+    tagline?: string;
+    metrics?: string;
+    specialties?: string[];
+  };
   const [studios, setStudios] = useState<Studio[]>([
-    { name: "Lone Star Studio", tagline: "Indie craftsmanship with AAA polish", metrics: "Top-rated indie hits", specialties: ["Unity", "Unreal", "Pixel Art"] },
-    { name: "AeThex | GameForge", tagline: "High-performance cross-platform experiences", metrics: "Billions of player sessions", specialties: ["Roblox", "Backend", "LiveOps"] },
-    { name: "Gaming Control", tagline: "Strategy, simulation, and systems-first design", metrics: "Award-winning franchises", specialties: ["Simulation", "AI/ML", "Economy"] },
+    {
+      name: "Lone Star Studio",
+      tagline: "Indie craftsmanship with AAA polish",
+      metrics: "Top-rated indie hits",
+      specialties: ["Unity", "Unreal", "Pixel Art"],
+    },
+    {
+      name: "AeThex | GameForge",
+      tagline: "High-performance cross-platform experiences",
+      metrics: "Billions of player sessions",
+      specialties: ["Roblox", "Backend", "LiveOps"],
+    },
+    {
+      name: "Gaming Control",
+      tagline: "Strategy, simulation, and systems-first design",
+      metrics: "Award-winning franchises",
+      specialties: ["Simulation", "AI/ML", "Economy"],
+    },
   ]);
 
   useEffect(() => {
@@ -177,11 +197,16 @@ export default function Admin() {
                   <Settings className="h-5 w-5 text-yellow-400" />
                   <CardTitle className="text-lg">Featured Studios</CardTitle>
                 </div>
-                <CardDescription>Manage studios shown on Game Development page</CardDescription>
+                <CardDescription>
+                  Manage studios shown on Game Development page
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {studios.map((s, i) => (
-                  <div key={i} className="p-3 rounded border border-border/40 space-y-2">
+                  <div
+                    key={i}
+                    className="p-3 rounded border border-border/40 space-y-2"
+                  >
                     <div className="grid md:grid-cols-2 gap-2">
                       <input
                         className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
@@ -220,7 +245,13 @@ export default function Admin() {
                         value={(s.specialties || []).join(", ")}
                         onChange={(e) => {
                           const next = studios.slice();
-                          next[i] = { ...next[i], specialties: e.target.value.split(",").map(v => v.trim()).filter(Boolean) };
+                          next[i] = {
+                            ...next[i],
+                            specialties: e.target.value
+                              .split(",")
+                              .map((v) => v.trim())
+                              .filter(Boolean),
+                          };
                           setStudios(next);
                         }}
                         placeholder="Specialties (comma separated)"
@@ -244,7 +275,9 @@ export default function Admin() {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => setStudios([...studios, { name: "New Studio" }])}
+                    onClick={() =>
+                      setStudios([...studios, { name: "New Studio" }])
+                    }
                   >
                     Add Studio
                   </Button>
@@ -252,7 +285,10 @@ export default function Admin() {
                     size="sm"
                     onClick={() => {
                       try {
-                        localStorage.setItem("featured_studios", JSON.stringify(studios));
+                        localStorage.setItem(
+                          "featured_studios",
+                          JSON.stringify(studios),
+                        );
                       } catch {}
                     }}
                   >
