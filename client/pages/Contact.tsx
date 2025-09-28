@@ -80,6 +80,21 @@ export default function Contact() {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card className="bg-card/50 border-border/50">
+                <CardHeader>
+                  <CardTitle>Related resources</CardTitle>
+                  <CardDescription>Find quick answers and community links.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid sm:grid-cols-2 gap-3 text-sm">
+                  <a href="/community" className="underline text-aethex-300">Community hub</a>
+                  <a href="/docs" className="underline text-aethex-300">Docs</a>
+                  <a href="/changelog" className="underline text-aethex-300">Changelog</a>
+                  <a href="/blog" className="underline text-aethex-300">Blog</a>
+                  <a href="/feed" className="underline text-aethex-300">Live feed</a>
+                  <a href="/support" className="underline text-aethex-300">Support</a>
+                </CardContent>
+              </Card>
             </div>
 
             <Card className="bg-card/50 border-border/50">
