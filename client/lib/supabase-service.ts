@@ -235,6 +235,14 @@ export const achievementService = {
 // Community Services
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
+    // Prefer server API (service role) to avoid RLS issues
+    try {
+      const resp = await fetch(`/api/posts?limit=${limit}`);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Array.isArray(data) && data.length) return data;
+      }
+    } catch {}
     try {
       const { data, error } = await supabase
         .from("community_posts")
@@ -282,6 +290,14 @@ export const communityService = {
     >,
   ): Promise<CommunityPost> {
     try {
+      const resp = await fetch(`/api/posts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(post),
+      });
+      if (resp.ok) return await resp.json();
+    } catch {}
+    try {
       const { data, error } = await supabase
         .from("community_posts")
         .insert(post)
@@ -316,6 +332,10 @@ export const communityService = {
   },
 
   async getUserPosts(userId: string): Promise<CommunityPost[]> {
+    try {
+      const resp = await fetch(`/api/user/${userId}/posts`);
+      if (resp.ok) return await resp.json();
+    } catch {}
     try {
       const { data, error } = await supabase
         .from("community_posts")
