@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
+import { useMemo } from "react";
 import { SkeletonOnboardingStep } from "@/components/Skeleton";
 import UserTypeSelection from "@/components/onboarding/UserTypeSelection";
 import PersonalInfo from "@/components/onboarding/PersonalInfo";
@@ -166,6 +167,11 @@ export default function Onboarding() {
         aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
       ]).catch(() => undefined);
 
+      // Mark onboarding complete locally (UI fallback)
+      try {
+        localStorage.setItem("onboarding_complete", "1");
+      } catch {}
+
       // Refresh profile so UI updates immediately
       await refreshProfile();
 
@@ -179,7 +185,7 @@ export default function Onboarding() {
       navigate("/dashboard", { replace: true });
       setTimeout(() => {
         if (location.pathname.includes("onboarding")) {
-          window.location.assign("/dashboard");
+          window.location.replace("/dashboard");
         }
       }, 400);
     } catch (e) {
@@ -244,7 +250,7 @@ export default function Onboarding() {
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
               <div
-                className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-700 ease-out glow-blue"
+                className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-700 ease-out glow-blue motion-reduce:transition-none"
                 style={{
                   width: `${((currentStep + 1) / steps.length) * 100}%`,
                 }}
@@ -255,9 +261,9 @@ export default function Onboarding() {
               {steps.map((_, index) => (
                 <div
                   key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 rounded-full transition-all duration-300 motion-reduce:transition-none ${
                     index <= currentStep
-                      ? "bg-aethex-400 glow-blue animate-pulse"
+                      ? "bg-aethex-400 glow-blue animate-pulse motion-reduce:animate-none"
                       : "bg-muted"
                   }`}
                 />
@@ -266,7 +272,7 @@ export default function Onboarding() {
           </div>
 
           {/* Step Content */}
-          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-500 animate-scale-in">
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-500 animate-scale-in motion-reduce:animate-none">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-foreground mb-2 animate-slide-right">
                 {steps[currentStep].title}
@@ -297,21 +303,35 @@ export default function Onboarding() {
             )}
           </div>
 
-          {/* Floating particles effect */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
-            {[...Array(15)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-aethex-400 rounded-full animate-float"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${3 + Math.random() * 2}s`,
-                }}
-              />
-            ))}
-          </div>
+          {/* Floating particles effect (performance-friendly) */}
+          {(() => {
+            const particles = useMemo(
+              () =>
+                Array.from({ length: 8 }).map(() => ({
+                  left: `${Math.floor(Math.random() * 100)}%`,
+                  top: `${Math.floor(Math.random() * 100)}%`,
+                  delay: `${Math.random().toFixed(2)}s`,
+                  duration: `${3 + Math.floor(Math.random() * 2)}s`,
+                })),
+              [],
+            );
+            return (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10 hidden md:block motion-reduce:hidden">
+                {particles.map((p, i) => (
+                  <div
+                    key={i}
+                    className="absolute w-1 h-1 bg-aethex-400 rounded-full animate-float motion-reduce:animate-none"
+                    style={{
+                      left: p.left,
+                      top: p.top,
+                      animationDelay: p.delay,
+                      animationDuration: p.duration,
+                    }}
+                  />
+                ))}
+              </div>
+            );
+          })()}
         </div>
       </div>
     </Layout>
