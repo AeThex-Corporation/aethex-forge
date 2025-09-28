@@ -86,22 +86,65 @@ export function createServer() {
       const { id, profile } = req.body || {};
       console.log("[API] /api/profile/ensure called", { id, profile });
       if (!id) return res.status(400).json({ error: "missing id" });
-      try {
+
+      const tryUpsert = async (payload: any) => {
         const resp = await adminSupabase
           .from("user_profiles")
-          .upsert({ id, ...profile }, { onConflict: "id" })
-          .select();
-        // Supabase may return { data, error } or throw. Normalize response
-        const data = (resp as any).data ?? null;
-        const error = (resp as any).error ?? null;
+          .upsert(payload, { onConflict: "id" })
+          .select()
+          .single();
+        return resp as any;
+      };
+
+      try {
+        let username = profile?.username;
+        let attempt = await tryUpsert({ id, ...profile, username });
+
+        const normalizeError = (err: any) => {
+          if (!err) return null;
+          if (typeof err === "string") return { message: err };
+          if (typeof err === "object" && Object.keys(err).length === 0)
+            return null; // treat empty object as no error
+          return err;
+        };
+
+        let error = normalizeError(attempt.error);
         if (error) {
-          console.error("[API] /api/profile/ensure supabase error:", error);
-          return res.status(500).json({ error: error.message || String(error) });
+          console.error("[API] ensure upsert error:", {
+            message: (error as any).message,
+            code: (error as any).code,
+            details: (error as any).details,
+            hint: (error as any).hint,
+          });
+
+          const message: string = (error as any).message || "";
+          const code: string = (error as any).code || "";
+
+          // Handle duplicate username
+          if (code === "23505" || message.includes("duplicate key") || message.includes("username")) {
+            const suffix = Math.random().toString(36).slice(2, 6);
+            const newUsername = `${String(username || "user").slice(0, 20)}_${suffix}`;
+            console.log("[API] retrying with unique username", newUsername);
+            attempt = await tryUpsert({ id, ...profile, username: newUsername });
+            error = normalizeError(attempt.error);
+          }
         }
-        // If data is an array, pick the first
-        const row = Array.isArray(data) ? data[0] : data;
-        console.log("[API] /api/profile/ensure success", { row });
-        res.json(row || {});
+
+        if (error) {
+          // Possible foreign key violation: auth.users missing
+          if ((error as any).code === "23503" || (error as any).message?.includes("foreign key")) {
+            return res.status(400).json({
+              error:
+                "User does not exist in authentication system. Please sign out and sign back in, then retry onboarding.",
+            });
+          }
+          return res.status(500).json({
+            error:
+              (error as any).message || JSON.stringify(error) || "Unknown error",
+          });
+        }
+
+        return res.json(attempt.data || {});
       } catch (e: any) {
         console.error("[API] /api/profile/ensure exception:", e);
         res.status(500).json({ error: e?.message || String(e) });
