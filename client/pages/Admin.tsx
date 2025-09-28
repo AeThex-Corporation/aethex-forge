@@ -175,17 +175,90 @@ export default function Admin() {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Settings className="h-5 w-5 text-yellow-400" />
-                  <CardTitle className="text-lg">Site Settings</CardTitle>
+                  <CardTitle className="text-lg">Featured Studios</CardTitle>
                 </div>
-                <CardDescription>Branding, legal, integrations</CardDescription>
+                <CardDescription>Manage studios shown on Game Development page</CardDescription>
               </CardHeader>
-              <CardContent>
-                <Button
-                  variant="outline"
-                  onClick={() => navigate("/get-started")}
-                >
-                  Open Settings
-                </Button>
+              <CardContent className="space-y-3">
+                {studios.map((s, i) => (
+                  <div key={i} className="p-3 rounded border border-border/40 space-y-2">
+                    <div className="grid md:grid-cols-2 gap-2">
+                      <input
+                        className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                        value={s.name}
+                        onChange={(e) => {
+                          const next = studios.slice();
+                          next[i] = { ...next[i], name: e.target.value };
+                          setStudios(next);
+                        }}
+                        placeholder="Studio name"
+                      />
+                      <input
+                        className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                        value={s.tagline || ""}
+                        onChange={(e) => {
+                          const next = studios.slice();
+                          next[i] = { ...next[i], tagline: e.target.value };
+                          setStudios(next);
+                        }}
+                        placeholder="Tagline"
+                      />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-2">
+                      <input
+                        className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                        value={s.metrics || ""}
+                        onChange={(e) => {
+                          const next = studios.slice();
+                          next[i] = { ...next[i], metrics: e.target.value };
+                          setStudios(next);
+                        }}
+                        placeholder="Metrics (e.g., 1B+ sessions)"
+                      />
+                      <input
+                        className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                        value={(s.specialties || []).join(", ")}
+                        onChange={(e) => {
+                          const next = studios.slice();
+                          next[i] = { ...next[i], specialties: e.target.value.split(",").map(v => v.trim()).filter(Boolean) };
+                          setStudios(next);
+                        }}
+                        placeholder="Specialties (comma separated)"
+                      />
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const next = studios.filter((_, idx) => idx !== i);
+                          setStudios(next);
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                <div className="flex justify-between">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setStudios([...studios, { name: "New Studio" }])}
+                  >
+                    Add Studio
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      try {
+                        localStorage.setItem("featured_studios", JSON.stringify(studios));
+                      } catch {}
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
