@@ -7,6 +7,7 @@ import {
   aethexUserService,
   aethexRoleService,
   type AethexUserProfile,
+  checkProfileComplete,
 } from "@/lib/aethex-database-adapter";
 
 interface AuthContextType {
@@ -15,6 +16,7 @@ interface AuthContextType {
   roles: string[];
   session: Session | null;
   loading: boolean;
+  profileComplete: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (
     email: string,
@@ -263,6 +265,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     roles,
     session,
     loading,
+    profileComplete: checkProfileComplete(profile),
     signIn,
     signUp,
     signInWithOAuth,
