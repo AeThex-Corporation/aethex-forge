@@ -137,8 +137,11 @@ export default function Onboarding() {
         body: JSON.stringify({ id: user.id, profile: payload }),
       });
       if (!ensureResp.ok) {
-        const j = await ensureResp.json().catch(() => ({}));
-        throw new Error(j.error || "Failed to save profile");
+        const text = await ensureResp.text().catch(() => "");
+        let parsedError: any = undefined;
+        try { parsedError = JSON.parse(text); } catch {}
+        const message = parsedError?.error || text || `HTTP ${ensureResp.status}`;
+        throw new Error(message);
       }
 
       // Fire-and-forget interests via server
