@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { adminSupabase } from "./supabase";
 
 export function createServer() {
   const app = express();
@@ -18,8 +19,6 @@ export function createServer() {
 
   // Admin-backed API (service role)
   try {
-    const { adminSupabase } = await import("./supabase");
-
     app.get("/api/health", async (_req, res) => {
       try {
         const { error } = await adminSupabase.from("user_profiles").select("count", { count: "exact", head: true });
