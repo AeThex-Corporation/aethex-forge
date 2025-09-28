@@ -22,10 +22,16 @@ export interface AethexUserProfile extends UserProfile {
 
 export function checkProfileComplete(p?: AethexUserProfile | null): boolean {
   if (!p) return false;
-  const hasUsername = typeof p.username === "string" && p.username.trim().length > 0;
-  const hasFullName = typeof p.full_name === "string" && p.full_name.trim().length > 0;
-  const hasUserType = typeof (p as any).user_type === "string" && (p as any).user_type.trim().length > 0;
-  const hasExperience = typeof (p as any).experience_level === "string" && (p as any).experience_level.trim().length > 0;
+  const hasUsername =
+    typeof p.username === "string" && p.username.trim().length > 0;
+  const hasFullName =
+    typeof p.full_name === "string" && p.full_name.trim().length > 0;
+  const hasUserType =
+    typeof (p as any).user_type === "string" &&
+    (p as any).user_type.trim().length > 0;
+  const hasExperience =
+    typeof (p as any).experience_level === "string" &&
+    (p as any).experience_level.trim().length > 0;
   return hasUsername && hasFullName && hasUserType && hasExperience;
 }
 
