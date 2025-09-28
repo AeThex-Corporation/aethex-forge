@@ -567,13 +567,17 @@ export const aethexRealtimeService = {
     userId: string,
     callback: (notification: any) => void,
   ) {
-    return supabase
+    const client: any = supabase as any;
+    if (!client || typeof client.channel !== "function") {
+      return { unsubscribe: () => {} } as any;
+    }
+    return client
       .channel(`notifications:${userId}`)
       .on(
         "postgres_changes",
         {
           event: "INSERT",
-          schema: "public",
+        	schema: "public",
           table: "notifications",
           filter: `user_id=eq.${userId}`,
         },
@@ -583,7 +587,11 @@ export const aethexRealtimeService = {
   },
 
   subscribeToProjects(callback: (project: any) => void) {
-    return supabase
+    const client: any = supabase as any;
+    if (!client || typeof client.channel !== "function") {
+      return { unsubscribe: () => {} } as any;
+    }
+    return client
       .channel("projects")
       .on(
         "postgres_changes",
