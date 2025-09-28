@@ -167,6 +167,35 @@ export function createServer() {
       }
     });
 
+    app.post("/api/achievements/award", async (req, res) => {
+      const { user_id, achievement_names } = req.body || {};
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      const names: string[] = Array.isArray(achievement_names) && achievement_names.length
+        ? achievement_names
+        : ["Welcome to AeThex"];
+      try {
+        const { data: achievements, error: aErr } = await adminSupabase
+          .from("achievements")
+          .select("id, name")
+          .in("name", names);
+        if (aErr) return res.status(500).json({ error: aErr.message });
+        const rows = (achievements || []).map((a: any) => ({
+          user_id,
+          achievement_id: a.id,
+        }));
+        if (!rows.length) return res.json({ ok: true, awarded: [] });
+        const { error: iErr } = await adminSupabase
+          .from("user_achievements")
+          .insert(rows, { upsert: true });
+        if (iErr && iErr.code !== "23505")
+          return res.status(500).json({ error: iErr.message });
+        return res.json({ ok: true, awarded: rows.length });
+      } catch (e: any) {
+        console.error("[API] achievements/award exception", e);
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.get("/api/applications", async (req, res) => {
       const owner = String(req.query.owner || "");
       if (!owner) return res.status(400).json({ error: "owner required" });
