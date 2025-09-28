@@ -146,11 +146,50 @@ export default function GameDevelopment() {
       title: "Roblox Tycoon Empire",
       description: "Business simulation with advanced economy systems",
       tech: ["Roblox Studio", "Lua", "DataStore"],
-      players: "100K+ visits",
+      players: "1B+ visits",
       rating: 4.7,
       category: "Simulation",
     },
   ];
+
+  type Studio = {
+    name: string;
+    tagline?: string;
+    metrics?: string;
+    specialties?: string[];
+  };
+
+  const defaultStudios: Studio[] = [
+    {
+      name: "Lone Star Studio",
+      tagline: "Indie craftsmanship with AAA polish",
+      metrics: "Top-rated indie hits",
+      specialties: ["Unity", "Unreal", "Pixel Art"],
+    },
+    {
+      name: "AeThex | GameForge",
+      tagline: "High-performance cross-platform experiences",
+      metrics: "Billions of player sessions",
+      specialties: ["Roblox", "Backend", "LiveOps"],
+    },
+    {
+      name: "Gaming Control",
+      tagline: "Strategy, simulation, and systems-first design",
+      metrics: "Award-winning franchises",
+      specialties: ["Simulation", "AI/ML", "Economy"],
+    },
+  ];
+
+  const [studios, setStudios] = useState<Studio[]>(defaultStudios);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("featured_studios");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) setStudios(parsed);
+      }
+    } catch {}
+  }, []);
 
   const process = [
     {
@@ -391,65 +430,61 @@ export default function GameDevelopment() {
           </div>
         </section>
 
-        {/* Portfolio Section */}
+        {/* Featured Studios Section */}
         <section className="py-20 bg-background/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
-                Featured Projects
+                Featured Studios
               </h2>
               <p className="text-lg text-muted-foreground">
-                Showcasing our latest game development achievements
+                Hand-picked studios powering AeThex game development
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {portfolio.map((project, index) => (
+              {studios.map((studio, index) => (
                 <Card
                   key={index}
                   className="relative overflow-hidden border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className="absolute top-4 right-4 z-10">
-                    <Badge variant="outline" className="bg-background/80">
-                      {project.category}
-                    </Badge>
-                  </div>
-
                   <CardHeader>
                     <div className="space-y-2">
-                      <CardTitle className="text-lg">{project.title}</CardTitle>
-                      <CardDescription>{project.description}</CardDescription>
+                      <CardTitle className="text-lg">{studio.name}</CardTitle>
+                      {studio.tagline && (
+                        <CardDescription>{studio.tagline}</CardDescription>
+                      )}
                     </div>
                   </CardHeader>
 
                   <CardContent className="space-y-4">
-                    <div className="flex flex-wrap gap-1">
-                      {project.tech.map((tech, techIndex) => (
-                        <Badge
-                          key={techIndex}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
+                    {studio.specialties?.length ? (
+                      <div className="flex flex-wrap gap-1">
+                        {studio.specialties.map((tech, techIndex) => (
+                          <Badge
+                            key={techIndex}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : null}
 
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center space-x-2">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">
-                          {project.players}
-                        </span>
+                    {studio.metrics ? (
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center space-x-2 text-muted-foreground">
+                          <Users className="h-4 w-4" />
+                          <span>{studio.metrics}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Star className="h-4 w-4 text-yellow-500" />
+                          <span className="font-semibold">Top Rated</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="text-sm font-semibold">
-                          {project.rating}
-                        </span>
-                      </div>
-                    </div>
+                    ) : null}
                   </CardContent>
                 </Card>
               ))}
