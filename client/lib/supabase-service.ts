@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { ensureDemoSeed } from "./demo-feed";
 import type {
   Database,
   UserProfile,
@@ -252,13 +253,25 @@ export const communityService = {
         .limit(limit);
       if (!error && data && data.length) return data;
     } catch {}
-    // Fallback to demo posts
+    // Fallback to demo posts with auto-seed
     try {
-      const raw = localStorage.getItem("demo_posts");
-      const posts = raw ? JSON.parse(raw) : [];
-      return posts.slice(0, limit);
+      let raw = localStorage.getItem("demo_posts");
+      let posts = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(posts) || posts.length === 0) {
+        ensureDemoSeed();
+        raw = localStorage.getItem("demo_posts");
+        posts = raw ? JSON.parse(raw) : [];
+      }
+      return (Array.isArray(posts) ? posts : []).slice(0, limit);
     } catch {
-      return [];
+      try {
+        ensureDemoSeed();
+        const raw = localStorage.getItem("demo_posts");
+        const posts = raw ? JSON.parse(raw) : [];
+        return (Array.isArray(posts) ? posts : []).slice(0, limit);
+      } catch {
+        return [];
+      }
     }
   },
 
