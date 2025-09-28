@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { OnboardingData } from "@/pages/Onboarding";
 
 interface WelcomeProps {
   data: OnboardingData;
