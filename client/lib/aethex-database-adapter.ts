@@ -489,12 +489,19 @@ export const aethexAchievementService = {
   },
 
   async checkAndAwardOnboardingAchievement(userId: string): Promise<void> {
-    const { data: achievement } = await supabase
+    // Support either seeded name or legacy name
+    const { data: achList, error } = await supabase
       .from("achievements")
-      .select("id")
-      .eq("name", "AeThex Explorer")
-      .single();
+      .select("id, name")
+      .in("name", ["Welcome to AeThex", "AeThex Explorer"])
+      .limit(1);
 
+    if (error) {
+      console.warn("Onboarding achievement lookup failed:", error);
+      return;
+    }
+
+    const achievement = Array.isArray(achList) ? achList[0] : null;
     if (achievement) {
       await this.awardAchievement(userId, (achievement as any).id);
     }
