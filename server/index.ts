@@ -214,7 +214,7 @@ export function createServer() {
         if (!rows.length) return res.json({ ok: true, awarded: [] });
         const { error: iErr } = await adminSupabase
           .from("user_achievements")
-          .insert(rows, { upsert: true });
+          .upsert(rows, { onConflict: "user_id,achievement_id" as any });
         if (iErr && iErr.code !== "23505")
           return res.status(500).json({ error: iErr.message });
         return res.json({ ok: true, awarded: rows.length });
