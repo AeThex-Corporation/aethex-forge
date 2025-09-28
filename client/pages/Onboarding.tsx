@@ -62,7 +62,7 @@ export default function Onboarding() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isFinishing, setIsFinishing] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, refreshProfile } = useAuth();
 
   const steps = [
     { title: "Choose Your Path", component: UserTypeSelection },
@@ -163,7 +163,16 @@ export default function Onboarding() {
         aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
       ]).catch(() => undefined);
 
-      // Navigate immediately after profile success
+      // Refresh profile so UI updates immediately
+      await refreshProfile();
+
+      // Success toast
+      aethexToast.success({
+        title: "You're all set!",
+        description: "Profile setup complete. Welcome to your dashboard.",
+      });
+
+      // Navigate after success
       navigate("/dashboard", { replace: true });
     } catch (e) {
       function formatError(err: any) {
