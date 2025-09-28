@@ -139,8 +139,11 @@ export default function Onboarding() {
       if (!ensureResp.ok) {
         const text = await ensureResp.text().catch(() => "");
         let parsedError: any = undefined;
-        try { parsedError = JSON.parse(text); } catch {}
-        const message = parsedError?.error || text || `HTTP ${ensureResp.status}`;
+        try {
+          parsedError = JSON.parse(text);
+        } catch {}
+        const message =
+          parsedError?.error || text || `HTTP ${ensureResp.status}`;
         throw new Error(message);
       }
 

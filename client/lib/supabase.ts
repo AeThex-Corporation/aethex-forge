@@ -219,7 +219,7 @@ export const storage = supabase.storage;
 export const channel = supabase.channel;
 
 // Test function for debugging
-;(window as any).testSupabase = async () => {
+(window as any).testSupabase = async () => {
   console.log("🧪 Manual Supabase Test");
   console.log("URL:", supabaseUrl);
   console.log("Key configured:", !!supabaseAnonKey);

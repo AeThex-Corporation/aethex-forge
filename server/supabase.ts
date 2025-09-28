@@ -1,13 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
+const SUPABASE_URL =
+  process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
 const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE || "";
 
 if (!SUPABASE_URL) {
   console.warn("SUPABASE_URL not set for server");
 }
 if (!SUPABASE_SERVICE_ROLE) {
-  console.warn("SUPABASE_SERVICE_ROLE not set for server (admin ops will fail)");
+  console.warn(
+    "SUPABASE_SERVICE_ROLE not set for server (admin ops will fail)",
+  );
 }
 
 export const adminSupabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE, {

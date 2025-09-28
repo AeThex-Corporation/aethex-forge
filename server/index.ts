@@ -21,11 +21,16 @@ export function createServer() {
   try {
     app.get("/api/health", async (_req, res) => {
       try {
-        const { error } = await adminSupabase.from("user_profiles").select("count", { count: "exact", head: true });
-        if (error) return res.status(500).json({ ok: false, error: error.message });
+        const { error } = await adminSupabase
+          .from("user_profiles")
+          .select("count", { count: "exact", head: true });
+        if (error)
+          return res.status(500).json({ ok: false, error: error.message });
         return res.json({ ok: true });
       } catch (e: any) {
-        return res.status(500).json({ ok: false, error: e?.message || String(e) });
+        return res
+          .status(500)
+          .json({ ok: false, error: e?.message || String(e) });
       }
     });
 
@@ -121,18 +126,29 @@ export function createServer() {
           const code: string = (error as any).code || "";
 
           // Handle duplicate username
-          if (code === "23505" || message.includes("duplicate key") || message.includes("username")) {
+          if (
+            code === "23505" ||
+            message.includes("duplicate key") ||
+            message.includes("username")
+          ) {
             const suffix = Math.random().toString(36).slice(2, 6);
             const newUsername = `${String(username || "user").slice(0, 20)}_${suffix}`;
             console.log("[API] retrying with unique username", newUsername);
-            attempt = await tryUpsert({ id, ...profile, username: newUsername });
+            attempt = await tryUpsert({
+              id,
+              ...profile,
+              username: newUsername,
+            });
             error = normalizeError(attempt.error);
           }
         }
 
         if (error) {
           // Possible foreign key violation: auth.users missing
-          if ((error as any).code === "23503" || (error as any).message?.includes("foreign key")) {
+          if (
+            (error as any).code === "23503" ||
+            (error as any).message?.includes("foreign key")
+          ) {
             return res.status(400).json({
               error:
                 "User does not exist in authentication system. Please sign out and sign back in, then retry onboarding.",
@@ -140,7 +156,9 @@ export function createServer() {
           }
           return res.status(500).json({
             error:
-              (error as any).message || JSON.stringify(error) || "Unknown error",
+              (error as any).message ||
+              JSON.stringify(error) ||
+              "Unknown error",
           });
         }
 
@@ -153,12 +171,21 @@ export function createServer() {
 
     app.post("/api/interests", async (req, res) => {
       const { user_id, interests } = req.body || {};
-      if (!user_id || !Array.isArray(interests)) return res.status(400).json({ error: "invalid payload" });
+      if (!user_id || !Array.isArray(interests))
+        return res.status(400).json({ error: "invalid payload" });
       try {
-        await adminSupabase.from("user_interests").delete().eq("user_id", user_id);
+        await adminSupabase
+          .from("user_interests")
+          .delete()
+          .eq("user_id", user_id);
         if (interests.length) {
-          const rows = interests.map((interest: string) => ({ user_id, interest }));
-          const { error } = await adminSupabase.from("user_interests").insert(rows);
+          const rows = interests.map((interest: string) => ({
+            user_id,
+            interest,
+          }));
+          const { error } = await adminSupabase
+            .from("user_interests")
+            .insert(rows);
           if (error) return res.status(500).json({ error: error.message });
         }
         res.json({ ok: true });
@@ -170,9 +197,10 @@ export function createServer() {
     app.post("/api/achievements/award", async (req, res) => {
       const { user_id, achievement_names } = req.body || {};
       if (!user_id) return res.status(400).json({ error: "user_id required" });
-      const names: string[] = Array.isArray(achievement_names) && achievement_names.length
-        ? achievement_names
-        : ["Welcome to AeThex"];
+      const names: string[] =
+        Array.isArray(achievement_names) && achievement_names.length
+          ? achievement_names
+          : ["Welcome to AeThex"];
       try {
         const { data: achievements, error: aErr } = await adminSupabase
           .from("achievements")

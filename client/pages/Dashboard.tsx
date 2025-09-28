@@ -51,7 +51,13 @@ import {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user, profile, loading: authLoading, updateProfile, profileComplete } = useAuth();
+  const {
+    user,
+    profile,
+    loading: authLoading,
+    updateProfile,
+    profileComplete,
+  } = useAuth();
   const [displayName, setDisplayName] = useState("");
   const [locationInput, setLocationInput] = useState("");
   const [bio, setBio] = useState("");
@@ -491,7 +497,9 @@ export default function Dashboard() {
                         Level {profile?.level || 1}
                       </Badge>
                       {profileComplete && (
-                        <Badge className="mt-2 ml-2 bg-green-600 text-white border-green-500">Profile Complete</Badge>
+                        <Badge className="mt-2 ml-2 bg-green-600 text-white border-green-500">
+                          Profile Complete
+                        </Badge>
                       )}
                     </div>
 
