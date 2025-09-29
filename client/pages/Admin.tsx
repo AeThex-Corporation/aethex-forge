@@ -63,7 +63,7 @@ export default function Admin() {
       setDemoProfiles([]);
     }
     fetch("/api/featured-studios")
-      .then((r) => r.ok ? r.json() : [])
+      .then((r) => (r.ok ? r.json() : []))
       .then((data) => {
         if (Array.isArray(data) && data.length) setStudios(data);
       })

@@ -184,7 +184,7 @@ export default function GameDevelopment() {
   useEffect(() => {
     fetch("/api/featured-studios")
       .then((r) => (r.ok ? r.json() : []))
-      .then((data) => Array.isArray(data) ? setStudios(data) : undefined)
+      .then((data) => (Array.isArray(data) ? setStudios(data) : undefined))
       .catch(() => undefined);
   }, []);
 
