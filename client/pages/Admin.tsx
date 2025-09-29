@@ -62,13 +62,12 @@ export default function Admin() {
     } catch {
       setDemoProfiles([]);
     }
-    try {
-      const raw = localStorage.getItem("featured_studios");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) setStudios(parsed);
-      }
-    } catch {}
+    fetch("/api/featured-studios")
+      .then((r) => r.ok ? r.json() : [])
+      .then((data) => {
+        if (Array.isArray(data) && data.length) setStudios(data);
+      })
+      .catch(() => void 0);
   }, []);
 
   useEffect(() => {
@@ -283,13 +282,16 @@ export default function Admin() {
                   </Button>
                   <Button
                     size="sm"
-                    onClick={() => {
-                      try {
-                        localStorage.setItem(
-                          "featured_studios",
-                          JSON.stringify(studios),
-                        );
-                      } catch {}
+                    onClick={async () => {
+                      const resp = await fetch("/api/featured-studios", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ studios }),
+                      });
+                      if (!resp.ok) {
+                        alert("Failed to save studios");
+                        return;
+                      }
                     }}
                   >
                     Save
