@@ -194,6 +194,43 @@ export function createServer() {
       }
     });
 
+    app.get("/api/featured-studios", async (_req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("featured_studios")
+          .select("*")
+          .order("rank", { ascending: true, nullsFirst: true } as any)
+          .order("name", { ascending: true });
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/featured-studios", async (req, res) => {
+      const studios = (req.body?.studios || []) as any[];
+      if (!Array.isArray(studios))
+        return res.status(400).json({ error: "studios must be an array" });
+      try {
+        const rows = studios.map((s: any, idx: number) => ({
+          id: s.id,
+          name: String(s.name || "").trim(),
+          tagline: s.tagline || null,
+          metrics: s.metrics || null,
+          specialties: Array.isArray(s.specialties) ? s.specialties : null,
+          rank: Number.isFinite(s.rank) ? s.rank : idx,
+        }));
+        const { error } = await adminSupabase
+          .from("featured_studios")
+          .upsert(rows as any, { onConflict: "name" as any });
+        if (error) return res.status(500).json({ error: error.message });
+        res.json({ ok: true, count: rows.length });
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.post("/api/achievements/award", async (req, res) => {
       const { user_id, achievement_names } = req.body || {};
       if (!user_id) return res.status(400).json({ error: "user_id required" });
