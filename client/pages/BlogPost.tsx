@@ -16,10 +16,11 @@ export default function BlogPost() {
     (async () => {
       try {
         if (!slug) return;
-        const entry = await fetchBuilderOne<any>("blog-post", slug);
-        if (!cancelled) setPost(entry?.data ? { ...entry.data, title: entry.data.title || entry.name } : null);
+        const res = await fetch(`/api/blog/${encodeURIComponent(slug)}`);
+        const data = res.ok ? await res.json() : null;
+        if (!cancelled) setPost(data);
       } catch (e) {
-        console.warn("Builder CMS blog post fetch failed:", e);
+        console.warn("Blog post fetch failed:", e);
       } finally {
         if (!cancelled) setLoading(false);
       }
