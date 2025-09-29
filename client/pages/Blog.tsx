@@ -31,17 +31,45 @@ export default function Blog() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const toastShownRef = useRef(false);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [featuredPost, setFeaturedPost] = useState<any | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      if (!toastShownRef.current) {
-        aethexToast.system("AeThex Blog loaded successfully");
-        toastShownRef.current = true;
+    let cancelled = false;
+    (async () => {
+      try {
+        const list = await fetchBuilderList<any>("blog-post", { limit: 50 });
+        const mapped = (list.results || []).map((r) => ({
+          id: r.id,
+          slug: r.data?.slug || (r.name || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+          title: r.data?.title || r.name,
+          excerpt: r.data?.excerpt,
+          author: r.data?.author,
+          date: r.data?.date,
+          readTime: r.data?.readTime,
+          category: r.data?.category || "General",
+          image: r.data?.image,
+          likes: r.data?.likes || 0,
+          comments: r.data?.comments || 0,
+          trending: r.data?.trending || false,
+        }));
+        if (!cancelled) {
+          setPosts(mapped);
+          setFeaturedPost(mapped[0] || null);
+        }
+      } catch (e) {
+        console.warn("Builder CMS blog fetch failed:", e);
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+          if (!toastShownRef.current) {
+            aethexToast.system("AeThex Blog loaded successfully");
+            toastShownRef.current = true;
+          }
+        }
       }
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   const categories = [
@@ -52,21 +80,8 @@ export default function Blog() {
     { id: "company", name: "Company News", count: 7 },
   ];
 
-  const featuredPost = {
-    title: "The Future of Quantum Game Development",
-    excerpt:
-      "Exploring how quantum computing will revolutionize game AI, physics simulations, and procedural generation in the next decade.",
-    author: "Dr. Sarah Chen",
-    date: "December 15, 2024",
-    readTime: "8 min read",
-    category: "Research",
-    likes: 124,
-    comments: 23,
-    image:
-      "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&h=300&fit=crop",
-  };
 
-  const posts = [
+  const postsStatic = [
     {
       title: "Building Scalable Game Architecture with Microservices",
       excerpt:
@@ -143,10 +158,10 @@ export default function Blog() {
 
   const filteredPosts =
     selectedCategory === "all"
-      ? posts
-      : posts.filter(
-          (post) => post.category.toLowerCase() === selectedCategory,
-        );
+      ? (posts.length ? posts : postsStatic)
+      : (posts.length ? posts : postsStatic).filter(
+        (post) => (post.category || "").toLowerCase() === selectedCategory,
+      );
 
   if (isLoading) {
     return (
@@ -266,12 +281,14 @@ export default function Blog() {
                         <span>{featuredPost.date}</span>
                       </div>
                     </div>
-                    <Badge variant="outline">{featuredPost.readTime}</Badge>
+                    {featuredPost?.readTime && (
+                      <Badge variant="outline">{featuredPost.readTime}</Badge>
+                    )}
                   </div>
 
                   <div className="flex items-center justify-between">
                     <Button asChild>
-                      <Link to="/blog/quantum-game-development">
+                      <Link to={`/blog/${(featuredPost?.slug || "").toString()}`}>
                         Read Article
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Link>
@@ -279,11 +296,11 @@ export default function Blog() {
                     <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                       <div className="flex items-center space-x-1">
                         <ThumbsUp className="h-4 w-4" />
-                        <span>{featuredPost.likes}</span>
+                        <span>{featuredPost?.likes || 0}</span>
                       </div>
                       <div className="flex items-center space-x-1">
                         <MessageCircle className="h-4 w-4" />
-                        <span>{featuredPost.comments}</span>
+                        <span>{featuredPost?.comments || 0}</span>
                       </div>
                     </div>
                   </div>
