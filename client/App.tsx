@@ -22,6 +22,7 @@ import DocsOverview from "./pages/docs/DocsOverview";
 import DocsTutorials from "./pages/docs/DocsTutorials";
 import Tutorials from "./pages/Tutorials";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Community from "./pages/Community";
 import Support from "./pages/Support";
 import Status from "./pages/Status";
