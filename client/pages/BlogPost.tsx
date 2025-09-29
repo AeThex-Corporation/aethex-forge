@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { User, Calendar } from "lucide-react";
 import NotFound from "./NotFound";
-import { fetchBuilderOne } from "@/lib/builder";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
