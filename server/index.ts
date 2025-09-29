@@ -261,6 +261,41 @@ export function createServer() {
       }
     });
 
+    // Blog endpoints (Supabase-backed)
+    app.get("/api/blog", async (req, res) => {
+      const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 12));
+      const category = String(req.query.category || "").trim();
+      try {
+        let query = adminSupabase
+          .from("blog_posts")
+          .select("id, slug, title, excerpt, author, date, read_time, category, image, likes, comments, published_at")
+          .order("published_at", { ascending: false, nullsLast: true } as any)
+          .limit(limit);
+        if (category) query = query.eq("category", category);
+        const { data, error } = await query;
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.get("/api/blog/:slug", async (req, res) => {
+      const slug = String(req.params.slug || "");
+      if (!slug) return res.status(400).json({ error: "missing slug" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("blog_posts")
+          .select("id, slug, title, excerpt, author, date, read_time, category, image, body_html, published_at")
+          .eq("slug", slug)
+          .single();
+        if (error) return res.status(404).json({ error: error.message });
+        res.json(data || null);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.get("/api/applications", async (req, res) => {
       const owner = String(req.query.owner || "");
       if (!owner) return res.status(400).json({ error: "owner required" });
