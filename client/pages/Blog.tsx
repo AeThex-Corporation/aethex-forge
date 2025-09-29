@@ -12,7 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { Link } from "react-router-dom";
-import { fetchBuilderList } from "@/lib/builder";
 import {
   PenTool,
   Calendar,
@@ -38,27 +37,28 @@ export default function Blog() {
     let cancelled = false;
     (async () => {
       try {
-        const list = await fetchBuilderList<any>("blog-post", { limit: 50 });
-        const mapped = (list.results || []).map((r) => ({
-          id: r.id,
-          slug: r.data?.slug || (r.name || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
-          title: r.data?.title || r.name,
-          excerpt: r.data?.excerpt,
-          author: r.data?.author,
-          date: r.data?.date,
-          readTime: r.data?.readTime,
-          category: r.data?.category || "General",
-          image: r.data?.image,
-          likes: r.data?.likes || 0,
-          comments: r.data?.comments || 0,
-          trending: r.data?.trending || false,
-        }));
-        if (!cancelled) {
+        const res = await fetch("/api/blog?limit=50");
+        const data = res.ok ? await res.json() : [];
+        if (!cancelled && Array.isArray(data)) {
+          const mapped = data.map((r: any) => ({
+            id: r.id,
+            slug: r.slug,
+            title: r.title,
+            excerpt: r.excerpt,
+            author: r.author,
+            date: r.date,
+            readTime: r.read_time,
+            category: r.category || "General",
+            image: r.image,
+            likes: r.likes || 0,
+            comments: r.comments || 0,
+            trending: Boolean(r.trending),
+          }));
           setPosts(mapped);
           setFeaturedPost(mapped[0] || null);
         }
       } catch (e) {
-        console.warn("Builder CMS blog fetch failed:", e);
+        console.warn("Blog fetch failed:", e);
       } finally {
         if (!cancelled) {
           setIsLoading(false);
