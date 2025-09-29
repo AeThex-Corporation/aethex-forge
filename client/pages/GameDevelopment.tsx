@@ -180,15 +180,12 @@ export default function GameDevelopment() {
     },
   ];
 
-  const [studios, setStudios] = useState<Studio[]>(defaultStudios);
+  const [studios, setStudios] = useState<Studio[]>([]);
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("featured_studios");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length) setStudios(parsed);
-      }
-    } catch {}
+    fetch("/api/featured-studios")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => Array.isArray(data) ? setStudios(data) : undefined)
+      .catch(() => undefined);
   }, []);
 
   const process = [
