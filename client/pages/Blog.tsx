@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { Link } from "react-router-dom";
+import { fetchBuilderList } from "@/lib/builder";
 import {
   PenTool,
   Calendar,
