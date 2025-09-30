@@ -238,11 +238,17 @@ export const aethexUserService = {
       throw error;
     }
 
-    return (data as any[]).map(
-      (row) =>
-        ({
-          ...row,
-        }) as AethexUserProfile,
+    return Promise.all(
+      (data as any[]).map(async (row) => {
+        const profileRow = { ...row } as AethexUserProfile & {
+          email?: string | null;
+        };
+        if (!profileRow.email) {
+          const mock = await mockAuth.getUserProfile(profileRow.id as any);
+          if (mock?.email) profileRow.email = mock.email;
+        }
+        return profileRow as AethexUserProfile;
+      }),
     );
   },
 
