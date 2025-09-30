@@ -479,10 +479,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }));
   }, [user]);
 
-  const computedComplete =
-    checkProfileComplete(profile) ||
-    (typeof window !== "undefined" &&
-      window.localStorage.getItem("onboarding_complete") === "1");
+  const profileCompletedByData = useMemo(
+    () => checkProfileComplete(profile),
+    [profile],
+  );
+
+  const localOnboardingComplete =
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("onboarding_complete") === "1";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (profileCompletedByData) {
+      window.localStorage.setItem("onboarding_complete", "1");
+    } else if (window.localStorage.getItem("onboarding_complete") === "1") {
+      window.localStorage.removeItem("onboarding_complete");
+    }
+  }, [profileCompletedByData]);
+
+  const computedComplete = profileCompletedByData || localOnboardingComplete;
 
   const value = {
     user,
