@@ -453,7 +453,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           error?.message ||
           "We had trouble contacting the auth service, but local data was cleared.",
       });
-      throw error;
     } finally {
       setLoading(false);
     }
