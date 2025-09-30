@@ -10,7 +10,7 @@ export interface ProviderDescriptor {
   provider: ProviderKey;
   name: string;
   description: string;
-  Icon: React.ComponentType<{ className?: string }>;
+  Icon: ComponentType<{ className?: string }>;
   gradient: string;
 }
 
