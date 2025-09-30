@@ -17,6 +17,15 @@ import {
   checkProfileComplete,
 } from "@/lib/aethex-database-adapter";
 
+type SupportedOAuthProvider = "github" | "google";
+
+interface LinkedProvider {
+  provider: SupportedOAuthProvider;
+  identityId?: string;
+  linkedAt?: string;
+  lastSignInAt?: string;
+}
+
 interface AuthContextType {
   user: User | null;
   profile: AethexUserProfile | null;
