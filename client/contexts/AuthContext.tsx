@@ -500,13 +500,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, [clearClientAuthState]);
 
-
   const signOut = async () => {
     setLoading(true);
     const issues: string[] = [];
 
     try {
-      const { error: localError } = await supabase.auth.signOut({ scope: "local" });
+      const { error: localError } = await supabase.auth.signOut({
+        scope: "local",
+      });
       if (localError?.message && !/session/i.test(localError.message)) {
         issues.push(localError.message);
       }
@@ -529,11 +530,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (globalError) {
         const status = (globalError as any)?.status;
         if (status !== 401) {
-          issues.push(globalError.message ?? "Unable to reach authentication service.");
+          issues.push(
+            globalError.message ?? "Unable to reach authentication service.",
+          );
         }
       }
     } catch (error: any) {
-      const message = error?.message ?? "Unable to reach authentication service.";
+      const message =
+        error?.message ?? "Unable to reach authentication service.";
       issues.push(message);
       console.warn("Supabase global sign-out issue:", error);
     }
