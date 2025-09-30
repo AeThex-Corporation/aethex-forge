@@ -148,15 +148,32 @@ export default function Onboarding() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: user.id, profile: payload }),
       });
+
+      // If server endpoint missing (404) or returns server error, fallback to direct Supabase client
       if (!ensureResp.ok) {
-        const text = await ensureResp.text().catch(() => "");
-        let parsedError: any = undefined;
-        try {
-          parsedError = JSON.parse(text);
-        } catch {}
-        const message =
-          parsedError?.error || text || `HTTP ${ensureResp.status}`;
-        throw new Error(message);
+        // If endpoint not found, attempt client-side upsert via Supabase SDK
+        if (ensureResp.status === 404) {
+          try {
+            await aethexUserService.updateProfile(user.id, payload as any);
+          } catch (err) {
+            const text = await ensureResp.text().catch(() => "");
+            let parsedError: any = undefined;
+            try {
+              parsedError = JSON.parse(text);
+            } catch {}
+            const message = parsedError?.error || text || `HTTP ${ensureResp.status}`;
+            throw new Error(`Server endpoint missing and client fallback failed: ${message}`);
+          }
+        } else {
+          const text = await ensureResp.text().catch(() => "");
+          let parsedError: any = undefined;
+          try {
+            parsedError = JSON.parse(text);
+          } catch {}
+          const message =
+            parsedError?.error || text || `HTTP ${ensureResp.status}`;
+          throw new Error(message);
+        }
       }
 
       // Fire-and-forget interests via server
