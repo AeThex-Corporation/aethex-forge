@@ -37,7 +37,7 @@ import Admin from "./pages/Admin";
 import Feed from "./pages/Feed";
 import ProjectsNew from "./pages/ProjectsNew";
 import { Navigate } from "react-router-dom";
-import NotFound from "./pages/NotFound";
+import FourOhFourPage from "./pages/404";
 
 const queryClient = new QueryClient();
 
