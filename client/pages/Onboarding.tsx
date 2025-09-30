@@ -74,17 +74,201 @@ export default function Onboarding() {
     { title: "Welcome to AeThex", component: Welcome },
   ];
 
+  const ONBOARDING_STORAGE_KEY = "aethex_onboarding_progress_v1";
+  const [hydrated, setHydrated] = useState(false);
+  const [achievementPreview, setAchievementPreview] =
+    useState<AethexAchievement | null>(null);
+
+  const mapProfileToOnboardingData = useCallback(
+    (profile: AethexUserProfile | null, interests: string[]): OnboardingData => {
+      const email = profile?.email || user?.email || "";
+      const fullName = profile?.full_name?.trim() || "";
+      const nameParts = fullName ? fullName.split(/\s+/).filter(Boolean) : [];
+      const firstName = nameParts.shift() || "";
+      const lastName = nameParts.join(" ");
+      const normalizedType = (() => {
+        const value = (profile as any)?.user_type;
+        switch (value) {
+          case "game_developer":
+            return "game-developer";
+          case "client":
+            return "client";
+          case "community_member":
+            return "member";
+          case "customer":
+            return "customer";
+          default:
+            return null;
+        }
+      })();
+
+      const storedPreferred =
+        Array.isArray((profile as any)?.preferred_services) &&
+        ((profile as any)?.preferred_services as string[]).length > 0
+          ? ((profile as any)?.preferred_services as string[])
+          : [];
+
+      const normalizedInterests = Array.isArray(interests) ? interests : [];
+
+      const profileSkills =
+        Array.isArray((profile as any)?.skills) &&
+        ((profile as any)?.skills as string[]).length > 0
+          ? ((profile as any)?.skills as string[])
+          : [];
+
+      return {
+        userType: normalizedType,
+        personalInfo: {
+          firstName:
+            firstName ||
+            (profile?.username ?? email.split("@")[0] ?? ""),
+          lastName,
+          email,
+          company: (profile as any)?.company || "",
+        },
+        experience: {
+          level: ((profile as any)?.experience_level as string) || "",
+          skills: profileSkills,
+          previousProjects: profile?.bio || "",
+        },
+        interests: {
+          primaryGoals: normalizedInterests,
+          preferredServices:
+            storedPreferred.length > 0 ? storedPreferred : normalizedInterests,
+        },
+      };
+    },
+    [user?.email],
+  );
+
   useEffect(() => {
-    const timer = setTimeout(() => {
+    let active = true;
+
+    const hydrate = async () => {
+      const achievementsPromise = aethexAchievementService
+        .getAllAchievements()
+        .catch(() => [] as AethexAchievement[]);
+
+      let nextData: OnboardingData = {
+        ...initialData,
+        personalInfo: {
+          ...initialData.personalInfo,
+          email: user?.email || "",
+        },
+      };
+      let nextStep = 0;
+      let restored = false;
+
+      if (typeof window !== "undefined") {
+        try {
+          const raw = window.localStorage.getItem(ONBOARDING_STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw) as {
+              data?: OnboardingData;
+              step?: number;
+            };
+            if (parsed?.data) {
+              nextData = {
+                ...initialData,
+                ...parsed.data,
+                personalInfo: {
+                  ...initialData.personalInfo,
+                  ...parsed.data.personalInfo,
+                },
+                experience: {
+                  ...initialData.experience,
+                  ...parsed.data.experience,
+                },
+                interests: {
+                  ...initialData.interests,
+                  ...parsed.data.interests,
+                },
+              };
+              if (typeof parsed.step === "number") {
+                nextStep = Math.max(
+                  0,
+                  Math.min(parsed.step, steps.length - 1),
+                );
+              }
+              restored = true;
+            }
+          }
+        } catch (error) {
+          console.warn("Unable to restore onboarding progress:", error);
+        }
+      }
+
+      if (!restored && user?.id) {
+        try {
+          const [profile, interests] = await Promise.all([
+            aethexUserService.getCurrentUser(),
+            aethexUserService.getUserInterests(user.id),
+          ]);
+          nextData = mapProfileToOnboardingData(profile, interests || []);
+        } catch (error) {
+          console.warn("Unable to hydrate onboarding profile:", error);
+        }
+      }
+
+      const achievements = await achievementsPromise;
+      if (!active) return;
+
+      const welcomeBadge =
+        achievements.find(
+          (achievement) =>
+            achievement.id === "ach_welcome" ||
+            achievement.name === "Welcome to AeThex",
+        ) || null;
+
+      setData(nextData);
+      setCurrentStep(nextStep);
+      setAchievementPreview(welcomeBadge);
+      setHydrated(true);
       setIsLoading(false);
-    }, 1200);
+    };
 
-    return () => clearTimeout(timer);
+    hydrate();
+
+    return () => {
+      active = false;
+    };
+  }, [user, steps.length, mapProfileToOnboardingData]);
+
+  useEffect(() => {
+    if (!hydrated || isFinishing) return;
+    if (typeof window === "undefined") return;
+    try {
+      const payload = {
+        data,
+        step: currentStep,
+      };
+      window.localStorage.setItem(
+        ONBOARDING_STORAGE_KEY,
+        JSON.stringify(payload),
+      );
+    } catch (error) {
+      console.warn("Unable to persist onboarding progress:", error);
+    }
+  }, [data, currentStep, hydrated, isFinishing]);
+
+  const updateData = useCallback((newData: Partial<OnboardingData>) => {
+    setData((prev) => ({
+      ...prev,
+      ...newData,
+      personalInfo: {
+        ...prev.personalInfo,
+        ...(newData.personalInfo ?? {}),
+      },
+      experience: {
+        ...prev.experience,
+        ...(newData.experience ?? {}),
+      },
+      interests: {
+        ...prev.interests,
+        ...(newData.interests ?? {}),
+      },
+    }));
   }, []);
-
-  const updateData = (newData: Partial<OnboardingData>) => {
-    setData((prev) => ({ ...prev, ...newData }));
-  };
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
