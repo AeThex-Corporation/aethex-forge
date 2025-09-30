@@ -19,19 +19,39 @@ export interface AethexUserProfile extends UserProfile {
   skills?: string[];
 }
 
+const isNonEmptyString = (value: unknown): value is string =>
+  typeof value === "string" && value.trim().length > 0;
+
 export function checkProfileComplete(p?: AethexUserProfile | null): boolean {
   if (!p) return false;
-  const hasUsername =
-    typeof p.username === "string" && p.username.trim().length > 0;
-  const hasFullName =
-    typeof p.full_name === "string" && p.full_name.trim().length > 0;
-  const hasUserType =
-    typeof (p as any).user_type === "string" &&
-    (p as any).user_type.trim().length > 0;
-  const hasExperience =
-    typeof (p as any).experience_level === "string" &&
-    (p as any).experience_level.trim().length > 0;
-  return hasUsername && hasFullName && hasUserType && hasExperience;
+
+  if ((p as any).onboarded === true) {
+    return true;
+  }
+
+  const hasIdentity = isNonEmptyString(p.username) || isNonEmptyString(p.full_name);
+  const hasProfileCore =
+    isNonEmptyString(p.full_name) &&
+    isNonEmptyString((p as any).user_type) &&
+    isNonEmptyString((p as any).experience_level);
+  const hasStory = isNonEmptyString(p.bio) || isNonEmptyString(p.location);
+  const hasPresence =
+    isNonEmptyString(p.avatar_url) ||
+    isNonEmptyString((p as any).banner_url) ||
+    isNonEmptyString((p as any).website_url) ||
+    isNonEmptyString(p.github_url) ||
+    isNonEmptyString(p.linkedin_url) ||
+    isNonEmptyString(p.twitter_url);
+
+  if (hasIdentity && hasProfileCore) {
+    return true;
+  }
+
+  if (hasIdentity && hasStory && hasPresence) {
+    return true;
+  }
+
+  return false;
 }
 
 export interface AethexProject {
