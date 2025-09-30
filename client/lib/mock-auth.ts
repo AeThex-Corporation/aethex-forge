@@ -3,6 +3,7 @@ interface MockUser {
   id: string;
   email: string;
   created_at: string;
+  identities?: MockIdentity[];
 }
 
 interface MockSession {
@@ -25,30 +26,109 @@ interface MockProfile {
   updated_at: string;
 }
 
+interface MockIdentity {
+  identity_id: string;
+  provider: string;
+  created_at: string;
+  last_sign_in_at: string;
+}
+
 class MockAuthService {
   private currentUser: MockUser | null = null;
   private currentSession: MockSession | null = null;
   private profiles: Map<string, MockProfile> = new Map();
+  private providerMap: Record<string, MockIdentity[]> = {};
+  private linkedProviders: MockIdentity[] = [];
 
   constructor() {
-    // Load from localStorage if available
-    const savedUser = localStorage.getItem("mock_user");
-    const savedProfile = localStorage.getItem("mock_profile");
-
-    if (savedUser) {
-      this.currentUser = JSON.parse(savedUser);
-      if (this.currentUser) {
-        this.currentSession = {
-          user: this.currentUser,
-          access_token: "mock_token_" + Date.now(),
-        };
+    // Load provider map first so that identities can be populated for saved sessions
+    try {
+      const rawProviders = localStorage.getItem("mock_linked_provider_map");
+      if (rawProviders) {
+        this.providerMap = JSON.parse(rawProviders);
       }
+    } catch {
+      this.providerMap = {};
     }
 
-    if (savedProfile) {
-      const profile = JSON.parse(savedProfile);
-      this.profiles.set(profile.id, profile);
+    // Load from localStorage if available
+    try {
+      const savedUser = localStorage.getItem("mock_user");
+      const savedProfile = localStorage.getItem("mock_profile");
+
+      if (savedUser) {
+        this.currentUser = JSON.parse(savedUser);
+        if (this.currentUser) {
+          this.currentSession = {
+            user: this.currentUser,
+            access_token: "mock_token_" + Date.now(),
+          };
+        }
+      }
+
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        this.profiles.set(profile.id, profile);
+      }
+    } catch {
+      // ignore corrupted local storage
     }
+
+    if (this.currentUser) {
+      this.loadLinkedProvidersForUser(this.currentUser.id);
+    }
+  }
+
+  private loadLinkedProvidersForUser(userId: string) {
+    this.linkedProviders = this.providerMap[userId]
+      ? [...this.providerMap[userId]]
+      : [];
+    this.updateCurrentUserIdentities();
+  }
+
+  private saveProviderMap() {
+    try {
+      localStorage.setItem(
+        "mock_linked_provider_map",
+        JSON.stringify(this.providerMap),
+      );
+    } catch {
+      // ignore
+    }
+  }
+
+  private updateCurrentUserIdentities() {
+    if (!this.currentUser) return;
+    (this.currentUser as any).identities = this.linkedProviders.map(
+      (identity) => ({
+        identity_id: identity.identity_id,
+        provider: identity.provider,
+        created_at: identity.created_at,
+        last_sign_in_at: identity.last_sign_in_at,
+      }),
+    );
+    try {
+      localStorage.setItem("mock_user", JSON.stringify(this.currentUser));
+    } catch {
+      // ignore storage errors
+    }
+  }
+
+  private setLinkedProvidersForUser(userId: string, providers: MockIdentity[]) {
+    this.providerMap[userId] = providers;
+    this.linkedProviders = [...providers];
+    this.saveProviderMap();
+    this.updateCurrentUserIdentities();
+  }
+
+  private createIdentity(provider: string): MockIdentity {
+    const timestamp = new Date().toISOString();
+    return {
+      identity_id: `mock-${provider}-${Date.now()}`,
+      provider,
+      created_at: timestamp,
+      last_sign_in_at: timestamp,
+    };
   }
 
   async signInWithPassword(email: string, password: string) {
@@ -70,14 +150,21 @@ class MockAuthService {
     };
 
     // Save to localStorage
-    localStorage.setItem("mock_user", JSON.stringify(user));
+    try {
+      localStorage.setItem("mock_user", JSON.stringify(user));
+    } catch {
+      // ignore
+    }
+
+    // Load any previously linked providers for this user
+    this.loadLinkedProvidersForUser(user.id);
 
     // Notify auth state change
     setTimeout(() => this.notifyAuthChange("SIGNED_IN"), 50);
 
     return {
       data: {
-        user,
+        user: this.currentUser,
         session: this.currentSession,
       },
       error: null,
@@ -98,14 +185,19 @@ class MockAuthService {
       access_token: "mock_oauth_token_" + Date.now(),
     };
 
-    // Save to localStorage
-    localStorage.setItem("mock_user", JSON.stringify(user));
+    this.setLinkedProvidersForUser(user.id, [this.createIdentity(provider)]);
+
+    try {
+      localStorage.setItem("mock_user", JSON.stringify(this.currentUser));
+    } catch {
+      // ignore
+    }
 
     // Notify auth state change after a short delay to simulate redirect
     setTimeout(() => this.notifyAuthChange("SIGNED_IN"), 50);
 
     return {
-      data: { user, session: this.currentSession },
+      data: { user: this.currentUser, session: this.currentSession },
       error: null,
     };
   }
@@ -113,8 +205,13 @@ class MockAuthService {
   async signOut() {
     this.currentUser = null;
     this.currentSession = null;
-    localStorage.removeItem("mock_user");
-    localStorage.removeItem("mock_profile");
+    this.linkedProviders = [];
+    try {
+      localStorage.removeItem("mock_user");
+      localStorage.removeItem("mock_profile");
+    } catch {
+      // ignore
+    }
 
     // Notify auth state change
     setTimeout(() => this.notifyAuthChange("SIGNED_OUT"), 50);
@@ -151,8 +248,7 @@ class MockAuthService {
       // Create new profile
       profile = {
         id: userId,
-        username:
-          updates.username || this.currentUser?.email?.split("@")[0] || "user",
+        username: updates.username || this.currentUser?.email?.split("@")[0] || "user",
         email: this.currentUser?.email || "",
         role: "member",
         onboarded: true,
@@ -161,7 +257,7 @@ class MockAuthService {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         ...updates,
-      };
+      } as MockProfile;
     } else {
       // Update existing
       profile = {
@@ -172,7 +268,11 @@ class MockAuthService {
     }
 
     this.profiles.set(userId, profile);
-    localStorage.setItem("mock_profile", JSON.stringify(profile));
+    try {
+      localStorage.setItem("mock_profile", JSON.stringify(profile));
+    } catch {
+      // ignore
+    }
 
     return profile;
   }
@@ -204,9 +304,51 @@ class MockAuthService {
     };
   }
 
-  private authCallback:
-    | ((event: string, session: MockSession | null) => void)
-    | null = null;
+  async linkIdentity(options: { provider: string }) {
+    if (!this.currentUser) {
+      throw new Error("No user logged in");
+    }
+
+    const provider = options.provider;
+    if (!provider) {
+      throw new Error("Provider is required");
+    }
+
+    if (this.linkedProviders.some((p) => p.provider === provider)) {
+      return { data: { provider, alreadyLinked: true }, error: null };
+    }
+
+    const updated = [...this.linkedProviders, this.createIdentity(provider)];
+    this.setLinkedProvidersForUser(this.currentUser.id, updated);
+    return { data: { provider }, error: null };
+  }
+
+  async unlinkIdentity(options: { identity_id?: string; provider?: string }) {
+    if (!this.currentUser) {
+      throw new Error("No user logged in");
+    }
+
+    const { identity_id, provider } = options;
+    let removedProvider: string | undefined = provider;
+
+    const filtered = this.linkedProviders.filter((identity) => {
+      const matches = identity_id
+        ? identity.identity_id === identity_id
+        : provider
+          ? identity.provider === provider
+          : false;
+      if (matches) {
+        removedProvider = identity.provider;
+      }
+      return !matches;
+    });
+
+    this.setLinkedProvidersForUser(this.currentUser.id, filtered);
+    return { data: { provider: removedProvider }, error: null };
+  }
+
+  private authCallback: ((event: string, session: MockSession | null) => void) |
+    null = null;
 
   private notifyAuthChange(event: string) {
     if (this.authCallback) {
