@@ -109,18 +109,29 @@ const PassportSummary = ({
             <Badge
               className={cn(
                 "text-white shadow-lg",
-                realm?.gradient ? `bg-gradient-to-r ${realm.gradient}` : "bg-aethex-500",
+                realm?.gradient
+                  ? `bg-gradient-to-r ${realm.gradient}`
+                  : "bg-aethex-500",
               )}
             >
               {realm?.label || "Innovation Commons"}
             </Badge>
-            <Badge variant="outline" className="border-slate-600/60 text-slate-200">
+            <Badge
+              variant="outline"
+              className="border-slate-600/60 text-slate-200"
+            >
               Level {level}
             </Badge>
-            <Badge variant="outline" className="border-slate-600/60 text-slate-200">
+            <Badge
+              variant="outline"
+              className="border-slate-600/60 text-slate-200"
+            >
               {totalXp} XP
             </Badge>
-            <Badge variant="outline" className="border-slate-600/60 text-slate-200">
+            <Badge
+              variant="outline"
+              className="border-slate-600/60 text-slate-200"
+            >
               {loyaltyPoints} Loyalty
             </Badge>
           </div>
@@ -150,7 +161,8 @@ const PassportSummary = ({
               <Sparkles className="h-4 w-4 text-aethex-300" />
             </div>
             <p className="mt-2 text-sm text-slate-200">
-              {(profile as any)?.user_type?.replace("_", " ") || "community member"}
+              {(profile as any)?.user_type?.replace("_", " ") ||
+                "community member"}
             </p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
@@ -185,9 +197,7 @@ const PassportSummary = ({
                   className="rounded-xl border border-slate-800 bg-slate-900/40 p-4"
                 >
                   <div className="flex items-center gap-2 text-slate-100">
-                    <span className="text-xl">
-                      {achievement.icon || "✨"}
-                    </span>
+                    <span className="text-xl">{achievement.icon || "✨"}</span>
                     <span className="text-sm font-medium">
                       {achievement.name}
                     </span>
@@ -210,7 +220,11 @@ const PassportSummary = ({
             </h3>
             <div className="flex flex-wrap gap-2">
               {interests.map((interest) => (
-                <Badge key={interest} variant="outline" className="border-slate-600/60 text-slate-200">
+                <Badge
+                  key={interest}
+                  variant="outline"
+                  className="border-slate-600/60 text-slate-200"
+                >
                   {interest}
                 </Badge>
               ))}
@@ -249,14 +263,20 @@ const PassportSummary = ({
           <>
             <Separator className="border-slate-800" />
             <div className="flex flex-wrap gap-3">
-              <Button asChild variant="outline" className="border-slate-700 text-slate-100">
+              <Button
+                asChild
+                variant="outline"
+                className="border-slate-700 text-slate-100"
+              >
                 <Link to="/dashboard?tab=profile">Edit Profile</Link>
               </Button>
               <Button
                 asChild
                 className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
               >
-                <Link to="/dashboard?tab=connections">Manage Passport Links</Link>
+                <Link to="/dashboard?tab=connections">
+                  Manage Passport Links
+                </Link>
               </Button>
             </div>
           </>

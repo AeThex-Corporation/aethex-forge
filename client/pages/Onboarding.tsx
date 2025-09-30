@@ -80,7 +80,10 @@ export default function Onboarding() {
     useState<AethexAchievement | null>(null);
 
   const mapProfileToOnboardingData = useCallback(
-    (profile: AethexUserProfile | null, interests: string[]): OnboardingData => {
+    (
+      profile: AethexUserProfile | null,
+      interests: string[],
+    ): OnboardingData => {
       const email = profile?.email || user?.email || "";
       const fullName = profile?.full_name?.trim() || "";
       const nameParts = fullName ? fullName.split(/\s+/).filter(Boolean) : [];
@@ -120,8 +123,7 @@ export default function Onboarding() {
         userType: normalizedType,
         personalInfo: {
           firstName:
-            firstName ||
-            (profile?.username ?? email.split("@")[0] ?? ""),
+            firstName || (profile?.username ?? email.split("@")[0] ?? ""),
           lastName,
           email,
           company: (profile as any)?.company || "",
@@ -185,10 +187,7 @@ export default function Onboarding() {
                 },
               };
               if (typeof parsed.step === "number") {
-                nextStep = Math.max(
-                  0,
-                  Math.min(parsed.step, steps.length - 1),
-                );
+                nextStep = Math.max(0, Math.min(parsed.step, steps.length - 1));
               }
               restored = true;
             }
@@ -326,8 +325,7 @@ export default function Onboarding() {
         username: normalizedFirst.replace(/\s+/g, "_"),
         full_name: `${normalizedFirst} ${normalizedLast}`.trim(),
         user_type:
-          (userTypeMap[data.userType || "member"] as any) ||
-          "community_member",
+          (userTypeMap[data.userType || "member"] as any) || "community_member",
         experience_level: (data.experience.level as any) || "beginner",
         bio: data.experience.previousProjects?.trim() || undefined,
       } as any;

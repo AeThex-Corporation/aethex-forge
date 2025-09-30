@@ -135,16 +135,24 @@ describe("onboarding passport flow", () => {
       bio: "Building awesome experiences",
     });
 
-    const hydratedProfile = (await mockAuth.getUserProfile(user.id as any)) as AethexUserProfile;
+    const hydratedProfile = (await mockAuth.getUserProfile(
+      user.id as any,
+    )) as AethexUserProfile;
     expect(checkProfileComplete(hydratedProfile as any)).toBe(true);
 
     await mockAuth.linkIdentity({ provider: "github" });
     const refreshedUser = (await mockAuth.getUser()).data.user;
-    expect(refreshedUser?.identities?.some((id: any) => id.provider === "github")).toBe(true);
+    expect(
+      refreshedUser?.identities?.some((id: any) => id.provider === "github"),
+    ).toBe(true);
 
     await aethexAchievementService.checkAndAwardOnboardingAchievement(user.id);
-    const achievements = await aethexAchievementService.getUserAchievements(user.id);
-    const welcomeBadge = achievements.find((item) => item.name === "Welcome to AeThex");
+    const achievements = await aethexAchievementService.getUserAchievements(
+      user.id,
+    );
+    const welcomeBadge = achievements.find(
+      (item) => item.name === "Welcome to AeThex",
+    );
     expect(welcomeBadge).toBeTruthy();
   });
 });

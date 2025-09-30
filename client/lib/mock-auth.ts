@@ -252,7 +252,8 @@ class MockAuthService {
       // Create new profile
       profile = {
         id: userId,
-        username: updates.username || this.currentUser?.email?.split("@")[0] || "user",
+        username:
+          updates.username || this.currentUser?.email?.split("@")[0] || "user",
         email: this.currentUser?.email || "",
         role: "member",
         onboarded: true,
@@ -351,8 +352,9 @@ class MockAuthService {
     return { data: { provider: removedProvider }, error: null };
   }
 
-  private authCallback: ((event: string, session: MockSession | null) => void) |
-    null = null;
+  private authCallback:
+    | ((event: string, session: MockSession | null) => void)
+    | null = null;
 
   private notifyAuthChange(event: string) {
     if (this.authCallback) {

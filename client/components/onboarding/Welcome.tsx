@@ -8,12 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  CheckCircle,
-  ArrowRight,
-  Sparkles,
-  ShieldCheck,
-} from "lucide-react";
+import { CheckCircle, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { AethexAchievement } from "@/lib/aethex-database-adapter";
 
@@ -211,16 +206,23 @@ export default function Welcome({
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-emerald-100/90">
             {achievement.description && <p>{achievement.description}</p>}
-            {typeof achievement.xp_reward === "number" && achievement.xp_reward > 0 && (
-              <div className="text-xs uppercase tracking-wider text-emerald-200">
-                +{achievement.xp_reward} XP added to your passport progression
-              </div>
-            )}
+            {typeof achievement.xp_reward === "number" &&
+              achievement.xp_reward > 0 && (
+                <div className="text-xs uppercase tracking-wider text-emerald-200">
+                  +{achievement.xp_reward} XP added to your passport progression
+                </div>
+              )}
             <div className="flex flex-wrap gap-2">
-              <Badge variant="outline" className="border-emerald-500/40 text-emerald-100">
+              <Badge
+                variant="outline"
+                className="border-emerald-500/40 text-emerald-100"
+              >
                 <ShieldCheck className="mr-1 h-3.5 w-3.5" /> Profile Verified
               </Badge>
-              <Badge variant="outline" className="border-emerald-500/40 text-emerald-100">
+              <Badge
+                variant="outline"
+                className="border-emerald-500/40 text-emerald-100"
+              >
                 <Sparkles className="mr-1 h-3.5 w-3.5" /> Passport Updated
               </Badge>
             </div>
@@ -271,7 +273,10 @@ export default function Welcome({
           variant="secondary"
           className="bg-aethex-500/20 text-aethex-100 border border-aethex-500/40"
         >
-          <Link to="/dashboard?tab=connections" className="flex items-center gap-2">
+          <Link
+            to="/dashboard?tab=connections"
+            className="flex items-center gap-2"
+          >
             <ShieldCheck className="h-4 w-4" />
             Link OAuth Accounts
           </Link>

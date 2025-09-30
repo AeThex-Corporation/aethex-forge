@@ -24,13 +24,7 @@ import {
   type AethexUserProfile,
 } from "@/lib/aethex-database-adapter";
 import { cn } from "@/lib/utils";
-import {
-  Search,
-  RefreshCw,
-  UserRound,
-  Users,
-  Sparkles,
-} from "lucide-react";
+import { Search, RefreshCw, UserRound, Users, Sparkles } from "lucide-react";
 
 const realmFilters: Array<{ value: string; label: string }> = [
   { value: "all", label: "All Realms" },
@@ -52,7 +46,8 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
-  const realmStyle = realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
+  const realmStyle =
+    realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
   return (
     <Card className="group h-full border border-slate-800 bg-slate-900/60 transition-transform hover:-translate-y-1 hover:border-aethex-400/60">
       <CardHeader className="space-y-3">
@@ -60,7 +55,10 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           <Badge className={cn("text-xs uppercase tracking-wider", realmStyle)}>
             {profile.user_type.replace("_", " ")}
           </Badge>
-          <Badge variant="outline" className="border-slate-700/70 text-slate-300">
+          <Badge
+            variant="outline"
+            className="border-slate-700/70 text-slate-300"
+          >
             Level {profile.level ?? 1}
           </Badge>
         </div>
@@ -92,12 +90,19 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
         </div>
         <div className="flex flex-wrap gap-2 text-xs text-slate-300">
           {(profile as any)?.skills?.slice(0, 3)?.map((skill: string) => (
-            <Badge key={skill} variant="outline" className="border-slate-700/70 text-slate-200">
+            <Badge
+              key={skill}
+              variant="outline"
+              className="border-slate-700/70 text-slate-200"
+            >
               {skill}
             </Badge>
           ))}
           {((profile as any)?.skills?.length || 0) > 3 && (
-            <Badge variant="outline" className="border-slate-700/70 text-slate-200">
+            <Badge
+              variant="outline"
+              className="border-slate-700/70 text-slate-200"
+            >
               +{((profile as any)?.skills?.length || 0) - 3}
             </Badge>
           )}
@@ -107,7 +112,10 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           variant="outline"
           className="w-full border-slate-700/70 text-slate-100 transition-colors hover:border-aethex-400/60 hover:text-white"
         >
-          <Link to={`/profiles/${profile.id}`} className="flex items-center justify-center gap-2">
+          <Link
+            to={`/profiles/${profile.id}`}
+            className="flex items-center justify-center gap-2"
+          >
             <UserRound className="h-4 w-4" />
             View Passport
           </Link>
@@ -129,15 +137,9 @@ const ProfilesDirectory = () => {
       const matchesRealm =
         realmFilter === "all" || profile.user_type === realmFilter;
       const matchesSearch = lowerSearch
-        ? [
-            profile.full_name,
-            profile.username,
-            (profile as any)?.company,
-          ]
+        ? [profile.full_name, profile.username, (profile as any)?.company]
             .filter(Boolean)
-            .some((value) =>
-              String(value).toLowerCase().includes(lowerSearch),
-            )
+            .some((value) => String(value).toLowerCase().includes(lowerSearch))
         : true;
       return matchesRealm && matchesSearch;
     });
@@ -178,7 +180,8 @@ const ProfilesDirectory = () => {
                   Discover AeThex talent
                 </h1>
                 <p className="text-slate-300">
-                  Browse verified creators, clients, and community members across every AeThex realm.
+                  Browse verified creators, clients, and community members
+                  across every AeThex realm.
                 </p>
               </div>
               <div className="flex gap-2">
@@ -190,7 +193,10 @@ const ProfilesDirectory = () => {
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Refresh
                 </Button>
-                <Button asChild className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90">
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+                >
                   <Link to="/profiles/me">Go to my passport</Link>
                 </Button>
               </div>
@@ -228,7 +234,8 @@ const ProfilesDirectory = () => {
                 No passports found
               </div>
               <p className="mt-2 text-sm text-slate-300">
-                Try adjusting your search or realm filters. New members join AeThex every day!
+                Try adjusting your search or realm filters. New members join
+                AeThex every day!
               </p>
             </Card>
           ) : (

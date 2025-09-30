@@ -131,7 +131,7 @@ export const aethexUserService = {
 
       if (isTableMissing(error)) {
         throw new Error(
-          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+          'Supabase table "user_profiles" is missing. Please run the required migrations.',
         );
       }
 
@@ -172,7 +172,7 @@ export const aethexUserService = {
 
       if (isTableMissing(error)) {
         throw new Error(
-          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+          'Supabase table "user_profiles" is missing. Please run the required migrations.',
         );
       }
 
@@ -194,18 +194,19 @@ export const aethexUserService = {
     if (error) {
       if (isTableMissing(error)) {
         throw new Error(
-          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+          'Supabase table "user_profiles" is missing. Please run the required migrations.',
         );
       }
       throw error;
     }
 
-    return ((data as any[]) || []).map((row) =>
-      ({
-        ...(row as AethexUserProfile),
-        user_type: (row as any).user_type || "community_member",
-        experience_level: (row as any).experience_level || "beginner",
-      }) as AethexUserProfile,
+    return ((data as any[]) || []).map(
+      (row) =>
+        ({
+          ...(row as AethexUserProfile),
+          user_type: (row as any).user_type || "community_member",
+          experience_level: (row as any).experience_level || "beginner",
+        }) as AethexUserProfile,
     );
   },
 
@@ -238,7 +239,7 @@ export const aethexUserService = {
 
       if (isTableMissing(error)) {
         throw new Error(
-          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+          'Supabase table "user_profiles" is missing. Please run the required migrations.',
         );
       }
 
@@ -280,7 +281,7 @@ export const aethexUserService = {
     if (error) {
       if (isTableMissing(error)) {
         throw new Error(
-          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+          'Supabase table "user_profiles" is missing. Please run the required migrations.',
         );
       }
       throw error;
@@ -315,7 +316,7 @@ export const aethexUserService = {
     if (error) {
       if (isTableMissing(error)) {
         throw new Error(
-          "Supabase table \"user_interests\" is missing. Please run the required migrations.",
+          'Supabase table "user_interests" is missing. Please run the required migrations.',
         );
       }
       throw error;
@@ -333,7 +334,7 @@ export const aethexUserService = {
     if (error) {
       if (isTableMissing(error)) {
         throw new Error(
-          "Supabase table \"user_interests\" is missing. Please run the required migrations.",
+          'Supabase table "user_interests" is missing. Please run the required migrations.',
         );
       }
       console.warn("Error fetching interests:", error);
@@ -610,7 +611,7 @@ export const aethexAchievementService = {
       if (error) {
         if (isTableMissing(error)) {
           throw new Error(
-            "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+            'Supabase table "user_profiles" is missing. Please run the required migrations.',
           );
         }
         console.warn("Unable to load profile for XP update:", error);

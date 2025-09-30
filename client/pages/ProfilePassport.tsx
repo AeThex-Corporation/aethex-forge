@@ -46,7 +46,9 @@ const ProfilePassport = () => {
   const navigate = useNavigate();
   const { user, linkedProviders } = useAuth();
 
-  const [profile, setProfile] = useState<(AethexUserProfile & { email?: string | null }) | null>(null);
+  const [profile, setProfile] = useState<
+    (AethexUserProfile & { email?: string | null }) | null
+  >(null);
   const [achievements, setAchievements] = useState<AethexAchievement[]>([]);
   const [projects, setProjects] = useState<ProjectPreview[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
@@ -74,14 +76,15 @@ const ProfilePassport = () => {
     const loadProfile = async () => {
       try {
         setLoading(true);
-        const [profileData, achievementList, interestList, projectList] = await Promise.all([
-          params.id === "me" && profile && profile.id === targetUserId
-            ? Promise.resolve(profile)
-            : aethexUserService.getProfileById(targetUserId),
-          aethexAchievementService.getUserAchievements(targetUserId),
-          aethexUserService.getUserInterests(targetUserId),
-          aethexProjectService.getUserProjects(targetUserId).catch(() => []),
-        ]);
+        const [profileData, achievementList, interestList, projectList] =
+          await Promise.all([
+            params.id === "me" && profile && profile.id === targetUserId
+              ? Promise.resolve(profile)
+              : aethexUserService.getProfileById(targetUserId),
+            aethexAchievementService.getUserAchievements(targetUserId),
+            aethexUserService.getUserInterests(targetUserId),
+            aethexProjectService.getUserProjects(targetUserId).catch(() => []),
+          ]);
 
         if (!profileData) {
           setNotFound(true);
@@ -142,20 +145,29 @@ const ProfilePassport = () => {
             <section className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-xl font-semibold text-white">Highlighted missions</h2>
+                  <h2 className="text-xl font-semibold text-white">
+                    Highlighted missions
+                  </h2>
                   <p className="text-sm text-slate-300">
                     A snapshot of what this creator has shipped inside AeThex.
                   </p>
                 </div>
                 {isSelf && (
-                  <Button asChild variant="outline" className="border-slate-700/70 text-slate-100">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-slate-700/70 text-slate-100"
+                  >
                     <Link to="/projects/new">Launch new project</Link>
                   </Button>
                 )}
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 {projects.map((project) => (
-                  <Card key={project.id} className="border border-slate-800 bg-slate-900/70">
+                  <Card
+                    key={project.id}
+                    className="border border-slate-800 bg-slate-900/70"
+                  >
                     <CardHeader className="flex flex-row items-start justify-between space-y-0">
                       <div className="space-y-1">
                         <CardTitle className="text-lg text-white">
@@ -165,15 +177,23 @@ const ProfilePassport = () => {
                           {project.description || "AeThex project"}
                         </CardDescription>
                       </div>
-                      <Badge variant="outline" className="border-slate-700/70 text-slate-200">
+                      <Badge
+                        variant="outline"
+                        className="border-slate-700/70 text-slate-200"
+                      >
                         {project.status?.replace("_", " ") ?? "active"}
                       </Badge>
                     </CardHeader>
                     <CardContent className="flex items-center justify-between text-xs text-slate-300">
                       <span className="flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5" /> {formatDate(project.created_at)}
+                        <Clock className="h-3.5 w-3.5" />{" "}
+                        {formatDate(project.created_at)}
                       </span>
-                      <Button asChild variant="ghost" className="h-8 px-2 text-xs text-aethex-200">
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className="h-8 px-2 text-xs text-aethex-200"
+                      >
                         <Link to="/projects/new">
                           View mission
                           <ExternalLink className="ml-1 h-3.5 w-3.5" />
@@ -189,26 +209,36 @@ const ProfilePassport = () => {
           <section className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-white">Achievements</h2>
+                <h2 className="text-xl font-semibold text-white">
+                  Achievements
+                </h2>
                 <p className="text-sm text-slate-300">
                   Passport stamps earned across AeThex experiences.
                 </p>
               </div>
               {isSelf && (
-                <Badge variant="outline" className="border-aethex-500/50 text-aethex-200">
-                  <Award className="mr-1 h-3 w-3" /> {achievements.length} badges
+                <Badge
+                  variant="outline"
+                  className="border-aethex-500/50 text-aethex-200"
+                >
+                  <Award className="mr-1 h-3 w-3" /> {achievements.length}{" "}
+                  badges
                 </Badge>
               )}
             </div>
             {achievements.length === 0 ? (
               <Card className="border border-slate-800 bg-slate-900/60 p-8 text-center text-slate-300">
                 <Target className="mx-auto mb-3 h-8 w-8 text-aethex-300" />
-                No achievements yet. Complete onboarding and participate in missions to earn AeThex badges.
+                No achievements yet. Complete onboarding and participate in
+                missions to earn AeThex badges.
               </Card>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2">
                 {achievements.map((achievement) => (
-                  <Card key={achievement.id} className="border border-slate-800 bg-slate-900/70">
+                  <Card
+                    key={achievement.id}
+                    className="border border-slate-800 bg-slate-900/70"
+                  >
                     <CardContent className="flex h-full flex-col justify-between gap-3 p-5">
                       <div className="flex items-center gap-3 text-white">
                         <span className="text-3xl">
@@ -241,24 +271,40 @@ const ProfilePassport = () => {
           <section className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-xl font-semibold text-white">Stay connected</h2>
+                <h2 className="text-xl font-semibold text-white">
+                  Stay connected
+                </h2>
                 <p className="text-sm text-slate-300">
-                  Reach out, collaborate, and shape the next AeThex release together.
+                  Reach out, collaborate, and shape the next AeThex release
+                  together.
                 </p>
               </div>
               {isSelf ? (
-                <Button asChild className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90">
-                  <Link to="/dashboard?tab=connections">Manage connections</Link>
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+                >
+                  <Link to="/dashboard?tab=connections">
+                    Manage connections
+                  </Link>
                 </Button>
               ) : (
-                <Button asChild variant="outline" className="border-slate-700/70 text-slate-100">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-slate-700/70 text-slate-100"
+                >
                   <Link to="/dashboard">Invite to collaborate</Link>
                 </Button>
               )}
             </div>
             <div className="flex flex-wrap gap-2 text-sm text-slate-300">
               {profile.github_url && (
-                <Button asChild variant="ghost" className="h-8 px-2 text-xs text-slate-200">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-8 px-2 text-xs text-slate-200"
+                >
                   <a href={profile.github_url} target="_blank" rel="noreferrer">
                     GitHub
                     <ExternalLink className="ml-1 h-3.5 w-3.5" />
@@ -266,31 +312,58 @@ const ProfilePassport = () => {
                 </Button>
               )}
               {profile.linkedin_url && (
-                <Button asChild variant="ghost" className="h-8 px-2 text-xs text-slate-200">
-                  <a href={profile.linkedin_url} target="_blank" rel="noreferrer">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-8 px-2 text-xs text-slate-200"
+                >
+                  <a
+                    href={profile.linkedin_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     LinkedIn
                     <ExternalLink className="ml-1 h-3.5 w-3.5" />
                   </a>
                 </Button>
               )}
               {profile.twitter_url && (
-                <Button asChild variant="ghost" className="h-8 px-2 text-xs text-slate-200">
-                  <a href={profile.twitter_url} target="_blank" rel="noreferrer">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-8 px-2 text-xs text-slate-200"
+                >
+                  <a
+                    href={profile.twitter_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     X / Twitter
                     <ExternalLink className="ml-1 h-3.5 w-3.5" />
                   </a>
                 </Button>
               )}
               {profile.website_url && (
-                <Button asChild variant="ghost" className="h-8 px-2 text-xs text-slate-200">
-                  <a href={profile.website_url} target="_blank" rel="noreferrer">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-8 px-2 text-xs text-slate-200"
+                >
+                  <a
+                    href={profile.website_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Portfolio
                     <ExternalLink className="ml-1 h-3.5 w-3.5" />
                   </a>
                 </Button>
               )}
               {profile.bio && (
-                <Badge variant="outline" className="border-slate-700/70 text-slate-200">
+                <Badge
+                  variant="outline"
+                  className="border-slate-700/70 text-slate-200"
+                >
                   {profile.bio}
                 </Badge>
               )}
