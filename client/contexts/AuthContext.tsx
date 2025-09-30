@@ -378,6 +378,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         });
         return;
       }
+
+      const identities = (user.identities ?? []) as any[];
+      const supportedLinkedCount = identities.filter((item: any) =>
+        ["github", "google"].includes(item.provider),
+      ).length;
+      const hasEmailIdentity = identities.some(
+        (item: any) => item.provider === "email",
+      );
+      if (!hasEmailIdentity && supportedLinkedCount <= 1) {
+        aethexToast.error({
+          title: "Cannot unlink provider",
+          description:
+            "Add another sign-in method before removing this connection.",
+        });
+        return;
+      }
       try {
         const { error } = (await supabase.auth.unlinkIdentity({
           identity_id: identity.identity_id,
