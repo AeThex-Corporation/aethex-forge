@@ -280,6 +280,24 @@ export default function Dashboard() {
     }
   };
 
+  const handleLinkProvider = async (provider: ProviderKey) => {
+    setConnectionAction(`${provider}-link`);
+    try {
+      await linkProvider(provider);
+    } finally {
+      setConnectionAction(null);
+    }
+  };
+
+  const handleUnlinkProvider = async (provider: ProviderKey) => {
+    setConnectionAction(`${provider}-unlink`);
+    try {
+      await unlinkProvider(provider);
+    } finally {
+      setConnectionAction(null);
+    }
+  };
+
   const handleQuickAction = async (actionTitle: string) => {
     switch (actionTitle) {
       case "Start New Project":
