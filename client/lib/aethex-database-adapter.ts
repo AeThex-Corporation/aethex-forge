@@ -375,6 +375,10 @@ export const aethexUserService = {
       throw error;
     }
 
+    try {
+      await mockAuth.updateProfile(userId as any, data as any);
+    } catch {}
+
     return {
       ...data,
       onboarded: true,
