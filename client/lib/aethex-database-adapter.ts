@@ -1,6 +1,6 @@
 // Maps existing schema to our application needs
 
-import { supabase } from "./supabase";
+import { supabase, isSupabaseConfigured } from "./supabase";
 import type { Database } from "./database.types";
 import { aethexToast } from "./aethex-toast";
 import { mockAuth } from "./mock-auth";
@@ -84,6 +84,17 @@ export const aethexUserService = {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return null;
+    if (!isSupabaseConfigured) {
+      const mock =
+        (await mockAuth.getUserProfile(user.id as any)) ||
+        (await mockAuth.updateProfile(user.id as any, {
+          username: user.email?.split("@")[0] || "user",
+          email: user.email || "",
+          role: "member",
+          onboarded: true,
+        } as any));
+      return { ...(mock as any), email: user.email } as AethexUserProfile;
+    }
 
     const { data, error } = await supabase
       .from("user_profiles")
@@ -141,6 +152,10 @@ export const aethexUserService = {
     userId: string,
     updates: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
+    if (!isSupabaseConfigured) {
+      const mock = await mockAuth.updateProfile(userId as any, updates as any);
+      return mock as unknown as AethexUserProfile;
+    }
     const { data, error } = await supabase
       .from("user_profiles")
       .update(updates)
@@ -178,6 +193,25 @@ export const aethexUserService = {
     userId: string,
     profileData: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
+    if (!isSupabaseConfigured) {
+      const mock = await mockAuth.updateProfile(userId as any, {
+        username: profileData.username || `user_${Date.now()}`,
+        full_name: profileData.full_name,
+        bio: profileData.bio,
+        location: profileData.location,
+        linkedin_url: profileData.linkedin_url as any,
+        github_url: profileData.github_url as any,
+        twitter_url: profileData.twitter_url as any,
+        level: 1,
+        total_xp: 0,
+      } as any);
+      return {
+        ...(mock as any),
+        onboarded: true,
+        role: "member",
+        loyalty_points: 0,
+      } as any;
+    }
     // Only insert fields that exist in the actual database schema
     const { data, error } = await supabase
       .from("user_profiles")
@@ -239,6 +273,15 @@ export const aethexUserService = {
   },
 
   async addUserInterests(userId: string, interests: string[]): Promise<void> {
+    if (!isSupabaseConfigured) {
+      try {
+        localStorage.setItem(
+          `mock_interests_${userId}`,
+          JSON.stringify(interests || []),
+        );
+      } catch {}
+      return;
+    }
     // First, delete existing interests (ignore failures when table missing)
     await supabase
       .from("user_interests")
@@ -263,6 +306,15 @@ export const aethexUserService = {
   },
 
   async getUserInterests(userId: string): Promise<string[]> {
+    if (!isSupabaseConfigured) {
+      try {
+        return JSON.parse(
+          localStorage.getItem(`mock_interests_${userId}`) || "[]",
+        );
+      } catch {
+        return [];
+      }
+    }
     const { data, error } = await supabase
       .from("user_interests")
       .select("interest")
