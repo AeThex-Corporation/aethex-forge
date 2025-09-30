@@ -937,6 +937,24 @@ export default function Dashboard() {
                       </div>
                     </TabsContent>
 
+                    <TabsContent value="connections" className="space-y-6">
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-semibold text-foreground">
+                          Linked accounts
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          Manage third-party login providers connected to your AeThex account.
+                        </p>
+                      </div>
+                      <OAuthConnections
+                        providers={oauthConnections}
+                        linkedProviderMap={linkedProviderMap}
+                        connectionAction={connectionAction}
+                        onLink={handleLinkProvider}
+                        onUnlink={handleUnlinkProvider}
+                      />
+                    </TabsContent>
+
                     <TabsContent value="notifications" className="space-y-4">
                       <div className="flex items-center justify-between border rounded-lg p-3">
                         <div>
