@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { ensureDemoSeed } from "@/lib/demo-feed";
 import { useNavigate } from "react-router-dom";
+import { aethexToast } from "@/lib/aethex-toast";
 import {
   Card,
   CardContent,
