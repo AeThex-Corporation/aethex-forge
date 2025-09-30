@@ -30,7 +30,7 @@ export default function Admin() {
   const { user, loading, roles } = useAuth();
   const navigate = useNavigate();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
-  const [demoProfiles, setDemoProfiles] = useState<any[]>([]);
+  const [managedProfiles, setManagedProfiles] = useState<AethexUserProfile[]>([]);
   type Studio = {
     name: string;
     tagline?: string;
