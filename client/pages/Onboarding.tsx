@@ -317,14 +317,19 @@ export default function Onboarding() {
         customer: "customer",
       };
 
+      const normalizedFirst =
+        data.personalInfo.firstName?.trim() ||
+        user.email?.split("@")[0] ||
+        "user";
+      const normalizedLast = data.personalInfo.lastName?.trim() || "";
       const payload = {
-        username: `${data.personalInfo.firstName || user.email?.split("@")[0] || "user"}`,
-        full_name:
-          `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim(),
+        username: normalizedFirst.replace(/\s+/g, "_"),
+        full_name: `${normalizedFirst} ${normalizedLast}`.trim(),
         user_type:
-          (userTypeMap[data.userType || "member"] as any) || "community_member",
+          (userTypeMap[data.userType || "member"] as any) ||
+          "community_member",
         experience_level: (data.experience.level as any) || "beginner",
-        bio: data.experience.previousProjects || undefined,
+        bio: data.experience.previousProjects?.trim() || undefined,
       } as any;
 
       // Ensure profile via server (uses service role)
@@ -386,6 +391,7 @@ export default function Onboarding() {
       // Mark onboarding complete locally (UI fallback)
       try {
         localStorage.setItem("onboarding_complete", "1");
+        localStorage.removeItem(ONBOARDING_STORAGE_KEY);
       } catch {}
 
       // Refresh profile so UI updates immediately
