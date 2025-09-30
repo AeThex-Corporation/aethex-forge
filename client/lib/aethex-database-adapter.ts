@@ -370,124 +370,225 @@ export const aethexProjectService = {
   },
 };
 
-// Achievement Services (maps to existing achievements table)
+// Achievement Services (maps to existing achievements table) with robust local fallbacks
 export const aethexAchievementService = {
+  defaultAchievements(): AethexAchievement[] {
+    return [
+      {
+        id: "ach_welcome",
+        name: "Welcome to AeThex",
+        description: "Completed onboarding and set up your profile",
+        icon: "👋",
+        xp_reward: 100,
+        badge_color: "#10b981",
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "ach_explorer",
+        name: "AeThex Explorer",
+        description: "Visited key sections and explored the app",
+        icon: "🧭",
+        xp_reward: 150,
+        badge_color: "#3b82f6",
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "ach_level_master",
+        name: "Level Master",
+        description: "Reached level 5",
+        icon: "🏆",
+        xp_reward: 250,
+        badge_color: "#f59e0b",
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "ach_portfolio",
+        name: "Portfolio Creator",
+        description: "Created your first project",
+        icon: "📁",
+        xp_reward: 200,
+        badge_color: "#8b5cf6",
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "ach_project_master",
+        name: "Project Master",
+        description: "Completed 10 projects",
+        icon: "🛠️",
+        xp_reward: 500,
+        badge_color: "#ef4444",
+        created_at: new Date().toISOString(),
+      },
+    ];
+  },
+
+  loadLocalAchievements(): AethexAchievement[] {
+    try {
+      const raw = localStorage.getItem("demo_achievements");
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    const defaults = this.defaultAchievements();
+    try {
+      localStorage.setItem("demo_achievements", JSON.stringify(defaults));
+    } catch {}
+    return defaults;
+  },
+
+  saveUserAchievement(userId: string, achievementId: string) {
+    try {
+      const key = `demo_user_achievements_${userId}`;
+      const raw = localStorage.getItem(key);
+      const ids: string[] = raw ? JSON.parse(raw) : [];
+      if (!ids.includes(achievementId)) ids.push(achievementId);
+      localStorage.setItem(key, JSON.stringify(ids));
+    } catch {}
+  },
+
   async getAllAchievements(): Promise<AethexAchievement[]> {
-    const { data, error } = await supabase
-      .from("achievements")
-      .select("*")
-      .order("xp_reward", { ascending: false });
-
-    if (error) {
-      console.warn("Error fetching achievements:", error);
-      return [];
-    }
-
-    return data as AethexAchievement[];
+    try {
+      const { data, error } = await supabase
+        .from("achievements")
+        .select("*")
+        .order("xp_reward", { ascending: false });
+      if (!error && Array.isArray(data) && data.length) {
+        return data as AethexAchievement[];
+      }
+    } catch {}
+    return this.loadLocalAchievements();
   },
 
   async getUserAchievements(userId: string): Promise<AethexAchievement[]> {
-    const { data, error } = await supabase
-      .from("user_achievements")
-      .select(
-        `
+    try {
+      const { data, error } = await supabase
+        .from("user_achievements")
+        .select(
+          `
         achievement_id,
         achievements (*)
       `,
-      )
-      .eq("user_id", userId);
+        )
+        .eq("user_id", userId);
+      if (!error && Array.isArray(data)) {
+        const list = (data as any[])
+          .map((item) => (item as any).achievements)
+          .filter(Boolean) as AethexAchievement[];
+        if (list.length) return list;
+      }
+    } catch {}
 
-    if (error) {
-      console.warn("Error fetching user achievements:", error);
-      return [];
-    }
-
-    return (data as any[])
-      .map((item) => (item as any).achievements)
-      .filter(Boolean) as AethexAchievement[];
+    // Local fallback
+    const key = `demo_user_achievements_${userId}`;
+    let ids: string[] = [];
+    try {
+      ids = JSON.parse(localStorage.getItem(key) || "[]");
+    } catch {}
+    const all = await this.getAllAchievements();
+    const byId = new Map(all.map((a) => [a.id, a] as const));
+    return ids.map((id) => byId.get(id)).filter(Boolean) as AethexAchievement[];
   },
 
   async awardAchievement(userId: string, achievementId: string): Promise<void> {
-    const { error } = await supabase.from("user_achievements").insert({
-      user_id: userId,
-      achievement_id: achievementId,
-    });
-
-    if (error && error.code !== "23505") {
-      // Ignore duplicate key error
-      if (isTableMissing(error)) return;
-      console.warn("Error awarding achievement:", error);
-      throw error;
+    let usedLocal = false;
+    try {
+      const { error } = await supabase.from("user_achievements").insert({
+        user_id: userId,
+        achievement_id: achievementId,
+      });
+      if (error && error.code !== "23505") {
+        if (!isTableMissing(error)) throw error;
+        usedLocal = true;
+      }
+    } catch {
+      usedLocal = true;
     }
 
-    // Get achievement details for toast
-    const { data: achievement } = await supabase
-      .from("achievements")
-      .select("*")
-      .eq("id", achievementId)
-      .single();
+    let achievement: AethexAchievement | null = null;
+    if (!usedLocal) {
+      try {
+        const { data } = await supabase
+          .from("achievements")
+          .select("*")
+          .eq("id", achievementId)
+          .single();
+        achievement = (data as any) || null;
+      } catch {}
+    }
+
+    if (usedLocal || !achievement) {
+      this.saveUserAchievement(userId, achievementId);
+      const all = await this.getAllAchievements();
+      achievement = all.find((a) => a.id === achievementId) || null;
+    }
 
     if (achievement) {
       aethexToast.aethex({
         title: "Achievement Unlocked! 🎉",
-        description: `${(achievement as any).icon} ${(achievement as any).name} - ${(achievement as any).description}`,
+        description: `${achievement.icon || "🏅"} ${achievement.name} - ${achievement.description}`,
         duration: 8000,
       });
-
-      // Update user's total XP and level
-      await this.updateUserXPAndLevel(userId, (achievement as any).xp_reward);
+      await this.updateUserXPAndLevel(userId, achievement.xp_reward);
     }
   },
 
   async updateUserXPAndLevel(userId: string, xpGained: number): Promise<void> {
-    // Get current user data
-    const { data: profile, error } = await supabase
-      .from("user_profiles")
-      .select("total_xp, level, loyalty_points")
-      .eq("id", userId)
-      .single();
+    try {
+      const { data: profile, error } = await supabase
+        .from("user_profiles")
+        .select("total_xp, level, loyalty_points")
+        .eq("id", userId)
+        .single();
 
-    if (error || !profile) {
-      if (isTableMissing(error)) return;
-      console.log("Profile not found or missing XP fields, skipping XP update");
-      return;
-    }
+      if (!error && profile) {
+        const newTotalXP = ((profile as any).total_xp || 0) + xpGained;
+        const newLevel = Math.floor(newTotalXP / 1000) + 1;
+        const newLoyaltyPoints = ((profile as any).loyalty_points || 0) + xpGained;
 
-    const newTotalXP = ((profile as any).total_xp || 0) + xpGained;
-    const newLevel = Math.floor(newTotalXP / 1000) + 1; // 1000 XP per level
-    const newLoyaltyPoints = ((profile as any).loyalty_points || 0) + xpGained;
+        const updates: any = {};
+        if ("total_xp" in (profile as any)) updates.total_xp = newTotalXP;
+        if ("level" in (profile as any)) updates.level = newLevel;
+        if ("loyalty_points" in (profile as any)) updates.loyalty_points = newLoyaltyPoints;
 
-    // Update profile (only update existing fields)
-    const updates: any = {};
-    if ("total_xp" in (profile as any)) updates.total_xp = newTotalXP;
-    if ("level" in (profile as any)) updates.level = newLevel;
-    if ("loyalty_points" in (profile as any))
-      updates.loyalty_points = newLoyaltyPoints;
-
-    if (Object.keys(updates).length > 0) {
-      await supabase.from("user_profiles").update(updates).eq("id", userId);
-    }
-
-    // Check for level-up achievements
-    if (newLevel > ((profile as any).level || 1)) {
-      if (newLevel >= 5) {
-        const levelUpAchievement = await supabase
-          .from("achievements")
-          .select("id")
-          .eq("name", "Level Master")
-          .single();
-
-        if (levelUpAchievement.data) {
-          await this.awardAchievement(
-            userId,
-            (levelUpAchievement.data as any).id,
-          );
+        if (Object.keys(updates).length > 0) {
+          await supabase.from("user_profiles").update(updates).eq("id", userId);
         }
+
+        if (newLevel > ((profile as any).level || 1) && newLevel >= 5) {
+          // Try to find Level Master by name, fall back to default id
+          try {
+            const { data } = await supabase
+              .from("achievements")
+              .select("id")
+              .eq("name", "Level Master")
+              .single();
+            const id = (data as any)?.id || "ach_level_master";
+            await this.awardAchievement(userId, id);
+          } catch {
+            await this.awardAchievement(userId, "ach_level_master");
+          }
+        }
+        return;
       }
-    }
+    } catch {}
+
+    // Local fallback using mock profile persistence
+    try {
+      const current = await mockAuth.getUserProfile(userId as any);
+      const total_xp = ((current as any)?.total_xp || 0) + xpGained;
+      const level = Math.floor(total_xp / 1000) + 1;
+      const loyalty_points = ((current as any)?.loyalty_points || 0) + xpGained;
+      await mockAuth.updateProfile(userId as any, {
+        total_xp,
+        level,
+        loyalty_points,
+      } as any);
+      if (level > ((current as any)?.level || 1) && level >= 5) {
+        await this.awardAchievement(userId, "ach_level_master");
+      }
+    } catch {}
   },
 
   async checkAndAwardOnboardingAchievement(userId: string): Promise<void> {
+    let awarded = false;
     try {
       const resp = await fetch(`/api/achievements/award`, {
         method: "POST",
@@ -497,49 +598,56 @@ export const aethexAchievementService = {
           achievement_names: ["Welcome to AeThex", "AeThex Explorer"],
         }),
       });
-      if (!resp.ok) {
-        const text = await resp.text().catch(() => "");
-        console.warn("Award onboarding achievement failed:", text);
-        return;
-      }
-      // Show celebratory toast
-      aethexToast.aethex({
-        title: "Achievement Unlocked! 🎉",
-        description: "Welcome to AeThex - Profile setup complete",
-        duration: 8000,
-      });
-    } catch (e) {
-      console.warn("Award onboarding achievement exception:", e);
+      awarded = resp.ok;
+    } catch {}
+
+    if (!awarded) {
+      const all = await this.getAllAchievements();
+      const byName = new Map(all.map((a) => [a.name, a.id] as const));
+      const ids = [
+        byName.get("Welcome to AeThex") || "ach_welcome",
+        byName.get("AeThex Explorer") || "ach_explorer",
+      ];
+      for (const id of ids) await this.awardAchievement(userId, id);
     }
+
+    aethexToast.aethex({
+      title: "Achievement Unlocked! 🎉",
+      description: "Welcome to AeThex - Profile setup complete",
+      duration: 8000,
+    });
   },
 
   async checkAndAwardProjectAchievements(userId: string): Promise<void> {
     const projects = await aethexProjectService.getUserProjects(userId);
 
-    // First project achievement
     if (projects.length >= 1) {
-      const { data: achievement } = await supabase
-        .from("achievements")
-        .select("id")
-        .eq("name", "Portfolio Creator")
-        .single();
-
-      if (achievement) {
-        await this.awardAchievement(userId, (achievement as any).id);
+      // Portfolio Creator
+      try {
+        const { data } = await supabase
+          .from("achievements")
+          .select("id")
+          .eq("name", "Portfolio Creator")
+          .single();
+        const id = (data as any)?.id || "ach_portfolio";
+        await this.awardAchievement(userId, id);
+      } catch {
+        await this.awardAchievement(userId, "ach_portfolio");
       }
     }
 
-    // Project master achievement
-    const completedProjects = projects.filter((p) => p.status === "completed");
-    if (completedProjects.length >= 10) {
-      const { data: achievement } = await supabase
-        .from("achievements")
-        .select("id")
-        .eq("name", "Project Master")
-        .single();
-
-      if (achievement) {
-        await this.awardAchievement(userId, (achievement as any).id);
+    const completed = projects.filter((p) => p.status === "completed");
+    if (completed.length >= 10) {
+      try {
+        const { data } = await supabase
+          .from("achievements")
+          .select("id")
+          .eq("name", "Project Master")
+          .single();
+        const id = (data as any)?.id || "ach_project_master";
+        await this.awardAchievement(userId, id);
+      } catch {
+        await this.awardAchievement(userId, "ach_project_master");
       }
     }
   },
