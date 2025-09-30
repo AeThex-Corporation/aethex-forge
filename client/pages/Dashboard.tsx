@@ -422,7 +422,7 @@ export default function Dashboard() {
         navigate("/projects/new");
         break;
       case "Join Team":
-        navigate("/teams");
+        navigate("/community");
         break;
       case "Access Labs":
         navigate("/research");
