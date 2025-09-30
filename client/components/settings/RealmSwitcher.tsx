@@ -147,7 +147,8 @@ const RealmSwitcher = memo(function RealmSwitcher({
           Realm & Path
         </h3>
         <p className="text-sm text-muted-foreground">
-          Tailor your AeThex experience. Choose the realm that matches your goals and align the path difficulty that fits your craft.
+          Tailor your AeThex experience. Choose the realm that matches your
+          goals and align the path difficulty that fits your craft.
         </p>
       </div>
 
@@ -229,9 +230,7 @@ const RealmSwitcher = memo(function RealmSwitcher({
                     {isActive ? "Realm active" : "Activate realm"}
                   </Button>
                   <Button asChild variant="ghost" size="sm" className="text-xs">
-                    <Link to={realm.route}>
-                      Visit {realm.routeLabel}
-                    </Link>
+                    <Link to={realm.route}>Visit {realm.routeLabel}</Link>
                   </Button>
                 </div>
               </CardContent>
@@ -244,7 +243,8 @@ const RealmSwitcher = memo(function RealmSwitcher({
         <div className="space-y-2">
           <p className="text-sm font-medium text-foreground">Path difficulty</p>
           <p className="text-xs text-muted-foreground">
-            Tune the experience level that unlocks curated resources and challenges matched to your expertise.
+            Tune the experience level that unlocks curated resources and
+            challenges matched to your expertise.
           </p>
         </div>
         <Select value={selectedExperience} onValueChange={onExperienceChange}>
@@ -263,7 +263,8 @@ const RealmSwitcher = memo(function RealmSwitcher({
 
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-muted-foreground">
-          Your realm influences recommendations, default routes, and collaboration invites. You can change it anytime.
+          Your realm influences recommendations, default routes, and
+          collaboration invites. You can change it anytime.
         </p>
         <Button
           type="button"

@@ -15,9 +15,7 @@ import OAuthConnections, {
   ProviderDescriptor,
   ProviderKey,
 } from "@/components/settings/OAuthConnections";
-import RealmSwitcher, {
-  RealmKey,
-} from "@/components/settings/RealmSwitcher";
+import RealmSwitcher, { RealmKey } from "@/components/settings/RealmSwitcher";
 import {
   Card,
   CardContent,
@@ -96,7 +94,9 @@ export default function Dashboard() {
   const [experienceLevel, setExperienceLevel] = useState("beginner");
   const [savingRealm, setSavingRealm] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState(() => searchParams.get("tab") ?? "profile");
+  const [activeTab, setActiveTab] = useState(
+    () => searchParams.get("tab") ?? "profile",
+  );
 
   const linkedProviderMap = useMemo(() => {
     const map: Record<string, (typeof linkedProviders)[number]> = {};
@@ -197,8 +197,7 @@ export default function Dashboard() {
       console.error("Failed to save realm:", error);
       aethexToast.error({
         title: "Unable to save realm",
-        description:
-          error?.message || "Please try again or refresh the page.",
+        description: error?.message || "Please try again or refresh the page.",
       });
     } finally {
       setSavingRealm(false);
@@ -1011,7 +1010,8 @@ export default function Dashboard() {
                           Linked accounts
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          Manage third-party login providers connected to your AeThex account.
+                          Manage third-party login providers connected to your
+                          AeThex account.
                         </p>
                       </div>
                       <OAuthConnections

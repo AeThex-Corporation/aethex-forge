@@ -29,7 +29,8 @@ export function checkProfileComplete(p?: AethexUserProfile | null): boolean {
     return true;
   }
 
-  const hasIdentity = isNonEmptyString(p.username) || isNonEmptyString(p.full_name);
+  const hasIdentity =
+    isNonEmptyString(p.username) || isNonEmptyString(p.full_name);
   const hasProfileCore =
     isNonEmptyString(p.full_name) &&
     isNonEmptyString((p as any).user_type) &&

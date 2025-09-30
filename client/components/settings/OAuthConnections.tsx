@@ -69,7 +69,10 @@ const OAuthConnections = memo(function OAuthConnections({
             {statusCopy.linked}
           </Badge>
         ) : (
-          <Badge variant="outline" className="border-border/50 text-muted-foreground">
+          <Badge
+            variant="outline"
+            className="border-border/50 text-muted-foreground"
+          >
             {statusCopy.notLinked}
           </Badge>
         );
@@ -79,7 +82,9 @@ const OAuthConnections = memo(function OAuthConnections({
             key={provider}
             className={cn(
               "flex flex-col gap-4 rounded-xl border p-4 md:flex-row md:items-center md:justify-between",
-              linkedMeta ? "border-emerald-500/40 bg-emerald-500/5" : "border-border/50 bg-background/20",
+              linkedMeta
+                ? "border-emerald-500/40 bg-emerald-500/5"
+                : "border-border/50 bg-background/20",
             )}
           >
             <div className="flex flex-1 items-start gap-4">
@@ -93,7 +98,9 @@ const OAuthConnections = memo(function OAuthConnections({
               </div>
               <div className="flex-1 space-y-2">
                 <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-3">
-                  <h3 className="text-lg font-semibold text-foreground">{name}</h3>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {name}
+                  </h3>
                   {linkedBadge}
                 </div>
                 <p className="text-sm text-muted-foreground">{description}</p>
@@ -101,19 +108,25 @@ const OAuthConnections = memo(function OAuthConnections({
                   <div className="grid gap-1 text-xs text-muted-foreground sm:grid-cols-2">
                     {linkedMeta.linkedAt && (
                       <div>
-                        <span className="font-medium text-foreground">Linked:</span>{" "}
+                        <span className="font-medium text-foreground">
+                          Linked:
+                        </span>{" "}
                         {formatTimestamp(linkedMeta.linkedAt)}
                       </div>
                     )}
                     {linkedMeta.lastSignInAt && (
                       <div>
-                        <span className="font-medium text-foreground">Last sign-in:</span>{" "}
+                        <span className="font-medium text-foreground">
+                          Last sign-in:
+                        </span>{" "}
                         {formatTimestamp(linkedMeta.lastSignInAt)}
                       </div>
                     )}
                     {linkedMeta.identityId && (
                       <div className="truncate" title={linkedMeta.identityId}>
-                        <span className="font-medium text-foreground">Identity:</span>{" "}
+                        <span className="font-medium text-foreground">
+                          Identity:
+                        </span>{" "}
                         {linkedMeta.identityId}
                       </div>
                     )}
@@ -130,7 +143,10 @@ const OAuthConnections = memo(function OAuthConnections({
                   onClick={() => onUnlink(provider)}
                 >
                   {isUnlinking ? (
-                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    <Loader2
+                      className="h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
                   ) : (
                     <Unlink className="h-4 w-4" aria-hidden="true" />
                   )}
@@ -143,7 +159,10 @@ const OAuthConnections = memo(function OAuthConnections({
                   onClick={() => onLink(provider)}
                 >
                   {isLinking ? (
-                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    <Loader2
+                      className="h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
                   ) : (
                     <LinkIcon className="h-4 w-4" aria-hidden="true" />
                   )}
