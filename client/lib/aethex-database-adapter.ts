@@ -808,6 +808,21 @@ export const aethexRealtimeService = {
 // Role Services (with Supabase table fallback)
 export const aethexRoleService = {
   async getUserRoles(userId: string): Promise<string[]> {
+    // Try roles via join (role_id -> roles.name)
+    try {
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role_id, roles ( name )")
+        .eq("user_id", userId);
+      if (!error && Array.isArray(data) && data.length) {
+        const names = (data as any[])
+          .map((r) => (r as any).roles?.name)
+          .filter(Boolean);
+        if (names.length) return names;
+      }
+    } catch {}
+
+    // Try legacy text column 'role'
     try {
       const { data, error } = await supabase
         .from("user_roles")
@@ -818,12 +833,14 @@ export const aethexRoleService = {
       }
     } catch {}
 
+    // Owner email fallback
     try {
       const { data: authData } = await supabase.auth.getUser();
       const email = authData?.user?.email?.toLowerCase();
       if (email === "mrpiglr@gmail.com") return ["owner", "admin", "founder"];
     } catch {}
 
+    // Mock/local fallback
     try {
       const raw = localStorage.getItem("mock_roles");
       const map = raw ? JSON.parse(raw) : {};
@@ -834,6 +851,33 @@ export const aethexRoleService = {
   },
 
   async setUserRoles(userId: string, roles: string[]): Promise<void> {
+    // Prefer normalized roles table if present
+    try {
+      // Ensure roles exist and fetch their ids
+      const wanted = Array.from(new Set(roles.map((r) => r.toLowerCase())));
+      // Insert missing roles
+      await supabase.from("roles").upsert(
+        wanted.map((name) => ({ name } as any)) as any,
+        { onConflict: "name" } as any,
+      ).catch(() => undefined);
+      // Fetch role ids
+      const { data: roleRows } = await supabase
+        .from("roles")
+        .select("id, name")
+        .in("name", wanted as any);
+      const idRows = (roleRows || []).map((r: any) => ({
+        user_id: userId,
+        role_id: r.id,
+      }));
+      if (idRows.length) {
+        await supabase.from("user_roles").upsert(idRows as any, {
+          onConflict: "user_id,role_id" as any,
+        } as any);
+        return;
+      }
+    } catch {}
+
+    // Legacy text column fallback
     try {
       const rows = roles.map((role) => ({ user_id: userId, role }));
       const { error } = await supabase.from("user_roles").upsert(
@@ -845,6 +889,7 @@ export const aethexRoleService = {
       if (!error) return;
     } catch {}
 
+    // Local fallback
     try {
       const raw = localStorage.getItem("mock_roles");
       const map = raw ? JSON.parse(raw) : {};
