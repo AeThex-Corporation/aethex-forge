@@ -99,9 +99,9 @@ const App = () => (
               <Route path="/terms" element={<Terms />} />
 
               {/* Explicit 404 route for static hosting fallbacks */}
-              <Route path="/404" element={<NotFound />} />
+              <Route path="/404" element={<FourOhFourPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<FourOhFourPage />} />
             </Routes>
           </PageTransition>
         </BrowserRouter>
