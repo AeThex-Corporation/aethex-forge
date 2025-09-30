@@ -69,7 +69,9 @@ export default function Blog() {
         }
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const categories = [
@@ -79,7 +81,6 @@ export default function Blog() {
     { id: "research", name: "Research", count: 8 },
     { id: "company", name: "Company News", count: 7 },
   ];
-
 
   const postsStatic = [
     {
@@ -158,10 +159,12 @@ export default function Blog() {
 
   const filteredPosts =
     selectedCategory === "all"
-      ? (posts.length ? posts : postsStatic)
+      ? posts.length
+        ? posts
+        : postsStatic
       : (posts.length ? posts : postsStatic).filter(
-        (post) => (post.category || "").toLowerCase() === selectedCategory,
-      );
+          (post) => (post.category || "").toLowerCase() === selectedCategory,
+        );
 
   if (isLoading) {
     return (
@@ -288,7 +291,9 @@ export default function Blog() {
 
                   <div className="flex items-center justify-between">
                     <Button asChild>
-                      <Link to={`/blog/${(featuredPost?.slug || "").toString()}`}>
+                      <Link
+                        to={`/blog/${(featuredPost?.slug || "").toString()}`}
+                      >
                         Read Article
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Link>

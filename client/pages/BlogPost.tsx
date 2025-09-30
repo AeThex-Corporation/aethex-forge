@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Calendar } from "lucide-react";
 import NotFound from "./NotFound";
@@ -25,7 +31,9 @@ export default function BlogPost() {
         if (!cancelled) setLoading(false);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   if (loading) return null;
@@ -37,15 +45,23 @@ export default function BlogPost() {
         <div className="container mx-auto px-4 max-w-3xl">
           <Card className="overflow-hidden border-border/50 animate-scale-in">
             {post.image && (
-              <img src={post.image} alt={post.title} className="w-full h-64 object-cover" />
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-64 object-cover"
+              />
             )}
             <CardHeader>
               {post.category && (
-                <Badge className="mb-4 bg-gradient-to-r from-aethex-500 to-neon-blue">{post.category}</Badge>
+                <Badge className="mb-4 bg-gradient-to-r from-aethex-500 to-neon-blue">
+                  {post.category}
+                </Badge>
               )}
               <CardTitle className="text-3xl mt-2">{post.title}</CardTitle>
               {post.excerpt && (
-                <CardDescription className="text-muted-foreground mt-2">{post.excerpt}</CardDescription>
+                <CardDescription className="text-muted-foreground mt-2">
+                  {post.excerpt}
+                </CardDescription>
               )}
               <div className="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
                 {post.author && (
@@ -67,7 +83,9 @@ export default function BlogPost() {
                 <p>{post.excerpt}</p>
               )}
               <div className="pt-6">
-                <Link to="/blog" className="text-aethex-400 underline">Back to Blog</Link>
+                <Link to="/blog" className="text-aethex-400 underline">
+                  Back to Blog
+                </Link>
               </div>
             </CardContent>
           </Card>

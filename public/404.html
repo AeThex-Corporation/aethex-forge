@@ -6,24 +6,54 @@
     <title>Page Not Found</title>
     <meta http-equiv="refresh" content="0; url=/404" />
     <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: #0b0b10; color: #e5e7eb; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; }
-      a { color: #7c3aed; }
-      .wrap { text-align:center; padding: 2rem; }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Ubuntu,
+          Cantarell,
+          Noto Sans,
+          Helvetica,
+          Arial,
+          "Apple Color Emoji",
+          "Segoe UI Emoji";
+        background: #0b0b10;
+        color: #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      a {
+        color: #7c3aed;
+      }
+      .wrap {
+        text-align: center;
+        padding: 2rem;
+      }
     </style>
     <script>
-      (function(){
+      (function () {
         try {
           if (window && window.location) {
-            window.location.replace('/404');
+            window.location.replace("/404");
           }
-        } catch(e) { /* noop */ }
+        } catch (e) {
+          /* noop */
+        }
       })();
     </script>
   </head>
   <body>
     <div class="wrap">
       <h1>Page not found</h1>
-      <p>Redirecting to the site 404 page… If you are not redirected, <a href="/404">click here</a>.</p>
+      <p>
+        Redirecting to the site 404 page… If you are not redirected,
+        <a href="/404">click here</a>.
+      </p>
     </div>
   </body>
 </html>

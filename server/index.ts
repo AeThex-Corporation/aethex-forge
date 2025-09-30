@@ -268,7 +268,9 @@ export function createServer() {
       try {
         let query = adminSupabase
           .from("blog_posts")
-          .select("id, slug, title, excerpt, author, date, read_time, category, image, likes, comments, published_at")
+          .select(
+            "id, slug, title, excerpt, author, date, read_time, category, image, likes, comments, published_at",
+          )
           .order("published_at", { ascending: false, nullsLast: true } as any)
           .limit(limit);
         if (category) query = query.eq("category", category);
@@ -286,7 +288,9 @@ export function createServer() {
       try {
         const { data, error } = await adminSupabase
           .from("blog_posts")
-          .select("id, slug, title, excerpt, author, date, read_time, category, image, body_html, published_at")
+          .select(
+            "id, slug, title, excerpt, author, date, read_time, category, image, body_html, published_at",
+          )
           .eq("slug", slug)
           .single();
         if (error) return res.status(404).json({ error: error.message });
