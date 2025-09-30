@@ -234,14 +234,20 @@ export const achievementService = {
 // Community Services
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
-    // Prefer server API (service role) to avoid RLS issues
     try {
       const resp = await fetch(`/api/posts?limit=${limit}`);
       if (resp.ok) {
         const data = await resp.json();
-        if (Array.isArray(data) && data.length) return data;
+        if (Array.isArray(data)) {
+          return data as CommunityPost[];
+        }
+      } else if (resp.status >= 400) {
+        console.warn("API responded with", resp.status);
       }
-    } catch {}
+    } catch (error) {
+      console.warn("Failed to fetch posts via API:", error);
+    }
+
     try {
       const { data, error } = await supabase
         .from("community_posts")
@@ -258,27 +264,16 @@ export const communityService = {
         .eq("is_published", true)
         .order("created_at", { ascending: false })
         .limit(limit);
-      if (!error && data && data.length) return data;
-    } catch {}
-    // Fallback to demo posts with auto-seed
-    try {
-      let raw = localStorage.getItem("demo_posts");
-      let posts = raw ? JSON.parse(raw) : [];
-      if (!Array.isArray(posts) || posts.length === 0) {
-        ensureDemoSeed();
-        raw = localStorage.getItem("demo_posts");
-        posts = raw ? JSON.parse(raw) : [];
-      }
-      return (Array.isArray(posts) ? posts : []).slice(0, limit);
-    } catch {
-      try {
-        ensureDemoSeed();
-        const raw = localStorage.getItem("demo_posts");
-        const posts = raw ? JSON.parse(raw) : [];
-        return (Array.isArray(posts) ? posts : []).slice(0, limit);
-      } catch {
+
+      if (error) {
+        console.error("Failed to load posts from Supabase:", error);
         return [];
       }
+
+      return (Array.isArray(data) ? data : []) as CommunityPost[];
+    } catch (error) {
+      console.error("Unexpected error loading posts:", error);
+      return [];
     }
   },
 
@@ -294,60 +289,60 @@ export const communityService = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(post),
       });
-      if (resp.ok) return await resp.json();
-    } catch {}
-    try {
-      const { data, error } = await supabase
-        .from("community_posts")
-        .insert(post)
-        .select()
-        .single();
-      if (!error && data) return data;
-    } catch {}
-    // Fallback to local demo store
-    const fallback: any = {
-      ...post,
-      id: `demo_${Date.now()}`,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      likes_count: 0,
-      comments_count: 0,
-      user_profiles: (function () {
-        try {
-          const profiles = JSON.parse(
-            localStorage.getItem("demo_profiles") || "[]",
-          );
-          return profiles.find((p: any) => p.id === post.author_id) || null;
-        } catch {
-          return null;
-        }
-      })(),
-    };
-    const raw = localStorage.getItem("demo_posts");
-    const list = raw ? JSON.parse(raw) : [];
-    list.unshift(fallback);
-    localStorage.setItem("demo_posts", JSON.stringify(list));
-    return fallback;
+      if (resp.ok) {
+        return (await resp.json()) as CommunityPost;
+      }
+      if (resp.status >= 400) {
+        const payload = await resp.json().catch(() => ({}));
+        throw new Error(payload?.error || `API responded with ${resp.status}`);
+      }
+    } catch (error) {
+      console.warn("Falling back to Supabase insert for post:", error);
+    }
+
+    const { data, error } = await supabase
+      .from("community_posts")
+      .insert(post)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(error?.message || "Unable to publish post");
+    }
+
+    return data as CommunityPost;
   },
 
   async getUserPosts(userId: string): Promise<CommunityPost[]> {
     try {
       const resp = await fetch(`/api/user/${userId}/posts`);
-      if (resp.ok) return await resp.json();
-    } catch {}
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Array.isArray(data)) {
+          return data as CommunityPost[];
+        }
+      } else if (resp.status >= 400) {
+        console.warn("API responded with", resp.status);
+      }
+    } catch (error) {
+      console.warn("Failed to fetch user posts via API:", error);
+    }
+
     try {
       const { data, error } = await supabase
         .from("community_posts")
         .select("*")
         .eq("author_id", userId)
         .order("created_at", { ascending: false });
-      if (!error && data) return data;
-    } catch {}
-    try {
-      const raw = localStorage.getItem("demo_posts");
-      const posts = raw ? JSON.parse(raw) : [];
-      return posts.filter((p: any) => p.author_id === userId);
-    } catch {
+
+      if (error) {
+        console.error("Failed to load user posts from Supabase:", error);
+        return [];
+      }
+
+      return (Array.isArray(data) ? data : []) as CommunityPost[];
+    } catch (error) {
+      console.error("Unexpected error loading user posts:", error);
       return [];
     }
   },
