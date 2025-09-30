@@ -267,6 +267,16 @@ export default function Welcome({
             <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
+        <Button
+          asChild
+          variant="secondary"
+          className="bg-aethex-500/20 text-aethex-100 border border-aethex-500/40"
+        >
+          <Link to="/dashboard?tab=connections" className="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4" />
+            Link OAuth Accounts
+          </Link>
+        </Button>
       </div>
 
       <div className="text-center pt-4">
