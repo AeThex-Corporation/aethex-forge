@@ -320,6 +320,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         });
         return;
       }
+
+      const alreadyLinked = user.identities?.some(
+        (identity: any) => identity.provider === provider,
+      );
+      if (alreadyLinked) {
+        aethexToast.info({
+          title: "Already linked",
+          description: `Your ${provider} account is already connected.`,
+        });
+        return;
+      }
       try {
         const { data, error } = (await supabase.auth.linkIdentity({
           provider,
