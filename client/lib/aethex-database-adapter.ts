@@ -856,10 +856,13 @@ export const aethexRoleService = {
       // Ensure roles exist and fetch their ids
       const wanted = Array.from(new Set(roles.map((r) => r.toLowerCase())));
       // Insert missing roles
-      await supabase.from("roles").upsert(
-        wanted.map((name) => ({ name } as any)) as any,
-        { onConflict: "name" } as any,
-      ).catch(() => undefined);
+      await supabase
+        .from("roles")
+        .upsert(
+          wanted.map((name) => ({ name }) as any) as any,
+          { onConflict: "name" } as any,
+        )
+        .catch(() => undefined);
       // Fetch role ids
       const { data: roleRows } = await supabase
         .from("roles")
@@ -870,9 +873,12 @@ export const aethexRoleService = {
         role_id: r.id,
       }));
       if (idRows.length) {
-        await supabase.from("user_roles").upsert(idRows as any, {
-          onConflict: "user_id,role_id" as any,
-        } as any);
+        await supabase.from("user_roles").upsert(
+          idRows as any,
+          {
+            onConflict: "user_id,role_id" as any,
+          } as any,
+        );
         return;
       }
     } catch {}
