@@ -88,6 +88,8 @@ export default function Dashboard() {
   const [userPosts, setUserPosts] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
   const [connectionAction, setConnectionAction] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(() => searchParams.get("tab") ?? "profile");
 
   const linkedProviderMap = useMemo(() => {
     const map: Record<string, (typeof linkedProviders)[number]> = {};
@@ -97,24 +99,47 @@ export default function Dashboard() {
     return map;
   }, [linkedProviders]);
 
-  const oauthConnections = useMemo(
-    () =>
-      [
-        {
-          provider: "google" as ProviderKey,
-          name: "Google",
-          description: "Link your Google account for one-click access.",
-          Icon: Globe,
-          gradient: "from-red-500 to-yellow-500",
-        },
-        {
-          provider: "github" as ProviderKey,
-          name: "GitHub",
-          description: "Connect your GitHub account to sync contributions.",
-          Icon: Github,
-          gradient: "from-gray-600 to-gray-900",
-        },
-      ] as const,
+  useEffect(() => {
+    const paramTab = searchParams.get("tab") ?? "profile";
+    if (paramTab !== activeTab) {
+      setActiveTab(paramTab);
+    }
+  }, [searchParams, activeTab]);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    const next = new URLSearchParams(searchParams);
+    if (value === "profile") {
+      if (next.has("tab")) {
+        next.delete("tab");
+        setSearchParams(next, { replace: true });
+      }
+      return;
+    }
+
+    if (next.get("tab") !== value) {
+      next.set("tab", value);
+      setSearchParams(next, { replace: true });
+    }
+  };
+
+  const oauthConnections = useMemo<readonly ProviderDescriptor[]>(
+    () => [
+      {
+        provider: "google",
+        name: "Google",
+        description: "Link your Google account for one-click access.",
+        Icon: Globe,
+        gradient: "from-red-500 to-yellow-500",
+      },
+      {
+        provider: "github",
+        name: "GitHub",
+        description: "Connect your GitHub account to sync contributions.",
+        Icon: Github,
+        gradient: "from-gray-600 to-gray-900",
+      },
+    ],
     [],
   );
 
