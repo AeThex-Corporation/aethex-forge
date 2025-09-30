@@ -296,6 +296,52 @@ export function createServer() {
       }
     });
 
+    app.post("/api/blog", async (req, res) => {
+      const p = req.body || {};
+      const row = {
+        slug: String(p.slug || "").trim(),
+        title: String(p.title || "").trim(),
+        excerpt: p.excerpt || null,
+        author: p.author || null,
+        date: p.date || null,
+        read_time: p.read_time || null,
+        category: p.category || null,
+        image: p.image || null,
+        likes: Number.isFinite(p.likes) ? p.likes : 0,
+        comments: Number.isFinite(p.comments) ? p.comments : 0,
+        body_html: p.body_html || null,
+        published_at: p.published_at || new Date().toISOString(),
+      } as any;
+      if (!row.slug || !row.title)
+        return res.status(400).json({ error: "slug and title required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("blog_posts")
+          .upsert(row, { onConflict: "slug" as any })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || row);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.delete("/api/blog/:slug", async (req, res) => {
+      const slug = String(req.params.slug || "");
+      if (!slug) return res.status(400).json({ error: "missing slug" });
+      try {
+        const { error } = await adminSupabase
+          .from("blog_posts")
+          .delete()
+          .eq("slug", slug);
+        if (error) return res.status(500).json({ error: error.message });
+        res.json({ ok: true });
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.get("/api/applications", async (req, res) => {
       const owner = String(req.query.owner || "");
       if (!owner) return res.status(400).json({ error: "owner required" });
