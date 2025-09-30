@@ -189,6 +189,46 @@ export default function Welcome({
         </CardContent>
       </Card>
 
+      {/* Achievement Badge */}
+      {achievement && (
+        <Card className="max-w-2xl mx-auto border border-emerald-500/40 bg-emerald-500/10">
+          <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-2xl">
+                {achievement.icon || "🎖️"}
+              </div>
+              <div>
+                <CardTitle className="text-base text-emerald-50">
+                  Achievement Unlocked
+                </CardTitle>
+                <CardDescription className="text-xs text-emerald-100/80">
+                  {achievement.name}
+                </CardDescription>
+              </div>
+            </div>
+            <Badge className="bg-emerald-600/90 text-white border border-emerald-500/40">
+              AeThex Passport
+            </Badge>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm text-emerald-100/90">
+            {achievement.description && <p>{achievement.description}</p>}
+            {typeof achievement.xp_reward === "number" && achievement.xp_reward > 0 && (
+              <div className="text-xs uppercase tracking-wider text-emerald-200">
+                +{achievement.xp_reward} XP added to your passport progression
+              </div>
+            )}
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="outline" className="border-emerald-500/40 text-emerald-100">
+                <ShieldCheck className="mr-1 h-3.5 w-3.5" /> Profile Verified
+              </Badge>
+              <Badge variant="outline" className="border-emerald-500/40 text-emerald-100">
+                <Sparkle className="mr-1 h-3.5 w-3.5" /> Passport Updated
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Next Steps */}
       <div className="max-w-2xl mx-auto space-y-4">
         <h3 className="text-lg font-semibold text-center">What's Next?</h3>
