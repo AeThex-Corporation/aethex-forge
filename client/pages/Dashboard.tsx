@@ -91,6 +91,9 @@ export default function Dashboard() {
   const [userPosts, setUserPosts] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
   const [connectionAction, setConnectionAction] = useState<string | null>(null);
+  const [userRealm, setUserRealm] = useState<RealmKey | null>(null);
+  const [experienceLevel, setExperienceLevel] = useState("beginner");
+  const [savingRealm, setSavingRealm] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(() => searchParams.get("tab") ?? "profile");
 
