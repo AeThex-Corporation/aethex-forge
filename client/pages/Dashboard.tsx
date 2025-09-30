@@ -993,6 +993,16 @@ export default function Dashboard() {
                           {savingProfile ? "Saving..." : "Save Changes"}
                         </Button>
                       </div>
+                      <Separator className="my-6" />
+                      <RealmSwitcher
+                        selectedRealm={userRealm}
+                        onRealmChange={setUserRealm}
+                        selectedExperience={experienceLevel}
+                        onExperienceChange={setExperienceLevel}
+                        hasChanges={hasRealmChanges}
+                        onSave={handleRealmSave}
+                        saving={savingRealm}
+                      />
                     </TabsContent>
 
                     <TabsContent value="connections" className="space-y-6">
