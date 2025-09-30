@@ -256,6 +256,18 @@ export default function Dashboard() {
     setProfileCompletion(pct);
   };
 
+  const hasRealmChanges = useMemo(() => {
+    const currentRealm = ((profile as any)?.user_type as RealmKey) ?? null;
+    const currentExperience =
+      ((profile as any)?.experience_level as string) || "beginner";
+    const selectedRealmValue = userRealm ?? null;
+    const selectedExperienceValue = experienceLevel || "beginner";
+    return (
+      selectedRealmValue !== currentRealm ||
+      selectedExperienceValue !== currentExperience
+    );
+  }, [profile, userRealm, experienceLevel]);
+
   const loadDashboardData = async () => {
     try {
       setIsLoading(true);
