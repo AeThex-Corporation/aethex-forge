@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,6 +11,10 @@ import {
 } from "@/lib/aethex-database-adapter";
 import { communityService } from "@/lib/supabase-service";
 import PostComposer from "@/components/social/PostComposer";
+import OAuthConnections, {
+  ProviderDescriptor,
+  ProviderKey,
+} from "@/components/settings/OAuthConnections";
 import {
   Card,
   CardContent,
