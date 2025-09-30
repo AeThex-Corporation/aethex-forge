@@ -13,6 +13,11 @@ if (!SUPABASE_SERVICE_ROLE) {
   );
 }
 
-export const adminSupabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE, {
-  auth: { autoRefreshToken: false, persistSession: false },
-});
+let admin: any = null;
+if (SUPABASE_URL && SUPABASE_SERVICE_ROLE) {
+  admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
+
+export const adminSupabase = admin as ReturnType<typeof createClient>;
