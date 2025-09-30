@@ -425,8 +425,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (typeof window !== "undefined") {
       try {
         window.localStorage.removeItem("onboarding_complete");
-        window.localStorage.removeItem("supabase.auth.token");
-        window.localStorage.removeItem("supabase.auth.refresh_token");
+        Object.keys(window.localStorage)
+          .filter((key) => key.startsWith("sb-") || key.includes("supabase"))
+          .forEach((key) => {
+            window.localStorage.removeItem(key);
+          });
       } catch {}
     }
   }, []);
