@@ -510,6 +510,7 @@ export default function Onboarding() {
                     data={data}
                     onFinish={finishOnboarding}
                     isFinishing={isFinishing}
+                    achievement={achievementPreview ?? undefined}
                   />
                 ) : (
                   <CurrentStepComponent
