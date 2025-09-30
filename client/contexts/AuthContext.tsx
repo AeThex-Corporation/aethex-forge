@@ -58,6 +58,7 @@ const missingProviderFallback: AuthContextType = {
   session: null,
   loading: true,
   profileComplete: false,
+  linkedProviders: [],
   signIn: async () => {
     throw new Error(
       "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
@@ -69,6 +70,16 @@ const missingProviderFallback: AuthContextType = {
     );
   },
   signInWithOAuth: async () => {
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
+  },
+  linkProvider: async () => {
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
+  },
+  unlinkProvider: async () => {
     throw new Error(
       "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
     );
