@@ -37,10 +37,12 @@ export default function Login() {
   const { signIn, signUp, signInWithOAuth, user, loading, profile } = useAuth();
   const { success: toastSuccess, error: toastError } = useAethexToast();
 
-  // Keep users on the login page; navigate only after successful auth
+  // After auth resolves and a user exists, navigate to dashboard
   useEffect(() => {
-    // no-op
-  }, []);
+    if (user && !loading) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,10 +51,10 @@ export default function Login() {
     try {
       if (isSignUp) {
         await signUp(email, password, {
-          id: "", // Will be set by Supabase
+          id: "",
           full_name: fullName,
-          user_type: "game_developer", // Default, can be changed in onboarding
-          username: email.split("@")[0], // Generate username from email
+          user_type: "game_developer",
+          username: email.split("@")[0],
         });
         toastSuccess({
           title: "Account created!",
@@ -62,8 +64,7 @@ export default function Login() {
         setIsSignUp(false);
       } else {
         await signIn(email, password);
-        // Navigate immediately; Dashboard will handle profile/onboarding state
-        navigate("/dashboard", { replace: true });
+        // Do not navigate immediately; wait for auth state to update
       }
     } catch (error: any) {
       console.error("Authentication error:", error);
