@@ -83,6 +83,43 @@ export default function Dashboard() {
   });
   const [userPosts, setUserPosts] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
+  const [connectionAction, setConnectionAction] = useState<string | null>(null);
+
+  type ProviderKey = "google" | "github";
+
+  const linkedProviderSet = useMemo(
+    () => new Set(linkedProviders.map((item) => item.provider)),
+    [linkedProviders],
+  );
+
+  const linkedProviderMap = useMemo(() => {
+    const map: Record<string, (typeof linkedProviders)[number]> = {};
+    linkedProviders.forEach((lp) => {
+      map[lp.provider] = lp;
+    });
+    return map;
+  }, [linkedProviders]);
+
+  const oauthConnections = useMemo(
+    () =>
+      [
+        {
+          provider: "google" as ProviderKey,
+          name: "Google",
+          description: "Link your Google account for one-click access.",
+          Icon: Globe,
+          gradient: "from-red-500 to-yellow-500",
+        },
+        {
+          provider: "github" as ProviderKey,
+          name: "GitHub",
+          description: "Connect your GitHub account to sync contributions.",
+          Icon: Github,
+          gradient: "from-gray-600 to-gray-900",
+        },
+      ] as const,
+    [],
+  );
 
   useEffect(() => {
     console.log("Dashboard useEffect:", {
