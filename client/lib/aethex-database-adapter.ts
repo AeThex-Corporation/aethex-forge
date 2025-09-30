@@ -87,12 +87,15 @@ export const aethexUserService = {
     if (!isSupabaseConfigured) {
       const mock =
         (await mockAuth.getUserProfile(user.id as any)) ||
-        (await mockAuth.updateProfile(user.id as any, {
-          username: user.email?.split("@")[0] || "user",
-          email: user.email || "",
-          role: "member",
-          onboarded: true,
-        } as any));
+        (await mockAuth.updateProfile(
+          user.id as any,
+          {
+            username: user.email?.split("@")[0] || "user",
+            email: user.email || "",
+            role: "member",
+            onboarded: true,
+          } as any,
+        ));
       return { ...(mock as any), email: user.email } as AethexUserProfile;
     }
 
@@ -194,17 +197,20 @@ export const aethexUserService = {
     profileData: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
     if (!isSupabaseConfigured) {
-      const mock = await mockAuth.updateProfile(userId as any, {
-        username: profileData.username || `user_${Date.now()}`,
-        full_name: profileData.full_name,
-        bio: profileData.bio,
-        location: profileData.location,
-        linkedin_url: profileData.linkedin_url as any,
-        github_url: profileData.github_url as any,
-        twitter_url: profileData.twitter_url as any,
-        level: 1,
-        total_xp: 0,
-      } as any);
+      const mock = await mockAuth.updateProfile(
+        userId as any,
+        {
+          username: profileData.username || `user_${Date.now()}`,
+          full_name: profileData.full_name,
+          bio: profileData.bio,
+          location: profileData.location,
+          linkedin_url: profileData.linkedin_url as any,
+          github_url: profileData.github_url as any,
+          twitter_url: profileData.twitter_url as any,
+          level: 1,
+          total_xp: 0,
+        } as any,
+      );
       return {
         ...(mock as any),
         onboarded: true,
@@ -593,12 +599,14 @@ export const aethexAchievementService = {
       if (!error && profile) {
         const newTotalXP = ((profile as any).total_xp || 0) + xpGained;
         const newLevel = Math.floor(newTotalXP / 1000) + 1;
-        const newLoyaltyPoints = ((profile as any).loyalty_points || 0) + xpGained;
+        const newLoyaltyPoints =
+          ((profile as any).loyalty_points || 0) + xpGained;
 
         const updates: any = {};
         if ("total_xp" in (profile as any)) updates.total_xp = newTotalXP;
         if ("level" in (profile as any)) updates.level = newLevel;
-        if ("loyalty_points" in (profile as any)) updates.loyalty_points = newLoyaltyPoints;
+        if ("loyalty_points" in (profile as any))
+          updates.loyalty_points = newLoyaltyPoints;
 
         if (Object.keys(updates).length > 0) {
           await supabase.from("user_profiles").update(updates).eq("id", userId);
@@ -628,11 +636,14 @@ export const aethexAchievementService = {
       const total_xp = ((current as any)?.total_xp || 0) + xpGained;
       const level = Math.floor(total_xp / 1000) + 1;
       const loyalty_points = ((current as any)?.loyalty_points || 0) + xpGained;
-      await mockAuth.updateProfile(userId as any, {
-        total_xp,
-        level,
-        loyalty_points,
-      } as any);
+      await mockAuth.updateProfile(
+        userId as any,
+        {
+          total_xp,
+          level,
+          loyalty_points,
+        } as any,
+      );
       if (level > ((current as any)?.level || 1) && level >= 5) {
         await this.awardAchievement(userId, "ach_level_master");
       }

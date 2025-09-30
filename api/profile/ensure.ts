@@ -2,7 +2,8 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { getAdminClient } from "../_supabase";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== "POST")
+    return res.status(405).json({ error: "Method not allowed" });
 
   const { id, profile } = (req.body || {}) as { id?: string; profile?: any };
   if (!id) return res.status(400).json({ error: "missing id" });
@@ -47,19 +48,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (error) {
-      if ((error as any).code === "23503" || (error as any).message?.includes("foreign key")) {
+      if (
+        (error as any).code === "23503" ||
+        (error as any).message?.includes("foreign key")
+      ) {
         return res.status(400).json({
           error:
             "User does not exist in authentication system. Please sign out and sign back in, then retry onboarding.",
         });
       }
-      return res.status(500).json({ error: (error as any).message || "Unknown error" });
+      return res
+        .status(500)
+        .json({ error: (error as any).message || "Unknown error" });
     }
 
     return res.json(attempt.data || {});
   } catch (e: any) {
     if (/SUPABASE_/.test(String(e?.message || ""))) {
-      return res.status(500).json({ error: `Server misconfigured: ${e.message}` });
+      return res
+        .status(500)
+        .json({ error: `Server misconfigured: ${e.message}` });
     }
     return res.status(500).json({ error: e?.message || String(e) });
   }

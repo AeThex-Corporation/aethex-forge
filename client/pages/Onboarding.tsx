@@ -161,8 +161,11 @@ export default function Onboarding() {
             try {
               parsedError = JSON.parse(text);
             } catch {}
-            const message = parsedError?.error || text || `HTTP ${ensureResp.status}`;
-            throw new Error(`Server endpoint missing and client fallback failed: ${message}`);
+            const message =
+              parsedError?.error || text || `HTTP ${ensureResp.status}`;
+            throw new Error(
+              `Server endpoint missing and client fallback failed: ${message}`,
+            );
           }
         } else {
           const text = await ensureResp.text().catch(() => "");
