@@ -441,7 +441,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const supported: SupportedOAuthProvider[] = ["github", "google"];
     if (!user?.identities) return [];
     return (user.identities as any[])
-      .filter((identity) => supported.includes(identity.provider))
+      .filter((identity) =>
+        supported.includes(identity.provider as SupportedOAuthProvider),
+      )
       .map((identity) => ({
         provider: identity.provider as SupportedOAuthProvider,
         identityId: identity.identity_id,
