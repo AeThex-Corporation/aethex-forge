@@ -7,13 +7,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  CheckCircle,
+  ArrowRight,
+  Sparkles,
+  ShieldCheck,
+  Sparkle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import type { AethexAchievement } from "@/lib/aethex-database-adapter";
 
 interface WelcomeProps {
   data: OnboardingData;
   onFinish?: () => void;
   isFinishing?: boolean;
+  achievement?: AethexAchievement;
 }
 
 export default function Welcome({ data, onFinish, isFinishing }: WelcomeProps) {
