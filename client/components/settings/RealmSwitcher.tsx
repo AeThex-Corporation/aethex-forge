@@ -39,7 +39,7 @@ export interface RealmOption {
   name: string;
   title: string;
   description: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: ComponentType<{ className?: string }>;
   gradient: string;
   route: string;
   routeLabel: string;
