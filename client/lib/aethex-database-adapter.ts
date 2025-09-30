@@ -3,7 +3,6 @@
 import { supabase, isSupabaseConfigured } from "./supabase";
 import type { Database } from "./database.types";
 import { aethexToast } from "./aethex-toast";
-import { mockAuth } from "./mock-auth";
 
 // Use the existing database user profile type directly
 import type { UserProfile } from "./database.types";
