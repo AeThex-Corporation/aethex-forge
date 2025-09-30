@@ -287,7 +287,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const signInWithOAuth = async (provider: "github" | "google") => {
+  const signInWithOAuth = async (provider: SupportedOAuthProvider) => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
