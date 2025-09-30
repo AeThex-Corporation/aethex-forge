@@ -25,7 +25,12 @@ interface WelcomeProps {
   achievement?: AethexAchievement;
 }
 
-export default function Welcome({ data, onFinish, isFinishing }: WelcomeProps) {
+export default function Welcome({
+  data,
+  onFinish,
+  isFinishing,
+  achievement,
+}: WelcomeProps) {
   const getUserTypeLabel = () => {
     switch (data.userType) {
       case "game-developer":
