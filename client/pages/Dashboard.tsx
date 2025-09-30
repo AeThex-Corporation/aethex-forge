@@ -159,6 +159,51 @@ export default function Dashboard() {
     }
   };
 
+  const handleRealmSave = async () => {
+    if (!user) {
+      aethexToast.error({
+        title: "Not signed in",
+        description: "Sign in to update your realm preferences.",
+      });
+      return;
+    }
+
+    if (!userRealm) {
+      aethexToast.error({
+        title: "Select a realm",
+        description: "Choose a realm before saving your preferences.",
+      });
+      return;
+    }
+
+    setSavingRealm(true);
+    const payload = {
+      user_type: userRealm,
+      experience_level: experienceLevel || "beginner",
+    } as any;
+
+    try {
+      await updateProfile(payload);
+      computeProfileCompletion({
+        ...(profile as any),
+        ...payload,
+      });
+      aethexToast.success({
+        title: "Realm updated",
+        description: "Your AeThex experience has been refreshed.",
+      });
+    } catch (error: any) {
+      aethexToast.error({
+        title: "Unable to save realm",
+        description:
+          error?.message || "Please try again or refresh the page.",
+      });
+      throw error;
+    } finally {
+      setSavingRealm(false);
+    }
+  };
+
   const oauthConnections = useMemo<readonly ProviderDescriptor[]>(
     () => [
       {
