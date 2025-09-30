@@ -136,13 +136,25 @@ export default function Feed() {
 
   const isFollowingAuthor = (id: string) => following.includes(id);
   const toggleFollow = async (targetId: string) => {
-    if (!user) return;
-    if (isFollowingAuthor(targetId)) {
-      await aethexSocialService.unfollowUser(user.id, targetId);
-      setFollowing((s) => s.filter((x) => x !== targetId));
-    } else {
-      await aethexSocialService.followUser(user.id, targetId);
-      setFollowing((s) => Array.from(new Set([...s, targetId])));
+    if (!user) {
+      toast({ description: "Please sign in to manage follows." });
+      return;
+    }
+
+    try {
+      if (isFollowingAuthor(targetId)) {
+        await aethexSocialService.unfollowUser(user.id, targetId);
+        setFollowing((s) => s.filter((x) => x !== targetId));
+      } else {
+        await aethexSocialService.followUser(user.id, targetId);
+        setFollowing((s) => Array.from(new Set([...s, targetId])));
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Action failed",
+        description: error?.message || "Try again in a moment.",
+      });
     }
   };
 
