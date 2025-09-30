@@ -113,6 +113,48 @@ export default function Admin() {
     );
   }
 
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingPosts(true);
+        const res = await fetch("/api/blog?limit=100");
+        const data = res.ok ? await res.json() : [];
+        if (Array.isArray(data)) setBlogPosts(data);
+      } catch (e) {
+        console.warn("Failed to load blog posts:", e);
+      } finally {
+        setLoadingPosts(false);
+      }
+    })();
+  }, []);
+
+  const savePost = async (idx: number) => {
+    const p = blogPosts[idx];
+    const payload = { ...p, slug: (p.slug || p.title || "").toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-") };
+    const res = await fetch("/api/blog", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) return aethexToast.error({ title: "Save failed", description: await res.text().catch(() => "") });
+    const saved = await res.json();
+    const next = blogPosts.slice();
+    next[idx] = saved;
+    setBlogPosts(next);
+    aethexToast.success({ title: "Saved", description: saved.title });
+  };
+
+  const deletePost = async (idx: number) => {
+    const p = blogPosts[idx];
+    const res = await fetch(`/api/blog/${encodeURIComponent(p.slug)}`, { method: "DELETE" });
+    if (!res.ok) return aethexToast.error({ title: "Delete failed", description: await res.text().catch(() => "") });
+    setBlogPosts(blogPosts.filter((_, i) => i !== idx));
+    aethexToast.info({ title: "Deleted", description: p.title });
+  };
+
   return (
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12">
@@ -188,6 +230,72 @@ export default function Admin() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">Coming soon</p>
+              </CardContent>
+            </Card>
+
+            {/* Blog Posts Management */}
+            <Card className="bg-card/50 border-border/50 md:col-span-2 lg:col-span-3">
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <PenTool className="h-5 w-5 text-aethex-400" />
+                  <CardTitle className="text-lg">Blog Posts</CardTitle>
+                </div>
+                <CardDescription>Manage blog content stored in Supabase</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={loadingPosts}
+                    onClick={async () => {
+                      try {
+                        setLoadingPosts(true);
+                        const res = await fetch("/api/blog?limit=100");
+                        const data = res.ok ? await res.json() : [];
+                        if (Array.isArray(data)) setBlogPosts(data);
+                      } finally {
+                        setLoadingPosts(false);
+                      }
+                    }}
+                  >
+                    Refresh
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => setBlogPosts([{ title: "New Post", slug: "new-post", category: "General" }, ...blogPosts])}
+                  >
+                    Add Post
+                  </Button>
+                </div>
+
+                {blogPosts.map((p, i) => (
+                  <div key={p.id || p.slug || i} className="p-3 rounded border border-border/40 space-y-2">
+                    <div className="grid md:grid-cols-2 gap-2">
+                      <input className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" placeholder="Title" value={p.title || ""} onChange={(e) => {
+                        const next = blogPosts.slice(); next[i] = { ...next[i], title: e.target.value }; setBlogPosts(next);
+                      }} />
+                      <input className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" placeholder="Slug" value={p.slug || ""} onChange={(e) => {
+                        const next = blogPosts.slice(); next[i] = { ...next[i], slug: e.target.value }; setBlogPosts(next);
+                      }} />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-2">
+                      <input className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" placeholder="Author" value={p.author || ""} onChange={(e) => { const n = blogPosts.slice(); n[i] = { ...n[i], author: e.target.value }; setBlogPosts(n); }} />
+                      <input className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" placeholder="Date" value={p.date || ""} onChange={(e) => { const n = blogPosts.slice(); n[i] = { ...n[i], date: e.target.value }; setBlogPosts(n); }} />
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-2">
+                      <input className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" placeholder="Read time (e.g., 8 min read)" value={p.read_time || ""} onChange={(e) => { const n = blogPosts.slice(); n[i] = { ...n[i], read_time: e.target.value }; setBlogPosts(n); }} />
+                      <input className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" placeholder="Category" value={p.category || ""} onChange={(e) => { const n = blogPosts.slice(); n[i] = { ...n[i], category: e.target.value }; setBlogPosts(n); }} />
+                      <input className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" placeholder="Image URL" value={p.image || ""} onChange={(e) => { const n = blogPosts.slice(); n[i] = { ...n[i], image: e.target.value }; setBlogPosts(n); }} />
+                    </div>
+                    <textarea className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" rows={2} placeholder="Excerpt" value={p.excerpt || ""} onChange={(e) => { const n = blogPosts.slice(); n[i] = { ...n[i], excerpt: e.target.value }; setBlogPosts(n); }} />
+                    <textarea className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm" rows={6} placeholder="Body HTML" value={p.body_html || ""} onChange={(e) => { const n = blogPosts.slice(); n[i] = { ...n[i], body_html: e.target.value }; setBlogPosts(n); }} />
+                    <div className="flex justify-end gap-2">
+                      <Button size="sm" variant="outline" onClick={() => deletePost(i)}>Delete</Button>
+                      <Button size="sm" onClick={() => savePost(i)}>Save</Button>
+                    </div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
 
