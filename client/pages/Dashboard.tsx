@@ -110,8 +110,7 @@ export default function Dashboard() {
     if (typeof window === "undefined" || !user) {
       return;
     }
-    const currentUrl = new URL(window.location.href);
-    const preservedTab = currentUrl.searchParams.get("tab");
+    const sanitized = new URLSearchParams(window.location.search);
     const keysToStrip = [
       "code",
       "state",
@@ -126,23 +125,16 @@ export default function Dashboard() {
     ];
     let mutated = false;
     keysToStrip.forEach((key) => {
-      if (currentUrl.searchParams.has(key)) {
-        currentUrl.searchParams.delete(key);
+      if (sanitized.has(key)) {
+        sanitized.delete(key);
         mutated = true;
       }
     });
 
     if (mutated) {
-      if (preservedTab) {
-        currentUrl.searchParams.set("tab", preservedTab);
-      } else {
-        currentUrl.searchParams.delete("tab");
-      }
-      const nextSearch = currentUrl.searchParams.toString();
-      const nextUrl = `${currentUrl.pathname}${nextSearch ? `?${nextSearch}` : ""}${currentUrl.hash}`;
-      window.history.replaceState(null, "", nextUrl);
+      setSearchParams(sanitized, { replace: true });
     }
-  }, [user?.id]);
+  }, [user?.id, setSearchParams]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
