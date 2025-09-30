@@ -598,6 +598,8 @@ export const aethexAchievementService = {
   },
 
   async updateUserXPAndLevel(userId: string, xpGained: number): Promise<void> {
+    ensureSupabase();
+
     try {
       const { data: profile, error } = await supabase
         .from("user_profiles")
@@ -605,58 +607,52 @@ export const aethexAchievementService = {
         .eq("id", userId)
         .single();
 
-      if (!error && profile) {
-        const newTotalXP = ((profile as any).total_xp || 0) + xpGained;
-        const newLevel = Math.floor(newTotalXP / 1000) + 1;
-        const newLoyaltyPoints =
-          ((profile as any).loyalty_points || 0) + xpGained;
-
-        const updates: any = {};
-        if ("total_xp" in (profile as any)) updates.total_xp = newTotalXP;
-        if ("level" in (profile as any)) updates.level = newLevel;
-        if ("loyalty_points" in (profile as any))
-          updates.loyalty_points = newLoyaltyPoints;
-
-        if (Object.keys(updates).length > 0) {
-          await supabase.from("user_profiles").update(updates).eq("id", userId);
+      if (error) {
+        if (isTableMissing(error)) {
+          throw new Error(
+            "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+          );
         }
-
-        if (newLevel > ((profile as any).level || 1) && newLevel >= 5) {
-          // Try to find Level Master by name, fall back to default id
-          try {
-            const { data } = await supabase
-              .from("achievements")
-              .select("id")
-              .eq("name", "Level Master")
-              .single();
-            const id = (data as any)?.id || "ach_level_master";
-            await this.awardAchievement(userId, id);
-          } catch {
-            await this.awardAchievement(userId, "ach_level_master");
-          }
-        }
+        console.warn("Unable to load profile for XP update:", error);
         return;
       }
-    } catch {}
 
-    // Local fallback using mock profile persistence
-    try {
-      const current = await mockAuth.getUserProfile(userId as any);
-      const total_xp = ((current as any)?.total_xp || 0) + xpGained;
-      const level = Math.floor(total_xp / 1000) + 1;
-      const loyalty_points = ((current as any)?.loyalty_points || 0) + xpGained;
-      await mockAuth.updateProfile(
-        userId as any,
-        {
-          total_xp,
-          level,
-          loyalty_points,
-        } as any,
-      );
-      if (level > ((current as any)?.level || 1) && level >= 5) {
-        await this.awardAchievement(userId, "ach_level_master");
+      if (!profile) {
+        console.warn("No profile found while updating XP for", userId);
+        return;
       }
-    } catch {}
+
+      const currentProfile: any = profile;
+      const newTotalXP = (currentProfile.total_xp || 0) + xpGained;
+      const newLevel = Math.floor(newTotalXP / 1000) + 1;
+      const newLoyaltyPoints = (currentProfile.loyalty_points || 0) + xpGained;
+
+      const updates: Record<string, number> = {};
+      if ("total_xp" in currentProfile) updates.total_xp = newTotalXP;
+      if ("level" in currentProfile) updates.level = newLevel;
+      if ("loyalty_points" in currentProfile)
+        updates.loyalty_points = newLoyaltyPoints;
+
+      if (Object.keys(updates).length > 0) {
+        await supabase.from("user_profiles").update(updates).eq("id", userId);
+      }
+
+      if (newLevel > (currentProfile.level || 1) && newLevel >= 5) {
+        try {
+          const { data } = await supabase
+            .from("achievements")
+            .select("id")
+            .eq("name", "Level Master")
+            .single();
+          const id = (data as any)?.id || "ach_level_master";
+          await this.awardAchievement(userId, id);
+        } catch {
+          await this.awardAchievement(userId, "ach_level_master");
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to update XP and level:", error);
+    }
   },
 
   async checkAndAwardOnboardingAchievement(userId: string): Promise<void> {
