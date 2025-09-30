@@ -105,11 +105,19 @@ export const supabase = new Proxy(supabaseClient || {}, {
         // OAuth sign-in (GitHub/Google). Falls back to mock in development.
         signInWithOAuth: async (opts: any) => {
           const provider = opts?.provider;
-          if (isSupabaseConfigured && target && target.auth && typeof target.auth.signInWithOAuth === 'function') {
+          if (
+            isSupabaseConfigured &&
+            target &&
+            target.auth &&
+            typeof target.auth.signInWithOAuth === "function"
+          ) {
             try {
               return await target.auth.signInWithOAuth(opts);
             } catch (error: any) {
-              console.warn('Supabase signInWithOAuth failed:', error?.message || error);
+              console.warn(
+                "Supabase signInWithOAuth failed:",
+                error?.message || error,
+              );
               try {
                 return await mockAuth.signInWithOAuth(provider);
               } catch (e) {
@@ -157,7 +165,9 @@ export const supabase = new Proxy(supabaseClient || {}, {
             try {
               realSub = target.auth.onAuthStateChange(callback);
             } catch (error) {
-              console.warn("Supabase onAuthStateChange failed, will use mock too");
+              console.warn(
+                "Supabase onAuthStateChange failed, will use mock too",
+              );
             }
           }
           // Always subscribe to mock as a safety net in case we fall back during auth
