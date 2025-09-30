@@ -394,9 +394,10 @@ export default function Dashboard() {
         (p) => p.status === "completed",
       ).length;
 
-      const totalXp = typeof (profile as any)?.total_xp === "number"
-        ? (profile as any).total_xp
-        : 0;
+      const totalXp =
+        typeof (profile as any)?.total_xp === "number"
+          ? (profile as any).total_xp
+          : 0;
       const performanceBase =
         60 + activeCount * 5 + completedCount * 8 + userAchievements.length * 3;
       const performanceScore = Math.min(
