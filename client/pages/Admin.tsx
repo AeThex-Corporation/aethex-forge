@@ -2,10 +2,12 @@ import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
-import { ensureDemoSeed } from "@/lib/demo-feed";
-import { isSupabaseConfigured } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 import { aethexToast } from "@/lib/aethex-toast";
+import {
+  aethexUserService,
+  type AethexUserProfile,
+} from "@/lib/aethex-database-adapter";
 import {
   Card,
   CardContent,
