@@ -132,14 +132,32 @@ export const supabase = new Proxy(supabaseClient || {}, {
           return await mockAuth.getSession();
         },
         onAuthStateChange: (callback: any) => {
+          let realSub: any = null;
           if (isSupabaseConfigured && target && target.auth) {
             try {
-              return target.auth.onAuthStateChange(callback);
+              realSub = target.auth.onAuthStateChange(callback);
             } catch (error) {
-              console.warn("Supabase onAuthStateChange failed, using mock");
+              console.warn("Supabase onAuthStateChange failed, will use mock too");
             }
           }
-          return mockAuth.onAuthStateChange(callback);
+          // Always subscribe to mock as a safety net in case we fall back during auth
+          const mockSub = mockAuth.onAuthStateChange(callback);
+
+          // Return a combined unsubscribe that cleans up both
+          return {
+            data: {
+              subscription: {
+                unsubscribe: () => {
+                  try {
+                    realSub?.data?.subscription?.unsubscribe?.();
+                  } catch {}
+                  try {
+                    mockSub?.data?.subscription?.unsubscribe?.();
+                  } catch {}
+                },
+              },
+            },
+          } as any;
         },
       };
     }
