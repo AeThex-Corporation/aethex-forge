@@ -458,6 +458,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
+  // Global handler to catch auth refresh failures (e.g. Invalid Refresh Token)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const onAuthError = (ev: any) => {
+      const reason = ev?.reason || ev?.error || ev?.message || ev;
+      const message = String(
+        reason?.message ?? reason ?? ev?.toString?.() ?? "",
+      ).toLowerCase();
+
+      if (
+        message.includes("invalid refresh token") ||
+        message.includes("session expired") ||
+        message.includes("revoked")
+      ) {
+        console.warn("Captured auth error (clearing local session):", reason);
+        try {
+          clearClientAuthState();
+        } catch (e) {
+          /* ignore */
+        }
+        try {
+          aethexToast.error({
+            title: "Session expired",
+            description:
+              "Your session has expired or was revoked. Please sign in again.",
+          });
+        } catch (e) {
+          /* ignore */
+        }
+      }
+    };
+
+    window.addEventListener("unhandledrejection", onAuthError as any);
+    window.addEventListener("error", onAuthError as any);
+
+    return () => {
+      window.removeEventListener("unhandledrejection", onAuthError as any);
+      window.removeEventListener("error", onAuthError as any);
+    };
+  }, [clearClientAuthState]);
+
+
   const signOut = async () => {
     setLoading(true);
     const issues: string[] = [];
