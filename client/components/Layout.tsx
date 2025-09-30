@@ -28,6 +28,7 @@ export default function Layout({ children }: LayoutProps) {
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Get Started", href: "/onboarding" },
+    { name: "Profiles", href: "/profiles" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
@@ -35,6 +36,7 @@ export default function Layout({ children }: LayoutProps) {
   const userNavigation = [
     { name: "Dashboard", href: "/dashboard" },
     { name: "Feed", href: "/feed" },
+    { name: "Profiles", href: "/profiles" },
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
@@ -169,6 +171,14 @@ export default function Layout({ children }: LayoutProps) {
                             <Link to="/dashboard" className="cursor-pointer">
                               <User className="mr-2 h-4 w-4" />
                               Dashboard
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link to="/profiles/me" className="cursor-pointer">
+                              <Badge className="mr-2 h-5 w-5 rounded-full bg-aethex-500/20 text-aethex-200">
+                                <Sparkles className="h-3 w-3" />
+                              </Badge>
+                              My Passport
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
