@@ -108,24 +108,12 @@ function isTableMissing(err: any): boolean {
 // User Profile Services
 export const aethexUserService = {
   async getCurrentUser(): Promise<AethexUserProfile | null> {
+    ensureSupabase();
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return null;
-    if (!isSupabaseConfigured) {
-      const mock =
-        (await mockAuth.getUserProfile(user.id as any)) ||
-        (await mockAuth.updateProfile(
-          user.id as any,
-          {
-            username: user.email?.split("@")[0] || "user",
-            email: user.email || "",
-            role: "member",
-            onboarded: true,
-          } as any,
-        ));
-      return { ...(mock as any), email: user.email } as AethexUserProfile;
-    }
 
     const { data, error } = await supabase
       .from("user_profiles")
@@ -134,39 +122,27 @@ export const aethexUserService = {
       .single();
 
     if (error) {
-      // If table missing, fall back to mock for local dev only
-      if (isTableMissing(error)) {
-        const mock = await mockAuth.getUserProfile(user.id as any);
-        if (mock)
-          return { ...(mock as any), email: user.email } as AethexUserProfile;
-        const created = await mockAuth.updateProfile(
-          user.id as any,
-          {
-            username: user.email?.split("@")[0] || "user",
-            email: user.email || "",
-            role: "member",
-            onboarded: true,
-          } as any,
-        );
-        return { ...(created as any), email: user.email } as AethexUserProfile;
-      }
-      // If no row, create initial DB profile instead of mock
       if ((error as any)?.code === "PGRST116") {
-        const created = await this.createInitialProfile(user.id, {
+        return await this.createInitialProfile(user.id, {
           username: user.email?.split("@")[0] || "user",
           full_name: user.email?.split("@")[0] || "user",
         });
-        return created;
       }
+
+      if (isTableMissing(error)) {
+        throw new Error(
+          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+        );
+      }
+
       throw error;
     }
 
     if (!data || Object.keys(data || {}).length === 0) {
-      const created = await this.createInitialProfile(user.id, {
+      return await this.createInitialProfile(user.id, {
         username: user.email?.split("@")[0] || "user",
         full_name: user.email?.split("@")[0] || "user",
       });
-      return created;
     }
 
     return {
@@ -181,10 +157,7 @@ export const aethexUserService = {
 
   async getProfileById(userId: string): Promise<AethexUserProfile | null> {
     if (!userId) return null;
-    if (!isSupabaseConfigured) {
-      const mock = await mockAuth.getUserProfile(userId as any);
-      return mock ? ({ ...(mock as any) } as AethexUserProfile) : null;
-    }
+    ensureSupabase();
 
     const { data, error } = await supabase
       .from("user_profiles")
@@ -193,22 +166,20 @@ export const aethexUserService = {
       .single();
 
     if (error) {
-      if ((error as any)?.code === "PGRST116" || isTableMissing(error)) {
-        const fallback = await mockAuth.getUserProfile(userId as any);
-        return fallback ? ({ ...(fallback as any) } as AethexUserProfile) : null;
+      if ((error as any)?.code === "PGRST116") {
+        return null;
       }
+
+      if (isTableMissing(error)) {
+        throw new Error(
+          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+        );
+      }
+
       throw error;
     }
 
-    let enriched = data as AethexUserProfile;
-    if (!enriched.email) {
-      const mock = await mockAuth.getUserProfile(userId as any);
-      if (mock?.email) {
-        enriched = { ...enriched, email: mock.email } as AethexUserProfile;
-      }
-    }
-
-    return enriched;
+    return data as AethexUserProfile;
   },
 
   async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
