@@ -1,5 +1,4 @@
 import { supabase } from "./supabase";
-import { ensureDemoSeed } from "./demo-feed";
 import type {
   Database,
   UserProfile,
