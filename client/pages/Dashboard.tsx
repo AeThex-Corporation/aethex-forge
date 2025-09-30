@@ -106,6 +106,44 @@ export default function Dashboard() {
     }
   }, [searchParams, activeTab]);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !user) {
+      return;
+    }
+    const currentUrl = new URL(window.location.href);
+    const preservedTab = currentUrl.searchParams.get("tab");
+    const keysToStrip = [
+      "code",
+      "state",
+      "scope",
+      "auth_error",
+      "error_description",
+      "access_token",
+      "refresh_token",
+      "token_type",
+      "provider",
+      "type",
+    ];
+    let mutated = false;
+    keysToStrip.forEach((key) => {
+      if (currentUrl.searchParams.has(key)) {
+        currentUrl.searchParams.delete(key);
+        mutated = true;
+      }
+    });
+
+    if (mutated) {
+      if (preservedTab) {
+        currentUrl.searchParams.set("tab", preservedTab);
+      } else {
+        currentUrl.searchParams.delete("tab");
+      }
+      const nextSearch = currentUrl.searchParams.toString();
+      const nextUrl = `${currentUrl.pathname}${nextSearch ? `?${nextSearch}` : ""}${currentUrl.hash}`;
+      window.history.replaceState(null, "", nextUrl);
+    }
+  }, [user]);
+
   const handleTabChange = (value: string) => {
     setActiveTab(value);
     const next = new URLSearchParams(searchParams);
