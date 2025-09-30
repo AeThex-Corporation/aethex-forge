@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, type Mock } from "vitest";
 
 const createStorage = () => {
   const store = new Map<string, string>();
@@ -31,6 +31,8 @@ vi.stubGlobal(
     json: async () => ({}),
   }),
 );
+
+const fetchMock = fetch as unknown as Mock;
 
 vi.mock("@/lib/supabase", () => {
   const chain = () => ({
@@ -104,8 +106,8 @@ describe("onboarding passport flow", () => {
   beforeEach(async () => {
     localStorage.clear();
     await mockAuth.signOut();
-    (fetch as unknown as vi.Mock).mockReset();
-    (fetch as unknown as vi.Mock).mockResolvedValue({
+    fetchMock.mockReset();
+    fetchMock.mockResolvedValue({
       ok: false,
       status: 404,
       text: async () => "",
