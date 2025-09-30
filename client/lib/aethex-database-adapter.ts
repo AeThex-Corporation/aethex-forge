@@ -183,17 +183,7 @@ export const aethexUserService = {
   },
 
   async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
-    if (!isSupabaseConfigured) {
-      return mockAuth.getAllProfiles().map(
-        (profile) =>
-          ({
-            ...(profile as any),
-            user_type: (profile as any).user_type || "community_member",
-            experience_level:
-              (profile as any).experience_level || "beginner",
-          }) as AethexUserProfile,
-      );
-    }
+    ensureSupabase();
 
     const { data, error } = await supabase
       .from("user_profiles")
@@ -203,30 +193,19 @@ export const aethexUserService = {
 
     if (error) {
       if (isTableMissing(error)) {
-        return mockAuth.getAllProfiles().map(
-          (profile) =>
-            ({
-              ...(profile as any),
-              user_type: (profile as any).user_type || "community_member",
-              experience_level:
-                (profile as any).experience_level || "beginner",
-            }) as AethexUserProfile,
+        throw new Error(
+          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
         );
       }
       throw error;
     }
 
-    return Promise.all(
-      (data as any[]).map(async (row) => {
-        const profileRow = { ...row } as AethexUserProfile & {
-          email?: string | null;
-        };
-        if (!profileRow.email) {
-          const mock = await mockAuth.getUserProfile(profileRow.id as any);
-          if (mock?.email) profileRow.email = mock.email;
-        }
-        return profileRow as AethexUserProfile;
-      }),
+    return ((data as any[]) || []).map((row) =>
+      ({
+        ...(row as AethexUserProfile),
+        user_type: (row as any).user_type || "community_member",
+        experience_level: (row as any).experience_level || "beginner",
+      }) as AethexUserProfile,
     );
   },
 
