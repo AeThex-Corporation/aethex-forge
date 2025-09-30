@@ -146,7 +146,7 @@ export default function Dashboard() {
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
-    const next = new URLSearchParams(searchParams);
+    const next = new URLSearchParams(searchParams.toString());
     if (value === "profile") {
       if (next.has("tab")) {
         next.delete("tab");
