@@ -13,7 +13,6 @@ import {
   ArrowRight,
   Sparkles,
   ShieldCheck,
-  Sparkle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { AethexAchievement } from "@/lib/aethex-database-adapter";
