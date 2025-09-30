@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, type ComponentType } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
