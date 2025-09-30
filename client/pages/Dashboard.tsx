@@ -47,6 +47,8 @@ import {
   Play,
   Pause,
   BarChart3,
+  Github,
+  Globe,
 } from "lucide-react";
 
 export default function Dashboard() {
