@@ -59,6 +59,9 @@ export default function Dashboard() {
     loading: authLoading,
     updateProfile,
     profileComplete,
+    linkedProviders,
+    linkProvider,
+    unlinkProvider,
   } = useAuth();
   const [displayName, setDisplayName] = useState("");
   const [locationInput, setLocationInput] = useState("");
