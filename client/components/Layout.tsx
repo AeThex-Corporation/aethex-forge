@@ -175,9 +175,7 @@ export default function Layout({ children }: LayoutProps) {
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link to="/profiles/me" className="cursor-pointer">
-                              <Badge className="mr-2 h-5 w-5 rounded-full bg-aethex-500/20 text-aethex-200">
-                                <Sparkles className="h-3 w-3" />
-                              </Badge>
+                              <Sparkles className="mr-2 h-4 w-4" />
                               My Passport
                             </Link>
                           </DropdownMenuItem>
