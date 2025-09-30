@@ -290,6 +290,10 @@ export const aethexUserService = {
       throw error;
     }
 
+    try {
+      await mockAuth.updateProfile(userId as any, updates as any);
+    } catch {}
+
     return data as AethexUserProfile;
   },
 
