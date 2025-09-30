@@ -73,7 +73,7 @@ export default function Contact() {
                     <Mail className="h-4 w-4" /> support@aethex.biz
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <Phone className="h-4 w-4" /> (530) 784-1287
+                    <Phone className="h-4 w-4" /> 346-556-7100
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <MessageSquare className="h-4 w-4" /> Community hub
