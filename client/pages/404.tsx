@@ -38,7 +38,7 @@ interface GameState {
   gameWon: boolean;
 }
 
-const NotFound = () => {
+const FourOhFourPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [timeSpent, setTimeSpent] = useState(0);
@@ -453,4 +453,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default FourOhFourPage;
