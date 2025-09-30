@@ -27,7 +27,6 @@ interface OAuthConnectionsProps {
   connectionAction: string | null;
   onLink: (provider: ProviderKey) => void;
   onUnlink: (provider: ProviderKey) => void;
-  ensureSecondarySignIn?: boolean;
 }
 
 const formatTimestamp = (value?: string) => {
