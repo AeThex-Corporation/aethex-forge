@@ -311,6 +311,85 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const linkProvider = useCallback(
+    async (provider: SupportedOAuthProvider) => {
+      if (!user) {
+        aethexToast.error({
+          title: "Link failed",
+          description: "You need to be signed in before linking providers.",
+        });
+        return;
+      }
+      try {
+        const { data, error } = (await supabase.auth.linkIdentity({
+          provider,
+          redirectTo: `${window.location.origin}/dashboard?tab=connections`,
+        })) as any;
+        if (error) throw error;
+        const linkUrl = data?.url;
+        if (linkUrl) {
+          window.location.href = linkUrl;
+          return;
+        }
+        await refreshAuthState();
+        aethexToast.success({
+          title: "Account linked",
+          description: `Your ${provider} account is now connected.`,
+        });
+      } catch (error: any) {
+        console.error("linkProvider error:", error);
+        aethexToast.error({
+          title: "Link failed",
+          description:
+            error?.message || "Unable to link this provider right now.",
+        });
+      }
+    },
+    [user, refreshAuthState],
+  );
+
+  const unlinkProvider = useCallback(
+    async (provider: SupportedOAuthProvider) => {
+      if (!user) {
+        aethexToast.error({
+          title: "Unlink failed",
+          description: "You need to be signed in to manage linked accounts.",
+        });
+        return;
+      }
+      const identity = user.identities?.find(
+        (item: any) => item.provider === provider,
+      );
+      if (!identity) {
+        aethexToast.info({
+          title: "Not linked",
+          description: `No ${provider} account is linked to this profile.`,
+        });
+        return;
+      }
+      try {
+        const { error } = (await supabase.auth.unlinkIdentity({
+          identity_id: identity.identity_id,
+          provider,
+        })) as any;
+        if (error) throw error;
+        await refreshAuthState();
+        aethexToast.success({
+          title: "Account unlinked",
+          description: `Your ${provider} connection has been removed.`,
+        });
+      } catch (error: any) {
+        console.error("unlinkProvider error:", error);
+        aethexToast.error({
+          title: "Unlink failed",
+          description:
+            error?.message || "Unable to unlink this provider right now.",
+        });
+      }
+    },
+    [user, refreshAuthState],
+  );
+
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
