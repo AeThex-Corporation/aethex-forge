@@ -183,13 +183,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const signIn = async (email: string, password: string) => {
+    setLoading(true);
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
       if (error) throw error;
+      // Wait for auth state change to update context
+      try {
+        await supabase.auth.getSession();
+      } catch {}
     } catch (error: any) {
       console.error("SignIn error details:", error);
 
@@ -206,6 +210,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         title: "Sign in failed",
         description: errorMessage,
       });
+      setLoading(false);
       throw new Error(errorMessage);
     }
   };
@@ -215,6 +220,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     password: string,
     userData?: Partial<AethexUserProfile>,
   ) => {
+    setLoading(true);
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -236,6 +242,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         description: error.message,
       });
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
