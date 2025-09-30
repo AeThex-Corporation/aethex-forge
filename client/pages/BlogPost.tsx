@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Calendar } from "lucide-react";
-import NotFound from "./NotFound";
+import FourOhFourPage from "./404";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -37,7 +37,7 @@ export default function BlogPost() {
   }, [slug]);
 
   if (loading) return null;
-  if (!post) return <NotFound />;
+  if (!post) return <FourOhFourPage />;
 
   return (
     <Layout>
