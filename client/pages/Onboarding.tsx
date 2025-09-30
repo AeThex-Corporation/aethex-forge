@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
-import { useMemo } from "react";
 import { SkeletonOnboardingStep } from "@/components/Skeleton";
 import UserTypeSelection from "@/components/onboarding/UserTypeSelection";
 import PersonalInfo from "@/components/onboarding/PersonalInfo";
