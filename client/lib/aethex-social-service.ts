@@ -1,7 +1,5 @@
 import { supabase } from "./supabase";
 
-import { supabase } from "./supabase";
-
 export const aethexSocialService = {
   async listRecommended(userId: string, limit = 10) {
     try {
