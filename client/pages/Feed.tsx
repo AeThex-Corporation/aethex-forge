@@ -10,8 +10,6 @@ import { aethexSocialService } from "@/lib/aethex-social-service";
 import { communityService, realtimeService } from "@/lib/supabase-service";
 import PostComposer from "@/components/social/PostComposer";
 import { useToast } from "@/hooks/use-toast";
-import { ensureDemoSeed } from "@/lib/demo-feed";
-import { isSupabaseConfigured } from "@/lib/supabase";
 import {
   Heart,
   MessageCircle,
@@ -66,7 +64,6 @@ export default function Feed() {
   const [muted, setMuted] = useState(true);
 
   useEffect(() => {
-    if (!isSupabaseConfigured) ensureDemoSeed();
     const load = async () => {
       setIsLoading(true);
       try {
