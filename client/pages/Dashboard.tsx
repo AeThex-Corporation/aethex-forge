@@ -15,6 +15,9 @@ import OAuthConnections, {
   ProviderDescriptor,
   ProviderKey,
 } from "@/components/settings/OAuthConnections";
+import RealmSwitcher, {
+  RealmKey,
+} from "@/components/settings/RealmSwitcher";
 import {
   Card,
   CardContent,
