@@ -238,6 +238,10 @@ class MockAuthService {
     return this.profiles.get(userId) || null;
   }
 
+  getAllProfiles(): MockProfile[] {
+    return Array.from(this.profiles.values());
+  }
+
   async updateProfile(
     userId: string,
     updates: Partial<MockProfile>,
