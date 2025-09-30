@@ -3,6 +3,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { ensureDemoSeed } from "@/lib/demo-feed";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 import { aethexToast } from "@/lib/aethex-toast";
 import {
@@ -57,9 +58,13 @@ export default function Admin() {
 
   useEffect(() => {
     try {
-      ensureDemoSeed();
-      const list = JSON.parse(localStorage.getItem("demo_profiles") || "[]");
-      setDemoProfiles(Array.isArray(list) ? list : []);
+      if (!isSupabaseConfigured) {
+        ensureDemoSeed();
+        const list = JSON.parse(localStorage.getItem("demo_profiles") || "[]");
+        setDemoProfiles(Array.isArray(list) ? list : []);
+      } else {
+        setDemoProfiles([]);
+      }
     } catch {
       setDemoProfiles([]);
     }
