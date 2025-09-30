@@ -129,6 +129,54 @@ export const supabase = new Proxy(supabaseClient || {}, {
           // Mock fallback
           return await mockAuth.signInWithOAuth(provider);
         },
+        linkIdentity: async (options: { provider: string; redirectTo?: string }) => {
+          if (
+            isSupabaseConfigured &&
+            target &&
+            target.auth &&
+            typeof target.auth.linkIdentity === "function"
+          ) {
+            try {
+              return await target.auth.linkIdentity(options);
+            } catch (error: any) {
+              console.warn(
+                "Supabase linkIdentity failed:",
+                error?.message || error,
+              );
+              try {
+                return await mockAuth.linkIdentity({ provider: options.provider });
+              } catch {
+                throw error;
+              }
+            }
+          }
+
+          return await mockAuth.linkIdentity({ provider: options.provider });
+        },
+        unlinkIdentity: async (options: { identity_id?: string; provider?: string }) => {
+          if (
+            isSupabaseConfigured &&
+            target &&
+            target.auth &&
+            typeof target.auth.unlinkIdentity === "function"
+          ) {
+            try {
+              return await target.auth.unlinkIdentity(options);
+            } catch (error: any) {
+              console.warn(
+                "Supabase unlinkIdentity failed:",
+                error?.message || error,
+              );
+              try {
+                return await mockAuth.unlinkIdentity(options);
+              } catch {
+                throw error;
+              }
+            }
+          }
+
+          return await mockAuth.unlinkIdentity(options);
+        },
         signOut: async () => {
           if (isSupabaseConfigured && target && target.auth) {
             try {
