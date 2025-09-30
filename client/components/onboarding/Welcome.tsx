@@ -222,7 +222,7 @@ export default function Welcome({
                 <ShieldCheck className="mr-1 h-3.5 w-3.5" /> Profile Verified
               </Badge>
               <Badge variant="outline" className="border-emerald-500/40 text-emerald-100">
-                <Sparkle className="mr-1 h-3.5 w-3.5" /> Passport Updated
+                <Sparkles className="mr-1 h-3.5 w-3.5" /> Passport Updated
               </Badge>
             </div>
           </CardContent>
