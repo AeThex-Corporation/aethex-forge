@@ -599,12 +599,12 @@ export default function Admin() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {demoProfiles.length === 0 && (
+                {managedProfiles.length === 0 && (
                   <div className="text-sm text-muted-foreground">
-                    No demo accounts seeded yet.
+                    No member profiles found yet.
                   </div>
                 )}
-                {demoProfiles.map((p) => (
+                {managedProfiles.map((p) => (
                   <div
                     key={p.id}
                     className="flex items-center justify-between p-2 rounded border border-border/40"
