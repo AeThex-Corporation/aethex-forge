@@ -355,7 +355,7 @@ export default function Layout({ children }: LayoutProps) {
                   info@aethex.biz
                 </li>
                 <li className="hover:text-aethex-400 transition-colors">
-                  (530) 784-1287
+                  346-556-7100
                 </li>
               </ul>
             </div>
