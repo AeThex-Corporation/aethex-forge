@@ -372,6 +372,20 @@ export default function Dashboard() {
         setAchievements([]);
       }
 
+      // Load follower count for real collaboration insight
+      let followerCount = 0;
+      try {
+        const { count, error } = await supabase
+          .from("user_follows")
+          .select("id", { count: "exact", head: true })
+          .eq("following_id", user!.id);
+        if (!error && typeof count === "number") {
+          followerCount = count;
+        }
+      } catch (e) {
+        console.warn("Could not load follower count:", e);
+      }
+
       // Calculate stats (treat planning and in_progress as active)
       const activeCount = userProjects.filter(
         (p) => p.status === "in_progress" || p.status === "planning",
@@ -380,11 +394,21 @@ export default function Dashboard() {
         (p) => p.status === "completed",
       ).length;
 
+      const totalXp = typeof (profile as any)?.total_xp === "number"
+        ? (profile as any).total_xp
+        : 0;
+      const performanceBase =
+        60 + activeCount * 5 + completedCount * 8 + userAchievements.length * 3;
+      const performanceScore = Math.min(
+        100,
+        Math.round(performanceBase + totalXp / 150),
+      );
+
       setStats({
         activeProjects: activeCount,
         completedTasks: completedCount,
-        teamMembers: 8, // Mock for now
-        performanceScore: `${Math.min(95, 70 + completedCount * 5)}%`,
+        teamMembers: followerCount,
+        performanceScore: `${performanceScore}%`,
       });
     } catch (error) {
       console.error("Error loading dashboard data:", error);
