@@ -735,9 +735,10 @@ export default function Dashboard() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Tabs defaultValue="profile">
-                    <TabsList className="mb-4">
+                  <Tabs value={activeTab} onValueChange={handleTabChange}>
+                    <TabsList className="mb-4 flex flex-wrap gap-2">
                       <TabsTrigger value="profile">Profile</TabsTrigger>
+                      <TabsTrigger value="connections">Connections</TabsTrigger>
                       <TabsTrigger value="notifications">
                         Notifications
                       </TabsTrigger>
