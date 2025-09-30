@@ -101,6 +101,26 @@ export const supabase = new Proxy(supabaseClient || {}, {
             );
           }
         },
+
+        // OAuth sign-in (GitHub/Google). Falls back to mock in development.
+        signInWithOAuth: async (opts: any) => {
+          const provider = opts?.provider;
+          if (isSupabaseConfigured && target && target.auth && typeof target.auth.signInWithOAuth === 'function') {
+            try {
+              return await target.auth.signInWithOAuth(opts);
+            } catch (error: any) {
+              console.warn('Supabase signInWithOAuth failed:', error?.message || error);
+              try {
+                return await mockAuth.signInWithOAuth(provider);
+              } catch (e) {
+                throw error;
+              }
+            }
+          }
+
+          // Mock fallback
+          return await mockAuth.signInWithOAuth(provider);
+        },
         signOut: async () => {
           if (isSupabaseConfigured && target && target.auth) {
             try {
