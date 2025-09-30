@@ -101,6 +101,30 @@ const missingProviderFallback: AuthContextType = {
   },
 };
 
+const SIGN_OUT_TIMEOUT_MS = 4000;
+
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  timeoutMessage = "Operation timed out",
+): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error(timeoutMessage));
+    }, timeoutMs);
+
+    promise
+      .then((value) => {
+        clearTimeout(timer);
+        resolve(value);
+      })
+      .catch((error) => {
+        clearTimeout(timer);
+        reject(error);
+      });
+  });
+}
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -436,25 +460,57 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const signOut = async () => {
     setLoading(true);
+    const issues: string[] = [];
+
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      const { error: localError } = await supabase.auth.signOut({ scope: "local" });
+      if (localError?.message && !/session/i.test(localError.message)) {
+        issues.push(localError.message);
+      }
+    } catch (error: any) {
+      const message = error?.message ?? "Unable to clear local session.";
+      if (!/session/i.test(message)) {
+        issues.push(message);
+      }
+    } finally {
       clearClientAuthState();
+      setLoading(false);
+    }
+
+    try {
+      const { error: globalError } = await withTimeout(
+        supabase.auth.signOut({ scope: "global" }),
+        SIGN_OUT_TIMEOUT_MS,
+        "Supabase sign out timed out",
+      );
+      if (globalError) {
+        const status = (globalError as any)?.status;
+        if (status !== 401) {
+          issues.push(globalError.message ?? "Unable to reach authentication service.");
+        }
+      }
+    } catch (error: any) {
+      const message = error?.message ?? "Unable to reach authentication service.";
+      issues.push(message);
+      console.warn("Supabase global sign-out issue:", error);
+    }
+
+    const uniqueIssues = Array.from(new Set(issues)).filter(Boolean);
+    if (uniqueIssues.length) {
+      const hasTimeout = uniqueIssues.some((msg) =>
+        msg.toLowerCase().includes("timed out"),
+      );
+      aethexToast.error({
+        title: "Sign out issue",
+        description: hasTimeout
+          ? "We couldn't reach Supabase to finish signing out, but your local session was cleared."
+          : uniqueIssues[0],
+      });
+    } else {
       aethexToast.info({
         title: "Signed out",
         description: "You have been signed out successfully.",
       });
-    } catch (error: any) {
-      console.warn("Supabase signOut failed, forcing local cleanup:", error);
-      clearClientAuthState();
-      aethexToast.error({
-        title: "Sign out issue",
-        description:
-          error?.message ||
-          "We had trouble contacting the auth service, but local data was cleared.",
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
