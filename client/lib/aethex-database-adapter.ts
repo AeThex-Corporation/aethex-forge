@@ -252,29 +252,8 @@ export const aethexUserService = {
     userId: string,
     profileData: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
-    if (!isSupabaseConfigured) {
-      const mock = await mockAuth.updateProfile(
-        userId as any,
-        {
-          username: profileData.username || `user_${Date.now()}`,
-          full_name: profileData.full_name,
-          bio: profileData.bio,
-          location: profileData.location,
-          linkedin_url: profileData.linkedin_url as any,
-          github_url: profileData.github_url as any,
-          twitter_url: profileData.twitter_url as any,
-          level: 1,
-          total_xp: 0,
-        } as any,
-      );
-      return {
-        ...(mock as any),
-        onboarded: true,
-        role: "member",
-        loyalty_points: 0,
-      } as any;
-    }
-    // Only insert fields that exist in the actual database schema
+    ensureSupabase();
+
     const { data, error } = await supabase
       .from("user_profiles")
       .insert({
@@ -299,36 +278,13 @@ export const aethexUserService = {
       .single();
 
     if (error) {
-      console.warn("Error creating profile, attempting mock fallback:", error);
       if (isTableMissing(error)) {
-        const mock = await mockAuth.updateProfile(
-          userId as any,
-          {
-            username: profileData.username || `user_${Date.now()}`,
-            full_name: profileData.full_name,
-            bio: profileData.bio,
-            location: profileData.location,
-            linkedin_url: profileData.linkedin_url as any,
-            github_url: profileData.github_url as any,
-            twitter_url: profileData.twitter_url as any,
-            level: 1,
-            total_xp: 0,
-          } as any,
+        throw new Error(
+          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
         );
-
-        return {
-          ...(mock as any),
-          onboarded: true,
-          role: "member",
-          loyalty_points: 0,
-        } as any;
       }
       throw error;
     }
-
-    try {
-      await mockAuth.updateProfile(userId as any, data as any);
-    } catch {}
 
     return {
       ...data,
