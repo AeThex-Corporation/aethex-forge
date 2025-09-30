@@ -59,17 +59,16 @@ export default function Admin() {
   ]);
 
   useEffect(() => {
-    try {
-      if (!isSupabaseConfigured) {
-        ensureDemoSeed();
-        const list = JSON.parse(localStorage.getItem("demo_profiles") || "[]");
-        setDemoProfiles(Array.isArray(list) ? list : []);
-      } else {
-        setDemoProfiles([]);
+    (async () => {
+      try {
+        const list = await aethexUserService.listProfiles(50);
+        setManagedProfiles(list);
+      } catch (error) {
+        console.warn("Failed to load managed profiles:", error);
+        setManagedProfiles([]);
       }
-    } catch {
-      setDemoProfiles([]);
-    }
+    })();
+
     fetch("/api/featured-studios")
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => {
