@@ -417,16 +417,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     [user, refreshAuthState],
   );
 
+  const clearClientAuthState = useCallback(() => {
+    setUser(null);
+    setProfile(null);
+    setRoles([]);
+    setSession(null);
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem("onboarding_complete");
+        window.localStorage.removeItem("supabase.auth.token");
+        window.localStorage.removeItem("supabase.auth.refresh_token");
+      } catch {}
+    }
+  }, []);
+
   const signOut = async () => {
+    setLoading(true);
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      clearClientAuthState();
+      aethexToast.info({
+        title: "Signed out",
+        description: "You have been signed out successfully.",
+      });
     } catch (error: any) {
+      console.warn("Supabase signOut failed, forcing local cleanup:", error);
+      clearClientAuthState();
       aethexToast.error({
-        title: "Sign out failed",
-        description: error.message,
+        title: "Sign out issue",
+        description:
+          error?.message ||
+          "We had trouble contacting the auth service, but local data was cleared.",
       });
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
