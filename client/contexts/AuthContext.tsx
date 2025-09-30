@@ -33,13 +33,16 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   profileComplete: boolean;
+  linkedProviders: LinkedProvider[];
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (
     email: string,
     password: string,
     userData?: Partial<AethexUserProfile>,
   ) => Promise<void>;
-  signInWithOAuth: (provider: "github" | "google") => Promise<void>;
+  signInWithOAuth: (provider: SupportedOAuthProvider) => Promise<void>;
+  linkProvider: (provider: SupportedOAuthProvider) => Promise<void>;
+  unlinkProvider: (provider: SupportedOAuthProvider) => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<AethexUserProfile>) => Promise<void>;
   refreshProfile: () => Promise<void>;
