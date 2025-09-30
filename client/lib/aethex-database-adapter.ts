@@ -295,23 +295,14 @@ export const aethexUserService = {
   },
 
   async addUserInterests(userId: string, interests: string[]): Promise<void> {
-    if (!isSupabaseConfigured) {
-      try {
-        localStorage.setItem(
-          `mock_interests_${userId}`,
-          JSON.stringify(interests || []),
-        );
-      } catch {}
-      return;
-    }
-    // First, delete existing interests (ignore failures when table missing)
+    ensureSupabase();
+
     await supabase
       .from("user_interests")
       .delete()
       .eq("user_id", userId)
       .catch(() => undefined);
 
-    // Insert new interests
     const interestRows = interests.map((interest) => ({
       user_id: userId,
       interest,
@@ -322,27 +313,29 @@ export const aethexUserService = {
       .insert(interestRows);
 
     if (error) {
-      if (isTableMissing(error)) return;
+      if (isTableMissing(error)) {
+        throw new Error(
+          "Supabase table \"user_interests\" is missing. Please run the required migrations.",
+        );
+      }
       throw error;
     }
   },
 
   async getUserInterests(userId: string): Promise<string[]> {
-    if (!isSupabaseConfigured) {
-      try {
-        return JSON.parse(
-          localStorage.getItem(`mock_interests_${userId}`) || "[]",
-        );
-      } catch {
-        return [];
-      }
-    }
+    ensureSupabase();
+
     const { data, error } = await supabase
       .from("user_interests")
       .select("interest")
       .eq("user_id", userId);
 
     if (error) {
+      if (isTableMissing(error)) {
+        throw new Error(
+          "Supabase table \"user_interests\" is missing. Please run the required migrations.",
+        );
+      }
       console.warn("Error fetching interests:", error);
       return [];
     }
