@@ -193,7 +193,15 @@ export const aethexUserService = {
       throw error;
     }
 
-    return data as AethexUserProfile;
+    let enriched = data as AethexUserProfile;
+    if (!enriched.email) {
+      const mock = await mockAuth.getUserProfile(userId as any);
+      if (mock?.email) {
+        enriched = { ...enriched, email: mock.email } as AethexUserProfile;
+      }
+    }
+
+    return enriched;
   },
 
   async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
@@ -541,7 +549,7 @@ export const aethexAchievementService = {
         id: "ach_level_master",
         name: "Level Master",
         description: "Reached level 5",
-        icon: "��",
+        icon: "🏆",
         xp_reward: 250,
         badge_color: "#f59e0b",
         created_at: new Date().toISOString(),
