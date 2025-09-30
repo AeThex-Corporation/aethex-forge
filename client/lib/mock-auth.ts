@@ -84,6 +84,32 @@ class MockAuthService {
     };
   }
 
+  // Simulate OAuth sign-in flow for development
+  async signInWithOAuth(provider: string) {
+    const user: MockUser = {
+      id: `mock_oauth_${provider}_${Date.now()}`,
+      email: `${provider}_user_${Date.now()}@example.com`,
+      created_at: new Date().toISOString(),
+    };
+
+    this.currentUser = user;
+    this.currentSession = {
+      user,
+      access_token: 'mock_oauth_token_' + Date.now(),
+    };
+
+    // Save to localStorage
+    localStorage.setItem('mock_user', JSON.stringify(user));
+
+    // Notify auth state change after a short delay to simulate redirect
+    setTimeout(() => this.notifyAuthChange('SIGNED_IN'), 50);
+
+    return {
+      data: { user, session: this.currentSession },
+      error: null,
+    };
+  }
+
   async signOut() {
     this.currentUser = null;
     this.currentSession = null;
