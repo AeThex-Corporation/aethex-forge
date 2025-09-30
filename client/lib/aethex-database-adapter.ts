@@ -213,10 +213,8 @@ export const aethexUserService = {
     userId: string,
     updates: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
-    if (!isSupabaseConfigured) {
-      const mock = await mockAuth.updateProfile(userId as any, updates as any);
-      return mock as unknown as AethexUserProfile;
-    }
+    ensureSupabase();
+
     const { data, error } = await supabase
       .from("user_profiles")
       .update(updates)
@@ -225,13 +223,6 @@ export const aethexUserService = {
       .single();
 
     if (error) {
-      if (isTableMissing(error)) {
-        const mock = await mockAuth.updateProfile(
-          userId as any,
-          updates as any,
-        );
-        return mock as unknown as AethexUserProfile;
-      }
       if ((error as any)?.code === "PGRST116") {
         const { data: upserted, error: upsertError } = await supabase
           .from("user_profiles")
@@ -244,12 +235,15 @@ export const aethexUserService = {
         if (upsertError) throw upsertError;
         return upserted as AethexUserProfile;
       }
+
+      if (isTableMissing(error)) {
+        throw new Error(
+          "Supabase table \"user_profiles\" is missing. Please run the required migrations.",
+        );
+      }
+
       throw error;
     }
-
-    try {
-      await mockAuth.updateProfile(userId as any, updates as any);
-    } catch {}
 
     return data as AethexUserProfile;
   },
