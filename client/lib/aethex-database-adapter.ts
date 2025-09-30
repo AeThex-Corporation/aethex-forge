@@ -21,6 +21,14 @@ export interface AethexUserProfile extends UserProfile {
 const isNonEmptyString = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
 
+const ensureSupabase = () => {
+  if (!isSupabaseConfigured) {
+    throw new Error(
+      "Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
+    );
+  }
+};
+
 export function checkProfileComplete(p?: AethexUserProfile | null): boolean {
   if (!p) return false;
 
