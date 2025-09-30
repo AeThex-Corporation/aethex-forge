@@ -1,6 +1,6 @@
 // Maps existing schema to our application needs
 
-import { supabase, isSupabaseConfigured } from "./supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { Database } from "./database.types";
 import { aethexToast } from "./aethex-toast";
 
