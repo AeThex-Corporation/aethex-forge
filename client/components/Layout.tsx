@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Settings, LogOut, Bell } from "lucide-react";
+import { User, Settings, LogOut, Bell, Sparkles } from "lucide-react";
 import { useEffect } from "react";
 import { ensureDemoSeed } from "@/lib/demo-feed";
 import { isSupabaseConfigured } from "@/lib/supabase";
