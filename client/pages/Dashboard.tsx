@@ -193,12 +193,12 @@ export default function Dashboard() {
         description: "Your AeThex experience has been refreshed.",
       });
     } catch (error: any) {
+      console.error("Failed to save realm:", error);
       aethexToast.error({
         title: "Unable to save realm",
         description:
           error?.message || "Please try again or refresh the page.",
       });
-      throw error;
     } finally {
       setSavingRealm(false);
     }
