@@ -218,6 +218,8 @@ export default function Dashboard() {
     setLinkedin(profile?.linkedin_url || "");
     setGithub(profile?.github_url || "");
     setTwitter(profile?.twitter_url || "");
+    setUserRealm(((profile as any)?.user_type as RealmKey) ?? null);
+    setExperienceLevel((profile as any)?.experience_level || "beginner");
     if (profile) computeProfileCompletion(profile);
   }, [profile]);
 
