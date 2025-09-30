@@ -142,7 +142,7 @@ export default function Dashboard() {
       const nextUrl = `${currentUrl.pathname}${nextSearch ? `?${nextSearch}` : ""}${currentUrl.hash}`;
       window.history.replaceState(null, "", nextUrl);
     }
-  }, [user]);
+  }, [user?.id]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
