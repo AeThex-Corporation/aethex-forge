@@ -135,8 +135,8 @@ describe("onboarding passport flow", () => {
       bio: "Building awesome experiences",
     });
 
-    const hydratedProfile = await aethexUserService.getCurrentUser();
-    expect(checkProfileComplete(hydratedProfile)).toBe(true);
+    const hydratedProfile = (await mockAuth.getUserProfile(user.id as any)) as AethexUserProfile;
+    expect(checkProfileComplete(hydratedProfile as any)).toBe(true);
 
     await mockAuth.linkIdentity({ provider: "github" });
     const refreshedUser = (await mockAuth.getUser()).data.user;
