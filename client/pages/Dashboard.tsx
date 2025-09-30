@@ -89,13 +89,6 @@ export default function Dashboard() {
   const [applications, setApplications] = useState<any[]>([]);
   const [connectionAction, setConnectionAction] = useState<string | null>(null);
 
-  type ProviderKey = "google" | "github";
-
-  const linkedProviderSet = useMemo(
-    () => new Set(linkedProviders.map((item) => item.provider)),
-    [linkedProviders],
-  );
-
   const linkedProviderMap = useMemo(() => {
     const map: Record<string, (typeof linkedProviders)[number]> = {};
     linkedProviders.forEach((lp) => {
