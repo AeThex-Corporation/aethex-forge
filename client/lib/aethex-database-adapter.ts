@@ -172,6 +172,72 @@ export const aethexUserService = {
     } as AethexUserProfile;
   },
 
+  async getProfileById(userId: string): Promise<AethexUserProfile | null> {
+    if (!userId) return null;
+    if (!isSupabaseConfigured) {
+      const mock = await mockAuth.getUserProfile(userId as any);
+      return mock ? ({ ...(mock as any) } as AethexUserProfile) : null;
+    }
+
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      if ((error as any)?.code === "PGRST116" || isTableMissing(error)) {
+        const fallback = await mockAuth.getUserProfile(userId as any);
+        return fallback ? ({ ...(fallback as any) } as AethexUserProfile) : null;
+      }
+      throw error;
+    }
+
+    return data as AethexUserProfile;
+  },
+
+  async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
+    if (!isSupabaseConfigured) {
+      return mockAuth.getAllProfiles().map(
+        (profile) =>
+          ({
+            ...(profile as any),
+            user_type: (profile as any).user_type || "community_member",
+            experience_level:
+              (profile as any).experience_level || "beginner",
+          }) as AethexUserProfile,
+      );
+    }
+
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .order("updated_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      if (isTableMissing(error)) {
+        return mockAuth.getAllProfiles().map(
+          (profile) =>
+            ({
+              ...(profile as any),
+              user_type: (profile as any).user_type || "community_member",
+              experience_level:
+                (profile as any).experience_level || "beginner",
+            }) as AethexUserProfile,
+        );
+      }
+      throw error;
+    }
+
+    return (data as any[]).map(
+      (row) =>
+        ({
+          ...row,
+        }) as AethexUserProfile,
+    );
+  },
+
   async updateProfile(
     userId: string,
     updates: Partial<AethexUserProfile>,
@@ -475,7 +541,7 @@ export const aethexAchievementService = {
         id: "ach_level_master",
         name: "Level Master",
         description: "Reached level 5",
-        icon: "🏆",
+        icon: "��",
         xp_reward: 250,
         badge_color: "#f59e0b",
         created_at: new Date().toISOString(),
