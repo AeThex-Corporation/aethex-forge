@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Settings, LogOut, Bell } from "lucide-react";
 import { useEffect } from "react";
 import { ensureDemoSeed } from "@/lib/demo-feed";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -45,7 +46,7 @@ export default function Layout({ children }: LayoutProps) {
 
   useEffect(() => {
     try {
-      ensureDemoSeed();
+      if (!isSupabaseConfigured) ensureDemoSeed();
     } catch {}
   }, []);
 
