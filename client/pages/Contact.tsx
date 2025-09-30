@@ -10,7 +10,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { aethexToast } from "@/lib/aethex-toast";
 import { Mail, Phone, MessageSquare } from "lucide-react";
 import { useState } from "react";
@@ -84,15 +90,29 @@ export default function Contact() {
               <Card className="bg-card/50 border-border/50">
                 <CardHeader>
                   <CardTitle>Related resources</CardTitle>
-                  <CardDescription>Find quick answers and community links.</CardDescription>
+                  <CardDescription>
+                    Find quick answers and community links.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="grid sm:grid-cols-2 gap-3 text-sm">
-                  <a href="/community" className="underline text-aethex-300">Community hub</a>
-                  <a href="/docs" className="underline text-aethex-300">Docs</a>
-                  <a href="/changelog" className="underline text-aethex-300">Changelog</a>
-                  <a href="/blog" className="underline text-aethex-300">Blog</a>
-                  <a href="/feed" className="underline text-aethex-300">Live feed</a>
-                  <a href="/support" className="underline text-aethex-300">Support</a>
+                  <a href="/community" className="underline text-aethex-300">
+                    Community hub
+                  </a>
+                  <a href="/docs" className="underline text-aethex-300">
+                    Docs
+                  </a>
+                  <a href="/changelog" className="underline text-aethex-300">
+                    Changelog
+                  </a>
+                  <a href="/blog" className="underline text-aethex-300">
+                    Blog
+                  </a>
+                  <a href="/feed" className="underline text-aethex-300">
+                    Live feed
+                  </a>
+                  <a href="/support" className="underline text-aethex-300">
+                    Support
+                  </a>
                 </CardContent>
               </Card>
             </div>
@@ -129,13 +149,17 @@ export default function Contact() {
                     <div>
                       <Label>Topic</Label>
                       <Select value={topic} onValueChange={setTopic}>
-                        <SelectTrigger className="w-full"><SelectValue placeholder="Choose a topic" /></SelectTrigger>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Choose a topic" />
+                        </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="general">General</SelectItem>
                           <SelectItem value="sales">Sales</SelectItem>
                           <SelectItem value="support">Support</SelectItem>
                           <SelectItem value="community">Community</SelectItem>
-                          <SelectItem value="collaboration">Collaboration</SelectItem>
+                          <SelectItem value="collaboration">
+                            Collaboration
+                          </SelectItem>
                           <SelectItem value="press">Press/Media</SelectItem>
                         </SelectContent>
                       </Select>
@@ -143,7 +167,9 @@ export default function Contact() {
                     <div>
                       <Label>Urgency</Label>
                       <Select value={urgency} onValueChange={setUrgency}>
-                        <SelectTrigger className="w-full"><SelectValue placeholder="Urgency" /></SelectTrigger>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Urgency" />
+                        </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="low">Low</SelectItem>
                           <SelectItem value="normal">Normal</SelectItem>

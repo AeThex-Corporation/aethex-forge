@@ -40,22 +40,34 @@ const missingProviderFallback: AuthContextType = {
   loading: true,
   profileComplete: false,
   signIn: async () => {
-    throw new Error("AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.");
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
   },
   signUp: async () => {
-    throw new Error("AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.");
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
   },
   signInWithOAuth: async () => {
-    throw new Error("AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.");
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
   },
   signOut: async () => {
-    throw new Error("AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.");
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
   },
   updateProfile: async () => {
-    throw new Error("AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.");
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
   },
   refreshProfile: async () => {
-    throw new Error("AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.");
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
   },
 };
 
@@ -63,7 +75,9 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     if (!warnedMissingProvider) {
-      console.warn("useAuth called without an AuthProvider. Falling back to safe defaults.");
+      console.warn(
+        "useAuth called without an AuthProvider. Falling back to safe defaults.",
+      );
       warnedMissingProvider = true;
     }
     return missingProviderFallback;
