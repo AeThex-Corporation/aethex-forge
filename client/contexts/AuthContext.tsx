@@ -212,6 +212,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const refreshAuthState = useCallback(async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+      setUser(data.session?.user ?? null);
+    } catch (error) {
+      console.warn("Failed to refresh auth state:", error);
+    }
+  }, []);
+
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
