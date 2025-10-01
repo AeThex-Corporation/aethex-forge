@@ -96,7 +96,11 @@ const ProfilePassport = () => {
           resolvedProfile = (authProfile as any) ?? null;
         }
 
-        if (!resolvedProfile && isViewingSelf && typeof window !== "undefined") {
+        if (
+          !resolvedProfile &&
+          isViewingSelf &&
+          typeof window !== "undefined"
+        ) {
           try {
             const stored = localStorage.getItem(`demo_profile_${targetUserId}`);
             if (stored) {
@@ -113,9 +117,11 @@ const ProfilePassport = () => {
               (authProfile as any)?.full_name || user.email || "AeThex Creator",
             email: user.email,
             user_type:
-              ((authProfile as any)?.user_type as any) || ("community_member" as any),
+              ((authProfile as any)?.user_type as any) ||
+              ("community_member" as any),
             experience_level:
-              ((authProfile as any)?.experience_level as any) || ("beginner" as any),
+              ((authProfile as any)?.experience_level as any) ||
+              ("beginner" as any),
             level: (authProfile as any)?.level ?? 1,
             total_xp: (authProfile as any)?.total_xp ?? 0,
             loyalty_points: (authProfile as any)?.loyalty_points ?? 0,
