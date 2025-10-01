@@ -29,6 +29,8 @@ import Status from "./pages/Status";
 import Changelog from "./pages/Changelog";
 import ProfilesDirectory from "./pages/ProfilesDirectory";
 import ProfilePassport from "./pages/ProfilePassport";
+import Profile from "./pages/Profile";
+import LegacyPassportRedirect from "./pages/LegacyPassportRedirect";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import GetStarted from "./pages/GetStarted";
@@ -60,17 +62,25 @@ const App = () => (
                 element={<Navigate to="/feed" replace />}
               />
               <Route path="/projects/new" element={<ProjectsNew />} />
-              <Route
-                path="/profile"
-                element={<Navigate to="/profiles/me" replace />}
-              />
-              <Route
-                path="/profile/me"
-                element={<Navigate to="/profiles/me" replace />}
-              />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/me" element={<Profile />} />
+
               <Route path="/profiles" element={<ProfilesDirectory />} />
-              <Route path="/profiles/me" element={<ProfilePassport />} />
-              <Route path="/profiles/:id" element={<ProfilePassport />} />
+              <Route
+                path="/profiles/me"
+                element={<LegacyPassportRedirect />}
+              />
+              <Route
+                path="/profiles/:id"
+                element={<LegacyPassportRedirect />}
+              />
+
+              <Route
+                path="/passport"
+                element={<Navigate to="/passport/me" replace />}
+              />
+              <Route path="/passport/me" element={<ProfilePassport />} />
+              <Route path="/passport/:id" element={<ProfilePassport />} />
               <Route path="/login" element={<Login />} />
 
               {/* Service routes */}
