@@ -165,9 +165,15 @@ export default function Layout({ children }: LayoutProps) {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link to="/profiles/me" className="cursor-pointer">
+                            <Link to="/profile/me" className="cursor-pointer">
+                              <Settings className="mr-2 h-4 w-4" />
+                              My Profile
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link to="/passport/me" className="cursor-pointer">
                               <Sparkles className="mr-2 h-4 w-4" />
-                              My Passport
+                              AeThex Passport
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
