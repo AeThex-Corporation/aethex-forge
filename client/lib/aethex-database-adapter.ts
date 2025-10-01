@@ -473,6 +473,16 @@ export const aethexAchievementService = {
   },
 
   async awardAchievement(userId: string, achievementId: string): Promise<void> {
+    const { data: achievement, error: fetchError } = await supabase
+      .from("achievements")
+      .select("id, xp_reward")
+      .eq("id", achievementId)
+      .maybeSingle();
+
+    if (fetchError) {
+      throw fetchError;
+    }
+
     const { error } = await supabase.from("user_achievements").insert({
       user_id: userId,
       achievement_id: achievementId,
@@ -480,6 +490,10 @@ export const aethexAchievementService = {
 
     if (error && error.code !== "23505") {
       throw error;
+    }
+
+    if (!error && achievement?.xp_reward) {
+      await this.updateUserXPAndLevel(userId, achievement.xp_reward ?? 0);
     }
   },
 
