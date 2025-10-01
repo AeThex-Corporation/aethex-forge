@@ -91,6 +91,9 @@ export default function Feed() {
         });
 
         setItems(mapped);
+      } catch (error) {
+        console.error("Failed to load feed", error);
+        setItems([]);
       } finally {
         setIsLoading(false);
       }
