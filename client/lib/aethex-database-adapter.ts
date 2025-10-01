@@ -749,14 +749,8 @@ export const aethexRoleService = {
         } as any,
       );
       if (!error) return;
-    } catch {}
-
-    // Local fallback
-    try {
-      const raw = localStorage.getItem("mock_roles");
-      const map = raw ? JSON.parse(raw) : {};
-      map[userId] = roles;
-      localStorage.setItem("mock_roles", JSON.stringify(map));
-    } catch {}
+    } catch (error) {
+      console.warn("Failed to persist user roles:", error);
+    }
   },
 };
