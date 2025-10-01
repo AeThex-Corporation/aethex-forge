@@ -89,31 +89,8 @@ export default function Feed() {
             comments: p.comments_count ?? 0,
           };
         });
-        // If no posts yet, fall back to recommended people as placeholders
-        if (mapped.length === 0) {
-          const recs = await aethexSocialService.listRecommended(
-            user?.id || "guest",
-            12,
-          );
-          const placeholders: FeedItem[] = recs.map((r: any) => ({
-            id: r.id,
-            authorId: r.id,
-            authorName: r.full_name || r.username || "User",
-            authorAvatar: r.avatar_url,
-            caption: r.bio || "",
-            mediaUrl: r.banner_url || r.avatar_url || null,
-            mediaType: r.banner_url?.match(/\.(mp4|webm|mov)(\?.*)?$/i)
-              ? "video"
-              : r.banner_url || r.avatar_url
-                ? "image"
-                : "none",
-            likes: Math.floor(Math.random() * 200) + 5,
-            comments: Math.floor(Math.random() * 30),
-          }));
-          setItems(placeholders);
-        } else {
-          setItems(mapped);
-        }
+
+        setItems(mapped);
       } finally {
         setIsLoading(false);
       }
