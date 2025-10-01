@@ -2,7 +2,6 @@
 
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { Database } from "./database.types";
-import { aethexToast } from "./aethex-toast";
 
 // Use the existing database user profile type directly
 import type { UserProfile } from "./database.types";
