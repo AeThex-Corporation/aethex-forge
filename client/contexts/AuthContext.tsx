@@ -189,6 +189,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
       setLoading(false);
 
+      // Handle token refresh failures specifically
+      if (event === "TOKEN_REFRESH_FAILED") {
+        console.warn("Token refresh failed - clearing local session");
+        try {
+          clearClientAuthState();
+        } catch (e) {
+          /* ignore */
+        }
+        try {
+          aethexToast.error({
+            title: "Session expired",
+            description:
+              "Your session could not be refreshed and has been cleared. Please sign in again.",
+          });
+        } catch (e) {
+          /* ignore */
+        }
+        return;
+      }
+
       // Show toast notifications for auth events
       if (event === "SIGNED_IN") {
         aethexToast.success({
@@ -241,8 +261,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
       setUser(data.session?.user ?? null);
-    } catch (error) {
+    } catch (error: any) {
       console.warn("Failed to refresh auth state:", error);
+      const msg = String(error?.message ?? error).toLowerCase();
+      if (
+        msg.includes("invalid refresh token") ||
+        msg.includes("session expired") ||
+        msg.includes("revoked")
+      ) {
+        try {
+          clearClientAuthState();
+        } catch (e) {
+          /* ignore */
+        }
+        try {
+          aethexToast.error({
+            title: "Session expired",
+            description:
+              "Your session has expired or was revoked. Please sign in again.",
+          });
+        } catch (e) {
+          /* ignore */
+        }
+      }
     }
   }, []);
 
