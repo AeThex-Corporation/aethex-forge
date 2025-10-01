@@ -234,47 +234,27 @@ export const achievementService = {
 // Community Services
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
-    try {
-      const resp = await fetch(`/api/posts?limit=${limit}`);
-      if (resp.ok) {
-        const data = await resp.json();
-        if (Array.isArray(data)) {
-          return data as CommunityPost[];
-        }
-      } else if (resp.status >= 400) {
-        console.warn("API responded with", resp.status);
-      }
-    } catch (error) {
-      console.warn("Failed to fetch posts via API:", error);
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from("community_posts")
-        .select(
-          `
-          *,
-          user_profiles (
-            username,
-            full_name,
-            avatar_url
-          )
-        `,
+    const { data, error } = await supabase
+      .from("community_posts")
+      .select(
+        `
+        *,
+        user_profiles (
+          username,
+          full_name,
+          avatar_url
         )
-        .eq("is_published", true)
-        .order("created_at", { ascending: false })
-        .limit(limit);
+      `,
+      )
+      .eq("is_published", true)
+      .order("created_at", { ascending: false })
+      .limit(limit);
 
-      if (error) {
-        console.error("Failed to load posts from Supabase:", error);
-        return [];
-      }
-
-      return (Array.isArray(data) ? data : []) as CommunityPost[];
-    } catch (error) {
-      console.error("Unexpected error loading posts:", error);
-      return [];
+    if (error) {
+      throw error;
     }
+
+    return (Array.isArray(data) ? data : []) as CommunityPost[];
   },
 
   async createPost(
@@ -314,37 +294,17 @@ export const communityService = {
   },
 
   async getUserPosts(userId: string): Promise<CommunityPost[]> {
-    try {
-      const resp = await fetch(`/api/user/${userId}/posts`);
-      if (resp.ok) {
-        const data = await resp.json();
-        if (Array.isArray(data)) {
-          return data as CommunityPost[];
-        }
-      } else if (resp.status >= 400) {
-        console.warn("API responded with", resp.status);
-      }
-    } catch (error) {
-      console.warn("Failed to fetch user posts via API:", error);
+    const { data, error } = await supabase
+      .from("community_posts")
+      .select("*")
+      .eq("author_id", userId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw error;
     }
 
-    try {
-      const { data, error } = await supabase
-        .from("community_posts")
-        .select("*")
-        .eq("author_id", userId)
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Failed to load user posts from Supabase:", error);
-        return [];
-      }
-
-      return (Array.isArray(data) ? data : []) as CommunityPost[];
-    } catch (error) {
-      console.error("Unexpected error loading user posts:", error);
-      return [];
-    }
+    return (Array.isArray(data) ? data : []) as CommunityPost[];
   },
 };
 
