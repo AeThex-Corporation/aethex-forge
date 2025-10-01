@@ -64,6 +64,10 @@ const App = () => (
                 path="/profile"
                 element={<Navigate to="/profiles/me" replace />}
               />
+              <Route
+                path="/profile/me"
+                element={<Navigate to="/profiles/me" replace />}
+              />
               <Route path="/profiles" element={<ProfilesDirectory />} />
               <Route path="/profiles/me" element={<ProfilePassport />} />
               <Route path="/profiles/:id" element={<ProfilePassport />} />
