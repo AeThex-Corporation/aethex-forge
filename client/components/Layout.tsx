@@ -11,7 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Settings, LogOut, Bell, Sparkles, UserCircle } from "lucide-react";
+import {
+  User,
+  Settings,
+  LogOut,
+  Bell,
+  Sparkles,
+  UserCircle,
+} from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -177,7 +184,10 @@ export default function Layout({ children }: LayoutProps) {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link to="/profile/me#settings" className="cursor-pointer">
+                            <Link
+                              to="/profile/me#settings"
+                              className="cursor-pointer"
+                            >
                               <Settings className="mr-2 h-4 w-4" />
                               Settings
                             </Link>

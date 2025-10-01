@@ -66,10 +66,7 @@ const App = () => (
               <Route path="/profile/me" element={<Profile />} />
 
               <Route path="/profiles" element={<ProfilesDirectory />} />
-              <Route
-                path="/profiles/me"
-                element={<LegacyPassportRedirect />}
-              />
+              <Route path="/profiles/me" element={<LegacyPassportRedirect />} />
               <Route
                 path="/profiles/:id"
                 element={<LegacyPassportRedirect />}
