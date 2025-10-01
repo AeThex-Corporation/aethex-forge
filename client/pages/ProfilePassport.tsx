@@ -44,7 +44,7 @@ const formatDate = (value?: string | null) => {
 const ProfilePassport = () => {
   const params = useParams<{ id?: string }>();
   const navigate = useNavigate();
-  const { user, linkedProviders } = useAuth();
+  const { user, linkedProviders, profile: authProfile } = useAuth();
 
   const [profile, setProfile] = useState<
     (AethexUserProfile & { email?: string | null }) | null
@@ -86,12 +86,61 @@ const ProfilePassport = () => {
             aethexProjectService.getUserProjects(targetUserId).catch(() => []),
           ]);
 
-        if (!profileData) {
+        let resolvedProfile = profileData as
+          | (AethexUserProfile & { email?: string | null })
+          | null;
+
+        const isViewingSelf = params.id === "me" && user?.id === targetUserId;
+
+        if (!resolvedProfile && isViewingSelf) {
+          resolvedProfile = (authProfile as any) ?? null;
+        }
+
+        if (!resolvedProfile && isViewingSelf && typeof window !== "undefined") {
+          try {
+            const stored = localStorage.getItem(`demo_profile_${targetUserId}`);
+            if (stored) {
+              resolvedProfile = JSON.parse(stored);
+            }
+          } catch {}
+        }
+
+        if (!resolvedProfile && isViewingSelf && user) {
+          resolvedProfile = {
+            id: user.id,
+            username: user.email?.split("@")[0] || `user_${Date.now()}`,
+            full_name:
+              (authProfile as any)?.full_name || user.email || "AeThex Creator",
+            email: user.email,
+            user_type:
+              ((authProfile as any)?.user_type as any) || ("community_member" as any),
+            experience_level:
+              ((authProfile as any)?.experience_level as any) || ("beginner" as any),
+            level: (authProfile as any)?.level ?? 1,
+            total_xp: (authProfile as any)?.total_xp ?? 0,
+            loyalty_points: (authProfile as any)?.loyalty_points ?? 0,
+            created_at:
+              (authProfile as any)?.created_at || new Date().toISOString(),
+            updated_at:
+              (authProfile as any)?.updated_at || new Date().toISOString(),
+          } as AethexUserProfile;
+        }
+
+        if (resolvedProfile && isViewingSelf && typeof window !== "undefined") {
+          try {
+            localStorage.setItem(
+              `demo_profile_${targetUserId}`,
+              JSON.stringify(resolvedProfile),
+            );
+          } catch {}
+        }
+
+        if (!resolvedProfile) {
           setNotFound(true);
           return;
         }
 
-        setProfile(profileData as any);
+        setProfile(resolvedProfile as any);
         setAchievements(achievementList ?? []);
         setInterests(interestList ?? []);
         setProjects(
