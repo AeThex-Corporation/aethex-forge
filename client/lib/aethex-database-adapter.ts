@@ -171,12 +171,9 @@ export const aethexUserService = {
       }
 
       if (isTableMissing(error)) {
-        console.warn('user_profiles table missing during getProfileById - returning local fallback if available');
-        try {
-          const raw = localStorage.getItem(`demo_profile_${userId}`);
-          if (raw) return JSON.parse(raw) as AethexUserProfile;
-        } catch {}
-        return null;
+        throw new Error(
+          'Supabase table "user_profiles" is missing. Please run the required migrations.',
+        );
       }
 
       throw error;
