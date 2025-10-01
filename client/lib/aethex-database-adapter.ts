@@ -297,9 +297,24 @@ export const aethexUserService = {
 
     if (error) {
       if (isTableMissing(error)) {
-        throw new Error(
-          'Supabase table "user_profiles" is missing. Please run the required migrations.',
-        );
+        // Fallback to local profile storage when DB is not migrated
+        console.warn('user_profiles table missing during createInitialProfile - using local fallback');
+        const fallback: AethexUserProfile = {
+          id: userId,
+          username: profileData.username || `user_${Date.now()}`,
+          full_name: profileData.full_name || profileData.username || `user_${Date.now()}`,
+          user_type: (profileData as any).user_type || "community_member",
+          experience_level: (profileData as any).experience_level || "beginner",
+          level: 1,
+          total_xp: 0,
+          loyalty_points: 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        } as AethexUserProfile;
+        try {
+          localStorage.setItem(`demo_profile_${userId}`, JSON.stringify(fallback));
+        } catch {}
+        return fallback;
       }
       throw error;
     }
