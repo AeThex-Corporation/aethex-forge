@@ -197,7 +197,7 @@ const ProfilesDirectory = () => {
                   asChild
                   className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
                 >
-                  <Link to="/profiles/me">Go to my passport</Link>
+                  <Link to="/passport/me">View my passport</Link>
                 </Button>
               </div>
             </div>
