@@ -703,13 +703,6 @@ export const aethexRoleService = {
       if (email === "mrpiglr@gmail.com") return ["owner", "admin", "founder"];
     } catch {}
 
-    // Mock/local fallback
-    try {
-      const raw = localStorage.getItem("mock_roles");
-      const map = raw ? JSON.parse(raw) : {};
-      if (map[userId]) return map[userId];
-    } catch {}
-
     return ["member"];
   },
 
