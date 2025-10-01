@@ -213,9 +213,22 @@ export const aethexUserService = {
 
     if (error) {
       if (isTableMissing(error)) {
-        throw new Error(
-          'Supabase table "user_profiles" is missing. Please run the required migrations.',
-        );
+        console.warn('user_profiles table missing during listProfiles - returning local demo profiles');
+        try {
+          const keys = Object.keys(localStorage || {}).filter((k) => k.startsWith('demo_profile_'));
+          const profiles = keys
+            .map((k) => {
+              try {
+                return JSON.parse(localStorage.getItem(k) || "null");
+              } catch {
+                return null;
+              }
+            })
+            .filter(Boolean) as AethexUserProfile[];
+          return profiles.slice(0, limit);
+        } catch {
+          return [];
+        }
       }
       throw error;
     }
