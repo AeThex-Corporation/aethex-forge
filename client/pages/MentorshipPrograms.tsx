@@ -395,7 +395,7 @@ export default function MentorshipPrograms() {
                             key={featureIndex}
                             className="flex items-center space-x-2 text-sm"
                           >
-                            <CheckCircle className="h-3 w-3 text-aethex-400 flex-shrink-0" />
+                            <CheckCircle className="h-3 w-3 text-emerald-400 flex-shrink-0" />
                             <span>{feature}</span>
                           </div>
                         ))}
