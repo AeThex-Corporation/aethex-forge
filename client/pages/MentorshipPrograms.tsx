@@ -415,7 +415,7 @@ export default function MentorshipPrograms() {
                           </div>
                         </div>
                         <div className="text-center">
-                          <span className="text-sm font-semibold text-aethex-400">
+                          <span className="text-sm font-semibold text-emerald-400">
                             {program.price}
                           </span>
                         </div>
