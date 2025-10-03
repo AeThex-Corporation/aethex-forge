@@ -301,7 +301,7 @@ export default function MentorshipPrograms() {
             <div className="max-w-4xl mx-auto space-y-8">
               <Badge
                 variant="outline"
-                className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle"
+                className="border-emerald-400/50 text-emerald-300 animate-bounce-gentle"
               >
                 <GraduationCap className="h-3 w-3 mr-1" />
                 Mentorship & Education Division
