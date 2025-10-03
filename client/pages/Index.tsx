@@ -24,6 +24,7 @@ import {
   Target,
   Users,
   TrendingUp,
+  Microscope,
 } from "lucide-react";
 
 export default function Index() {
@@ -292,14 +293,28 @@ export default function Index() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
-              <CardHeader>
-                <CardTitle>Research Labs</CardTitle>
-                <CardDescription>Innovation and R&D</CardDescription>
+            <Card className="border border-yellow-400/40 bg-black/80 text-yellow-100 shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all hover:-translate-y-1 hover:border-yellow-300">
+              <CardHeader className="space-y-2">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Microscope className="h-5 w-5 text-yellow-300" />
+                  AeThex Labs
+                </CardTitle>
+                <CardDescription className="text-yellow-100/70">
+                  BlackSite R&D portal synced with Labs mainframe
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <Button asChild className="w-full">
-                  <Link to="/research">Learn More</Link>
+              <CardContent className="space-y-3">
+                <Button asChild className="w-full bg-yellow-400 text-black hover:bg-yellow-300">
+                  <Link to="/research">Open Interface</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full border-yellow-400/60 text-yellow-200 hover:bg-yellow-500/10"
+                >
+                  <a href="https://labs.aethex.biz" target="_blank" rel="noreferrer">
+                    Visit labs.aethex.biz
+                  </a>
                 </Button>
               </CardContent>
             </Card>
