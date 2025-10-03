@@ -640,7 +640,7 @@ export default function MentorshipPrograms() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                  className="border-emerald-400/60 text-emerald-200 hover:border-emerald-400 hover:bg-emerald-500/10 hover-lift text-lg px-8 py-6"
                 >
                   <Link to="/docs">View Curriculum</Link>
                 </Button>
