@@ -456,7 +456,7 @@ export default function MentorshipPrograms() {
                     onClick={() => setSelectedTrack(index)}
                   >
                     <CardHeader className="text-center">
-                      <Icon className="h-12 w-12 text-aethex-400 mx-auto mb-3" />
+                      <Icon className="h-12 w-12 text-emerald-400 mx-auto mb-3" />
                       <CardTitle
                         className={`text-lg ${isSelected ? "text-gradient" : ""}`}
                       >
