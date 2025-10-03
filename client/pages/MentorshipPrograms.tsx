@@ -662,7 +662,7 @@ export default function MentorshipPrograms() {
                   </p>
                 </div>
                 <div className="text-center">
-                  <Award className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                  <Award className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Certification</h3>
                   <p className="text-sm text-muted-foreground">
                     Industry recognized
