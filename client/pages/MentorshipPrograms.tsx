@@ -458,7 +458,11 @@ export default function MentorshipPrograms() {
                     <CardHeader className="text-center">
                       <Icon className="h-12 w-12 text-emerald-400 mx-auto mb-3" />
                       <CardTitle
-                        className={`text-lg ${isSelected ? "text-gradient" : ""}`}
+                        className={`text-lg ${
+                          isSelected
+                            ? "bg-gradient-to-r from-emerald-400 to-aethex-500 bg-clip-text text-transparent"
+                            : ""
+                        }`}
                       >
                         {track.name}
                       </CardTitle>
