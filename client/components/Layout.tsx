@@ -32,6 +32,7 @@ export default function Layout({ children }: LayoutProps) {
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Get Started", href: "/onboarding" },
+    { name: "Pricing", href: "/pricing" },
     { name: "Profiles", href: "/profiles" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
@@ -40,6 +41,7 @@ export default function Layout({ children }: LayoutProps) {
   const userNavigation = [
     { name: "Dashboard", href: "/dashboard" },
     { name: "Feed", href: "/feed" },
+    { name: "Pricing", href: "/pricing" },
     { name: "Profiles", href: "/profiles" },
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
