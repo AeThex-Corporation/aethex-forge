@@ -312,7 +312,10 @@ export default function DevelopmentConsulting() {
                   size="lg"
                   className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift"
                 >
-                  <Link to="/contact" className="flex items-center space-x-2">
+                  <Link
+                    to="/pricing#development-consulting"
+                    className="flex items-center space-x-2"
+                  >
                     <Target className="h-5 w-5" />
                     <span>Get Free Assessment</span>
                     <ArrowRight className="h-5 w-5" />
