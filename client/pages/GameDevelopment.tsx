@@ -581,7 +581,10 @@ export default function GameDevelopment() {
                   size="lg"
                   className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
                 >
-                  <Link to="/contact" className="flex items-center space-x-2">
+                  <Link
+                    to="/pricing#game-development"
+                    className="flex items-center space-x-2"
+                  >
                     <Play className="h-5 w-5" />
                     <span>Start Your Project</span>
                     <ArrowRight className="h-5 w-5" />
