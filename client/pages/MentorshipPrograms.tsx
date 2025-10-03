@@ -335,7 +335,7 @@ export default function MentorshipPrograms() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-border/50 hover-lift"
+                  className="border-emerald-400/50 text-emerald-200 hover:border-emerald-400 hover:bg-emerald-500/10 hover-lift"
                 >
                   <Link to="/docs">Program Details</Link>
                 </Button>
