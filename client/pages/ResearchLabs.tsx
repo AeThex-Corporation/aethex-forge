@@ -511,28 +511,26 @@ export default function ResearchLabs() {
                     </p>
                   </div>
                 </div>
+
+                <div className="mt-12 flex flex-col items-center gap-3">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-yellow-400/20 bg-black/70 px-5 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-yellow-300">
+                    <span className="h-2 w-2 rounded-full bg-yellow-300 animate-pulse" />
+                    System Nominal
+                  </div>
+                  <a
+                    href="https://labs.aethex.biz/status"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-yellow-200 hover:text-yellow-100"
+                  >
+                    Labs Status Console
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
               </div>
             </div>
           </section>
         </main>
-
-        <footer className="relative border-t border-yellow-400/20 bg-black/90 py-6">
-          <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 text-sm text-yellow-100/70 md:flex-row">
-            <p>© {new Date().getFullYear()} AeThex Labs · Classified Distribution</p>
-            <a
-              href="https://labs.aethex.biz/status"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-yellow-300 hover:text-yellow-200"
-            >
-              <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-yellow-300" />
-              System Nominal — View Status
-            </a>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 bg-yellow-500/10 py-2 text-center text-xs font-semibold uppercase tracking-[0.3em] text-yellow-300">
-            Labs uplink stabilised · All sectors synced
-          </div>
-        </footer>
       </div>
     </Layout>
   );
