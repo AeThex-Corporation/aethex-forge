@@ -522,15 +522,15 @@ export default function MentorshipPrograms() {
                     <img
                       src={mentor.avatar}
                       alt={mentor.name}
-                      className="w-24 h-24 rounded-full mx-auto mb-4 ring-4 ring-aethex-400/20"
+                      className="w-24 h-24 rounded-full mx-auto mb-4 ring-4 ring-emerald-400/20"
                     />
-                    <h3 className="font-semibold text-lg text-gradient">
+                    <h3 className="font-semibold text-lg bg-gradient-to-r from-emerald-400 to-aethex-500 bg-clip-text text-transparent">
                       {mentor.name}
                     </h3>
                     <p className="text-sm text-muted-foreground">
                       {mentor.title}
                     </p>
-                    <p className="text-sm font-medium text-aethex-400">
+                    <p className="text-sm font-medium text-emerald-400">
                       {mentor.company}
                     </p>
 
