@@ -520,7 +520,7 @@ export default function DevelopmentConsulting() {
                       }`}
                       variant={pkg.popular ? "default" : "outline"}
                     >
-                      <Link to="/contact">Get Started</Link>
+                      <Link to="/pricing#development-consulting">Get Started</Link>
                     </Button>
                   </CardContent>
                 </Card>
