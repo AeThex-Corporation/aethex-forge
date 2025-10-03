@@ -449,8 +449,8 @@ export default function MentorshipPrograms() {
                     key={index}
                     className={`cursor-pointer transition-all duration-300 hover-lift animate-scale-in ${
                       isSelected
-                        ? "border-aethex-500 glow-blue scale-105"
-                        : "border-border/50 hover:border-aethex-400/50"
+                        ? "border-emerald-500 shadow-[0_0_25px_rgba(16,185,129,0.35)] scale-105"
+                        : "border-border/50 hover:border-emerald-400/60"
                     }`}
                     style={{ animationDelay: `${index * 0.1}s` }}
                     onClick={() => setSelectedTrack(index)}
