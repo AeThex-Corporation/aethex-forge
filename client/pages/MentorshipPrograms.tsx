@@ -323,7 +323,7 @@ export default function MentorshipPrograms() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift"
+                  className="bg-gradient-to-r from-emerald-400 to-neon-blue shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:from-emerald-500 hover:to-aethex-500 hover-lift"
                 >
                   <Link to="/contact" className="flex items-center space-x-2">
                     <BookOpen className="h-5 w-5" />
