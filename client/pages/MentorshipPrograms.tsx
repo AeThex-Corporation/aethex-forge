@@ -283,7 +283,7 @@ export default function MentorshipPrograms() {
             {[...Array(25)].map((_, i) => (
               <div
                 key={i}
-                className="absolute text-aethex-400 animate-float"
+                className="absolute text-emerald-400/80 animate-float"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
