@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,484 +12,527 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { Link } from "react-router-dom";
 import {
-  Zap,
+  ArrowRight,
+  Beaker,
   Brain,
-  Atom,
+  CheckCircle,
   Cpu,
   Database,
-  Shield,
-  Rocket,
-  ArrowRight,
-  CheckCircle,
-  Eye,
   Download,
   ExternalLink,
-  Beaker,
+  Eye,
   Microscope,
+  Shield,
+  Zap,
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+type Directive = {
+  title: string;
+  codename: string;
+  summary: string;
+  status: "Exploratory" | "Operational" | "In Testing" | "Stealth";
+  command: string;
+  output: string[];
+  link: string;
+};
+
+type Facility = {
+  name: string;
+  location: string;
+  equipment: string[];
+  capacity: string;
+  status: "Operational" | "Scaling" | "Prototype";
+  link: string;
+};
+
+type Transmission = {
+  headline: string;
+  description: string;
+  category: string;
+  priority: "High" | "Medium" | "Critical";
+  link: string;
+};
+
+const directives: Directive[] = [
+  {
+    title: "Project CHIMERA",
+    codename: "Synthetic Cognition",
+    summary:
+      "Fusion of quantum-inspired architectures with autonomous design heuristics for adaptive content generation.",
+    status: "Operational",
+    command: "$ run status --project=chimera",
+    output: [
+      "[SYSTEM] Quantum nodes linked",
+      "[I/O] Creativity gradient stable at 0.97",
+      "[SECURITY] Containment protocols verified",
+    ],
+    link: "https://labs.aethex.biz/projects/chimera",
+  },
+  {
+    title: "Project ENIGMA",
+    codename: "Neural Defense",
+    summary:
+      "Real-time anomaly detection fabric with on-device heuristics hardened for hostile simulation environments.",
+    status: "In Testing",
+    command: "$ run status --project=enigma",
+    output: [
+      "[BUILD] Secure enclave compiled",
+      "[TELEMETRY] Latency delta: -38%",
+      "[FLAG] Adversarial fingerprints neutralised",
+    ],
+    link: "https://labs.aethex.biz/projects/enigma",
+  },
+  {
+    title: "Project GENESIS",
+    codename: "Distributed Worlds",
+    summary:
+      "Composable metaverse tooling that stitches persistent realms with live player-authored logic streams.",
+    status: "Exploratory",
+    command: "$ run status --project=genesis",
+    output: [
+      "[SIM] Multi-realm handshake accepted",
+      "[GRAPH] Temporal mesh integrity: 99.2%",
+      "[NEXT] Requesting narrative assets",
+    ],
+    link: "https://labs.aethex.biz/projects/genesis",
+  },
+];
+
+const facilities: Facility[] = [
+  {
+    name: "Signal Processing Bay",
+    location: "Deck 03 · Node West",
+    equipment: [
+      "GPU swarm (A100 x32)",
+      "Photonic inference cores",
+      "Adaptive RF shield array",
+    ],
+    capacity: "12 researchers",
+    status: "Operational",
+    link: "https://labs.aethex.biz/facilities/signal-bay",
+  },
+  {
+    name: "Quantum Prototyping Wing",
+    location: "Deck 07 · Core Atrium",
+    equipment: [
+      "Superconducting qubit stack",
+      "Cryogenic vacuum chambers",
+      "Stabilised frequency lattice",
+    ],
+    capacity: "9 researchers",
+    status: "Scaling",
+    link: "https://labs.aethex.biz/facilities/quantum-wing",
+  },
+  {
+    name: "Defense Simulation Hub",
+    location: "Deck 05 · South Array",
+    equipment: [
+      "Adversarial scenario engine",
+      "Distributed threat sandbox",
+      "Neural trace visualisers",
+    ],
+    capacity: "15 researchers",
+    status: "Prototype",
+    link: "https://labs.aethex.biz/facilities/defense-hub",
+  },
+];
+
+const transmissions: Transmission[] = [
+  {
+    headline: "Zero-latency voxel streaming achieved",
+    description:
+      "Joint deployment between Labs mainframe and AeThex Forge cut render latency by 63% across 11 test regions.",
+    category: "Breakthrough",
+    priority: "High",
+    link: "https://labs.aethex.biz/updates/voxel-streaming",
+  },
+  {
+    headline: "Neural defense telemetry sync online",
+    description:
+      "Edge devices now receive live threat heuristics every 4.7 seconds via Labs relay with autonomous fallback.",
+    category: "Deployment",
+    priority: "Critical",
+    link: "https://labs.aethex.biz/updates/neural-defense",
+  },
+  {
+    headline: "Genesis Realm Editor private preview",
+    description:
+      "Closed group of 120 creators mapping persistent storylines with distributed logic patches in real time.",
+    category: "Programs",
+    priority: "Medium",
+    link: "https://labs.aethex.biz/updates/genesis-preview",
+  },
+];
 
 export default function ResearchLabs() {
   const [isLoading, setIsLoading] = useState(true);
-
   const toastShownRef = useRef(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
       if (!toastShownRef.current) {
-        aethexToast.system("Research & Labs division accessed");
+        aethexToast.system("Labs mainframe linked");
         toastShownRef.current = true;
       }
-    }, 1000);
+    }, 900);
 
     return () => clearTimeout(timer);
   }, []);
 
-  const researchAreas = [
-    {
-      title: "Quantum Computing",
-      description: "Advancing quantum algorithms for real-world applications",
-      icon: Atom,
-      status: "Active Research",
-      papers: 12,
-      breakthrough: "Quantum ML optimization algorithm",
-      impact: "50% faster training",
-      color: "from-purple-500 to-indigo-600",
-    },
-    {
-      title: "Neural Architecture Search",
-      description: "Automated discovery of optimal neural network designs",
-      icon: Brain,
-      status: "Production Ready",
-      papers: 8,
-      breakthrough: "AutoML framework",
-      impact: "90% accuracy improvement",
-      color: "from-blue-500 to-cyan-600",
-    },
-    {
-      title: "Edge AI Systems",
-      description: "Deploying AI models on resource-constrained devices",
-      icon: Cpu,
-      status: "Beta Testing",
-      papers: 6,
-      breakthrough: "Model compression technique",
-      impact: "10x smaller models",
-      color: "from-green-500 to-emerald-600",
-    },
-    {
-      title: "Blockchain Security",
-      description:
-        "Next-generation consensus algorithms and smart contract security",
-      icon: Shield,
-      status: "Research Phase",
-      papers: 4,
-      breakthrough: "Zero-knowledge protocols",
-      impact: "Enhanced privacy",
-      color: "from-orange-500 to-red-600",
-    },
-  ];
-
-  const publications = [
-    {
-      title: "Quantum-Enhanced Machine Learning for Game AI",
-      authors: "Dr. Sarah Chen, Dr. Marcus Zhang",
-      journal: "Nature Quantum Information",
-      year: "2024",
-      citations: 127,
-      type: "Peer Reviewed",
-      impact: "High",
-    },
-    {
-      title:
-        "Efficient Neural Architecture Search Using Evolutionary Algorithms",
-      authors: "Dr. Aisha Patel, Dr. John Liu",
-      journal: "International Conference on Machine Learning",
-      year: "2024",
-      citations: 89,
-      type: "Conference",
-      impact: "Medium",
-    },
-    {
-      title: "Edge Computing Framework for Real-time Game Analytics",
-      authors: "Dr. Michael Chen, Dr. Lisa Wong",
-      journal: "IEEE Transactions on Computers",
-      year: "2023",
-      citations: 156,
-      type: "Peer Reviewed",
-      impact: "High",
-    },
-  ];
-
-  const labs = [
-    {
-      name: "Quantum AI Lab",
-      location: "Building A, Floor 3",
-      equipment: [
-        "IBM Quantum System",
-        "Superconducting Qubits",
-        "Cryogenic Systems",
-      ],
-      capacity: "12 researchers",
-      status: "Operational",
-    },
-    {
-      name: "Neural Networks Lab",
-      location: "Building B, Floor 2",
-      equipment: ["GPU Clusters", "TPU Arrays", "High-Memory Systems"],
-      capacity: "20 researchers",
-      status: "Operational",
-    },
-    {
-      name: "Blockchain Security Lab",
-      location: "Building C, Floor 1",
-      equipment: [
-        "Security Testing Rigs",
-        "Network Simulators",
-        "Hardware Wallets",
-      ],
-      capacity: "8 researchers",
-      status: "Expanding",
-    },
-  ];
-
   if (isLoading) {
     return (
       <LoadingScreen
-        message="Accessing Research Division..."
+        message="Aligning with Labs mainframe..."
         showProgress={true}
-        duration={1000}
+        duration={900}
       />
     );
   }
 
   return (
     <Layout>
-      <div className="min-h-screen bg-aethex-gradient">
-        {/* Hero Section */}
-        <section className="relative py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            {[...Array(30)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute text-aethex-400 animate-float"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${3 + Math.random() * 2}s`,
-                  fontSize: `${8 + Math.random() * 6}px`,
-                }}
-              >
-                {"⚛️🧠🔬⚡".charAt(Math.floor(Math.random() * 4))}
-              </div>
-            ))}
-          </div>
+      <div className="relative min-h-screen bg-black text-white">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#facc15_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(250,204,21,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
 
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <div className="max-w-4xl mx-auto space-y-8">
-              <Badge
-                variant="outline"
-                className="border-neon-yellow/50 text-neon-yellow animate-bounce-gentle"
-              >
-                <Beaker className="h-3 w-3 mr-1" />
-                Research & Experimental Division
-              </Badge>
-
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient">AeThex | L.A.B.S.</span>
-              </h1>
-
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Pushing the boundaries of technology through cutting-edge
-                research and breakthrough discoveries that shape the future of
-                digital innovation.
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-gradient-to-r from-neon-yellow to-aethex-600 hover:from-neon-yellow/90 hover:to-aethex-700 glow-yellow hover-lift"
+        <main className="relative z-10">
+          <section className="relative overflow-hidden py-20 lg:py-28">
+            <div className="container mx-auto max-w-6xl px-4 text-center">
+              <div className="mx-auto flex max-w-3xl flex-col items-center gap-8">
+                <Badge
+                  variant="outline"
+                  className="border-yellow-400/40 bg-yellow-500/10 text-yellow-300 shadow-[0_0_20px_rgba(250,204,21,0.2)]"
                 >
-                  <Link to="/contact" className="flex items-center space-x-2">
-                    <Microscope className="h-5 w-5" />
-                    <span>Collaborate With Us</span>
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
+                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-yellow-300" />
+                  Research & Development Uplink
+                </Badge>
+
+                <h1 className="text-4xl font-black tracking-tight text-yellow-300 sm:text-5xl lg:text-6xl">
+                  AeThex | L.A.B.S. Interface
+                </h1>
+
+                <p className="text-lg text-yellow-100/90 sm:text-xl">
+                  Real-time window into the AeThex Labs mainframe. Monitor directives, facilities, and transmissions as they propagate
+                  through the network.
+                </p>
+
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-yellow-400 text-black shadow-[0_0_30px_rgba(250,204,21,0.35)] transition hover:bg-yellow-300"
+                  >
+                    <a href="https://labs.aethex.biz" target="_blank" rel="noreferrer">
+                      <Microscope className="mr-2 h-5 w-5" />
+                      Access Labs Mainframe
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="border-yellow-400/60 text-yellow-300 hover:bg-yellow-500/10"
+                  >
+                    <Link to="/docs">
+                      <ExternalLink className="mr-2 h-5 w-5" />
+                      View Research Library
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="border-slate-800/80 bg-slate-900/60 text-yellow-200 hover:border-yellow-400/40"
+                  >
+                    <Link to="/contact">
+                      <Beaker className="mr-2 h-5 w-5" />
+                      Initiate Collaboration
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="border-y border-yellow-400/10 bg-black/80 py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="mb-12 flex items-start justify-between gap-6">
+                <div>
+                  <h2 className="text-3xl font-bold text-yellow-300 sm:text-4xl">
+                    Core Directives
+                  </h2>
+                  <p className="mt-3 max-w-2xl text-sm text-yellow-100/70 sm:text-base">
+                    Programmes sourced from the Labs backbone. Tap into live status feeds and request extended dossiers directly from
+                    the Labs archive.
+                  </p>
+                </div>
+                <Zap className="hidden h-10 w-10 text-yellow-400/70 sm:block" />
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {directives.map((directive) => (
+                  <Card
+                    key={directive.title}
+                    className="flex h-full flex-col border border-yellow-400/20 bg-black/60 backdrop-blur"
+                  >
+                    <CardHeader className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-xl text-yellow-100">
+                          {directive.title}
+                        </CardTitle>
+                        <Badge className="bg-yellow-500/10 text-xs text-yellow-300">
+                          {directive.status}
+                        </Badge>
+                      </div>
+                      <CardDescription className="text-sm uppercase tracking-wide text-yellow-200/70">
+                        {directive.codename}
+                      </CardDescription>
+                      <p className="text-sm text-yellow-100/80">{directive.summary}</p>
+                    </CardHeader>
+                    <CardContent className="flex flex-1 flex-col gap-4">
+                      <div className="rounded border border-yellow-400/20 bg-black/70 p-4 font-mono text-xs text-green-400">
+                        <div className="mb-2 text-yellow-200/80">{directive.command}</div>
+                        <div className="space-y-1 text-green-300/90">
+                          {directive.output.map((line) => (
+                            <div key={line} className="truncate">
+                              {line}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <Button
+                        asChild
+                        variant="link"
+                        className="justify-start px-0 text-yellow-300 hover:text-yellow-200"
+                      >
+                        <a href={directive.link} target="_blank" rel="noreferrer">
+                          Request Full Report
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 className="text-3xl font-bold text-yellow-300 sm:text-4xl">
+                    Labs Transmissions
+                  </h2>
+                  <p className="mt-2 max-w-3xl text-sm text-yellow-100/70 sm:text-base">
+                    Broadcasts directly from Labs operations. Filtered for Research & Development stakeholders across AeThex networks.
+                  </p>
+                </div>
                 <Button
                   asChild
                   variant="outline"
-                  size="lg"
-                  className="border-border/50 hover-lift"
+                  className="border-yellow-400/40 text-yellow-200 hover:bg-yellow-500/10"
                 >
-                  <Link to="/docs">Research Papers</Link>
+                  <a href="https://labs.aethex.biz/updates" target="_blank" rel="noreferrer">
+                    Browse Labs Timeline
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </a>
                 </Button>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Research Areas */}
-        <section className="py-20 bg-background/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 animate-slide-up">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
-                Active Research Areas
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Exploring frontiers in quantum computing, AI, and emerging
-                technologies
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-              {researchAreas.map((area, index) => {
-                const Icon = area.icon;
-                return (
+              <div className="space-y-6">
+                {transmissions.map((transmission) => (
                   <Card
-                    key={index}
-                    className="relative overflow-hidden border-border/50 hover:border-neon-yellow/50 transition-all duration-500 hover-lift animate-scale-in"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    key={transmission.headline}
+                    className="border border-yellow-400/10 bg-black/70 backdrop-blur"
                   >
-                    <CardHeader>
-                      <div className="flex items-center space-x-4">
-                        <div
-                          className={`p-3 rounded-lg bg-gradient-to-r ${area.color}`}
-                        >
-                          <Icon className="h-6 w-6 text-white" />
+                    <CardContent className="flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3 text-sm uppercase tracking-wide text-yellow-400/70">
+                          <span>{transmission.category}</span>
+                          <span className="inline-flex items-center rounded-full border border-yellow-400/30 px-2 py-0.5 text-xs font-semibold text-yellow-200">
+                            {transmission.priority} Priority
+                          </span>
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-xl">
-                              {area.title}
-                            </CardTitle>
-                            <Badge variant="outline" className="text-xs">
-                              {area.status}
-                            </Badge>
-                          </div>
-                          <CardDescription className="mt-1">
-                            {area.description}
-                          </CardDescription>
-                        </div>
+                        <h3 className="text-xl font-semibold text-yellow-100">
+                          {transmission.headline}
+                        </h3>
+                        <p className="max-w-3xl text-sm text-yellow-100/75">
+                          {transmission.description}
+                        </p>
                       </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                          <div className="text-lg font-bold text-gradient">
-                            {area.papers}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            Publications
-                          </div>
-                        </div>
-                        <div className="col-span-2">
-                          <div className="text-sm font-semibold">
-                            {area.breakthrough}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {area.impact}
-                          </div>
-                        </div>
+                      <div className="flex flex-wrap gap-3">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-yellow-400/50 text-yellow-200 hover:bg-yellow-500/10"
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          Open Update
+                        </Button>
+                        <Button size="sm" variant="outline" className="border-yellow-400/30 text-yellow-200">
+                          <Download className="mr-2 h-4 w-4" />
+                          Archive Packet
+                        </Button>
+                        <Button
+                          asChild
+                          size="sm"
+                          className="bg-yellow-400 text-black hover:bg-yellow-300"
+                        >
+                          <a href={transmission.link} target="_blank" rel="noreferrer">
+                            Labs Detail
+                          </a>
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Publications */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 animate-slide-up">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
-                Recent Publications
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Our latest research contributions to the scientific community
-              </p>
-            </div>
+          <section className="border-y border-yellow-400/10 bg-black/85 py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="mb-12 text-center">
+                <h2 className="text-3xl font-bold text-yellow-300 sm:text-4xl">
+                  Research Facilities Network
+                </h2>
+                <p className="mt-3 text-sm text-yellow-100/70 sm:text-base">
+                  Physical infrastructure tethered to Labs for rapid prototyping, cyber defense simulations, and quantum-grade production.
+                </p>
+              </div>
 
-            <div className="max-w-4xl mx-auto space-y-6">
-              {publications.map((pub, index) => (
-                <Card
-                  key={index}
-                  className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-right"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gradient mb-2">
-                          {pub.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {pub.authors}
-                        </p>
-                        <p className="text-sm font-medium">
-                          {pub.journal} • {pub.year}
-                        </p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Badge
-                          variant={
-                            pub.impact === "High" ? "default" : "secondary"
-                          }
-                        >
-                          {pub.impact} Impact
+              <div className="grid gap-6 md:grid-cols-3">
+                {facilities.map((facility) => (
+                  <Card
+                    key={facility.name}
+                    className="flex h-full flex-col border border-yellow-400/15 bg-black/70 backdrop-blur"
+                  >
+                    <CardHeader className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg text-yellow-100">
+                          {facility.name}
+                        </CardTitle>
+                        <Badge className="bg-yellow-500/10 text-xs text-yellow-300">
+                          {facility.status}
                         </Badge>
-                        <Badge variant="outline">{pub.type}</Badge>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-muted-foreground">
-                        Citations:{" "}
-                        <span className="font-semibold text-aethex-400">
-                          {pub.citations}
-                        </span>
+                      <CardDescription className="text-sm text-yellow-200/70">
+                        {facility.location}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex flex-1 flex-col gap-4">
+                      <div className="space-y-2">
+                        <p className="text-xs uppercase text-yellow-400/80">Equipment Loadout</p>
+                        <div className="space-y-2">
+                          {facility.equipment.map((item) => (
+                            <div key={item} className="flex items-center gap-2 text-sm text-yellow-100/80">
+                              <CheckCircle className="h-3 w-3 text-yellow-300" />
+                              <span>{item}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
-                          <Eye className="h-3 w-3 mr-1" />
-                          View
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <Download className="h-3 w-3 mr-1" />
-                          PDF
-                        </Button>
+                      <div className="text-sm text-yellow-200/75">
+                        Capacity: <span className="font-semibold text-yellow-200">{facility.capacity}</span>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Lab Facilities */}
-        <section className="py-20 bg-background/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 animate-slide-up">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
-                Research Facilities
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                State-of-the-art laboratories equipped with cutting-edge
-                technology
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {labs.map((lab, index) => (
-                <Card
-                  key={index}
-                  className="border-border/50 hover:border-neon-yellow/50 transition-all duration-300 hover-lift animate-scale-in"
-                  style={{ animationDelay: `${index * 0.2}s` }}
-                >
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">{lab.name}</CardTitle>
-                      <Badge
-                        variant={
-                          lab.status === "Operational" ? "default" : "secondary"
-                        }
-                        className="text-xs"
+                      <Button
+                        asChild
+                        variant="link"
+                        className="mt-auto justify-start px-0 text-yellow-300 hover:text-yellow-200"
                       >
-                        {lab.status}
-                      </Badge>
-                    </div>
-                    <CardDescription>{lab.location}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <h4 className="font-semibold text-sm mb-2">Equipment:</h4>
-                      <div className="space-y-1">
-                        {lab.equipment.map((item, itemIndex) => (
-                          <div
-                            key={itemIndex}
-                            className="flex items-center space-x-2 text-sm"
-                          >
-                            <CheckCircle className="h-3 w-3 text-aethex-400 flex-shrink-0" />
-                            <span>{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Capacity:{" "}
-                      <span className="font-medium">{lab.capacity}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple">
-                Join Our Research Community
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Collaborate with world-class researchers and contribute to
-                breakthrough discoveries that will shape the future of
-                technology.
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-gradient-to-r from-neon-yellow to-aethex-600 hover:from-neon-yellow/90 hover:to-aethex-700 glow-yellow hover-lift text-lg px-8 py-6"
-                >
-                  <Link to="/contact" className="flex items-center space-x-2">
-                    <Beaker className="h-5 w-5" />
-                    <span>Research Partnership</span>
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="border-neon-yellow/50 hover:border-neon-yellow hover-lift text-lg px-8 py-6"
-                >
-                  <Link to="/docs">Access Publications</Link>
-                </Button>
+                        <a href={facility.link} target="_blank" rel="noreferrer">
+                          Inspect Facility
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
+            </div>
+          </section>
 
-              <div className="grid grid-cols-3 gap-8 mt-12">
-                <div className="text-center">
-                  <Database className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
-                  <h3 className="font-semibold">Open Data</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Research datasets
-                  </p>
+          <section className="py-20">
+            <div className="container mx-auto max-w-5xl px-4 text-center">
+              <div className="space-y-6">
+                <h2 className="text-3xl font-bold text-yellow-300 sm:text-4xl">
+                  Sync With AeThex Labs
+                </h2>
+                <p className="mx-auto max-w-3xl text-sm text-yellow-100/70 sm:text-base">
+                  Join the private Labs console for priority access to directives, research packets, and sandbox environments crafted by the
+                  Research & Development collective.
+                </p>
+                <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-yellow-400 text-black hover:bg-yellow-300"
+                  >
+                    <a href="https://labs.aethex.biz/signup" target="_blank" rel="noreferrer">
+                      <Brain className="mr-2 h-5 w-5" />
+                      Request Labs Credentials
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="border-yellow-400/60 text-yellow-200 hover:bg-yellow-500/10"
+                  >
+                    <Link to="/community">
+                      <Database className="mr-2 h-5 w-5" />
+                      Meet the Research Community
+                    </Link>
+                  </Button>
                 </div>
-                <div className="text-center">
-                  <ExternalLink className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
-                  <h3 className="font-semibold">Collaborations</h3>
-                  <p className="text-sm text-muted-foreground">
-                    University partnerships
-                  </p>
-                </div>
-                <div className="text-center">
-                  <Rocket className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
-                  <h3 className="font-semibold">Innovation</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Breakthrough research
-                  </p>
+                <div className="grid gap-8 pt-10 sm:grid-cols-3">
+                  <div className="space-y-2">
+                    <Shield className="mx-auto h-8 w-8 text-yellow-400" />
+                    <h3 className="text-lg font-semibold text-yellow-100">Secure Relay</h3>
+                    <p className="text-sm text-yellow-100/70">
+                      Labs transmissions are signed and checksum verified every 90 seconds.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Cpu className="mx-auto h-8 w-8 text-yellow-400" />
+                    <h3 className="text-lg font-semibold text-yellow-100">Adaptive Compute</h3>
+                    <p className="text-sm text-yellow-100/70">
+                      Elastic compute mesh auto-balances workloads across Forge and Labs infrastructure.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Beaker className="mx-auto h-8 w-8 text-yellow-400" />
+                    <h3 className="text-lg font-semibold text-yellow-100">Rapid Experimentation</h3>
+                    <p className="text-sm text-yellow-100/70">
+                      Prototype, validate, and deploy concepts with Labs-grade toolchains in under 24 hours.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
+          </section>
+        </main>
+
+        <footer className="relative border-t border-yellow-400/20 bg-black/90 py-6">
+          <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 text-sm text-yellow-100/70 md:flex-row">
+            <p>© {new Date().getFullYear()} AeThex Labs · Classified Distribution</p>
+            <a
+              href="https://labs.aethex.biz/status"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-yellow-300 hover:text-yellow-200"
+            >
+              <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-yellow-300" />
+              System Nominal — View Status
+            </a>
           </div>
-        </section>
+          <div className="absolute inset-x-0 bottom-0 bg-yellow-500/10 py-2 text-center text-xs font-semibold uppercase tracking-[0.3em] text-yellow-300">
+            Labs uplink stabilised · All sectors synced
+          </div>
+        </footer>
       </div>
     </Layout>
   );
