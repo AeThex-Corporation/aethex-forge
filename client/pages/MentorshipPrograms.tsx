@@ -292,7 +292,7 @@ export default function MentorshipPrograms() {
                   fontSize: `${8 + Math.random() * 6}px`,
                 }}
               >
-                {"🎓📚💡��".charAt(Math.floor(Math.random() * 4))}
+                {"🎓📚💡🚀".charAt(Math.floor(Math.random() * 4))}
               </div>
             ))}
           </div>
@@ -633,7 +633,10 @@ export default function MentorshipPrograms() {
                   size="lg"
                   className="bg-gradient-to-r from-emerald-400 to-neon-blue shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:from-emerald-500 hover:to-aethex-500 hover-lift text-lg px-8 py-6"
                 >
-                  <Link to="/contact" className="flex items-center space-x-2">
+                  <Link
+                    to="/pricing#mentorship"
+                    className="flex items-center space-x-2"
+                  >
                     <Heart className="h-5 w-5" />
                     <span>Apply for Mentorship</span>
                     <ArrowRight className="h-5 w-5" />
