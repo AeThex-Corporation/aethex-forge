@@ -219,8 +219,8 @@ function EventCard({
                     <Input
                       id={`name-${event.id}`}
                       value={form.name}
-                      onChange={(value) =>
-                        setForm((prev) => ({ ...prev, name: value.target.value }))
+                      onChange={(eventChange) =>
+                        setForm((prev) => ({ ...prev, name: eventChange.target.value }))
                       }
                       placeholder="Enter your name"
                       required
