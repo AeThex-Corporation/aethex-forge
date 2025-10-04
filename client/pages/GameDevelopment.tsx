@@ -295,7 +295,7 @@ export default function GameDevelopment() {
                   className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift"
                 >
                   <Link
-                    to="/pricing#game-development"
+                    to="/engage#game-development"
                     className="flex items-center space-x-2"
                   >
                     <Rocket className="h-5 w-5" />
@@ -582,7 +582,7 @@ export default function GameDevelopment() {
                   className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
                 >
                   <Link
-                    to="/pricing#game-development"
+                    to="/engage#game-development"
                     className="flex items-center space-x-2"
                   >
                     <Play className="h-5 w-5" />
