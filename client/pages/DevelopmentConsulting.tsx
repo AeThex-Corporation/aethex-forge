@@ -645,7 +645,7 @@ export default function DevelopmentConsulting() {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 gap-8 mt-12">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-12">
                 <div className="text-center">
                   <Shield className="h-8 w-8 text-pink-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Confidential</h3>
