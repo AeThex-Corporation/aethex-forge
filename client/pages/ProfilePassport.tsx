@@ -81,6 +81,22 @@ const ProfilePassport = () => {
 
         if (isSelfRoute) {
           const currentUser = await aethexUserService.getCurrentUser();
+
+          if (currentUser?.username) {
+            if (!requestedUsername || requestedUsername === "me") {
+              navigate(`/passport/${currentUser.username}`, { replace: true });
+              return;
+            }
+
+            if (
+              currentUser.username.toLowerCase() === requestedUsername.toLowerCase() &&
+              currentUser.username !== requestedUsername
+            ) {
+              navigate(`/passport/${currentUser.username}`, { replace: true });
+              return;
+            }
+          }
+
           if (currentUser) {
             resolvedProfile = {
               ...currentUser,
