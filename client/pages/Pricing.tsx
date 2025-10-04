@@ -646,7 +646,7 @@ export default function Engage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full border-aethex-400/60 text-aethex-100 hover:bg-aethex-500/10"
+                    className="w-full border-aethex-400/60 text-aethex-100 hover:bg-aethex-500/10 text-base sm:text-lg py-4 sm:py-5"
                   >
                     <a href="mailto:hello@aethex.biz?subject=AeThex Engagement Inquiry">
                       hello@aethex.biz
