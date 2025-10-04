@@ -348,7 +348,7 @@ export default function MentorshipPrograms() {
         </section>
 
         {/* Programs Overview */}
-        <section className="py-20 bg-background/30">
+        <section className="py-16 sm:py-20 bg-background/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -432,7 +432,7 @@ export default function MentorshipPrograms() {
         </section>
 
         {/* Learning Tracks */}
-        <section className="py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -503,7 +503,7 @@ export default function MentorshipPrograms() {
         </section>
 
         {/* Featured Mentors */}
-        <section className="py-20 bg-background/30">
+        <section className="py-16 sm:py-20 bg-background/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -566,7 +566,7 @@ export default function MentorshipPrograms() {
         </section>
 
         {/* Success Stories */}
-        <section className="py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -616,7 +616,7 @@ export default function MentorshipPrograms() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-background/30">
+        <section className="py-16 sm:py-20 bg-background/30">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
               <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-300 via-aethex-400 to-neon-blue bg-clip-text text-transparent">
