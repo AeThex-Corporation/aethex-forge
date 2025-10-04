@@ -331,7 +331,7 @@ export default function Engage() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
                   <Link to="#bundles" className="flex items-center gap-2">
                     <BadgeDollarSign className="h-5 w-5" />
