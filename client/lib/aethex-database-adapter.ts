@@ -53,7 +53,7 @@ const normalizeProfile = (
   username:
     (row as any)?.username ?? email?.split("@")[0] ?? "user",
   onboarded: true,
-  role: (row as any)?.role ?? "member",
+  role: (row as any)?.role ?? "developer",
   loyalty_points: (row as any)?.loyalty_points ?? 0,
   current_streak: (row as any)?.current_streak ?? 0,
   longest_streak:
