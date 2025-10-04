@@ -180,7 +180,7 @@ export default function DevelopmentConsulting() {
         "30-min follow-up call",
       ],
       popular: false,
-      color: "from-gray-500 to-gray-600",
+      color: "from-pink-400 via-fuchsia-500 to-rose-500",
     },
     {
       name: "Comprehensive Audit",
@@ -196,7 +196,7 @@ export default function DevelopmentConsulting() {
         "3 months email support",
       ],
       popular: true,
-      color: "from-aethex-500 to-neon-blue",
+      color: "from-fuchsia-500 via-pink-500 to-rose-500",
     },
     {
       name: "Strategic Partnership",
@@ -212,7 +212,7 @@ export default function DevelopmentConsulting() {
         "Quarterly reviews",
       ],
       popular: false,
-      color: "from-purple-500 to-pink-600",
+      color: "from-rose-500 via-fuchsia-600 to-pink-700",
     },
   ];
 
@@ -470,14 +470,14 @@ export default function DevelopmentConsulting() {
                   key={index}
                   className={`relative overflow-hidden transition-all duration-500 hover-lift animate-scale-in ${
                     pkg.popular
-                      ? "border-aethex-500 glow-blue scale-105"
+                      ? "border-pink-500 shadow-[0_0_40px_rgba(236,72,153,0.45)] scale-105"
                       : "border-border/50 hover:border-pink-400/50"
                   }`}
                   style={{ animationDelay: `${index * 0.2}s` }}
                   onClick={() => setActivePackage(index)}
                 >
                   {pkg.popular && (
-                    <div className="absolute top-0 right-0 bg-gradient-to-r from-aethex-500 to-neon-blue text-white px-3 py-1 text-xs font-semibold">
+                    <div className="absolute top-0 right-0 bg-gradient-to-r from-fuchsia-500 to-rose-500 text-white px-3 py-1 text-xs font-semibold">
                       MOST POPULAR
                     </div>
                   )}
@@ -516,8 +516,8 @@ export default function DevelopmentConsulting() {
                       asChild
                       className={`w-full ${
                         pkg.popular
-                          ? "bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
-                          : ""
+                          ? "bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 hover:from-fuchsia-600 hover:via-pink-500 hover:to-rose-500/90"
+                          : "border-pink-400/50 text-pink-200 hover:border-pink-400 hover:bg-pink-500/10"
                       }`}
                       variant={pkg.popular ? "default" : "outline"}
                     >
