@@ -871,7 +871,7 @@ export default function Community() {
       bio: "Hosts the weekly build clinics and mentors new squads shipping co-op missions.",
       recentContribution: "Rolled out the Adaptive Matchmaking toolkit for Season 4.",
       reputation: "4.9/5 player rating",
-      profileUrl: "/developers/alex-developer",
+      profileUrl: "/passport/alex-developer",
     },
     {
       name: "Sarah Coder",
@@ -884,7 +884,7 @@ export default function Community() {
       bio: "Maintains the AeThex SDK quickstarts and keeps localisation packs up to date.",
       recentContribution: "Launched the multiplayer onboarding walkthrough in seven languages.",
       reputation: "4.8/5 creator rating",
-      profileUrl: "/developers/sarah-coder",
+      profileUrl: "/passport/sarah-coder",
     },
     {
       name: "Jordan AI",
@@ -897,7 +897,7 @@ export default function Community() {
       bio: "Builds guardrailed inference pipelines and shares evaluation playbooks weekly.",
       recentContribution: "Released the Procedural Dialogue orchestrator adopted by 40+ teams.",
       reputation: "4.9/5 mentor rating",
-      profileUrl: "/developers/jordan-ai",
+      profileUrl: "/passport/jordan-ai",
     },
   ];
 
@@ -1760,7 +1760,7 @@ export default function Community() {
                       {contributor.badge}
                     </Badge>
                     <Button asChild variant="outline" className="w-full border-aethex-400/40">
-                      <Link to={contributor.profileUrl}>View profile</Link>
+                      <Link to={contributor.profileUrl}>View passport</Link>
                     </Button>
                   </CardContent>
                 </Card>
