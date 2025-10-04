@@ -512,7 +512,7 @@ export default function GameDevelopment() {
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   {/* Step Number */}
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-aethex-500 to-neon-blue flex items-center justify-center text-white font-bold mr-6 glow-blue">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-aethex-500 to-neon-blue flex items-center justify-center text-white font-bold glow-blue sm:mr-6">
                     {phase.step}
                   </div>
 
