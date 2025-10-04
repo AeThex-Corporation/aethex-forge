@@ -286,7 +286,7 @@ export default function Engage() {
     <Layout>
       <div className="min-h-screen bg-aethex-gradient">
         {/* Hero */}
-        <section className="relative overflow-hidden py-20 lg:py-28">
+        <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28">
           <div className="absolute inset-0 opacity-15">
             {[...Array(35)].map((_, idx) => (
               <div
