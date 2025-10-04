@@ -624,7 +624,7 @@ export default function DevelopmentConsulting() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 hover:from-fuchsia-600 hover:via-pink-500 hover:to-rose-500/90 shadow-[0_0_35px_rgba(236,72,153,0.45)] hover-lift text-lg px-8 py-6"
+                  className="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 hover:from-fuchsia-600 hover:via-pink-500 hover:to-rose-500/90 shadow-[0_0_35px_rgba(236,72,153,0.45)] hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
                   <Link
                     to="/engage#development-consulting"
