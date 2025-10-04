@@ -25,6 +25,7 @@ import {
   Settings,
   Users,
   Activity,
+  PenTool,
 } from "lucide-react";
 
 export default function Admin() {
