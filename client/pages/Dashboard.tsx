@@ -98,6 +98,10 @@ export default function Dashboard() {
     () => searchParams.get("tab") ?? "profile",
   );
 
+  const currentStreak = profile?.current_streak ?? 0;
+  const longestStreak = profile?.longest_streak ?? currentStreak;
+  const streakLabel = `${currentStreak} day${currentStreak === 1 ? "" : "s"} streak`;
+
   const linkedProviderMap = useMemo(() => {
     const map: Record<string, (typeof linkedProviders)[number]> = {};
     linkedProviders.forEach((lp) => {
