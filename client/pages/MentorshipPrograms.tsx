@@ -326,7 +326,7 @@ export default function MentorshipPrograms() {
                   className="bg-gradient-to-r from-emerald-400 to-neon-blue shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:from-emerald-500 hover:to-aethex-500 hover-lift"
                 >
                   <Link
-                    to="/pricing#mentorship"
+                    to="/engage#mentorship"
                     className="flex items-center space-x-2"
                   >
                     <BookOpen className="h-5 w-5" />
@@ -634,7 +634,7 @@ export default function MentorshipPrograms() {
                   className="bg-gradient-to-r from-emerald-400 to-neon-blue shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:from-emerald-500 hover:to-aethex-500 hover-lift text-lg px-8 py-6"
                 >
                   <Link
-                    to="/pricing#mentorship"
+                    to="/engage#mentorship"
                     className="flex items-center space-x-2"
                   >
                     <Heart className="h-5 w-5" />
