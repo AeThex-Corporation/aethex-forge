@@ -69,7 +69,7 @@ export default function DevelopmentConsulting() {
         "Security assessment",
         "Technology stack evaluation",
       ],
-      color: "from-blue-500 to-cyan-600",
+      color: "from-fuchsia-500 to-rose-500",
     },
     {
       title: "DevOps & Infrastructure",
@@ -85,7 +85,7 @@ export default function DevelopmentConsulting() {
         "Container orchestration",
         "Infrastructure as code",
       ],
-      color: "from-green-500 to-emerald-600",
+      color: "from-violet-500 to-fuchsia-600",
     },
     {
       title: "Code Quality & Optimization",
@@ -100,7 +100,7 @@ export default function DevelopmentConsulting() {
         "Documentation improvement",
         "Best practices implementation",
       ],
-      color: "from-purple-500 to-indigo-600",
+      color: "from-pink-500 to-rose-600",
     },
     {
       title: "Team & Process Consulting",
@@ -115,7 +115,7 @@ export default function DevelopmentConsulting() {
         "Knowledge transfer",
         "Leadership coaching",
       ],
-      color: "from-orange-500 to-red-600",
+      color: "from-fuchsia-400 to-pink-600",
     },
   ];
 
