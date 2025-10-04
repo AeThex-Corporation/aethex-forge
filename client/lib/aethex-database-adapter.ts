@@ -253,20 +253,18 @@ export const aethexUserService = {
     }
 
     if (!data || Object.keys(data || {}).length === 0) {
-      return await this.createInitialProfile(user.id, {
-        username: user.email?.split("@")[0] || "user",
-        full_name: user.email?.split("@")[0] || "user",
-      });
+      return await this.createInitialProfile(
+        user.id,
+        {
+          username: user.email?.split("@")[0] || "user",
+          full_name: user.email?.split("@")[0] || "user",
+        },
+        user.email,
+      );
     }
 
-    return {
-      ...data,
-      email: user.email,
-      username: (data as any).username || user.email?.split("@")[0] || "user",
-      onboarded: true,
-      role: "member",
-      loyalty_points: 0,
-    } as AethexUserProfile;
+    const normalized = normalizeProfile(data, user.email);
+    return await ensureDailyStreakForProfile(normalized);
   },
 
   async getProfileById(userId: string): Promise<AethexUserProfile | null> {
