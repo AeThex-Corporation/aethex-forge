@@ -631,7 +631,7 @@ export default function MentorshipPrograms() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-emerald-400 to-neon-blue shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:from-emerald-500 hover:to-aethex-500 hover-lift text-lg px-8 py-6"
+                  className="bg-gradient-to-r from-emerald-400 to-neon-blue shadow-[0_0_25px_rgba(16,185,129,0.35)] hover:from-emerald-500 hover:to-aethex-500 hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
                   <Link
                     to="/engage#mentorship"
