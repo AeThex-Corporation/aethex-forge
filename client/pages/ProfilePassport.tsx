@@ -42,7 +42,7 @@ const formatDate = (value?: string | null) => {
 };
 
 const ProfilePassport = () => {
-  const params = useParams<{ id?: string }>();
+  const params = useParams<{ username?: string }>();
   const navigate = useNavigate();
   const { user, linkedProviders } = useAuth();
 
