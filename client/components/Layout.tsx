@@ -302,7 +302,7 @@ export default function CodeLayout({ children }: LayoutProps) {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link to="/passport/me" className="cursor-pointer">
+                            <Link to={passportHref} className="cursor-pointer">
                               <Sparkles className="mr-2 h-4 w-4" />
                               AeThex Passport
                             </Link>
