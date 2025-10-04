@@ -332,6 +332,14 @@ export default function Profile() {
                   {profile?.full_name || 'User Profile'}
                 </h1>
                 <p className="text-gray-300">{user?.email}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Badge variant="outline" className="border-purple-400/40 text-purple-200">
+                    Current streak: {currentStreak}d
+                  </Badge>
+                  <Badge variant="outline" className="border-purple-400/40 text-purple-200">
+                    Longest streak: {longestStreak}d
+                  </Badge>
+                </div>
               </div>
             </div>
           </div>
