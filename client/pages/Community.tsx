@@ -38,6 +38,38 @@ import {
   Loader2,
 } from "lucide-react";
 
+type EventStatus = "Registration Open" | "Recurring" | "Upcoming" | "Waitlist";
+
+type CommunityEvent = {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  type: string;
+  participants: number;
+  prize?: string | null;
+  status: EventStatus;
+  description: string;
+  agenda: string[];
+  registrationEnabled: boolean;
+  registrationUrl?: string;
+};
+
+type EventRegistrationPayload = {
+  name: string;
+  email: string;
+  teamName?: string;
+  message?: string;
+};
+
+interface EventCardProps {
+  event: CommunityEvent;
+  animationDelay: number;
+  isRegistered: boolean;
+  registrant?: EventRegistrationPayload;
+  onRegister: (payload: EventRegistrationPayload) => void;
+}
+
 export default function Community() {
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
