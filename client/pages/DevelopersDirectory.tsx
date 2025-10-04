@@ -41,11 +41,11 @@ const realmBadgeStyles: Record<string, string> = {
   customer: "bg-gradient-to-r from-amber-400 to-aethex-700 text-white",
 };
 
-interface ProfileCardProps {
+interface DeveloperCardProps {
   profile: AethexUserProfile & { email?: string | null };
 }
 
-const DeveloperCard = ({ profile }: ProfileCardProps) => {
+const DeveloperCard = ({ profile }: DeveloperCardProps) => {
   const realmStyle =
     realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
   const isGodMode = (profile.level ?? 1) >= 100;
@@ -171,7 +171,7 @@ const DevelopersDirectory = () => {
   }, []);
 
   if (loading) {
-    return <LoadingScreen message="Syncing AeThex passports..." />;
+    return <LoadingScreen message="Syncing AeThex developers..." />;
   }
 
   return (
@@ -180,16 +180,16 @@ const DevelopersDirectory = () => {
         <div className="container mx-auto px-4 max-w-6xl space-y-10">
           <header className="space-y-4">
             <Badge className="bg-aethex-500/20 text-aethex-100">
-              <Users className="mr-2 h-4 w-4" /> AeThex Passport Network
+              <Users className="mr-2 h-4 w-4" /> AeThex Developer Network
             </Badge>
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold text-white">
-                  Discover AeThex talent
+                  Discover AeThex developers
                 </h1>
                 <p className="text-slate-300">
-                  Browse verified creators, clients, and community members
-                  across every AeThex realm.
+                  Browse verified builders, clients, and community members across
+                  every AeThex realm.
                 </p>
               </div>
               <div className="flex gap-2">
@@ -239,10 +239,10 @@ const DevelopersDirectory = () => {
             <Card className="border border-slate-800 bg-slate-900/60 p-12 text-center text-slate-300">
               <Sparkles className="mx-auto mb-4 h-8 w-8 text-aethex-300" />
               <div className="text-lg font-semibold text-white">
-                No passports found
+                No developers found
               </div>
               <p className="mt-2 text-sm text-slate-300">
-                Try adjusting your search or realm filters. New members join
+                Try adjusting your search or realm filters. New developers join
                 AeThex every day!
               </p>
             </Card>
