@@ -604,7 +604,7 @@ export default function Admin() {
               <CardContent className="space-y-3">
                 {managedProfiles.length === 0 && (
                   <div className="text-sm text-muted-foreground">
-                    No member profiles found yet.
+                    No developer profiles found yet.
                   </div>
                 )}
                 {managedProfiles.map((p) => (
