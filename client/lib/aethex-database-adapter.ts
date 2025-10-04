@@ -2,6 +2,7 @@
 
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { Database } from "./database.types";
+import { mockAuth } from "./mock-auth";
 
 // Use the existing database user profile type directly
 import type { UserProfile } from "./database.types";
@@ -23,12 +24,12 @@ export interface AethexUserProfile extends UserProfile {
 const isNonEmptyString = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
 
+const isTestEnvironment =
+  typeof process !== "undefined" &&
+  (process.env?.NODE_ENV === "test" || process.env?.VITEST);
+
 const ensureSupabase = () => {
   if (!isSupabaseConfigured) {
-    const isTestEnvironment =
-      typeof process !== "undefined" &&
-      (process.env?.NODE_ENV === "test" || process.env?.VITEST);
-
     if (isTestEnvironment) {
       return;
     }
