@@ -48,13 +48,21 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   const realmStyle =
     realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
+  const isGodMode = (profile.level ?? 1) >= 100;
   return (
     <Card className="group h-full border border-slate-800 bg-slate-900/60 transition-transform hover:-translate-y-1 hover:border-aethex-400/60">
       <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between">
-          <Badge className={cn("text-xs uppercase tracking-wider", realmStyle)}>
-            {profile.user_type.replace("_", " ")}
-          </Badge>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Badge className={cn("text-xs uppercase tracking-wider", realmStyle)}>
+              {profile.user_type.replace("_", " ")}
+            </Badge>
+            {isGodMode && (
+              <Badge className="bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-500 text-slate-900 text-[10px] font-semibold shadow">
+                GOD Mode
+              </Badge>
+            )}
+          </div>
           <Badge
             variant="outline"
             className="border-slate-700/70 text-slate-300"
