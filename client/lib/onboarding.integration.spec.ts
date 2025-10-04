@@ -130,7 +130,7 @@ describe("onboarding passport flow", () => {
       id: user.id,
       username: "tester",
       full_name: "Tester One",
-      user_type: "community_member" as AethexUserProfile["user_type"],
+      user_type: "game_developer" as AethexUserProfile["user_type"],
       experience_level: "intermediate" as AethexUserProfile["experience_level"],
       bio: "Building awesome experiences",
     });
