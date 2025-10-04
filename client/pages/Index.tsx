@@ -209,7 +209,7 @@ export default function Index() {
       </section>
 
       {/* Achievements Section */}
-      <section className="py-20 bg-background/30">
+      <section className="py-16 sm:py-20 bg-background/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16 animate-slide-up">
@@ -221,7 +221,7 @@ export default function Index() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {achievements.map((achievement, index) => (
                 <div
                   key={index}
@@ -245,7 +245,7 @@ export default function Index() {
       </section>
 
       {/* Offerings Overview */}
-      <section className="py-20">
+      <section className="py-16 sm:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
@@ -256,7 +256,7 @@ export default function Index() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
               <CardHeader>
                 <CardTitle>Game Development</CardTitle>
@@ -327,7 +327,7 @@ export default function Index() {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             <Card className="bg-card/50 border-border/50">
               <CardHeader>
                 <CardTitle>Documentation</CardTitle>
@@ -383,7 +383,7 @@ export default function Index() {
       </section>
 
       {/* Technology Showcase */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="py-16 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/20 via-transparent to-neon-blue/20" />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -399,7 +399,7 @@ export default function Index() {
             </div>
 
             {/* Interactive Technology Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
               {[
                 {
                   name: "Game Studios",
