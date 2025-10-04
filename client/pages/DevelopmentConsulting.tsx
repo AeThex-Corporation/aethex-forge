@@ -631,7 +631,7 @@ export default function DevelopmentConsulting() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-pink-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                  className="border-pink-400/50 text-pink-200 hover:border-pink-400 hover:bg-pink-500/10 hover-lift text-lg px-8 py-6"
                 >
                   <Link to="/docs">Download Case Studies</Link>
                 </Button>
