@@ -1,6 +1,5 @@
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
-import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
