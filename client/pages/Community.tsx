@@ -353,7 +353,7 @@ export default function Community() {
                     </a>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="border-border/60">
-                    <Link to="/platforms/devconnect">View Integration Guide</Link>
+                    <Link to="/contact">Talk with AeThex Team</Link>
                   </Button>
                 </div>
               </div>
