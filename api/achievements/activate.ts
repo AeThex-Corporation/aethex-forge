@@ -102,10 +102,6 @@ export default async function handler(
         .is("total_xp", null),
       admin
         .from("user_profiles")
-        .update({ loyalty_points: 0 })
-        .is("loyalty_points", null),
-      admin
-        .from("user_profiles")
         .update({ user_type: "game_developer" })
         .neq("user_type", "game_developer"),
     ]);
