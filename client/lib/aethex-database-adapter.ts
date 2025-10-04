@@ -233,10 +233,14 @@ export const aethexUserService = {
 
     if (error) {
       if ((error as any)?.code === "PGRST116") {
-        return await this.createInitialProfile(user.id, {
-          username: user.email?.split("@")[0] || "user",
-          full_name: user.email?.split("@")[0] || "user",
-        });
+        return await this.createInitialProfile(
+          user.id,
+          {
+            username: user.email?.split("@")[0] || "user",
+            full_name: user.email?.split("@")[0] || "user",
+          },
+          user.email,
+        );
       }
 
       if (isTableMissing(error)) {
