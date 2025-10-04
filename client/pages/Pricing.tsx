@@ -633,7 +633,7 @@ export default function Engage() {
                   <Button
                     asChild
                     size="lg"
-                    className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+                    className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 text-base sm:text-lg py-4 sm:py-5"
                   >
                     <Link
                       to="/contact"
