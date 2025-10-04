@@ -205,6 +205,13 @@ export interface AethexUserAchievement {
   unlocked_at: string;
 }
 
+export interface ActivateRewardsResponse {
+  ok: boolean;
+  achievementsSeeded: number;
+  godModeAwarded: boolean;
+  targetUserId?: string | null;
+}
+
 function isTableMissing(err: any): boolean {
   const msg = String(err?.message || err?.hint || err?.details || "");
   return (
