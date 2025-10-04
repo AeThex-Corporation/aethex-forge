@@ -304,7 +304,10 @@ export default function Index() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button asChild className="w-full bg-yellow-400 text-black hover:bg-yellow-300">
+                <Button
+                  asChild
+                  className="w-full bg-yellow-400 text-black hover:bg-yellow-300"
+                >
                   <Link to="/research">Open Interface</Link>
                 </Button>
                 <Button
@@ -312,7 +315,11 @@ export default function Index() {
                   variant="outline"
                   className="w-full border-yellow-400/60 text-yellow-200 hover:bg-yellow-500/10"
                 >
-                  <a href="https://labs.aethex.biz" target="_blank" rel="noreferrer">
+                  <a
+                    href="https://labs.aethex.biz"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Visit labs.aethex.biz
                   </a>
                 </Button>

@@ -428,7 +428,10 @@ export default function DevelopmentConsulting() {
                     <CardHeader className="text-center">
                       <Icon className="h-12 w-12 text-pink-400 mx-auto mb-3" />
                       <CardTitle className="text-lg">{area.category}</CardTitle>
-                      <Badge variant="outline" className="text-xs border-pink-400/40 text-pink-200">
+                      <Badge
+                        variant="outline"
+                        className="text-xs border-pink-400/40 text-pink-200"
+                      >
                         {area.projects}
                       </Badge>
                     </CardHeader>
@@ -521,7 +524,9 @@ export default function DevelopmentConsulting() {
                       }`}
                       variant={pkg.popular ? "default" : "outline"}
                     >
-                      <Link to="/engage#development-consulting">Get Started</Link>
+                      <Link to="/engage#development-consulting">
+                        Get Started
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -550,7 +555,10 @@ export default function DevelopmentConsulting() {
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   <CardHeader>
-                    <Badge variant="outline" className="w-fit mb-2 border-pink-400/40 text-pink-200">
+                    <Badge
+                      variant="outline"
+                      className="w-fit mb-2 border-pink-400/40 text-pink-200"
+                    >
                       {study.client}
                     </Badge>
                     <CardTitle className="text-lg">{study.title}</CardTitle>

@@ -214,7 +214,8 @@ export default function ResearchLabs() {
                 </h1>
 
                 <p className="text-lg text-yellow-100/90 sm:text-xl">
-                  Real-time window into the AeThex Labs mainframe. Monitor directives, facilities, and transmissions as they propagate
+                  Real-time window into the AeThex Labs mainframe. Monitor
+                  directives, facilities, and transmissions as they propagate
                   through the network.
                 </p>
 
@@ -224,7 +225,11 @@ export default function ResearchLabs() {
                     size="lg"
                     className="bg-yellow-400 text-black shadow-[0_0_30px_rgba(250,204,21,0.35)] transition hover:bg-yellow-300"
                   >
-                    <a href="https://labs.aethex.biz" target="_blank" rel="noreferrer">
+                    <a
+                      href="https://labs.aethex.biz"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <Microscope className="mr-2 h-5 w-5" />
                       Access Labs Mainframe
                     </a>
@@ -264,8 +269,9 @@ export default function ResearchLabs() {
                     Core Directives
                   </h2>
                   <p className="mt-3 max-w-2xl text-sm text-yellow-100/70 sm:text-base">
-                    Programmes sourced from the Labs backbone. Tap into live status feeds and request extended dossiers directly from
-                    the Labs archive.
+                    Programmes sourced from the Labs backbone. Tap into live
+                    status feeds and request extended dossiers directly from the
+                    Labs archive.
                   </p>
                 </div>
                 <Zap className="hidden h-10 w-10 text-yellow-400/70 sm:block" />
@@ -289,11 +295,15 @@ export default function ResearchLabs() {
                       <CardDescription className="text-sm uppercase tracking-wide text-yellow-200/70">
                         {directive.codename}
                       </CardDescription>
-                      <p className="text-sm text-yellow-100/80">{directive.summary}</p>
+                      <p className="text-sm text-yellow-100/80">
+                        {directive.summary}
+                      </p>
                     </CardHeader>
                     <CardContent className="flex flex-1 flex-col gap-4">
                       <div className="rounded border border-yellow-400/20 bg-black/70 p-4 font-mono text-xs text-green-400">
-                        <div className="mb-2 text-yellow-200/80">{directive.command}</div>
+                        <div className="mb-2 text-yellow-200/80">
+                          {directive.command}
+                        </div>
                         <div className="space-y-1 text-green-300/90">
                           {directive.output.map((line) => (
                             <div key={line} className="truncate">
@@ -307,7 +317,11 @@ export default function ResearchLabs() {
                         variant="link"
                         className="justify-start px-0 text-yellow-300 hover:text-yellow-200"
                       >
-                        <a href={directive.link} target="_blank" rel="noreferrer">
+                        <a
+                          href={directive.link}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           Request Full Report
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
@@ -327,7 +341,8 @@ export default function ResearchLabs() {
                     Labs Transmissions
                   </h2>
                   <p className="mt-2 max-w-3xl text-sm text-yellow-100/70 sm:text-base">
-                    Broadcasts directly from Labs operations. Filtered for Research & Development stakeholders across AeThex networks.
+                    Broadcasts directly from Labs operations. Filtered for
+                    Research & Development stakeholders across AeThex networks.
                   </p>
                 </div>
                 <Button
@@ -335,7 +350,11 @@ export default function ResearchLabs() {
                   variant="outline"
                   className="border-yellow-400/40 text-yellow-200 hover:bg-yellow-500/10"
                 >
-                  <a href="https://labs.aethex.biz/updates" target="_blank" rel="noreferrer">
+                  <a
+                    href="https://labs.aethex.biz/updates"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Browse Labs Timeline
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
@@ -372,7 +391,11 @@ export default function ResearchLabs() {
                           <Eye className="mr-2 h-4 w-4" />
                           Open Update
                         </Button>
-                        <Button size="sm" variant="outline" className="border-yellow-400/30 text-yellow-200">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-yellow-400/30 text-yellow-200"
+                        >
                           <Download className="mr-2 h-4 w-4" />
                           Archive Packet
                         </Button>
@@ -381,7 +404,11 @@ export default function ResearchLabs() {
                           size="sm"
                           className="bg-yellow-400 text-black hover:bg-yellow-300"
                         >
-                          <a href={transmission.link} target="_blank" rel="noreferrer">
+                          <a
+                            href={transmission.link}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
                             Labs Detail
                           </a>
                         </Button>
@@ -400,7 +427,9 @@ export default function ResearchLabs() {
                   Research Facilities Network
                 </h2>
                 <p className="mt-3 text-sm text-yellow-100/70 sm:text-base">
-                  Physical infrastructure tethered to Labs for rapid prototyping, cyber defense simulations, and quantum-grade production.
+                  Physical infrastructure tethered to Labs for rapid
+                  prototyping, cyber defense simulations, and quantum-grade
+                  production.
                 </p>
               </div>
 
@@ -425,10 +454,15 @@ export default function ResearchLabs() {
                     </CardHeader>
                     <CardContent className="flex flex-1 flex-col gap-4">
                       <div className="space-y-2">
-                        <p className="text-xs uppercase text-yellow-400/80">Equipment Loadout</p>
+                        <p className="text-xs uppercase text-yellow-400/80">
+                          Equipment Loadout
+                        </p>
                         <div className="space-y-2">
                           {facility.equipment.map((item) => (
-                            <div key={item} className="flex items-center gap-2 text-sm text-yellow-100/80">
+                            <div
+                              key={item}
+                              className="flex items-center gap-2 text-sm text-yellow-100/80"
+                            >
                               <CheckCircle className="h-3 w-3 text-yellow-300" />
                               <span>{item}</span>
                             </div>
@@ -436,14 +470,21 @@ export default function ResearchLabs() {
                         </div>
                       </div>
                       <div className="text-sm text-yellow-200/75">
-                        Capacity: <span className="font-semibold text-yellow-200">{facility.capacity}</span>
+                        Capacity:{" "}
+                        <span className="font-semibold text-yellow-200">
+                          {facility.capacity}
+                        </span>
                       </div>
                       <Button
                         asChild
                         variant="link"
                         className="mt-auto justify-start px-0 text-yellow-300 hover:text-yellow-200"
                       >
-                        <a href={facility.link} target="_blank" rel="noreferrer">
+                        <a
+                          href={facility.link}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           Inspect Facility
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
@@ -462,8 +503,9 @@ export default function ResearchLabs() {
                   Sync With AeThex Labs
                 </h2>
                 <p className="mx-auto max-w-3xl text-sm text-yellow-100/70 sm:text-base">
-                  Join the private Labs console for priority access to directives, research packets, and sandbox environments crafted by the
-                  Research & Development collective.
+                  Join the private Labs console for priority access to
+                  directives, research packets, and sandbox environments crafted
+                  by the Research & Development collective.
                 </p>
                 <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                   <Button
@@ -471,7 +513,11 @@ export default function ResearchLabs() {
                     size="lg"
                     className="bg-yellow-400 text-black hover:bg-yellow-300"
                   >
-                    <a href="https://labs.aethex.biz/signup" target="_blank" rel="noreferrer">
+                    <a
+                      href="https://labs.aethex.biz/signup"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <Brain className="mr-2 h-5 w-5" />
                       Request Labs Credentials
                     </a>
@@ -491,23 +537,32 @@ export default function ResearchLabs() {
                 <div className="grid gap-8 pt-10 sm:grid-cols-3">
                   <div className="space-y-2">
                     <Shield className="mx-auto h-8 w-8 text-yellow-400" />
-                    <h3 className="text-lg font-semibold text-yellow-100">Secure Relay</h3>
+                    <h3 className="text-lg font-semibold text-yellow-100">
+                      Secure Relay
+                    </h3>
                     <p className="text-sm text-yellow-100/70">
-                      Labs transmissions are signed and checksum verified every 90 seconds.
+                      Labs transmissions are signed and checksum verified every
+                      90 seconds.
                     </p>
                   </div>
                   <div className="space-y-2">
                     <Cpu className="mx-auto h-8 w-8 text-yellow-400" />
-                    <h3 className="text-lg font-semibold text-yellow-100">Adaptive Compute</h3>
+                    <h3 className="text-lg font-semibold text-yellow-100">
+                      Adaptive Compute
+                    </h3>
                     <p className="text-sm text-yellow-100/70">
-                      Elastic compute mesh auto-balances workloads across Forge and Labs infrastructure.
+                      Elastic compute mesh auto-balances workloads across Forge
+                      and Labs infrastructure.
                     </p>
                   </div>
                   <div className="space-y-2">
                     <Beaker className="mx-auto h-8 w-8 text-yellow-400" />
-                    <h3 className="text-lg font-semibold text-yellow-100">Rapid Experimentation</h3>
+                    <h3 className="text-lg font-semibold text-yellow-100">
+                      Rapid Experimentation
+                    </h3>
                     <p className="text-sm text-yellow-100/70">
-                      Prototype, validate, and deploy concepts with Labs-grade toolchains in under 24 hours.
+                      Prototype, validate, and deploy concepts with Labs-grade
+                      toolchains in under 24 hours.
                     </p>
                   </div>
                 </div>

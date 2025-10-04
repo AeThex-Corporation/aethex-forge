@@ -139,7 +139,8 @@ const engagementModels: EngagementModel[] = [
     name: "Revenue Share / Commission",
     summary:
       "Performance-aligned partnerships where AeThex participates directly in upside across launches, cosmetics, or creator tooling.",
-    bestFor: "Creators with engaged audiences, experiential brands, emerging studios",
+    bestFor:
+      "Creators with engaged audiences, experiential brands, emerging studios",
     pricing: "Flexible splits after recouped production costs",
     highlights: [
       "Shared analytics dashboards and growth experiments",
@@ -154,44 +155,52 @@ const commissionTiers: CommissionTier[] = [
     name: "Indie Accelerator",
     split: "70% creator / 30% AeThex after cost recovery",
     threshold: "Projects under $50K or first-time launches",
-    notes: "AeThex fronts production sprints and tooling. Marketing boosts via community partners included.",
+    notes:
+      "AeThex fronts production sprints and tooling. Marketing boosts via community partners included.",
   },
   {
     name: "Studio Partnership",
     split: "80% partner / 20% AeThex on net revenue",
     threshold: "Established teams with existing distribution",
-    notes: "Joint roadmap planning, LiveOps experimentation, and marketplace merchandising support.",
+    notes:
+      "Joint roadmap planning, LiveOps experimentation, and marketplace merchandising support.",
   },
   {
     name: "Enterprise Commission",
     split: "Custom 10-25% performance fee",
-    threshold: "High-profile activations, seasonal events, or branded experiences",
-    notes: "Co-marketing, compliance, and rapid scale pods with 24/7 operations.",
+    threshold:
+      "High-profile activations, seasonal events, or branded experiences",
+    notes:
+      "Co-marketing, compliance, and rapid scale pods with 24/7 operations.",
   },
 ];
 
 const addOns: AddOn[] = [
   {
     title: "Creative Direction",
-    description: "Narrative design, concept art, branding systems, and pitch decks ready for investors or communities.",
+    description:
+      "Narrative design, concept art, branding systems, and pitch decks ready for investors or communities.",
     rate: "$2,000+ per engagement",
     icon: Sparkles,
   },
   {
     title: "Growth & Monetization",
-    description: "Economy balancing, pricing experiments, retention funnels, and live events strategy.",
+    description:
+      "Economy balancing, pricing experiments, retention funnels, and live events strategy.",
     rate: "$1,200/mo or revenue share",
     icon: LineChart,
   },
   {
     title: "Support & Operations",
-    description: "Player support, moderation, telemetry tuning, and automated health checks across platforms.",
+    description:
+      "Player support, moderation, telemetry tuning, and automated health checks across platforms.",
     rate: "$95/hr or bundle",
     icon: Users,
   },
   {
     title: "QA & Certification",
-    description: "Platform certification, device matrix testing, and regression pipelines for continuous delivery.",
+    description:
+      "Platform certification, device matrix testing, and regression pipelines for continuous delivery.",
     rate: "$1,500 per release window",
     icon: CalendarCheck,
   },
@@ -410,7 +419,9 @@ export default function Engage() {
                       variant="outline"
                       className="mt-4 w-full border-aethex-400/40 text-aethex-100 hover:border-aethex-400 hover:bg-aethex-500/10"
                     >
-                      <Link to={`/contact?subject=${encodeURIComponent(bundle.name + " Inquiry")}`}>
+                      <Link
+                        to={`/contact?subject=${encodeURIComponent(bundle.name + " Inquiry")}`}
+                      >
                         Request {bundle.name} Proposal
                       </Link>
                     </Button>
@@ -429,8 +440,9 @@ export default function Engage() {
                 Engagement Models
               </h2>
               <p className="text-lg text-muted-foreground">
-                Mix and match fixed project work, retainers, or performance-based
-                commissions. Every option includes transparent reporting.
+                Mix and match fixed project work, retainers, or
+                performance-based commissions. Every option includes transparent
+                reporting.
               </p>
             </div>
 
@@ -623,7 +635,10 @@ export default function Engage() {
                     size="lg"
                     className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
                   >
-                    <Link to="/contact" className="flex items-center justify-center gap-2">
+                    <Link
+                      to="/contact"
+                      className="flex items-center justify-center gap-2"
+                    >
                       <Briefcase className="h-5 w-5" />
                       Request Proposal
                     </Link>
