@@ -82,6 +82,9 @@ const PassportSummary = ({
   const loyaltyPoints = (profile as any)?.loyalty_points ?? 0;
   const progressToNextLevel = Math.min(((totalXp % 1000) / 1000) * 100, 100);
   const featureAchievements = achievements.slice(0, MAX_HERO_ACHIEVEMENTS);
+  const godModeUnlocked = achievements.some(
+    (achievement) => achievement.name?.toLowerCase() === "god mode",
+  );
 
   return (
     <Card className="bg-gradient-to-br from-slate-950/90 via-slate-900/70 to-slate-950/90 border border-slate-800 shadow-2xl">
