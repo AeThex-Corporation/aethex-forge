@@ -325,7 +325,7 @@ export default function Onboarding() {
         username: normalizedFirst.replace(/\s+/g, "_"),
         full_name: `${normalizedFirst} ${normalizedLast}`.trim(),
         user_type:
-          (userTypeMap[data.userType || "member"] as any) || "community_member",
+          (userTypeMap[data.userType || "member"] as any) || "game_developer",
         experience_level: (data.experience.level as any) || "beginner",
         bio: data.experience.previousProjects?.trim() || undefined,
       } as any;
