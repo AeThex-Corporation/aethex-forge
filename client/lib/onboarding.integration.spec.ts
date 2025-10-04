@@ -35,16 +35,202 @@ vi.stubGlobal(
 const fetchMock = fetch as unknown as Mock;
 
 vi.mock("@/lib/supabase", () => {
-  const chain = () => ({
-    select: () => chain(),
-    insert: () => ({ data: null, error: null }),
-    update: () => ({ data: null, error: null }),
-    delete: () => ({ error: null }),
-    eq: () => chain(),
-    order: () => chain(),
-    limit: () => chain(),
-    single: () => ({ data: null, error: null }),
+  const userProfiles = new Map<string, any>();
+  const userAchievements: Array<{ user_id: string; achievement_id: string }> = [];
+
+  const achievementsCatalog = [
+    {
+      id: "welcome-to-aethex",
+      name: "Welcome to AeThex",
+      description: "Complete your AeThex passport to unlock the community.",
+      icon: "sparkles",
+      xp_reward: 150,
+      badge_color: "#7C3AED",
+      created_at: "2024-01-01T00:00:00.000Z",
+    },
+    {
+      id: "aethex-explorer",
+      name: "AeThex Explorer",
+      description: "Link your favorite tools and showcase your craft.",
+      icon: "compass",
+      xp_reward: 200,
+      badge_color: "#06B6D4",
+      created_at: "2024-01-01T00:00:00.000Z",
+    },
+  ];
+
+  const achievementsById = new Map(achievementsCatalog.map((item) => [item.id, item] as const));
+  const achievementsByName = new Map(achievementsCatalog.map((item) => [item.name, item] as const));
+
+  const profileDefaults = (id: string) => ({
+    id,
+    user_type: "game_developer",
+    experience_level: "beginner",
+    total_xp: 0,
+    level: 1,
+    loyalty_points: 0,
+    current_streak: 1,
+    longest_streak: 1,
+    last_streak_at: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   });
+
+  const userProfilesTable = {
+    update(values: any) {
+      return {
+        eq(_column: string, id: string) {
+          const existing = userProfiles.get(id) ?? profileDefaults(id);
+          const updated = { ...existing, ...values };
+          userProfiles.set(id, updated);
+          return {
+            select() {
+              return {
+                single() {
+                  return { data: updated, error: null };
+                },
+              };
+            },
+          };
+        },
+      };
+    },
+    upsert(values: any) {
+      const record = { ...profileDefaults(values.id), ...values };
+      userProfiles.set(values.id, record);
+      return {
+        select() {
+          return {
+            single() {
+              return { data: record, error: null };
+            },
+          };
+        },
+      };
+    },
+    insert(values: any) {
+      const record = { ...profileDefaults(values.id), ...values };
+      userProfiles.set(values.id, record);
+      return {
+        select() {
+          return {
+            single() {
+              return { data: record, error: null };
+            },
+          };
+        },
+      };
+    },
+    select() {
+      return {
+        eq(_column: string, id: string) {
+          const record = userProfiles.get(id);
+          return {
+            single() {
+              if (!record) {
+                return { data: null, error: { code: "PGRST116" } };
+              }
+              return { data: record, error: null };
+            },
+          };
+        },
+        order() {
+          return {
+            limit() {
+              return {
+                data: Array.from(userProfiles.values()),
+                error: null,
+              };
+            },
+          };
+        },
+      };
+    },
+  };
+
+  const achievementsTable = {
+    select(columns?: string) {
+      const mapRecord = (record: any) => {
+        if (!record) return record;
+        if (!columns || columns.includes("*")) return record;
+        const fieldNames = columns.split(",").map((item) => item.trim());
+        const shaped: Record<string, any> = {};
+        for (const field of fieldNames) {
+          if (!field) continue;
+          shaped[field] = record[field];
+        }
+        return shaped;
+      };
+
+      return {
+        order() {
+          return {
+            data: achievementsCatalog.map(mapRecord),
+            error: null,
+          };
+        },
+        eq(column: string, value: string) {
+          const found =
+            column === "id"
+              ? achievementsById.get(value)
+              : column === "name"
+                ? achievementsByName.get(value)
+                : undefined;
+          const mapped = mapRecord(found ?? null);
+          return {
+            maybeSingle() {
+              return { data: mapped ?? null, error: null };
+            },
+            single() {
+              return { data: mapped ?? null, error: null };
+            },
+          };
+        },
+        maybeSingle() {
+          const first = achievementsCatalog[0] ?? null;
+          return { data: mapRecord(first), error: null };
+        },
+      };
+    },
+  };
+
+  const userAchievementsTable = {
+    insert(payload: any) {
+      const entries = Array.isArray(payload) ? payload : [payload];
+      let error: any = null;
+      for (const entry of entries) {
+        const exists = userAchievements.some(
+          (item) =>
+            item.user_id === entry.user_id && item.achievement_id === entry.achievement_id,
+        );
+        if (exists) {
+          error = { code: "23505" };
+          continue;
+        }
+        userAchievements.push({ ...entry });
+      }
+      return { error };
+    },
+    select() {
+      return {
+        eq(_column: string, userId: string) {
+          return {
+            data: userAchievements.map((entry) => ({
+              ...entry,
+              achievements: achievementsById.get(entry.achievement_id),
+            })).filter((entry) => entry.user_id === userId),
+            error: null,
+          };
+        },
+      };
+    },
+  };
+
+  const tableMap: Record<string, any> = {
+    user_profiles: userProfilesTable,
+    achievements: achievementsTable,
+    user_achievements: userAchievementsTable,
+  };
 
   return {
     supabase: {
@@ -64,7 +250,11 @@ vi.mock("@/lib/supabase", () => {
           },
         }),
       },
-      from: () => chain(),
+      from(table: string) {
+        return tableMap[table] ?? {
+          select: () => ({ data: [], error: null }),
+        };
+      },
       channel: () => ({
         on: () => ({}),
         subscribe: () => ({ unsubscribe: () => {} }),
