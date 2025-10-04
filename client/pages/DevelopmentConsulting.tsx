@@ -575,7 +575,7 @@ export default function DevelopmentConsulting() {
                             key={resultIndex}
                             className="flex items-center space-x-2 text-sm"
                           >
-                            <TrendingUp className="h-3 w-3 text-green-400 flex-shrink-0" />
+                            <TrendingUp className="h-3 w-3 text-pink-400 flex-shrink-0" />
                             <span>{result}</span>
                           </li>
                         ))}
