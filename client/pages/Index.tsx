@@ -368,44 +368,31 @@ export default function Index() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
-              <CardHeader>
-                <CardTitle>Game Development</CardTitle>
-                <CardDescription>Studios and indie support</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild className="w-full">
-                  <Link to="/game-development">Learn More</Link>
-                </Button>
-              </CardContent>
-            </Card>
+            {serviceOfferings.map((offering) => (
+              <Card
+                key={offering.title}
+                className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
+              >
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+                <CardHeader className="relative space-y-2">
+                  <CardTitle className={`text-lg ${offering.titleClass}`}>
+                    {offering.title}
+                  </CardTitle>
+                  <CardDescription className={`text-sm ${offering.descriptionClass}`}>
+                    {offering.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="relative pt-2">
+                  <Button asChild className={`w-full ${offering.buttonClass}`}>
+                    <Link to={offering.link}>Learn More</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
 
-            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
-              <CardHeader>
-                <CardTitle>Consulting</CardTitle>
-                <CardDescription>Architecture & delivery</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild className="w-full">
-                  <Link to="/consulting">Learn More</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all hover-lift">
-              <CardHeader>
-                <CardTitle>Mentorship</CardTitle>
-                <CardDescription>Programs and guidance</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild className="w-full">
-                  <Link to="/mentorship">Learn More</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-yellow-400/40 bg-black/80 text-yellow-100 shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all hover:-translate-y-1 hover:border-yellow-300">
-              <CardHeader className="space-y-2">
+            <Card className="relative overflow-hidden border border-yellow-400/40 bg-black/80 text-yellow-100 shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 hover:-translate-y-1 hover:border-yellow-300 group">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+              <CardHeader className="relative space-y-2">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Microscope className="h-5 w-5 text-yellow-300" />
                   AeThex Labs
@@ -414,10 +401,10 @@ export default function Index() {
                   BlackSite R&D portal synced with Labs mainframe
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="relative space-y-3">
                 <Button
                   asChild
-                  className="w-full bg-yellow-400 text-black hover:bg-yellow-300"
+                  className="w-full bg-yellow-400 text-black hover:bg-yellow-300 shadow-[0_0_18px_rgba(250,204,21,0.25)]"
                 >
                   <Link to="/research">Open Interface</Link>
                 </Button>
