@@ -212,39 +212,6 @@ export interface ActivateRewardsResponse {
   targetUserId?: string | null;
 }
 
-const fallbackInterests = new Map<string, string[]>();
-
-const fallbackAchievementCatalog: ReadonlyArray<AethexAchievement> = [
-  {
-    id: "welcome-to-aethex",
-    name: "Welcome to AeThex",
-    description: "Complete your AeThex passport to unlock the community.",
-    icon: "sparkles",
-    xp_reward: 150,
-    badge_color: "#7C3AED",
-    created_at: "2024-01-01T00:00:00.000Z",
-  },
-  {
-    id: "aethex-explorer",
-    name: "AeThex Explorer",
-    description: "Link your favorite tools and showcase your craft.",
-    icon: "compass",
-    xp_reward: 200,
-    badge_color: "#06B6D4",
-    created_at: "2024-01-01T00:00:00.000Z",
-  },
-];
-
-const fallbackAchievementsById = new Map<string, AethexAchievement>(
-  fallbackAchievementCatalog.map((achievement) => [achievement.id, achievement]),
-);
-
-const fallbackAchievementsByName = new Map<string, AethexAchievement>(
-  fallbackAchievementCatalog.map((achievement) => [achievement.name, achievement]),
-);
-
-const fallbackUserAchievements = new Map<string, Set<string>>();
-
 function isTableMissing(err: any): boolean {
   const msg = String(err?.message || err?.hint || err?.details || "");
   return (
