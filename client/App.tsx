@@ -28,7 +28,7 @@ import Community from "./pages/Community";
 import Support from "./pages/Support";
 import Status from "./pages/Status";
 import Changelog from "./pages/Changelog";
-import ProfilesDirectory from "./pages/ProfilesDirectory";
+import DevelopersDirectory from "./pages/DevelopersDirectory";
 import ProfilePassport from "./pages/ProfilePassport";
 import Profile from "./pages/Profile";
 import LegacyPassportRedirect from "./pages/LegacyPassportRedirect";
@@ -66,7 +66,13 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/me" element={<Profile />} />
 
-              <Route path="/profiles" element={<ProfilesDirectory />} />
+              <Route path="/developers" element={<DevelopersDirectory />} />
+              <Route path="/developers/me" element={<LegacyPassportRedirect />} />
+              <Route
+                path="/developers/:id"
+                element={<LegacyPassportRedirect />}
+              />
+              <Route path="/profiles" element={<Navigate to="/developers" replace />} />
               <Route path="/profiles/me" element={<LegacyPassportRedirect />} />
               <Route
                 path="/profiles/:id"
