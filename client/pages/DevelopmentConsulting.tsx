@@ -266,11 +266,12 @@ export default function DevelopmentConsulting() {
       <div className="min-h-screen bg-aethex-gradient">
         {/* Hero Section */}
         <section className="relative py-20 lg:py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900/40 via-transparent to-slate-950/60" />
           <div className="absolute inset-0 opacity-10">
             {[...Array(25)].map((_, i) => (
               <div
                 key={i}
-                className="absolute text-aethex-400 animate-float"
+                className="absolute text-pink-400/60 animate-float"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
@@ -288,14 +289,14 @@ export default function DevelopmentConsulting() {
             <div className="max-w-4xl mx-auto space-y-8">
               <Badge
                 variant="outline"
-                className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle"
+                className="border-fuchsia-500/60 text-pink-200 animate-bounce-gentle"
               >
                 <BriefcaseIcon className="h-3 w-3 mr-1" />
                 Development Consulting Division
               </Badge>
 
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient-purple">
+                <span className="bg-gradient-to-r from-fuchsia-300 via-pink-500 to-rose-500 bg-clip-text text-transparent">
                   Strategic Technology Consulting
                 </span>
               </h1>
@@ -310,7 +311,7 @@ export default function DevelopmentConsulting() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift"
+                  className="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 hover:from-fuchsia-600 hover:via-pink-500 hover:to-rose-500/90 shadow-[0_0_35px_rgba(236,72,153,0.45)] hover-lift"
                 >
                   <Link
                     to="/engage#development-consulting"
@@ -325,7 +326,7 @@ export default function DevelopmentConsulting() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-border/50 hover-lift"
+                  className="border-pink-400/50 text-pink-200 hover:border-pink-400 hover:bg-pink-500/10 hover-lift"
                 >
                   <Link to="/docs">Case Studies</Link>
                 </Button>
