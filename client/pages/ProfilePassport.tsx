@@ -136,6 +136,10 @@ const ProfilePassport = () => {
 
         if (!resolvedProfile || !resolvedId) {
           if (!cancelled) {
+            setProfile(null);
+            setAchievements([]);
+            setInterests([]);
+            setProjects([]);
             setNotFound(true);
           }
           return;
