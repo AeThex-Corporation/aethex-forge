@@ -244,10 +244,10 @@ function EventCard({
                     <Input
                       id={`team-${event.id}`}
                       value={form.teamName}
-                      onChange={(value) =>
+                      onChange={(eventChange) =>
                         setForm((prev) => ({
                           ...prev,
-                          teamName: value.target.value,
+                          teamName: eventChange.target.value,
                         }))
                       }
                       placeholder="Who are you building with?"
