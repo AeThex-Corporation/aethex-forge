@@ -137,6 +137,11 @@ const PassportSummary = ({
             >
               {loyaltyPoints} Loyalty
             </Badge>
+            {godModeUnlocked && (
+              <Badge className="bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-500 text-slate-900 font-semibold shadow-lg shadow-yellow-400/40">
+                GOD Mode
+              </Badge>
+            )}
           </div>
         </div>
         <div className="w-full max-w-xs space-y-3 rounded-xl bg-slate-900/60 p-4 border border-slate-800">
