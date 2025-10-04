@@ -336,7 +336,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* Services Grid */}
-        <section className="py-20 bg-background/30">
+        <section className="py-20 bg-pink-500/5 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -453,7 +453,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* Consulting Packages */}
-        <section className="py-20 bg-background/30">
+        <section className="py-20 bg-rose-500/5 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -601,7 +601,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-background/30">
+        <section className="py-20 bg-pink-500/5 backdrop-blur-sm">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple">
