@@ -595,7 +595,7 @@ export default function Engage() {
         </section>
 
         {/* FAQs + CTA */}
-        <section className="py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto max-w-5xl px-4">
             <div className="grid gap-12 md:grid-cols-[3fr,2fr]">
               <div>
