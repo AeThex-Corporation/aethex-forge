@@ -232,8 +232,8 @@ function EventCard({
                       id={`email-${event.id}`}
                       type="email"
                       value={form.email}
-                      onChange={(value) =>
-                        setForm((prev) => ({ ...prev, email: value.target.value }))
+                      onChange={(eventChange) =>
+                        setForm((prev) => ({ ...prev, email: eventChange.target.value }))
                       }
                       placeholder="you@example.com"
                       required
