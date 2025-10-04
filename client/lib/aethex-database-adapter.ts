@@ -312,13 +312,14 @@ export const aethexUserService = {
       throw error;
     }
 
-    return ((data as any[]) || []).map(
-      (row) =>
-        ({
+    return ((data as any[]) || []).map((row) =>
+      normalizeProfile(
+        {
           ...(row as AethexUserProfile),
           user_type: (row as any).user_type || "community_member",
           experience_level: (row as any).experience_level || "beginner",
-        }) as AethexUserProfile,
+        },
+      ),
     );
   },
 
