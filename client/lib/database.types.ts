@@ -338,6 +338,9 @@ export type Database = {
           level: number | null;
           linkedin_url: string | null;
           location: string | null;
+          current_streak: number | null;
+          longest_streak: number | null;
+          last_streak_at: string | null;
           total_xp: number | null;
           twitter_url: string | null;
           updated_at: string;
@@ -359,6 +362,9 @@ export type Database = {
           level?: number | null;
           linkedin_url?: string | null;
           location?: string | null;
+          current_streak?: number | null;
+          longest_streak?: number | null;
+          last_streak_at?: string | null;
           total_xp?: number | null;
           twitter_url?: string | null;
           updated_at?: string;
@@ -380,6 +386,9 @@ export type Database = {
           level?: number | null;
           linkedin_url?: string | null;
           location?: string | null;
+          current_streak?: number | null;
+          longest_streak?: number | null;
+          last_streak_at?: string | null;
           total_xp?: number | null;
           twitter_url?: string | null;
           updated_at?: string;
