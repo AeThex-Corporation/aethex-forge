@@ -161,6 +161,9 @@ export default function Profile() {
     },
   ]);
 
+  const currentStreak = profile?.current_streak ?? 0;
+  const longestStreak = profile?.longest_streak ?? currentStreak;
+
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/login');
