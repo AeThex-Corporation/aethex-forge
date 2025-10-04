@@ -291,7 +291,7 @@ export const aethexUserService = {
       throw error;
     }
 
-    return data as AethexUserProfile;
+    return normalizeProfile(data);
   },
 
   async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
@@ -358,7 +358,7 @@ export const aethexUserService = {
       throw error;
     }
 
-    return data as AethexUserProfile;
+    return normalizeProfile(data);
   },
 
   async createInitialProfile(
