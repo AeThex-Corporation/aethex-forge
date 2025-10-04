@@ -106,7 +106,115 @@ export default function Layout({ children }: LayoutProps) {
           </nav>
 
           {/* Auth Section */}
-          <div className="flex items-center space-x-4 animate-slide-left">
+          <div className="flex items-center gap-2 md:gap-4 animate-slide-left">
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="border-border/60 bg-background/80 backdrop-blur hover:bg-background"
+                  >
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Open navigation</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent
+                  side="left"
+                  className="bg-background/95 backdrop-blur-xl border-border/40"
+                >
+                  <SheetHeader className="text-left">
+                    <SheetTitle>Navigate AeThex</SheetTitle>
+                    <SheetDescription>
+                      Access any section without leaving your flow.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <nav className="mt-6 flex flex-col gap-2">
+                    {navItems.map((item) => (
+                      <SheetClose asChild key={item.name}>
+                        <Link
+                          to={item.href}
+                          onClick={scrollToTop}
+                          className={cn(
+                            "flex items-center justify-between rounded-lg border border-transparent px-3 py-2 text-base font-medium transition-colors",
+                            location.pathname === item.href
+                              ? "bg-aethex-500/15 text-aethex-200"
+                              : "text-muted-foreground hover:border-aethex-400/40 hover:text-aethex-300",
+                          )}
+                        >
+                          <span>{item.name}</span>
+                          {location.pathname === item.href && (
+                            <span className="text-xs font-semibold uppercase tracking-widest text-aethex-300">
+                              Active
+                            </span>
+                          )}
+                        </Link>
+                      </SheetClose>
+                    ))}
+                  </nav>
+                  <div className="mt-8 space-y-3 border-t border-border/40 pt-4">
+                    {loading ? (
+                      <div className="space-y-2">
+                        <div className="h-4 w-32 animate-pulse rounded bg-border/40" />
+                        <div className="h-4 w-24 animate-pulse rounded bg-border/40" />
+                      </div>
+                    ) : user ? (
+                      <>
+                        <SheetClose asChild>
+                          <Link
+                            to="/dashboard"
+                            onClick={scrollToTop}
+                            className="block rounded-lg bg-gradient-to-r from-aethex-500 to-neon-blue px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-aethex-500/20"
+                          >
+                            Go to Dashboard
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            to="/profile/me"
+                            onClick={scrollToTop}
+                            className="block rounded-lg border border-border/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-aethex-400/40 hover:text-aethex-200"
+                          >
+                            Manage Profile
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <button
+                            type="button"
+                            className="flex w-full items-center justify-start rounded-lg border border-transparent px-3 py-2 text-sm font-medium text-red-400 transition-colors hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-300"
+                            onClick={() => signOut()}
+                          >
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Sign out
+                          </button>
+                        </SheetClose>
+                      </>
+                    ) : (
+                      <>
+                        <SheetClose asChild>
+                          <Link
+                            to="/onboarding"
+                            onClick={scrollToTop}
+                            className="block rounded-lg bg-gradient-to-r from-aethex-500 to-neon-blue px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-aethex-500/20"
+                          >
+                            Join AeThex
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            to="/login"
+                            onClick={scrollToTop}
+                            className="block rounded-lg border border-border/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-aethex-400/40 hover:text-aethex-200"
+                          >
+                            Sign In
+                          </Link>
+                        </SheetClose>
+                      </>
+                    )}
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
             {!loading && (
               <>
                 {user ? (
