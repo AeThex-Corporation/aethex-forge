@@ -374,69 +374,69 @@ export default function Blog() {
         </section>
 
         {/* Featured Post */}
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <Card className="max-w-4xl mx-auto overflow-hidden border-border/50 hover:border-aethex-400/50 transition-all duration-300 animate-scale-in">
-              <div className="md:flex">
-                <div className="md:w-1/2">
-                  <img
-                    src={featuredPost.image}
-                    alt={featuredPost.title}
-                    className="w-full h-64 md:h-full object-cover"
-                  />
-                </div>
-                <div className="md:w-1/2 p-8">
-                  <Badge className="mb-4 bg-gradient-to-r from-aethex-500 to-neon-blue">
-                    Featured
-                  </Badge>
-                  <CardTitle className="text-2xl mb-4 text-gradient">
-                    {featuredPost.title}
-                  </CardTitle>
-                  <CardDescription className="text-base mb-6">
-                    {featuredPost.excerpt}
-                  </CardDescription>
+        {activeFeaturedPost && (
+          <section className="py-12">
+            <div className="container mx-auto px-4">
+              <Card className="max-w-4xl mx-auto overflow-hidden border-border/50 hover:border-aethex-400/50 transition-all duration-300 animate-scale-in">
+                <div className="md:flex">
+                  <div className="md:w-1/2">
+                    <img
+                      src={activeFeaturedPost.image ?? placeholderImage}
+                      alt={activeFeaturedPost.title}
+                      className="w-full h-64 md:h-full object-cover"
+                    />
+                  </div>
+                  <div className="md:w-1/2 p-8">
+                    <Badge className="mb-4 bg-gradient-to-r from-aethex-500 to-neon-blue">
+                      Featured
+                    </Badge>
+                    <CardTitle className="text-2xl mb-4 text-gradient">
+                      {activeFeaturedPost.title}
+                    </CardTitle>
+                    <CardDescription className="text-base mb-6">
+                      {activeFeaturedPost.excerpt}
+                    </CardDescription>
 
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <User className="h-4 w-4" />
-                        <span>{featuredPost.author}</span>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                        <div className="flex items-center space-x-1">
+                          <User className="h-4 w-4" />
+                          <span>{activeFeaturedPost.author || "AeThex Team"}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{activeFeaturedPost.date}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{featuredPost.date}</span>
+                      {activeFeaturedPost.readTime && (
+                        <Badge variant="outline">{activeFeaturedPost.readTime}</Badge>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <Button asChild>
+                        <Link to={`/blog/${buildSlug(activeFeaturedPost)}`}>
+                          Read Article
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </Link>
+                      </Button>
+                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                        <div className="flex items-center space-x-1">
+                          <ThumbsUp className="h-4 w-4" />
+                          <span>{activeFeaturedPost.likes ?? 0}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <MessageCircle className="h-4 w-4" />
+                          <span>{activeFeaturedPost.comments ?? 0}</span>
+                        </div>
                       </div>
                     </div>
-                    {featuredPost?.readTime && (
-                      <Badge variant="outline">{featuredPost.readTime}</Badge>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <Button asChild>
-                      <Link
-                        to={`/blog/${(featuredPost?.slug || "").toString()}`}
-                      >
-                        Read Article
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </Link>
-                    </Button>
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <ThumbsUp className="h-4 w-4" />
-                        <span>{featuredPost?.likes || 0}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <MessageCircle className="h-4 w-4" />
-                        <span>{featuredPost?.comments || 0}</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          </div>
-        </section>
+              </Card>
+            </div>
+          </section>
+        )}
 
         {/* Recent Posts */}
         <section className="py-20">
