@@ -508,7 +508,7 @@ export default function GameDevelopment() {
               {process.map((phase, index) => (
                 <div
                   key={index}
-                  className="relative flex items-start mb-12 animate-slide-right"
+                  className="relative flex flex-col sm:flex-row items-start gap-4 sm:gap-6 mb-12 animate-slide-right"
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   {/* Step Number */}
