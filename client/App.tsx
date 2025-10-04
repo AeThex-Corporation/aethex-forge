@@ -16,7 +16,7 @@ import GameDevelopment from "./pages/GameDevelopment";
 import DevelopmentConsulting from "./pages/DevelopmentConsulting";
 import MentorshipPrograms from "./pages/MentorshipPrograms";
 import ResearchLabs from "./pages/ResearchLabs";
-import Pricing from "./pages/Pricing";
+import Engage from "./pages/Pricing";
 import Documentation from "./pages/Documentation";
 import DocsLayout from "./pages/DocsLayout";
 import DocsOverview from "./pages/docs/DocsOverview";
@@ -85,8 +85,11 @@ const App = () => (
               <Route path="/game-development" element={<GameDevelopment />} />
               <Route path="/consulting" element={<DevelopmentConsulting />} />
               <Route path="/mentorship" element={<MentorshipPrograms />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/engage" element={<Pricing />} />
+              <Route path="/engage" element={<Engage />} />
+              <Route
+                path="/pricing"
+                element={<Navigate to="/engage" replace />}
+              />
               <Route path="/research" element={<ResearchLabs />} />
               <Route path="/labs" element={<ResearchLabs />} />
 
