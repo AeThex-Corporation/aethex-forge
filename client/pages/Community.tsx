@@ -176,6 +176,19 @@ type SpotlightCreator = {
   }[];
 };
 
+type FeaturedContributor = {
+  name: string;
+  avatar: string;
+  title: string;
+  contributions: number;
+  badge: string;
+  speciality: string;
+  bio: string;
+  recentContribution: string;
+  reputation: string;
+  profileUrl: string;
+};
+
 type ModerationTool = {
   id: string;
   title: string;
