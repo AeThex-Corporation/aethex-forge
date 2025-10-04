@@ -587,7 +587,7 @@ export default function DevelopmentConsulting() {
                         <Badge
                           key={techIndex}
                           variant="secondary"
-                          className="text-xs"
+                          className="text-xs bg-pink-500/10 text-pink-100"
                         >
                           {tech}
                         </Badge>
