@@ -233,7 +233,7 @@ const faqs = [
   {
     question: "What information helps you quote faster?",
     answer:
-      "Links to existing builds, tech stack details, target platforms, deadlines, and growth goals. Even bullet-point dreams are welcome���our team is great at filling in blanks.",
+      "Links to existing builds, tech stack details, target platforms, deadlines, and growth goals. Even bullet-point dreams are welcome—our team is great at filling in blanks.",
   },
   {
     question: "Can we start small before scaling up?",
@@ -517,7 +517,7 @@ export default function Engage() {
               </h2>
               <p className="text-lg text-muted-foreground">
                 Bolt these on to any bundle or engagement model for extra lift.
-                Pricing shown is typical—final quotes depend on scope.
+                Investments shown are typical—final quotes depend on scope.
               </p>
             </div>
 
@@ -556,8 +556,8 @@ export default function Engage() {
                 How Engagements Flow
               </h2>
               <p className="text-lg text-muted-foreground">
-                Every engagement—regardless of pricing—follows a transparent flow
-                so you always know what happens next.
+                Every engagement—regardless of investment—follows a transparent
+                flow so you always know what happens next.
               </p>
             </div>
 
@@ -633,7 +633,7 @@ export default function Engage() {
                     variant="outline"
                     className="w-full border-aethex-400/60 text-aethex-100 hover:bg-aethex-500/10"
                   >
-                    <a href="mailto:hello@aethex.biz?subject=AeThex Pricing Inquiry">
+                    <a href="mailto:hello@aethex.biz?subject=AeThex Engagement Inquiry">
                       hello@aethex.biz
                     </a>
                   </Button>
