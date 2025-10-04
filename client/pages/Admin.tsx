@@ -108,7 +108,7 @@ export default function Admin() {
               <CardHeader>
                 <CardTitle className="text-red-400">Access Denied</CardTitle>
                 <CardDescription>
-                  You dont have permission to access the admin panel.
+                  You don't have permission to access the admin panel.
                 </CardDescription>
               </CardHeader>
               <CardContent>
