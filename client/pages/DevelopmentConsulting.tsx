@@ -550,7 +550,7 @@ export default function DevelopmentConsulting() {
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   <CardHeader>
-                    <Badge variant="outline" className="w-fit mb-2">
+                    <Badge variant="outline" className="w-fit mb-2 border-pink-400/40 text-pink-200">
                       {study.client}
                     </Badge>
                     <CardTitle className="text-lg">{study.title}</CardTitle>
