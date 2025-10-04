@@ -652,7 +652,7 @@ export default function MentorshipPrograms() {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 gap-8 mt-12">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-12">
                 <div className="text-center">
                   <MessageCircle className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
                   <h3 className="font-semibold">24/7 Support</h3>
