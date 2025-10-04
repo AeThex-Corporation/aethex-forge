@@ -65,8 +65,110 @@ export default function Blog() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const toastShownRef = useRef(false);
-  const [posts, setPosts] = useState<any[]>([]);
-  const [featuredPost, setFeaturedPost] = useState<any | null>(null);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [featuredPost, setFeaturedPost] = useState<BlogPost | null>(null);
+
+  const staticPosts = useMemo<BlogPost[]>(
+    () => [
+      {
+        id: "static-1",
+        slug: "building-scalable-game-architecture",
+        title: "Building Scalable Game Architecture with Microservices",
+        excerpt:
+          "Learn how to design game backends that can handle millions of concurrent players using modern microservices patterns.",
+        author: "Marcus Rodriguez",
+        date: "December 12, 2024",
+        readTime: "6 min read",
+        category: "Technology",
+        likes: 89,
+        comments: 15,
+        trending: true,
+        image:
+          "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-2",
+        slug: "advanced-unity-optimization-techniques",
+        title: "Advanced Unity Optimization Techniques",
+        excerpt:
+          "Performance optimization strategies that can boost your Unity game's frame rate by up to 300%.",
+        author: "Alex Thompson",
+        date: "December 10, 2024",
+        readTime: "12 min read",
+        category: "Tutorials",
+        likes: 156,
+        comments: 34,
+        trending: false,
+        image:
+          "https://images.unsplash.com/photo-1527443224154-dcc0707b462b?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-3",
+        slug: "aethex-labs-neural-network-compression",
+        title: "AeThex Labs: Breakthrough in Neural Network Compression",
+        excerpt:
+          "Our research team achieves 90% model size reduction while maintaining accuracy for mobile game AI.",
+        author: "Dr. Aisha Patel",
+        date: "December 8, 2024",
+        readTime: "5 min read",
+        category: "Research",
+        likes: 203,
+        comments: 41,
+        trending: true,
+        image:
+          "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-4",
+        slug: "introducing-aethex-cloud-gaming-platform",
+        title: "Introducing AeThex Cloud Gaming Platform",
+        excerpt:
+          "Launch games instantly across any device with our new cloud gaming infrastructure and global CDN.",
+        author: "AeThex Team",
+        date: "December 5, 2024",
+        readTime: "4 min read",
+        category: "Company News",
+        likes: 278,
+        comments: 52,
+        trending: false,
+        image:
+          "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-5",
+        slug: "real-time-ray-tracing-in-web-games",
+        title: "Real-time Ray Tracing in Web Games",
+        excerpt:
+          "Tutorial: Implementing hardware-accelerated ray tracing in browser-based games using WebGPU.",
+        author: "Jordan Kim",
+        date: "December 3, 2024",
+        readTime: "15 min read",
+        category: "Tutorials",
+        likes: 94,
+        comments: 18,
+        trending: false,
+        image:
+          "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-6",
+        slug: "the-evolution-of-game-ai",
+        title: "The Evolution of Game AI: From Scripts to Neural Networks",
+        excerpt:
+          "A comprehensive look at how artificial intelligence in games has evolved and where it's heading next.",
+        author: "Dr. Michael Chen",
+        date: "December 1, 2024",
+        readTime: "10 min read",
+        category: "Technology",
+        likes: 167,
+        comments: 29,
+        trending: false,
+        image:
+          "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1200&q=80",
+      },
+    ],
+    [],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -75,22 +177,23 @@ export default function Blog() {
         const res = await fetch("/api/blog?limit=50");
         const data = res.ok ? await res.json() : [];
         if (!cancelled && Array.isArray(data)) {
-          const mapped = data.map((r: any) => ({
+          const mapped: BlogPost[] = data.map((r: any) => ({
             id: r.id,
-            slug: r.slug,
+            slug: r.slug ?? r.id ?? undefined,
             title: r.title,
             excerpt: r.excerpt,
             author: r.author,
             date: r.date,
-            readTime: r.read_time,
-            category: r.category || "General",
-            image: r.image,
-            likes: r.likes || 0,
-            comments: r.comments || 0,
+            readTime: r.read_time ?? r.readTime,
+            category: r.category ?? "General",
+            image: r.image ?? null,
+            likes: typeof r.likes === "number" ? r.likes : 0,
+            comments: typeof r.comments === "number" ? r.comments : 0,
             trending: Boolean(r.trending),
           }));
           setPosts(mapped);
-          setFeaturedPost(mapped[0] || null);
+          const highlighted = mapped.find((post) => post.trending) ?? mapped[0] ?? null;
+          setFeaturedPost(highlighted);
         }
       } catch (e) {
         console.warn("Blog fetch failed:", e);
