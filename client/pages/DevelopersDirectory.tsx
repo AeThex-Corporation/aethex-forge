@@ -139,6 +139,10 @@ const DevelopersDirectory = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [realmFilter, setRealmFilter] = useState("all");
+  const { profile: authProfile } = useAuth();
+  const myPassportHref = authProfile?.username
+    ? `/passport/${authProfile.username}`
+    : "/passport/me";
 
   const filteredProfiles = useMemo(() => {
     const lowerSearch = search.trim().toLowerCase();
