@@ -609,7 +609,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-pink-500/5 backdrop-blur-sm">
+        <section className="py-16 sm:py-20 bg-pink-500/5 backdrop-blur-sm">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
               <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-fuchsia-300 via-pink-500 to-rose-500 bg-clip-text text-transparent">
