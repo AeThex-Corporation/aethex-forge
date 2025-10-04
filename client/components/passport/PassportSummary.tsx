@@ -76,7 +76,7 @@ const PassportSummary = ({
   isSelf,
   linkedProviders,
 }: PassportSummaryProps) => {
-  const realm = realmMeta[(profile as any)?.user_type || "community_member"];
+  const realm = realmMeta[(profile as any)?.user_type || "game_developer"];
   const level = profile.level ?? 1;
   const totalXp = profile.total_xp ?? 0;
   const loyaltyPoints = (profile as any)?.loyalty_points ?? 0;
