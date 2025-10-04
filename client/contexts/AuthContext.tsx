@@ -14,6 +14,7 @@ import { aethexToast } from "@/lib/aethex-toast";
 import {
   aethexUserService,
   aethexRoleService,
+  aethexAchievementService,
   type AethexUserProfile,
   checkProfileComplete,
 } from "@/lib/aethex-database-adapter";
