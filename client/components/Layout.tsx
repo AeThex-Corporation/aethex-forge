@@ -58,6 +58,8 @@ export default function Layout({ children }: LayoutProps) {
     { name: "Contact", href: "/contact" },
   ];
 
+  const navItems = user ? userNavigation : navigation;
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
