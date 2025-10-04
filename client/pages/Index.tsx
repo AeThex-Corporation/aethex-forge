@@ -81,6 +81,117 @@ export default function Index() {
     { metric: "24/7", label: "Global Community" },
   ];
 
+  const serviceOfferings = [
+    {
+      title: "Game Development",
+      description: "Studios and indie support",
+      link: "/game-development",
+      cardClass:
+        "border-blue-500/40 bg-gradient-to-br from-blue-950/60 via-indigo-950/30 to-purple-900/40 text-blue-100 hover:border-blue-400/80 hover:shadow-[0_0_25px_rgba(59,130,246,0.35)]",
+      titleClass: "text-blue-100",
+      descriptionClass: "text-blue-100/70",
+      buttonClass:
+        "bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-400 hover:via-indigo-400 hover:to-purple-400 text-white shadow-[0_0_18px_rgba(59,130,246,0.25)]",
+    },
+    {
+      title: "Consulting",
+      description: "Architecture & delivery",
+      link: "/consulting",
+      cardClass:
+        "border-fuchsia-500/40 bg-gradient-to-br from-fuchsia-950/60 via-rose-950/30 to-purple-900/40 text-fuchsia-100 hover:border-fuchsia-400/80 hover:shadow-[0_0_25px_rgba(217,70,239,0.35)]",
+      titleClass: "text-fuchsia-100",
+      descriptionClass: "text-fuchsia-100/70",
+      buttonClass:
+        "bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 hover:from-fuchsia-400 hover:via-pink-400 hover:to-rose-400 text-white shadow-[0_0_18px_rgba(236,72,153,0.25)]",
+    },
+    {
+      title: "Mentorship",
+      description: "Programs and guidance",
+      link: "/mentorship",
+      cardClass:
+        "border-emerald-500/40 bg-gradient-to-br from-emerald-950/60 via-teal-950/30 to-blue-900/40 text-emerald-100 hover:border-emerald-400/80 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]",
+      titleClass: "text-emerald-100",
+      descriptionClass: "text-emerald-100/70",
+      buttonClass:
+        "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-400 text-black font-semibold shadow-[0_0_18px_rgba(20,184,166,0.25)]",
+    },
+  ];
+
+  const resourceOfferings = [
+    {
+      title: "Documentation",
+      description: "Guides and tutorials",
+      cardClass:
+        "border-cyan-400/40 bg-gradient-to-br from-cyan-950/50 via-sky-950/25 to-blue-900/30 text-cyan-100 hover:border-cyan-300/70 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]",
+      titleClass: "text-cyan-100",
+      descriptionClass: "text-cyan-100/70",
+      actions: [
+        {
+          label: "Docs",
+          href: "/docs",
+          variant: "outline",
+          buttonClass:
+            "border-cyan-400/60 text-cyan-200 hover:bg-cyan-500/10 hover:text-cyan-100",
+        },
+        {
+          label: "Tutorials",
+          href: "/docs/tutorials",
+          variant: "outline",
+          buttonClass:
+            "border-cyan-400/60 text-cyan-200 hover:bg-cyan-500/10 hover:text-cyan-100",
+        },
+      ],
+    },
+    {
+      title: "Community",
+      description: "News and discussions",
+      cardClass:
+        "border-orange-400/40 bg-gradient-to-br from-amber-950/50 via-orange-950/25 to-rose-900/30 text-orange-100 hover:border-orange-300/70 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]",
+      titleClass: "text-orange-100",
+      descriptionClass: "text-orange-100/70",
+      actions: [
+        {
+          label: "Community",
+          href: "/community",
+          variant: "outline",
+          buttonClass:
+            "border-orange-400/60 text-orange-200 hover:bg-orange-500/10 hover:text-orange-100",
+        },
+        {
+          label: "Blog",
+          href: "/blog",
+          variant: "outline",
+          buttonClass:
+            "border-orange-400/60 text-orange-200 hover:bg-orange-500/10 hover:text-orange-100",
+        },
+      ],
+    },
+    {
+      title: "Company",
+      description: "About and contact",
+      cardClass:
+        "border-indigo-400/40 bg-gradient-to-br from-indigo-950/50 via-blue-950/25 to-slate-900/30 text-indigo-100 hover:border-indigo-300/70 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]",
+      titleClass: "text-indigo-100",
+      descriptionClass: "text-indigo-100/70",
+      actions: [
+        {
+          label: "About",
+          href: "/about",
+          variant: "outline",
+          buttonClass:
+            "border-indigo-400/60 text-indigo-200 hover:bg-indigo-500/10 hover:text-indigo-100",
+        },
+        {
+          label: "Contact",
+          href: "/contact",
+          variant: "outline",
+          buttonClass:
+            "border-indigo-400/60 text-indigo-200 hover:bg-indigo-500/10 hover:text-indigo-100",
+        },
+      ],
+    },
+  ];
+
   if (isLoading) {
     return (
       <LoadingScreen
