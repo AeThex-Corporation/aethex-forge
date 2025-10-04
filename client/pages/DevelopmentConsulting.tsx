@@ -353,7 +353,7 @@ export default function DevelopmentConsulting() {
                 return (
                   <Card
                     key={index}
-                    className="relative overflow-hidden border-border/50 hover:border-aethex-400/50 transition-all duration-500 hover-lift animate-scale-in"
+                    className="relative overflow-hidden border-border/50 hover:border-pink-400/50 transition-all duration-500 hover-lift animate-scale-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <CardHeader>
@@ -380,7 +380,7 @@ export default function DevelopmentConsulting() {
                             key={featureIndex}
                             className="flex items-center space-x-2 text-sm"
                           >
-                            <CheckCircle className="h-3 w-3 text-aethex-400 flex-shrink-0" />
+                            <CheckCircle className="h-3 w-3 text-pink-400 flex-shrink-0" />
                             <span>{feature}</span>
                           </div>
                         ))}
@@ -391,7 +391,7 @@ export default function DevelopmentConsulting() {
                           <Clock className="h-4 w-4" />
                           <span>{service.duration}</span>
                         </div>
-                        <div className="flex items-center space-x-2 text-sm font-semibold text-aethex-400">
+                        <div className="flex items-center space-x-2 text-sm font-semibold text-pink-400">
                           <DollarSign className="h-4 w-4" />
                           <span>{service.price}</span>
                         </div>
@@ -422,11 +422,11 @@ export default function DevelopmentConsulting() {
                 return (
                   <Card
                     key={index}
-                    className="bg-card/30 border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
+                    className="bg-card/30 border-border/50 hover:border-pink-400/50 transition-all duration-300 hover-lift animate-scale-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <CardHeader className="text-center">
-                      <Icon className="h-12 w-12 text-aethex-400 mx-auto mb-3" />
+                      <Icon className="h-12 w-12 text-pink-400 mx-auto mb-3" />
                       <CardTitle className="text-lg">{area.category}</CardTitle>
                       <Badge variant="outline" className="text-xs">
                         {area.projects}
@@ -471,7 +471,7 @@ export default function DevelopmentConsulting() {
                   className={`relative overflow-hidden transition-all duration-500 hover-lift animate-scale-in ${
                     pkg.popular
                       ? "border-aethex-500 glow-blue scale-105"
-                      : "border-border/50 hover:border-aethex-400/50"
+                      : "border-border/50 hover:border-pink-400/50"
                   }`}
                   style={{ animationDelay: `${index * 0.2}s` }}
                   onClick={() => setActivePackage(index)}
@@ -506,7 +506,7 @@ export default function DevelopmentConsulting() {
                           key={featureIndex}
                           className="flex items-center space-x-2 text-sm"
                         >
-                          <CheckCircle className="h-4 w-4 text-aethex-400 flex-shrink-0" />
+                          <CheckCircle className="h-4 w-4 text-pink-400 flex-shrink-0" />
                           <span>{feature}</span>
                         </div>
                       ))}
@@ -546,7 +546,7 @@ export default function DevelopmentConsulting() {
               {caseStudies.map((study, index) => (
                 <Card
                   key={index}
-                  className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-up"
+                  className="border-border/50 hover:border-pink-400/50 transition-all duration-300 hover-lift animate-slide-up"
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   <CardHeader>
@@ -631,7 +631,7 @@ export default function DevelopmentConsulting() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                  className="border-pink-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
                 >
                   <Link to="/docs">Download Case Studies</Link>
                 </Button>
@@ -639,21 +639,21 @@ export default function DevelopmentConsulting() {
 
               <div className="grid grid-cols-3 gap-8 mt-12">
                 <div className="text-center">
-                  <Shield className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                  <Shield className="h-8 w-8 text-pink-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Confidential</h3>
                   <p className="text-sm text-muted-foreground">
                     NDAs & security first
                   </p>
                 </div>
                 <div className="text-center">
-                  <Globe className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                  <Globe className="h-8 w-8 text-pink-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Global Expertise</h3>
                   <p className="text-sm text-muted-foreground">
                     World-class consultants
                   </p>
                 </div>
                 <div className="text-center">
-                  <Trophy className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                  <Trophy className="h-8 w-8 text-pink-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Proven Results</h3>
                   <p className="text-sm text-muted-foreground">
                     500+ successful projects
