@@ -26,6 +26,41 @@ import {
   TrendingUp,
 } from "lucide-react";
 
+type BlogPost = {
+  id?: string | number;
+  slug?: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  readTime?: string;
+  category?: string;
+  image?: string | null;
+  likes?: number;
+  comments?: number;
+  trending?: boolean;
+};
+
+const normalizeCategory = (value?: string) =>
+  value
+    ? value
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+    : "general";
+
+const buildSlug = (post: BlogPost): string => {
+  const base = (post.slug || post.id || post.title || "").toString();
+  const sanitized = base
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return sanitized || "article";
+};
+
 export default function Blog() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
