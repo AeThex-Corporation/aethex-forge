@@ -45,7 +45,6 @@ import {
   Hash,
   Headphones,
   Heart,
-  Image,
   Layers,
   Loader2,
   MapPin,
@@ -62,7 +61,6 @@ import {
   Twitter,
   Users,
   UserCircle,
-  Video,
   Vote,
   type LucideIcon,
 } from "lucide-react";
