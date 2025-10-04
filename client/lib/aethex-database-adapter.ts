@@ -13,6 +13,9 @@ export interface AethexUserProfile extends UserProfile {
   onboarded?: boolean;
   role?: string;
   loyalty_points?: number;
+  current_streak?: number | null;
+  longest_streak?: number | null;
+  last_streak_at?: string | null;
   social_links?: any;
   skills?: string[];
 }
