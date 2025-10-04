@@ -45,7 +45,7 @@ interface ProfileCardProps {
   profile: AethexUserProfile & { email?: string | null };
 }
 
-const ProfileCard = ({ profile }: ProfileCardProps) => {
+const DeveloperCard = ({ profile }: ProfileCardProps) => {
   const realmStyle =
     realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
   const isGodMode = (profile.level ?? 1) >= 100;
@@ -133,7 +133,7 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
   );
 };
 
-const ProfilesDirectory = () => {
+const DevelopersDirectory = () => {
   const [profiles, setProfiles] = useState<AethexUserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -249,7 +249,7 @@ const ProfilesDirectory = () => {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {filteredProfiles.map((profile) => (
-                <ProfileCard key={profile.id} profile={profile as any} />
+                <DeveloperCard key={profile.id} profile={profile as any} />
               ))}
             </div>
           )}
@@ -259,4 +259,4 @@ const ProfilesDirectory = () => {
   );
 };
 
-export default ProfilesDirectory;
+export default DevelopersDirectory;
