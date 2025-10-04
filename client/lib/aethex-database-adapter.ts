@@ -455,11 +455,57 @@ export const aethexUserService = {
     profileData: Partial<AethexUserProfile>,
     email?: string | null,
   ): Promise<AethexUserProfile | null> {
-    ensureSupabase();
-
     const now = new Date();
     const nowIso = now.toISOString();
     const todayIso = isoDate(startOfUTC(now));
+
+    if (!isSupabaseConfigured) {
+      const stored = await mockAuth.updateProfile(
+        userId,
+        {
+          id: userId,
+          username:
+            profileData.username ||
+            (email ? email.split("@")[0] : undefined) ||
+            `user_${Date.now()}`,
+          user_type: (profileData as any).user_type || "game_developer",
+          experience_level: (profileData as any).experience_level || "beginner",
+          full_name: profileData.full_name,
+          bio: profileData.bio,
+          location: profileData.location,
+          website_url: (profileData as any).website_url,
+          github_url: profileData.github_url,
+          twitter_url: profileData.twitter_url,
+          linkedin_url: profileData.linkedin_url,
+          banner_url: (profileData as any).banner_url,
+          level: 1,
+          total_xp: 0,
+          current_streak: 1,
+          longest_streak: 1,
+          last_streak_at: todayIso,
+          created_at: nowIso,
+          updated_at: nowIso,
+          onboarded: true,
+        } as any,
+      );
+
+      return normalizeProfile(
+        {
+          ...stored,
+          user_type:
+            (stored as any)?.user_type ?? (profileData as any).user_type ?? "game_developer",
+          experience_level:
+            (stored as any)?.experience_level ??
+            (profileData as any).experience_level ??
+            "beginner",
+          total_xp: (stored as any)?.total_xp ?? 0,
+          level: (stored as any)?.level ?? 1,
+        },
+        stored.email ?? email ?? null,
+      );
+    }
+
+    ensureSupabase();
 
     const { data, error } = await supabase
       .from("user_profiles")
