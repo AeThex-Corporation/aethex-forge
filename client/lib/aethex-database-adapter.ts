@@ -23,16 +23,8 @@ export interface AethexUserProfile extends UserProfile {
 const isNonEmptyString = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
 
-const isTestEnvironment =
-  typeof process !== "undefined" &&
-  (process.env?.NODE_ENV === "test" || process.env?.VITEST);
-
 const ensureSupabase = () => {
   if (!isSupabaseConfigured) {
-    if (isTestEnvironment) {
-      return;
-    }
-
     throw new Error(
       "Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
     );
