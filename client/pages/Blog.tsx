@@ -273,11 +273,28 @@ export default function Blog() {
 
   const activeFeaturedPost = useMemo(() => {
     const dataset = posts.length ? posts : staticPosts;
-    if (featuredPost) {
-      return featuredPost;
+    const scoped = selectedCategory === "all" ? dataset : filteredPosts;
+    const scopedPosts = scoped.length ? scoped : dataset;
+    const featuredSlug = featuredPost ? buildSlug(featuredPost) : null;
+    if (featuredSlug) {
+      const matchingFeatured = scopedPosts.find(
+        (post) => buildSlug(post) === featuredSlug,
+      );
+      if (matchingFeatured) {
+        return matchingFeatured;
+      }
     }
-    return dataset.find((post) => post.trending) ?? dataset[0] ?? null;
-  }, [featuredPost, posts, staticPosts]);
+    return (
+      scopedPosts.find((post) => post.trending) ??
+      (featuredSlug
+        ? dataset.find((post) => buildSlug(post) === featuredSlug)
+        : null) ??
+      dataset.find((post) => post.trending) ??
+      scopedPosts[0] ??
+      dataset[0] ??
+      null
+    );
+  }, [featuredPost, filteredPosts, posts, staticPosts, selectedCategory]);
 
   const displayedPosts = useMemo(() => {
     if (!activeFeaturedPost) {
