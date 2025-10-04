@@ -431,7 +431,7 @@ export default function GameDevelopment() {
         </section>
 
         {/* Featured Studios Section */}
-        <section className="py-20 bg-background/30">
+        <section className="py-16 sm:py-20 bg-background/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
