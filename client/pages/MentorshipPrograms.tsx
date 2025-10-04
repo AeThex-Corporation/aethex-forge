@@ -307,7 +307,7 @@ export default function MentorshipPrograms() {
                 Mentorship & Education Division
               </Badge>
 
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
                 <span className="bg-gradient-to-r from-emerald-300 via-aethex-400 to-neon-blue bg-clip-text text-transparent">
                   Accelerate Your Tech Journey
                 </span>
