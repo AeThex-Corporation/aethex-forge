@@ -258,10 +258,10 @@ function EventCard({
                     <Textarea
                       id={`notes-${event.id}`}
                       value={form.message}
-                      onChange={(value) =>
+                      onChange={(eventChange) =>
                         setForm((prev) => ({
                           ...prev,
-                          message: value.target.value,
+                          message: eventChange.target.value,
                         }))
                       }
                       placeholder="Let us know about accessibility or collaboration needs"
