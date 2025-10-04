@@ -370,7 +370,7 @@ export default function Engage() {
         </section>
 
         {/* Service Bundles */}
-        <section id="bundles" className="bg-background/30 py-20">
+        <section id="bundles" className="bg-background/30 py-16 sm:py-20">
           <div className="container mx-auto max-w-6xl px-4">
             <div className="text-center">
               <h2 className="text-3xl font-bold text-gradient mb-4 sm:text-4xl">
