@@ -342,7 +342,7 @@ export default function Engage() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-aethex-400/60 text-aethex-100 hover:bg-aethex-500/10"
+                  className="border-aethex-400/60 text-aethex-100 hover:bg-aethex-500/10 text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
                   <Link to="/contact" className="flex items-center gap-2">
                     <Rocket className="h-5 w-5" />
