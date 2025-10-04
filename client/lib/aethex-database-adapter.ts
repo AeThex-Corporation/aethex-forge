@@ -376,7 +376,10 @@ export const aethexUserService = {
       .from("user_profiles")
       .insert({
         id: userId,
-        username: profileData.username || `user_${Date.now()}`,
+        username:
+          profileData.username ||
+          (email ? email.split("@")[0] : undefined) ||
+          `user_${Date.now()}`,
         user_type: (profileData as any).user_type || "community_member",
         experience_level: (profileData as any).experience_level || "beginner",
         full_name: profileData.full_name,
@@ -389,8 +392,11 @@ export const aethexUserService = {
         banner_url: (profileData as any).banner_url,
         level: 1,
         total_xp: 0,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        current_streak: 1,
+        longest_streak: 1,
+        last_streak_at: todayIso,
+        created_at: nowIso,
+        updated_at: nowIso,
       })
       .select()
       .single();
