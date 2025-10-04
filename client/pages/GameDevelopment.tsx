@@ -555,7 +555,7 @@ export default function GameDevelopment() {
 
                   {/* Connector Line */}
                   {index < process.length - 1 && (
-                    <div className="absolute left-6 top-12 w-0.5 h-12 bg-gradient-to-b from-aethex-400 to-transparent" />
+                    <div className="absolute left-6 top-14 hidden sm:block w-0.5 h-12 bg-gradient-to-b from-aethex-400 to-transparent" />
                   )}
                 </div>
               ))}
