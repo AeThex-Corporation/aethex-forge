@@ -233,7 +233,7 @@ const faqs = [
   {
     question: "What information helps you quote faster?",
     answer:
-      "Links to existing builds, tech stack details, target platforms, deadlines, and growth goals. Even bullet-point dreams are welcome—our team is great at filling in blanks.",
+      "Links to existing builds, tech stack details, target platforms, deadlines, and growth goals. Even bullet-point dreams are welcome���our team is great at filling in blanks.",
   },
   {
     question: "Can we start small before scaling up?",
@@ -247,7 +247,7 @@ const faqs = [
   },
 ];
 
-export default function Pricing() {
+export default function Engage() {
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
 
@@ -255,7 +255,7 @@ export default function Pricing() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       if (!toastShownRef.current) {
-        aethexToast.system("Pricing & Engagement center ready");
+        aethexToast.system("Engagement center ready");
         toastShownRef.current = true;
       }
     }, 900);
@@ -266,7 +266,7 @@ export default function Pricing() {
   if (isLoading) {
     return (
       <LoadingScreen
-        message="Loading pricing matrix..."
+        message="Loading engagement center..."
         showProgress
         duration={900}
       />
@@ -303,7 +303,7 @@ export default function Pricing() {
                 className="border-aethex-400/50 text-aethex-300 backdrop-blur-sm"
               >
                 <Handshake className="mr-2 h-3 w-3" />
-                Pricing & Engagement Playbook
+                Engagement Playbook
               </Badge>
 
               <h1 className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
@@ -314,7 +314,7 @@ export default function Pricing() {
 
               <p className="text-lg text-muted-foreground sm:text-xl">
                 Compare investment models, commission structures, and add-ons in
-                a single hub. Every price button across AeThex now routes here so
+                a single hub. Every action to engage AeThex now routes here so
                 you can align stakeholders quickly.
               </p>
 
@@ -326,7 +326,7 @@ export default function Pricing() {
                 >
                   <Link to="#bundles" className="flex items-center gap-2">
                     <BadgeDollarSign className="h-5 w-5" />
-                    Explore Pricing Bundles
+                    Explore Engagement Bundles
                   </Link>
                 </Button>
                 <Button
