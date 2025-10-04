@@ -227,7 +227,7 @@ export default function Profile() {
             .insert({
               id: user.id,
               username: profileData.displayName || user.email?.split('@')[0] || `user_${Date.now()}`,
-              user_type: "community_member",
+              user_type: "game_developer",
               experience_level: "beginner",
               full_name: profileData.displayName,
               bio: profileData.bio,
