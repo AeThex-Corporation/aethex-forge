@@ -383,7 +383,7 @@ export default function Engage() {
               </p>
             </div>
 
-            <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {serviceBundles.map((bundle, index) => (
                 <Card
                   key={bundle.id}
