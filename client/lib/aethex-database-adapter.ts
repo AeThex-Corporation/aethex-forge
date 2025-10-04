@@ -348,7 +348,7 @@ export const aethexUserService = {
         const { data: upserted, error: upsertError } = await supabase
           .from("user_profiles")
           .upsert(
-            { id: userId, user_type: "community_member", ...updates } as any,
+            { id: userId, user_type: "game_developer", ...updates } as any,
             { onConflict: "id" },
           )
           .select()
