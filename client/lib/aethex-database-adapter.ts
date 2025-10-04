@@ -31,6 +31,114 @@ const ensureSupabase = () => {
   }
 };
 
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+const startOfUTC = (date: Date) =>
+  new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+
+const isoDate = (date: Date) => date.toISOString().slice(0, 10);
+
+const normalizeDateInput = (value?: string | null) => {
+  if (!value) return null;
+  const normalized = value.includes("T") ? value : `${value}T00:00:00Z`;
+  return startOfUTC(new Date(normalized));
+};
+
+const normalizeProfile = (
+  row: any,
+  email?: string | null,
+): AethexUserProfile => ({
+  ...(row as AethexUserProfile),
+  email: email ?? (row as any)?.email,
+  username:
+    (row as any)?.username ?? email?.split("@")[0] ?? "user",
+  onboarded: true,
+  role: (row as any)?.role ?? "member",
+  loyalty_points: (row as any)?.loyalty_points ?? 0,
+  current_streak: (row as any)?.current_streak ?? 0,
+  longest_streak:
+    (row as any)?.longest_streak ?? Math.max((row as any)?.current_streak ?? 0, 0),
+  last_streak_at: (row as any)?.last_streak_at ?? null,
+});
+
+const ensureDailyStreakForProfile = async (
+  profile: AethexUserProfile,
+): Promise<AethexUserProfile> => {
+  try {
+    ensureSupabase();
+  } catch {
+    return {
+      ...profile,
+      current_streak: profile.current_streak ?? 0,
+      longest_streak: profile.longest_streak ?? profile.current_streak ?? 0,
+      last_streak_at: profile.last_streak_at ?? null,
+    };
+  }
+
+  const today = startOfUTC(new Date());
+  const isoToday = isoDate(today);
+  const lastRecorded = normalizeDateInput(profile.last_streak_at);
+  let current = profile.current_streak ?? 0;
+  let longest = profile.longest_streak ?? 0;
+  let lastValue = profile.last_streak_at ?? null;
+  let needsUpdate = false;
+
+  if (!lastRecorded) {
+    current = Math.max(current, 1);
+    longest = Math.max(longest, current);
+    lastValue = isoToday;
+    needsUpdate = true;
+  } else {
+    const diffDays = Math.floor(
+      (today.getTime() - lastRecorded.getTime()) / MS_PER_DAY,
+    );
+
+    if (diffDays === 1) {
+      current = current + 1;
+      longest = Math.max(longest, current);
+      lastValue = isoToday;
+      needsUpdate = true;
+    } else if (diffDays > 1 || diffDays < 0) {
+      current = 1;
+      longest = Math.max(longest, current);
+      lastValue = isoToday;
+      needsUpdate = true;
+    }
+  }
+
+  if (needsUpdate) {
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .update({
+        current_streak: current,
+        longest_streak: longest,
+        last_streak_at: isoToday,
+      })
+      .eq("id", profile.id)
+      .select()
+      .single();
+
+    if (!error && data) {
+      return normalizeProfile(data, profile.email);
+    }
+
+    console.warn("Failed to persist streak update:", error);
+    return {
+      ...profile,
+      current_streak: current,
+      longest_streak: longest,
+      last_streak_at: lastValue,
+    };
+  }
+
+  return {
+    ...profile,
+    current_streak: current,
+    longest_streak: longest,
+    last_streak_at: lastValue,
+  };
+};
+
 export function checkProfileComplete(p?: AethexUserProfile | null): boolean {
   if (!p) return false;
 
