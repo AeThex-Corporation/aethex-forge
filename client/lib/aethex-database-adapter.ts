@@ -323,7 +323,7 @@ export const aethexUserService = {
       normalizeProfile(
         {
           ...(row as AethexUserProfile),
-          user_type: (row as any).user_type || "community_member",
+          user_type: (row as any).user_type || "game_developer",
           experience_level: (row as any).experience_level || "beginner",
         },
       ),
