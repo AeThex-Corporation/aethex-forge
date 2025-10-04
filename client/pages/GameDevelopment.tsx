@@ -579,7 +579,7 @@ export default function GameDevelopment() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
                   <Link
                     to="/engage#game-development"
