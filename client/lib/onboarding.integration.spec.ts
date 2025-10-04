@@ -77,7 +77,7 @@ vi.mock("@/lib/supabase", () => {
         }),
       },
     },
-    isSupabaseConfigured: false,
+    isSupabaseConfigured: true,
   };
 });
 
