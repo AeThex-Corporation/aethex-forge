@@ -148,6 +148,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [roles, setRoles] = useState<string[]>([]);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const rewardsActivatedRef = useRef(false);
 
   useEffect(() => {
     // Add timeout to ensure loading doesn't get stuck
