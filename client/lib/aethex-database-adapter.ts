@@ -368,6 +368,10 @@ export const aethexUserService = {
   ): Promise<AethexUserProfile | null> {
     ensureSupabase();
 
+    const now = new Date();
+    const nowIso = now.toISOString();
+    const todayIso = isoDate(startOfUTC(now));
+
     const { data, error } = await supabase
       .from("user_profiles")
       .insert({
