@@ -364,6 +364,7 @@ export const aethexUserService = {
   async createInitialProfile(
     userId: string,
     profileData: Partial<AethexUserProfile>,
+    email?: string | null,
   ): Promise<AethexUserProfile | null> {
     ensureSupabase();
 
