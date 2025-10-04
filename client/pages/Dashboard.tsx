@@ -644,6 +644,16 @@ export default function Dashboard() {
                 <p className="text-muted-foreground">
                   {profile?.role || "Member"} • Level {profile?.level || 1} • {streakLabel} 🔥
                 </p>
+                {longestStreak > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Badge
+                      variant="outline"
+                      className="border-aethex-400/40 text-aethex-200"
+                    >
+                      Longest streak: {longestStreak}d
+                    </Badge>
+                  </div>
+                )}
               </div>
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-muted-foreground">
