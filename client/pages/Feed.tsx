@@ -1,7 +1,6 @@
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
