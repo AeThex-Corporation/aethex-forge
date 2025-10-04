@@ -9,9 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
+import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import type { FormEvent } from "react";
 import {
   Users,
   MessageCircle,
@@ -28,6 +34,8 @@ import {
   Coffee,
   Code,
   Gamepad2,
+  CheckCircle,
+  Loader2,
 } from "lucide-react";
 
 export default function Community() {
