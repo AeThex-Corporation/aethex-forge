@@ -234,7 +234,7 @@ export default function Community() {
                 const Icon = stat.icon;
                 return (
                   <div
-                    key={index}
+                    key={stat.label}
                     className="text-center space-y-3 animate-scale-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
@@ -275,7 +275,7 @@ export default function Community() {
                 const Icon = platform.icon;
                 return (
                   <Card
-                    key={index}
+                    key={platform.name}
                     className="text-center border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
                     style={{ animationDelay: `${index * 0.2}s` }}
                   >
@@ -408,7 +408,7 @@ export default function Community() {
             <div className="max-w-4xl mx-auto space-y-6">
               {events.map((event, index) => (
                 <Card
-                  key={index}
+                  key={event.title}
                   className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-right"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
@@ -488,7 +488,7 @@ export default function Community() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {contributors.map((contributor, index) => (
                 <Card
-                  key={index}
+                  key={contributor.name}
                   className="text-center border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
