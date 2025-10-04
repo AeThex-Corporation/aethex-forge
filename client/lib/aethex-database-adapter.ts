@@ -549,6 +549,11 @@ export const aethexUserService = {
   },
 
   async addUserInterests(userId: string, interests: string[]): Promise<void> {
+    if (!isSupabaseConfigured) {
+      fallbackInterests.set(userId, Array.from(new Set(interests)));
+      return;
+    }
+
     ensureSupabase();
 
     await supabase
@@ -577,6 +582,10 @@ export const aethexUserService = {
   },
 
   async getUserInterests(userId: string): Promise<string[]> {
+    if (!isSupabaseConfigured) {
+      return fallbackInterests.get(userId) ?? [];
+    }
+
     ensureSupabase();
 
     const { data, error } = await supabase
