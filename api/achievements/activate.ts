@@ -145,7 +145,6 @@ export default async function handler(
       const progressStats = {
         level: 100,
         total_xp: 99000,
-        loyalty_points: 99000,
         current_streak: 365,
         longest_streak: 365,
       };
