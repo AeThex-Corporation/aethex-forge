@@ -212,97 +212,82 @@ export default function Blog() {
     };
   }, []);
 
-  const categories = [
-    { id: "all", name: "All Posts", count: 45 },
-    { id: "technology", name: "Technology", count: 18 },
-    { id: "tutorials", name: "Tutorials", count: 12 },
-    { id: "research", name: "Research", count: 8 },
-    { id: "company", name: "Company News", count: 7 },
-  ];
+  useEffect(() => {
+    if (selectedCategory === "all") {
+      return;
+    }
+    const dataset = posts.length ? posts : staticPosts;
+    const hasCategory = dataset.some(
+      (post) => normalizeCategory(post.category) === selectedCategory,
+    );
+    if (!hasCategory) {
+      setSelectedCategory("all");
+    }
+  }, [posts, staticPosts, selectedCategory]);
 
-  const postsStatic = [
-    {
-      title: "Building Scalable Game Architecture with Microservices",
-      excerpt:
-        "Learn how to design game backends that can handle millions of concurrent players using modern microservices patterns.",
-      author: "Marcus Rodriguez",
-      date: "December 12, 2024",
-      readTime: "6 min read",
-      category: "Technology",
-      likes: 89,
-      comments: 15,
-      trending: true,
-    },
-    {
-      title: "Advanced Unity Optimization Techniques",
-      excerpt:
-        "Performance optimization strategies that can boost your Unity game's frame rate by up to 300%.",
-      author: "Alex Thompson",
-      date: "December 10, 2024",
-      readTime: "12 min read",
-      category: "Tutorials",
-      likes: 156,
-      comments: 34,
-      trending: false,
-    },
-    {
-      title: "AeThex Labs: Breakthrough in Neural Network Compression",
-      excerpt:
-        "Our research team achieves 90% model size reduction while maintaining accuracy for mobile game AI.",
-      author: "Dr. Aisha Patel",
-      date: "December 8, 2024",
-      readTime: "5 min read",
-      category: "Research",
-      likes: 203,
-      comments: 41,
-      trending: true,
-    },
-    {
-      title: "Introducing AeThex Cloud Gaming Platform",
-      excerpt:
-        "Launch games instantly across any device with our new cloud gaming infrastructure and global CDN.",
-      author: "AeThex Team",
-      date: "December 5, 2024",
-      readTime: "4 min read",
-      category: "Company News",
-      likes: 278,
-      comments: 52,
-      trending: false,
-    },
-    {
-      title: "Real-time Ray Tracing in Web Games",
-      excerpt:
-        "Tutorial: Implementing hardware-accelerated ray tracing in browser-based games using WebGPU.",
-      author: "Jordan Kim",
-      date: "December 3, 2024",
-      readTime: "15 min read",
-      category: "Tutorials",
-      likes: 94,
-      comments: 18,
-      trending: false,
-    },
-    {
-      title: "The Evolution of Game AI: From Scripts to Neural Networks",
-      excerpt:
-        "A comprehensive look at how artificial intelligence in games has evolved and where it's heading next.",
-      author: "Dr. Michael Chen",
-      date: "December 1, 2024",
-      readTime: "10 min read",
-      category: "Technology",
-      likes: 167,
-      comments: 29,
-      trending: false,
-    },
-  ];
+  const categories = useMemo(() => {
+    const dataset = posts.length ? posts : staticPosts;
+    const counts = new Map<string, { name: string; count: number }>();
+    dataset.forEach((post) => {
+      const name = post.category || "General";
+      const id = normalizeCategory(name);
+      const existing = counts.get(id);
+      counts.set(id, {
+        name,
+        count: (existing?.count ?? 0) + 1,
+      });
+    });
+    const preferredOrder = [
+      "technology",
+      "tutorials",
+      "research",
+      "company-news",
+      "general",
+    ];
+    const ordered: { id: string; name: string; count: number }[] = [];
+    preferredOrder.forEach((id) => {
+      const entry = counts.get(id);
+      if (entry) {
+        ordered.push({ id, name: entry.name, count: entry.count });
+        counts.delete(id);
+      }
+    });
+    counts.forEach((value, id) => {
+      ordered.push({ id, name: value.name, count: value.count });
+    });
+    return [
+      { id: "all", name: "All Posts", count: dataset.length },
+      ...ordered,
+    ];
+  }, [posts, staticPosts]);
 
-  const filteredPosts =
-    selectedCategory === "all"
-      ? posts.length
-        ? posts
-        : postsStatic
-      : (posts.length ? posts : postsStatic).filter(
-          (post) => (post.category || "").toLowerCase() === selectedCategory,
-        );
+  const filteredPosts = useMemo(() => {
+    const dataset = posts.length ? posts : staticPosts;
+    if (selectedCategory === "all") {
+      return dataset;
+    }
+    return dataset.filter(
+      (post) => normalizeCategory(post.category) === selectedCategory,
+    );
+  }, [posts, staticPosts, selectedCategory]);
+
+  const activeFeaturedPost = useMemo(() => {
+    const dataset = posts.length ? posts : staticPosts;
+    if (featuredPost) {
+      return featuredPost;
+    }
+    return dataset.find((post) => post.trending) ?? dataset[0] ?? null;
+  }, [featuredPost, posts, staticPosts]);
+
+  const displayedPosts = useMemo(() => {
+    if (!activeFeaturedPost) {
+      return filteredPosts;
+    }
+    const featuredSlug = buildSlug(activeFeaturedPost);
+    return filteredPosts.filter((post) => buildSlug(post) !== featuredSlug);
+  }, [filteredPosts, activeFeaturedPost]);
+
+  const placeholderImage = "/placeholder.svg";
 
   if (isLoading) {
     return (
