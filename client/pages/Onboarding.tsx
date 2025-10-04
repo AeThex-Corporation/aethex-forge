@@ -312,7 +312,7 @@ export default function Onboarding() {
       const userTypeMap: Record<string, string> = {
         "game-developer": "game_developer",
         client: "client",
-        member: "community_member",
+        member: "game_developer",
         customer: "customer",
       };
 
