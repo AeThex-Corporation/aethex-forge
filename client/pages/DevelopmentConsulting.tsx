@@ -336,7 +336,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* Services Grid */}
-        <section className="py-20 bg-pink-500/5 backdrop-blur-sm">
+        <section className="py-16 sm:py-20 bg-pink-500/5 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -405,7 +405,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* Expertise Areas */}
-        <section className="py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -456,7 +456,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* Consulting Packages */}
-        <section className="py-20 bg-rose-500/5 backdrop-blur-sm">
+        <section className="py-16 sm:py-20 bg-rose-500/5 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
@@ -536,7 +536,7 @@ export default function DevelopmentConsulting() {
         </section>
 
         {/* Case Studies */}
-        <section className="py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 animate-slide-up">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
