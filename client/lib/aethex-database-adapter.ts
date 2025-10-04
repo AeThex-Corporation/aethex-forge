@@ -410,12 +410,7 @@ export const aethexUserService = {
       throw error;
     }
 
-    return {
-      ...data,
-      onboarded: true,
-      role: "member",
-      loyalty_points: 0,
-    } as AethexUserProfile;
+    return normalizeProfile(data, email);
   },
 
   async addUserInterests(userId: string, interests: string[]): Promise<void> {
