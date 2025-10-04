@@ -277,24 +277,6 @@ export const aethexUserService = {
   async getProfileById(userId: string): Promise<AethexUserProfile | null> {
     if (!userId) return null;
 
-    if (!isSupabaseConfigured) {
-      const profile = await mockAuth.getUserProfile(userId);
-      if (!profile) {
-        return null;
-      }
-
-      return normalizeProfile(
-        {
-          ...profile,
-          user_type: (profile as any)?.user_type ?? "game_developer",
-          experience_level: (profile as any)?.experience_level ?? "beginner",
-          total_xp: (profile as any)?.total_xp ?? 0,
-          level: (profile as any)?.level ?? 1,
-        },
-        (profile as any)?.email ?? null,
-      );
-    }
-
     ensureSupabase();
 
     const { data, error } = await supabase
