@@ -265,7 +265,7 @@ export default function DevelopmentConsulting() {
     <Layout>
       <div className="min-h-screen bg-aethex-gradient">
         {/* Hero Section */}
-        <section className="relative py-20 lg:py-32 overflow-hidden">
+        <section className="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-900/40 via-transparent to-slate-950/60" />
           <div className="absolute inset-0 opacity-10">
             {[...Array(25)].map((_, i) => (
