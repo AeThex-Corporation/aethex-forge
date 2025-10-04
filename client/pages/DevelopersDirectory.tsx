@@ -121,7 +121,7 @@ const DeveloperCard = ({ profile }: ProfileCardProps) => {
           className="w-full border-slate-700/70 text-slate-100 transition-colors hover:border-aethex-400/60 hover:text-white"
         >
           <Link
-            to={`/profiles/${profile.id}`}
+            to={`/developers/${profile.id}`}
             className="flex items-center justify-center gap-2"
           >
             <UserRound className="h-4 w-4" />
