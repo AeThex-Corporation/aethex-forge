@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,6 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import {
   Users,
   MessageCircle,
