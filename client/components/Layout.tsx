@@ -43,7 +43,7 @@ export default function CodeLayout({ children }: LayoutProps) {
     { name: "Home", href: "/" },
     { name: "Get Started", href: "/onboarding" },
     { name: "Engage", href: "/engage" },
-    { name: "Profiles", href: "/profiles" },
+    { name: "Developers", href: "/developers" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
@@ -52,7 +52,7 @@ export default function CodeLayout({ children }: LayoutProps) {
     { name: "Dashboard", href: "/dashboard" },
     { name: "Feed", href: "/feed" },
     { name: "Engage", href: "/engage" },
-    { name: "Profiles", href: "/profiles" },
+    { name: "Developers", href: "/developers" },
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
