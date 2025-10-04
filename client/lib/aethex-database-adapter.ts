@@ -267,6 +267,37 @@ function isTableMissing(err: any): boolean {
 // User Profile Services
 export const aethexUserService = {
   async getCurrentUser(): Promise<AethexUserProfile | null> {
+    if (!isSupabaseConfigured) {
+      const { data } = await mockAuth.getUser();
+      const user = data.user;
+      if (!user) return null;
+
+      const profile = await mockAuth.getUserProfile(user.id);
+      if (!profile || Object.keys(profile || {}).length === 0) {
+        return await this.createInitialProfile(
+          user.id,
+          {
+            username: user.email?.split("@")[0] || "user",
+            full_name: user.email?.split("@")[0] || "user",
+          },
+          user.email,
+        );
+      }
+
+      const normalized = normalizeProfile(
+        {
+          ...profile,
+          user_type: (profile as any)?.user_type ?? "game_developer",
+          experience_level: (profile as any)?.experience_level ?? "beginner",
+          total_xp: (profile as any)?.total_xp ?? 0,
+          level: (profile as any)?.level ?? 1,
+        },
+        user.email ?? (profile as any)?.email ?? null,
+      );
+
+      return await ensureDailyStreakForProfile(normalized);
+    }
+
     ensureSupabase();
 
     const {
