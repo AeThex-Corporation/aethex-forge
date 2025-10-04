@@ -561,7 +561,7 @@ export default function Engage() {
         </section>
 
         {/* Process */}
-        <section className="bg-background/30 py-20">
+        <section className="bg-background/30 py-16 sm:py-20">
           <div className="container mx-auto max-w-5xl px-4">
             <div className="text-center">
               <h2 className="text-3xl font-bold text-gradient mb-4 sm:text-4xl">
