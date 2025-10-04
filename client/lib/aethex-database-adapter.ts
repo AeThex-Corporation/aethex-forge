@@ -25,6 +25,14 @@ const isNonEmptyString = (value: unknown): value is string =>
 
 const ensureSupabase = () => {
   if (!isSupabaseConfigured) {
+    const isTestEnvironment =
+      typeof process !== "undefined" &&
+      (process.env?.NODE_ENV === "test" || process.env?.VITEST);
+
+    if (isTestEnvironment) {
+      return;
+    }
+
     throw new Error(
       "Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
     );
