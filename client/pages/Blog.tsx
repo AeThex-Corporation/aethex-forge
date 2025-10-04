@@ -450,82 +450,92 @@ export default function Blog() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-              {filteredPosts.map((post, index) => (
-                <Card
-                  key={index}
-                  className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-up"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
-                      <Badge variant="outline" className="text-xs">
-                        {post.category}
-                      </Badge>
-                      {post.trending && (
-                        <Badge className="bg-gradient-to-r from-orange-500 to-red-600 text-xs">
-                          <TrendingUp className="h-3 w-3 mr-1" />
-                          Trending
+            {displayedPosts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                {displayedPosts.map((post, index) => (
+                  <Card
+                    key={buildSlug(post)}
+                    className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-up"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between mb-2">
+                        <Badge variant="outline" className="text-xs">
+                          {post.category || "General"}
                         </Badge>
-                      )}
-                    </div>
-                    <CardTitle className="text-lg hover:text-gradient transition-colors cursor-pointer">
-                      {post.title}
-                    </CardTitle>
-                    <CardDescription className="text-sm">
-                      {post.excerpt}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <div className="flex items-center space-x-2">
-                        <User className="h-3 w-3" />
-                        <span>{post.author}</span>
+                        {post.trending && (
+                          <Badge className="bg-gradient-to-r from-orange-500 to-red-600 text-xs">
+                            <TrendingUp className="h-3 w-3 mr-1" />
+                            Trending
+                          </Badge>
+                        )}
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="h-3 w-3" />
-                        <span>{post.date}</span>
-                      </div>
-                    </div>
+                      <CardTitle className="text-lg hover:text-gradient transition-colors cursor-pointer">
+                        {post.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm">
+                        {post.excerpt}
+                      </CardDescription>
+                    </CardHeader>
 
-                    <div className="flex items-center justify-between">
-                      <Badge variant="outline" className="text-xs">
-                        {post.readTime}
-                      </Badge>
-                      <div className="flex items-center space-x-3">
-                        <Button size="sm" variant="ghost">
-                          <Bookmark className="h-3 w-3" />
-                        </Button>
-                        <Button size="sm" variant="ghost">
-                          <Share className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                        <div className="flex items-center space-x-1">
-                          <ThumbsUp className="h-3 w-3" />
-                          <span>{post.likes}</span>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className="flex items-center space-x-2">
+                          <User className="h-3 w-3" />
+                          <span>{post.author || "AeThex Team"}</span>
                         </div>
-                        <div className="flex items-center space-x-1">
-                          <MessageCircle className="h-3 w-3" />
-                          <span>{post.comments}</span>
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="h-3 w-3" />
+                          <span>{post.date || "Coming soon"}</span>
                         </div>
                       </div>
-                      <Button size="sm" asChild>
-                        <Link
-                          to={`/blog/${post.title.toLowerCase().replace(/\s+/g, "-")}`}
-                        >
-                          Read More
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+
+                      <div className="flex items-center justify-between">
+                        {post.readTime ? (
+                          <Badge variant="outline" className="text-xs">
+                            {post.readTime}
+                          </Badge>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">
+                            Quick read
+                          </span>
+                        )}
+                        <div className="flex items-center space-x-3">
+                          <Button size="sm" variant="ghost">
+                            <Bookmark className="h-3 w-3" />
+                          </Button>
+                          <Button size="sm" variant="ghost">
+                            <Share className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-border/30">
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                          <div className="flex items-center space-x-1">
+                            <ThumbsUp className="h-3 w-3" />
+                            <span>{post.likes ?? 0}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <MessageCircle className="h-3 w-3" />
+                            <span>{post.comments ?? 0}</span>
+                          </div>
+                        </div>
+                        <Button size="sm" asChild>
+                          <Link to={`/blog/${buildSlug(post)}`}>
+                            Read More
+                          </Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="max-w-3xl mx-auto rounded-lg border border-border/40 bg-background/60 p-10 text-center text-muted-foreground animate-slide-up">
+                No articles available in this category yet. Please check back soon.
+              </div>
+            )}
           </div>
         </section>
 
