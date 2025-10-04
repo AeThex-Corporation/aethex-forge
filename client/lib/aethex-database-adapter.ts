@@ -568,9 +568,7 @@ export const aethexProjectService = {
 // Achievement Services (Supabase only)
 export const aethexAchievementService = {
   async getAllAchievements(): Promise<AethexAchievement[]> {
-    if (!isSupabaseConfigured) {
-      return fallbackAchievementCatalog.map((achievement) => ({ ...achievement }));
-    }
+    ensureSupabase();
 
     const { data, error } = await supabase
       .from("achievements")
@@ -585,13 +583,7 @@ export const aethexAchievementService = {
   },
 
   async getUserAchievements(userId: string): Promise<AethexAchievement[]> {
-    if (!isSupabaseConfigured) {
-      const unlocked = fallbackUserAchievements.get(userId);
-      if (!unlocked) return [];
-      return Array.from(unlocked)
-        .map((achievementId) => fallbackAchievementsById.get(achievementId))
-        .filter((value): value is AethexAchievement => Boolean(value));
-    }
+    ensureSupabase();
 
     const { data, error } = await supabase
       .from("user_achievements")
@@ -613,22 +605,7 @@ export const aethexAchievementService = {
   },
 
   async awardAchievement(userId: string, achievementId: string): Promise<void> {
-    if (!isSupabaseConfigured) {
-      const achievement =
-        fallbackAchievementsById.get(achievementId) ||
-        fallbackAchievementsByName.get(achievementId);
-      if (!achievement) {
-        return;
-      }
-
-      const current = fallbackUserAchievements.get(userId) ?? new Set<string>();
-      if (!current.has(achievement.id)) {
-        current.add(achievement.id);
-        fallbackUserAchievements.set(userId, current);
-        await this.updateUserXPAndLevel(userId, achievement.xp_reward ?? 0);
-      }
-      return;
-    }
+    ensureSupabase();
 
     const { data: achievement, error: fetchError } = await supabase
       .from("achievements")
@@ -638,6 +615,10 @@ export const aethexAchievementService = {
 
     if (fetchError) {
       throw fetchError;
+    }
+
+    if (!achievement) {
+      return;
     }
 
     const { error } = await supabase.from("user_achievements").insert({
@@ -655,24 +636,7 @@ export const aethexAchievementService = {
   },
 
   async updateUserXPAndLevel(userId: string, xpGained: number | null = null): Promise<void> {
-    if (!isSupabaseConfigured) {
-      const xpDelta = xpGained ?? 0;
-      const currentProfile = (await mockAuth.getUserProfile(userId)) as any;
-      const currentXP = currentProfile?.total_xp ?? 0;
-      const newTotalXP = currentXP + xpDelta;
-      const newLevel = Math.floor(newTotalXP / 1000) + 1;
-      const newLoyaltyPoints = (currentProfile?.loyalty_points ?? 0) + xpDelta;
-
-      await mockAuth.updateProfile(
-        userId,
-        {
-          total_xp: newTotalXP,
-          level: newLevel,
-          loyalty_points: newLoyaltyPoints,
-        } as any,
-      );
-      return;
-    }
+    ensureSupabase();
 
     const { data: profile, error } = await supabase
       .from("user_profiles")
@@ -704,27 +668,13 @@ export const aethexAchievementService = {
         .from("user_profiles")
         .update(updates)
         .eq("id", userId);
+
       if (updateError) throw updateError;
     }
   },
 
   async checkAndAwardOnboardingAchievement(userId: string): Promise<void> {
-    const awardDirectly = async () => {
-      const names = ["Welcome to AeThex", "AeThex Explorer"];
-      const achievements = await this.getAllAchievements();
-      const byName = new Map(achievements.map((item) => [item.name, item.id] as const));
-
-      for (const name of names) {
-        const id = byName.get(name);
-        if (!id) continue;
-        await this.awardAchievement(userId, id);
-      }
-    };
-
-    if (!isSupabaseConfigured) {
-      await awardDirectly();
-      return;
-    }
+    ensureSupabase();
 
     try {
       const resp = await fetch(`/api/achievements/award`, {
@@ -743,7 +693,15 @@ export const aethexAchievementService = {
       console.warn("Edge function award failed, attempting direct Supabase insert", error);
     }
 
-    await awardDirectly();
+    const achievements = await this.getAllAchievements();
+    const byName = new Map(achievements.map((item) => [item.name, item.id] as const));
+    const names = ["Welcome to AeThex", "AeThex Explorer"];
+
+    for (const name of names) {
+      const id = byName.get(name);
+      if (!id) continue;
+      await this.awardAchievement(userId, id);
+    }
   },
 
   async checkAndAwardProjectAchievements(userId: string): Promise<void> {
