@@ -84,7 +84,7 @@ const App = () => (
                 element={<Navigate to="/passport/me" replace />}
               />
               <Route path="/passport/me" element={<ProfilePassport />} />
-              <Route path="/passport/:id" element={<ProfilePassport />} />
+              <Route path="/passport/:username" element={<ProfilePassport />} />
               <Route path="/login" element={<Login />} />
 
               {/* Service routes */}
