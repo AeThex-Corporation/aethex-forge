@@ -573,7 +573,7 @@ export default function Engage() {
               </p>
             </div>
 
-            <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-2">
               {process.map((stage) => (
                 <Card
                   key={stage.step}
