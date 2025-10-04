@@ -642,8 +642,7 @@ export default function Dashboard() {
                   {profile?.full_name || user.email?.split("@")[0]}
                 </h1>
                 <p className="text-muted-foreground">
-                  {profile?.role || "Member"} • Level {profile?.level || 1} • 7
-                  day streak 🔥
+                  {profile?.role || "Member"} • Level {profile?.level || 1} • {streakLabel} 🔥
                 </p>
               </div>
               <div className="flex items-center space-x-4">
