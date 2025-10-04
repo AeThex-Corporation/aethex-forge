@@ -34,7 +34,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: LayoutProps) {
+export default function CodeLayout({ children }: LayoutProps) {
   const location = useLocation();
   const { user, profile, roles, signOut, loading, profileComplete } = useAuth();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
