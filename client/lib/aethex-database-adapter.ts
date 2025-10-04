@@ -388,7 +388,7 @@ export const aethexUserService = {
           profileData.username ||
           (email ? email.split("@")[0] : undefined) ||
           `user_${Date.now()}`,
-        user_type: (profileData as any).user_type || "community_member",
+        user_type: (profileData as any).user_type || "game_developer",
         experience_level: (profileData as any).experience_level || "beginner",
         full_name: profileData.full_name,
         bio: profileData.bio,
