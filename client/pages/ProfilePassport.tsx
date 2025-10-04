@@ -44,7 +44,7 @@ const formatDate = (value?: string | null) => {
 const ProfilePassport = () => {
   const params = useParams<{ username?: string }>();
   const navigate = useNavigate();
-  const { user, linkedProviders } = useAuth();
+  const { user, linkedProviders, profile: authProfile } = useAuth();
 
   const [profile, setProfile] = useState<
     (AethexUserProfile & { email?: string | null }) | null
