@@ -83,6 +83,112 @@ type EventRegistrationPayload = {
   message?: string;
 };
 
+type ForumSpace = {
+  id: string;
+  name: string;
+  description: string;
+  threads: number;
+  activeToday: number;
+  latestThread: {
+    title: string;
+    author: string;
+    timeAgo: string;
+  };
+  icon: LucideIcon;
+};
+
+type FeedbackChannel = {
+  id: string;
+  title: string;
+  description: string;
+  submissionsThisWeek: number;
+  statuses: {
+    label: string;
+    count: number;
+    tone: "neutral" | "positive" | "warning";
+  }[];
+  owner: string;
+};
+
+type PollTrend = "up" | "steady" | "down";
+
+type PollOption = {
+  id: string;
+  label: string;
+  votes: number;
+  trend: PollTrend;
+};
+
+type CommunityPoll = {
+  id: string;
+  question: string;
+  closesIn: string;
+  options: PollOption[];
+};
+
+type ChatChannel = {
+  id: string;
+  name: string;
+  description: string;
+  participants: number;
+  activeNow: number;
+  icon: LucideIcon;
+};
+
+type ProfileHighlight = {
+  id: string;
+  title: string;
+  description: string;
+  metricLabel: string;
+  metricValue: string;
+  icon: LucideIcon;
+};
+
+type WorkshopItem = {
+  id: string;
+  title: string;
+  description: string;
+  downloads: number;
+  rating: number;
+  author: string;
+  icon: LucideIcon;
+};
+
+type MediaItem = {
+  id: string;
+  title: string;
+  type: "Screenshot" | "Artwork" | "Video";
+  thumbnail: string;
+  author: string;
+  likes: number;
+};
+
+type SpotlightCreator = {
+  id: string;
+  name: string;
+  role: string;
+  highlight: string;
+  link: string;
+  avatar: string;
+  metrics: {
+    label: string;
+    value: string;
+  }[];
+};
+
+type ModerationTool = {
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};
+
+type ReportReason = {
+  id: string;
+  label: string;
+  description: string;
+};
+
 interface EventCardProps {
   event: CommunityEvent;
   animationDelay: number;
