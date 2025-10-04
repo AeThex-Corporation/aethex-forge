@@ -702,9 +702,9 @@ export default function Community() {
 
   const devConnectHighlights = [
     {
-      title: "Unified Creator Profiles",
+      title: "Unified Developer Profiles",
       description:
-        "Showcase your AeThex achievements, GitHub contributions, and live projects in one public hub.",
+        "Showcase your AeThex achievements, GitHub contributions, and live projects in one public developer hub.",
       icon: Users,
     },
     {
@@ -836,7 +836,7 @@ export default function Community() {
     {
       id: "portfolio",
       title: "Unified Portfolio",
-      description: "Link GitHub, AeThex achievements, and live builds in one profile.",
+      description: "Link GitHub, AeThex achievements, and live builds in one developer profile.",
       metricLabel: "Portfolio views",
       metricValue: "3.2K / wk",
       icon: Layers,
@@ -871,7 +871,7 @@ export default function Community() {
       bio: "Hosts the weekly build clinics and mentors new squads shipping co-op missions.",
       recentContribution: "Rolled out the Adaptive Matchmaking toolkit for Season 4.",
       reputation: "4.9/5 player rating",
-      profileUrl: "/profiles/alex-developer",
+      profileUrl: "/developers/alex-developer",
     },
     {
       name: "Sarah Coder",
@@ -884,7 +884,7 @@ export default function Community() {
       bio: "Maintains the AeThex SDK quickstarts and keeps localisation packs up to date.",
       recentContribution: "Launched the multiplayer onboarding walkthrough in seven languages.",
       reputation: "4.8/5 creator rating",
-      profileUrl: "/profiles/sarah-coder",
+      profileUrl: "/developers/sarah-coder",
     },
     {
       name: "Jordan AI",
@@ -897,7 +897,7 @@ export default function Community() {
       bio: "Builds guardrailed inference pipelines and shares evaluation playbooks weekly.",
       recentContribution: "Released the Procedural Dialogue orchestrator adopted by 40+ teams.",
       reputation: "4.9/5 mentor rating",
-      profileUrl: "/profiles/jordan-ai",
+      profileUrl: "/developers/jordan-ai",
     },
   ];
 
@@ -1394,7 +1394,7 @@ export default function Community() {
                     })}
                   </div>
                   <div className="rounded-lg border border-aethex-400/40 bg-gradient-to-r from-aethex-500/10 to-neon-blue/10 p-4 text-sm text-muted-foreground">
-                    DevConnect syncs directly with AeThex profiles, so your
+                    DevConnect syncs directly with AeThex developer profiles, so your
                     activity, streaks, and achievements follow you across every
                     build.
                   </div>
@@ -1580,7 +1580,7 @@ export default function Community() {
             <SectionHeader
               badge="Real-time Collaboration"
               title="Integrated chat with Discord-style presence"
-              description="Spin up voice, text, and co-working rooms that bridge seamlessly with our forums and profiles."
+              description="Spin up voice, text, and co-working rooms that bridge seamlessly with our forums and developer hubs."
               align="left"
             />
             <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
@@ -1673,13 +1673,13 @@ export default function Community() {
           </div>
         </section>
 
-        {/* Player Profile Highlights */}
+        {/* Developer Profile Highlights */}
         <section className="py-20">
           <div className="container mx-auto px-4">
             <SectionHeader
-              badge="Player Profiles"
+              badge="Developer Profiles"
               title="Showcase your journey across AeThex"
-              description="Profiles blend achievements, portfolio pieces, and social proof so collaborators can find you fast."
+              description="Developer profiles blend achievements, portfolio pieces, and social proof so collaborators can find you fast."
               align="left"
             />
             <div className="grid gap-6 md:grid-cols-3">
@@ -1711,12 +1711,12 @@ export default function Community() {
           </div>
         </section>
 
-        {/* Featured Player Profiles */}
+        {/* Featured Developers */}
         <section className="py-20 bg-background/30">
           <div className="container mx-auto px-4">
             <SectionHeader
               badge="Community Leaders"
-              title="Featured player profiles"
+              title="Featured developers"
               description="Highlighting builders who mentor others, ship mods, and level up the entire network."
               align="center"
             />
