@@ -303,21 +303,6 @@ export const aethexUserService = {
   },
 
   async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
-    if (!isSupabaseConfigured) {
-      return mockAuth.getAllProfiles().slice(0, limit).map((row) =>
-        normalizeProfile(
-          {
-            ...row,
-            user_type: (row as any)?.user_type || "game_developer",
-            experience_level: (row as any)?.experience_level || "beginner",
-            total_xp: (row as any)?.total_xp ?? 0,
-            level: (row as any)?.level ?? 1,
-          },
-          (row as any)?.email,
-        ),
-      );
-    }
-
     ensureSupabase();
 
     const { data, error } = await supabase
