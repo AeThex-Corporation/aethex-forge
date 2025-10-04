@@ -302,6 +302,64 @@ export const aethexUserService = {
     return normalizeProfile(data);
   },
 
+  async getProfileByUsername(username: string): Promise<AethexUserProfile | null> {
+    const normalized = username?.trim();
+    if (!normalized) return null;
+
+    ensureSupabase();
+
+    const {
+      data,
+      error,
+    } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .eq("username", normalized)
+      .maybeSingle();
+
+    if (error) {
+      if ((error as any)?.code !== "PGRST116") {
+        if (isTableMissing(error)) {
+          throw new Error(
+            'Supabase table "user_profiles" is missing. Please run the required migrations.',
+          );
+        }
+        throw error;
+      }
+    }
+
+    if (data) {
+      return normalizeProfile(data);
+    }
+
+    const {
+      data: fallback,
+      error: fallbackError,
+    } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .ilike("username", normalized)
+      .maybeSingle();
+
+    if (fallbackError) {
+      if ((fallbackError as any)?.code === "PGRST116") {
+        return null;
+      }
+      if (isTableMissing(fallbackError)) {
+        throw new Error(
+          'Supabase table "user_profiles" is missing. Please run the required migrations.',
+        );
+      }
+      throw fallbackError;
+    }
+
+    if (fallback) {
+      return normalizeProfile(fallback);
+    }
+
+    return null;
+  },
+
   async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
     ensureSupabase();
 
