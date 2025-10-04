@@ -62,66 +62,104 @@ const ProfilePassport = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  const targetUserId = useMemo(() => {
-    if (params.id === "me" || !params.id) {
-      return user?.id ?? null;
-    }
-    return params.id;
-  }, [params.id, user?.id]);
-
-  const isSelf = user?.id && profile?.id ? user.id === profile.id : false;
-
   useEffect(() => {
-    if (!targetUserId) {
-      if (!user) {
-        navigate("/login");
-      }
+    if (isSelfRoute && !user) {
       setLoading(false);
+      setNotFound(false);
+      navigate("/login");
       return;
     }
 
-    const loadProfile = async () => {
+    let cancelled = false;
+
+    const loadPassport = async () => {
       setLoading(true);
       try {
-        const isViewingSelf = params.id === "me" || !params.id;
+        let resolvedProfile: (AethexUserProfile & { email?: string | null }) | null =
+          null;
+        let resolvedId: string | null = null;
 
-        const profilePromise = isViewingSelf
-          ? aethexUserService.getCurrentUser()
-          : aethexUserService.getProfileById(targetUserId);
+        if (isSelfRoute) {
+          const currentUser = await aethexUserService.getCurrentUser();
+          if (currentUser) {
+            resolvedProfile = {
+              ...currentUser,
+              email:
+                (currentUser as any)?.email ??
+                user?.email ??
+                authProfile?.email ??
+                null,
+            } as AethexUserProfile & { email?: string | null };
+            resolvedId = currentUser.id ?? user?.id ?? null;
+          }
+        } else if (requestedUsername) {
+          let fetchedProfile =
+            (await aethexUserService.getProfileByUsername(requestedUsername)) ??
+            (isUuid(requestedUsername)
+              ? await aethexUserService.getProfileById(requestedUsername)
+              : null);
 
-        const [profileData, achievementList, interestList, projectList] =
-          await Promise.all([
-            profilePromise,
-            aethexAchievementService
-              .getUserAchievements(targetUserId)
-              .catch((error) => {
-                console.error("Failed to load achievements", error);
-                return [] as AethexAchievement[];
-              }),
-            aethexUserService.getUserInterests(targetUserId).catch((error) => {
-              console.error("Failed to load interests", error);
-              return [] as string[];
-            }),
-            aethexProjectService
-              .getUserProjects(targetUserId)
-              .catch((error) => {
-                console.error("Failed to load projects", error);
-                return [] as ProjectPreview[];
-              }),
-          ]);
+          if (
+            fetchedProfile?.username &&
+            fetchedProfile.username.toLowerCase() ===
+              requestedUsername.toLowerCase() &&
+            fetchedProfile.username !== requestedUsername
+          ) {
+            navigate(`/passport/${fetchedProfile.username}`, { replace: true });
+            return;
+          }
 
-        if (!profileData) {
-          setNotFound(true);
+          if (fetchedProfile) {
+            resolvedProfile = {
+              ...fetchedProfile,
+              email: (fetchedProfile as any)?.email ?? null,
+            } as AethexUserProfile & { email?: string | null };
+            resolvedId = fetchedProfile.id ?? null;
+          }
+        }
+
+        if (!resolvedProfile || !resolvedId) {
+          if (!cancelled) {
+            setNotFound(true);
+          }
           return;
         }
 
-        const resolvedProfile = {
-          ...profileData,
-          email:
-            (profileData as any)?.email ?? (isViewingSelf ? user?.email ?? null : null),
-        } as AethexUserProfile & { email?: string | null };
+        const viewingSelf =
+          isSelfRoute ||
+          (!!user?.id && resolvedId === user.id) ||
+          (!!authProfile?.username &&
+            !!resolvedProfile.username &&
+            authProfile.username.toLowerCase() ===
+              resolvedProfile.username.toLowerCase());
 
-        setProfile(resolvedProfile);
+        const [achievementList, interestList, projectList] = await Promise.all([
+          aethexAchievementService
+            .getUserAchievements(resolvedId)
+            .catch((error) => {
+              console.error("Failed to load achievements", error);
+              return [] as AethexAchievement[];
+            }),
+          aethexUserService.getUserInterests(resolvedId).catch((error) => {
+            console.error("Failed to load interests", error);
+            return [] as string[];
+          }),
+          aethexProjectService.getUserProjects(resolvedId).catch((error) => {
+            console.error("Failed to load projects", error);
+            return [] as ProjectPreview[];
+          }),
+        ]);
+
+        if (cancelled) {
+          return;
+        }
+
+        setProfile({
+          ...resolvedProfile,
+          email:
+            resolvedProfile.email ??
+            (viewingSelf ? user?.email ?? authProfile?.email ?? null : null),
+        });
         setAchievements(achievementList ?? []);
         setInterests(interestList ?? []);
         setProjects(
@@ -136,15 +174,38 @@ const ProfilePassport = () => {
         setNotFound(false);
       } catch (error) {
         console.error("Failed to load passport", error);
-        setNotFound(true);
+        if (!cancelled) {
+          setNotFound(true);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
-    loadProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [targetUserId, params.id, user?.email]);
+    loadPassport();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    authProfile?.email,
+    authProfile?.username,
+    isSelfRoute,
+    navigate,
+    requestedUsername,
+    user?.email,
+    user?.id,
+  ]);
+
+  const isSelf = Boolean(
+    profile &&
+      ((user?.id && profile.id && user.id === profile.id) ||
+        (authProfile?.username &&
+          profile.username &&
+          authProfile.username.toLowerCase() === profile.username.toLowerCase())),
+  );
 
   if (loading) {
     return <LoadingScreen message="Loading AeThex passport..." />;
