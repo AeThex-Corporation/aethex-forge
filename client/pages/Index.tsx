@@ -135,7 +135,7 @@ export default function Index() {
             {/* Title */}
             <div className="space-y-6 animate-scale-in">
               <div className="space-y-4">
-                <h1 className="text-5xl lg:text-7xl font-bold">
+                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold">
                   <span className="text-gradient-purple">AeThex</span>
                 </h1>
                 <h2 className="text-2xl lg:text-3xl text-gradient animate-fade-in">
@@ -149,7 +149,7 @@ export default function Index() {
             </div>
 
             {/* Interactive Features Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up">
               {features.map((feature, index) => {
                 const Icon = feature.icon;
                 const isActive = activeSection === index;
@@ -163,7 +163,7 @@ export default function Index() {
                     }`}
                     onClick={() => setActiveSection(index)}
                   >
-                    <CardContent className="p-6 text-center space-y-3">
+                    <CardContent className="p-5 sm:p-6 text-center space-y-3">
                       <div
                         className={`mx-auto w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}
                       >
@@ -184,7 +184,7 @@ export default function Index() {
               <Button
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
+                className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
               >
                 <Link
                   to="/onboarding"
@@ -199,7 +199,7 @@ export default function Index() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
               >
                 <Link to="/dashboard">Explore Dashboard</Link>
               </Button>
