@@ -49,6 +49,9 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
   const realmStyle =
     realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
   const isGodMode = (profile.level ?? 1) >= 100;
+  const passportHref = profile.username
+    ? `/passport/${profile.username}`
+    : `/passport/${profile.id}`;
   return (
     <Card className="group h-full border border-slate-800 bg-slate-900/60 transition-transform hover:-translate-y-1 hover:border-aethex-400/60">
       <CardHeader className="space-y-3">
@@ -120,10 +123,7 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
           variant="outline"
           className="w-full border-slate-700/70 text-slate-100 transition-colors hover:border-aethex-400/60 hover:text-white"
         >
-          <Link
-            to={`/developers/${profile.id}`}
-            className="flex items-center justify-center gap-2"
-          >
+          <Link to={passportHref} className="flex items-center justify-center gap-2">
             <UserRound className="h-4 w-4" />
             View Passport
           </Link>
