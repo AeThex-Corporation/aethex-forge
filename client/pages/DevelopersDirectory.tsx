@@ -210,7 +210,7 @@ const DevelopersDirectory = () => {
                   asChild
                   className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
                 >
-                  <Link to="/passport/me">View my passport</Link>
+                  <Link to={myPassportHref}>View my passport</Link>
                 </Button>
               </div>
             </div>
