@@ -335,45 +335,6 @@ export const aethexUserService = {
     userId: string,
     updates: Partial<AethexUserProfile>,
   ): Promise<AethexUserProfile | null> {
-    if (!isSupabaseConfigured) {
-      const nowIso = new Date().toISOString();
-      const stored = await mockAuth.updateProfile(
-        userId,
-        {
-          ...updates,
-          onboarded: true,
-          user_type: (updates as any)?.user_type ?? "game_developer",
-          experience_level: (updates as any)?.experience_level ?? "beginner",
-          updated_at: nowIso,
-        } as any,
-      );
-
-      const normalized = normalizeProfile(
-        {
-          ...stored,
-          user_type:
-            (stored as any)?.user_type ?? (updates as any)?.user_type ?? "game_developer",
-          experience_level:
-            (stored as any)?.experience_level ??
-            (updates as any)?.experience_level ??
-            "beginner",
-          total_xp: (stored as any)?.total_xp ?? 0,
-          level: (stored as any)?.level ?? 1,
-          loyalty_points: (stored as any)?.loyalty_points ?? 0,
-          current_streak: (stored as any)?.current_streak ?? 1,
-          longest_streak:
-            (stored as any)?.longest_streak ??
-            Math.max((stored as any)?.current_streak ?? 1, 1),
-          last_streak_at: (stored as any)?.last_streak_at ?? null,
-          updated_at: (stored as any)?.updated_at ?? nowIso,
-          created_at: (stored as any)?.created_at ?? nowIso,
-        },
-        stored.email ?? (updates as any)?.email ?? null,
-      );
-
-      return normalized;
-    }
-
     ensureSupabase();
 
     const { data, error } = await supabase
