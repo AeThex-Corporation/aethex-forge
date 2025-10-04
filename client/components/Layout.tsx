@@ -58,6 +58,10 @@ export default function CodeLayout({ children }: LayoutProps) {
     { name: "Contact", href: "/contact" },
   ];
 
+  const passportHref = profile?.username
+    ? `/passport/${profile.username}`
+    : "/passport/me";
+
   const navItems = user ? userNavigation : navigation;
 
   const scrollToTop = () => {
