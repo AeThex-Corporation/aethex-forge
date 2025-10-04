@@ -211,7 +211,7 @@ export default function Profile() {
             linkedin_url: profileData.linkedinUrl,
             github_url: profileData.githubUsername ? `https://github.com/${profileData.githubUsername}` : null,
             twitter_url: profileData.twitterUsername ? `https://twitter.com/${profileData.twitterUsername}` : null,
-            user_type: "community_member",
+            user_type: "game_developer",
             experience_level: "beginner",
             level: 1,
             total_xp: 0,
