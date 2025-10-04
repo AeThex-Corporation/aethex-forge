@@ -404,7 +404,7 @@ export default function MentorshipPrograms() {
                         ))}
                       </div>
 
-                      <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/30">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border/30">
                         <div className="text-center">
                           <Clock className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
                           <div className="text-xs text-muted-foreground">
