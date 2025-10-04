@@ -718,6 +718,33 @@ export const aethexAchievementService = {
       }
     }
   },
+
+  async activateCommunityRewards(target?: {
+    email?: string;
+    username?: string;
+  }): Promise<ActivateRewardsResponse | null> {
+    try {
+      const payload = {
+        targetEmail: target?.email,
+        targetUsername: target?.username,
+      };
+      const response = await fetch("/api/achievements/activate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to activate community rewards");
+      }
+
+      return (await response.json()) as ActivateRewardsResponse;
+    } catch (error) {
+      console.warn("activateCommunityRewards failed:", error);
+      return null;
+    }
+  },
 };
 
 // Notification Service (uses existing notifications table)
