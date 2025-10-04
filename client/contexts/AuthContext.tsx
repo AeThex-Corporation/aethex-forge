@@ -259,6 +259,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  useEffect(() => {
+    if (!user || !profile) return;
+    if (!roles.length) return;
+    if (rewardsActivatedRef.current) return;
+
+    const hasAdminRole = roles.some((role) =>
+      ["owner", "admin", "founder"].includes(role.toLowerCase()),
+    );
+
+    if (!hasAdminRole) {
+      return;
+    }
+
+    rewardsActivatedRef.current = true;
+
+    aethexAchievementService
+      .activateCommunityRewards({
+        email: "mrpiglr@gmail.com",
+        username: "mrpiglr",
+      })
+      .then((response) => {
+        if (response?.godModeAwarded) {
+          try {
+            aethexToast.success({
+              title: "GOD mode activated",
+              description: "Legendary rewards synced for mrpiglr.",
+            });
+          } catch (toastError) {
+            console.warn("Failed to show activation toast", toastError);
+          }
+        }
+      })
+      .catch((error) => {
+        console.warn("activateCommunityRewards invocation failed", error);
+        rewardsActivatedRef.current = false;
+      });
+  }, [user, profile, roles]);
+
   const refreshAuthState = useCallback(async () => {
     try {
       const { data } = await supabase.auth.getSession();
