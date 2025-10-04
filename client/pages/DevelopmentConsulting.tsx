@@ -428,7 +428,7 @@ export default function DevelopmentConsulting() {
                     <CardHeader className="text-center">
                       <Icon className="h-12 w-12 text-pink-400 mx-auto mb-3" />
                       <CardTitle className="text-lg">{area.category}</CardTitle>
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs border-pink-400/40 text-pink-200">
                         {area.projects}
                       </Badge>
                     </CardHeader>
