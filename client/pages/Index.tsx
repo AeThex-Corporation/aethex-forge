@@ -426,56 +426,42 @@ export default function Index() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            <Card className="bg-card/50 border-border/50">
-              <CardHeader>
-                <CardTitle>Documentation</CardTitle>
-                <CardDescription>Guides and tutorials</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex gap-2">
-                  <Button asChild variant="outline">
-                    <Link to="/docs">Docs</Link>
-                  </Button>
-                  <Button asChild variant="outline">
-                    <Link to="/docs/tutorials">Tutorials</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50">
-              <CardHeader>
-                <CardTitle>Community</CardTitle>
-                <CardDescription>News and discussions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex gap-2">
-                  <Button asChild variant="outline">
-                    <Link to="/community">Community</Link>
-                  </Button>
-                  <Button asChild variant="outline">
-                    <Link to="/blog">Blog</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50">
-              <CardHeader>
-                <CardTitle>Company</CardTitle>
-                <CardDescription>About and contact</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex gap-2">
-                  <Button asChild variant="outline">
-                    <Link to="/about">About</Link>
-                  </Button>
-                  <Button asChild variant="outline">
-                    <Link to="/contact">Contact</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {resourceOfferings.map((offering) => (
+              <Card
+                key={offering.title}
+                className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
+              >
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-35 transition-opacity duration-500" />
+                <CardHeader className="relative space-y-2">
+                  <CardTitle className={`text-lg ${offering.titleClass}`}>
+                    {offering.title}
+                  </CardTitle>
+                  <CardDescription className={`text-sm ${offering.descriptionClass}`}>
+                    {offering.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="relative">
+                  <div className="flex flex-wrap gap-2">
+                    {offering.actions.map((action) => (
+                      <Button
+                        key={action.label}
+                        asChild
+                        variant={action.variant}
+                        className={`flex-1 min-w-[120px] ${action.buttonClass}`}
+                      >
+                        {action.external ? (
+                          <a href={action.href} target="_blank" rel="noreferrer">
+                            {action.label}
+                          </a>
+                        ) : (
+                          <Link to={action.href}>{action.label}</Link>
+                        )}
+                      </Button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
