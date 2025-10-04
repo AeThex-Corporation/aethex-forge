@@ -143,6 +143,27 @@ export default function Community() {
     { label: "Games Created", value: "1K+", icon: Gamepad2 },
   ];
 
+  const devConnectHighlights = [
+    {
+      title: "Unified Creator Profiles",
+      description:
+        "Showcase your AeThex achievements, GitHub contributions, and live projects in one public hub.",
+      icon: Users,
+    },
+    {
+      title: "Real-time Collaboration Rooms",
+      description:
+        "Spin up focused channels with voice, video, and whiteboards tailored for each build sprint.",
+      icon: MessageCircle,
+    },
+    {
+      title: "Integrated Delivery Pipeline",
+      description:
+        "Track deployments, alerts, and community feedback with automated insights across your stack.",
+      icon: TrendingUp,
+    },
+  ];
+
   if (isLoading) {
     return (
       <LoadingScreen
