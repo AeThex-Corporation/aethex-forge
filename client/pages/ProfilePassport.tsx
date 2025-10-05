@@ -72,10 +72,60 @@ const ProfilePassport = () => {
       return;
     }
 
+    const normalizedUsername = requestedUsername?.toLowerCase() ?? null;
+    const targetKey = isSelfRoute
+      ? user?.id
+        ? `id:${user.id}`
+        : authProfile?.username
+        ? `username:${authProfile.username.toLowerCase()}`
+        : "self"
+      : normalizedUsername
+      ? `username:${normalizedUsername}`
+      : null;
+
+    if (targetKey && lastLoadedKeyRef.current === targetKey && profile) {
+      setLoading(false);
+      setNotFound(false);
+      return;
+    }
+
+    if (targetKey && lastLoadedKeyRef.current !== targetKey) {
+      activationAttemptedRef.current = false;
+    }
+
     let cancelled = false;
 
-    const loadPassport = async () => {
+    const profileMatchesCurrentTarget = (() => {
+      if (!profile) {
+        return false;
+      }
+      if (normalizedUsername) {
+        return (
+          profile.username?.toLowerCase() === normalizedUsername ||
+          profile.id === requestedUsername
+        );
+      }
+      if (isSelfRoute) {
+        if (user?.id && profile.id === user.id) {
+          return true;
+        }
+        if (
+          authProfile?.username &&
+          profile.username &&
+          authProfile.username.toLowerCase() ===
+            profile.username.toLowerCase()
+        ) {
+          return true;
+        }
+      }
+      return false;
+    })();
+
+    if (!profileMatchesCurrentTarget) {
       setLoading(true);
+    }
+
+    const loadPassport = async () => {
       try {
         let resolvedProfile:
           | (AethexUserProfile & { email?: string | null })
@@ -92,8 +142,8 @@ const ProfilePassport = () => {
             }
 
             if (
-              currentUser.username.toLowerCase() ===
-                requestedUsername.toLowerCase() &&
+              normalizedUsername &&
+              currentUser.username.toLowerCase() === normalizedUsername &&
               currentUser.username !== requestedUsername
             ) {
               navigate(`/passport/${currentUser.username}`, { replace: true });
@@ -113,7 +163,7 @@ const ProfilePassport = () => {
             resolvedId = currentUser.id ?? user?.id ?? null;
           }
         } else if (requestedUsername) {
-          let fetchedProfile =
+          const fetchedProfile =
             (await aethexUserService.getProfileByUsername(requestedUsername)) ??
             (isUuid(requestedUsername)
               ? await aethexUserService.getProfileById(requestedUsername)
@@ -121,8 +171,7 @@ const ProfilePassport = () => {
 
           if (
             fetchedProfile?.username &&
-            fetchedProfile.username.toLowerCase() ===
-              requestedUsername.toLowerCase() &&
+            fetchedProfile.username.toLowerCase() === normalizedUsername &&
             fetchedProfile.username !== requestedUsername
           ) {
             navigate(`/passport/${fetchedProfile.username}`, { replace: true });
@@ -145,6 +194,7 @@ const ProfilePassport = () => {
             setInterests([]);
             setProjects([]);
             setNotFound(true);
+            lastLoadedKeyRef.current = null;
           }
           return;
         }
@@ -153,37 +203,42 @@ const ProfilePassport = () => {
           resolvedProfile.username &&
           resolvedProfile.username.toLowerCase() === "mrpiglr"
         ) {
-          try {
-            await aethexAchievementService.activateCommunityRewards({
-              email:
-                resolvedProfile.email ??
-                user?.email ??
-                authProfile?.email ??
-                undefined,
-              username: resolvedProfile.username,
-            });
-
-            const refreshedProfile =
-              (await aethexUserService.getProfileByUsername(
-                resolvedProfile.username,
-              )) ??
-              (resolvedId
-                ? await aethexUserService.getProfileById(resolvedId)
-                : null);
-
-            if (refreshedProfile) {
-              resolvedProfile = {
-                ...refreshedProfile,
+          if (!activationAttemptedRef.current) {
+            activationAttemptedRef.current = true;
+            try {
+              await aethexAchievementService.activateCommunityRewards({
                 email:
-                  (refreshedProfile as any)?.email ??
                   resolvedProfile.email ??
-                  null,
-              } as AethexUserProfile & { email?: string | null };
-              resolvedId = refreshedProfile.id ?? resolvedId;
+                  user?.email ??
+                  authProfile?.email ??
+                  undefined,
+                username: resolvedProfile.username,
+              });
+
+              const refreshedProfile =
+                (await aethexUserService.getProfileByUsername(
+                  resolvedProfile.username,
+                )) ??
+                (resolvedId
+                  ? await aethexUserService.getProfileById(resolvedId)
+                  : null);
+
+              if (refreshedProfile) {
+                resolvedProfile = {
+                  ...refreshedProfile,
+                  email:
+                    (refreshedProfile as any)?.email ??
+                    resolvedProfile.email ??
+                    null,
+                } as AethexUserProfile & { email?: string | null };
+                resolvedId = refreshedProfile.id ?? resolvedId;
+              }
+            } catch {
+              activationAttemptedRef.current = false;
             }
-          } catch (error) {
-            console.warn("Failed to activate legendary passport status", error);
           }
+        } else {
+          activationAttemptedRef.current = false;
         }
 
         const viewingSelf =
@@ -197,18 +252,13 @@ const ProfilePassport = () => {
         const [achievementList, interestList, projectList] = await Promise.all([
           aethexAchievementService
             .getUserAchievements(resolvedId)
-            .catch((error) => {
-              console.error("Failed to load achievements", error);
-              return [] as AethexAchievement[];
-            }),
-          aethexUserService.getUserInterests(resolvedId).catch((error) => {
-            console.error("Failed to load interests", error);
-            return [] as string[];
-          }),
-          aethexProjectService.getUserProjects(resolvedId).catch((error) => {
-            console.error("Failed to load projects", error);
-            return [] as ProjectPreview[];
-          }),
+            .catch(() => [] as AethexAchievement[]),
+          aethexUserService
+            .getUserInterests(resolvedId)
+            .catch(() => [] as string[]),
+          aethexProjectService
+            .getUserProjects(resolvedId)
+            .catch(() => [] as ProjectPreview[]),
         ]);
 
         if (cancelled) {
@@ -219,7 +269,7 @@ const ProfilePassport = () => {
           ...resolvedProfile,
           email:
             resolvedProfile.email ??
-            (viewingSelf ? (user?.email ?? authProfile?.email ?? null) : null),
+            (viewingSelf ? user?.email ?? authProfile?.email ?? null : null),
         });
         setAchievements(achievementList ?? []);
         setInterests(interestList ?? []);
@@ -233,9 +283,21 @@ const ProfilePassport = () => {
           })),
         );
         setNotFound(false);
-      } catch (error) {
-        console.error("Failed to load passport", error);
+
+        lastLoadedKeyRef.current =
+          targetKey ??
+          (resolvedProfile.username
+            ? `username:${resolvedProfile.username.toLowerCase()}`
+            : resolvedId
+            ? `id:${resolvedId}`
+            : null);
+      } catch {
         if (!cancelled) {
+          lastLoadedKeyRef.current = null;
+          setProfile(null);
+          setAchievements([]);
+          setInterests([]);
+          setProjects([]);
           setNotFound(true);
         }
       } finally {
