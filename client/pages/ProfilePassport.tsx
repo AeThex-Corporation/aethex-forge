@@ -61,6 +61,8 @@ const ProfilePassport = () => {
   const [interests, setInterests] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const lastLoadedKeyRef = useRef<string | null>(null);
+  const activationAttemptedRef = useRef(false);
 
   useEffect(() => {
     if (isSelfRoute && !user) {
