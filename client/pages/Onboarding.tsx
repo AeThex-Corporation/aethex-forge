@@ -394,13 +394,16 @@ export default function Onboarding() {
         description: "Profile setup complete. Welcome to your dashboard.",
       });
 
-      // Navigate after success (with hard redirect fallback)
+      // Navigate after success (with lightweight fallback)
       navigate("/dashboard", { replace: true });
-      setTimeout(() => {
-        if (location.pathname.includes("onboarding")) {
-          window.location.replace("/dashboard");
-        }
-      }, 400);
+
+      if (typeof window !== "undefined") {
+        setTimeout(() => {
+          if (window.location.pathname.includes("onboarding")) {
+            navigate("/dashboard", { replace: true });
+          }
+        }, 300);
+      }
     } catch (e) {
       function formatError(err: any) {
         if (!err) return "Unknown error";
