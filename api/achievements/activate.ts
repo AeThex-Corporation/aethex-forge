@@ -48,10 +48,7 @@ const CORE_ACHIEVEMENTS = [
 const DEFAULT_TARGET_EMAIL = "mrpiglr@gmail.com";
 const DEFAULT_TARGET_USERNAME = "mrpiglr";
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -68,20 +65,18 @@ export default async function handler(
     // Ensure core achievements exist
     const achievementResults = await Promise.all(
       CORE_ACHIEVEMENTS.map(async (achievement) => {
-        const { error } = await admin
-          .from("achievements")
-          .upsert(
-            {
-              id: achievement.id,
-              name: achievement.name,
-              description: achievement.description,
-              icon: achievement.icon,
-              badge_color: achievement.badgeColor,
-              xp_reward: achievement.xpReward,
-              created_at: nowIso,
-            },
-            { onConflict: "id" },
-          );
+        const { error } = await admin.from("achievements").upsert(
+          {
+            id: achievement.id,
+            name: achievement.name,
+            description: achievement.description,
+            icon: achievement.icon,
+            badge_color: achievement.badgeColor,
+            xp_reward: achievement.xpReward,
+            created_at: nowIso,
+          },
+          { onConflict: "id" },
+        );
 
         if (error) {
           throw error;
@@ -92,14 +87,8 @@ export default async function handler(
 
     // Normalise profile progression defaults
     await Promise.all([
-      admin
-        .from("user_profiles")
-        .update({ level: 1 })
-        .is("level", null),
-      admin
-        .from("user_profiles")
-        .update({ total_xp: 0 })
-        .is("total_xp", null),
+      admin.from("user_profiles").update({ level: 1 }).is("level", null),
+      admin.from("user_profiles").update({ total_xp: 0 }).is("total_xp", null),
       admin
         .from("user_profiles")
         .update({ user_type: "game_developer" })
@@ -108,7 +97,9 @@ export default async function handler(
 
     // Locate target user
     const normalizedEmail = (targetEmail || DEFAULT_TARGET_EMAIL).toLowerCase();
-    const normalizedUsername = (targetUsername || DEFAULT_TARGET_USERNAME).toLowerCase();
+    const normalizedUsername = (
+      targetUsername || DEFAULT_TARGET_USERNAME
+    ).toLowerCase();
 
     let targetUserId: string | null = null;
 
@@ -171,7 +162,9 @@ export default async function handler(
         throw existingError;
       }
 
-      const existingIds = new Set((existingRows ?? []).map((row: any) => row.achievement_id));
+      const existingIds = new Set(
+        (existingRows ?? []).map((row: any) => row.achievement_id),
+      );
 
       for (const achievement of CORE_ACHIEVEMENTS) {
         if (existingIds.has(achievement.id)) {

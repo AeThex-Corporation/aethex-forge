@@ -75,8 +75,9 @@ const ProfilePassport = () => {
     const loadPassport = async () => {
       setLoading(true);
       try {
-        let resolvedProfile: (AethexUserProfile & { email?: string | null }) | null =
-          null;
+        let resolvedProfile:
+          | (AethexUserProfile & { email?: string | null })
+          | null = null;
         let resolvedId: string | null = null;
 
         if (isSelfRoute) {
@@ -89,7 +90,8 @@ const ProfilePassport = () => {
             }
 
             if (
-              currentUser.username.toLowerCase() === requestedUsername.toLowerCase() &&
+              currentUser.username.toLowerCase() ===
+                requestedUsername.toLowerCase() &&
               currentUser.username !== requestedUsername
             ) {
               navigate(`/passport/${currentUser.username}`, { replace: true });
@@ -215,7 +217,7 @@ const ProfilePassport = () => {
           ...resolvedProfile,
           email:
             resolvedProfile.email ??
-            (viewingSelf ? user?.email ?? authProfile?.email ?? null : null),
+            (viewingSelf ? (user?.email ?? authProfile?.email ?? null) : null),
         });
         setAchievements(achievementList ?? []);
         setInterests(interestList ?? []);
@@ -261,7 +263,8 @@ const ProfilePassport = () => {
       ((user?.id && profile.id && user.id === profile.id) ||
         (authProfile?.username &&
           profile.username &&
-          authProfile.username.toLowerCase() === profile.username.toLowerCase())),
+          authProfile.username.toLowerCase() ===
+            profile.username.toLowerCase())),
   );
 
   if (loading) {

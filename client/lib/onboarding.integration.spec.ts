@@ -36,7 +36,8 @@ const fetchMock = fetch as unknown as Mock;
 
 vi.mock("@/lib/supabase", () => {
   const userProfiles = new Map<string, any>();
-  const userAchievements: Array<{ user_id: string; achievement_id: string }> = [];
+  const userAchievements: Array<{ user_id: string; achievement_id: string }> =
+    [];
 
   const achievementsCatalog = [
     {
@@ -59,8 +60,12 @@ vi.mock("@/lib/supabase", () => {
     },
   ];
 
-  const achievementsById = new Map(achievementsCatalog.map((item) => [item.id, item] as const));
-  const achievementsByName = new Map(achievementsCatalog.map((item) => [item.name, item] as const));
+  const achievementsById = new Map(
+    achievementsCatalog.map((item) => [item.id, item] as const),
+  );
+  const achievementsByName = new Map(
+    achievementsCatalog.map((item) => [item.name, item] as const),
+  );
 
   const profileDefaults = (id: string) => ({
     id,
@@ -201,7 +206,8 @@ vi.mock("@/lib/supabase", () => {
       for (const entry of entries) {
         const exists = userAchievements.some(
           (item) =>
-            item.user_id === entry.user_id && item.achievement_id === entry.achievement_id,
+            item.user_id === entry.user_id &&
+            item.achievement_id === entry.achievement_id,
         );
         if (exists) {
           error = { code: "23505" };
@@ -215,10 +221,12 @@ vi.mock("@/lib/supabase", () => {
       return {
         eq(_column: string, userId: string) {
           return {
-            data: userAchievements.map((entry) => ({
-              ...entry,
-              achievements: achievementsById.get(entry.achievement_id),
-            })).filter((entry) => entry.user_id === userId),
+            data: userAchievements
+              .map((entry) => ({
+                ...entry,
+                achievements: achievementsById.get(entry.achievement_id),
+              }))
+              .filter((entry) => entry.user_id === userId),
             error: null,
           };
         },
@@ -251,9 +259,11 @@ vi.mock("@/lib/supabase", () => {
         }),
       },
       from(table: string) {
-        return tableMap[table] ?? {
-          select: () => ({ data: [], error: null }),
-        };
+        return (
+          tableMap[table] ?? {
+            select: () => ({ data: [], error: null }),
+          }
+        );
       },
       channel: () => ({
         on: () => ({}),

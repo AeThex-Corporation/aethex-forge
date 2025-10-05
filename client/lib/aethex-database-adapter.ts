@@ -34,7 +34,9 @@ const ensureSupabase = () => {
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 const startOfUTC = (date: Date) =>
-  new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
+  );
 
 const isoDate = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -50,14 +52,14 @@ const normalizeProfile = (
 ): AethexUserProfile => ({
   ...(row as AethexUserProfile),
   email: email ?? (row as any)?.email,
-  username:
-    (row as any)?.username ?? email?.split("@")[0] ?? "user",
+  username: (row as any)?.username ?? email?.split("@")[0] ?? "user",
   onboarded: true,
   role: (row as any)?.role ?? "developer",
   loyalty_points: (row as any)?.loyalty_points ?? 0,
   current_streak: (row as any)?.current_streak ?? 0,
   longest_streak:
-    (row as any)?.longest_streak ?? Math.max((row as any)?.current_streak ?? 0, 0),
+    (row as any)?.longest_streak ??
+    Math.max((row as any)?.current_streak ?? 0, 0),
   last_streak_at: (row as any)?.last_streak_at ?? null,
 });
 
@@ -302,16 +304,15 @@ export const aethexUserService = {
     return normalizeProfile(data);
   },
 
-  async getProfileByUsername(username: string): Promise<AethexUserProfile | null> {
+  async getProfileByUsername(
+    username: string,
+  ): Promise<AethexUserProfile | null> {
     const normalized = username?.trim();
     if (!normalized) return null;
 
     ensureSupabase();
 
-    const {
-      data,
-      error,
-    } = await supabase
+    const { data, error } = await supabase
       .from("user_profiles")
       .select("*")
       .eq("username", normalized)
@@ -332,10 +333,7 @@ export const aethexUserService = {
       return normalizeProfile(data);
     }
 
-    const {
-      data: fallback,
-      error: fallbackError,
-    } = await supabase
+    const { data: fallback, error: fallbackError } = await supabase
       .from("user_profiles")
       .select("*")
       .ilike("username", normalized)
@@ -379,13 +377,11 @@ export const aethexUserService = {
     }
 
     return ((data as any[]) || []).map((row) =>
-      normalizeProfile(
-        {
-          ...(row as AethexUserProfile),
-          user_type: (row as any).user_type || "game_developer",
-          experience_level: (row as any).experience_level || "beginner",
-        },
-      ),
+      normalizeProfile({
+        ...(row as AethexUserProfile),
+        user_type: (row as any).user_type || "game_developer",
+        experience_level: (row as any).experience_level || "beginner",
+      }),
     );
   },
 
@@ -693,7 +689,10 @@ export const aethexAchievementService = {
     }
   },
 
-  async updateUserXPAndLevel(userId: string, xpGained: number | null = null): Promise<void> {
+  async updateUserXPAndLevel(
+    userId: string,
+    xpGained: number | null = null,
+  ): Promise<void> {
     ensureSupabase();
 
     const { data: profile, error } = await supabase
@@ -719,7 +718,8 @@ export const aethexAchievementService = {
     const updates: Record<string, number> = {};
     if ("total_xp" in currentProfile) updates.total_xp = newTotalXP;
     if ("level" in currentProfile) updates.level = newLevel;
-    if ("loyalty_points" in currentProfile) updates.loyalty_points = newLoyaltyPoints;
+    if ("loyalty_points" in currentProfile)
+      updates.loyalty_points = newLoyaltyPoints;
 
     if (Object.keys(updates).length > 0) {
       const { error: updateError } = await supabase
@@ -748,11 +748,16 @@ export const aethexAchievementService = {
         return;
       }
     } catch (error) {
-      console.warn("Edge function award failed, attempting direct Supabase insert", error);
+      console.warn(
+        "Edge function award failed, attempting direct Supabase insert",
+        error,
+      );
     }
 
     const achievements = await this.getAllAchievements();
-    const byName = new Map(achievements.map((item) => [item.name, item.id] as const));
+    const byName = new Map(
+      achievements.map((item) => [item.name, item.id] as const),
+    );
     const names = ["Welcome to AeThex", "AeThex Explorer"];
 
     for (const name of names) {

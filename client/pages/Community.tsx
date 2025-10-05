@@ -24,7 +24,13 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import {
   AlertTriangle,
   ArrowDown,
@@ -285,14 +291,17 @@ function EventCard({
   };
 
   const statusStyles: Record<EventStatus, string> = {
-    "Registration Open": "bg-gradient-to-r from-emerald-500/20 to-aethex-500/30 text-emerald-200 border border-emerald-400/40",
+    "Registration Open":
+      "bg-gradient-to-r from-emerald-500/20 to-aethex-500/30 text-emerald-200 border border-emerald-400/40",
     Recurring: "bg-blue-500/10 text-blue-200 border border-blue-400/40",
     Upcoming: "bg-orange-500/10 text-orange-200 border border-orange-400/40",
     Waitlist: "bg-amber-500/10 text-amber-200 border border-amber-400/40",
   };
 
   const buttonLabel = isRegistered ? "Manage Registration" : "Register";
-  const submitLabel = isRegistered ? "Update Registration" : "Confirm Registration";
+  const submitLabel = isRegistered
+    ? "Update Registration"
+    : "Confirm Registration";
 
   return (
     <Card
@@ -303,8 +312,15 @@ function EventCard({
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-xl font-semibold text-gradient">{event.title}</h3>
-              <Badge className={cn("uppercase tracking-wide", statusStyles[event.status])}>
+              <h3 className="text-xl font-semibold text-gradient">
+                {event.title}
+              </h3>
+              <Badge
+                className={cn(
+                  "uppercase tracking-wide",
+                  statusStyles[event.status],
+                )}
+              >
                 {event.status}
               </Badge>
               {isRegistered && (
@@ -347,7 +363,9 @@ function EventCard({
                 <Button
                   size="sm"
                   variant={isRegistered ? "outline" : "default"}
-                  disabled={!event.registrationEnabled && !event.registrationUrl}
+                  disabled={
+                    !event.registrationEnabled && !event.registrationUrl
+                  }
                 >
                   {buttonLabel}
                 </Button>
@@ -367,7 +385,10 @@ function EventCard({
                       id={`name-${event.id}`}
                       value={form.name}
                       onChange={(eventChange) =>
-                        setForm((prev) => ({ ...prev, name: eventChange.target.value }))
+                        setForm((prev) => ({
+                          ...prev,
+                          name: eventChange.target.value,
+                        }))
                       }
                       placeholder="Enter your name"
                       required
@@ -380,14 +401,19 @@ function EventCard({
                       type="email"
                       value={form.email}
                       onChange={(eventChange) =>
-                        setForm((prev) => ({ ...prev, email: eventChange.target.value }))
+                        setForm((prev) => ({
+                          ...prev,
+                          email: eventChange.target.value,
+                        }))
                       }
                       placeholder="you@example.com"
                       required
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor={`team-${event.id}`}>Team or studio (optional)</Label>
+                    <Label htmlFor={`team-${event.id}`}>
+                      Team or studio (optional)
+                    </Label>
                     <Input
                       id={`team-${event.id}`}
                       value={form.teamName}
@@ -401,7 +427,9 @@ function EventCard({
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor={`notes-${event.id}`}>Notes for the organizers</Label>
+                    <Label htmlFor={`notes-${event.id}`}>
+                      Notes for the organizers
+                    </Label>
                     <Textarea
                       id={`notes-${event.id}`}
                       value={form.message}
@@ -415,11 +443,13 @@ function EventCard({
                       rows={3}
                     />
                   </div>
-                  {error && (
-                    <p className="text-sm text-red-400">{error}</p>
-                  )}
+                  {error && <p className="text-sm text-red-400">{error}</p>}
                   <DialogFooter>
-                    <Button type="submit" disabled={submitting} className="w-full">
+                    <Button
+                      type="submit"
+                      disabled={submitting}
+                      className="w-full"
+                    >
                       {submitting ? (
                         <span className="flex items-center justify-center gap-2">
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -434,8 +464,17 @@ function EventCard({
               </DialogContent>
             </Dialog>
             {event.registrationUrl && (
-              <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                <a href={event.registrationUrl} target="_blank" rel="noreferrer">
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <a
+                  href={event.registrationUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Event details
                 </a>
               </Button>
@@ -449,7 +488,10 @@ function EventCard({
           </p>
           <ul className="space-y-2">
             {event.agenda.map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li
+                key={item}
+                className="flex items-start gap-3 text-sm text-muted-foreground"
+              >
                 <ArrowRight className="mt-1 h-3.5 w-3.5 text-aethex-400" />
                 <span>{item}</span>
               </li>
@@ -468,16 +510,27 @@ interface SectionHeaderProps {
   align?: "center" | "left";
 }
 
-function SectionHeader({ badge, title, description, align = "center" }: SectionHeaderProps) {
-  const containerClass = align === "center" ? "mx-auto text-center" : "text-left";
+function SectionHeader({
+  badge,
+  title,
+  description,
+  align = "center",
+}: SectionHeaderProps) {
+  const containerClass =
+    align === "center" ? "mx-auto text-center" : "text-left";
   return (
-    <div className={cn("space-y-4 mb-16 animate-slide-up max-w-3xl", containerClass)}>
+    <div
+      className={cn(
+        "space-y-4 mb-16 animate-slide-up max-w-3xl",
+        containerClass,
+      )}
+    >
       {badge && (
         <Badge
           variant="outline"
           className={cn(
             "w-fit border-aethex-400/50 text-aethex-300 bg-aethex-500/10",
-            align === "center" ? "mx-auto" : ""
+            align === "center" ? "mx-auto" : "",
           )}
         >
           {badge}
@@ -496,7 +549,10 @@ interface PollCardProps {
 }
 
 function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
-  const totalVotes = poll.options.reduce((sum, option) => sum + option.votes, 0);
+  const totalVotes = poll.options.reduce(
+    (sum, option) => sum + option.votes,
+    0,
+  );
 
   return (
     <Card className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift">
@@ -511,14 +567,24 @@ function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
             {poll.closesIn}
           </span>
         </div>
-        <CardTitle className="text-xl text-foreground">{poll.question}</CardTitle>
+        <CardTitle className="text-xl text-foreground">
+          {poll.question}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-3">
           {poll.options.map((option) => {
-            const percentage = totalVotes === 0 ? 0 : Math.round((option.votes / totalVotes) * 100);
+            const percentage =
+              totalVotes === 0
+                ? 0
+                : Math.round((option.votes / totalVotes) * 100);
             const isSelected = selectedOption === option.id;
-            const TrendIcon = option.trend === "up" ? TrendingUp : option.trend === "down" ? ArrowDown : ArrowRight;
+            const TrendIcon =
+              option.trend === "up"
+                ? TrendingUp
+                : option.trend === "down"
+                  ? ArrowDown
+                  : ArrowRight;
 
             return (
               <Button
@@ -529,7 +595,7 @@ function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
                   "relative w-full justify-between overflow-hidden border border-border/50 bg-background/80 text-left",
                   isSelected
                     ? "bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border-aethex-400/60"
-                    : "hover:border-aethex-400/40"
+                    : "hover:border-aethex-400/40",
                 )}
                 onClick={() => onSelect(option.id)}
               >
@@ -544,16 +610,17 @@ function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
                   <TrendIcon className="h-4 w-4" />
                   {option.label}
                 </span>
-                <span className="text-sm font-semibold">
-                  {percentage}%
-                </span>
+                <span className="text-sm font-semibold">{percentage}%</span>
               </Button>
             );
           })}
         </div>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>{totalVotes} votes recorded</span>
-          <Badge variant="outline" className="flex items-center gap-1 border-aethex-400/40 bg-aethex-500/10 text-aethex-300">
+          <Badge
+            variant="outline"
+            className="flex items-center gap-1 border-aethex-400/40 bg-aethex-500/10 text-aethex-300"
+          >
             <Sparkles className="h-3 w-3" /> Live insight
           </Badge>
         </div>
@@ -565,16 +632,34 @@ function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
 export default function Community() {
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
-  const [registeredEvents, setRegisteredEvents] = useState<Record<string, EventRegistrationPayload>>({});
+  const [registeredEvents, setRegisteredEvents] = useState<
+    Record<string, EventRegistrationPayload>
+  >({});
   const [polls, setPolls] = useState<CommunityPoll[]>(() => [
     {
       id: "winter-cosmetic",
-      question: "Which cosmetic drop should we fast-track for the winter update?",
+      question:
+        "Which cosmetic drop should we fast-track for the winter update?",
       closesIn: "Closes in 3 days",
       options: [
-        { id: "frostbyte-operative", label: "Frostbyte Operative Skin", votes: 342, trend: "up" },
-        { id: "aurora-trails", label: "Aurora Hover Trails", votes: 287, trend: "steady" },
-        { id: "synthwave-lobby", label: "Synthwave Lobby Music Pack", votes: 198, trend: "down" },
+        {
+          id: "frostbyte-operative",
+          label: "Frostbyte Operative Skin",
+          votes: 342,
+          trend: "up",
+        },
+        {
+          id: "aurora-trails",
+          label: "Aurora Hover Trails",
+          votes: 287,
+          trend: "steady",
+        },
+        {
+          id: "synthwave-lobby",
+          label: "Synthwave Lobby Music Pack",
+          votes: 198,
+          trend: "down",
+        },
       ],
     },
     {
@@ -582,13 +667,30 @@ export default function Community() {
       question: "What should the team prioritise next for the companion app?",
       closesIn: "Closes in 6 days",
       options: [
-        { id: "build-tracker", label: "Squad build tracking & loadouts", votes: 264, trend: "up" },
-        { id: "voice-integrations", label: "Native voice channel integration", votes: 192, trend: "steady" },
-        { id: "marketplace", label: "Creator marketplace beta", votes: 148, trend: "up" },
+        {
+          id: "build-tracker",
+          label: "Squad build tracking & loadouts",
+          votes: 264,
+          trend: "up",
+        },
+        {
+          id: "voice-integrations",
+          label: "Native voice channel integration",
+          votes: 192,
+          trend: "steady",
+        },
+        {
+          id: "marketplace",
+          label: "Creator marketplace beta",
+          votes: 148,
+          trend: "up",
+        },
       ],
     },
   ]);
-  const [pollSelections, setPollSelections] = useState<Record<string, string>>({});
+  const [pollSelections, setPollSelections] = useState<Record<string, string>>(
+    {},
+  );
   const [reportForm, setReportForm] = useState({ reason: "", details: "" });
 
   useEffect(() => {
@@ -725,7 +827,8 @@ export default function Community() {
     {
       id: "strategy-lab",
       name: "Strategy Lab",
-      description: "Break down balance changes and evolving metas with systems designers.",
+      description:
+        "Break down balance changes and evolving metas with systems designers.",
       threads: 182,
       activeToday: 46,
       latestThread: {
@@ -738,7 +841,8 @@ export default function Community() {
     {
       id: "build-clinic",
       name: "Build Clinic",
-      description: "Share pipelines, CI setups, and performance wins with fellow builders.",
+      description:
+        "Share pipelines, CI setups, and performance wins with fellow builders.",
       threads: 241,
       activeToday: 63,
       latestThread: {
@@ -751,7 +855,8 @@ export default function Community() {
     {
       id: "playtest-reports",
       name: "Playtest Reports",
-      description: "Swap qualitative feedback, telemetry, and next-step experiments.",
+      description:
+        "Swap qualitative feedback, telemetry, and next-step experiments.",
       threads: 96,
       activeToday: 22,
       latestThread: {
@@ -767,7 +872,8 @@ export default function Community() {
     {
       id: "bug-reports",
       title: "Bug Reports",
-      description: "Track crashes, blockers, and gameplay issues spotted by players.",
+      description:
+        "Track crashes, blockers, and gameplay issues spotted by players.",
       submissionsThisWeek: 52,
       statuses: [
         { label: "New", count: 7, tone: "warning" },
@@ -780,7 +886,8 @@ export default function Community() {
     {
       id: "balance-insights",
       title: "Balance Insights",
-      description: "Surface tuning feedback for weapons, archetypes, and encounters.",
+      description:
+        "Surface tuning feedback for weapons, archetypes, and encounters.",
       submissionsThisWeek: 38,
       statuses: [
         { label: "In Review", count: 15, tone: "neutral" },
@@ -793,7 +900,8 @@ export default function Community() {
     {
       id: "feature-ideas",
       title: "Ideas & Features",
-      description: "Prioritise new systems, cosmetics, and social tools suggested by the community.",
+      description:
+        "Prioritise new systems, cosmetics, and social tools suggested by the community.",
       submissionsThisWeek: 61,
       statuses: [
         { label: "Ideation", count: 24, tone: "neutral" },
@@ -809,7 +917,8 @@ export default function Community() {
     {
       id: "squad-voice",
       name: "Squad Voice Lounge",
-      description: "Hop into matchmaking-ready rooms with spatial audio support.",
+      description:
+        "Hop into matchmaking-ready rooms with spatial audio support.",
       participants: 640,
       activeNow: 132,
       icon: Headphones,
@@ -836,7 +945,8 @@ export default function Community() {
     {
       id: "portfolio",
       title: "Unified Portfolio",
-      description: "Link GitHub, AeThex achievements, and live builds in one developer profile.",
+      description:
+        "Link GitHub, AeThex achievements, and live builds in one developer profile.",
       metricLabel: "Portfolio views",
       metricValue: "3.2K / wk",
       icon: Layers,
@@ -844,7 +954,8 @@ export default function Community() {
     {
       id: "streaks",
       title: "Contribution Streaks",
-      description: "Track commits, bug reports, and mentoring sessions automatically.",
+      description:
+        "Track commits, bug reports, and mentoring sessions automatically.",
       metricLabel: "Longest streak",
       metricValue: "48 days",
       icon: Sparkles,
@@ -852,7 +963,8 @@ export default function Community() {
     {
       id: "reputation",
       title: "Reputation Signals",
-      description: "Surface kudos, endorsements, and verified roles in the community.",
+      description:
+        "Surface kudos, endorsements, and verified roles in the community.",
       metricLabel: "Reputation",
       metricValue: "4.9 ★",
       icon: UserCircle,
@@ -869,7 +981,8 @@ export default function Community() {
       badge: "🏆 Top Contributor",
       speciality: "Game Development",
       bio: "Hosts the weekly build clinics and mentors new squads shipping co-op missions.",
-      recentContribution: "Rolled out the Adaptive Matchmaking toolkit for Season 4.",
+      recentContribution:
+        "Rolled out the Adaptive Matchmaking toolkit for Season 4.",
       reputation: "4.9/5 player rating",
       profileUrl: "/passport/alex-developer",
     },
@@ -882,7 +995,8 @@ export default function Community() {
       badge: "📚 Knowledge Hero",
       speciality: "Technical Writing",
       bio: "Maintains the AeThex SDK quickstarts and keeps localisation packs up to date.",
-      recentContribution: "Launched the multiplayer onboarding walkthrough in seven languages.",
+      recentContribution:
+        "Launched the multiplayer onboarding walkthrough in seven languages.",
       reputation: "4.8/5 creator rating",
       profileUrl: "/passport/sarah-coder",
     },
@@ -895,7 +1009,8 @@ export default function Community() {
       badge: "🧠 AI Pioneer",
       speciality: "Machine Learning",
       bio: "Builds guardrailed inference pipelines and shares evaluation playbooks weekly.",
-      recentContribution: "Released the Procedural Dialogue orchestrator adopted by 40+ teams.",
+      recentContribution:
+        "Released the Procedural Dialogue orchestrator adopted by 40+ teams.",
       reputation: "4.9/5 mentor rating",
       profileUrl: "/passport/jordan-ai",
     },
@@ -905,7 +1020,8 @@ export default function Community() {
     {
       id: "photon-ridge",
       title: "Photon Ridge Raid",
-      description: "Modded endgame encounter balancing puzzle mechanics with co-op combat.",
+      description:
+        "Modded endgame encounter balancing puzzle mechanics with co-op combat.",
       downloads: 12045,
       rating: 4.8,
       author: "NebulaFox",
@@ -914,7 +1030,8 @@ export default function Community() {
     {
       id: "neon-run",
       title: "Neon Run Track Pack",
-      description: "Five synthwave-inspired courses with dynamic weather scripting.",
+      description:
+        "Five synthwave-inspired courses with dynamic weather scripting.",
       downloads: 8742,
       rating: 4.7,
       author: "CircuitBreaker",
@@ -923,7 +1040,8 @@ export default function Community() {
     {
       id: "dynamic-hubs",
       title: "Dynamic Hub Templates",
-      description: "Drop-in lobby layouts with reactive NPC chatter and map voting.",
+      description:
+        "Drop-in lobby layouts with reactive NPC chatter and map voting.",
       downloads: 6403,
       rating: 4.9,
       author: "Astra",
@@ -936,7 +1054,8 @@ export default function Community() {
       id: "screenshot-1",
       title: "Aurora Rift",
       type: "Screenshot",
-      thumbnail: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop",
+      thumbnail:
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop",
       author: "Nova",
       likes: 684,
     },
@@ -944,7 +1063,8 @@ export default function Community() {
       id: "artwork-1",
       title: "Character concept: Vox",
       type: "Artwork",
-      thumbnail: "https://images.unsplash.com/photo-1604079628040-94301bb21b11?w=600&h=400&fit=crop",
+      thumbnail:
+        "https://images.unsplash.com/photo-1604079628040-94301bb21b11?w=600&h=400&fit=crop",
       author: "Sketchbyte",
       likes: 542,
     },
@@ -952,7 +1072,8 @@ export default function Community() {
       id: "video-1",
       title: "Speedrun showcase",
       type: "Video",
-      thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=400&fit=crop",
+      thumbnail:
+        "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=400&fit=crop",
       author: "Dash",
       likes: 452,
     },
@@ -960,7 +1081,8 @@ export default function Community() {
       id: "screenshot-2",
       title: "Photon Ridge sunset",
       type: "Screenshot",
-      thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
+      thumbnail:
+        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
       author: "NebulaFox",
       likes: 398,
     },
@@ -968,7 +1090,8 @@ export default function Community() {
       id: "artwork-2",
       title: "Kairos armor set",
       type: "Artwork",
-      thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
+      thumbnail:
+        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
       author: "Synth",
       likes: 356,
     },
@@ -976,7 +1099,8 @@ export default function Community() {
       id: "video-2",
       title: "Live jam timelapse",
       type: "Video",
-      thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
+      thumbnail:
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
       author: "BeatSync",
       likes: 312,
     },
@@ -987,9 +1111,11 @@ export default function Community() {
       id: "nebulafox",
       name: "NebulaFox",
       role: "Systems Designer",
-      highlight: "Created the Photon Ridge raid encounter adopted by 54% of squads.",
+      highlight:
+        "Created the Photon Ridge raid encounter adopted by 54% of squads.",
       link: "/community/spotlight/nebulafox",
-      avatar: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=120&h=120&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=120&h=120&fit=crop&crop=face",
       metrics: [
         { label: "Downloads", value: "12K" },
         { label: "Avg Rating", value: "4.8" },
@@ -1000,9 +1126,11 @@ export default function Community() {
       id: "lunatech",
       name: "LunaTech",
       role: "Technical Artist",
-      highlight: "Delivered the AeThex holographic shader pack powering six community events.",
+      highlight:
+        "Delivered the AeThex holographic shader pack powering six community events.",
       link: "/community/spotlight/lunatech",
-      avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120&h=120&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120&h=120&fit=crop&crop=face",
       metrics: [
         { label: "Adopted Studios", value: "32" },
         { label: "Workshop Forks", value: "210" },
@@ -1044,7 +1172,8 @@ export default function Community() {
   const moderationGuidelines = [
     {
       title: "Respect every player",
-      description: "Harassment, hate speech, and discrimination are removed without debate.",
+      description:
+        "Harassment, hate speech, and discrimination are removed without debate.",
     },
     {
       title: "Keep feedback actionable",
@@ -1052,7 +1181,8 @@ export default function Community() {
     },
     {
       title: "Collaborate transparently",
-      description: "Disclose monetisation, affiliations, or sensitive data sources when sharing work.",
+      description:
+        "Disclose monetisation, affiliations, or sensitive data sources when sharing work.",
     },
   ];
 
@@ -1060,19 +1190,22 @@ export default function Community() {
     {
       id: "auto-shields",
       title: "Automated Shields",
-      description: "Realtime filters flag slurs, spam, and phishing before they hit the feed.",
+      description:
+        "Realtime filters flag slurs, spam, and phishing before they hit the feed.",
       icon: Shield,
     },
     {
       id: "casebook",
       title: "Casebook Workflows",
-      description: "Escalate complex cases with evidence bundles and audit trails.",
+      description:
+        "Escalate complex cases with evidence bundles and audit trails.",
       icon: Gavel,
     },
     {
       id: "report-routing",
       title: "Report Routing",
-      description: "Route player reports to dedicated channel owners for rapid follow-up.",
+      description:
+        "Route player reports to dedicated channel owners for rapid follow-up.",
       icon: Flag,
     },
   ];
@@ -1081,27 +1214,34 @@ export default function Community() {
     {
       id: "harassment",
       label: "Harassment or hateful content",
-      description: "Toxic language, slurs, or targeted harassment toward a player or group.",
+      description:
+        "Toxic language, slurs, or targeted harassment toward a player or group.",
     },
     {
       id: "cheating",
       label: "Cheating or exploit",
-      description: "Sharing hacks, stolen assets, or instructions to bypass fair play.",
+      description:
+        "Sharing hacks, stolen assets, or instructions to bypass fair play.",
     },
     {
       id: "inappropriate",
       label: "Inappropriate media",
-      description: "Adult content, personal data leaks, or otherwise unsafe material.",
+      description:
+        "Adult content, personal data leaks, or otherwise unsafe material.",
     },
   ];
 
-  const feedbackToneStyles: Record<"neutral" | "positive" | "warning", string> = {
-    neutral: "bg-blue-500/10 text-blue-200 border border-blue-400/40",
-    positive: "bg-emerald-500/10 text-emerald-200 border border-emerald-400/40",
-    warning: "bg-amber-500/10 text-amber-200 border border-amber-400/40",
-  };
+  const feedbackToneStyles: Record<"neutral" | "positive" | "warning", string> =
+    {
+      neutral: "bg-blue-500/10 text-blue-200 border border-blue-400/40",
+      positive:
+        "bg-emerald-500/10 text-emerald-200 border border-emerald-400/40",
+      warning: "bg-amber-500/10 text-amber-200 border border-amber-400/40",
+    };
 
-  const selectedReportReason = reportReasons.find((reason) => reason.id === reportForm.reason);
+  const selectedReportReason = reportReasons.find(
+    (reason) => reason.id === reportForm.reason,
+  );
 
   const handleEventRegistration = useCallback(
     (eventData: CommunityEvent, payload: EventRegistrationPayload) => {
@@ -1165,11 +1305,15 @@ export default function Community() {
       }
 
       if (!trimmedDetails) {
-        aethexToast.system("Add a brief description so moderators can respond quickly.");
+        aethexToast.system(
+          "Add a brief description so moderators can respond quickly.",
+        );
         return;
       }
 
-      aethexToast.system("Report submitted. Our moderation team will review shortly.");
+      aethexToast.system(
+        "Report submitted. Our moderation team will review shortly.",
+      );
       setReportForm({ reason: "", details: "" });
     },
     [reportForm],
@@ -1342,9 +1486,9 @@ export default function Community() {
                   Introducing DevConnect
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  DevConnect is our dedicated hub for platform teams building the
-                  next wave of AeThex experiences. Launch collabs, monitor live
-                  services, and activate the Studio network — all from one
+                  DevConnect is our dedicated hub for platform teams building
+                  the next wave of AeThex experiences. Launch collabs, monitor
+                  live services, and activate the Studio network — all from one
                   command center.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -1363,7 +1507,12 @@ export default function Community() {
                       <ArrowRight className="h-5 w-5" />
                     </a>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="border-border/60">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="border-border/60"
+                  >
                     <Link to="/contact">Talk with AeThex Team</Link>
                   </Button>
                 </div>
@@ -1394,9 +1543,9 @@ export default function Community() {
                     })}
                   </div>
                   <div className="rounded-lg border border-aethex-400/40 bg-gradient-to-r from-aethex-500/10 to-neon-blue/10 p-4 text-sm text-muted-foreground">
-                    DevConnect syncs directly with AeThex developer profiles, so your
-                    activity, streaks, and achievements follow you across every
-                    build.
+                    DevConnect syncs directly with AeThex developer profiles, so
+                    your activity, streaks, and achievements follow you across
+                    every build.
                   </div>
                 </CardContent>
               </Card>
@@ -1429,8 +1578,12 @@ export default function Community() {
                             <Icon className="h-5 w-5" />
                           </div>
                           <div>
-                            <CardTitle className="text-lg">{space.name}</CardTitle>
-                            <CardDescription>{space.description}</CardDescription>
+                            <CardTitle className="text-lg">
+                              {space.name}
+                            </CardTitle>
+                            <CardDescription>
+                              {space.description}
+                            </CardDescription>
                           </div>
                         </div>
                         <Badge variant="outline" className="border-border/50">
@@ -1450,10 +1603,15 @@ export default function Community() {
                           {space.latestThread.title}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          by {space.latestThread.author} • {space.latestThread.timeAgo}
+                          by {space.latestThread.author} •{" "}
+                          {space.latestThread.timeAgo}
                         </p>
                       </div>
-                      <Button asChild variant="ghost" className="w-full justify-between text-sm">
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className="w-full justify-between text-sm"
+                      >
                         <Link to={`/forums/${space.id}`}>
                           Enter space
                           <ArrowRight className="h-4 w-4" />
@@ -1481,7 +1639,10 @@ export default function Community() {
                 {feedbackChannels.map((channel) => {
                   const Icon = channel.icon;
                   return (
-                    <Card key={channel.id} className="border-border/50 bg-background/80 backdrop-blur">
+                    <Card
+                      key={channel.id}
+                      className="border-border/50 bg-background/80 backdrop-blur"
+                    >
                       <CardHeader className="space-y-3">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-center gap-3">
@@ -1489,11 +1650,18 @@ export default function Community() {
                               <Icon className="h-5 w-5" />
                             </div>
                             <div>
-                              <CardTitle className="text-lg">{channel.title}</CardTitle>
-                              <CardDescription>{channel.description}</CardDescription>
+                              <CardTitle className="text-lg">
+                                {channel.title}
+                              </CardTitle>
+                              <CardDescription>
+                                {channel.description}
+                              </CardDescription>
                             </div>
                           </div>
-                          <Badge variant="outline" className="border-aethex-400/40 text-aethex-200">
+                          <Badge
+                            variant="outline"
+                            className="border-aethex-400/40 text-aethex-200"
+                          >
                             {channel.submissionsThisWeek} this week
                           </Badge>
                         </div>
@@ -1506,13 +1674,20 @@ export default function Community() {
                           {channel.statuses.map((status) => (
                             <Badge
                               key={status.label}
-                              className={cn("text-xs", feedbackToneStyles[status.tone])}
+                              className={cn(
+                                "text-xs",
+                                feedbackToneStyles[status.tone],
+                              )}
                             >
                               {status.label}: {status.count}
                             </Badge>
                           ))}
                         </div>
-                        <Button asChild variant="ghost" className="w-full justify-between text-sm">
+                        <Button
+                          asChild
+                          variant="ghost"
+                          className="w-full justify-between text-sm"
+                        >
                           <Link to="/feedback">
                             Submit feedback
                             <ArrowRight className="h-4 w-4" />
@@ -1527,7 +1702,8 @@ export default function Community() {
                 <CardHeader>
                   <CardTitle>Live roadmap snapshot</CardTitle>
                   <CardDescription>
-                    Track what the team is shipping next based on player momentum.
+                    Track what the team is shipping next based on player
+                    momentum.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1537,13 +1713,23 @@ export default function Community() {
                       className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/80 p-4 sm:flex-row sm:items-center sm:justify-between"
                     >
                       <div>
-                        <p className="font-medium text-foreground">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.eta}</p>
+                        <p className="font-medium text-foreground">
+                          {item.title}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {item.eta}
+                        </p>
                       </div>
-                      <Badge className={feedbackToneStyles[item.statusTone]}>{item.status}</Badge>
+                      <Badge className={feedbackToneStyles[item.statusTone]}>
+                        {item.status}
+                      </Badge>
                     </div>
                   ))}
-                  <Button asChild variant="outline" className="w-full border-aethex-400/40">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full border-aethex-400/40"
+                  >
                     <Link to="/roadmap">Open public roadmap</Link>
                   </Button>
                 </CardContent>
@@ -1588,7 +1774,8 @@ export default function Community() {
                 <CardHeader>
                   <CardTitle>Active channels</CardTitle>
                   <CardDescription>
-                    See who’s online and jump into the conversations that matter right now.
+                    See who’s online and jump into the conversations that matter
+                    right now.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1605,18 +1792,26 @@ export default function Community() {
                               <Icon className="h-5 w-5" />
                             </div>
                             <div>
-                              <p className="font-medium text-foreground">{channel.name}</p>
-                              <p className="text-sm text-muted-foreground">{channel.description}</p>
+                              <p className="font-medium text-foreground">
+                                {channel.name}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {channel.description}
+                              </p>
                             </div>
                           </div>
-                          <Badge variant="outline" className="border-aethex-400/40 text-aethex-200">
+                          <Badge
+                            variant="outline"
+                            className="border-aethex-400/40 text-aethex-200"
+                          >
                             {channel.participants} members
                           </Badge>
                         </div>
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
                           <span>Synced with Discord</span>
                           <span className="flex items-center gap-1 text-emerald-200">
-                            <Sparkles className="h-3 w-3" /> {channel.activeNow} live now
+                            <Sparkles className="h-3 w-3" /> {channel.activeNow}{" "}
+                            live now
                           </span>
                         </div>
                       </div>
@@ -1628,7 +1823,8 @@ export default function Community() {
                 <CardHeader>
                   <CardTitle>Why players love integrated chat</CardTitle>
                   <CardDescription>
-                    Keep every squad aligned across devices with presence, threads, and recordings.
+                    Keep every squad aligned across devices with presence,
+                    threads, and recordings.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1666,7 +1862,9 @@ export default function Community() {
                   animationDelay={index * 0.12}
                   isRegistered={Boolean(registeredEvents[event.id])}
                   registrant={registeredEvents[event.id]}
-                  onRegister={(payload) => handleEventRegistration(event, payload)}
+                  onRegister={(payload) =>
+                    handleEventRegistration(event, payload)
+                  }
                 />
               ))}
             </div>
@@ -1686,12 +1884,17 @@ export default function Community() {
               {profileHighlights.map((highlight) => {
                 const Icon = highlight.icon;
                 return (
-                  <Card key={highlight.id} className="border-border/50 bg-background/80 backdrop-blur">
+                  <Card
+                    key={highlight.id}
+                    className="border-border/50 bg-background/80 backdrop-blur"
+                  >
                     <CardHeader className="space-y-3">
                       <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
                         <Icon className="h-6 w-6" />
                       </div>
-                      <CardTitle className="text-lg">{highlight.title}</CardTitle>
+                      <CardTitle className="text-lg">
+                        {highlight.title}
+                      </CardTitle>
                       <CardDescription>{highlight.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -1759,7 +1962,11 @@ export default function Community() {
                     <Badge className="bg-aethex-500/10 text-aethex-200 border border-aethex-400/40">
                       {contributor.badge}
                     </Badge>
-                    <Button asChild variant="outline" className="w-full border-aethex-400/40">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="w-full border-aethex-400/40"
+                    >
                       <Link to={contributor.profileUrl}>View passport</Link>
                     </Button>
                   </CardContent>
@@ -1782,7 +1989,10 @@ export default function Community() {
               {workshopItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <Card key={item.id} className="border-border/50 bg-background/80 backdrop-blur">
+                  <Card
+                    key={item.id}
+                    className="border-border/50 bg-background/80 backdrop-blur"
+                  >
                     <CardHeader className="space-y-3">
                       <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
                         <Icon className="h-6 w-6" />
@@ -1799,12 +2009,18 @@ export default function Community() {
                       </div>
                       <div className="flex items-center justify-between text-sm text-muted-foreground">
                         <span>Rating</span>
-                        <span className="font-semibold text-aethex-200">{item.rating.toFixed(1)}</span>
+                        <span className="font-semibold text-aethex-200">
+                          {item.rating.toFixed(1)}
+                        </span>
                       </div>
                       <p className="text-xs text-muted-foreground">
                         Created by {item.author}
                       </p>
-                      <Button asChild variant="ghost" className="w-full justify-between text-sm">
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className="w-full justify-between text-sm"
+                      >
                         <Link to={`/workshop/${item.id}`}>
                           View asset
                           <ArrowRight className="h-4 w-4" />
@@ -1829,7 +2045,10 @@ export default function Community() {
             />
             <div className="grid gap-6 md:grid-cols-3">
               {mediaGallery.map((item) => (
-                <Card key={item.id} className="border-border/40 bg-background/80 backdrop-blur overflow-hidden">
+                <Card
+                  key={item.id}
+                  className="border-border/40 bg-background/80 backdrop-blur overflow-hidden"
+                >
                   <div className="relative">
                     <img
                       src={item.thumbnail}
@@ -1843,8 +2062,12 @@ export default function Community() {
                   </div>
                   <CardContent className="space-y-3 p-5">
                     <div className="space-y-1">
-                      <h3 className="font-semibold text-foreground">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">by {item.author}</p>
+                      <h3 className="font-semibold text-foreground">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        by {item.author}
+                      </p>
                     </div>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
                       <span className="flex items-center gap-2">
@@ -1873,7 +2096,10 @@ export default function Community() {
             />
             <div className="grid gap-6 lg:grid-cols-2 max-w-6xl mx-auto">
               {spotlightCreators.map((creator) => (
-                <Card key={creator.id} className="border-border/50 bg-background/80 backdrop-blur">
+                <Card
+                  key={creator.id}
+                  className="border-border/50 bg-background/80 backdrop-blur"
+                >
                   <CardContent className="p-6 space-y-5">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex items-center gap-3">
@@ -1886,7 +2112,9 @@ export default function Community() {
                           <p className="text-lg font-semibold text-gradient">
                             {creator.name}
                           </p>
-                          <p className="text-sm text-muted-foreground">{creator.role}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {creator.role}
+                          </p>
                         </div>
                       </div>
                       <Badge className="bg-aethex-500/10 border-aethex-400/40 text-aethex-200">
@@ -1935,20 +2163,32 @@ export default function Community() {
                 <CardHeader className="flex items-start justify-between gap-4">
                   <div>
                     <CardTitle>Community guidelines</CardTitle>
-                    <CardDescription>Expectations for every player and contributor.</CardDescription>
+                    <CardDescription>
+                      Expectations for every player and contributor.
+                    </CardDescription>
                   </div>
-                  <Badge variant="outline" className="border-aethex-400/40 text-aethex-200">
+                  <Badge
+                    variant="outline"
+                    className="border-aethex-400/40 text-aethex-200"
+                  >
                     Updated weekly
                   </Badge>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3">
                     {moderationGuidelines.map((guideline) => (
-                      <li key={guideline.title} className="flex items-start gap-3">
+                      <li
+                        key={guideline.title}
+                        className="flex items-start gap-3"
+                      >
                         <Shield className="mt-0.5 h-4 w-4 text-aethex-400" />
                         <div>
-                          <p className="text-sm font-medium text-foreground">{guideline.title}</p>
-                          <p className="text-sm text-muted-foreground">{guideline.description}</p>
+                          <p className="text-sm font-medium text-foreground">
+                            {guideline.title}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {guideline.description}
+                          </p>
                         </div>
                       </li>
                     ))}
@@ -1960,7 +2200,8 @@ export default function Community() {
                   <CardHeader>
                     <CardTitle>Moderation toolkit</CardTitle>
                     <CardDescription>
-                      Equip community managers with actionable, auditable controls.
+                      Equip community managers with actionable, auditable
+                      controls.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-4 sm:grid-cols-3">
@@ -1974,8 +2215,12 @@ export default function Community() {
                           <div className="flex h-10 w-10 items-center justify-center rounded-md bg-aethex-500/10 text-aethex-300">
                             <Icon className="h-5 w-5" />
                           </div>
-                          <p className="text-sm font-medium text-foreground">{tool.title}</p>
-                          <p className="text-sm text-muted-foreground">{tool.description}</p>
+                          <p className="text-sm font-medium text-foreground">
+                            {tool.title}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {tool.description}
+                          </p>
                         </div>
                       );
                     })}
@@ -1985,7 +2230,8 @@ export default function Community() {
                   <CardHeader>
                     <CardTitle>Submit a report</CardTitle>
                     <CardDescription>
-                      Reports are routed to the right channel owners for fast follow-up.
+                      Reports are routed to the right channel owners for fast
+                      follow-up.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -1996,7 +2242,10 @@ export default function Community() {
                           id="report-reason"
                           value={reportForm.reason}
                           onChange={(event) =>
-                            setReportForm((prev) => ({ ...prev, reason: event.target.value }))
+                            setReportForm((prev) => ({
+                              ...prev,
+                              reason: event.target.value,
+                            }))
                           }
                           className="w-full rounded-lg border border-border/50 bg-background/80 px-3 py-2 text-sm focus:border-aethex-400 focus:outline-none focus:ring-2 focus:ring-aethex-400/40"
                         >
@@ -2019,7 +2268,10 @@ export default function Community() {
                           id="report-details"
                           value={reportForm.details}
                           onChange={(event) =>
-                            setReportForm((prev) => ({ ...prev, details: event.target.value }))
+                            setReportForm((prev) => ({
+                              ...prev,
+                              details: event.target.value,
+                            }))
                           }
                           placeholder="Share links, timestamps, or context so moderators can follow up quickly."
                           rows={4}

@@ -58,7 +58,9 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Badge className={cn("text-xs uppercase tracking-wider", realmStyle)}>
+            <Badge
+              className={cn("text-xs uppercase tracking-wider", realmStyle)}
+            >
               {profile.user_type.replace("_", " ")}
             </Badge>
             {isGodMode && (
@@ -124,7 +126,10 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
           variant="outline"
           className="w-full border-slate-700/70 text-slate-100 transition-colors hover:border-aethex-400/60 hover:text-white"
         >
-          <Link to={passportHref} className="flex items-center justify-center gap-2">
+          <Link
+            to={passportHref}
+            className="flex items-center justify-center gap-2"
+          >
             <UserRound className="h-4 w-4" />
             View Passport
           </Link>
@@ -193,8 +198,8 @@ const DevelopersDirectory = () => {
                   Discover AeThex developers
                 </h1>
                 <p className="text-slate-300">
-                  Browse verified builders, clients, and community members across
-                  every AeThex realm.
+                  Browse verified builders, clients, and community members
+                  across every AeThex realm.
                 </p>
               </div>
               <div className="flex gap-2">

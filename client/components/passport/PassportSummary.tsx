@@ -150,10 +150,14 @@ const PassportSummary = ({
         <div className="w-full max-w-xs space-y-3 rounded-xl bg-slate-900/60 p-4 border border-slate-800">
           <div className="flex items-center justify-between text-slate-200">
             <span className="text-sm font-medium uppercase tracking-wider">
-              {isLegendary ? "Legendary Status" : `Progress to Level ${level + 1}`}
+              {isLegendary
+                ? "Legendary Status"
+                : `Progress to Level ${level + 1}`}
             </span>
             <span className="text-sm text-slate-300">
-              {isLegendary ? "MAX" : `${(progressToNextLevel || 0).toFixed(0)}%`}
+              {isLegendary
+                ? "MAX"
+                : `${(progressToNextLevel || 0).toFixed(0)}%`}
             </span>
           </div>
           <Progress value={progressToNextLevel} className="h-2" />
