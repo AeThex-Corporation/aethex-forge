@@ -140,7 +140,9 @@ export default async function handler(
       }
     }
 
+    const awardedAchievementIds: string[] = [];
     let godModeAwarded = false;
+
     if (targetUserId) {
       const progressStats = {
         level: 100,
@@ -159,35 +161,54 @@ export default async function handler(
         })
         .eq("id", targetUserId);
 
-      const { data: existingGodMode } = await admin
+      const { data: existingRows, error: existingError } = await admin
         .from("user_achievements")
-        .select("id")
-        .eq("user_id", targetUserId)
-        .eq("achievement_id", "god-mode")
-        .maybeSingle();
+        .select("achievement_id")
+        .eq("user_id", targetUserId);
 
-      if (!existingGodMode) {
+      if (existingError) {
+        throw existingError;
+      }
+
+      const existingIds = new Set((existingRows ?? []).map((row: any) => row.achievement_id));
+
+      for (const achievement of CORE_ACHIEVEMENTS) {
+        if (existingIds.has(achievement.id)) {
+          if (achievement.id === "god-mode") {
+            godModeAwarded = true;
+          }
+          continue;
+        }
+
         const { error: insertError } = await admin
           .from("user_achievements")
           .insert({
             id: randomUUID(),
             user_id: targetUserId,
-            achievement_id: "god-mode",
+            achievement_id: achievement.id,
             earned_at: nowIso,
           });
 
-        if (insertError) {
+        if (insertError && insertError.code !== "23505") {
           throw insertError;
+        }
+
+        awardedAchievementIds.push(achievement.id);
+        if (achievement.id === "god-mode") {
+          godModeAwarded = true;
         }
       }
 
-      godModeAwarded = true;
+      if (!godModeAwarded && existingIds.has("god-mode")) {
+        godModeAwarded = true;
+      }
     }
 
     return res.json({
       ok: true,
       achievementsSeeded: achievementResults.length,
       godModeAwarded,
+      awardedAchievementIds,
       targetUserId,
     });
   } catch (error: any) {
