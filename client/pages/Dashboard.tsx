@@ -642,7 +642,8 @@ export default function Dashboard() {
                   {profile?.full_name || user.email?.split("@")[0]}
                 </h1>
                 <p className="text-muted-foreground">
-                  {profile?.role || "Member"} • Level {profile?.level || 1} • {streakLabel} 🔥
+                  {profile?.role || "Member"} • Level {profile?.level || 1} •{" "}
+                  {streakLabel} 🔥
                 </p>
                 {longestStreak > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2">
