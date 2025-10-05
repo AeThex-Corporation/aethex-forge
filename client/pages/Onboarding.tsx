@@ -330,37 +330,6 @@ export default function Onboarding() {
         bio: data.experience.previousProjects?.trim() || undefined,
       } as any;
 
-      // Ensure profile via server (uses service role)
-      const ensureResp = await fetch(`/api/profile/ensure`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: user.id, profile: payload }),
-      });
-
-      if (!ensureResp.ok) {
-        const text = await ensureResp.text().catch(() => "");
-        let parsedError: any;
-        try {
-          parsedError = JSON.parse(text);
-        } catch {}
-        const primaryMessage =
-          parsedError?.error || text || `HTTP ${ensureResp.status}`;
-
-        try {
-          await aethexUserService.updateProfile(user.id, payload as any);
-        } catch (fallbackError: any) {
-          const fallbackMessage =
-            fallbackError?.message || fallbackError?.toString?.() || "";
-          const combined = [primaryMessage, fallbackMessage]
-            .filter(Boolean)
-            .join(" | ");
-          throw new Error(
-            combined || "Unable to complete profile setup. Please try again.",
-          );
-        }
-      }
-
-      // Fire-and-forget interests via server
       const interests = Array.from(
         new Set([
           ...(data.interests.primaryGoals || []),
@@ -368,16 +337,70 @@ export default function Onboarding() {
         ]),
       );
 
-      Promise.allSettled([
-        interests.length
-          ? fetch(`/api/interests`, {
+      let profilePersisted = false;
+      try {
+        await aethexUserService.updateProfile(user.id, payload as any);
+        profilePersisted = true;
+      } catch (updateError: any) {
+        console.warn("Primary profile update failed, attempting create", updateError);
+        try {
+          await aethexUserService.createInitialProfile(
+            user.id,
+            payload as any,
+            user.email,
+          );
+          profilePersisted = true;
+        } catch (createError: any) {
+          console.warn("Profile create failed, falling back to admin API", createError);
+          const ensureResp = await fetch(`/api/profile/ensure`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: user.id, profile: payload }),
+          });
+
+          if (!ensureResp.ok) {
+            const text = await ensureResp.text().catch(() => "");
+            let parsedError: any;
+            try {
+              parsedError = JSON.parse(text);
+            } catch {}
+            const primaryMessage =
+              parsedError?.error || text || `HTTP ${ensureResp.status}`;
+            const combinedMessage =
+              primaryMessage || "Unable to complete profile setup. Please try again.";
+            throw new Error(combinedMessage);
+          }
+
+          profilePersisted = true;
+        }
+      }
+
+      if (!profilePersisted) {
+        throw new Error("Unable to complete profile setup. Please try again.");
+      }
+
+      if (interests.length) {
+        try {
+          await aethexUserService.addUserInterests(user.id, interests);
+        } catch (interestError) {
+          console.warn("Failed to persist interests via client", interestError);
+          try {
+            await fetch(`/api/interests`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ user_id: user.id, interests }),
-            })
-          : Promise.resolve(),
-        aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
-      ]).catch(() => undefined);
+            });
+          } catch (interestFallbackError) {
+            console.warn("Failed to persist interests via API", interestFallbackError);
+          }
+        }
+      }
+
+      try {
+        await aethexAchievementService.checkAndAwardOnboardingAchievement(user.id);
+      } catch (achievementError) {
+        console.warn("Failed to award onboarding achievement", achievementError);
+      }
 
       // Mark onboarding complete locally (UI fallback)
       try {
