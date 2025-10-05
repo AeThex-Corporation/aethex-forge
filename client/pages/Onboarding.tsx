@@ -342,7 +342,10 @@ export default function Onboarding() {
         await aethexUserService.updateProfile(user.id, payload as any);
         profilePersisted = true;
       } catch (updateError: any) {
-        console.warn("Primary profile update failed, attempting create", updateError);
+        console.warn(
+          "Primary profile update failed, attempting create",
+          updateError,
+        );
         try {
           await aethexUserService.createInitialProfile(
             user.id,
@@ -351,7 +354,10 @@ export default function Onboarding() {
           );
           profilePersisted = true;
         } catch (createError: any) {
-          console.warn("Profile create failed, falling back to admin API", createError);
+          console.warn(
+            "Profile create failed, falling back to admin API",
+            createError,
+          );
           const ensureResp = await fetch(`/api/profile/ensure`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -367,7 +373,8 @@ export default function Onboarding() {
             const primaryMessage =
               parsedError?.error || text || `HTTP ${ensureResp.status}`;
             const combinedMessage =
-              primaryMessage || "Unable to complete profile setup. Please try again.";
+              primaryMessage ||
+              "Unable to complete profile setup. Please try again.";
             throw new Error(combinedMessage);
           }
 
@@ -391,15 +398,23 @@ export default function Onboarding() {
               body: JSON.stringify({ user_id: user.id, interests }),
             });
           } catch (interestFallbackError) {
-            console.warn("Failed to persist interests via API", interestFallbackError);
+            console.warn(
+              "Failed to persist interests via API",
+              interestFallbackError,
+            );
           }
         }
       }
 
       try {
-        await aethexAchievementService.checkAndAwardOnboardingAchievement(user.id);
+        await aethexAchievementService.checkAndAwardOnboardingAchievement(
+          user.id,
+        );
       } catch (achievementError) {
-        console.warn("Failed to award onboarding achievement", achievementError);
+        console.warn(
+          "Failed to award onboarding achievement",
+          achievementError,
+        );
       }
 
       // Mark onboarding complete locally (UI fallback)
