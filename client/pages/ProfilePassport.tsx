@@ -77,11 +77,11 @@ const ProfilePassport = () => {
       ? user?.id
         ? `id:${user.id}`
         : authProfile?.username
-        ? `username:${authProfile.username.toLowerCase()}`
-        : "self"
+          ? `username:${authProfile.username.toLowerCase()}`
+          : "self"
       : normalizedUsername
-      ? `username:${normalizedUsername}`
-      : null;
+        ? `username:${normalizedUsername}`
+        : null;
 
     if (targetKey && lastLoadedKeyRef.current === targetKey) {
       setLoading(false);
@@ -243,7 +243,7 @@ const ProfilePassport = () => {
           ...resolvedProfile,
           email:
             resolvedProfile.email ??
-            (viewingSelf ? user?.email ?? authProfile?.email ?? null : null),
+            (viewingSelf ? (user?.email ?? authProfile?.email ?? null) : null),
         });
         setAchievements(achievementList ?? []);
         setInterests(interestList ?? []);
@@ -263,8 +263,8 @@ const ProfilePassport = () => {
           (resolvedProfile.username
             ? `username:${resolvedProfile.username.toLowerCase()}`
             : resolvedId
-            ? `id:${resolvedId}`
-            : null);
+              ? `id:${resolvedId}`
+              : null);
       } catch {
         if (!cancelled) {
           lastLoadedKeyRef.current = null;
