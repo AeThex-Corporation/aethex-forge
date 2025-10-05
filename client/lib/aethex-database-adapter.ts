@@ -819,8 +819,7 @@ export const aethexAchievementService = {
       }
 
       return (await response.json()) as ActivateRewardsResponse;
-    } catch (error) {
-      console.warn("activateCommunityRewards failed:", error);
+    } catch {
       return null;
     }
   },
