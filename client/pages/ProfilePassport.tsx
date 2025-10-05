@@ -95,33 +95,7 @@ const ProfilePassport = () => {
 
     let cancelled = false;
 
-    const profileMatchesCurrentTarget = (() => {
-      if (!profile) {
-        return false;
-      }
-      if (normalizedUsername) {
-        return (
-          profile.username?.toLowerCase() === normalizedUsername ||
-          profile.id === requestedUsername
-        );
-      }
-      if (isSelfRoute) {
-        if (user?.id && profile.id === user.id) {
-          return true;
-        }
-        if (
-          authProfile?.username &&
-          profile.username &&
-          authProfile.username.toLowerCase() ===
-            profile.username.toLowerCase()
-        ) {
-          return true;
-        }
-      }
-      return false;
-    })();
-
-    if (!profileMatchesCurrentTarget) {
+    if (!targetKey || lastLoadedKeyRef.current !== targetKey) {
       setLoading(true);
     }
 
