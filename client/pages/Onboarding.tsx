@@ -337,33 +337,26 @@ export default function Onboarding() {
         body: JSON.stringify({ id: user.id, profile: payload }),
       });
 
-      // If server endpoint missing (404) or returns server error, fallback to direct Supabase client
       if (!ensureResp.ok) {
-        // If endpoint not found, attempt client-side upsert via Supabase SDK
-        if (ensureResp.status === 404) {
-          try {
-            await aethexUserService.updateProfile(user.id, payload as any);
-          } catch (err) {
-            const text = await ensureResp.text().catch(() => "");
-            let parsedError: any = undefined;
-            try {
-              parsedError = JSON.parse(text);
-            } catch {}
-            const message =
-              parsedError?.error || text || `HTTP ${ensureResp.status}`;
-            throw new Error(
-              `Server endpoint missing and client fallback failed: ${message}`,
-            );
-          }
-        } else {
-          const text = await ensureResp.text().catch(() => "");
-          let parsedError: any = undefined;
-          try {
-            parsedError = JSON.parse(text);
-          } catch {}
-          const message =
-            parsedError?.error || text || `HTTP ${ensureResp.status}`;
-          throw new Error(message);
+        const text = await ensureResp.text().catch(() => "");
+        let parsedError: any;
+        try {
+          parsedError = JSON.parse(text);
+        } catch {}
+        const primaryMessage =
+          parsedError?.error || text || `HTTP ${ensureResp.status}`;
+
+        try {
+          await aethexUserService.updateProfile(user.id, payload as any);
+        } catch (fallbackError: any) {
+          const fallbackMessage =
+            fallbackError?.message || fallbackError?.toString?.() || "";
+          const combined = [primaryMessage, fallbackMessage]
+            .filter(Boolean)
+            .join(" | ");
+          throw new Error(
+            combined || "Unable to complete profile setup. Please try again.",
+          );
         }
       }
 
