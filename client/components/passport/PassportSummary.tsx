@@ -80,11 +80,14 @@ const PassportSummary = ({
   const level = profile.level ?? 1;
   const totalXp = profile.total_xp ?? 0;
   const loyaltyPoints = (profile as any)?.loyalty_points ?? 0;
-  const progressToNextLevel = Math.min(((totalXp % 1000) / 1000) * 100, 100);
-  const featureAchievements = achievements.slice(0, MAX_HERO_ACHIEVEMENTS);
   const godModeUnlocked = achievements.some(
     (achievement) => achievement.name?.toLowerCase() === "god mode",
   );
+  const isLegendary = godModeUnlocked || level >= 100;
+  const progressToNextLevel = isLegendary
+    ? 100
+    : Math.min(((totalXp % 1000) / 1000) * 100, 100);
+  const featureAchievements = achievements.slice(0, MAX_HERO_ACHIEVEMENTS);
 
   return (
     <Card className="bg-gradient-to-br from-slate-950/90 via-slate-900/70 to-slate-950/90 border border-slate-800 shadow-2xl">
@@ -147,10 +150,10 @@ const PassportSummary = ({
         <div className="w-full max-w-xs space-y-3 rounded-xl bg-slate-900/60 p-4 border border-slate-800">
           <div className="flex items-center justify-between text-slate-200">
             <span className="text-sm font-medium uppercase tracking-wider">
-              Progress to Level {level + 1}
+              {isLegendary ? "Legendary Status" : `Progress to Level ${level + 1}`}
             </span>
             <span className="text-sm text-slate-300">
-              {(progressToNextLevel || 0).toFixed(0)}%
+              {isLegendary ? "MAX" : `${(progressToNextLevel || 0).toFixed(0)}%`}
             </span>
           </div>
           <Progress value={progressToNextLevel} className="h-2" />
