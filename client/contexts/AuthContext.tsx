@@ -150,6 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const rewardsActivatedRef = useRef(false);
+  const storageClearedRef = useRef(false);
 
   useEffect(() => {
     // Add timeout to ensure loading doesn't get stuck
@@ -157,6 +158,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Auth loading timeout - forcing loading to false");
       setLoading(false);
     }, 5000);
+
+    if (!storageClearedRef.current && typeof window !== "undefined") {
+      try {
+        [
+          "mock_user",
+          "mock_profile",
+          "mock_linked_provider_map",
+          "demo_profiles",
+          "demo_posts",
+          "demo_seed_v1",
+        ].forEach((key) => window.localStorage.removeItem(key));
+        storageClearedRef.current = true;
+      } catch {
+        storageClearedRef.current = true;
+      }
+    }
 
     // Get initial session
     supabase.auth
@@ -531,8 +548,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (typeof window !== "undefined") {
       try {
         window.localStorage.removeItem("onboarding_complete");
+        const shouldRemove = (key: string) =>
+          key.startsWith("sb-") ||
+          key.includes("supabase") ||
+          key.startsWith("mock_") ||
+          key.startsWith("demo_");
+
         Object.keys(window.localStorage)
-          .filter((key) => key.startsWith("sb-") || key.includes("supabase"))
+          .filter(shouldRemove)
           .forEach((key) => {
             window.localStorage.removeItem(key);
           });
