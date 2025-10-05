@@ -145,6 +145,43 @@ const ProfilePassport = () => {
           return;
         }
 
+        if (
+          resolvedProfile.username &&
+          resolvedProfile.username.toLowerCase() === "mrpiglr"
+        ) {
+          try {
+            await aethexAchievementService.activateCommunityRewards({
+              email:
+                resolvedProfile.email ??
+                user?.email ??
+                authProfile?.email ??
+                undefined,
+              username: resolvedProfile.username,
+            });
+
+            const refreshedProfile =
+              (await aethexUserService.getProfileByUsername(
+                resolvedProfile.username,
+              )) ??
+              (resolvedId
+                ? await aethexUserService.getProfileById(resolvedId)
+                : null);
+
+            if (refreshedProfile) {
+              resolvedProfile = {
+                ...refreshedProfile,
+                email:
+                  (refreshedProfile as any)?.email ??
+                  resolvedProfile.email ??
+                  null,
+              } as AethexUserProfile & { email?: string | null };
+              resolvedId = refreshedProfile.id ?? resolvedId;
+            }
+          } catch (error) {
+            console.warn("Failed to activate legendary passport status", error);
+          }
+        }
+
         const viewingSelf =
           isSelfRoute ||
           (!!user?.id && resolvedId === user.id) ||
