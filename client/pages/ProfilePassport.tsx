@@ -83,7 +83,7 @@ const ProfilePassport = () => {
       ? `username:${normalizedUsername}`
       : null;
 
-    if (targetKey && lastLoadedKeyRef.current === targetKey && profile) {
+    if (targetKey && lastLoadedKeyRef.current === targetKey) {
       setLoading(false);
       setNotFound(false);
       return;
