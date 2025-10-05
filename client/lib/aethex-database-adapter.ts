@@ -211,6 +211,7 @@ export interface ActivateRewardsResponse {
   ok: boolean;
   achievementsSeeded: number;
   godModeAwarded: boolean;
+  awardedAchievementIds?: string[];
   targetUserId?: string | null;
 }
 
