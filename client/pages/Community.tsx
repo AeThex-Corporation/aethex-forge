@@ -2396,7 +2396,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="recognition" className="mt-0">
+          {activeTab === "recognition" && (
+            <TabsContent value="recognition" className="mt-0">
             {/* Recognition & Roles */}
             <section className="py-20 bg-background/30">
               <div className="container mx-auto px-4">
@@ -2441,6 +2442,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="features" className="mt-0">
             {/* Community Features */}
