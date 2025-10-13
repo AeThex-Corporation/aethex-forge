@@ -842,8 +842,8 @@ export default function Community() {
       id: "starter-kit",
       title: "Starter Resource Kit",
       description: "Download templates, style guides, and best practices curated by mentors.",
-      href: "/resources/starter-kit",
-      label: "Download kit",
+      href: "/docs/examples",
+      label: "Browse kit",
     },
   ];
 
