@@ -890,6 +890,13 @@ export default function Community() {
     },
   ];
 
+  const knowledgeSuggestions = [
+    "Connect Supabase auth",
+    "Host a community event",
+    "Fix build pipeline errors",
+    "Publish a player guide",
+  ];
+
   const knowledgeBaseTopics = [
     {
       id: "faq",
