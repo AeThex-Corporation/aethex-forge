@@ -3104,6 +3104,59 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="media" className="mt-0">
+            {/* Media Galleries */}
+            <section className="py-20 bg-background/30">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Media Galleries"
+                  title="Show off your best captures and recaps"
+                  description="Screenshots, artwork, and videos are curated into themed galleries to inspire the community."
+                  align="left"
+                />
+                <div className="grid gap-6 md:grid-cols-3">
+                  {mediaGallery.map((item) => (
+                    <Card
+                      key={item.id}
+                      className="border-border/40 bg-background/80 backdrop-blur overflow-hidden"
+                    >
+                      <div className="relative">
+                        <img
+                          src={item.thumbnail}
+                          alt={item.title}
+                          className="h-48 w-full object-cover"
+                          loading="lazy"
+                        />
+                        <Badge className="absolute left-4 top-4 bg-background/80 backdrop-blur border-border/60">
+                          {item.type}
+                        </Badge>
+                      </div>
+                      <CardContent className="space-y-3 p-5">
+                        <div className="space-y-1">
+                          <h3 className="font-semibold text-foreground">
+                            {item.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            by {item.author}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
+                          <span className="flex items-center gap-2">
+                            <Heart className="h-4 w-4 text-aethex-400" />
+                            {item.likes}
+                          </span>
+                          <Button asChild variant="ghost" className="px-0 text-sm">
+                            <Link to={`/gallery/${item.id}`}>Open gallery</Link>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
