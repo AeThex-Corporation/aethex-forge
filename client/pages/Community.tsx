@@ -2592,7 +2592,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="devconnect" className="mt-0">
+          {activeTab === "devconnect" && (
+            <TabsContent value="devconnect" className="mt-0">
             {/* DevConnect Spotlight */}
             <section className="relative py-20 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/40 via-transparent to-neon-blue/30" />
@@ -2668,6 +2669,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="forums" className="mt-0">
             {/* Forums & Discussion */}
