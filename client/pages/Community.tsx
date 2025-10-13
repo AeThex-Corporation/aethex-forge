@@ -2862,7 +2862,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="polls" className="mt-0">
+          {activeTab === "polls" && (
+            <TabsContent value="polls" className="mt-0">
             {/* Community Polls */}
             <section className="py-20 bg-background/30">
               <div className="container mx-auto px-4">
@@ -2885,6 +2886,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="collaboration" className="mt-0">
             {/* Real-time Collaboration */}
@@ -3394,7 +3396,7 @@ export default function Community() {
                 <p className="text-lg text-muted-foreground">
                   DevConnect is our dedicated hub for platform teams building
                   the next wave of AeThex experiences. Launch collabs, monitor
-                  live services, and activate the Studio network — all from one
+                  live services, and activate the Studio network �� all from one
                   command center.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
