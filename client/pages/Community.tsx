@@ -2194,7 +2194,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="leaderboards" className="mt-0">
+          {activeTab === "leaderboards" && (
+            <TabsContent value="leaderboards" className="mt-0">
             {/* Leaderboards */}
             <section className="py-20 bg-background/30">
               <div className="container mx-auto px-4">
@@ -2246,6 +2247,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="newsletter" className="mt-0">
             {/* Community Newsletter */}
