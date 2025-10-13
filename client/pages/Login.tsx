@@ -34,15 +34,18 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
-  const { signIn, signUp, signInWithOAuth, user, loading, profile } = useAuth();
+  const { signIn, signUp, signInWithOAuth, user, loading, profileComplete } =
+    useAuth();
   const { success: toastSuccess, error: toastError } = useAethexToast();
 
   // After auth resolves and a user exists, navigate to dashboard
   useEffect(() => {
-    if (user && !loading) {
-      navigate("/dashboard", { replace: true });
+    if (!loading && user) {
+      navigate(profileComplete ? "/dashboard" : "/onboarding", {
+        replace: true,
+      });
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, profileComplete, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
