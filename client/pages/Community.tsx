@@ -1797,7 +1797,7 @@ export default function Community() {
 
         <Tabs
           value={activeTab}
-          onValueChange={setActiveTab}
+          onValueChange={handleTabChange}
           className="space-y-12"
         >
           <div className="container mx-auto px-4">
