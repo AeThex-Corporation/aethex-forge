@@ -2535,6 +2535,83 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="devconnect" className="mt-0">
+            {/* DevConnect Spotlight */}
+            <section className="relative py-20 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/40 via-transparent to-neon-blue/30" />
+              <div className="container mx-auto px-4 relative z-10">
+                <div className="max-w-5xl mx-auto grid lg:grid-cols-[2fr_3fr] gap-10 items-center">
+                  <div className="space-y-6 animate-slide-left">
+                    <Badge className="bg-gradient-to-r from-aethex-500 to-neon-blue w-fit">
+                      New Platform
+                    </Badge>
+                    <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
+                      Introducing DevConnect
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                      DevConnect is our dedicated hub for platform teams building the next wave of AeThex experiences. Launch collabs, monitor live services, and activate the Studio network — all from one command center.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button
+                        asChild
+                        size="lg"
+                        className="bg-gradient-to-r from-neon-blue to-aethex-500 hover:from-neon-blue/90 hover:to-aethex-500/90 glow-blue hover-lift"
+                      >
+                        <a
+                          href="https://devconnect.sbs"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center space-x-2"
+                        >
+                          <span>Launch DevConnect</span>
+                          <ArrowRight className="h-5 w-5" />
+                        </a>
+                      </Button>
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="lg"
+                        className="border-border/60"
+                      >
+                        <Link to="/contact">Talk with AeThex Team</Link>
+                      </Button>
+                    </div>
+                  </div>
+                  <Card className="border-border/40 bg-background/80 backdrop-blur-xl shadow-lg shadow-aethex-500/10 animate-slide-right">
+                    <CardContent className="p-8 space-y-6">
+                      <div className="grid gap-4">
+                        {devConnectHighlights.map((highlight, index) => {
+                          const Icon = highlight.icon;
+                          return (
+                            <div
+                              key={highlight.title}
+                              className="flex items-start gap-4 p-4 rounded-xl border border-border/40 bg-background/60"
+                            >
+                              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 text-aethex-300">
+                                <Icon className="h-5 w-5" />
+                              </div>
+                              <div className="space-y-1">
+                                <h3 className="font-semibold text-foreground">
+                                  {highlight.title}
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                  {highlight.description}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="rounded-lg border border-aethex-400/40 bg-gradient-to-r from-aethex-500/10 to-neon-blue/10 p-4 text-sm text-muted-foreground">
+                        DevConnect syncs directly with AeThex developer profiles, so your activity, streaks, and achievements follow you across every build.
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
