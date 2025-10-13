@@ -645,6 +645,8 @@ function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
 export default function Community() {
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
+  const [knowledgeQuery, setKnowledgeQuery] = useState("");
+  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [registeredEvents, setRegisteredEvents] = useState<
     Record<string, EventRegistrationPayload>
   >({});
@@ -1310,7 +1312,7 @@ export default function Community() {
         "https://images.unsplash.com/photo-1494790108755-2616b612b029?w=120&h=120&fit=crop&crop=face",
       title: "Documentation Expert",
       contributions: 89,
-      badge: "📚 Knowledge Hero",
+      badge: "���� Knowledge Hero",
       speciality: "Technical Writing",
       bio: "Maintains the AeThex SDK quickstarts and keeps localisation packs up to date.",
       recentContribution:
