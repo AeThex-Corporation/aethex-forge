@@ -3157,6 +3157,72 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="spotlight" className="mt-0">
+            {/* Creator Spotlight */}
+            <section className="py-20">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Creator Spotlight"
+                  title="Recognising standout community creators"
+                  description="Spotlight creators whose mods, art, and systems elevate the AeThex ecosystem."
+                  align="center"
+                />
+                <div className="grid gap-6 lg:grid-cols-2 max-w-6xl mx-auto">
+                  {spotlightCreators.map((creator) => (
+                    <Card
+                      key={creator.id}
+                      className="border-border/50 bg-background/80 backdrop-blur"
+                    >
+                      <CardContent className="p-6 space-y-5">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={creator.avatar}
+                              alt={creator.name}
+                              className="h-14 w-14 rounded-full ring-4 ring-aethex-400/20"
+                            />
+                            <div>
+                              <p className="text-lg font-semibold text-gradient">
+                                {creator.name}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {creator.role}
+                              </p>
+                            </div>
+                          </div>
+                          <Badge className="bg-aethex-500/10 border-aethex-400/40 text-aethex-200">
+                            Featured creator
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {creator.highlight}
+                        </p>
+                        <div className="grid grid-cols-3 gap-3">
+                          {creator.metrics.map((metric) => (
+                            <div
+                              key={`${creator.id}-${metric.label}`}
+                              className="rounded-lg border border-border/40 bg-background/80 p-3 text-center"
+                            >
+                              <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                                {metric.label}
+                              </p>
+                              <p className="text-lg font-semibold text-foreground">
+                                {metric.value}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                        <Button asChild className="w-full">
+                          <Link to={creator.link}>View creator profile</Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
