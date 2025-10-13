@@ -2799,6 +2799,30 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="polls" className="mt-0">
+            {/* Community Polls */}
+            <section className="py-20 bg-background/30">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Community Polls"
+                  title="Let players steer the next big moves"
+                  description="Run lightweight polls to validate cosmetics, roadmap priorities, and upcoming events."
+                  align="center"
+                />
+                <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+                  {polls.map((poll) => (
+                    <PollCard
+                      key={poll.id}
+                      poll={poll}
+                      selectedOption={pollSelections[poll.id]}
+                      onSelect={(optionId) => handlePollVote(poll.id, optionId)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
