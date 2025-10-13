@@ -802,6 +802,51 @@ export default function Community() {
     { label: "Games Created", value: "1K+", icon: Gamepad2 },
   ];
 
+  const newMemberSteps = [
+    {
+      id: "join-discord",
+      title: "Join the live chat",
+      description: "Hop into Discord intros and grab the starter role in under five minutes.",
+      icon: MessageCircle,
+    },
+    {
+      id: "complete-profile",
+      title: "Complete your profile",
+      description: "Upload an avatar, link your GitHub, and let the network know your focus.",
+      icon: UserCircle,
+    },
+    {
+      id: "make-intro",
+      title: "Share your first post",
+      description: "Publish a quick intro or project teaser in the feed to unlock your first badge.",
+      icon: Sparkles,
+    },
+  ];
+
+  const newMemberResources = [
+    {
+      id: "orientation",
+      title: "Orientation Checklist",
+      description: "Track every onboarding milestone with an interactive guide.",
+      href: "/onboarding",
+      label: "Open checklist",
+    },
+    {
+      id: "community-tour",
+      title: "Community Tour",
+      description: "Watch a quick walkthrough of forums, events, and support channels.",
+      href: "/docs/getting-started",
+      label: "View tour",
+    },
+    {
+      id: "starter-kit",
+      title: "Starter Resource Kit",
+      description: "Download templates, style guides, and best practices curated by mentors.",
+      href: "/resources/starter-kit",
+      label: "Download kit",
+    },
+  ];
+
   const devConnectHighlights = [
     {
       title: "Unified Developer Profiles",
