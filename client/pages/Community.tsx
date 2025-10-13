@@ -2980,6 +2980,70 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="featured" className="mt-0">
+            {/* Featured Developers */}
+            <section className="py-20 bg-background/30">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Community Leaders"
+                  title="Featured developers"
+                  description="Highlighting builders who mentor others, ship mods, and level up the entire network."
+                  align="center"
+                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                  {contributors.map((contributor, index) => (
+                    <Card
+                      key={contributor.name}
+                      className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
+                      style={{ animationDelay: `${index * 0.2}s` }}
+                    >
+                      <CardContent className="p-6 space-y-4 text-center">
+                        <img
+                          src={contributor.avatar}
+                          alt={contributor.name}
+                          className="w-20 h-20 rounded-full mx-auto ring-4 ring-aethex-400/20"
+                        />
+                        <div className="space-y-1">
+                          <h3 className="font-semibold text-lg text-gradient">
+                            {contributor.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {contributor.title}
+                          </p>
+                        </div>
+                        <Badge variant="outline" className="mx-auto">
+                          {contributor.speciality}
+                        </Badge>
+                        <p className="text-sm text-muted-foreground text-left">
+                          {contributor.bio}
+                        </p>
+                        <div className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-2 text-left">
+                          <p className="text-sm font-medium text-foreground">
+                            {contributor.recentContribution}
+                          </p>
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span>{contributor.reputation}</span>
+                            <span>{contributor.contributions} contributions</span>
+                          </div>
+                        </div>
+                        <Badge className="bg-aethex-500/10 text-aethex-200 border border-aethex-400/40">
+                          {contributor.badge}
+                        </Badge>
+                        <Button
+                          asChild
+                          variant="outline"
+                          className="w-full border-aethex-400/40"
+                        >
+                          <Link to={contributor.profileUrl}>View passport</Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
