@@ -2685,6 +2685,120 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="feedback" className="mt-0">
+            {/* Feedback & Roadmap */}
+            <section className="py-20">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Feedback & Roadmap"
+                  title="Collect insights and close the loop with players"
+                  description="Organise bug reports, balance discussions, and feature ideas in a transparent queue."
+                  align="left"
+                />
+                <div className="grid gap-8 lg:grid-cols-[2fr_3fr]">
+                  <div className="space-y-6">
+                    {feedbackChannels.map((channel) => {
+                      const Icon = channel.icon;
+                      return (
+                        <Card
+                          key={channel.id}
+                          className="border-border/50 bg-background/80 backdrop-blur"
+                        >
+                          <CardHeader className="space-y-3">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                  <Icon className="h-5 w-5" />
+                                </div>
+                                <div>
+                                  <CardTitle className="text-lg">
+                                    {channel.title}
+                                  </CardTitle>
+                                  <CardDescription>
+                                    {channel.description}
+                                  </CardDescription>
+                                </div>
+                              </div>
+                              <Badge
+                                variant="outline"
+                                className="border-aethex-400/40 text-aethex-200"
+                              >
+                                {channel.submissionsThisWeek} this week
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                              Stewarded by {channel.owner}
+                            </p>
+                          </CardHeader>
+                          <CardContent className="space-y-3">
+                            <div className="flex flex-wrap gap-2">
+                              {channel.statuses.map((status) => (
+                                <Badge
+                                  key={status.label}
+                                  className={cn(
+                                    "text-xs",
+                                    feedbackToneStyles[status.tone],
+                                  )}
+                                >
+                                  {status.label}: {status.count}
+                                </Badge>
+                              ))}
+                            </div>
+                            <Button
+                              asChild
+                              variant="ghost"
+                              className="w-full justify-between text-sm"
+                            >
+                              <Link to="/feedback">
+                                Submit feedback
+                                <ArrowRight className="h-4 w-4" />
+                              </Link>
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                  <Card className="border-border/50 bg-background/80 backdrop-blur">
+                    <CardHeader>
+                      <CardTitle>Live roadmap snapshot</CardTitle>
+                      <CardDescription>
+                        Track what the team is shipping next based on player momentum.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {roadmapSnapshot.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/80 p-4 sm:flex-row sm:items-center sm:justify-between"
+                        >
+                          <div>
+                            <p className="font-medium text-foreground">
+                              {item.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {item.eta}
+                            </p>
+                          </div>
+                          <Badge className={feedbackToneStyles[item.statusTone]}>
+                            {item.status}
+                          </Badge>
+                        </div>
+                      ))}
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="w-full border-aethex-400/40"
+                      >
+                        <Link to="/roadmap">Open public roadmap</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
