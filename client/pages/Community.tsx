@@ -2823,6 +2823,90 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="collaboration" className="mt-0">
+            {/* Real-time Collaboration */}
+            <section className="py-20">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Real-time Collaboration"
+                  title="Integrated chat with Discord-style presence"
+                  description="Spin up voice, text, and co-working rooms that bridge seamlessly with our forums and developer hubs."
+                  align="left"
+                />
+                <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
+                  <Card className="border-border/50 bg-background/80 backdrop-blur">
+                    <CardHeader>
+                      <CardTitle>Active channels</CardTitle>
+                      <CardDescription>
+                        See who’s online and jump into the conversations that matter right now.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {chatChannels.map((channel) => {
+                        const Icon = channel.icon;
+                        return (
+                          <div
+                            key={channel.id}
+                            className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-3"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex items-start gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                  <Icon className="h-5 w-5" />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-foreground">
+                                    {channel.name}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {channel.description}
+                                  </p>
+                                </div>
+                              </div>
+                              <Badge
+                                variant="outline"
+                                className="border-aethex-400/40 text-aethex-200"
+                              >
+                                {channel.participants} members
+                              </Badge>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span>Synced with Discord</span>
+                              <span className="flex items-center gap-1 text-emerald-200">
+                                <Sparkles className="h-3 w-3" /> {channel.activeNow} live now
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
+                  <Card className="border-border/50 bg-background/80 backdrop-blur">
+                    <CardHeader>
+                      <CardTitle>Why players love integrated chat</CardTitle>
+                      <CardDescription>
+                        Keep every squad aligned across devices with presence, threads, and recordings.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <ul className="space-y-3 text-sm text-muted-foreground">
+                        {chatFeatures.map((feature) => (
+                          <li key={feature} className="flex items-start gap-3">
+                            <CheckCircle className="mt-0.5 h-4 w-4 text-aethex-400" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <Button asChild className="w-full">
+                        <Link to="/chat">Launch real-time hub</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
