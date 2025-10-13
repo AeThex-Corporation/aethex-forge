@@ -2473,6 +2473,68 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="platforms" className="mt-0">
+            {/* Community Platforms */}
+            <section className="py-20">
+              <div className="container mx-auto px-4">
+                <div className="text-center mb-16 animate-slide-up">
+                  <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
+                    Connect on Your Favorite Platform
+                  </h2>
+                  <p className="text-lg text-muted-foreground">
+                    Multiple ways to engage with the AeThex community
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                  {platforms.map((platform, index) => {
+                    const Icon = platform.icon;
+                    return (
+                      <Card
+                        key={platform.name}
+                        className="text-center border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
+                        style={{ animationDelay: `${index * 0.2}s` }}
+                      >
+                        <CardHeader>
+                          <div
+                            className={`mx-auto w-16 h-16 rounded-lg bg-gradient-to-r ${platform.color} flex items-center justify-center mb-4`}
+                          >
+                            <Icon className="h-8 w-8 text-white" />
+                          </div>
+                          <CardTitle className="text-xl">{platform.name}</CardTitle>
+                          <CardDescription>{platform.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="grid grid-cols-1 gap-2 text-sm">
+                            <div className="flex justify-between">
+                              <span>Members:</span>
+                              <span className="font-semibold text-aethex-400">
+                                {platform.members}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Activity:</span>
+                              <span className="font-semibold text-aethex-400">
+                                {platform.activity}
+                              </span>
+                            </div>
+                          </div>
+
+                          <Button asChild className="w-full">
+                            <Link to={platform.link}>
+                              Join Now
+                              <ArrowRight className="h-4 w-4 ml-2" />
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
