@@ -3511,38 +3511,6 @@ export default function Community() {
           )}
         </Tabs>
 
-        {/* Community Stats */}
-        <section className="py-16 bg-background/30">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <div
-                    key={stat.label}
-                    className="text-center space-y-3 animate-scale-in"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="flex justify-center">
-                      <div className="p-3 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border border-aethex-400/20">
-                        <Icon className="h-6 w-6 text-aethex-400" />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-gradient">
-                        {stat.value}
-                      </div>
-                      <p className="text-sm text-muted-foreground uppercase tracking-wide">
-                        {stat.label}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
         {/* Community Platforms */}
         <section className="py-20">
           <div className="container mx-auto px-4">
