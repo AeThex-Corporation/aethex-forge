@@ -708,6 +708,34 @@ export default function Community() {
   );
   const [reportForm, setReportForm] = useState({ reason: "", details: "" });
 
+  const handleKnowledgeSearch = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const query = knowledgeQuery.trim();
+      if (!query) {
+        aethexToast.system("Add a topic or question to search the knowledge base.");
+        return;
+      }
+      aethexToast.system(`Searching guides for "${query}"...`);
+      setKnowledgeQuery("");
+    },
+    [knowledgeQuery],
+  );
+
+  const handleNewsletterSignup = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const address = newsletterEmail.trim();
+      if (!address) {
+        aethexToast.system("Enter your email to join the newsletter.");
+        return;
+      }
+      aethexToast.system(`Subscribed ${address} to the AeThex community briefing.`);
+      setNewsletterEmail("");
+    },
+    [newsletterEmail],
+  );
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
