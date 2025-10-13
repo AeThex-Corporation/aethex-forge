@@ -3117,7 +3117,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="workshop" className="mt-0">
+          {activeTab === "workshop" && (
+            <TabsContent value="workshop" className="mt-0">
             {/* Workshop & Mod Support */}
             <section className="py-20">
               <div className="container mx-auto px-4">
@@ -3176,6 +3177,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="media" className="mt-0">
             {/* Media Galleries */}
