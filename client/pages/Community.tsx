@@ -3044,6 +3044,66 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="workshop" className="mt-0">
+            {/* Workshop & Mod Support */}
+            <section className="py-20">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Workshop & Mods"
+                  title="Build, share, and iterate with the community workshop"
+                  description="Mods, templates, and toolkits come with analytics so teams can iterate quickly."
+                  align="left"
+                />
+                <div className="grid gap-6 md:grid-cols-3">
+                  {workshopItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Card
+                        key={item.id}
+                        className="border-border/50 bg-background/80 backdrop-blur"
+                      >
+                        <CardHeader className="space-y-3">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                            <Icon className="h-6 w-6" />
+                          </div>
+                          <CardTitle className="text-lg">{item.title}</CardTitle>
+                          <CardDescription>{item.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <span>Downloads</span>
+                            <span className="font-semibold text-aethex-200">
+                              {item.downloads.toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <span>Rating</span>
+                            <span className="font-semibold text-aethex-200">
+                              {item.rating.toFixed(1)}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            Created by {item.author}
+                          </p>
+                          <Button
+                            asChild
+                            variant="ghost"
+                            className="w-full justify-between text-sm"
+                          >
+                            <Link to={`/workshop/${item.id}`}>
+                              View asset
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
