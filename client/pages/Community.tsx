@@ -3179,7 +3179,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="media" className="mt-0">
+          {activeTab === "media" && (
+            <TabsContent value="media" className="mt-0">
             {/* Media Galleries */}
             <section className="py-20 bg-background/30">
               <div className="container mx-auto px-4">
@@ -3231,6 +3232,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="spotlight" className="mt-0">
             {/* Creator Spotlight */}
