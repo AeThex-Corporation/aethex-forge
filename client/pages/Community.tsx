@@ -2612,6 +2612,79 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="forums" className="mt-0">
+            {/* Forums & Discussion */}
+            <section className="py-20 bg-background/30">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Forums & Discussions"
+                  title="Deep-dive with peers in dedicated boards"
+                  description="Launch structured conversations for strategy, support, and storytelling."
+                  align="left"
+                />
+                <div className="grid gap-6 md:grid-cols-3">
+                  {forumSpaces.map((space, index) => {
+                    const Icon = space.icon;
+                    return (
+                      <Card
+                        key={space.id}
+                        className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <CardHeader className="space-y-4">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-3">
+                              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                <Icon className="h-5 w-5" />
+                              </div>
+                              <div>
+                                <CardTitle className="text-lg">
+                                  {space.name}
+                                </CardTitle>
+                                <CardDescription>
+                                  {space.description}
+                                </CardDescription>
+                              </div>
+                            </div>
+                            <Badge variant="outline" className="border-border/50">
+                              {space.threads} threads
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="flex items-center justify-between text-xs text-muted-foreground uppercase tracking-wide">
+                            <span>{space.activeToday} active today</span>
+                            <span className="flex items-center gap-2">
+                              <MessageCircle className="h-3.5 w-3.5" /> Latest
+                            </span>
+                          </div>
+                          <div className="rounded-lg border border-border/40 bg-background/80 p-4">
+                            <p className="text-sm font-medium text-foreground">
+                              {space.latestThread.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              by {space.latestThread.author} • {space.latestThread.timeAgo}
+                            </p>
+                          </div>
+                          <Button
+                            asChild
+                            variant="ghost"
+                            className="w-full justify-between text-sm"
+                          >
+                            <Link to={`/forums/${space.id}`}>
+                              Enter space
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
