@@ -1963,7 +1963,8 @@ export default function Community() {
             </TabsContent>
           )}
 
-          <TabsContent value="knowledge" className="mt-0">
+          {activeTab === "knowledge" && (
+            <TabsContent value="knowledge" className="mt-0">
             {/* Knowledge Base */}
             <section className="py-20">
               <div className="container mx-auto px-4">
@@ -2058,6 +2059,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="mentorship" className="mt-0">
             {/* Mentorship Program */}
