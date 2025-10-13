@@ -2746,7 +2746,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="feedback" className="mt-0">
+          {activeTab === "feedback" && (
+            <TabsContent value="feedback" className="mt-0">
             {/* Feedback & Roadmap */}
             <section className="py-20">
               <div className="container mx-auto px-4">
@@ -2859,6 +2860,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="polls" className="mt-0">
             {/* Community Polls */}
