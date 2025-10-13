@@ -2907,6 +2907,34 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="events" className="mt-0">
+            {/* Upcoming Events */}
+            <section className="py-20 bg-background/30">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Events"
+                  title="Upcoming events"
+                  description="Join our community events and level up your skills."
+                  align="center"
+                />
+                <div className="max-w-4xl mx-auto space-y-6">
+                  {events.map((event, index) => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      animationDelay={index * 0.12}
+                      isRegistered={Boolean(registeredEvents[event.id])}
+                      registrant={registeredEvents[event.id]}
+                      onRegister={(payload) =>
+                        handleEventRegistration(event, payload)
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
