@@ -1777,7 +1777,7 @@ export default function Community() {
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="rounded-xl px-4 py-2 text-sm font-semibold text-muted-foreground transition data-[state=active]:bg-gradient-to-r data-[state=active]:from-aethex-500/20 data-[state=active]:to-neon-blue/20 data-[state=active]:text-foreground data-[state=active]:shadow"
+                    className="rounded-xl px-4 py-2 text-sm font-semibold text-muted-foreground transition whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-aethex-500/20 data-[state=active]:to-neon-blue/20 data-[state=active]:text-foreground data-[state=active]:shadow"
                   >
                     {tab.label}
                   </TabsTrigger>
