@@ -52,6 +52,7 @@ import {
   Headphones,
   Heart,
   Layers,
+  Play,
   Loader2,
   MapPin,
   MessageCircle,
