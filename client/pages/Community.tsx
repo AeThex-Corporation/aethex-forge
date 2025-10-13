@@ -2935,6 +2935,51 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+
+          <TabsContent value="profiles" className="mt-0">
+            {/* Developer Profile Highlights */}
+            <section className="py-20">
+              <div className="container mx-auto px-4">
+                <SectionHeader
+                  badge="Developer Profiles"
+                  title="Showcase your journey across AeThex"
+                  description="Developer profiles blend achievements, portfolio pieces, and social proof so collaborators can find you fast."
+                  align="left"
+                />
+                <div className="grid gap-6 md:grid-cols-3">
+                  {profileHighlights.map((highlight) => {
+                    const Icon = highlight.icon;
+                    return (
+                      <Card
+                        key={highlight.id}
+                        className="border-border/50 bg-background/80 backdrop-blur"
+                      >
+                        <CardHeader className="space-y-3">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                            <Icon className="h-6 w-6" />
+                          </div>
+                          <CardTitle className="text-lg">
+                            {highlight.title}
+                          </CardTitle>
+                          <CardDescription>{highlight.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="rounded-lg border border-border/40 bg-background/80 p-4">
+                            <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                              {highlight.metricLabel}
+                            </p>
+                            <p className="text-2xl font-semibold text-gradient-purple">
+                              {highlight.metricValue}
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          </TabsContent>
         </Tabs>
 
         {/* Community Stats */}
