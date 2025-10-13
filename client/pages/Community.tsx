@@ -848,6 +848,108 @@ export default function Community() {
     },
   ];
 
+  const knowledgeBaseTopics = [
+    {
+      id: "faq",
+      title: "FAQ & Community Policies",
+      description: "Find answers to the most common setup, support, and conduct questions.",
+      articles: 42,
+      icon: ClipboardList,
+      href: "/support",
+    },
+    {
+      id: "how-to",
+      title: "How-to Guides",
+      description: "Step-by-step tutorials for publishing builds, tracking analytics, and launching events.",
+      articles: 58,
+      icon: Code,
+      href: "/docs/tutorials",
+    },
+    {
+      id: "troubleshooting",
+      title: "Troubleshooting Library",
+      description: "Resolve build errors, auth issues, and integration blockers with proven fixes.",
+      articles: 34,
+      icon: AlertTriangle,
+      href: "/status",
+    },
+  ];
+
+  const mentorshipTracks = [
+    {
+      id: "technical",
+      title: "Technical mentorship",
+      description: "Pair with senior engineers for architecture reviews, performance tuning, and launch plans.",
+      mentors: 36,
+      icon: Code,
+    },
+    {
+      id: "creative",
+      title: "Creative direction",
+      description: "Work with art directors and narrative leads to sharpen your storytelling and worldbuilding.",
+      mentors: 22,
+      icon: Sparkles,
+    },
+    {
+      id: "career",
+      title: "Career coaching",
+      description: "Get guidance on portfolios, interviews, and collaborating inside cross-disciplinary teams.",
+      mentors: 18,
+      icon: Users,
+    },
+  ];
+
+  const caseStudyHighlights = [
+    {
+      id: "aurora",
+      title: "Aurora Protocol",
+      summary: "Scaled from prototype to 150K players after co-developing monetisation loops with AeThex mentors.",
+      metricLabel: "Retention uplift",
+      metricValue: "+28%",
+      icon: TrendingUp,
+    },
+    {
+      id: "zenith",
+      title: "Project Zenith",
+      summary: "Community artists produced 240+ assets in three weeks using our collaborative review pipeline.",
+      metricLabel: "Assets delivered",
+      metricValue: "243",
+      icon: FolderGit2,
+    },
+    {
+      id: "ember",
+      title: "Ember Syndicate",
+      summary: "A mentorship trio rallied devs worldwide to revive a dormant roguelite into a live service.",
+      metricLabel: "Mentor sessions",
+      metricValue: "64",
+      icon: Heart,
+    },
+  ];
+
+  const leaderboardCategories = [
+    {
+      id: "contributors",
+      title: "Top contributors",
+      description: "Members with the most merged pull requests and community answers this month.",
+      leaders: ["QuasarForge", "LunaDev", "SynthRider"],
+      icon: Award,
+    },
+    {
+      id: "mentors",
+      title: "Mentor impact",
+      description: "Hours spent mentoring, code reviewing, and onboarding new squads.",
+      leaders: ["ByteSage", "AriaNova", "FluxPilot"],
+      icon: Heart,
+    },
+    {
+      id: "creators",
+      title: "Creator highlights",
+      description: "Streamers and educators with the highest workshop enrollments and video watch time.",
+      leaders: ["NeonNarrator", "EchoArtist", "TechnoFable"],
+      icon: Star,
+    },
+  ];
+
   const devConnectHighlights = [
     {
       title: "Unified Developer Profiles",
