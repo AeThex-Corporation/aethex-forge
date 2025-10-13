@@ -3004,7 +3004,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="profiles" className="mt-0">
+          {activeTab === "profiles" && (
+            <TabsContent value="profiles" className="mt-0">
             {/* Developer Profile Highlights */}
             <section className="py-20">
               <div className="container mx-auto px-4">
@@ -3048,6 +3049,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="featured" className="mt-0">
             {/* Featured Developers */}
