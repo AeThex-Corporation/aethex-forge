@@ -3234,7 +3234,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="spotlight" className="mt-0">
+          {activeTab === "spotlight" && (
+            <TabsContent value="spotlight" className="mt-0">
             {/* Creator Spotlight */}
             <section className="py-20">
               <div className="container mx-auto px-4">
@@ -3299,6 +3300,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
         </Tabs>
 
         {/* Community Stats */}
