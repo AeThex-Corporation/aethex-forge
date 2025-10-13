@@ -1771,17 +1771,19 @@ export default function Community() {
           className="space-y-12"
         >
           <div className="container mx-auto px-4">
-            <TabsList className="flex w-full flex-wrap gap-2 rounded-2xl border border-border/60 bg-background/60 p-2">
-              {communityTabItems.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="rounded-xl px-4 py-2 text-sm font-semibold text-muted-foreground transition data-[state=active]:bg-gradient-to-r data-[state=active]:from-aethex-500/20 data-[state=active]:to-neon-blue/20 data-[state=active]:text-foreground data-[state=active]:shadow"
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <div className="overflow-x-auto pb-2">
+              <TabsList className="flex w-max flex-nowrap gap-2 rounded-2xl border border-border/60 bg-background/60 p-2">
+                {communityTabItems.map((tab) => (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="rounded-xl px-4 py-2 text-sm font-semibold text-muted-foreground transition data-[state=active]:bg-gradient-to-r data-[state=active]:from-aethex-500/20 data-[state=active]:to-neon-blue/20 data-[state=active]:text-foreground data-[state=active]:shadow"
+                  >
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
           </div>
 
           <TabsContent value="new-members" className="mt-0">
