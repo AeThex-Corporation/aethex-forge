@@ -3301,6 +3301,214 @@ export default function Community() {
             </section>
           </TabsContent>
           )}
+
+          {activeTab === "governance" && (
+            <TabsContent value="governance" className="mt-0">
+              {/* Community Governance */}
+              <section className="py-20 bg-background/30">
+                <div className="container mx-auto px-4">
+                  <SectionHeader
+                    badge="Community Governance"
+                    title="Clear guidelines, empowered moderators"
+                    description="We invest in tools and processes so every player feels safe, heard, and respected."
+                    align="left"
+                  />
+                  <div className="grid gap-8 lg:grid-cols-[2fr_3fr]">
+                    <Card className="border-border/50 bg-background/80 backdrop-blur">
+                      <CardHeader className="flex items-start justify-between gap-4">
+                        <div>
+                          <CardTitle>Community guidelines</CardTitle>
+                          <CardDescription>
+                            Expectations for every player and contributor.
+                          </CardDescription>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className="border-aethex-400/40 text-aethex-200"
+                        >
+                          Updated weekly
+                        </Badge>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-3">
+                          {moderationGuidelines.map((guideline) => (
+                            <li
+                              key={guideline.title}
+                              className="flex items-start gap-3"
+                            >
+                              <Shield className="mt-0.5 h-4 w-4 text-aethex-400" />
+                              <div>
+                                <p className="text-sm font-medium text-foreground">
+                                  {guideline.title}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  {guideline.description}
+                                </p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                    <div className="grid gap-8">
+                      <Card className="border-border/50 bg-background/80 backdrop-blur">
+                        <CardHeader>
+                          <CardTitle>Moderation toolkit</CardTitle>
+                          <CardDescription>
+                            Equip community managers with actionable, auditable
+                            controls.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="grid gap-4 sm:grid-cols-3">
+                          {moderationTools.map((tool) => {
+                            const Icon = tool.icon;
+                            return (
+                              <div
+                                key={tool.id}
+                                className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-3"
+                              >
+                                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-aethex-500/10 text-aethex-300">
+                                  <Icon className="h-5 w-5" />
+                                </div>
+                                <p className="text-sm font-medium text-foreground">
+                                  {tool.title}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  {tool.description}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </CardContent>
+                      </Card>
+                      <Card className="border-border/50 bg-background/80 backdrop-blur">
+                        <CardHeader>
+                          <CardTitle>Submit a report</CardTitle>
+                          <CardDescription>
+                            Reports are routed to the right channel owners for fast
+                            follow-up.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <form onSubmit={handleReportSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="report-reason">Reason</Label>
+                              <select
+                                id="report-reason"
+                                value={reportForm.reason}
+                                onChange={(event) =>
+                                  setReportForm((prev) => ({
+                                    ...prev,
+                                    reason: event.target.value,
+                                  }))
+                                }
+                                className="w-full rounded-lg border border-border/50 bg-background/80 px-3 py-2 text-sm focus:border-aethex-400 focus:outline-none focus:ring-2 focus:ring-aethex-400/40"
+                              >
+                                <option value="">Select a reason</option>
+                                {reportReasons.map((reason) => (
+                                  <option key={reason.id} value={reason.id}>
+                                    {reason.label}
+                                  </option>
+                                ))}
+                              </select>
+                              {selectedReportReason && (
+                                <p className="text-xs text-muted-foreground">
+                                  {selectedReportReason.description}
+                                </p>
+                              )}
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="report-details">Details</Label>
+                              <Textarea
+                                id="report-details"
+                                value={reportForm.details}
+                                onChange={(event) =>
+                                  setReportForm((prev) => ({
+                                    ...prev,
+                                    details: event.target.value,
+                                  }))
+                                }
+                                placeholder="Share links, timestamps, or context so moderators can follow up quickly."
+                                rows={4}
+                              />
+                            </div>
+                            <Button type="submit" className="w-full">
+                              Submit report
+                            </Button>
+                          </form>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </TabsContent>
+          )}
+
+          {activeTab === "cta" && (
+            <TabsContent value="cta" className="mt-0">
+              {/* CTA Section */}
+              <section className="py-20">
+                <div className="container mx-auto px-4 text-center">
+                  <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
+                    <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple">
+                      Ready to Join Our Community?
+                    </h2>
+                    <p className="text-xl text-muted-foreground">
+                      Connect with thousands of developers, share your projects, and
+                      grow your skills in our supportive and innovative community.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row justify-center gap-4">
+                      <Button
+                        asChild
+                        size="lg"
+                        className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
+                      >
+                        <Link to="/discord" className="flex items-center space-x-2">
+                          <Heart className="h-5 w-5" />
+                          <span>Join Community</span>
+                          <ArrowRight className="h-5 w-5" />
+                        </Link>
+                      </Button>
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="lg"
+                        className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                      >
+                        <Link to="/events">View All Events</Link>
+                      </Button>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-8 mt-12">
+                      <div className="text-center">
+                        <Coffee className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                        <h3 className="font-semibold">Weekly Meetups</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Virtual coffee chats
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <Star className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                        <h3 className="font-semibold">Recognition</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Contributor rewards
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <TrendingUp className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                        <h3 className="font-semibold">Growth</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Learn & advance
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </TabsContent>
+          )}
         </Tabs>
 
         {/* Community Stats */}
