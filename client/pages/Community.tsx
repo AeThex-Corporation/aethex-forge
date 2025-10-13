@@ -819,7 +819,7 @@ export default function Community() {
       agenda: [
         "15 min — Lightning updates from active squads",
         "30 min — Deep-dive breakout rooms hosted by AeThex mentors",
-        "15 min �� Open Q&A and contributor shout-outs",
+        "15 min — Open Q&A and contributor shout-outs",
       ],
       registrationEnabled: true,
       registrationUrl: "https://devconnect.sbs/events/weekly-meetup",
@@ -2528,7 +2528,8 @@ export default function Community() {
           </TabsContent>
           )}
 
-          <TabsContent value="platforms" className="mt-0">
+          {activeTab === "platforms" && (
+            <TabsContent value="platforms" className="mt-0">
             {/* Community Platforms */}
             <section className="py-20">
               <div className="container mx-auto px-4">
@@ -2589,6 +2590,7 @@ export default function Community() {
               </div>
             </section>
           </TabsContent>
+          )}
 
           <TabsContent value="devconnect" className="mt-0">
             {/* DevConnect Spotlight */}
