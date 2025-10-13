@@ -1169,6 +1169,21 @@ export default function Community() {
     { id: "activities", label: "Content & Activities" },
     { id: "recognition", label: "Recognition" },
     { id: "features", label: "Community Features" },
+    { id: "stats", label: "Community Stats" },
+    { id: "platforms", label: "Platforms" },
+    { id: "devconnect", label: "DevConnect" },
+    { id: "forums", label: "Forums" },
+    { id: "feedback", label: "Feedback" },
+    { id: "polls", label: "Polls" },
+    { id: "collaboration", label: "Collaboration" },
+    { id: "events", label: "Events" },
+    { id: "profiles", label: "Profiles" },
+    { id: "featured", label: "Featured Leaders" },
+    { id: "workshop", label: "Workshop" },
+    { id: "media", label: "Media Galleries" },
+    { id: "spotlight", label: "Spotlight" },
+    { id: "governance", label: "Governance" },
+    { id: "cta", label: "Join Us" },
   ];
 
   const devConnectHighlights = [
