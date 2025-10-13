@@ -1155,6 +1155,19 @@ export default function Community() {
     },
   ];
 
+  const communityTabItems = [
+    { id: "new-members", label: "New Members" },
+    { id: "knowledge", label: "Knowledge Base" },
+    { id: "mentorship", label: "Mentorship" },
+    { id: "case-studies", label: "Case Studies" },
+    { id: "leaderboards", label: "Leaderboards" },
+    { id: "newsletter", label: "Newsletter" },
+    { id: "growth", label: "Growth & Fun" },
+    { id: "activities", label: "Content & Activities" },
+    { id: "recognition", label: "Recognition" },
+    { id: "features", label: "Community Features" },
+  ];
+
   const devConnectHighlights = [
     {
       title: "Unified Developer Profiles",
