@@ -1426,6 +1426,149 @@ export default function Community() {
           </div>
         </section>
 
+        {/* New Member Hub */}
+        <section className="py-20 bg-background/40">
+          <div className="container mx-auto px-4">
+            <SectionHeader
+              badge="New Member Hub"
+              title="Start strong in your first 7 days"
+              description="Follow a guided path, watch the welcome tour, and unlock your first achievements fast."
+              align="left"
+            />
+            <div className="grid gap-8 lg:grid-cols-[2fr,3fr]">
+              <Card className="relative overflow-hidden border-border/60 bg-background/80 backdrop-blur-xl">
+                <CardContent className="p-0">
+                  <div className="relative aspect-video bg-gradient-to-br from-aethex-500/30 via-background to-neon-blue/30 flex items-center justify-center">
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/80 border border-aethex-400/50 shadow-lg shadow-aethex-500/20">
+                        <Play className="h-8 w-8 text-aethex-400" />
+                      </div>
+                      <div className="text-center space-y-2">
+                        <h3 className="text-xl font-semibold text-gradient">
+                          Welcome to AeThex
+                        </h3>
+                        <p className="text-sm text-muted-foreground max-w-sm">
+                          Learn how to customise your profile, meet mentors, and ship your first contribution.
+                        </p>
+                      </div>
+                      <Button asChild>
+                        <a
+                          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center space-x-2"
+                        >
+                          <span>Watch welcome briefing</span>
+                          <ArrowRight className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    </div>
+                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_rgba(80,199,255,0.25),_transparent_70%)]" />
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Orientation snapshot
+                    </h3>
+                    <div className="grid gap-3">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>Average onboarding time</span>
+                        <span className="font-semibold text-aethex-400">22 mins</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>Mentors online right now</span>
+                        <span className="font-semibold text-aethex-400">18</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>Starter quests completed this week</span>
+                        <span className="font-semibold text-aethex-400">412</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="grid gap-6">
+                <Card className="border-border/60 bg-background/80">
+                  <CardHeader className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                      <CheckCircle className="h-4 w-4 text-aethex-400" />
+                      First steps checklist
+                    </div>
+                    <CardTitle className="text-2xl">
+                      Ship your first wins this week
+                    </CardTitle>
+                    <CardDescription>
+                      Work through the essentials and unlock the New Recruit badge.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <ul className="space-y-4">
+                      {newMemberSteps.map((step) => {
+                        const Icon = step.icon;
+                        return (
+                          <li key={step.id} className="flex gap-4">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                              <Icon className="h-5 w-5" />
+                            </div>
+                            <div className="space-y-1">
+                              <p className="font-semibold text-foreground">
+                                {step.title}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {step.description}
+                              </p>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-border/60 bg-background/80">
+                  <CardHeader className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                      <Sparkles className="h-4 w-4 text-aethex-400" />
+                      Quick wins
+                    </div>
+                    <CardTitle className="text-2xl">
+                      Jump into the right resources
+                    </CardTitle>
+                    <CardDescription>
+                      Explore guides and shortcuts tailored for first-time members.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      {newMemberResources.map((resource) => (
+                        <div
+                          key={resource.id}
+                          className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/60 p-4 hover:border-aethex-400/40 transition-colors"
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <div>
+                              <p className="font-semibold text-foreground">
+                                {resource.title}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {resource.description}
+                              </p>
+                            </div>
+                            <ArrowRight className="h-4 w-4 text-aethex-400" />
+                          </div>
+                          <Button asChild variant="outline" size="sm" className="w-fit">
+                            <Link to={resource.href}>{resource.label}</Link>
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Community Stats */}
         <section className="py-16 bg-background/30">
           <div className="container mx-auto px-4">
