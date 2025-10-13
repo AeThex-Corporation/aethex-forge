@@ -646,6 +646,7 @@ export default function Community() {
   const toastShownRef = useRef(false);
   const [knowledgeQuery, setKnowledgeQuery] = useState("");
   const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [activeTab, setActiveTab] = useState("new-members");
   const [registeredEvents, setRegisteredEvents] = useState<
     Record<string, EventRegistrationPayload>
   >({});
