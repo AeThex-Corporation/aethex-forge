@@ -1192,6 +1192,30 @@ export default function Community() {
     { id: "cta", label: "Join Us" },
   ];
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const candidateTab = pathSegments[1];
+  const defaultTab = communityTabItems[0]?.id ?? "new-members";
+
+  const isValidTab = (value: string | undefined): value is string =>
+    communityTabItems.some((tab) => tab.id === value);
+
+  const activeTab = isValidTab(candidateTab) ? candidateTab : defaultTab;
+
+  useEffect(() => {
+    if (!isValidTab(candidateTab)) {
+      navigate(`/community/${defaultTab}`, { replace: true });
+    }
+  }, [candidateTab, defaultTab, navigate]);
+
+  const handleTabChange = (value: string) => {
+    const nextTab = isValidTab(value) ? value : defaultTab;
+    if (nextTab !== candidateTab) {
+      navigate(`/community/${nextTab}`);
+    }
+  };
+
   const devConnectHighlights = [
     {
       title: "Unified Developer Profiles",
