@@ -962,6 +962,164 @@ export default function Community() {
     },
   ];
 
+  const opportunityHighlights = [
+    {
+      id: "jobs",
+      title: "Job & Bounty Board",
+      description:
+        "Browse curated studio roles, funded milestones, and one-off bounties refreshed every Monday.",
+      metrics: [
+        { label: "Active opportunities", value: "47" },
+        { label: "Average reward", value: "$1.8K" },
+      ],
+      icon: Briefcase,
+      href: "/community/opportunities",
+      ctaLabel: "Browse roles",
+    },
+    {
+      id: "swag",
+      title: "AeThex Swag Store",
+      description:
+        "Rep the community with limited-run drops designed by resident artists and event champions.",
+      metrics: [
+        { label: "Items in stock", value: "32" },
+        { label: "Next drop", value: "Aug 18" },
+      ],
+      icon: Shirt,
+      href: "/store",
+      ctaLabel: "Shop collection",
+    },
+  ];
+
+  const creativeActivities = [
+    {
+      id: "lore",
+      title: "Lore & World-Building",
+      description:
+        "Co-create canon with writers and narrative designers through weekly prompts and live Q&As.",
+      icon: Layers,
+      highlights: [
+        "Story room every Thursday",
+        "Archive of approved lore entries",
+        "Direct feedback from narrative leads",
+      ],
+      href: "/community/lore",
+    },
+    {
+      id: "fan-art",
+      title: "Fan Art & Creations",
+      description:
+        "Celebrate visual, audio, and written masterpieces with monthly showcases and juried contests.",
+      icon: Palette,
+      highlights: [
+        "Creator of the Month feature",
+        "Quarterly themed contests",
+        "Licensing-ready asset library",
+      ],
+      href: "/community/creators",
+    },
+    {
+      id: "tournaments",
+      title: "Community Tournaments",
+      description:
+        "Host bracketed showdowns, co-op raids, or creative jams with built-in tools and prize support.",
+      icon: Trophy,
+      highlights: [
+        "DIY tournament toolkit",
+        "Signal-boost in newsletter",
+        "Staff moderation assistance",
+      ],
+      href: "/community/events",
+    },
+    {
+      id: "guides",
+      title: "Player Guides & Walkthroughs",
+      description:
+        "Publish mastery guides, speedrun paths, and onboarding walkthroughs with editorial amplification.",
+      icon: BookOpen,
+      highlights: [
+        "Featured guide slot on dashboard",
+        "Template library for writers",
+        "Revenue share for premium guides",
+      ],
+      href: "/community/guides",
+    },
+  ];
+
+  const recognitionPrograms = [
+    {
+      id: "ambassadors",
+      title: "Community Ambassador Program",
+      description:
+        "Empower passionate members to welcome newcomers, answer questions, and model best practices.",
+      icon: Megaphone,
+      perks: [
+        "Private strategy briefings",
+        "Exclusive badge and profile flair",
+        "Invite-only leadership roundtables",
+      ],
+      href: "/community/ambassadors",
+      ctaLabel: "Apply to lead",
+    },
+    {
+      id: "creators",
+      title: "Content Creator Program",
+      description:
+        "Provide media kits, early patch notes, and co-marketing boosts for streamers and educators.",
+      icon: Video,
+      perks: [
+        "Early access to updates",
+        "Sponsored segment opportunities",
+        "Dedicated support channel",
+      ],
+      href: "/community/creators-program",
+      ctaLabel: "Join the roster",
+    },
+    {
+      id: "feedback",
+      title: "Feedback & Playtesting Groups",
+      description:
+        "Curate squads of experienced players to stress-test builds and share actionable insights.",
+      icon: MessageSquareText,
+      perks: [
+        "Structured feedback templates",
+        "Direct line to product teams",
+        "Recognition in patch credits",
+      ],
+      href: "/community/playtesting",
+      ctaLabel: "Request access",
+    },
+  ];
+
+  const socialFeatures = [
+    {
+      id: "teams",
+      title: "Team & Guild Finder",
+      description:
+        "Match by timezone, skill rating, and preferred game modes to form squads that last.",
+      icon: Users,
+      bullets: [
+        "Smart matching by role and availability",
+        "Verified guild applications",
+        "Integrated scrim scheduler",
+      ],
+      href: "/community/teams",
+    },
+    {
+      id: "setups",
+      title: "Share Your Setup",
+      description:
+        "Show off battlestations, mobile rigs, and cosplays with seasonal themes and prizes.",
+      icon: MonitorSmartphone,
+      bullets: [
+        "Monthly showcase livestream",
+        "Hardware partner spotlights",
+        "Community voting for fan favorites",
+      ],
+      href: "/community/setups",
+    },
+  ];
+
   const devConnectHighlights = [
     {
       title: "Unified Developer Profiles",
