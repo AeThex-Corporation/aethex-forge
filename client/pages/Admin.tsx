@@ -365,6 +365,22 @@ export default function Admin() {
         action: () => setActiveTab("operations"),
       },
       {
+        label: "Opportunity applicants",
+        description:
+          "Review contributor and career applications from Opportunities.",
+        icon: Users,
+        action: () => {
+          setActiveTab("operations");
+          if (typeof window !== "undefined") {
+            setTimeout(() => {
+              document
+                .getElementById("opportunity-applications")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 75);
+          }
+        },
+      },
+      {
         label: "Open Builder CMS",
         description: "Edit marketing pages and landing content in Builder.io.",
         icon: ExternalLink,
