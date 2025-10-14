@@ -39,6 +39,60 @@ export type Database = {
         };
         Relationships: [];
       };
+      applications: {
+        Row: {
+          id: string;
+          type: "contributor" | "career";
+          full_name: string;
+          email: string;
+          location: string | null;
+          role_interest: string | null;
+          primary_skill: string | null;
+          experience_level: string | null;
+          availability: string | null;
+          portfolio_url: string | null;
+          resume_url: string | null;
+          interests: string[] | null;
+          message: string | null;
+          status: string;
+          submitted_at: string;
+        };
+        Insert: {
+          id?: string;
+          type: "contributor" | "career";
+          full_name: string;
+          email: string;
+          location?: string | null;
+          role_interest?: string | null;
+          primary_skill?: string | null;
+          experience_level?: string | null;
+          availability?: string | null;
+          portfolio_url?: string | null;
+          resume_url?: string | null;
+          interests?: string[] | null;
+          message?: string | null;
+          status?: string;
+          submitted_at?: string;
+        };
+        Update: {
+          id?: string;
+          type?: "contributor" | "career";
+          full_name?: string;
+          email?: string;
+          location?: string | null;
+          role_interest?: string | null;
+          primary_skill?: string | null;
+          experience_level?: string | null;
+          availability?: string | null;
+          portfolio_url?: string | null;
+          resume_url?: string | null;
+          interests?: string[] | null;
+          message?: string | null;
+          status?: string;
+          submitted_at?: string;
+        };
+        Relationships: [];
+      };
       comments: {
         Row: {
           author_id: string;
