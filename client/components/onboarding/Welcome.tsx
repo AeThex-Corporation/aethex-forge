@@ -38,20 +38,28 @@ export default function Welcome({
   achievement,
 }: WelcomeProps) {
   const { user, refreshProfile } = useAuth();
-  const { success: toastSuccess, error: toastError, warning: toastWarning, info: toastInfo } =
-    useAethexToast();
+  const {
+    success: toastSuccess,
+    error: toastError,
+    warning: toastWarning,
+    info: toastInfo,
+  } = useAethexToast();
 
   const emailAddress = data.personalInfo.email || user?.email || "";
   const deriveConfirmed = (source?: any) =>
     Boolean(source?.email_confirmed_at || source?.confirmed_at);
 
-  const [isVerified, setIsVerified] = useState<boolean>(() => deriveConfirmed(user));
+  const [isVerified, setIsVerified] = useState<boolean>(() =>
+    deriveConfirmed(user),
+  );
   const [isSendingVerification, setIsSendingVerification] = useState(false);
   const [isCheckingVerification, setIsCheckingVerification] = useState(false);
-  const [fallbackVerificationLink, setFallbackVerificationLink] = useState<string | null>(null);
+  const [fallbackVerificationLink, setFallbackVerificationLink] = useState<
+    string | null
+  >(null);
 
-  const fullNameValue = `${(data.personalInfo.firstName || "").trim()} ${(data.personalInfo.lastName || "").trim()}`
-    .trim() ||
+  const fullNameValue =
+    `${(data.personalInfo.firstName || "").trim()} ${(data.personalInfo.lastName || "").trim()}`.trim() ||
     ((user as any)?.user_metadata?.full_name as string | undefined);
 
   useEffect(() => {
@@ -90,14 +98,19 @@ export default function Welcome({
         }),
       });
 
-      const payload = await response.json().catch(() => ({} as Record<string, any>));
+      const payload = await response
+        .json()
+        .catch(() => ({}) as Record<string, any>);
 
       if (!response.ok) {
         throw new Error(payload?.error || "Failed to send verification email");
       }
 
       const sent = Boolean(payload?.sent);
-      const manualLink = typeof payload?.verificationUrl === "string" ? payload.verificationUrl : null;
+      const manualLink =
+        typeof payload?.verificationUrl === "string"
+          ? payload.verificationUrl
+          : null;
 
       if (sent) {
         toastSuccess({
@@ -120,7 +133,8 @@ export default function Welcome({
       console.error("Resend verification failed", error);
       toastError({
         title: "Verification email failed",
-        description: error?.message || "Unable to send verification email right now.",
+        description:
+          error?.message || "Unable to send verification email right now.",
       });
     } finally {
       setIsSendingVerification(false);
@@ -144,19 +158,24 @@ export default function Welcome({
         try {
           await refreshProfile();
         } catch (refreshError) {
-          console.warn("Unable to refresh profile after verification", refreshError);
+          console.warn(
+            "Unable to refresh profile after verification",
+            refreshError,
+          );
         }
       } else {
         toastInfo({
           title: "Verification pending",
-          description: "We still don't see the confirmation. Check your inbox or resend the email.",
+          description:
+            "We still don't see the confirmation. Check your inbox or resend the email.",
         });
       }
     } catch (error: any) {
       console.error("Check verification failed", error);
       toastError({
         title: "Unable to verify",
-        description: error?.message || "We couldn't confirm your email status yet.",
+        description:
+          error?.message || "We couldn't confirm your email status yet.",
       });
     } finally {
       setIsCheckingVerification(false);
@@ -164,8 +183,12 @@ export default function Welcome({
   };
 
   const VerificationIcon = isVerified ? MailCheck : MailWarning;
-  const verificationBorderClass = isVerified ? "border-emerald-500/40" : "border-amber-500/40";
-  const verificationIconBg = isVerified ? "bg-emerald-500 text-white" : "bg-amber-500 text-white";
+  const verificationBorderClass = isVerified
+    ? "border-emerald-500/40"
+    : "border-amber-500/40";
+  const verificationIconBg = isVerified
+    ? "bg-emerald-500 text-white"
+    : "bg-amber-500 text-white";
   const verificationBadgeClass = isVerified
     ? "bg-emerald-500/20 text-emerald-100 border border-emerald-500/40"
     : "bg-amber-500/20 text-amber-100 border border-amber-500/40";
@@ -344,7 +367,9 @@ export default function Welcome({
             </div>
             <div>
               <CardTitle className="text-base">
-                {isVerified ? "Email verified" : "Verify your email to continue"}
+                {isVerified
+                  ? "Email verified"
+                  : "Verify your email to continue"}
               </CardTitle>
               <CardDescription className={verificationDescriptionClass}>
                 {isVerified
