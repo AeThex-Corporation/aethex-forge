@@ -116,7 +116,7 @@ export default function DocsApiReference() {
         </p>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-2">
+      <section id="authentication" className="grid gap-6 md:grid-cols-2">
         <Card className="bg-slate-900/60 border-slate-700">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
