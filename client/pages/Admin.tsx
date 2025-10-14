@@ -734,7 +734,13 @@ export default function Admin() {
                 ))}
               </div>
 
-              <div className="grid gap-6 lg:grid-cols-2">
+              <div className="grid gap-6 xl:grid-cols-2">
+                <AdminStatusOverview
+                  services={statusSnapshot}
+                  overall={overallStatus}
+                  onViewStatus={() => navigate("/status")}
+                />
+
                 <Card className="bg-card/60 border-border/40 backdrop-blur">
                   <CardHeader>
                     <div className="flex items-center gap-2">
@@ -768,6 +774,11 @@ export default function Admin() {
                     )}
                   </CardContent>
                 </Card>
+
+                <AdminChangelogDigest
+                  entries={latestChangelog}
+                  onViewChangelog={() => navigate("/changelog")}
+                />
 
                 <Card className="bg-card/60 border-border/40 backdrop-blur">
                   <CardHeader>
