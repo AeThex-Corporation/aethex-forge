@@ -49,6 +49,11 @@ const navigation = [
     href: "/docs/examples",
     icon: FileText,
   },
+  {
+    name: "Integrations",
+    href: "/docs/integrations",
+    icon: Terminal,
+  },
 ];
 
 export default function DocsLayout() {
