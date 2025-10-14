@@ -64,7 +64,7 @@ const quickStartCards = [
   {
     title: "Platform Integrations",
     description: "Embed partner agents and automate external workflows",
-    icon: Link,
+    icon: LinkIcon,
     href: "/docs/integrations",
     duration: "7 min read",
     difficulty: "Intermediate",
