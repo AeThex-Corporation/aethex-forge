@@ -409,7 +409,7 @@ const loadSkipAgent = async (): Promise<void> => {
       URL.revokeObjectURL(blobUrl);
       window.__aethexSkipAgentInit = false;
       if (shouldEnableSkipAgent) {
-        console.warn("HelloSkip agent failed to execute", event);
+        console.warn("Agent runtime failed to execute", event);
       }
     };
 
@@ -417,7 +417,7 @@ const loadSkipAgent = async (): Promise<void> => {
   } catch (error) {
     window.__aethexSkipAgentInit = false;
     if (shouldEnableSkipAgent) {
-      console.warn("Skipped loading HelloSkip agent:", error);
+      console.warn("Skipped loading agent runtime:", error);
     }
   }
 };
