@@ -31,6 +31,11 @@ const navigation = [
     icon: BookOpen,
   },
   {
+    name: "Platform",
+    href: "/docs/platform",
+    icon: LayoutDashboard,
+  },
+  {
     name: "Tutorials",
     href: "/docs/tutorials",
     icon: Video,
