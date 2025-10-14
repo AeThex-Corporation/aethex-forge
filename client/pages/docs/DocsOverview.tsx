@@ -106,6 +106,19 @@ const resourceSections = [
     ],
     badge: "25+ examples",
   },
+  {
+    title: "Integrations",
+    description: "Embed partner tooling and automate external workflows",
+    icon: LinkIcon,
+    href: "/docs/integrations",
+    items: [
+      "HelloSkip agent",
+      "Theming hooks",
+      "Status preflights",
+      "Troubleshooting",
+    ],
+    badge: "Updated",
+  },
 ];
 
 const featuredUpdates = [
