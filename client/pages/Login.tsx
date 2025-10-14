@@ -198,6 +198,15 @@ export default function Login() {
                     <p className="mt-2 break-all rounded bg-background/60 px-3 py-2 font-mono text-xs text-foreground/90">
                       {manualVerificationLink}
                     </p>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="mt-3 border-aethex-400/40"
+                      onClick={() => window.open(manualVerificationLink, "_blank", "noopener")}
+                    >
+                      Open verification link
+                    </Button>
                   </AlertDescription>
                 </Alert>
               ) : null}
