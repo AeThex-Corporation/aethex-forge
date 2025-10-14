@@ -374,9 +374,11 @@ export default function DocsTutorials() {
                             </div>
                           </div>
 
-                          <Button className="bg-purple-600 hover:bg-purple-700">
-                            Start Tutorial
-                            <ChevronRight className="h-4 w-4 ml-2" />
+                          <Button asChild className="bg-purple-600 hover:bg-purple-700">
+                            <Link to={tutorial.path}>
+                              Start Tutorial
+                              <ChevronRight className="h-4 w-4 ml-2" />
+                            </Link>
                           </Button>
                         </div>
                       </div>
