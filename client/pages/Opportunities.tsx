@@ -211,7 +211,7 @@ const Opportunities = () => {
       fullName: prev.fullName || profile?.full_name || user?.email?.split("@")[0] || "",
       email: prev.email || user?.email || "",
       location: prev.location || profile?.location || "",
-      portfolioUrl: prev.portfolioUrl || (profile as any)?.website_url || "",
+      portfolioUrl: prev.portfolioUrl || profileWebsite || "",
     }));
 
     setCareerForm((prev) => ({
@@ -219,9 +219,9 @@ const Opportunities = () => {
       fullName: prev.fullName || profile?.full_name || user?.email?.split("@")[0] || "",
       email: prev.email || user?.email || "",
       location: prev.location || profile?.location || "",
-      portfolioUrl: prev.portfolioUrl || (profile as any)?.website_url || "",
+      portfolioUrl: prev.portfolioUrl || profileWebsite || "",
     }));
-  }, [profile, user]);
+  }, [profile, profileWebsite, user]);
 
   const toggleContributorInterest = (value: string) => {
     setContributorForm((prev) => {
@@ -278,7 +278,7 @@ const Opportunities = () => {
         location: profile?.location || "",
         primarySkill: "",
         availability: "",
-        portfolioUrl: profile ? (profile as any).website_url || "" : contributorForm.portfolioUrl,
+        portfolioUrl: profileWebsite || contributorForm.portfolioUrl,
         interests: [],
         message: "",
       });
@@ -335,7 +335,7 @@ const Opportunities = () => {
         location: profile?.location || "",
         roleInterest: "",
         experienceLevel: "",
-        portfolioUrl: profile ? (profile as any).website_url || "" : careerForm.portfolioUrl,
+        portfolioUrl: profileWebsite || careerForm.portfolioUrl,
         resumeUrl: "",
         message: "",
       });
