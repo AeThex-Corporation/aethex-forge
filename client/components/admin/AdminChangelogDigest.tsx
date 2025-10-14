@@ -30,7 +30,7 @@ const changeIcon: Record<ChangelogChange["type"], LucideIcon> = {
   added: Plus,
   improved: ArrowUpRight,
   fixed: Bug,
-  removed: ArrowUpRight,
+  removed: Minus,
   security: Shield,
 };
 
