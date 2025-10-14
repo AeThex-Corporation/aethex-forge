@@ -179,6 +179,21 @@ export default function Login() {
             </CardHeader>
 
             <CardContent className="space-y-6">
+              {manualVerificationLink ? (
+                <Alert className="border-aethex-400/30 bg-aethex-500/10 text-foreground">
+                  <Info className="h-4 w-4 text-aethex-300" />
+                  <AlertTitle>Manual verification required</AlertTitle>
+                  <AlertDescription>
+                    <p>
+                      We couldn't send the verification email automatically. Use
+                      the link below to confirm your account:
+                    </p>
+                    <p className="mt-2 break-all rounded bg-background/60 px-3 py-2 font-mono text-xs text-foreground/90">
+                      {manualVerificationLink}
+                    </p>
+                  </AlertDescription>
+                </Alert>
+              ) : null}
               {/* Social Login Buttons */}
               <div className="space-y-3">
                 <Button
