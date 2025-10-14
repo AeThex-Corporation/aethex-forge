@@ -129,7 +129,7 @@ export default function DocsGettingStarted() {
         </p>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
+      <section id="prerequisites" className="grid gap-6 lg:grid-cols-3">
         {prerequisites.map((item) => (
           <Card key={item.title} className="bg-slate-900/60 border-slate-700">
             <CardHeader>
