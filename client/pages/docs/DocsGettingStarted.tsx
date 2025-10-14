@@ -145,7 +145,7 @@ const platformHighlights = [
   {
     title: "Live ops analytics",
     description:
-      "Track real-time KPIs, automate status updates, and route alerts into your team&apos;s notification channels.",
+      "Track real-time KPIs, automate status updates, and route alerts into your team's notification channels.",
     icon: ActivitySquare,
   },
 ];
