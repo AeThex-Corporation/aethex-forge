@@ -806,6 +806,72 @@ export default function Admin() {
                 <Card className="bg-card/60 border-border/40 backdrop-blur">
                   <CardHeader>
                     <div className="flex items-center gap-2">
+                      <ClipboardList className="h-5 w-5 text-sky-300" />
+                      <CardTitle>Project applications</CardTitle>
+                    </div>
+                    <CardDescription>Review collaboration requests and prioritize approvals.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm text-muted-foreground">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p>
+                        {applicationsLoading
+                          ? "Loading application data…"
+                          : `${applications.length} total submissions (${pendingApplications} waiting)`}
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={loadApplications}
+                        disabled={applicationsLoading}
+                      >
+                        {applicationsLoading ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <RefreshCw className="mr-2 h-4 w-4" />
+                        )}
+                        Refresh
+                      </Button>
+                    </div>
+                    {applicationsLoading ? (
+                      <div className="flex items-center gap-2 text-sm">
+                        <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
+                        Synchronizing with Supabase…
+                      </div>
+                    ) : applications.length ? (
+                      <div className="grid gap-2">
+                        {applications.slice(0, 6).map((app) => (
+                          <div
+                            key={app.id}
+                            className="space-y-1 rounded border border-border/30 bg-background/40 p-3"
+                          >
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <p className="font-medium text-foreground">
+                                {app.applicant_name || app.applicant_email || "Unknown applicant"}
+                              </p>
+                              <Badge variant="outline" className="capitalize">
+                                {(app.status ?? "pending").toLowerCase()}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {app.projects?.title ?? "No project title"}
+                            </p>
+                            {app.created_at ? (
+                              <p className="text-[11px] text-muted-foreground/80">
+                                Submitted {new Date(app.created_at).toLocaleString()}
+                              </p>
+                            ) : null}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p>No applications on file. Encourage partners to apply via briefs.</p>
+                    )}
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
                       <Activity className="h-5 w-5 text-orange-300" />
                       <CardTitle>System status</CardTitle>
                     </div>
