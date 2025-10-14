@@ -259,7 +259,7 @@ export default function Admin() {
   const totalMembers = managedProfiles.length;
   const publishedPosts = blogPosts.length;
   const featuredStudios = studios.length;
-  const pendingApplications = applications.filter((app) => {
+  const pendingProjectApplications = projectApplications.filter((app) => {
     const status = (app.status ?? "").toLowerCase();
     return (
       status !== "approved" && status !== "completed" && status !== "closed"
