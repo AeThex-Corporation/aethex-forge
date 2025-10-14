@@ -307,10 +307,10 @@ export default function CodeLayout({ children }: LayoutProps) {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link to="/profile/me" className="cursor-pointer">
-                              <UserCircle className="mr-2 h-4 w-4" />
-                              My Profile
-                            </Link>
+                            <Link to="/profile" className="cursor-pointer">
+                            <UserCircle className="mr-2 h-4 w-4" />
+                            My Profile
+                          </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link to={passportHref} className="cursor-pointer">
