@@ -479,6 +479,12 @@ export default function Admin() {
         },
       },
       {
+        label: "System status",
+        description: "Monitor uptime and live incidents for AeThex services.",
+        icon: Server,
+        action: () => navigate("/status"),
+      },
+      {
         label: "Open Builder CMS",
         description: "Edit marketing pages and landing content in Builder.io.",
         icon: ExternalLink,
