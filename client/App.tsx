@@ -117,6 +117,7 @@ const App = () => (
                 <Route path="api" element={<DocsApiReference />} />
                 <Route path="cli" element={<DocsCli />} />
                 <Route path="examples" element={<DocsExamples />} />
+                <Route path="integrations" element={<DocsIntegrations />} />
               </Route>
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/blog" element={<Blog />} />
