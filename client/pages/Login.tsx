@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import LoadingScreen from "@/components/LoadingScreen";
 import {
   LogIn,
@@ -25,6 +26,7 @@ import {
   Mail,
   Lock,
   User,
+  Info,
 } from "lucide-react";
 
 export default function Login() {
