@@ -996,7 +996,7 @@ export default function Admin() {
                         <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
                         Synchronizing with Supabase…
                       </div>
-                    ) : applications.length ? (
+                    ) : projectApplications.length ? (
                       <div className="grid gap-2">
                         {applications.slice(0, 6).map((app) => (
                           <div
