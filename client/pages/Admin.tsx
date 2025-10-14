@@ -1033,7 +1033,10 @@ export default function Admin() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                <Card
+                  id="opportunity-applications"
+                  className="bg-card/60 border-border/40 backdrop-blur"
+                >
                   <CardHeader>
                     <div className="flex items-center gap-2">
                       <Users className="h-5 w-5 text-emerald-300" />
