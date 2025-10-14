@@ -713,11 +713,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     } catch (error: any) {
       setProfile((prev) => ({ ...(prev || ({} as any)), ...updates }) as any);
+      const extractErrorMessage = (err: any) => {
+        if (!err) return "Failed to update profile. Please try again.";
+        if (typeof err === "string") return err;
+        if (err.message) return err.message;
+        try {
+          return JSON.stringify(err);
+        } catch (e) {
+          return String(err);
+        }
+      };
+      const msg = extractErrorMessage(error);
       aethexToast.error({
         title: "Update failed",
-        description: error.message,
+        description: msg,
       });
-      throw error;
+      // Throw a normalized Error to give callers a searchable message
+      throw new Error(msg);
     }
   };
 
