@@ -167,7 +167,6 @@ const SKIP_AGENT_THEME = `
 }
 `;
 
-const SKIP_AGENT_ORIGIN = new URL(SKIP_AGENT_SRC).origin;
 const SKIP_AGENT_ROOT_SELECTORS = [
   ".skip-agent-button",
   ".skip-agent-overlay",
