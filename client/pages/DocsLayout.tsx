@@ -12,6 +12,7 @@ import {
   Search,
   Puzzle,
   Home,
+  GraduationCap,
   ChevronRight,
   Menu,
   X,
