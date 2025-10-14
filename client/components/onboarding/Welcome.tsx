@@ -163,6 +163,8 @@ export default function Welcome({
     }
   };
 
+  const VerificationIcon = isVerified ? MailCheck : MailWarning;
+
   const getUserTypeLabel = () => {
     switch (data.userType) {
       case "game-developer":
