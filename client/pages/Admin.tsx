@@ -120,6 +120,12 @@ export default function Admin() {
     }
   }, [user, loading, navigate]);
 
+  useEffect(() => {
+    if (!selectedMemberId && managedProfiles.length) {
+      setSelectedMemberId(managedProfiles[0].id);
+    }
+  }, [managedProfiles, selectedMemberId]);
+
   if (loading || !user) {
     return (
       <LoadingScreen
