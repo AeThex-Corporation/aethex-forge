@@ -10,6 +10,7 @@ import {
   Code,
   Terminal,
   Search,
+  Puzzle,
   Home,
   ChevronRight,
   Menu,
