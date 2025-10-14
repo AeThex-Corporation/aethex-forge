@@ -11,7 +11,9 @@ declare global {
 }
 
 const SKIP_AGENT_ID = "vVEuropu5l7xvT4Swwif";
-const SKIP_AGENT_SRC = "https://helloskip.com/agent.js";
+// Default agent src intentionally empty to avoid unconfigured external fetches.
+// Operators must set `window.__AETHEX_SKIP_AGENT_CONFIG = { src, id }` to enable runtime loading.
+const SKIP_AGENT_SRC = "";
 const SKIP_AGENT_SCRIPT_ID = "aethex-skip-agent-runtime";
 const SKIP_AGENT_THEME_ID = "aethex-skip-agent-theme";
 
