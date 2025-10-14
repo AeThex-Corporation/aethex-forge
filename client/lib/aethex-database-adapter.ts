@@ -364,7 +364,7 @@ export const aethexUserService = {
 
     let data: any[] | null = null;
     try {
-      const resp = await supabase
+      let resp = await supabase
         .from("user_profiles")
         .select(
           `
@@ -378,15 +378,34 @@ export const aethexUserService = {
         .limit(limit);
       // resp may be { data, error }
       if (!resp) throw new Error("Empty response from Supabase");
-      const anyResp: any = resp as any;
-      const err = anyResp.error;
+      let anyResp: any = resp as any;
+      let err = anyResp.error;
       if (err) {
-        if (isTableMissing(err)) {
-          throw new Error(
-            'Supabase table "user_profiles" is missing. Please run the required migrations.',
-          );
+        const message = String(err?.message || err);
+        if (message.includes("relationship") || message.includes("schema cache")) {
+          resp = await supabase
+            .from("user_profiles")
+            .select(
+              `
+            *,
+            user_achievements: user_achievements!inner (
+              achievements: achievements!inner ( xp_reward )
+            )
+          `,
+            )
+            .order("updated_at", { ascending: false })
+            .limit(limit);
+          anyResp = resp as any;
+          err = anyResp.error;
         }
-        throw new Error(err?.message || String(err));
+        if (err) {
+          if (isTableMissing(err)) {
+            throw new Error(
+              'Supabase table "user_profiles" is missing. Please run the required migrations.',
+            );
+          }
+          throw new Error(err?.message || String(err));
+        }
       }
       data = anyResp.data as any[];
     } catch (e: any) {
