@@ -518,23 +518,50 @@ export default function CodeLayout({ children }: LayoutProps) {
               </ul>
             </div>
 
-            {/* Contact */}
+            {/* Resources */}
             <div
               className="space-y-4 animate-slide-up"
               style={{ animationDelay: "0.3s" }}
             >
               <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
-                Contact
+                Resources
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="hover:text-aethex-400 transition-colors">
-                  Queen Creek, Arizona
+                <li>
+                  <Link
+                    to="/docs"
+                    onClick={scrollToTop}
+                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                  >
+                    Documentation
+                  </Link>
                 </li>
-                <li className="hover:text-aethex-400 transition-colors">
-                  info@aethex.biz
+                <li>
+                  <Link
+                    to="/tutorials"
+                    onClick={scrollToTop}
+                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                  >
+                    Tutorials
+                  </Link>
                 </li>
-                <li className="hover:text-aethex-400 transition-colors">
-                  346-556-7100
+                <li>
+                  <Link
+                    to="/blog"
+                    onClick={scrollToTop}
+                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                  >
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/support"
+                    onClick={scrollToTop}
+                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                  >
+                    Support Center
+                  </Link>
                 </li>
               </ul>
             </div>
