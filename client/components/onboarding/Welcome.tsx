@@ -192,6 +192,72 @@ export default function Welcome({
       }
     } catch (error: any) {
       console.error("Check verification failed", error);
+
+      // If the client has no active session (common in signup flows), fall back
+      // to a server-side check using the admin Supabase client.
+      const isSessionMissing =
+        (error && ((error.name && error.name.includes("AuthSessionMissing")) || (error.message && error.message.includes("Auth session missing")))) ||
+        false;
+
+      if (isSessionMissing && emailAddress) {
+        try {
+          const resp = await fetch("/api/auth/check-verification", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: emailAddress }),
+          });
+
+          const payload = await resp.json().catch(() => ({} as any));
+          if (!resp.ok) {
+            console.error("Server check-verification failed", payload);
+            toastError({
+              title: "Unable to verify",
+              description: payload?.error || "Server check failed",
+            });
+          } else {
+            const confirmed = Boolean(payload?.verified);
+            if (confirmed) {
+              setIsVerified(true);
+              setFallbackVerificationLink(null);
+              toastSuccess({
+                title: "Email verified",
+                description: "You're all set. You can sign in with this email.",
+              });
+              try {
+                await refreshProfile();
+              } catch (refreshError) {
+                console.warn(
+                  "Unable to refresh profile after verification",
+                  refreshError,
+                );
+              }
+            } else {
+              toastInfo({
+                title: "Verification pending",
+                description:
+                  "We still don't see the confirmation. Check your inbox or resend the email.",
+              });
+
+              // If the server returned a verification link (manual fallback), surface it.
+              if (payload?.user && payload?.user?.email && payload?.user?.confirmation_sent_at && !payload?.verified) {
+                // nothing specific to do here other than logging
+                console.debug("User found but not verified", payload.user);
+              }
+            }
+          }
+        } catch (e: any) {
+          console.error("Server-side check failed", e);
+          toastError({
+            title: "Unable to verify",
+            description: e?.message || "Server verification failed",
+          });
+        } finally {
+          setIsCheckingVerification(false);
+        }
+
+        return;
+      }
+
       toastError({
         title: "Unable to verify",
         description:
