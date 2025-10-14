@@ -85,6 +85,9 @@ export default function Admin() {
       specialties: ["Simulation", "AI/ML", "Economy"],
     },
   ]);
+  const [applications, setApplications] = useState<ProjectApplication[]>([]);
+  const [applicationsLoading, setApplicationsLoading] = useState(false);
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
