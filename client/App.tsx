@@ -56,6 +56,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <BrowserRouter>
+          <SkipAgentController />
           <PageTransition>
             <Routes>
               <Route path="/" element={<Index />} />
