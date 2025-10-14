@@ -392,6 +392,25 @@ export default function CodeLayout({ children }: LayoutProps) {
                 Pushing the boundaries of technology through cutting-edge
                 research and breakthrough discoveries.
               </p>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                  Queen Creek, Arizona
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                  <a
+                    href="mailto:info@aethex.biz"
+                    className="hover:text-aethex-400 transition-colors"
+                  >
+                    info@aethex.biz
+                  </a>
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                  (346) 556-7100
+                </p>
+              </div>
             </div>
 
             {/* Services */}
