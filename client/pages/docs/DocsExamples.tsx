@@ -177,7 +177,7 @@ export default function DocsExamples() {
         ))}
       </section>
 
-      <section className="space-y-4">
+      <section id="templates" className="space-y-4">
         <div className="flex items-center gap-3">
           <Flame className="h-6 w-6 text-emerald-300" />
           <h3 className="text-2xl font-semibold text-white">Deploy faster with templates</h3>
