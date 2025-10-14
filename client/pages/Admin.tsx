@@ -447,6 +447,35 @@ export default function Admin() {
         tone: "red" as const,
       },
       {
+        title: "Average latency",
+        value:
+          infrastructureMetrics.averageResponseTime !== null
+            ? `${infrastructureMetrics.averageResponseTime} ms`
+            : "—",
+        description:
+          "Mean response time across monitored infrastructure services.",
+        trend:
+          infrastructureMetrics.degradedServices > 0
+            ? `${infrastructureMetrics.degradedServices} service${infrastructureMetrics.degradedServices === 1 ? "" : "s"} above SLA target`
+            : "All services meeting SLA",
+        icon: Zap,
+        tone: "purple" as const,
+      },
+      {
+        title: "Reliability coverage",
+        value:
+          infrastructureMetrics.totalServices > 0
+            ? `${infrastructureMetrics.healthyServices}/${infrastructureMetrics.totalServices} healthy`
+            : "—",
+        description: "Operational services within the AeThex platform stack.",
+        trend:
+          infrastructureMetrics.averageUptime !== null
+            ? `Avg uptime ${infrastructureMetrics.averageUptime.toFixed(2)}%`
+            : "Awaiting uptime telemetry",
+        icon: Shield,
+        tone: "green" as const,
+      },
+      {
         title: "Featured studios",
         value: featuredStudios ? featuredStudios.toString() : "0",
         description: "Studios highlighted on community landing pages.",
@@ -492,6 +521,7 @@ export default function Admin() {
       totalMembers,
       blogReach,
       blogHighlights,
+      infrastructureMetrics,
     ],
   );
 
