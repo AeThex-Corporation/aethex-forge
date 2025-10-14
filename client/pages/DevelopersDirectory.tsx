@@ -21,6 +21,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import LoadingScreen from "@/components/LoadingScreen";
+import { useToast } from "@/hooks/use-toast";
 import {
   aethexUserService,
   type AethexUserProfile,
