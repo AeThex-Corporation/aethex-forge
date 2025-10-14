@@ -86,8 +86,27 @@ export default function Admin() {
       specialties: ["Simulation", "AI/ML", "Economy"],
     },
   ]);
-  const [applications, setApplications] = useState<ProjectApplication[]>([]);
-  const [applicationsLoading, setApplicationsLoading] = useState(false);
+  const [projectApplications, setProjectApplications] =
+    useState<ProjectApplication[]>([]);
+  const [projectApplicationsLoading, setProjectApplicationsLoading] =
+    useState(false);
+  type OpportunityApplication = {
+    id: string;
+    type?: string | null;
+    full_name?: string | null;
+    email?: string | null;
+    status?: string | null;
+    availability?: string | null;
+    role_interest?: string | null;
+    primary_skill?: string | null;
+    experience_level?: string | null;
+    submitted_at?: string | null;
+    message?: string | null;
+  };
+  const [opportunityApplications, setOpportunityApplications] =
+    useState<OpportunityApplication[]>([]);
+  const [opportunityApplicationsLoading, setOpportunityApplicationsLoading] =
+    useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
 
   const loadProfiles = useCallback(async () => {
