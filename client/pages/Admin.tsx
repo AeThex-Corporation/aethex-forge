@@ -1027,8 +1027,7 @@ export default function Admin() {
                       </div>
                     ) : (
                       <p>
-                        No applications on file. Encourage partners to apply via
-                        briefs.
+                        No project applications on file. Encourage partners to apply via briefs.
                       </p>
                     )}
                   </CardContent>
