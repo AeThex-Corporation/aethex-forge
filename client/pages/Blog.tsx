@@ -71,7 +71,71 @@ export default function Blog() {
   const staticPosts = useMemo<BlogPost[]>(
     () => [
       {
+        id: "static-0",
+        slug: "shipping-aethex-multiverse-events",
+        title: "Shipping AeThex Multiverse Events: Behind the Scenes",
+        excerpt:
+          "How the AeThex LiveOps squad orchestrated cross-platform events with zero downtime.",
+        author: "Sofia Alvarez",
+        date: "January 18, 2025",
+        readTime: "8 min read",
+        category: "Company News",
+        likes: 254,
+        comments: 44,
+        trending: true,
+        image:
+          "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
         id: "static-1",
+        slug: "aethex-guilds-collaboration-toolkit",
+        title: "AeThex Guilds Collaboration Toolkit Launch",
+        excerpt:
+          "New creator guild features help communities prototype faster and ship together.",
+        author: "Priya Desai",
+        date: "January 16, 2025",
+        readTime: "7 min read",
+        category: "Product Updates",
+        likes: 311,
+        comments: 59,
+        trending: false,
+        image:
+          "https://images.unsplash.com/photo-1526402464885-402318f32905?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-2",
+        slug: "horizon-engine-2-0-preview",
+        title: "Horizon Engine 2.0 Preview: Performance Notes",
+        excerpt:
+          "Peek into the renderer upgrades, tooling, and ergonomics coming to Horizon Engine 2.0.",
+        author: "Liam Hart",
+        date: "January 14, 2025",
+        readTime: "9 min read",
+        category: "Technology",
+        likes: 368,
+        comments: 71,
+        trending: false,
+        image:
+          "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-3",
+        slug: "community-creators-spotlight-january",
+        title: "Community Creators Spotlight — January Edition",
+        excerpt:
+          "Celebrating five AeThex creators pushing storytelling, accessibility, and esports forward.",
+        author: "AeThex Community Team",
+        date: "January 13, 2025",
+        readTime: "6 min read",
+        category: "Community",
+        likes: 427,
+        comments: 95,
+        trending: false,
+        image:
+          "https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        id: "static-4",
         slug: "building-scalable-game-architecture",
         title: "Building Scalable Game Architecture with Microservices",
         excerpt:
@@ -82,12 +146,12 @@ export default function Blog() {
         category: "Technology",
         likes: 89,
         comments: 15,
-        trending: true,
+        trending: false,
         image:
           "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        id: "static-2",
+        id: "static-5",
         slug: "advanced-unity-optimization-techniques",
         title: "Advanced Unity Optimization Techniques",
         excerpt:
@@ -103,7 +167,7 @@ export default function Blog() {
           "https://images.unsplash.com/photo-1527443224154-dcc0707b462b?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        id: "static-3",
+        id: "static-6",
         slug: "aethex-labs-neural-network-compression",
         title: "AeThex Labs: Breakthrough in Neural Network Compression",
         excerpt:
@@ -119,7 +183,7 @@ export default function Blog() {
           "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        id: "static-4",
+        id: "static-7",
         slug: "introducing-aethex-cloud-gaming-platform",
         title: "Introducing AeThex Cloud Gaming Platform",
         excerpt:
@@ -135,7 +199,7 @@ export default function Blog() {
           "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        id: "static-5",
+        id: "static-8",
         slug: "real-time-ray-tracing-in-web-games",
         title: "Real-time Ray Tracing in Web Games",
         excerpt:
@@ -151,7 +215,7 @@ export default function Blog() {
           "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        id: "static-6",
+        id: "static-9",
         slug: "the-evolution-of-game-ai",
         title: "The Evolution of Game AI: From Scripts to Neural Networks",
         excerpt:
