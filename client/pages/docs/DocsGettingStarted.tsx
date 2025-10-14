@@ -17,6 +17,10 @@ import {
   Shield,
   Layers,
   Code,
+  LayoutDashboard,
+  IdCard,
+  Users,
+  ActivitySquare,
 } from "lucide-react";
 
 const docCategories = [
