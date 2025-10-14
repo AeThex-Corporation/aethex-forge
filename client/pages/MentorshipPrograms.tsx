@@ -648,7 +648,7 @@ export default function MentorshipPrograms() {
                   size="lg"
                   className="border-emerald-400/60 text-emerald-200 hover:border-emerald-400 hover:bg-emerald-500/10 hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
-                  <Link to="/docs">View Curriculum</Link>
+                  <Link to="/docs/curriculum">View Curriculum</Link>
                 </Button>
               </div>
 
