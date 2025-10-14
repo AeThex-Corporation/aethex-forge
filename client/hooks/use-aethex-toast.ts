@@ -7,10 +7,24 @@ interface AethexToastOptions {
 }
 
 export const useAethexToast = () => {
+  const normalize = (d?: any) => {
+    if (d == null) return undefined;
+    if (typeof d === "string") return d;
+    if (typeof d === "object") {
+      if ((d as any).message) return String((d as any).message);
+      try {
+        return JSON.stringify(d);
+      } catch (e) {
+        return String(d);
+      }
+    }
+    return String(d);
+  };
+
   const success = (options: AethexToastOptions) => {
     return baseToast({
       title: `✅ ${options.title || "Success"}`,
-      description: options.description,
+      description: normalize(options.description),
       duration: options.duration || 5000,
       variant: "success" as any,
     });
