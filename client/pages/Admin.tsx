@@ -112,6 +112,31 @@ export default function Admin() {
       .catch(() => void 0);
   }, []);
 
+  const loadApplications = useCallback(async () => {
+    if (!user?.id) return;
+    setApplicationsLoading(true);
+    try {
+      const response = await fetch(
+        `/api/applications?owner=${encodeURIComponent(user.id)}`,
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setApplications(Array.isArray(data) ? data : []);
+      } else {
+        setApplications([]);
+      }
+    } catch (error) {
+      console.warn("Failed to load applications:", error);
+      setApplications([]);
+    } finally {
+      setApplicationsLoading(false);
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    loadApplications().catch(() => undefined);
+  }, [loadApplications]);
+
   useEffect(() => {
     if (!loading) {
       if (!user) {
