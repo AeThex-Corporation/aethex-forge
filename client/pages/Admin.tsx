@@ -163,6 +163,12 @@ export default function Admin() {
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
 
+  const selectedMember = useMemo(
+    () =>
+      managedProfiles.find((profile) => profile.id === selectedMemberId) ?? null,
+    [managedProfiles, selectedMemberId],
+  );
+
   const totalMembers = managedProfiles.length;
   const publishedPosts = blogPosts.length;
   const featuredStudios = studios.length;
