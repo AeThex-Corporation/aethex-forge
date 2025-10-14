@@ -295,14 +295,28 @@ export default function Admin() {
         tone: "green" as const,
       },
       {
-        title: "Pending applications",
-        value: applicationsLoading ? "…" : pendingApplications.toString(),
+        title: "Pending project applications",
+        value: projectApplicationsLoading
+          ? "���"
+          : pendingProjectApplications.toString(),
         description: "Project collaboration requests awaiting review.",
-        trend: applicationsLoading
+        trend: projectApplicationsLoading
           ? "Fetching submissions…"
-          : `${applications.length} total submissions`,
+          : `${projectApplications.length} total submissions`,
         icon: ClipboardList,
         tone: "orange" as const,
+      },
+      {
+        title: "Opportunity pipeline",
+        value: opportunityApplicationsLoading
+          ? "…"
+          : opportunityApplications.length.toString(),
+        description: "Contributor & career submissions captured via Opportunities.",
+        trend: opportunityApplicationsLoading
+          ? "Syncing applicant data…"
+          : `${opportunityApplications.filter((app) => (app.status ?? "new").toLowerCase() === "new").length} new this week`,
+        icon: Rocket,
+        tone: "teal" as const,
       },
     ],
     [
