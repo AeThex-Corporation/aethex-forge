@@ -316,13 +316,25 @@ const DevelopersDirectory = () => {
     });
   }, [profiles, search, realmFilter]);
 
+  const { toast } = useToast();
+
   const refreshProfiles = async () => {
     try {
       setLoading(true);
       const list = await aethexUserService.listProfiles(60);
       setProfiles(list);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to load profiles", error);
+      const msg =
+        (typeof error === "string" && error) ||
+        error?.message ||
+        JSON.stringify(error, Object.getOwnPropertyNames(error)) ||
+        "Unknown error";
+      toast({
+        variant: "destructive",
+        title: "Failed to load profiles",
+        description: msg,
+      });
       setProfiles([]);
     } finally {
       setLoading(false);
