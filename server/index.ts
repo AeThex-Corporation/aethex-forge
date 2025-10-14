@@ -57,12 +57,13 @@ export function createServer() {
 
       if (error) {
         console.error("[API] generateLink error:", {
-          message: error.message,
-          status: error.status,
+          message: error?.message || String(error),
+          status: (error as any)?.status || null,
           code: (error as any)?.code || null,
           details: (error as any)?.details || null,
         });
-        return res.status(error.status ?? 500).json({ error: error.message });
+        const errMsg = typeof error === "string" ? error : (error?.message || JSON.stringify(error));
+        return res.status((error as any)?.status ?? 500).json({ error: errMsg });
       }
 
       const actionLink =
