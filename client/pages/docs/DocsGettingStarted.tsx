@@ -232,7 +232,7 @@ export default function DocsGettingStarted() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-purple-500/40 bg-purple-900/20 p-8">
+      <section id="deploy" className="rounded-2xl border border-purple-500/40 bg-purple-900/20 p-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <h3 className="text-2xl font-semibold text-white">
