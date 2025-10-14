@@ -18,6 +18,85 @@ export function createServer() {
     res.json({ message: ping });
   });
 
+  app.post("/api/auth/send-verification-email", async (req, res) => {
+    const { email, redirectTo, fullName } = (req.body || {}) as {
+      email?: string;
+      redirectTo?: string;
+      fullName?: string | null;
+    };
+
+    if (!email) {
+      return res.status(400).json({ error: "email is required" });
+    }
+
+    if (!adminSupabase?.auth?.admin) {
+      return res
+        .status(500)
+        .json({ error: "Supabase admin client unavailable" });
+    }
+
+    try {
+      const fallbackRedirect =
+        process.env.EMAIL_VERIFY_REDIRECT ??
+        process.env.PUBLIC_BASE_URL ??
+        process.env.SITE_URL ??
+        "https://aethex.biz/login";
+
+      const redirectUrl =
+        typeof redirectTo === "string" && redirectTo.startsWith("http")
+          ? redirectTo
+          : fallbackRedirect;
+
+      const { data, error } = await adminSupabase.auth.admin.generateLink({
+        type: "signup",
+        email,
+        options: {
+          redirectTo: redirectUrl,
+        },
+      } as any);
+
+      if (error) {
+        return res.status(error.status ?? 500).json({ error: error.message });
+      }
+
+      const actionLink =
+        (data as any)?.properties?.action_link ??
+        (data as any)?.properties?.verification_link ??
+        null;
+
+      if (!actionLink) {
+        return res
+          .status(500)
+          .json({ error: "Failed to generate verification link" });
+      }
+
+      const displayName =
+        (data as any)?.user?.user_metadata?.full_name ?? fullName ?? null;
+
+      if (!emailService.isConfigured) {
+        return res.json({
+          sent: false,
+          verificationUrl: actionLink,
+          message:
+            "Email service not configured. Provide RESEND_API_KEY to enable outbound email.",
+        });
+      }
+
+      await emailService.sendVerificationEmail({
+        to: email,
+        verificationUrl: actionLink,
+        fullName: displayName,
+      });
+
+      return res.json({ sent: true, verificationUrl: actionLink });
+    } catch (error: any) {
+      console.error("[API] send verification email failed", error);
+      return res
+        .status(500)
+        .json({ error: error?.message || "Unexpected error" });
+    }
+  });
+
   // Admin-backed API (service role)
   try {
     const ownerEmail = (
