@@ -229,15 +229,25 @@ export default function Admin() {
         tone: "green" as const,
       },
       {
-        title: "Security posture",
-        value: "Owner",
-        description: `Admin access scoped to ${ownerEmail}.`,
-        trend: "Multi-role privileges active",
-        icon: Shield,
+        title: "Pending applications",
+        value: applicationsLoading ? "…" : pendingApplications.toString(),
+        description: "Project collaboration requests awaiting review.",
+        trend: applicationsLoading
+          ? "Fetching submissions…"
+          : `${applications.length} total submissions`,
+        icon: ClipboardList,
         tone: "orange" as const,
       },
     ],
-    [featuredStudios, loadingPosts, ownerEmail, publishedPosts, totalMembers],
+    [
+      applications.length,
+      applicationsLoading,
+      featuredStudios,
+      loadingPosts,
+      pendingApplications,
+      publishedPosts,
+      totalMembers,
+    ],
   );
 
   const quickActions = useMemo(
