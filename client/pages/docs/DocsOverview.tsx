@@ -258,12 +258,13 @@ export default function DocsOverview() {
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-2xl font-bold text-white">Recent Updates</h3>
           <Button
-            variant="outline"
-            size="sm"
-            className="border-slate-600 text-white hover:bg-slate-800"
-          >
-            View All Updates
-          </Button>
+          asChild
+          variant="outline"
+          size="sm"
+          className="border-slate-600 text-white hover:bg-slate-800"
+        >
+          <Link to="/changelog">View All Updates</Link>
+        </Button>
         </div>
         <div className="space-y-4">
           {featuredUpdates.map((update, index) => (
