@@ -11,12 +11,6 @@ const SkipAgentController = () => {
   useEffect(() => {
     const disableForDocs = location.pathname.startsWith(DOCS_PATH_PREFIX);
     void setSkipAgentActive(!disableForDocs);
-
-    return () => {
-      if (disableForDocs) {
-        void setSkipAgentActive(true);
-      }
-    };
   }, [location.pathname]);
 
   return null;
