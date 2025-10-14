@@ -62,8 +62,13 @@ export function createServer() {
           code: (error as any)?.code || null,
           details: (error as any)?.details || null,
         });
-        const errMsg = typeof error === "string" ? error : (error?.message || JSON.stringify(error));
-        return res.status((error as any)?.status ?? 500).json({ error: errMsg });
+        const errMsg =
+          typeof error === "string"
+            ? error
+            : error?.message || JSON.stringify(error);
+        return res
+          .status((error as any)?.status ?? 500)
+          .json({ error: errMsg });
       }
 
       const actionLink =
@@ -118,11 +123,18 @@ export function createServer() {
     }
 
     try {
-      const { data, error } = await adminSupabase.auth.admin.listUsers({ email });
+      const { data, error } = await adminSupabase.auth.admin.listUsers({
+        email,
+      });
       if (error) {
         console.error("[API] listUsers error:", error);
-        const errMsg = typeof error === "string" ? error : (error?.message || JSON.stringify(error));
-        return res.status((error as any)?.status ?? 500).json({ error: errMsg });
+        const errMsg =
+          typeof error === "string"
+            ? error
+            : error?.message || JSON.stringify(error);
+        return res
+          .status((error as any)?.status ?? 500)
+          .json({ error: errMsg });
       }
 
       const user = (data as any)?.users?.[0] ?? null;

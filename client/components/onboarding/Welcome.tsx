@@ -105,7 +105,9 @@ export default function Welcome({
       if (!response.ok) {
         // If server returned a manual verification link despite the error, surface it to the user.
         const manualLink =
-          typeof payload?.verificationUrl === "string" ? payload.verificationUrl : null;
+          typeof payload?.verificationUrl === "string"
+            ? payload.verificationUrl
+            : null;
 
         if (manualLink) {
           setFallbackVerificationLink(manualLink);
@@ -118,7 +120,10 @@ export default function Welcome({
         } else {
           toastError({
             title: "Verification email failed",
-            description: payload?.error || payload?.message || "Failed to send verification email",
+            description:
+              payload?.error ||
+              payload?.message ||
+              "Failed to send verification email",
           });
         }
 
@@ -196,7 +201,10 @@ export default function Welcome({
       // If the client has no active session (common in signup flows), fall back
       // to a server-side check using the admin Supabase client.
       const isSessionMissing =
-        (error && ((error.name && error.name.includes("AuthSessionMissing")) || (error.message && error.message.includes("Auth session missing")))) ||
+        (error &&
+          ((error.name && error.name.includes("AuthSessionMissing")) ||
+            (error.message &&
+              error.message.includes("Auth session missing")))) ||
         false;
 
       if (isSessionMissing && emailAddress) {
@@ -207,10 +215,14 @@ export default function Welcome({
             body: JSON.stringify({ email: emailAddress }),
           });
 
-          const payload = await resp.json().catch(() => ({} as any));
+          const payload = await resp.json().catch(() => ({}) as any);
           if (!resp.ok) {
             const serverMessage =
-              payload?.error || payload?.message || (Object.keys(payload || {}).length ? JSON.stringify(payload) : "Server check failed");
+              payload?.error ||
+              payload?.message ||
+              (Object.keys(payload || {}).length
+                ? JSON.stringify(payload)
+                : "Server check failed");
             console.error("Server check-verification failed", payload);
             toastError({
               title: "Unable to verify",
@@ -241,7 +253,12 @@ export default function Welcome({
               });
 
               // If the server returned a verification link (manual fallback), surface it.
-              if (payload?.user && payload?.user?.email && payload?.user?.confirmation_sent_at && !payload?.verified) {
+              if (
+                payload?.user &&
+                payload?.user?.email &&
+                payload?.user?.confirmation_sent_at &&
+                !payload?.verified
+              ) {
                 // nothing specific to do here other than logging
                 console.debug("User found but not verified", payload.user);
               }
