@@ -96,7 +96,7 @@ export function ActivityOverlay() {
     code: `#!/usr/bin/env bash
 set -euo pipefail
 
-WORKSPACE=${1:-"mods"}
+WORKSPACE=\${1:-"mods"}
 
 npm install
 aethex login --token "$AETHEX_TOKEN"
