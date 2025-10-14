@@ -184,7 +184,7 @@ export default function DocsCli() {
         </Card>
       </section>
 
-      <section className="space-y-4">
+      <section id="automation" className="space-y-4">
         <div className="flex items-center gap-3">
           <CloudLightning className="h-6 w-6 text-amber-300" />
           <h3 className="text-2xl font-semibold text-white">Automate everything</h3>
