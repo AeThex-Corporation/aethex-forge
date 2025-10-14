@@ -195,6 +195,8 @@ const createSkipAgentTheme = () => {
   document.head.appendChild(style);
 };
 
+const SKIP_AGENT_ORIGIN = new URL(SKIP_AGENT_SRC).origin;
+
 const embedSkipAgent = async () => {
   if (typeof window === "undefined" || typeof document === "undefined") {
     return;
@@ -203,6 +205,24 @@ const embedSkipAgent = async () => {
     return;
   }
   if (window.__aethexSkipAgentInit) {
+    return;
+  }
+
+  // Quick host reachability check to avoid the agent's own status request failing
+  try {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 2500);
+    // Use mode: 'no-cors' to avoid CORS failures — we only care if the network request resolves
+    await fetch(`${SKIP_AGENT_ORIGIN}/favicon.ico`, {
+      method: 'GET',
+      mode: 'no-cors',
+      cache: 'no-store',
+      signal: controller.signal,
+    });
+    window.clearTimeout(timeout);
+  } catch (err) {
+    // Host unreachable or blocked — skip embedding to prevent noisy errors from the external script
+    console.warn('Skip Agent host unreachable; skipping embed to avoid runtime fetch errors:', err);
     return;
   }
 
