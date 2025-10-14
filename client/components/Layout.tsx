@@ -177,11 +177,20 @@ export default function CodeLayout({ children }: LayoutProps) {
                         </SheetClose>
                         <SheetClose asChild>
                           <Link
-                            to="/profile/me"
+                            to="/profile"
                             onClick={scrollToTop}
                             className="block rounded-lg border border-border/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-aethex-400/40 hover:text-aethex-200"
                           >
-                            Manage Profile
+                            View Profile
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            to="/dashboard?tab=profile#settings"
+                            onClick={scrollToTop}
+                            className="block rounded-lg border border-border/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-aethex-400/40 hover:text-aethex-200"
+                          >
+                            Account Settings
                           </Link>
                         </SheetClose>
                         <SheetClose asChild>
