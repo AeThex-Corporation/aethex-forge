@@ -991,7 +991,7 @@ export default function Admin() {
                         Refresh
                       </Button>
                     </div>
-                    {applicationsLoading ? (
+                    {projectApplicationsLoading ? (
                       <div className="flex items-center gap-2 text-sm">
                         <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
                         Synchronizing with Supabase…
