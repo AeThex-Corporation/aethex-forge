@@ -140,6 +140,11 @@ const explorationLinks = [
     description: "Ask questions, share templates, and pair up with mentors in the public forums.",
     href: "/community",
   },
+  {
+    title: "Integrations Playbook",
+    description: "Review the HelloSkip embed and extend it to other partners.",
+    href: "/docs/integrations",
+  },
 ];
 
 export default function DocsGettingStarted() {
