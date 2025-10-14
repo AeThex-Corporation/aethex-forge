@@ -92,55 +92,59 @@ export default function Feed() {
   const fetchFeed = useCallback(async () => {
     setIsLoading(true);
     try {
-      const posts = await communityService.getPosts(30);
+      let posts = await communityService.getPosts(30);
       if (user?.id) {
         const flw = await aethexSocialService.getFollowing(user.id);
         setFollowing(flw);
       } else {
         setFollowing([]);
       }
-      const mapped: FeedItem[] = posts.map((p: any) => {
-        const meta = parseContent(p.content);
-        const author = p.user_profiles || {};
-        return {
-          id: p.id,
-          authorId: p.author_id,
-          authorName: author.full_name || author.username || "Community member",
-          authorAvatar: author.avatar_url,
-          caption: meta.text,
-          mediaUrl: meta.mediaUrl,
-          mediaType: meta.mediaType,
-          likes: p.likes_count ?? 0,
-          comments: p.comments_count ?? 0,
-        };
-      });
+
+      const mapPostsToFeedItems = (source: any[]): FeedItem[] =>
+        (Array.isArray(source) ? source : []).map((p: any) => {
+          const meta = parseContent(p.content);
+          const author = p.user_profiles || {};
+          return {
+            id: p.id,
+            authorId: p.author_id,
+            authorName:
+              author.full_name || author.username || "Community member",
+            authorAvatar: author.avatar_url,
+            caption: meta.text,
+            mediaUrl: meta.mediaUrl,
+            mediaType: meta.mediaType,
+            likes: p.likes_count ?? 0,
+            comments: p.comments_count ?? 0,
+          };
+        });
+
+      let mapped = mapPostsToFeedItems(posts);
+
+      if (mapped.length === 0) {
+        try {
+          const response = await fetch("/api/community/seed-demo", {
+            method: "POST",
+          });
+          if (response.ok) {
+            posts = await communityService.getPosts(30);
+            mapped = mapPostsToFeedItems(posts);
+          }
+        } catch (seedError) {
+          console.warn("Community demo seed failed", seedError);
+        }
+      }
 
       if (mapped.length === 0 && typeof window !== "undefined") {
-        ensureDemoSeed();
-        const demoPosts = getDemoPosts();
-        if (Array.isArray(demoPosts) && demoPosts.length) {
-          const seeded = demoPosts.map((post: any) => {
-            const meta = parseContent(post.content);
-            const author = post.user_profiles || {};
-            return {
-              id: post.id,
-              authorId: post.author_id,
-              authorName: author.full_name || author.username || "Community member",
-              authorAvatar: author.avatar_url,
-              caption: meta.text,
-              mediaUrl: meta.mediaUrl,
-              mediaType: meta.mediaType,
-              likes: post.likes_count ?? 0,
-              comments: post.comments_count ?? 0,
-            } as FeedItem;
-          });
-          setItems(seeded);
-        } else {
-          setItems(mapped);
+        try {
+          ensureDemoSeed();
+          const demoPosts = getDemoPosts();
+          mapped = mapPostsToFeedItems(demoPosts);
+        } catch (fallbackError) {
+          console.warn("Local demo feed fallback failed", fallbackError);
         }
-      } else {
-        setItems(mapped);
       }
+
+      setItems(mapped);
     } catch (error) {
       console.error("Failed to load feed", error);
       setItems([]);
