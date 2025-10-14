@@ -302,7 +302,7 @@ const embedSkipAgent = async () => {
   }
 
   try {
-    await window.SkipAgent.embed(SKIP_AGENT_ID, SKIP_AGENT_EMBED_OPTIONS);
+    await window.SkipAgent.embed(getAgentId(), SKIP_AGENT_EMBED_OPTIONS);
     if (!shouldEnableSkipAgent) {
       return;
     }
