@@ -110,9 +110,19 @@ const AdminAchievementManager = ({
       await loadUserAchievements(targetUser.id);
     } catch (error: any) {
       console.error("Failed to award achievement", error);
+      const extractErrorMessage = (err: any) => {
+        if (!err) return "Supabase rejected the award operation.";
+        if (typeof err === "string") return err;
+        if (err.message) return err.message;
+        try {
+          return JSON.stringify(err);
+        } catch (e) {
+          return String(err);
+        }
+      };
       aethexToast.error({
         title: "Award failed",
-        description: error?.message || "Supabase rejected the award operation.",
+        description: extractErrorMessage(error),
       });
     } finally {
       setAwarding(false);
