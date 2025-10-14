@@ -425,6 +425,8 @@ export default function Admin() {
       pendingProjectApplications,
       publishedPosts,
       totalMembers,
+      blogReach,
+      blogHighlights,
     ],
   );
 
