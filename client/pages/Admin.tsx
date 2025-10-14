@@ -302,11 +302,6 @@ export default function Admin() {
     [navigate],
   );
 
-  const displayProfiles = useMemo(
-    () => managedProfiles.slice(0, 12),
-    [managedProfiles],
-  );
-
   useEffect(() => {
     (async () => {
       try {
