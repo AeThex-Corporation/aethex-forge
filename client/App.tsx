@@ -27,6 +27,7 @@ import DocsApiReference from "./pages/docs/DocsApiReference";
 import DocsCli from "./pages/docs/DocsCli";
 import DocsExamples from "./pages/docs/DocsExamples";
 import DocsIntegrations from "./pages/docs/DocsIntegrations";
+import DocsCurriculum from "./pages/docs/DocsCurriculum";
 import Tutorials from "./pages/Tutorials";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
