@@ -317,12 +317,34 @@ export default function Admin() {
   );
 
   const overallStatus = useMemo(() => {
-    const hasOutage = statusSnapshot.some((service) => service.status === "outage");
-    if (hasOutage) return { label: "Service disruption", tone: "bg-red-500", Icon: XCircle };
-    const hasDegraded = statusSnapshot.some((service) => service.status === "degraded");
-    if (hasDegraded)
-      return { label: "Partial degradation", tone: "bg-yellow-500", Icon: AlertTriangle };
-    return { label: "All systems operational", tone: "bg-emerald-500", Icon: CheckCircle };
+    const base = {
+      label: "All systems operational",
+      accentClass: "text-emerald-300",
+      badgeClass: "border-emerald-500/40 bg-emerald-500/10 text-emerald-200",
+      Icon: CheckCircle,
+    } as const;
+
+    if (!statusSnapshot.length) return base;
+
+    if (statusSnapshot.some((service) => service.status === "outage")) {
+      return {
+        label: "Service disruption",
+        accentClass: "text-red-300",
+        badgeClass: "border-red-500/40 bg-red-500/10 text-red-200",
+        Icon: XCircle,
+      };
+    }
+
+    if (statusSnapshot.some((service) => service.status === "degraded")) {
+      return {
+        label: "Partial degradation",
+        accentClass: "text-yellow-300",
+        badgeClass: "border-yellow-500/40 bg-yellow-500/10 text-yellow-200",
+        Icon: AlertTriangle,
+      };
+    }
+
+    return base;
   }, [statusSnapshot]);
 
   const blogReach = useMemo(
