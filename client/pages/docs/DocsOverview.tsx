@@ -313,11 +313,19 @@ export default function DocsOverview() {
           </CardHeader>
           <CardContent>
             <Button
+              asChild
               variant="outline"
               className="border-slate-600 text-white hover:bg-slate-800"
             >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              View on GitHub
+              <a
+                href="https://github.com/aethex/examples"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                View on GitHub
+              </a>
             </Button>
           </CardContent>
         </Card>
