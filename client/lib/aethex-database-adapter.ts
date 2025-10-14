@@ -362,26 +362,36 @@ export const aethexUserService = {
   async listProfiles(limit = 50): Promise<AethexUserProfile[]> {
     ensureSupabase();
 
-    const { data, error } = await supabase
-      .from("user_profiles")
-      .select(
-        `
+    let data: any[] | null = null;
+    try {
+      const resp = await supabase
+        .from("user_profiles")
+        .select(
+          `
         *,
         user_achievements (
           achievements ( xp_reward )
         )
       `,
-      )
-      .order("updated_at", { ascending: false })
-      .limit(limit);
-
-    if (error) {
-      if (isTableMissing(error)) {
-        throw new Error(
-          'Supabase table "user_profiles" is missing. Please run the required migrations.',
-        );
+        )
+        .order("updated_at", { ascending: false })
+        .limit(limit);
+      // resp may be { data, error }
+      if (!resp) throw new Error("Empty response from Supabase");
+      const anyResp: any = resp as any;
+      const err = anyResp.error;
+      if (err) {
+        if (isTableMissing(err)) {
+          throw new Error(
+            'Supabase table "user_profiles" is missing. Please run the required migrations.',
+          );
+        }
+        throw new Error(err?.message || String(err));
       }
-      throw error;
+      data = anyResp.data as any[];
+    } catch (e: any) {
+      const msg = e?.message || JSON.stringify(e);
+      throw new Error(`Failed to list profiles: ${msg}`);
     }
 
     return ((data as any[]) || []).map((row) => {
