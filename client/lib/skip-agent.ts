@@ -297,6 +297,10 @@ const loadSkipAgent = async (): Promise<void> => {
     return;
   }
 
+  if (typeof navigator === "undefined") {
+    return;
+  }
+
   if (!("fetch" in window)) {
     return;
   }
