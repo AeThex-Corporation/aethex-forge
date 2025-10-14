@@ -28,7 +28,7 @@ import {
   Edit,
   MapPin,
   Rocket,
-  ShieldStar,
+  Shield,
   Trophy,
   UserCircle,
 } from "lucide-react";
@@ -105,7 +105,7 @@ const Profile = () => {
         label: "Level",
         value: `Lv ${level}`,
         helper: "Progress toward next milestone",
-        Icon: ShieldStar,
+        Icon: Shield,
       },
       {
         label: "Total XP",
@@ -238,7 +238,7 @@ const Profile = () => {
               <Card className="border-border/40 bg-background/60 backdrop-blur">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
-                    <ShieldStar className="h-5 w-5 text-aethex-300" />
+                    <Shield className="h-5 w-5 text-aethex-300" />
                     Progress snapshot
                   </CardTitle>
                   <CardDescription>Where you stand across AeThex programs.</CardDescription>
