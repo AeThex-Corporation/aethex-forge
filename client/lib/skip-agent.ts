@@ -177,9 +177,8 @@ const SKIP_AGENT_ROOT_SELECTORS = [
 
 let shouldEnableSkipAgent = false;
 
-// Allow consumers to override the agent configuration at runtime. If a consumer does not explicitly opt in,
-// the loader will remain disabled and no external runtime requests will be made.
-// Example opt-in (console): window.__AETHEX_SKIP_AGENT_CONFIG = { src: 'https://example.com/agent.js', id: '...' };
+// Allow operators to override the agent configuration at runtime when needed.
+// Example override (console): window.__AETHEX_SKIP_AGENT_CONFIG = { src: 'https://example.com/agent.js', id: '...' };
 const getRuntimeConfig = () => {
   try {
     if (typeof window !== "undefined" && (window as any).__AETHEX_SKIP_AGENT_CONFIG) {
