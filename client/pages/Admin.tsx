@@ -1000,7 +1000,7 @@ export default function Admin() {
                       <div className="grid gap-2">
                         {projectApplications.slice(0, 6).map((app) => (
                           <div
-                            key={app.id}
+                            key={app.id || `${app.applicant_email ?? "applicant"}-${app.projects?.id ?? "project"}`}
                             className="space-y-1 rounded border border-border/30 bg-background/40 p-3"
                           >
                             <div className="flex flex-wrap items-center justify-between gap-2">
