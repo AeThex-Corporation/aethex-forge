@@ -998,7 +998,7 @@ export default function Admin() {
                       </div>
                     ) : projectApplications.length ? (
                       <div className="grid gap-2">
-                        {applications.slice(0, 6).map((app) => (
+                        {projectApplications.slice(0, 6).map((app) => (
                           <div
                             key={app.id}
                             className="space-y-1 rounded border border-border/30 bg-background/40 p-3"
