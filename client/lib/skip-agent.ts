@@ -223,8 +223,25 @@ const isSkipAgentReachable = async (): Promise<boolean> => {
   const timeout = window.setTimeout(() => controller.abort(), 4000);
 
   try {
+    const agentSrc = getAgentSrc();
+    if (!agentSrc) {
+      window.clearTimeout(timeout);
+      return false;
+    }
+
+    let origin: string;
+    try {
+      origin = new URL(agentSrc).origin;
+    } catch (e) {
+      window.clearTimeout(timeout);
+      if (shouldEnableSkipAgent) {
+        console.warn("Invalid agent src; skipping status check", agentSrc);
+      }
+      return false;
+    }
+
     const response = await fetch(
-      `${SKIP_AGENT_ORIGIN}/api/agent/status?agentId=${encodeURIComponent(SKIP_AGENT_ID)}`,
+      `${origin}/api/agent/status?agentId=${encodeURIComponent(getAgentId())}`,
       {
         method: "GET",
         mode: "cors",
@@ -239,7 +256,7 @@ const isSkipAgentReachable = async (): Promise<boolean> => {
     window.clearTimeout(timeout);
 
     if (!response.ok) {
-      throw new Error(`Skip agent status request failed with ${response.status}`);
+      throw new Error(`Agent status request failed with ${response.status}`);
     }
 
     const payload = (await response.json().catch(() => null)) as
@@ -247,7 +264,7 @@ const isSkipAgentReachable = async (): Promise<boolean> => {
       | null;
 
     if (payload && payload.active === false) {
-      throw new Error("Skip agent is inactive");
+      throw new Error("Agent reported inactive");
     }
 
     return true;
@@ -255,7 +272,7 @@ const isSkipAgentReachable = async (): Promise<boolean> => {
     window.clearTimeout(timeout);
     if (shouldEnableSkipAgent) {
       console.warn(
-        "Skip Agent status endpoint unreachable; skipping embed to prevent runtime errors:",
+        "Agent status endpoint unreachable; skipping embed to prevent runtime errors:",
         error,
       );
     }
