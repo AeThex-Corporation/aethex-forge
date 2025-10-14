@@ -12,7 +12,6 @@ import {
   Blocks,
   Flame,
   Share2,
-  Radar,
   ArrowRight,
   Github,
   Code2,
