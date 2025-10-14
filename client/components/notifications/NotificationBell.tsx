@@ -255,7 +255,7 @@ export default function NotificationBell({ className }: { className?: string }) 
             </div>
           ) : (
             <div className="py-8 text-center text-sm text-muted-foreground">
-              No notifications yet. You	ll see activity updates here.
+              No notifications yet. You'll see activity updates here.
             </div>
           )}
         </ScrollArea>
