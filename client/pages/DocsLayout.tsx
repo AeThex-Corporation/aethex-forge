@@ -15,6 +15,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  LayoutDashboard,
 } from "lucide-react";
 
 const navigation = [
