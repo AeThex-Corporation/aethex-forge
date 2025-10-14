@@ -328,6 +328,45 @@ export default function DocsOverview() {
         </div>
       </div>
 
+      {/* Learning Resources */}
+      <div className="mb-12">
+        <h3 className="text-2xl font-bold text-white mb-6">Learning resources</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {learningResources.map((resource, index) => {
+            const Icon = resource.icon;
+            return (
+              <Card
+                key={resource.title}
+                className="text-center bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <CardHeader>
+                  <div
+                    className={`mx-auto w-16 h-16 rounded-lg bg-gradient-to-r ${resource.color} flex items-center justify-center mb-4`}
+                  >
+                    <Icon className="h-8 w-8 text-white" />
+                  </div>
+                  <CardTitle className="text-white text-lg">
+                    {resource.title}
+                  </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    {resource.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="outline" className="mb-4">
+                    {resource.count}
+                  </Badge>
+                  <Button asChild size="sm" className="w-full">
+                    <Link to={resource.link}>Explore</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Featured Updates */}
       <div className="mb-12">
         <div className="flex items-center justify-between mb-6">
