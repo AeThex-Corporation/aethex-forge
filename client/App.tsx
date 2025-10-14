@@ -47,6 +47,7 @@ import Terms from "./pages/Terms";
 import Admin from "./pages/Admin";
 import Feed from "./pages/Feed";
 import ProjectsNew from "./pages/ProjectsNew";
+import Opportunities from "./pages/Opportunities";
 import { Navigate } from "react-router-dom";
 import FourOhFourPage from "./pages/404";
 
