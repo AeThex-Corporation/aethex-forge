@@ -18,7 +18,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { AethexAchievement } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
