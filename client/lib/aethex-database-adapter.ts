@@ -364,7 +364,14 @@ export const aethexUserService = {
 
     const { data, error } = await supabase
       .from("user_profiles")
-      .select("*")
+      .select(
+        `
+        *,
+        user_achievements (
+          achievements ( xp_reward )
+        )
+      `,
+      )
       .order("updated_at", { ascending: false })
       .limit(limit);
 
@@ -377,13 +384,42 @@ export const aethexUserService = {
       throw error;
     }
 
-    return ((data as any[]) || []).map((row) =>
-      normalizeProfile({
+    return ((data as any[]) || []).map((row) => {
+      const achievements = Array.isArray((row as any)?.user_achievements)
+        ? ((row as any).user_achievements as any[])
+        : [];
+      const earnedXp = achievements.reduce<number>((total, entry) => {
+        const reward = Number((entry as any)?.achievements?.xp_reward ?? 0);
+        return total + (Number.isFinite(reward) ? reward : 0);
+      }, 0);
+
+      const rawTotalXp = Number((row as any)?.total_xp ?? earnedXp);
+      const totalXp = Number.isFinite(rawTotalXp) ? Math.max(rawTotalXp, 0) : 0;
+      const derivedLevel = Math.max(1, Math.floor(totalXp / 1000) + 1);
+      const levelValue = Number.isFinite((row as any)?.level)
+        ? Math.max(Number((row as any)?.level), 1)
+        : derivedLevel;
+      const loyaltyFromRow = Number((row as any)?.loyalty_points);
+      const loyaltyPoints = Number.isFinite(loyaltyFromRow)
+        ? Math.max(loyaltyFromRow, 0)
+        : totalXp;
+
+      const normalized = normalizeProfile({
         ...(row as AethexUserProfile),
         user_type: (row as any).user_type || "game_developer",
         experience_level: (row as any).experience_level || "beginner",
-      }),
-    );
+      });
+
+      delete (normalized as any).user_achievements;
+
+      return {
+        ...normalized,
+        total_xp: totalXp,
+        level: levelValue,
+        loyalty_points: loyaltyPoints,
+        achievements_count: achievements.length,
+      } as AethexUserProfile & { achievements_count: number };
+    });
   },
 
   async updateProfile(
