@@ -214,7 +214,7 @@ export default function DocsCli() {
               policies to guarantee only trusted pipelines can trigger releases.
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg" className="bg-amber-500 hover:bg-amber-400 text-black">
               <Link to="/docs/getting-started">
                 <ArrowRight className="mr-2 h-5 w-5" />
@@ -225,6 +225,12 @@ export default function DocsCli() {
               <Link to="/support">
                 <Shield className="mr-2 h-5 w-5" />
                 Security best practices
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="lg" className="text-amber-100 hover:text-amber-50">
+              <Link to="/docs/platform">
+                Discover platform features
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
