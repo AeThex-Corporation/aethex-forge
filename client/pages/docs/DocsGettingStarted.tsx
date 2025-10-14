@@ -160,6 +160,43 @@ export default function DocsGettingStarted() {
         </p>
       </section>
 
+      <section id="categories" className="space-y-6">
+        <div className="text-center space-y-2">
+          <h3 className="text-2xl font-semibold text-white">Documentation categories</h3>
+          <p className="text-gray-300 max-w-2xl mx-auto text-sm">
+            Jump into the area you need most. Each category below is mirrored in Builder CMS for collaborative
+            editing.
+          </p>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          {docCategories.map((category) => (
+            <Card key={category.title} className="border-border/50 hover:border-aethex-400/40 transition-all">
+              <CardHeader>
+                <div
+                  className={`inline-flex rounded-lg bg-gradient-to-r ${category.color} px-3 py-1 text-xs uppercase tracking-wider text-white`}
+                >
+                  {category.docs} docs
+                </div>
+                <CardTitle className="text-xl text-white mt-3">{category.title}</CardTitle>
+                <CardDescription className="text-gray-300">
+                  {category.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="grid grid-cols-2 gap-2 text-sm text-gray-300">
+                  {category.sections.map((section) => (
+                    <li key={section} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-aethex-400" />
+                      {section}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
       <section id="prerequisites" className="grid gap-6 lg:grid-cols-3">
         {prerequisites.map((item) => (
           <Card key={item.title} className="bg-slate-900/60 border-slate-700">
