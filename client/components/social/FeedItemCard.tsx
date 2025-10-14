@@ -121,7 +121,7 @@ export function FeedItemCard({
                 <span className="font-medium text-foreground">
                   {item.likes.toLocaleString()}
                 </span>
-                <span className="hidden xs:inline">Likes</span>
+                <span className="hidden sm:inline">Likes</span>
               </Button>
               <Button variant="ghost" size="sm" className="gap-2 pl-2 pr-3">
                 <MessageCircle className="h-4 w-4 text-aethex-400" />
