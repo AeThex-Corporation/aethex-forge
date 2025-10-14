@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { aethexToast } from "@/lib/aethex-toast";
 import {
