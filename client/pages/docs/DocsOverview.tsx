@@ -60,6 +60,14 @@ const quickStartCards = [
     duration: "8 min read",
     difficulty: "Intermediate",
   },
+  {
+    title: "Platform Integrations",
+    description: "Embed partner agents and automate external workflows",
+    icon: Link,
+    href: "/docs/integrations",
+    duration: "7 min read",
+    difficulty: "Intermediate",
+  },
 ];
 
 const resourceSections = [
