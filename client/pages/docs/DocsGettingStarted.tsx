@@ -153,7 +153,7 @@ export default function DocsGettingStarted() {
         ))}
       </section>
 
-      <section className="space-y-6">
+      <section id="setup-workflow" className="space-y-6">
         <div className="flex items-center gap-3">
           <PlugZap className="h-6 w-6 text-purple-400" />
           <h3 className="text-2xl font-semibold text-white">Setup workflow</h3>
