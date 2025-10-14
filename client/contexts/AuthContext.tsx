@@ -353,22 +353,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw new Error("Please provide both email and password.");
       }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      // Prefer explicit error from Supabase if present
       if (error) throw error;
 
-      // If signIn succeeded but no session info returned, attempt to refresh
       try {
         await supabase.auth.getSession();
       } catch (e) {
         // ignore
       }
-
-      return data;
     } catch (error: any) {
       console.error("SignIn error details:", error);
 
