@@ -197,6 +197,49 @@ const createSkipAgentTheme = () => {
 
 const SKIP_AGENT_ORIGIN = new URL(SKIP_AGENT_SRC).origin;
 
+const isSkipAgentReachable = async (): Promise<boolean> => {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 4000);
+
+  try {
+    const response = await fetch(
+      `${SKIP_AGENT_ORIGIN}/api/agent/status?agentId=${encodeURIComponent(SKIP_AGENT_ID)}`,
+      {
+        method: "GET",
+        mode: "cors",
+        credentials: "omit",
+        headers: {
+          Accept: "application/json",
+        },
+        cache: "no-store",
+        signal: controller.signal,
+      },
+    );
+    window.clearTimeout(timeout);
+
+    if (!response.ok) {
+      throw new Error(`Skip agent status request failed with ${response.status}`);
+    }
+
+    const payload = (await response.json().catch(() => null)) as
+      | { active?: boolean }
+      | null;
+
+    if (payload && payload.active === false) {
+      throw new Error("Skip agent is inactive");
+    }
+
+    return true;
+  } catch (error) {
+    window.clearTimeout(timeout);
+    console.warn(
+      "Skip Agent status endpoint unreachable; skipping embed to prevent runtime errors:",
+      error,
+    );
+    return false;
+  }
+};
+
 const embedSkipAgent = async () => {
   if (typeof window === "undefined" || typeof document === "undefined") {
     return;
@@ -208,21 +251,8 @@ const embedSkipAgent = async () => {
     return;
   }
 
-  // Quick host reachability check to avoid the agent's own status request failing
-  try {
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 2500);
-    // Use mode: 'no-cors' to avoid CORS failures — we only care if the network request resolves
-    await fetch(`${SKIP_AGENT_ORIGIN}/favicon.ico`, {
-      method: 'GET',
-      mode: 'no-cors',
-      cache: 'no-store',
-      signal: controller.signal,
-    });
-    window.clearTimeout(timeout);
-  } catch (err) {
-    // Host unreachable or blocked — skip embedding to prevent noisy errors from the external script
-    console.warn('Skip Agent host unreachable; skipping embed to avoid runtime fetch errors:', err);
+  const reachable = await isSkipAgentReachable();
+  if (!reachable) {
     return;
   }
 
