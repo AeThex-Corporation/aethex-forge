@@ -35,7 +35,9 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [manualVerificationLink, setManualVerificationLink] = useState<string | null>(null);
+  const [manualVerificationLink, setManualVerificationLink] = useState<
+    string | null
+  >(null);
   const navigate = useNavigate();
   const { signIn, signUp, signInWithOAuth, user, loading, profileComplete } =
     useAuth();
@@ -99,7 +101,8 @@ export default function Login() {
       console.error("Authentication error:", error);
       toastError({
         title: "Authentication failed",
-        description: error?.message || "Something went wrong. Please try again.",
+        description:
+          error?.message || "Something went wrong. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -203,7 +206,13 @@ export default function Login() {
                       size="sm"
                       variant="outline"
                       className="mt-3 border-aethex-400/40"
-                      onClick={() => window.open(manualVerificationLink, "_blank", "noopener")}
+                      onClick={() =>
+                        window.open(
+                          manualVerificationLink,
+                          "_blank",
+                          "noopener",
+                        )
+                      }
                     >
                       Open verification link
                     </Button>

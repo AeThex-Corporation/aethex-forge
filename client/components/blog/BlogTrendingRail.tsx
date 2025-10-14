@@ -16,8 +16,12 @@ const BlogTrendingRail = ({ posts }: BlogTrendingRailProps) => {
       <div className="container mx-auto space-y-6 px-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Trending now</p>
-            <h2 className="text-2xl font-semibold text-white">High-signal reads across AeThex</h2>
+            <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+              Trending now
+            </p>
+            <h2 className="text-2xl font-semibold text-white">
+              High-signal reads across AeThex
+            </h2>
           </div>
           <Badge className="hidden lg:inline-flex items-center gap-1 bg-gradient-to-r from-orange-500 to-rose-500 text-xs uppercase tracking-widest">
             <Flame className="h-3.5 w-3.5" /> Hot topics
@@ -40,7 +44,9 @@ const BlogTrendingRail = ({ posts }: BlogTrendingRailProps) => {
                 >
                   {post.title}
                 </Link>
-                <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                <p className="text-sm text-muted-foreground line-clamp-3">
+                  {post.excerpt}
+                </p>
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span>{post.author || "AeThex Team"}</span>
                   <div className="flex items-center gap-3">

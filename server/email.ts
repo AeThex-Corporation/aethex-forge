@@ -1,8 +1,10 @@
 import { Resend } from "resend";
 
 const resendApiKey = process.env.RESEND_API_KEY;
-const defaultFromAddress = process.env.RESEND_FROM_EMAIL ?? "AeThex OS <no-reply@aethex.dev>";
-const verifySupportEmail = process.env.VERIFY_SUPPORT_EMAIL ?? "support@aethex.biz";
+const defaultFromAddress =
+  process.env.RESEND_FROM_EMAIL ?? "AeThex OS <no-reply@aethex.dev>";
+const verifySupportEmail =
+  process.env.VERIFY_SUPPORT_EMAIL ?? "support@aethex.biz";
 
 const resendClient = resendApiKey ? new Resend(resendApiKey) : null;
 
@@ -42,7 +44,9 @@ export const emailService = {
       </div>
     `;
 
-    const text = [`Welcome to AeThex, ${safeName}!`, "",
+    const text = [
+      `Welcome to AeThex, ${safeName}!`,
+      "",
       "Use the link below to verify your account:",
       verificationUrl,
       "",

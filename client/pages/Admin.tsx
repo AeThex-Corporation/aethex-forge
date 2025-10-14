@@ -348,7 +348,8 @@ export default function Admin() {
   }, [statusSnapshot]);
 
   const blogReach = useMemo(
-    () => resolvedBlogPosts.reduce((total, post) => total + (post.likes ?? 0), 0),
+    () =>
+      resolvedBlogPosts.reduce((total, post) => total + (post.likes ?? 0), 0),
     [resolvedBlogPosts],
   );
 
@@ -430,8 +431,8 @@ export default function Admin() {
         trend: loadingPosts
           ? "Refreshing content…"
           : blogHighlights.length
-          ? `Latest: ${blogHighlights[0].title}`
-          : "Curate new stories",
+            ? `Latest: ${blogHighlights[0].title}`
+            : "Curate new stories",
         icon: PenTool,
         tone: "purple" as const,
       },

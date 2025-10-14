@@ -7,7 +7,11 @@ interface BlogCategoryChipsProps {
   onSelect: (id: string) => void;
 }
 
-const BlogCategoryChips = ({ categories, selected, onSelect }: BlogCategoryChipsProps) => {
+const BlogCategoryChips = ({
+  categories,
+  selected,
+  onSelect,
+}: BlogCategoryChipsProps) => {
   if (!categories.length) return null;
 
   return (

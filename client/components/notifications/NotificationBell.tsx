@@ -38,7 +38,10 @@ interface AethexNotification {
   read: boolean | null;
 }
 
-const typeIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+const typeIconMap: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
   success: CheckCircle2,
   warning: AlertTriangle,
   error: XCircle,
@@ -54,7 +57,11 @@ const typeAccentMap: Record<string, string> = {
   default: "text-aethex-300",
 };
 
-export default function NotificationBell({ className }: { className?: string }) {
+export default function NotificationBell({
+  className,
+}: {
+  className?: string;
+}) {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<AethexNotification[]>([]);
   const [loading, setLoading] = useState(false);
@@ -73,7 +80,9 @@ export default function NotificationBell({ className }: { className?: string }) 
       .getUserNotifications(user.id)
       .then((data) => {
         if (!isActive) return;
-        setNotifications(Array.isArray(data) ? (data as AethexNotification[]) : []);
+        setNotifications(
+          Array.isArray(data) ? (data as AethexNotification[]) : [],
+        );
       })
       .catch(() => {
         if (!isActive) return;
@@ -88,7 +97,9 @@ export default function NotificationBell({ className }: { className?: string }) 
       user.id,
       (payload: any) => {
         if (!isActive) return;
-        const next = (payload?.new ?? payload) as AethexNotification | undefined;
+        const next = (payload?.new ?? payload) as
+          | AethexNotification
+          | undefined;
         if (!next?.id) return;
 
         setNotifications((prev) => {
@@ -139,7 +150,9 @@ export default function NotificationBell({ className }: { className?: string }) 
     }
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     try {
-      await Promise.all(ids.map((id) => aethexNotificationService.markAsRead(id)));
+      await Promise.all(
+        ids.map((id) => aethexNotificationService.markAsRead(id)),
+      );
     } catch {
       // Soft fail silently
     } finally {
@@ -222,7 +235,9 @@ export default function NotificationBell({ className }: { className?: string }) 
         className="w-80 border-border/40 bg-background/95 backdrop-blur"
       >
         <DropdownMenuLabel className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-foreground">Notifications</span>
+          <span className="text-sm font-semibold text-foreground">
+            Notifications
+          </span>
           {unreadCount > 0 ? (
             <span className="text-xs text-muted-foreground">
               {unreadCount} unread
@@ -248,11 +263,14 @@ export default function NotificationBell({ className }: { className?: string }) 
         <ScrollArea className="max-h-80">
           {loading ? (
             <div className="flex items-center justify-center py-8 text-sm text-muted-foreground">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading notifications…
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading
+              notifications…
             </div>
           ) : notifications.length ? (
             <div className="py-1 space-y-1">
-              {notifications.map((notification) => renderNotification(notification))}
+              {notifications.map((notification) =>
+                renderNotification(notification),
+              )}
             </div>
           ) : (
             <div className="py-8 text-center text-sm text-muted-foreground">

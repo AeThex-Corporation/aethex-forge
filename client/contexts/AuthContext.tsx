@@ -461,7 +461,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           const payload = await response.json().catch(() => ({}));
 
           if (!response.ok) {
-            throw new Error(payload?.error || "Failed to queue verification email");
+            throw new Error(
+              payload?.error || "Failed to queue verification email",
+            );
           }
 
           emailSent = Boolean(payload?.sent);

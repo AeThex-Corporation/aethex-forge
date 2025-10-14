@@ -11,7 +11,11 @@ interface BlogPostGridProps {
   emptyState?: React.ReactNode;
 }
 
-const BlogPostGrid = ({ posts, placeholderImage = "/placeholder.svg", emptyState }: BlogPostGridProps) => {
+const BlogPostGrid = ({
+  posts,
+  placeholderImage = "/placeholder.svg",
+  emptyState,
+}: BlogPostGridProps) => {
   if (!posts.length) {
     return (
       <div className="rounded-2xl border border-border/40 bg-background/70 p-12 text-center text-muted-foreground">
@@ -38,25 +42,39 @@ const BlogPostGrid = ({ posts, placeholderImage = "/placeholder.svg", emptyState
             </div>
           ) : (
             <div className="flex h-48 w-full items-center justify-center bg-muted/10">
-              <img src={placeholderImage} alt="Placeholder" className="h-16 w-16 opacity-50" />
+              <img
+                src={placeholderImage}
+                alt="Placeholder"
+                className="h-16 w-16 opacity-50"
+              />
             </div>
           )}
 
           <CardHeader className="space-y-3">
             <div className="flex items-center justify-between">
-              <Badge variant="outline" className="text-xs uppercase tracking-wide">
+              <Badge
+                variant="outline"
+                className="text-xs uppercase tracking-wide"
+              >
                 {post.category || "General"}
               </Badge>
               {post.readTime ? (
-                <span className="text-xs text-muted-foreground">{post.readTime}</span>
+                <span className="text-xs text-muted-foreground">
+                  {post.readTime}
+                </span>
               ) : null}
             </div>
             <CardTitle className="text-xl leading-tight text-white">
-              <Link to={`/blog/${post.slug}`} className="transition hover:text-aethex-200">
+              <Link
+                to={`/blog/${post.slug}`}
+                className="transition hover:text-aethex-200"
+              >
                 {post.title}
               </Link>
             </CardTitle>
-            <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
+            <p className="text-sm text-muted-foreground line-clamp-3">
+              {post.excerpt}
+            </p>
           </CardHeader>
 
           <CardContent className="mt-auto space-y-6">
@@ -81,7 +99,10 @@ const BlogPostGrid = ({ posts, placeholderImage = "/placeholder.svg", emptyState
                 {post.comments?.toLocaleString() ?? 0}
               </span>
               <Button asChild size="sm" variant="outline" className="ml-auto">
-                <Link to={`/blog/${post.slug}`} className="inline-flex items-center gap-2 text-xs">
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="inline-flex items-center gap-2 text-xs"
+                >
                   Read article
                   <Share2 className="h-3.5 w-3.5" />
                 </Link>

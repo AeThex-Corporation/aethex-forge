@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Layers, ListFilter, Newspaper } from "lucide-react";
 import type { BlogCategory, BlogPost } from "@/components/blog/types";
 
-const buildSlug = (post: BlogPost): string => post.slug || post.id?.toString() || "article";
+const buildSlug = (post: BlogPost): string =>
+  post.slug || post.id?.toString() || "article";
 
 const normalizeCategory = (value?: string | null) =>
   (value || "general")
@@ -43,10 +44,17 @@ const Blog = () => {
             data = await res.json();
           }
         } catch (error) {
-          console.warn("Failed to parse blog API response, falling back to Supabase", error);
+          console.warn(
+            "Failed to parse blog API response, falling back to Supabase",
+            error,
+          );
         }
 
-        if ((!Array.isArray(data) || !data.length) && import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY) {
+        if (
+          (!Array.isArray(data) || !data.length) &&
+          import.meta.env.VITE_SUPABASE_URL &&
+          import.meta.env.VITE_SUPABASE_ANON_KEY
+        ) {
           try {
             const sbUrl = import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, "");
             const url = `${sbUrl}/rest/v1/blog_posts?select=slug,title,excerpt,author,date,read_time,category,image,likes,comments,published_at&order=published_at.desc&limit=50`;
@@ -76,8 +84,11 @@ const Blog = () => {
             category: record.category ?? "General",
             image: record.image ?? null,
             likes: typeof record.likes === "number" ? record.likes : null,
-            comments: typeof record.comments === "number" ? record.comments : null,
-            trending: Boolean(record.trending) || (typeof record.likes === "number" && record.likes > 250),
+            comments:
+              typeof record.comments === "number" ? record.comments : null,
+            trending:
+              Boolean(record.trending) ||
+              (typeof record.likes === "number" && record.likes > 250),
             body: record.body_html ?? record.body ?? null,
           }));
           setPosts(mapped);
@@ -103,7 +114,8 @@ const Blog = () => {
     const query = searchQuery.trim().toLowerCase();
     return dataset.filter((post) => {
       const matchesCategory =
-        selectedCategory === "all" || normalizeCategory(post.category) === selectedCategory;
+        selectedCategory === "all" ||
+        normalizeCategory(post.category) === selectedCategory;
       if (!matchesCategory) return false;
 
       if (!query) return true;
@@ -119,12 +131,16 @@ const Blog = () => {
     if (!filteredPosts.length) {
       return dataset.find((post) => post.trending) ?? dataset[0] ?? null;
     }
-    return filteredPosts.find((post) => post.trending) ?? filteredPosts[0] ?? null;
+    return (
+      filteredPosts.find((post) => post.trending) ?? filteredPosts[0] ?? null
+    );
   }, [dataset, filteredPosts]);
 
   const displayedPosts = useMemo(() => {
     if (!featuredPost) return filteredPosts;
-    return filteredPosts.filter((post) => buildSlug(post) !== buildSlug(featuredPost));
+    return filteredPosts.filter(
+      (post) => buildSlug(post) !== buildSlug(featuredPost),
+    );
   }, [filteredPosts, featuredPost]);
 
   const trendingPosts = useMemo(() => {
@@ -158,7 +174,9 @@ const Blog = () => {
     () => [
       {
         label: "Teams publishing",
-        value: new Set(dataset.map((post) => (post.author || "AeThex Team").split(" ")[0])).size,
+        value: new Set(
+          dataset.map((post) => (post.author || "AeThex Team").split(" ")[0]),
+        ).size,
         helper: "Active contributors this month",
         icon: <Layers className="h-4 w-4" />,
       },
@@ -205,9 +223,16 @@ const Blog = () => {
                 <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
                   Filter by track
                 </p>
-                <h2 className="text-2xl font-semibold text-white">Navigate the AeThex knowledge graph</h2>
+                <h2 className="text-2xl font-semibold text-white">
+                  Navigate the AeThex knowledge graph
+                </h2>
               </div>
-              <Button variant="ghost" size="sm" onClick={handleResetFilters} className="self-start lg:self-auto">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleResetFilters}
+                className="self-start lg:self-auto"
+              >
                 Reset filters
               </Button>
             </div>
@@ -235,9 +260,15 @@ const Blog = () => {
                     {insight.icon}
                   </span>
                   <div>
-                    <p className="text-sm text-muted-foreground">{insight.label}</p>
-                    <p className="text-2xl font-semibold text-white">{insight.value}</p>
-                    <p className="text-xs text-muted-foreground">{insight.helper}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {insight.label}
+                    </p>
+                    <p className="text-2xl font-semibold text-white">
+                      {insight.value}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {insight.helper}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -249,10 +280,18 @@ const Blog = () => {
           <div className="container mx-auto space-y-12 px-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Latest updates</p>
-                <h2 className="text-3xl font-semibold text-white">Fresh from the AeThex ship room</h2>
+                <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                  Latest updates
+                </p>
+                <h2 className="text-3xl font-semibold text-white">
+                  Fresh from the AeThex ship room
+                </h2>
               </div>
-              <Button asChild variant="outline" className="self-start border-border/60 text-sm">
+              <Button
+                asChild
+                variant="outline"
+                className="self-start border-border/60 text-sm"
+              >
                 <Link to="/changelog">
                   View changelog
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -271,14 +310,23 @@ const Blog = () => {
             <div className="rounded-2xl border border-border/40 bg-background/80 p-8">
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Explore more</p>
-                  <h3 className="text-2xl font-semibold text-white">Dive into AeThex documentation</h3>
+                  <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                    Explore more
+                  </p>
+                  <h3 className="text-2xl font-semibold text-white">
+                    Dive into AeThex documentation
+                  </h3>
                   <p className="max-w-2xl text-sm text-muted-foreground">
-                    Looking for implementation guides, deployment recipes, or program onboarding materials?
-                    Visit our documentation hub for developer tutorials, platform references, and community playbooks.
+                    Looking for implementation guides, deployment recipes, or
+                    program onboarding materials? Visit our documentation hub
+                    for developer tutorials, platform references, and community
+                    playbooks.
                   </p>
                 </div>
-                <Button asChild className="bg-gradient-to-r from-aethex-500 to-neon-blue">
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-aethex-500 to-neon-blue"
+                >
                   <Link to="/docs">Open documentation hub</Link>
                 </Button>
               </div>

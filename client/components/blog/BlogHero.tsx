@@ -14,7 +14,13 @@ interface BlogHeroProps {
   onViewAll?: () => void;
 }
 
-const BlogHero = ({ featured, totalCount, search, onSearchChange, onViewAll }: BlogHeroProps) => {
+const BlogHero = ({
+  featured,
+  totalCount,
+  search,
+  onSearchChange,
+  onViewAll,
+}: BlogHeroProps) => {
   return (
     <section className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-slate-950 via-slate-900/80 to-slate-950 pb-20 pt-24 text-foreground">
       <div className="absolute inset-x-0 top-0 h-[480px] bg-[radial-gradient(circle_at_top,_rgba(96,165,250,0.15),_transparent_60%)]" />
@@ -32,7 +38,9 @@ const BlogHero = ({ featured, totalCount, search, onSearchChange, onViewAll }: B
                 Ideas, updates, and behind-the-scenes craft from the AeThex team
               </h1>
               <p className="max-w-2xl text-lg text-muted-foreground">
-                Explore engineering deep dives, platform updates, community spotlights, and changelog summaries. We publish what we learn building AeThex across games, cloud, and creator ecosystems.
+                Explore engineering deep dives, platform updates, community
+                spotlights, and changelog summaries. We publish what we learn
+                building AeThex across games, cloud, and creator ecosystems.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
@@ -75,7 +83,9 @@ const BlogHero = ({ featured, totalCount, search, onSearchChange, onViewAll }: B
                     >
                       {featured.title}
                     </Link>
-                    <p className="text-sm text-muted-foreground">{featured.excerpt}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {featured.excerpt}
+                    </p>
                   </div>
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>{featured.author || "AeThex Team"}</span>
@@ -93,13 +103,16 @@ const BlogHero = ({ featured, totalCount, search, onSearchChange, onViewAll }: B
                     </span>
                   </div>
                   <Button asChild className="w-full">
-                    <Link to={`/blog/${featured.slug}`}>Read the full story</Link>
+                    <Link to={`/blog/${featured.slug}`}>
+                      Read the full story
+                    </Link>
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-4 text-muted-foreground">
                   <p className="text-base">
-                    We are preparing our latest feature article. Check back soon for fresh insights straight from the AeThex ship room.
+                    We are preparing our latest feature article. Check back soon
+                    for fresh insights straight from the AeThex ship room.
                   </p>
                   <div className="flex items-center gap-3 text-xs">
                     <span className="rounded-full border border-border/40 px-3 py-1">

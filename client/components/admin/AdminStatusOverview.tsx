@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { LucideIcon } from "lucide-react";
@@ -25,8 +31,7 @@ interface AdminStatusOverviewProps {
 }
 
 const statusBadgeClass: Record<AdminServiceStatus["status"], string> = {
-  operational:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-200",
+  operational: "border-emerald-500/30 bg-emerald-500/10 text-emerald-200",
   degraded: "border-yellow-500/30 bg-yellow-500/10 text-yellow-200",
   outage: "border-red-500/40 bg-red-500/10 text-red-200",
 };
@@ -71,7 +76,9 @@ export default function AdminStatusOverview({
       <CardHeader className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className={`${overall.badgeClass} flex h-10 w-10 items-center justify-center rounded-full border`}>
+            <div
+              className={`${overall.badgeClass} flex h-10 w-10 items-center justify-center rounded-full border`}
+            >
               <OverallIcon className="h-5 w-5" />
             </div>
             <div>
@@ -113,9 +120,7 @@ export default function AdminStatusOverview({
               Healthy services
             </p>
             <p className="text-xl font-semibold text-foreground">
-              {services.length
-                ? `${healthyServices}/${services.length}`
-                : "—"}
+              {services.length ? `${healthyServices}/${services.length}` : "—"}
             </p>
           </div>
         </div>
@@ -132,13 +137,18 @@ export default function AdminStatusOverview({
                     <ServiceIcon className="h-5 w-5 text-aethex-300" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">{service.name}</p>
+                    <p className="font-medium text-foreground">
+                      {service.name}
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {service.responseTime} ms • {service.uptime} uptime
                     </p>
                   </div>
                 </div>
-                <Badge className={statusBadgeClass[service.status]} variant="outline">
+                <Badge
+                  className={statusBadgeClass[service.status]}
+                  variant="outline"
+                >
                   {service.status}
                 </Badge>
               </div>

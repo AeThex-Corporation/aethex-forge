@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDistanceToNow } from "date-fns";
@@ -84,8 +90,13 @@ export default function AdminChangelogDigest({
                       Version {entry.version} • {entry.author}
                     </p>
                   </div>
-                  <Badge variant="outline" className="border-border/40 text-[11px]">
-                    {formatDistanceToNow(new Date(entry.date), { addSuffix: true })}
+                  <Badge
+                    variant="outline"
+                    className="border-border/40 text-[11px]"
+                  >
+                    {formatDistanceToNow(new Date(entry.date), {
+                      addSuffix: true,
+                    })}
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
@@ -100,10 +111,14 @@ export default function AdminChangelogDigest({
                           key={`${entry.id}-change-${idx}`}
                           className="flex items-start gap-2"
                         >
-                          <ChangeIcon className={`mt-0.5 h-4 w-4 ${changeAccent[change.type]}`} />
+                          <ChangeIcon
+                            className={`mt-0.5 h-4 w-4 ${changeAccent[change.type]}`}
+                          />
                           <span className="leading-relaxed">
                             <span className="font-medium text-foreground/80">
-                              {change.type.charAt(0).toUpperCase() + change.type.slice(1)}:
+                              {change.type.charAt(0).toUpperCase() +
+                                change.type.slice(1)}
+                              :
                             </span>{" "}
                             {change.description}
                           </span>
