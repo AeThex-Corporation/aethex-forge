@@ -1,5 +1,3 @@
-import { type MutableRefObject } from "react";
-
 declare global {
   interface Window {
     SkipAgent?: {
