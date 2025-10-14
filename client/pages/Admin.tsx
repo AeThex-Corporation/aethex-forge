@@ -132,30 +132,30 @@ export default function Admin() {
       .catch(() => void 0);
   }, []);
 
-  const loadApplications = useCallback(async () => {
+  const loadProjectApplications = useCallback(async () => {
     if (!user?.id) return;
-    setApplicationsLoading(true);
+    setProjectApplicationsLoading(true);
     try {
       const response = await fetch(
         `/api/applications?owner=${encodeURIComponent(user.id)}`,
       );
       if (response.ok) {
         const data = await response.json();
-        setApplications(Array.isArray(data) ? data : []);
+        setProjectApplications(Array.isArray(data) ? data : []);
       } else {
-        setApplications([]);
+        setProjectApplications([]);
       }
     } catch (error) {
-      console.warn("Failed to load applications:", error);
-      setApplications([]);
+      console.warn("Failed to load project applications:", error);
+      setProjectApplications([]);
     } finally {
-      setApplicationsLoading(false);
+      setProjectApplicationsLoading(false);
     }
   }, [user?.id]);
 
   useEffect(() => {
-    loadApplications().catch(() => undefined);
-  }, [loadApplications]);
+    loadProjectApplications().catch(() => undefined);
+  }, [loadProjectApplications]);
 
   useEffect(() => {
     if (!loading) {
