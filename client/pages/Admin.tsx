@@ -89,17 +89,21 @@ export default function Admin() {
   const [applicationsLoading, setApplicationsLoading] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const list = await aethexUserService.listProfiles(50);
-        setManagedProfiles(list);
-      } catch (error) {
-        console.warn("Failed to load managed profiles:", error);
-        setManagedProfiles([]);
-      }
-    })();
+  const loadProfiles = useCallback(async () => {
+    try {
+      const list = await aethexUserService.listProfiles(200);
+      setManagedProfiles(list);
+    } catch (error) {
+      console.warn("Failed to load managed profiles:", error);
+      setManagedProfiles([]);
+    }
+  }, []);
 
+  useEffect(() => {
+    loadProfiles().catch(() => undefined);
+  }, [loadProfiles]);
+
+  useEffect(() => {
     fetch("/api/featured-studios")
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => {
