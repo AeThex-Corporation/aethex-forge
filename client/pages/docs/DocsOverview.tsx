@@ -342,11 +342,14 @@ export default function DocsOverview() {
           </CardHeader>
           <CardContent>
             <Button
+              asChild
               variant="outline"
               className="border-slate-600 text-white hover:bg-slate-800"
             >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Join Community
+              <Link to="/community" className="inline-flex items-center">
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Join Community
+              </Link>
             </Button>
           </CardContent>
         </Card>
