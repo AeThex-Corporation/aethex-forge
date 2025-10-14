@@ -320,11 +320,11 @@ export default function CodeLayout({ children }: LayoutProps) {
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link
-                              to="/profile/me#settings"
+                              to="/dashboard?tab=profile#settings"
                               className="cursor-pointer"
                             >
                               <Settings className="mr-2 h-4 w-4" />
-                              Settings
+                              Account Settings
                             </Link>
                           </DropdownMenuItem>
                           {isOwner && (
