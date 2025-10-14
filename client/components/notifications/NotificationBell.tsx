@@ -87,6 +87,7 @@ export default function NotificationBell({ className }: { className?: string }) 
     const subscription = aethexRealtimeService.subscribeToUserNotifications(
       user.id,
       (payload: any) => {
+        if (!isActive) return;
         const next = (payload?.new ?? payload) as AethexNotification | undefined;
         if (!next?.id) return;
 
