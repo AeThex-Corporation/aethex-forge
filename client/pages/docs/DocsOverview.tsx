@@ -29,25 +29,33 @@ import {
 
 const quickStartCards = [
   {
-    title: "Platform Overview",
-    description: "Get familiar with AeThex platform features and capabilities",
+    title: "Platform tour",
+    description: "Walk through dashboard, passport, and community experiences",
+    icon: LayoutDashboard,
+    href: "/docs/platform",
+    duration: "6 min read",
+    difficulty: "Beginner",
+    isNew: true,
+  },
+  {
+    title: "Project setup",
+    description: "Launch your first AeThex project with guided onboarding",
     icon: Rocket,
     href: "/docs/getting-started",
     duration: "5 min read",
     difficulty: "Beginner",
   },
   {
-    title: "First Tutorial",
+    title: "First tutorial",
     description:
       "Follow your first interactive tutorial to build something amazing",
     icon: Play,
     href: "/docs/tutorials",
     duration: "15 min",
     difficulty: "Beginner",
-    isNew: true,
   },
   {
-    title: "API Integration",
+    title: "API integration",
     description: "Learn how to integrate with AeThex APIs and services",
     icon: Code,
     href: "/docs/api",
@@ -55,7 +63,7 @@ const quickStartCards = [
     difficulty: "Intermediate",
   },
   {
-    title: "CLI Tools",
+    title: "CLI tools",
     description: "Master the command line tools for efficient development",
     icon: Terminal,
     href: "/docs/cli",
@@ -63,7 +71,7 @@ const quickStartCards = [
     difficulty: "Intermediate",
   },
   {
-    title: "Platform Integrations",
+    title: "Platform integrations",
     description: "Embed partner agents and automate external workflows",
     icon: LinkIcon,
     href: "/docs/integrations",
