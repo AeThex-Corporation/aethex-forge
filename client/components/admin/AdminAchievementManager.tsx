@@ -316,12 +316,16 @@ const AdminAchievementManager = ({
               <Badge variant="outline">ID: {selectedAchievement.id}</Badge>
               <Badge variant="outline">
                 Created{" "}
-                {formatDistanceToNowStrict(
-                  new Date(selectedAchievement.created_at),
-                  {
-                    addSuffix: true,
-                  },
-                )}
+                {(() => {
+                  const raw = selectedAchievement.created_at;
+                  try {
+                    const d = raw ? new Date(raw) : null;
+                    if (!d || Number.isNaN(d.getTime())) return "unknown";
+                    return formatDistanceToNowStrict(d, { addSuffix: true });
+                  } catch (e) {
+                    return "unknown";
+                  }
+                })()}
               </Badge>
             </div>
           </div>
