@@ -209,10 +209,12 @@ export default function Welcome({
 
           const payload = await resp.json().catch(() => ({} as any));
           if (!resp.ok) {
+            const serverMessage =
+              payload?.error || payload?.message || (Object.keys(payload || {}).length ? JSON.stringify(payload) : "Server check failed");
             console.error("Server check-verification failed", payload);
             toastError({
               title: "Unable to verify",
-              description: payload?.error || "Server check failed",
+              description: serverMessage,
             });
           } else {
             const confirmed = Boolean(payload?.verified);
