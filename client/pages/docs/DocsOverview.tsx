@@ -330,7 +330,9 @@ export default function DocsOverview() {
 
       {/* Learning Resources */}
       <div className="mb-12">
-        <h3 className="text-2xl font-bold text-white mb-6">Learning resources</h3>
+        <h3 className="text-2xl font-bold text-white mb-6">
+          Learning resources
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {learningResources.map((resource, index) => {
             const Icon = resource.icon;
@@ -372,13 +374,13 @@ export default function DocsOverview() {
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-2xl font-bold text-white">Recent Updates</h3>
           <Button
-          asChild
-          variant="outline"
-          size="sm"
-          className="border-slate-600 text-white hover:bg-slate-800"
-        >
-          <Link to="/changelog">View All Updates</Link>
-        </Button>
+            asChild
+            variant="outline"
+            size="sm"
+            className="border-slate-600 text-white hover:bg-slate-800"
+          >
+            <Link to="/changelog">View All Updates</Link>
+          </Button>
         </div>
         <div className="space-y-4">
           {featuredUpdates.map((update, index) => (
@@ -472,10 +474,13 @@ export default function DocsOverview() {
 
       {/* Support CTA */}
       <div className="mt-12 rounded-2xl border border-purple-500/40 bg-purple-900/20 p-8 text-center">
-        <h3 className="text-3xl font-semibold text-white mb-4">Need help getting started?</h3>
+        <h3 className="text-3xl font-semibold text-white mb-4">
+          Need help getting started?
+        </h3>
         <p className="text-gray-300 max-w-3xl mx-auto mb-6">
-          Our documentation team updates these guides weekly. If you&apos;re looking for tailored onboarding,
-          architecture reviews, or migration support, reach out and we&apos;ll connect you with the right experts.
+          Our documentation team updates these guides weekly. If you&apos;re
+          looking for tailored onboarding, architecture reviews, or migration
+          support, reach out and we&apos;ll connect you with the right experts.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button

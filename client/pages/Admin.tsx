@@ -171,12 +171,17 @@ export default function Admin() {
               <CardHeader>
                 <CardTitle className="text-red-400">Access denied</CardTitle>
                 <CardDescription>
-                  This panel is restricted to {ownerEmail}. If you need access, contact the site owner.
+                  This panel is restricted to {ownerEmail}. If you need access,
+                  contact the site owner.
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex gap-2">
-                <Button onClick={() => navigate("/dashboard")}>Go to dashboard</Button>
-                <Button variant="outline" onClick={() => navigate("/support")}>Contact support</Button>
+                <Button onClick={() => navigate("/dashboard")}>
+                  Go to dashboard
+                </Button>
+                <Button variant="outline" onClick={() => navigate("/support")}>
+                  Contact support
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -191,7 +196,8 @@ export default function Admin() {
 
   const selectedMember = useMemo(
     () =>
-      managedProfiles.find((profile) => profile.id === selectedMemberId) ?? null,
+      managedProfiles.find((profile) => profile.id === selectedMemberId) ??
+      null,
     [managedProfiles, selectedMemberId],
   );
 
@@ -200,7 +206,9 @@ export default function Admin() {
   const featuredStudios = studios.length;
   const pendingApplications = applications.filter((app) => {
     const status = (app.status ?? "").toLowerCase();
-    return status !== "approved" && status !== "completed" && status !== "closed";
+    return (
+      status !== "approved" && status !== "completed" && status !== "closed"
+    );
   }).length;
 
   const overviewStats = useMemo(
@@ -209,7 +217,9 @@ export default function Admin() {
         title: "Total members",
         value: totalMembers ? totalMembers.toString() : "—",
         description: "Profiles synced from AeThex identity service.",
-        trend: totalMembers ? `${totalMembers} active profiles` : "Awaiting sync",
+        trend: totalMembers
+          ? `${totalMembers} active profiles`
+          : "Awaiting sync",
         icon: Users,
         tone: "blue" as const,
       },
@@ -365,23 +375,37 @@ export default function Admin() {
         <div className="container mx-auto px-4 max-w-6xl space-y-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-gradient">Admin Control Center</h1>
+              <h1 className="text-3xl font-bold text-gradient">
+                Admin Control Center
+              </h1>
               <p className="text-muted-foreground">
                 Unified oversight for AeThex operations, content, and community.
               </p>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="border-green-500/50 text-green-300">
+                <Badge
+                  variant="outline"
+                  className="border-green-500/50 text-green-300"
+                >
                   Owner
                 </Badge>
-                <Badge variant="outline" className="border-blue-500/50 text-blue-300">
+                <Badge
+                  variant="outline"
+                  className="border-blue-500/50 text-blue-300"
+                >
                   Admin
                 </Badge>
-                <Badge variant="outline" className="border-purple-500/50 text-purple-300">
+                <Badge
+                  variant="outline"
+                  className="border-purple-500/50 text-purple-300"
+                >
                   Founder
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground">
-                Signed in as <span className="text-foreground">{normalizedEmail || ownerEmail}</span>
+                Signed in as{" "}
+                <span className="text-foreground">
+                  {normalizedEmail || ownerEmail}
+                </span>
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -391,11 +415,17 @@ export default function Admin() {
               <Button variant="outline" onClick={() => navigate("/profile")}>
                 Profile
               </Button>
-              <Button onClick={() => setActiveTab("content")}>Create update</Button>
+              <Button onClick={() => setActiveTab("content")}>
+                Create update
+              </Button>
             </div>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="space-y-6"
+          >
             <TabsList className="w-full justify-start gap-2 overflow-x-auto border border-border/40 bg-background/40 px-1 py-1 backdrop-blur">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
@@ -425,23 +455,31 @@ export default function Admin() {
                       <Command className="h-5 w-5 text-aethex-300" />
                       <CardTitle>Quick actions</CardTitle>
                     </div>
-                    <CardDescription>Launch frequent administrative workflows.</CardDescription>
+                    <CardDescription>
+                      Launch frequent administrative workflows.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-3">
-                    {quickActions.map(({ label, description, icon: ActionIcon, action }) => (
-                      <button
-                        key={label}
-                        type="button"
-                        onClick={action}
-                        className="group flex items-start gap-3 rounded-lg border border-border/30 bg-background/40 px-4 py-3 text-left transition hover:border-aethex-400/60 hover:bg-background/60"
-                      >
-                        <ActionIcon className="mt-0.5 h-5 w-5 text-aethex-400 transition group-hover:text-aethex-200" />
-                        <div className="space-y-1">
-                          <p className="font-medium text-foreground">{label}</p>
-                          <p className="text-sm text-muted-foreground">{description}</p>
-                        </div>
-                      </button>
-                    ))}
+                    {quickActions.map(
+                      ({ label, description, icon: ActionIcon, action }) => (
+                        <button
+                          key={label}
+                          type="button"
+                          onClick={action}
+                          className="group flex items-start gap-3 rounded-lg border border-border/30 bg-background/40 px-4 py-3 text-left transition hover:border-aethex-400/60 hover:bg-background/60"
+                        >
+                          <ActionIcon className="mt-0.5 h-5 w-5 text-aethex-400 transition group-hover:text-aethex-200" />
+                          <div className="space-y-1">
+                            <p className="font-medium text-foreground">
+                              {label}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {description}
+                            </p>
+                          </div>
+                        </button>
+                      ),
+                    )}
                   </CardContent>
                 </Card>
 
@@ -451,21 +489,37 @@ export default function Admin() {
                       <Shield className="h-5 w-5 text-green-400" />
                       <CardTitle>Access control</CardTitle>
                     </div>
-                    <CardDescription>Owner-only access enforced via Supabase roles.</CardDescription>
+                    <CardDescription>
+                      Owner-only access enforced via Supabase roles.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <ul className="space-y-2 leading-relaxed">
                       <li>
-                        Owner email: <span className="text-foreground">{ownerEmail}</span>
+                        Owner email:{" "}
+                        <span className="text-foreground">{ownerEmail}</span>
                       </li>
-                      <li>Roles are provisioned automatically on owner sign-in.</li>
-                      <li>Grant additional admins by updating Supabase role assignments.</li>
+                      <li>
+                        Roles are provisioned automatically on owner sign-in.
+                      </li>
+                      <li>
+                        Grant additional admins by updating Supabase role
+                        assignments.
+                      </li>
                     </ul>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={() => setActiveTab("community")}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setActiveTab("community")}
+                      >
                         View members
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => navigate("/support")}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate("/support")}
+                      >
                         Contact support
                       </Button>
                     </div>
@@ -482,12 +536,18 @@ export default function Admin() {
                     <CardTitle>Content overview</CardTitle>
                   </div>
                   <CardDescription>
-                    {publishedPosts} published {publishedPosts === 1 ? "post" : "posts"} · {loadingPosts ? "refreshing content…" : "latest Supabase sync"}
+                    {publishedPosts} published{" "}
+                    {publishedPosts === 1 ? "post" : "posts"} ·{" "}
+                    {loadingPosts
+                      ? "refreshing content…"
+                      : "latest Supabase sync"}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground space-y-2">
                   <p>
-                    Drafts and announcements appear instantly on the public blog after saving. Use scheduled releases for major updates and keep thumbnails optimised for 1200×630.
+                    Drafts and announcements appear instantly on the public blog
+                    after saving. Use scheduled releases for major updates and
+                    keep thumbnails optimised for 1200×630.
                   </p>
                 </CardContent>
               </Card>
@@ -498,7 +558,9 @@ export default function Admin() {
                     <PenTool className="h-5 w-5 text-aethex-400" />
                     <CardTitle className="text-lg">Blog posts</CardTitle>
                   </div>
-                  <CardDescription>Manage blog content stored in Supabase</CardDescription>
+                  <CardDescription>
+                    Manage blog content stored in Supabase
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex flex-wrap items-center gap-3">
@@ -538,7 +600,8 @@ export default function Admin() {
 
                   {blogPosts.length === 0 && (
                     <p className="text-sm text-muted-foreground">
-                      No posts loaded yet. Use “Refresh” or “Add post” to start managing content.
+                      No posts loaded yet. Use “Refresh” or “Add post” to start
+                      managing content.
                     </p>
                   )}
 
@@ -680,14 +743,28 @@ export default function Admin() {
                     <UserCog className="h-5 w-5 text-teal-300" />
                     <CardTitle>Community actions</CardTitle>
                   </div>
-                  <CardDescription>Grow the network and celebrate contributors.</CardDescription>
+                  <CardDescription>
+                    Grow the network and celebrate contributors.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-2">
-                  <Button size="sm" onClick={() => navigate("/community")}>Open community hub</Button>
-                  <Button size="sm" variant="outline" onClick={() => navigate("/mentorship")}>
+                  <Button size="sm" onClick={() => navigate("/community")}>
+                    Open community hub
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => navigate("/mentorship")}
+                  >
                     Manage mentorships
                   </Button>
-                  <Button size="sm" variant="outline" onClick={() => navigate("/support")}>Support queue</Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => navigate("/support")}
+                  >
+                    Support queue
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -700,7 +777,9 @@ export default function Admin() {
                       <Settings className="h-5 w-5 text-yellow-300" />
                       <CardTitle>Featured studios</CardTitle>
                     </div>
-                    <CardDescription>Control studios highlighted across AeThex experiences.</CardDescription>
+                    <CardDescription>
+                      Control studios highlighted across AeThex experiences.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {studios.map((s, i) => (
@@ -762,7 +841,9 @@ export default function Admin() {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => setStudios(studios.filter((_, idx) => idx !== i))}
+                            onClick={() =>
+                              setStudios(studios.filter((_, idx) => idx !== i))
+                            }
                           >
                             Remove
                           </Button>
@@ -773,7 +854,9 @@ export default function Admin() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => setStudios([...studios, { name: "New Studio" }])}
+                        onClick={() =>
+                          setStudios([...studios, { name: "New Studio" }])
+                        }
                       >
                         Add studio
                       </Button>
@@ -788,12 +871,14 @@ export default function Admin() {
                           if (!resp.ok) {
                             aethexToast.error({
                               title: "Save failed",
-                              description: "Unable to persist featured studios.",
+                              description:
+                                "Unable to persist featured studios.",
                             });
                           } else {
                             aethexToast.success({
                               title: "Studios saved",
-                              description: "Featured studios updated successfully.",
+                              description:
+                                "Featured studios updated successfully.",
                             });
                           }
                         }}
@@ -810,7 +895,9 @@ export default function Admin() {
                       <ClipboardList className="h-5 w-5 text-sky-300" />
                       <CardTitle>Project applications</CardTitle>
                     </div>
-                    <CardDescription>Review collaboration requests and prioritize approvals.</CardDescription>
+                    <CardDescription>
+                      Review collaboration requests and prioritize approvals.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -847,7 +934,9 @@ export default function Admin() {
                           >
                             <div className="flex flex-wrap items-center justify-between gap-2">
                               <p className="font-medium text-foreground">
-                                {app.applicant_name || app.applicant_email || "Unknown applicant"}
+                                {app.applicant_name ||
+                                  app.applicant_email ||
+                                  "Unknown applicant"}
                               </p>
                               <Badge variant="outline" className="capitalize">
                                 {(app.status ?? "pending").toLowerCase()}
@@ -858,14 +947,18 @@ export default function Admin() {
                             </p>
                             {app.created_at ? (
                               <p className="text-[11px] text-muted-foreground/80">
-                                Submitted {new Date(app.created_at).toLocaleString()}
+                                Submitted{" "}
+                                {new Date(app.created_at).toLocaleString()}
                               </p>
                             ) : null}
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p>No applications on file. Encourage partners to apply via briefs.</p>
+                      <p>
+                        No applications on file. Encourage partners to apply via
+                        briefs.
+                      </p>
                     )}
                   </CardContent>
                 </Card>
@@ -876,7 +969,9 @@ export default function Admin() {
                       <Activity className="h-5 w-5 text-orange-300" />
                       <CardTitle>System status</CardTitle>
                     </div>
-                    <CardDescription>Auth, database, and realtime services.</CardDescription>
+                    <CardDescription>
+                      Auth, database, and realtime services.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground space-y-1">
                     <p>Auth: Operational</p>
@@ -891,11 +986,16 @@ export default function Admin() {
                       <UserCog className="h-5 w-5 text-teal-300" />
                       <CardTitle>Your account</CardTitle>
                     </div>
-                    <CardDescription>Owner privileges are active.</CardDescription>
+                    <CardDescription>
+                      Owner privileges are active.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground space-y-2">
                     <p>Signed in as {user.email}.</p>
-                    <p>You have full administrative access across AeThex services.</p>
+                    <p>
+                      You have full administrative access across AeThex
+                      services.
+                    </p>
                   </CardContent>
                 </Card>
               </div>

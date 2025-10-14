@@ -183,7 +183,10 @@ let shouldEnableSkipAgent = false;
 // Example override (console): window.__AETHEX_SKIP_AGENT_CONFIG = { src: 'https://example.com/agent.js', id: '...' };
 const getRuntimeConfig = () => {
   try {
-    if (typeof window !== "undefined" && (window as any).__AETHEX_SKIP_AGENT_CONFIG) {
+    if (
+      typeof window !== "undefined" &&
+      (window as any).__AETHEX_SKIP_AGENT_CONFIG
+    ) {
       return (window as any).__AETHEX_SKIP_AGENT_CONFIG as {
         src?: string;
         id?: string;
@@ -217,7 +220,10 @@ const createSkipAgentTheme = () => {
 
 const isDocsPath = () => {
   try {
-    return typeof window !== "undefined" && window.location.pathname.startsWith("/docs");
+    return (
+      typeof window !== "undefined" &&
+      window.location.pathname.startsWith("/docs")
+    );
   } catch (e) {
     return false;
   }
@@ -273,9 +279,9 @@ const isSkipAgentReachable = async (): Promise<boolean> => {
       throw new Error(`Agent status request failed with ${response.status}`);
     }
 
-    const payload = (await response.json().catch(() => null)) as
-      | { active?: boolean }
-      | null;
+    const payload = (await response.json().catch(() => null)) as {
+      active?: boolean;
+    } | null;
 
     if (payload && payload.active === false) {
       throw new Error("Agent reported inactive");
@@ -413,7 +419,9 @@ const loadSkipAgent = async (): Promise<void> => {
     }
 
     const scriptText = await response.text();
-    const blobUrl = URL.createObjectURL(new Blob([scriptText], { type: "application/javascript" }));
+    const blobUrl = URL.createObjectURL(
+      new Blob([scriptText], { type: "application/javascript" }),
+    );
 
     const script = document.createElement("script");
     script.id = SKIP_AGENT_SCRIPT_ID;

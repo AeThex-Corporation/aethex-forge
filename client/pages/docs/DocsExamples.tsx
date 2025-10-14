@@ -142,19 +142,27 @@ export default function DocsExamples() {
           <Blocks className="mr-2 h-3 w-3" />
           Examples & Templates
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">Production-ready patterns you can copy</h2>
+        <h2 className="text-3xl font-semibold text-white">
+          Production-ready patterns you can copy
+        </h2>
         <p className="text-gray-300 max-w-3xl">
-          Explore curated examples covering backend services, realtime overlays, automation scripts, and workflow
-          integrations. Each project includes detailed READMEs, infrastructure diagrams, and deployment runbooks.
+          Explore curated examples covering backend services, realtime overlays,
+          automation scripts, and workflow integrations. Each project includes
+          detailed READMEs, infrastructure diagrams, and deployment runbooks.
         </p>
       </section>
 
       <section id="code-gallery" className="grid gap-6 lg:grid-cols-3">
         {exampleSnippets.map((snippet) => (
-          <Card key={snippet.title} className="bg-slate-900/60 border-slate-700">
+          <Card
+            key={snippet.title}
+            className="bg-slate-900/60 border-slate-700"
+          >
             <CardHeader className="space-y-2">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-white text-lg">{snippet.title}</CardTitle>
+                <CardTitle className="text-white text-lg">
+                  {snippet.title}
+                </CardTitle>
                 <Badge variant="outline">{snippet.language}</Badge>
               </div>
               <CardDescription className="text-gray-300 text-sm">
@@ -165,7 +173,10 @@ export default function DocsExamples() {
               <pre className="rounded-lg border border-slate-700 bg-slate-950/60 p-4 text-xs text-emerald-200 overflow-x-auto">
                 <code>{snippet.code}</code>
               </pre>
-              <Button asChild className="w-full bg-emerald-500 hover:bg-emerald-400 text-black">
+              <Button
+                asChild
+                className="w-full bg-emerald-500 hover:bg-emerald-400 text-black"
+              >
                 <Link to={snippet.href} target="_blank" rel="noreferrer">
                   <Github className="mr-2 h-4 w-4" />
                   Open repository
@@ -180,13 +191,17 @@ export default function DocsExamples() {
       <section id="templates" className="space-y-4">
         <div className="flex items-center gap-3">
           <Flame className="h-6 w-6 text-emerald-300" />
-          <h3 className="text-2xl font-semibold text-white">Deploy faster with templates</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Deploy faster with templates
+          </h3>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {integrationIdeas.map((idea) => (
             <Card key={idea.title} className="bg-slate-900/60 border-slate-700">
               <CardHeader>
-                <CardTitle className="text-white text-base">{idea.title}</CardTitle>
+                <CardTitle className="text-white text-base">
+                  {idea.title}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-gray-300 text-sm mb-4">
@@ -208,23 +223,38 @@ export default function DocsExamples() {
         </div>
       </section>
 
-      <section id="share" className="rounded-2xl border border-emerald-500/40 bg-emerald-900/20 p-8">
+      <section
+        id="share"
+        className="rounded-2xl border border-emerald-500/40 bg-emerald-900/20 p-8"
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <h3 className="text-2xl font-semibold text-white">Share what you build</h3>
+            <h3 className="text-2xl font-semibold text-white">
+              Share what you build
+            </h3>
             <p className="text-gray-200 max-w-2xl text-sm">
-              Publish your own templates or improvements by opening a pull request to the public AeThex examples
-              repository. Every accepted contribution is highlighted in the monthly creator spotlight.
+              Publish your own templates or improvements by opening a pull
+              request to the public AeThex examples repository. Every accepted
+              contribution is highlighted in the monthly creator spotlight.
             </p>
           </div>
           <div className="flex gap-3">
-            <Button asChild size="lg" className="bg-emerald-500 hover:bg-emerald-400 text-black">
+            <Button
+              asChild
+              size="lg"
+              className="bg-emerald-500 hover:bg-emerald-400 text-black"
+            >
               <Link to="https://github.com/aethex/examples" target="_blank">
                 <Code2 className="mr-2 h-5 w-5" />
                 Contribute on GitHub
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-emerald-300/60 text-emerald-100">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-emerald-300/60 text-emerald-100"
+            >
               <Link to="/community">
                 <Share2 className="mr-2 h-5 w-5" />
                 Showcase to the community
@@ -234,16 +264,27 @@ export default function DocsExamples() {
         </div>
       </section>
 
-      <section id="services" className="rounded-2xl border border-emerald-500/20 bg-slate-900/80 p-8">
+      <section
+        id="services"
+        className="rounded-2xl border border-emerald-500/20 bg-slate-900/80 p-8"
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <h4 className="text-xl font-semibold text-white">Need a custom integration?</h4>
+            <h4 className="text-xl font-semibold text-white">
+              Need a custom integration?
+            </h4>
             <p className="text-gray-300 text-sm">
-              Our professional services team partners with studios to build tailored pipelines, analytics dashboards,
-              and automation workflows on top of AeThex.
+              Our professional services team partners with studios to build
+              tailored pipelines, analytics dashboards, and automation workflows
+              on top of AeThex.
             </p>
           </div>
-          <Button asChild variant="outline" size="lg" className="border-emerald-300/60 text-emerald-100">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="border-emerald-300/60 text-emerald-100"
+          >
             <Link to="/consulting">
               <Globe className="mr-2 h-5 w-5" />
               Talk to AeThex consultants

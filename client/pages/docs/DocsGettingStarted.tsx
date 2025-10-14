@@ -153,27 +153,32 @@ const platformHighlights = [
 const explorationLinks = [
   {
     title: "Platform Walkthrough",
-    description: "Tour the dashboard, notification center, and collaboration features.",
+    description:
+      "Tour the dashboard, notification center, and collaboration features.",
     href: "/dashboard",
   },
   {
     title: "Platform documentation",
-    description: "Share the high-level platform overview with non-technical teammates.",
+    description:
+      "Share the high-level platform overview with non-technical teammates.",
     href: "/docs/platform",
   },
   {
     title: "API Reference",
-    description: "Review authentication flows, REST endpoints, and webhook schemas.",
+    description:
+      "Review authentication flows, REST endpoints, and webhook schemas.",
     href: "/docs/api",
   },
   {
     title: "Tutorial Library",
-    description: "Follow guided builds for matchmaking services, player analytics, and live events.",
+    description:
+      "Follow guided builds for matchmaking services, player analytics, and live events.",
     href: "/docs/tutorials",
   },
   {
     title: "Community Support",
-    description: "Ask questions, share templates, and pair up with mentors in the public forums.",
+    description:
+      "Ask questions, share templates, and pair up with mentors in the public forums.",
     href: "/community",
   },
   {
@@ -195,31 +200,40 @@ export default function DocsGettingStarted() {
           Launch your first AeThex project in under 30 minutes
         </h2>
         <p className="text-gray-300 max-w-3xl">
-          This guide walks through the minimum setup required to ship a production-ready AeThex application.
-          Complete the prerequisites, initialize a workspace with the CLI, and review the deployment checklist
-          before inviting collaborators. Use the platform highlights below to brief product, community, and live-ops
-          teams on everything available beyond deployment.
+          This guide walks through the minimum setup required to ship a
+          production-ready AeThex application. Complete the prerequisites,
+          initialize a workspace with the CLI, and review the deployment
+          checklist before inviting collaborators. Use the platform highlights
+          below to brief product, community, and live-ops teams on everything
+          available beyond deployment.
         </p>
       </section>
 
       <section id="categories" className="space-y-6">
         <div className="text-center space-y-2">
-          <h3 className="text-2xl font-semibold text-white">Documentation categories</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Documentation categories
+          </h3>
           <p className="text-gray-300 max-w-2xl mx-auto text-sm">
-            Jump into the area you need most. Each category below is mirrored in Builder CMS for collaborative
-            editing.
+            Jump into the area you need most. Each category below is mirrored in
+            Builder CMS for collaborative editing.
           </p>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
           {docCategories.map((category) => (
-            <Card key={category.title} className="border-border/50 hover:border-aethex-400/40 transition-all">
+            <Card
+              key={category.title}
+              className="border-border/50 hover:border-aethex-400/40 transition-all"
+            >
               <CardHeader>
                 <div
                   className={`inline-flex rounded-lg bg-gradient-to-r ${category.color} px-3 py-1 text-xs uppercase tracking-wider text-white`}
                 >
                   {category.docs} docs
                 </div>
-                <CardTitle className="text-xl text-white mt-3">{category.title}</CardTitle>
+                <CardTitle className="text-xl text-white mt-3">
+                  {category.title}
+                </CardTitle>
                 <CardDescription className="text-gray-300">
                   {category.description}
                 </CardDescription>
@@ -253,7 +267,12 @@ export default function DocsGettingStarted() {
                 {item.description}
               </CardDescription>
               <Button asChild variant="outline" className="justify-start">
-                <Link to={item.actionHref} target={item.actionHref.startsWith("http") ? "_blank" : undefined}>
+                <Link
+                  to={item.actionHref}
+                  target={
+                    item.actionHref.startsWith("http") ? "_blank" : undefined
+                  }
+                >
                   <ArrowRight className="mr-2 h-4 w-4" />
                   {item.actionLabel}
                 </Link>
@@ -266,13 +285,18 @@ export default function DocsGettingStarted() {
       <section id="platform-highlights" className="space-y-6">
         <div className="flex items-center gap-3">
           <LayoutDashboard className="h-6 w-6 text-purple-400" />
-          <h3 className="text-2xl font-semibold text-white">Explore the platform</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Explore the platform
+          </h3>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
           {platformHighlights.map((item) => {
             const Icon = item.icon;
             return (
-              <Card key={item.title} className="bg-slate-900/60 border-slate-700">
+              <Card
+                key={item.title}
+                className="bg-slate-900/60 border-slate-700"
+              >
                 <CardHeader>
                   <CardTitle className="text-white text-lg flex items-center gap-3">
                     <Icon className="h-5 w-5 text-purple-300" />
@@ -302,7 +326,9 @@ export default function DocsGettingStarted() {
                 <Badge variant="outline" className="w-fit">
                   Step {index + 1}
                 </Badge>
-                <CardTitle className="text-white text-lg">{step.title}</CardTitle>
+                <CardTitle className="text-white text-lg">
+                  {step.title}
+                </CardTitle>
                 <CardDescription className="text-gray-300">
                   {step.description}
                 </CardDescription>
@@ -342,7 +368,10 @@ export default function DocsGettingStarted() {
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {explorationLinks.map((link) => (
-            <Card key={link.title} className="bg-slate-900/60 border-slate-700 hover:border-purple-500/40 transition-colors">
+            <Card
+              key={link.title}
+              className="bg-slate-900/60 border-slate-700 hover:border-purple-500/40 transition-colors"
+            >
               <CardHeader>
                 <CardTitle className="flex items-center justify-between text-white text-base">
                   {link.title}
@@ -369,26 +398,42 @@ export default function DocsGettingStarted() {
         </div>
       </section>
 
-      <section id="deploy" className="rounded-2xl border border-purple-500/40 bg-purple-900/20 p-8">
+      <section
+        id="deploy"
+        className="rounded-2xl border border-purple-500/40 bg-purple-900/20 p-8"
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <h3 className="text-2xl font-semibold text-white">
               Ready to automate your first deployment?
             </h3>
             <p className="text-gray-300 max-w-2xl">
-              Run <code className="rounded bg-black/40 px-2 py-1 text-purple-200">aethex deploy</code> once you have
-              verified environment variables, migrations, and smoke tests. Ship changes with confidence knowing
-              guardrails are enabled by default.
+              Run{" "}
+              <code className="rounded bg-black/40 px-2 py-1 text-purple-200">
+                aethex deploy
+              </code>{" "}
+              once you have verified environment variables, migrations, and
+              smoke tests. Ship changes with confidence knowing guardrails are
+              enabled by default.
             </p>
           </div>
           <div className="flex gap-3">
-            <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-500">
+            <Button
+              asChild
+              size="lg"
+              className="bg-purple-600 hover:bg-purple-500"
+            >
               <Link to="/docs/cli">
                 <Download className="mr-2 h-5 w-5" />
                 Review CLI commands
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-purple-400/60 text-purple-200">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-purple-400/60 text-purple-200"
+            >
               <Link to="/support">
                 <Code className="mr-2 h-5 w-5" />
                 Talk to an engineer

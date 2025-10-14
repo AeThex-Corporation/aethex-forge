@@ -33,15 +33,18 @@ export const AdminStatCard = ({
     <Card className="bg-card/60 border-border/40 backdrop-blur">
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base text-foreground/90">{title}</CardTitle>
-          <Badge variant="outline" className="border-border/40 text-xs text-muted-foreground">
+          <CardTitle className="text-base text-foreground/90">
+            {title}
+          </CardTitle>
+          <Badge
+            variant="outline"
+            className="border-border/40 text-xs text-muted-foreground"
+          >
             Admin metric
           </Badge>
         </div>
         <div className="flex items-center justify-between">
-          <div className="text-3xl font-semibold text-gradient">
-            {value}
-          </div>
+          <div className="text-3xl font-semibold text-gradient">{value}</div>
           <Icon className={`h-8 w-8 ${toneConfig[tone]}`} />
         </div>
         {trend ? (
@@ -51,7 +54,9 @@ export const AdminStatCard = ({
       {(description || actions) && (
         <CardContent className="space-y-3">
           {description ? (
-            <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {description}
+            </p>
           ) : null}
           {actions}
         </CardContent>

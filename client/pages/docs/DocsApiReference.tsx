@@ -69,11 +69,13 @@ const webhookTopics = [
   },
   {
     event: "incident.opened",
-    description: "Raised when monitoring detects outages or SLA breaches in production environments.",
+    description:
+      "Raised when monitoring detects outages or SLA breaches in production environments.",
   },
   {
     event: "member.invited",
-    description: "Notify downstream systems when a collaborator invitation is created or accepted.",
+    description:
+      "Notify downstream systems when a collaborator invitation is created or accepted.",
   },
 ];
 
@@ -108,11 +110,13 @@ export default function DocsApiReference() {
           <ServerCog className="mr-2 h-3 w-3" />
           API Reference
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">Integrate programmatically with the AeThex API</h2>
+        <h2 className="text-3xl font-semibold text-white">
+          Integrate programmatically with the AeThex API
+        </h2>
         <p className="text-gray-300 max-w-3xl">
-          The REST API exposes every core capability of the AeThex platform. Authenticate with OAuth 2.1 or
-          personal access tokens, call idempotent endpoints, and subscribe to webhooks to react to changes in real
-          time.
+          The REST API exposes every core capability of the AeThex platform.
+          Authenticate with OAuth 2.1 or personal access tokens, call idempotent
+          endpoints, and subscribe to webhooks to react to changes in real time.
         </p>
       </section>
 
@@ -125,16 +129,20 @@ export default function DocsApiReference() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-gray-300">
-            <p>Use the OAuth client credentials grant for service-to-service integrations:</p>
+            <p>
+              Use the OAuth client credentials grant for service-to-service
+              integrations:
+            </p>
             <pre className="rounded-lg border border-slate-700 bg-slate-950/60 p-4 text-sm text-blue-200">
-{`curl -X POST https://api.aethex.dev/v1/auth/token \
+              {`curl -X POST https://api.aethex.dev/v1/auth/token \
   -u CLIENT_ID:CLIENT_SECRET \
   -d "grant_type=client_credentials" \
   -d "scope=projects:read deployments:write"`}
             </pre>
             <p>
-              Prefer user-scoped access? Direct builders through the hosted OAuth consent screen and exchange their
-              authorization code using the same endpoint.
+              Prefer user-scoped access? Direct builders through the hosted
+              OAuth consent screen and exchange their authorization code using
+              the same endpoint.
             </p>
           </CardContent>
         </Card>
@@ -148,10 +156,11 @@ export default function DocsApiReference() {
           </CardHeader>
           <CardContent className="space-y-4 text-gray-300">
             <p className="text-gray-300">
-              Call the Projects endpoint with your Bearer token and inspect pagination headers for large result sets.
+              Call the Projects endpoint with your Bearer token and inspect
+              pagination headers for large result sets.
             </p>
             <pre className="rounded-lg border border-slate-700 bg-slate-950/60 p-4 text-sm text-teal-200">
-{`fetch("https://api.aethex.dev/v1/projects?page=1&limit=25", {
+              {`fetch("https://api.aethex.dev/v1/projects?page=1&limit=25", {
   headers: {
     Authorization: "Bearer ${TOKEN}",
     "AeThex-Environment": "production",
@@ -162,9 +171,16 @@ export default function DocsApiReference() {
 });`}
             </pre>
             <p>
-              Responses include <code className="rounded bg-black/40 px-2 py-1 text-blue-200">X-RateLimit-Remaining</code>
-              and <code className="rounded bg-black/40 px-2 py-1 text-blue-200">X-Request-ID</code> headers. Share the
-              request ID when contacting support for faster triage.
+              Responses include{" "}
+              <code className="rounded bg-black/40 px-2 py-1 text-blue-200">
+                X-RateLimit-Remaining
+              </code>
+              and{" "}
+              <code className="rounded bg-black/40 px-2 py-1 text-blue-200">
+                X-Request-ID
+              </code>{" "}
+              headers. Share the request ID when contacting support for faster
+              triage.
             </p>
           </CardContent>
         </Card>
@@ -189,7 +205,9 @@ export default function DocsApiReference() {
                 {apiEndpoints.map((endpoint) => (
                   <TableRow key={`${endpoint.method}-${endpoint.path}`}>
                     <TableCell>
-                      <Badge className="bg-blue-600/30 text-blue-100">{endpoint.method}</Badge>
+                      <Badge className="bg-blue-600/30 text-blue-100">
+                        {endpoint.method}
+                      </Badge>
                     </TableCell>
                     <TableCell className="font-mono text-purple-200">
                       {endpoint.path}
@@ -201,7 +219,8 @@ export default function DocsApiReference() {
                 ))}
               </TableBody>
               <TableCaption>
-                Need deeper coverage? The JavaScript SDK ships with typed request builders for every endpoint.
+                Need deeper coverage? The JavaScript SDK ships with typed
+                request builders for every endpoint.
               </TableCaption>
             </Table>
           </CardContent>
@@ -223,12 +242,23 @@ export default function DocsApiReference() {
                 className="rounded-lg border border-slate-700 bg-slate-950/40 p-4"
               >
                 <p className="font-mono text-sm text-blue-300">{topic.event}</p>
-                <p className="text-gray-300 text-sm mt-2">{topic.description}</p>
+                <p className="text-gray-300 text-sm mt-2">
+                  {topic.description}
+                </p>
               </div>
             ))}
             <p className="text-gray-400 text-sm">
-              Configure webhook destinations and signing secrets from the <Link to="/dashboard" className="text-blue-300 hover:text-blue-200">dashboard</Link>.
-              Verify requests with the <code className="rounded bg-black/40 px-2 py-1 text-blue-200">AeThex-Signature</code>
+              Configure webhook destinations and signing secrets from the{" "}
+              <Link
+                to="/dashboard"
+                className="text-blue-300 hover:text-blue-200"
+              >
+                dashboard
+              </Link>
+              . Verify requests with the{" "}
+              <code className="rounded bg-black/40 px-2 py-1 text-blue-200">
+                AeThex-Signature
+              </code>
               header to guarantee authenticity.
             </p>
           </CardContent>
@@ -243,13 +273,22 @@ export default function DocsApiReference() {
           </CardHeader>
           <CardContent className="space-y-4 text-gray-300">
             <p className="text-gray-300">
-              All endpoints are idempotent where appropriate and support conditional requests via the
-              <code className="rounded bg-black/40 px-2 py-1 text-blue-200">If-Match</code> header.
+              All endpoints are idempotent where appropriate and support
+              conditional requests via the
+              <code className="rounded bg-black/40 px-2 py-1 text-blue-200">
+                If-Match
+              </code>{" "}
+              header.
             </p>
             <div className="grid gap-3">
               {errorExamples.map((error) => (
-                <div key={error.code} className="flex items-start gap-3 rounded-lg border border-slate-700 bg-slate-950/60 p-3">
-                  <Badge className="bg-red-600/30 text-red-200">{error.code}</Badge>
+                <div
+                  key={error.code}
+                  className="flex items-start gap-3 rounded-lg border border-slate-700 bg-slate-950/60 p-3"
+                >
+                  <Badge className="bg-red-600/30 text-red-200">
+                    {error.code}
+                  </Badge>
                   <div>
                     <p className="text-white font-medium">{error.label}</p>
                     <p className="text-sm text-gray-400">{error.hint}</p>
@@ -258,20 +297,28 @@ export default function DocsApiReference() {
               ))}
             </div>
             <p className="text-gray-300">
-              Monitor rate-limit headers and retry using an exponential backoff strategy. Persistent errors can be
-              escalated to the AeThex support team with the failing request ID.
+              Monitor rate-limit headers and retry using an exponential backoff
+              strategy. Persistent errors can be escalated to the AeThex support
+              team with the failing request ID.
             </p>
           </CardContent>
         </Card>
       </section>
 
-      <section id="resources" className="rounded-2xl border border-blue-500/40 bg-blue-900/20 p-8">
+      <section
+        id="resources"
+        className="rounded-2xl border border-blue-500/40 bg-blue-900/20 p-8"
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <h3 className="text-2xl font-semibold text-white">Ship production-ready integrations</h3>
+            <h3 className="text-2xl font-semibold text-white">
+              Ship production-ready integrations
+            </h3>
             <p className="text-gray-300 max-w-2xl">
-              Combine the REST API with event webhooks for a full-duplex integration pattern. Use the official
-              TypeScript SDK for typed helpers or generate your own client with the published OpenAPI schema.
+              Combine the REST API with event webhooks for a full-duplex
+              integration pattern. Use the official TypeScript SDK for typed
+              helpers or generate your own client with the published OpenAPI
+              schema.
             </p>
           </div>
           <div className="flex gap-3">
@@ -281,7 +328,12 @@ export default function DocsApiReference() {
                 OpenAPI explorer
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-blue-400/60 text-blue-200">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-blue-400/60 text-blue-200"
+            >
               <Link to="/docs/examples">
                 <AlertTriangle className="mr-2 h-5 w-5" />
                 See implementation patterns

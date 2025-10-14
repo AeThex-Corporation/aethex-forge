@@ -95,7 +95,11 @@ const buildProfileDraft = (profile: AethexUserProfile): ProfileDraft => ({
       : "0",
 });
 
-const ensureOwnerRoles = (roles: string[], profile: AethexUserProfile | null, ownerEmail: string) => {
+const ensureOwnerRoles = (
+  roles: string[],
+  profile: AethexUserProfile | null,
+  ownerEmail: string,
+) => {
   if (!profile) return roles;
   if ((profile.email ?? "").toLowerCase() !== ownerEmail.toLowerCase()) {
     return roles;
@@ -138,21 +142,18 @@ const AdminMemberManager = ({
     }
   }, [profiles, selectedId, onSelectedIdChange]);
 
-  const loadRoles = useCallback(
-    async (id: string) => {
-      setLoadingRoles(true);
-      try {
-        const fetched = await aethexRoleService.getUserRoles(id);
-        setRoles(normalizeRoles(fetched));
-      } catch (error) {
-        console.warn("Failed to load user roles", error);
-        setRoles(["member"]);
-      } finally {
-        setLoadingRoles(false);
-      }
-    },
-    [],
-  );
+  const loadRoles = useCallback(async (id: string) => {
+    setLoadingRoles(true);
+    try {
+      const fetched = await aethexRoleService.getUserRoles(id);
+      setRoles(normalizeRoles(fetched));
+    } catch (error) {
+      console.warn("Failed to load user roles", error);
+      setRoles(["member"]);
+    } finally {
+      setLoadingRoles(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedProfile) {
@@ -217,7 +218,8 @@ const AdminMemberManager = ({
       console.error("Failed to set user roles", error);
       aethexToast.error({
         title: "Role update failed",
-        description: error?.message || "Unable to update roles. Check Supabase policies.",
+        description:
+          error?.message || "Unable to update roles. Check Supabase policies.",
       });
     } finally {
       setSavingRoles(false);
@@ -242,7 +244,8 @@ const AdminMemberManager = ({
         updates.total_xp = Number(profileDraft.total_xp) || 0;
       }
       if (profileDraft.loyalty_points.trim().length) {
-        (updates as any).loyalty_points = Number(profileDraft.loyalty_points) || 0;
+        (updates as any).loyalty_points =
+          Number(profileDraft.loyalty_points) || 0;
       }
       await aethexUserService.updateProfile(selectedProfile.id, updates);
       aethexToast.success({
@@ -254,7 +257,9 @@ const AdminMemberManager = ({
       console.error("Failed to update profile", error);
       aethexToast.error({
         title: "Profile update failed",
-        description: error?.message || "Supabase rejected the update. Review payload and RLS policies.",
+        description:
+          error?.message ||
+          "Supabase rejected the update. Review payload and RLS policies.",
       });
     } finally {
       setSavingProfile(false);
@@ -273,7 +278,9 @@ const AdminMemberManager = ({
           <div className="flex items-center justify-between gap-2">
             <div>
               <CardTitle>Directory</CardTitle>
-              <CardDescription>Search and select members to administer.</CardDescription>
+              <CardDescription>
+                Search and select members to administer.
+              </CardDescription>
             </div>
             <Button
               variant="outline"
@@ -320,7 +327,9 @@ const AdminMemberManager = ({
                     >
                       <TableCell className="font-medium text-foreground/90">
                         <div className="flex flex-col">
-                          <span>{profile.full_name || profile.username || "Unknown"}</span>
+                          <span>
+                            {profile.full_name || profile.username || "Unknown"}
+                          </span>
                           <span className="text-xs text-muted-foreground">
                             {profile.username}
                           </span>
@@ -339,7 +348,10 @@ const AdminMemberManager = ({
                 })}
                 {!filteredProfiles.length ? (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center text-muted-foreground">
+                    <TableCell
+                      colSpan={3}
+                      className="text-center text-muted-foreground"
+                    >
                       No members found.
                     </TableCell>
                   </TableRow>
@@ -410,7 +422,11 @@ const AdminMemberManager = ({
                       </SelectTrigger>
                       <SelectContent>
                         {experienceOptions.map((option) => (
-                          <SelectItem key={option} value={option} className="capitalize">
+                          <SelectItem
+                            key={option}
+                            value={option}
+                            className="capitalize"
+                          >
                             {option.replace("_", " ")}
                           </SelectItem>
                         ))}
@@ -432,7 +448,11 @@ const AdminMemberManager = ({
                       </SelectTrigger>
                       <SelectContent>
                         {userTypeOptions.map((option) => (
-                          <SelectItem key={option} value={option} className="capitalize">
+                          <SelectItem
+                            key={option}
+                            value={option}
+                            className="capitalize"
+                          >
                             {option.replace("_", " ")}
                           </SelectItem>
                         ))}
@@ -463,7 +483,9 @@ const AdminMemberManager = ({
                       value={profileDraft.level}
                       onChange={(event) =>
                         setProfileDraft((draft) =>
-                          draft ? { ...draft, level: event.target.value } : draft,
+                          draft
+                            ? { ...draft, level: event.target.value }
+                            : draft,
                         )
                       }
                       inputMode="numeric"
@@ -553,7 +575,10 @@ const AdminMemberManager = ({
                         variant={active ? "default" : "outline"}
                         size="sm"
                         onClick={() => handleRoleToggle(role)}
-                        className={cn("capitalize", active && "bg-aethex-500/80")}
+                        className={cn(
+                          "capitalize",
+                          active && "bg-aethex-500/80",
+                        )}
                       >
                         {role}
                       </Button>
@@ -587,7 +612,11 @@ const AdminMemberManager = ({
                     </span>
                   ) : (
                     roles.map((role) => (
-                      <Badge key={role} variant="outline" className="capitalize">
+                      <Badge
+                        key={role}
+                        variant="outline"
+                        className="capitalize"
+                      >
                         {role}
                       </Badge>
                     ))
@@ -610,7 +639,9 @@ const AdminMemberManager = ({
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => selectedProfile && loadRoles(selectedProfile.id)}
+                    onClick={() =>
+                      selectedProfile && loadRoles(selectedProfile.id)
+                    }
                     disabled={loadingRoles}
                   >
                     <RefreshCw className="mr-2 h-4 w-4" /> Reload

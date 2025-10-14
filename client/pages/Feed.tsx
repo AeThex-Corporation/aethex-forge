@@ -84,9 +84,9 @@ export default function Feed() {
   const [isLoading, setIsLoading] = useState(true);
   const [following, setFollowing] = useState<string[]>([]);
   const [items, setItems] = useState<FeedItem[]>([]);
-  const [activeFilter, setActiveFilter] = useState<"all" | "following" | "trending">(
-    "all",
-  );
+  const [activeFilter, setActiveFilter] = useState<
+    "all" | "following" | "trending"
+  >("all");
 
   const fetchFeed = useCallback(async () => {
     setIsLoading(true);
@@ -202,11 +202,14 @@ export default function Feed() {
   const filteredItems = useMemo(() => {
     if (activeFilter === "following") {
       return items.filter(
-        (item) => isFollowingAuthor(item.authorId) || item.authorId === user?.id,
+        (item) =>
+          isFollowingAuthor(item.authorId) || item.authorId === user?.id,
       );
     }
     if (activeFilter === "trending") {
-      return [...items].sort((a, b) => b.likes + b.comments - (a.likes + a.comments));
+      return [...items].sort(
+        (a, b) => b.likes + b.comments - (a.likes + a.comments),
+      );
     }
     return items;
   }, [activeFilter, isFollowingAuthor, items, user?.id]);
@@ -259,7 +262,8 @@ export default function Feed() {
   const totalEngagement = useMemo(
     () =>
       items.reduce(
-        (acc, item) => acc + (Number(item.likes) || 0) + (Number(item.comments) || 0),
+        (acc, item) =>
+          acc + (Number(item.likes) || 0) + (Number(item.comments) || 0),
         0,
       ),
     [items],
@@ -271,7 +275,10 @@ export default function Feed() {
   }, [items.length, totalEngagement]);
 
   const handleScrollToComposer = useCallback(() => {
-    composerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    composerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   }, []);
 
   const handleManualRefresh = useCallback(() => {
@@ -280,7 +287,11 @@ export default function Feed() {
 
   if (loading || (isLoading && items.length === 0)) {
     return (
-      <LoadingScreen message="Loading your feed..." showProgress duration={1000} />
+      <LoadingScreen
+        message="Loading your feed..."
+        showProgress
+        duration={1000}
+      />
     );
   }
 
@@ -297,11 +308,15 @@ export default function Feed() {
                     Community Pulse
                   </h1>
                   <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-                    Discover new creations, amplify your voice, and engage with the AeThex community in real time.
+                    Discover new creations, amplify your voice, and engage with
+                    the AeThex community in real time.
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <Badge variant="outline" className="border-aethex-400/60 bg-aethex-400/10 text-aethex-100">
+                  <Badge
+                    variant="outline"
+                    className="border-aethex-400/60 bg-aethex-400/10 text-aethex-100"
+                  >
                     Live updates enabled
                   </Badge>
                   <Button
@@ -316,28 +331,26 @@ export default function Feed() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                {(
-                  [
-                    {
-                      key: "all" as const,
-                      label: "All stories",
-                      icon: Sparkles,
-                      description: "Latest community activity",
-                    },
-                    {
-                      key: "following" as const,
-                      label: "Following",
-                      icon: Users,
-                      description: "People you follow",
-                    },
-                    {
-                      key: "trending" as const,
-                      label: "Trending",
-                      icon: Flame,
-                      description: "Most engagement",
-                    },
-                  ]
-                ).map(({ key, label, icon: Icon, description }) => (
+                {[
+                  {
+                    key: "all" as const,
+                    label: "All stories",
+                    icon: Sparkles,
+                    description: "Latest community activity",
+                  },
+                  {
+                    key: "following" as const,
+                    label: "Following",
+                    icon: Users,
+                    description: "People you follow",
+                  },
+                  {
+                    key: "trending" as const,
+                    label: "Trending",
+                    icon: Flame,
+                    description: "Most engagement",
+                  },
+                ].map(({ key, label, icon: Icon, description }) => (
                   <Button
                     key={key}
                     variant={activeFilter === key ? "default" : "outline"}
@@ -352,7 +365,9 @@ export default function Feed() {
                   >
                     <Icon className="h-4 w-4" />
                     <span className="font-medium">{label}</span>
-                    <span className="hidden text-xs sm:inline">{description}</span>
+                    <span className="hidden text-xs sm:inline">
+                      {description}
+                    </span>
                   </Button>
                 ))}
               </div>
@@ -368,9 +383,12 @@ export default function Feed() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-lg font-semibold text-foreground">Share something new</h2>
+                    <h2 className="text-lg font-semibold text-foreground">
+                      Share something new
+                    </h2>
                     <p className="text-sm text-muted-foreground">
-                      Post updates, showcase progress, or spark a conversation with the community.
+                      Post updates, showcase progress, or spark a conversation
+                      with the community.
                     </p>
                   </div>
                   <Button
@@ -386,7 +404,8 @@ export default function Feed() {
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/30 bg-background/60 p-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-aethex-300" />
-                    Your post is shared instantly with followers and the broader community.
+                    Your post is shared instantly with followers and the broader
+                    community.
                   </div>
                   <button
                     type="button"
@@ -403,7 +422,8 @@ export default function Feed() {
                   <CardHeader>
                     <CardTitle className="text-xl">No stories found</CardTitle>
                     <CardDescription>
-                      Try switching filters or follow more creators to personalize your feed.
+                      Try switching filters or follow more creators to
+                      personalize your feed.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0">
@@ -434,7 +454,9 @@ export default function Feed() {
             <aside className="space-y-6">
               <Card className="rounded-3xl border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
                 <CardHeader>
-                  <CardTitle className="text-lg">Your community snapshot</CardTitle>
+                  <CardTitle className="text-lg">
+                    Your community snapshot
+                  </CardTitle>
                   <CardDescription>
                     Track how your network is evolving at a glance.
                   </CardDescription>
@@ -442,25 +464,33 @@ export default function Feed() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="rounded-2xl border border-border/30 bg-background/60 p-4">
-                      <p className="text-xs uppercase text-muted-foreground">Stories today</p>
+                      <p className="text-xs uppercase text-muted-foreground">
+                        Stories today
+                      </p>
                       <p className="mt-1 text-2xl font-semibold text-foreground">
                         {items.length.toLocaleString()}
                       </p>
                     </div>
                     <div className="rounded-2xl border border-border/30 bg-background/60 p-4">
-                      <p className="text-xs uppercase text-muted-foreground">Creators you follow</p>
+                      <p className="text-xs uppercase text-muted-foreground">
+                        Creators you follow
+                      </p>
                       <p className="mt-1 text-2xl font-semibold text-foreground">
                         {following.length.toLocaleString()}
                       </p>
                     </div>
                     <div className="rounded-2xl border border-border/30 bg-background/60 p-4">
-                      <p className="text-xs uppercase text-muted-foreground">Community reactions</p>
+                      <p className="text-xs uppercase text-muted-foreground">
+                        Community reactions
+                      </p>
                       <p className="mt-1 text-2xl font-semibold text-foreground">
                         {totalEngagement.toLocaleString()}
                       </p>
                     </div>
                     <div className="rounded-2xl border border-border/30 bg-background/60 p-4">
-                      <p className="text-xs uppercase text-muted-foreground">Avg. engagement</p>
+                      <p className="text-xs uppercase text-muted-foreground">
+                        Avg. engagement
+                      </p>
                       <p className="mt-1 text-2xl font-semibold text-foreground">
                         {averageEngagement.toLocaleString()}
                       </p>
@@ -492,7 +522,8 @@ export default function Feed() {
                 <CardContent className="space-y-3">
                   {trendingTopics.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
-                      Start a conversation by adding hashtags like #gamedev or #design to your next post.
+                      Start a conversation by adding hashtags like #gamedev or
+                      #design to your next post.
                     </p>
                   ) : (
                     trendingTopics.map((topic, index) => (
@@ -505,7 +536,9 @@ export default function Feed() {
                             {index + 1}
                           </span>
                           <div>
-                            <p className="font-medium text-foreground">{topic.topic}</p>
+                            <p className="font-medium text-foreground">
+                              {topic.topic}
+                            </p>
                             <p className="text-xs text-muted-foreground">
                               {topic.count.toLocaleString()} mentions today
                             </p>
@@ -535,7 +568,8 @@ export default function Feed() {
                 <CardContent className="space-y-3">
                   {suggestedCreators.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
-                      You are up to date with the creators you follow. Engage with new posts to unlock more suggestions.
+                      You are up to date with the creators you follow. Engage
+                      with new posts to unlock more suggestions.
                     </p>
                   ) : (
                     suggestedCreators.map((creator) => (
@@ -554,9 +588,12 @@ export default function Feed() {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-medium text-foreground">{creator.name}</p>
+                            <p className="font-medium text-foreground">
+                              {creator.name}
+                            </p>
                             <p className="text-xs text-muted-foreground">
-                              {creator.posts.toLocaleString()} posts · {creator.likes.toLocaleString()} reactions
+                              {creator.posts.toLocaleString()} posts ·{" "}
+                              {creator.likes.toLocaleString()} reactions
                             </p>
                           </div>
                         </div>

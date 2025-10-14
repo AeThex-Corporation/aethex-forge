@@ -33,8 +33,11 @@ const AdminAchievementManager = ({
   targetUser,
 }: AdminAchievementManagerProps) => {
   const [achievements, setAchievements] = useState<AethexAchievement[]>([]);
-  const [userAchievements, setUserAchievements] = useState<AethexAchievement[]>([]);
-  const [selectedAchievementId, setSelectedAchievementId] = useState<string>("");
+  const [userAchievements, setUserAchievements] = useState<AethexAchievement[]>(
+    [],
+  );
+  const [selectedAchievementId, setSelectedAchievementId] =
+    useState<string>("");
   const [loadingList, setLoadingList] = useState(false);
   const [loadingUserAchievements, setLoadingUserAchievements] = useState(false);
   const [awarding, setAwarding] = useState(false);
@@ -53,21 +56,18 @@ const AdminAchievementManager = ({
     }
   }, []);
 
-  const loadUserAchievements = useCallback(
-    async (userId: string) => {
-      setLoadingUserAchievements(true);
-      try {
-        const list = await aethexAchievementService.getUserAchievements(userId);
-        setUserAchievements(list);
-      } catch (error) {
-        console.warn("Failed to load user achievements", error);
-        setUserAchievements([]);
-      } finally {
-        setLoadingUserAchievements(false);
-      }
-    },
-    [],
-  );
+  const loadUserAchievements = useCallback(async (userId: string) => {
+    setLoadingUserAchievements(true);
+    try {
+      const list = await aethexAchievementService.getUserAchievements(userId);
+      setUserAchievements(list);
+    } catch (error) {
+      console.warn("Failed to load user achievements", error);
+      setUserAchievements([]);
+    } finally {
+      setLoadingUserAchievements(false);
+    }
+  }, []);
 
   useEffect(() => {
     loadAchievements().catch(() => undefined);
@@ -82,7 +82,10 @@ const AdminAchievementManager = ({
   }, [targetUser?.id, loadUserAchievements]);
 
   const selectedAchievement = useMemo(
-    () => achievements.find((achievement) => achievement.id === selectedAchievementId) ?? null,
+    () =>
+      achievements.find(
+        (achievement) => achievement.id === selectedAchievementId,
+      ) ?? null,
     [achievements, selectedAchievementId],
   );
 
@@ -133,7 +136,8 @@ const AdminAchievementManager = ({
       if (!result) {
         aethexToast.error({
           title: "Activation failed",
-          description: "No rewards were activated. Check server logs for details.",
+          description:
+            "No rewards were activated. Check server logs for details.",
         });
       } else {
         const awarded = result.awardedAchievementIds?.length ?? 0;
@@ -177,7 +181,10 @@ const AdminAchievementManager = ({
             {targetUser ? (
               <div className="rounded border border-border/40 bg-background/40 p-3">
                 <p className="font-medium text-foreground">
-                  {targetUser.full_name ?? targetUser.username ?? targetUser.email ?? "Unknown"}
+                  {targetUser.full_name ??
+                    targetUser.username ??
+                    targetUser.email ??
+                    "Unknown"}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {targetUser.email ?? "No email on record"}
@@ -197,7 +204,11 @@ const AdminAchievementManager = ({
               disabled={!targetUser || loadingList}
             >
               <SelectTrigger className="bg-background/60">
-                <SelectValue placeholder={loadingList ? "Loading achievements…" : "Select achievement"} />
+                <SelectValue
+                  placeholder={
+                    loadingList ? "Loading achievements…" : "Select achievement"
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
                 {achievements.map((achievement) => (
@@ -240,7 +251,9 @@ const AdminAchievementManager = ({
 
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <p className="text-sm font-medium text-foreground">Achievement history</p>
+            <p className="text-sm font-medium text-foreground">
+              Achievement history
+            </p>
             {loadingUserAchievements ? (
               <span className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" /> Loading…
@@ -252,16 +265,24 @@ const AdminAchievementManager = ({
               {userAchievements.length ? (
                 <ul className="space-y-3 text-sm">
                   {userAchievements.map((achievement) => (
-                    <li key={achievement.id} className="flex items-start justify-between gap-3 rounded border border-border/30 bg-background/40 p-3">
+                    <li
+                      key={achievement.id}
+                      className="flex items-start justify-between gap-3 rounded border border-border/30 bg-background/40 p-3"
+                    >
                       <div className="space-y-1">
-                        <p className="font-medium text-foreground">{achievement.name}</p>
+                        <p className="font-medium text-foreground">
+                          {achievement.name}
+                        </p>
                         {achievement.description ? (
                           <p className="text-xs text-muted-foreground">
                             {achievement.description}
                           </p>
                         ) : null}
                       </div>
-                      <Badge variant="outline" className="whitespace-nowrap text-xs">
+                      <Badge
+                        variant="outline"
+                        className="whitespace-nowrap text-xs"
+                      >
                         {achievement.xp_reward ?? 0} XP
                       </Badge>
                     </li>
@@ -289,12 +310,18 @@ const AdminAchievementManager = ({
               <p className="mb-1">{selectedAchievement.description}</p>
             ) : null}
             <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-wide">
-              <Badge variant="outline">{selectedAchievement.xp_reward ?? 0} XP</Badge>
+              <Badge variant="outline">
+                {selectedAchievement.xp_reward ?? 0} XP
+              </Badge>
               <Badge variant="outline">ID: {selectedAchievement.id}</Badge>
               <Badge variant="outline">
-                Created {formatDistanceToNowStrict(new Date(selectedAchievement.created_at), {
-                  addSuffix: true,
-                })}
+                Created{" "}
+                {formatDistanceToNowStrict(
+                  new Date(selectedAchievement.created_at),
+                  {
+                    addSuffix: true,
+                  },
+                )}
               </Badge>
             </div>
           </div>

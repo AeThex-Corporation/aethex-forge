@@ -64,19 +64,22 @@ const collaborationWorkflows = [
     label: "Onboard & align",
     description:
       "Welcome teammates through the guided onboarding flow, capture their interests, and assign the right mentorship programs from day one.",
-    highlight: "Onboarding modules cover personal info, interests, and project preferences so teams ramp quickly.",
+    highlight:
+      "Onboarding modules cover personal info, interests, and project preferences so teams ramp quickly.",
   },
   {
     label: "Build together",
     description:
       "Kick off projects with shared canvases, synced task boards, and CLI-generated environments. Use the realm switcher to target the correct workspace.",
-    highlight: "In-app toasts notify collaborators when schema changes, deployments, or reviews need attention.",
+    highlight:
+      "In-app toasts notify collaborators when schema changes, deployments, or reviews need attention.",
   },
   {
     label: "Launch & iterate",
     description:
       "Promote builds through AeThex Deploy, track KPIs in the analytics feed, and publish release notes via the changelog tools.",
-    highlight: "Community announcements and blog posts keep players and stakeholders in the loop automatically.",
+    highlight:
+      "Community announcements and blog posts keep players and stakeholders in the loop automatically.",
   },
 ];
 
@@ -166,11 +169,14 @@ export default function DocsPlatform() {
           <Sparkles className="mr-2 h-3 w-3" />
           Platform Experience
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">Deliver cohesive player and builder journeys on AeThex</h2>
+        <h2 className="text-3xl font-semibold text-white">
+          Deliver cohesive player and builder journeys on AeThex
+        </h2>
         <p className="text-gray-300 max-w-3xl">
-          Beyond deployment pipelines and CLI tooling, AeThex bundles collaboration, identity, and live-ops systems so
-          teams can craft unforgettable experiences. Use this guide to orient new stakeholders and plan end-to-end
-          platform rollouts.
+          Beyond deployment pipelines and CLI tooling, AeThex bundles
+          collaboration, identity, and live-ops systems so teams can craft
+          unforgettable experiences. Use this guide to orient new stakeholders
+          and plan end-to-end platform rollouts.
         </p>
       </section>
 
@@ -183,14 +189,22 @@ export default function DocsPlatform() {
           {platformPillars.map((pillar) => {
             const Icon = pillar.icon;
             return (
-              <Card key={pillar.title} className="bg-slate-900/60 border-slate-700">
+              <Card
+                key={pillar.title}
+                className="bg-slate-900/60 border-slate-700"
+              >
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Icon className="h-6 w-6 text-cyan-300" />
-                      <CardTitle className="text-white text-lg">{pillar.title}</CardTitle>
+                      <CardTitle className="text-white text-lg">
+                        {pillar.title}
+                      </CardTitle>
                     </div>
-                    <Badge variant="outline" className="text-xs text-cyan-200 border-cyan-500/40">
+                    <Badge
+                      variant="outline"
+                      className="text-xs text-cyan-200 border-cyan-500/40"
+                    >
                       Platform
                     </Badge>
                   </div>
@@ -219,13 +233,20 @@ export default function DocsPlatform() {
       <section id="workflows" className="space-y-6">
         <div className="flex items-center gap-3">
           <Workflow className="h-6 w-6 text-cyan-300" />
-          <h3 className="text-2xl font-semibold text-white">Collaboration workflows</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Collaboration workflows
+          </h3>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {collaborationWorkflows.map((stage, index) => (
-            <Card key={stage.label} className="bg-slate-900/60 border-slate-700">
+            <Card
+              key={stage.label}
+              className="bg-slate-900/60 border-slate-700"
+            >
               <CardHeader className="space-y-2">
-                <Badge className="w-fit bg-cyan-600/30 text-cyan-100">Step {index + 1}</Badge>
+                <Badge className="w-fit bg-cyan-600/30 text-cyan-100">
+                  Step {index + 1}
+                </Badge>
                 <CardTitle className="text-white text-lg flex items-center gap-2">
                   <Globe className="h-5 w-5 text-cyan-300" />
                   {stage.label}
@@ -247,15 +268,23 @@ export default function DocsPlatform() {
       <section id="modules" className="space-y-6">
         <div className="flex items-center gap-3">
           <Compass className="h-6 w-6 text-cyan-300" />
-          <h3 className="text-2xl font-semibold text-white">Experience modules</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Experience modules
+          </h3>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {experienceModules.map((module) => (
-            <Card key={module.name} className="bg-slate-900/60 border-slate-700">
+            <Card
+              key={module.name}
+              className="bg-slate-900/60 border-slate-700"
+            >
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center justify-between">
                   {module.name}
-                  <Badge variant="outline" className="text-xs text-cyan-200 border-cyan-500/40">
+                  <Badge
+                    variant="outline"
+                    className="text-xs text-cyan-200 border-cyan-500/40"
+                  >
                     Platform
                   </Badge>
                 </CardTitle>
@@ -283,17 +312,24 @@ export default function DocsPlatform() {
       <section id="analytics" className="space-y-6">
         <div className="flex items-center gap-3">
           <BarChart3 className="h-6 w-6 text-cyan-300" />
-          <h3 className="text-2xl font-semibold text-white">Insights & analytics</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Insights & analytics
+          </h3>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {analyticsHighlights.map((item) => {
             const Icon = item.icon;
             return (
-              <Card key={item.title} className="bg-slate-900/60 border-slate-700">
+              <Card
+                key={item.title}
+                className="bg-slate-900/60 border-slate-700"
+              >
                 <CardHeader>
                   <div className="flex items-center gap-3">
                     <Icon className="h-6 w-6 text-cyan-300" />
-                    <CardTitle className="text-white text-lg">{item.title}</CardTitle>
+                    <CardTitle className="text-white text-lg">
+                      {item.title}
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -310,7 +346,9 @@ export default function DocsPlatform() {
       <section id="governance" className="space-y-6">
         <div className="flex items-center gap-3">
           <ShieldCheck className="h-6 w-6 text-cyan-300" />
-          <h3 className="text-2xl font-semibold text-white">Governance checklist</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Governance checklist
+          </h3>
         </div>
         <Card className="bg-slate-900/60 border-slate-700">
           <CardContent>
@@ -323,13 +361,19 @@ export default function DocsPlatform() {
         </Card>
       </section>
 
-      <section id="next-steps" className="rounded-2xl border border-cyan-500/40 bg-cyan-900/20 p-8">
+      <section
+        id="next-steps"
+        className="rounded-2xl border border-cyan-500/40 bg-cyan-900/20 p-8"
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <h3 className="text-2xl font-semibold text-white">Keep exploring the platform</h3>
+            <h3 className="text-2xl font-semibold text-white">
+              Keep exploring the platform
+            </h3>
             <p className="text-gray-300 max-w-2xl text-sm">
-              Share this page with non-technical teammates. It links out to every major surface area so marketing,
-              product, and operations groups can navigate confidently.
+              Share this page with non-technical teammates. It links out to
+              every major surface area so marketing, product, and operations
+              groups can navigate confidently.
             </p>
           </div>
           <div className="grid gap-3 md:grid-cols-2">

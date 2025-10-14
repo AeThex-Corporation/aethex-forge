@@ -11,13 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import {
-  Heart,
-  MessageCircle,
-  Share2,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+import { Heart, MessageCircle, Share2, Volume2, VolumeX } from "lucide-react";
 import type { FeedItem } from "@/pages/Feed";
 
 interface FeedItemCardProps {
@@ -42,7 +36,10 @@ export function FeedItemCard({
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3">
             <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30">
-              <AvatarImage src={item.authorAvatar || undefined} alt={item.authorName} />
+              <AvatarImage
+                src={item.authorAvatar || undefined}
+                alt={item.authorName}
+              />
               <AvatarFallback className="bg-aethex-500/10 text-aethex-300">
                 {item.authorName?.[0]?.toUpperCase() || "U"}
               </AvatarFallback>
@@ -132,7 +129,10 @@ export function FeedItemCard({
               </Button>
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="border-border/60 bg-background/60 text-xs uppercase tracking-wide">
+              <Badge
+                variant="outline"
+                className="border-border/60 bg-background/60 text-xs uppercase tracking-wide"
+              >
                 {item.mediaType === "video"
                   ? "Video"
                   : item.mediaType === "image"
