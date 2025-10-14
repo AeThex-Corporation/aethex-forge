@@ -82,7 +82,7 @@ const automationTips = [
 export default function DocsCli() {
   return (
     <div className="space-y-12">
-      <section className="space-y-4">
+      <section id="overview" className="space-y-4">
         <Badge className="bg-amber-500/20 text-amber-100 uppercase tracking-wide">
           <Terminal className="mr-2 h-3 w-3" />
           CLI Tools
