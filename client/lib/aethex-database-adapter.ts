@@ -932,6 +932,77 @@ export const aethexAchievementService = {
   },
 };
 
+export interface AethexApplicationSubmission {
+  type: "contributor" | "career";
+  full_name: string;
+  email: string;
+  location?: string | null;
+  role_interest?: string | null;
+  primary_skill?: string | null;
+  availability?: string | null;
+  portfolio_url?: string | null;
+  resume_url?: string | null;
+  interests?: string[] | null;
+  message?: string | null;
+}
+
+export const aethexApplicationService = {
+  async submitApplication(
+    submission: AethexApplicationSubmission,
+  ): Promise<void> {
+    ensureSupabase();
+
+    const sanitizeString = (value?: string | null) => {
+      if (typeof value !== "string") return null;
+      const trimmed = value.trim();
+      return trimmed.length ? trimmed : null;
+    };
+
+    const normalizeEmail = (value: string) => value.trim().toLowerCase();
+    const normalizeUrl = (value?: string | null) => {
+      const trimmed = sanitizeString(value);
+      if (!trimmed) return null;
+      if (/^https?:\/\//i.test(trimmed)) return trimmed;
+      return `https://${trimmed}`;
+    };
+
+    const normalizedInterests = Array.isArray(submission.interests)
+      ? submission.interests
+          .map((item) => (typeof item === "string" ? item.trim() : ""))
+          .filter((item) => item.length > 0)
+      : [];
+
+    const payload = {
+      type: submission.type,
+      full_name: sanitizeString(submission.full_name) ?? "Anonymous", // fallback for Supabase constraint
+      email: normalizeEmail(submission.email),
+      location: sanitizeString(submission.location),
+      role_interest: sanitizeString(submission.role_interest),
+      primary_skill: sanitizeString(submission.primary_skill),
+      availability: sanitizeString(submission.availability),
+      portfolio_url: normalizeUrl(submission.portfolio_url),
+      resume_url: normalizeUrl(submission.resume_url),
+      interests: normalizedInterests.length ? normalizedInterests : null,
+      message: sanitizeString(submission.message),
+      status: "new",
+      submitted_at: new Date().toISOString(),
+    } as const;
+
+    const { error } = await supabase
+      .from("applications")
+      .insert(payload as any);
+
+    if (error) {
+      if (isTableMissing(error)) {
+        throw new Error(
+          'Supabase table "applications" is missing. Please create it or adjust the application handler.',
+        );
+      }
+      throw error;
+    }
+  },
+};
+
 // Notification Service (uses existing notifications table)
 export const aethexNotificationService = {
   async getUserNotifications(userId: string): Promise<any[]> {
