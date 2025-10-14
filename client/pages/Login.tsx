@@ -68,12 +68,19 @@ export default function Login() {
         } else if (result?.verificationUrl) {
           setManualVerificationLink(result.verificationUrl);
           try {
-            await navigator.clipboard?.writeText(result.verificationUrl);
-            toastInfo({
-              title: "Verification link copied",
-              description:
-                "We copied the manual verification link to your clipboard. Paste it into your browser to finish signup.",
-            });
+            if (
+              typeof navigator !== "undefined" &&
+              navigator.clipboard?.writeText
+            ) {
+              await navigator.clipboard.writeText(result.verificationUrl);
+              toastInfo({
+                title: "Verification link copied",
+                description:
+                  "We copied the manual verification link to your clipboard. Paste it into your browser to finish signup.",
+              });
+            } else {
+              throw new Error("clipboard unsupported");
+            }
           } catch {
             toastInfo({
               title: "Manual verification required",
