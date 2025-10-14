@@ -49,7 +49,7 @@ interface ChangelogItem {
   impact: 'high' | 'medium' | 'low';
 }
 
-const changelogEntries: ChangelogEntry[] = [
+export const changelogEntries: ChangelogEntry[] = [
   {
     id: "v1.2.0",
     version: "1.2.0",
