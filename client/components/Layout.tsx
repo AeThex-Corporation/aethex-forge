@@ -461,31 +461,31 @@ export default function CodeLayout({ children }: LayoutProps) {
               </ul>
             </div>
 
-            {/* Resources */}
+            {/* Company */}
             <div
               className="space-y-4 animate-slide-up"
               style={{ animationDelay: "0.2s" }}
             >
               <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
-                Resources
+                Company
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link
-                    to="/docs"
+                    to="/about"
                     onClick={scrollToTop}
                     className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
                   >
-                    Documentation
+                    About AeThex
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/blog"
+                    to="/opportunities"
                     onClick={scrollToTop}
                     className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
                   >
-                    Blog
+                    Opportunities
                   </Link>
                 </li>
                 <li>
@@ -494,16 +494,25 @@ export default function CodeLayout({ children }: LayoutProps) {
                     onClick={scrollToTop}
                     className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
                   >
-                    Community
+                    Community Hub
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/support"
+                    to="/changelog"
                     onClick={scrollToTop}
                     className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
                   >
-                    Support
+                    Changelog
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/status"
+                    onClick={scrollToTop}
+                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                  >
+                    System Status
                   </Link>
                 </li>
               </ul>
