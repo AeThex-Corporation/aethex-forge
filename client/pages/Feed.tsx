@@ -3,6 +3,7 @@ import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import PostComposer from "@/components/social/PostComposer";
 import { FeedItemCard } from "@/components/social/FeedItemCard";
+import { ensureDemoSeed, getDemoPosts } from "@/lib/demo-feed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -114,7 +115,32 @@ export default function Feed() {
         };
       });
 
-      setItems(mapped);
+      if (mapped.length === 0 && typeof window !== "undefined") {
+        ensureDemoSeed();
+        const demoPosts = getDemoPosts();
+        if (Array.isArray(demoPosts) && demoPosts.length) {
+          const seeded = demoPosts.map((post: any) => {
+            const meta = parseContent(post.content);
+            const author = post.user_profiles || {};
+            return {
+              id: post.id,
+              authorId: post.author_id,
+              authorName: author.full_name || author.username || "Community member",
+              authorAvatar: author.avatar_url,
+              caption: meta.text,
+              mediaUrl: meta.mediaUrl,
+              mediaType: meta.mediaType,
+              likes: post.likes_count ?? 0,
+              comments: post.comments_count ?? 0,
+            } as FeedItem;
+          });
+          setItems(seeded);
+        } else {
+          setItems(mapped);
+        }
+      } else {
+        setItems(mapped);
+      }
     } catch (error) {
       console.error("Failed to load feed", error);
       setItems([]);
