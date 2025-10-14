@@ -112,10 +112,10 @@ const App = () => (
               <Route path="/docs" element={<DocsLayout />}>
                 <Route index element={<DocsOverview />} />
                 <Route path="tutorials" element={<DocsTutorials />} />
-                <Route path="getting-started" element={<Documentation />} />
-                <Route path="api" element={<Documentation />} />
-                <Route path="cli" element={<Documentation />} />
-                <Route path="examples" element={<Documentation />} />
+                <Route path="getting-started" element={<DocsGettingStarted />} />
+                <Route path="api" element={<DocsApiReference />} />
+                <Route path="cli" element={<DocsCli />} />
+                <Route path="examples" element={<DocsExamples />} />
               </Route>
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/blog" element={<Blog />} />
