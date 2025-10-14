@@ -139,6 +139,41 @@ const resourceSections = [
   },
 ];
 
+const learningResources = [
+  {
+    title: "Video tutorials",
+    description: "Visual learning with step-by-step walkthroughs",
+    icon: Video,
+    count: "50+ videos",
+    link: "/tutorials",
+    color: "from-red-500 to-pink-600",
+  },
+  {
+    title: "Podcast series",
+    description: "Deep dives into AeThex technology and strategy",
+    icon: Headphones,
+    count: "20+ episodes",
+    link: "/blog",
+    color: "from-purple-500 to-indigo-600",
+  },
+  {
+    title: "Code examples",
+    description: "Production-ready snippets maintained by the platform team",
+    icon: Github,
+    count: "100+ repos",
+    link: "/docs/examples",
+    color: "from-green-500 to-emerald-600",
+  },
+  {
+    title: "Downloads",
+    description: "SDKs, design kits, and tooling for every platform",
+    icon: Download,
+    count: "Latest releases",
+    link: "/docs/getting-started#setup-workflow",
+    color: "from-blue-500 to-cyan-600",
+  },
+];
+
 const featuredUpdates = [
   {
     title: "New AI Integration Tutorials",
