@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDistanceToNow } from "date-fns";
 import type { LucideIcon } from "lucide-react";
-import { ArrowUpRight, Bug, Plus, Shield } from "lucide-react";
+import { ArrowUpRight, Bug, Minus, Plus, Shield } from "lucide-react";
 
 interface ChangelogChange {
   type: "added" | "improved" | "fixed" | "removed" | "security";
