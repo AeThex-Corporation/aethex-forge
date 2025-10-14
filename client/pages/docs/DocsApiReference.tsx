@@ -103,7 +103,7 @@ const errorExamples = [
 export default function DocsApiReference() {
   return (
     <div className="space-y-12">
-      <section className="space-y-4">
+      <section id="overview" className="space-y-4">
         <Badge className="bg-blue-600/20 text-blue-200 uppercase tracking-wide">
           <ServerCog className="mr-2 h-3 w-3" />
           API Reference
