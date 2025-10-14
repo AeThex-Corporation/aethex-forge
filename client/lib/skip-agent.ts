@@ -379,19 +379,22 @@ const loadSkipAgent = async (): Promise<void> => {
   }
 
   try {
+    const agentSrc = getAgentSrc();
+    if (!agentSrc) {
+      throw new Error("No agent source configured");
+    }
+
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 5000);
-    const response = await fetch(SKIP_AGENT_SRC, { signal: controller.signal });
+    const response = await fetch(agentSrc, { signal: controller.signal });
     window.clearTimeout(timeout);
 
     if (!response.ok) {
-      throw new Error("Failed to download HelloSkip agent script");
+      throw new Error("Failed to download agent script");
     }
 
     const scriptText = await response.text();
-    const blobUrl = URL.createObjectURL(
-      new Blob([scriptText], { type: "application/javascript" }),
-    );
+    const blobUrl = URL.createObjectURL(new Blob([scriptText], { type: "application/javascript" }));
 
     const script = document.createElement("script");
     script.id = SKIP_AGENT_SCRIPT_ID;
