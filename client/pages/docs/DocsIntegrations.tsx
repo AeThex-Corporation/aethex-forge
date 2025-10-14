@@ -29,6 +29,7 @@ import {
   AlertTriangle,
   FileText,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const embedSettings = [
   {
@@ -93,7 +94,8 @@ export default function DocsIntegrations() {
         <p className="text-gray-300 max-w-3xl">
           AeThex supports secure, theme-aware embeds for third-party agents and tools. This guide covers the
           HelloSkip support assistant that ships with the platform and outlines patterns you can reuse for future
-          integrations.
+          integrations. The router-aware <code className="bg-black/40 px-2">SkipAgentController</code> keeps the
+          experience out of the documentation space while still making it available across the rest of the site.
         </p>
       </section>
 
@@ -107,13 +109,13 @@ export default function DocsIntegrations() {
           </CardHeader>
           <CardContent className="space-y-4 text-gray-300 text-sm leading-relaxed">
             <p>
-              The HelloSkip agent is lazily loaded at runtime from <code className="bg-black/40 px-2">main.tsx</code> using a
-              guarded fetch. Before executing the external runtime, AeThex performs a status preflight against
-              <code className="bg-black/40 px-2">/api/agent/status</code>. If the agent is unavailable, initialization is skipped to
-              prevent console noise.
+              The HelloSkip agent utilities live in <code className="bg-black/40 px-2">lib/skip-agent.ts</code>. They lazily fetch the
+              runtime once and gate initialization behind a guarded status check at
+              <code className="bg-black/40 px-2">/api/agent/status</code>. If the endpoint is unreachable or reports an inactive agent,
+              the embed is skipped to avoid client-side errors.
             </p>
             <p>
-              On success, the script injects HelloSkip&apos;s global object and immediately calls
+              When healthy, the loader injects HelloSkip&apos;s global object and calls
               <code className="bg-black/40 px-2">window.SkipAgent.embed</code> with AeThex-specific sizing, copy, and z-index values.
               A companion stylesheet applies the gradient, border, and focus treatments to match the site aesthetic.
             </p>
@@ -168,7 +170,7 @@ export default function DocsIntegrations() {
               </TableBody>
               <TableCaption>
                 Update values inside <code className="bg-black/40 px-1">SKIP_AGENT_EMBED_OPTIONS</code> in
-                <code className="bg-black/40 px-1">client/main.tsx</code>.
+                <code className="bg-black/40 px-1">client/lib/skip-agent.ts</code>.
               </TableCaption>
             </Table>
           </CardContent>
@@ -186,7 +188,8 @@ export default function DocsIntegrations() {
           <CardContent className="space-y-3 text-gray-300 text-sm">
             <ul className="list-disc space-y-2 pl-5">
               <li>Keep the preflight status check in place for stability in staging or offline previews.</li>
-              <li>Regenerate the blob URL after each successful load to avoid memory leaks.</li>
+              <li>Reuse the router gating pattern in <code className="bg-black/40 px-1">SkipAgentController</code> for embeds that should
+                disappear on specific routes.</li>
               <li>Wrap additional embeds in the same helper to maintain a single initialization flag.</li>
             </ul>
           </CardContent>
