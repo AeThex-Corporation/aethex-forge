@@ -103,6 +103,39 @@ export function createServer() {
     }
   });
 
+  app.post("/api/auth/check-verification", async (req, res) => {
+    const { email } = (req.body || {}) as { email?: string };
+
+    if (!email) {
+      return res.status(400).json({ error: "email is required" });
+    }
+
+    if (!adminSupabase?.auth?.admin) {
+      return res
+        .status(500)
+        .json({ error: "Supabase admin client unavailable" });
+    }
+
+    try {
+      const { data, error } = await adminSupabase.auth.admin.listUsers({ email });
+      if (error) {
+        console.error("[API] listUsers error:", error);
+        return res.status(error.status ?? 500).json({ error: error.message || String(error) });
+      }
+
+      const user = (data as any)?.users?.[0] ?? null;
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const verified = Boolean(user?.email_confirmed_at || user?.confirmed_at);
+      return res.json({ verified, user });
+    } catch (e: any) {
+      console.error("[API] check verification exception", e);
+      return res.status(500).json({ error: e?.message || String(e) });
+    }
+  });
+
   // Admin-backed API (service role)
   try {
     const ownerEmail = (
