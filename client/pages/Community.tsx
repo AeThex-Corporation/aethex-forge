@@ -3511,6 +3511,9 @@ export default function Community() {
           )}
         </Tabs>
 
+        {false && (
+          <>
+
         {/* DevConnect Spotlight */}
         <section className="relative py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/40 via-transparent to-neon-blue/30" />
@@ -4386,6 +4389,8 @@ export default function Community() {
             </div>
           </div>
         </section>
+          </>
+        )}
       </div>
     </Layout>
   );
