@@ -23,6 +23,7 @@ import {
   Download,
   Github,
   ExternalLink,
+  Link as LinkIcon,
 } from "lucide-react";
 
 const quickStartCards = [
