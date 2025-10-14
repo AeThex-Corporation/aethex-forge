@@ -348,31 +348,60 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      // Basic client-side validation
+      if (!email || !password) {
+        throw new Error("Please provide both email and password.");
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
+      // Prefer explicit error from Supabase if present
       if (error) throw error;
-      // Wait for auth state change to update context
+
+      // If signIn succeeded but no session info returned, attempt to refresh
       try {
         await supabase.auth.getSession();
-      } catch {}
+      } catch (e) {
+        // ignore
+      }
+
+      return data;
     } catch (error: any) {
       console.error("SignIn error details:", error);
 
-      let errorMessage = error.message;
+      let errorMessage = String(error?.message ?? error ?? "Sign in failed");
+
+      // Network / fetch errors
       if (
-        error.message?.includes("Failed to fetch") ||
-        error.name === "AuthRetryableFetchError"
+        errorMessage?.toLowerCase().includes("failed to fetch") ||
+        error?.name === "AuthRetryableFetchError"
       ) {
         errorMessage =
           "Unable to connect to authentication service. Please check your internet connection and try again.";
+      }
+
+      // Supabase specific invalid credentials message -> make it actionable
+      if (errorMessage.toLowerCase().includes("invalid login credentials")) {
+        errorMessage =
+          "Invalid email or password. If you forgot your password, use the 'Forgot password' flow or reset your password via email. If you recently signed up, check your inbox to verify your account.";
+      }
+
+      // Generic 400/401 response mapping
+      if (
+        (error?.status === 400 || error?.status === 401) &&
+        !errorMessage.toLowerCase().includes("invalid")
+      ) {
+        errorMessage = "Invalid email or password.";
       }
 
       aethexToast.error({
         title: "Sign in failed",
         description: errorMessage,
       });
+
       setLoading(false);
       throw new Error(errorMessage);
     }
