@@ -331,7 +331,7 @@ const AdminMemberManager = ({
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className="capitalize">
-                          {(profile.role || roles[0] || "member").toLowerCase()}
+                          {(profile.role || "member").toLowerCase()}
                         </Badge>
                       </TableCell>
                     </TableRow>
