@@ -117,6 +117,7 @@ const App = () => (
                 <Route index element={<DocsOverview />} />
                 <Route path="tutorials" element={<DocsTutorials />} />
                 <Route path="getting-started" element={<DocsGettingStarted />} />
+                <Route path="platform" element={<DocsPlatform />} />
                 <Route path="api" element={<DocsApiReference />} />
                 <Route path="cli" element={<DocsCli />} />
                 <Route path="examples" element={<DocsExamples />} />
