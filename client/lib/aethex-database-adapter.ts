@@ -939,6 +939,7 @@ export interface AethexApplicationSubmission {
   location?: string | null;
   role_interest?: string | null;
   primary_skill?: string | null;
+  experience_level?: string | null;
   availability?: string | null;
   portfolio_url?: string | null;
   resume_url?: string | null;
@@ -980,6 +981,7 @@ export const aethexApplicationService = {
       role_interest: sanitizeString(submission.role_interest),
       primary_skill: sanitizeString(submission.primary_skill),
       availability: sanitizeString(submission.availability),
+      experience_level: sanitizeString(submission.experience_level),
       portfolio_url: normalizeUrl(submission.portfolio_url),
       resume_url: normalizeUrl(submission.resume_url),
       interests: normalizedInterests.length ? normalizedInterests : null,
