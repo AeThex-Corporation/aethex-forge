@@ -157,6 +157,42 @@ export default function Admin() {
     loadProjectApplications().catch(() => undefined);
   }, [loadProjectApplications]);
 
+  const loadOpportunityApplications = useCallback(async () => {
+    const email = user?.email?.toLowerCase();
+    if (!email) return;
+    setOpportunityApplicationsLoading(true);
+    try {
+      const response = await fetch(
+        `/api/opportunities/applications?email=${encodeURIComponent(email)}`,
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setOpportunityApplications(Array.isArray(data) ? data : []);
+      } else {
+        const message = await response.text().catch(() => "");
+        if (response.status === 403) {
+          aethexToast.error({
+            title: "Access denied",
+            description:
+              "You must be signed in as the owner to view opportunity applications.",
+          });
+        } else {
+          console.warn("Opportunity applications request failed:", message);
+        }
+        setOpportunityApplications([]);
+      }
+    } catch (error) {
+      console.warn("Failed to load opportunity applications:", error);
+      setOpportunityApplications([]);
+    } finally {
+      setOpportunityApplicationsLoading(false);
+    }
+  }, [user?.email]);
+
+  useEffect(() => {
+    loadOpportunityApplications().catch(() => undefined);
+  }, [loadOpportunityApplications]);
+
   useEffect(() => {
     if (!loading) {
       if (!user) {
