@@ -371,6 +371,31 @@ export function createServer() {
         res.status(500).json({ error: e?.message || String(e) });
       }
     });
+
+    app.get("/api/opportunities/applications", async (req, res) => {
+      const requester = String(req.query.email || "").toLowerCase();
+      if (!requester || requester !== ownerEmail) {
+        return res.status(403).json({ error: "forbidden" });
+      }
+      try {
+        const { data, error } = await adminSupabase
+          .from("applications")
+          .select("*")
+          .order("submitted_at", { ascending: false })
+          .limit(200);
+        if (error) {
+          if (isTableMissing(error)) {
+            return res.json([]);
+          }
+          return res.status(500).json({ error: error.message });
+        }
+        return res.json(data || []);
+      } catch (e: any) {
+        return res
+          .status(500)
+          .json({ error: e?.message || String(e) });
+      }
+    });
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
