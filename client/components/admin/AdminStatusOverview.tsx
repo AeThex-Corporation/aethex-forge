@@ -44,25 +44,35 @@ export default function AdminStatusOverview({
         )
       : null;
 
+  const uptimeAccumulator = services.reduce(
+    (acc, service) => {
+      const asNumber = Number.parseFloat(service.uptime);
+      if (Number.isFinite(asNumber)) {
+        return { total: acc.total + asNumber, count: acc.count + 1 };
+      }
+      return acc;
+    },
+    { total: 0, count: 0 },
+  );
+
   const averageUptime =
-    services.length > 0
-      ? services.reduce((total, service) => {
-          const asNumber = Number.parseFloat(service.uptime);
-          return Number.isFinite(asNumber) ? total + asNumber : total;
-        }, 0) / services.length
+    uptimeAccumulator.count > 0
+      ? uptimeAccumulator.total / uptimeAccumulator.count
       : null;
 
   const healthyServices = services.filter(
     (service) => service.status === "operational",
   ).length;
 
+  const OverallIcon = overall.Icon;
+
   return (
     <Card className="bg-card/60 border-border/40 backdrop-blur">
       <CardHeader className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className={`${overall.badgeClass} flex h-10 w-10 items-center justify-center rounded-full border`}> 
-              <overall.Icon className="h-5 w-5" />
+            <div className={`${overall.badgeClass} flex h-10 w-10 items-center justify-center rounded-full border`}>
+              <OverallIcon className="h-5 w-5" />
             </div>
             <div>
               <CardTitle className="text-lg">System health</CardTitle>
