@@ -56,17 +56,33 @@ export default function Login() {
 
     try {
       if (isSignUp) {
-        await signUp(email, password, {
+        const result = await signUp(email, password, {
           id: "",
           full_name: fullName,
           user_type: "game_developer",
           username: email.split("@")[0],
         });
-        toastSuccess({
-          title: "Account created!",
-          description:
-            "Please check your email to verify your account, then sign in.",
-        });
+
+        if (result?.emailSent) {
+          setManualVerificationLink(null);
+        } else if (result?.verificationUrl) {
+          setManualVerificationLink(result.verificationUrl);
+          try {
+            await navigator.clipboard?.writeText(result.verificationUrl);
+            toastInfo({
+              title: "Verification link copied",
+              description:
+                "We copied the manual verification link to your clipboard. Paste it into your browser to finish signup.",
+            });
+          } catch {
+            toastInfo({
+              title: "Manual verification required",
+              description:
+                "Copy the link shown in the banner to verify your account.",
+            });
+          }
+        }
+
         setIsSignUp(false);
       } else {
         await signIn(email, password);
@@ -74,6 +90,10 @@ export default function Login() {
       }
     } catch (error: any) {
       console.error("Authentication error:", error);
+      toastError({
+        title: "Authentication failed",
+        description: error?.message || "Something went wrong. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
