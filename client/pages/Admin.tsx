@@ -277,6 +277,12 @@ export default function Admin() {
         action: () => setActiveTab("operations"),
       },
       {
+        label: "Review applications",
+        description: "Approve partnership or project requests.",
+        icon: ClipboardList,
+        action: () => setActiveTab("operations"),
+      },
+      {
         label: "Open Builder CMS",
         description: "Edit marketing pages and landing content in Builder.io.",
         icon: ExternalLink,
