@@ -149,7 +149,7 @@ export default function DocsExamples() {
         </p>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
+      <section id="code-gallery" className="grid gap-6 lg:grid-cols-3">
         {exampleSnippets.map((snippet) => (
           <Card key={snippet.title} className="bg-slate-900/60 border-slate-700">
             <CardHeader className="space-y-2">
