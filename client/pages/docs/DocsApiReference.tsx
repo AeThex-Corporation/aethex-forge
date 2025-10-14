@@ -170,7 +170,7 @@ export default function DocsApiReference() {
         </Card>
       </section>
 
-      <section className="space-y-4">
+      <section id="core-endpoints" className="space-y-4">
         <div className="flex items-center gap-3">
           <Activity className="h-6 w-6 text-blue-400" />
           <h3 className="text-2xl font-semibold text-white">Core endpoints</h3>
