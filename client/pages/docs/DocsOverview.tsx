@@ -25,6 +25,7 @@ import {
   Github,
   ExternalLink,
   Link as LinkIcon,
+  Headphones,
 } from "lucide-react";
 
 const quickStartCards = [
