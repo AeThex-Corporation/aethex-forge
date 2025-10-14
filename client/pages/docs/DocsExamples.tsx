@@ -234,7 +234,7 @@ export default function DocsExamples() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-emerald-500/20 bg-slate-900/80 p-8">
+      <section id="services" className="rounded-2xl border border-emerald-500/20 bg-slate-900/80 p-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <h4 className="text-xl font-semibold text-white">Need a custom integration?</h4>
