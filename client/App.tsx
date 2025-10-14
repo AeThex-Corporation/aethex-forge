@@ -22,6 +22,7 @@ import DocsLayout from "./pages/DocsLayout";
 import DocsOverview from "./pages/docs/DocsOverview";
 import DocsTutorials from "./pages/docs/DocsTutorials";
 import DocsGettingStarted from "./pages/docs/DocsGettingStarted";
+import DocsPlatform from "./pages/docs/DocsPlatform";
 import DocsApiReference from "./pages/docs/DocsApiReference";
 import DocsCli from "./pages/docs/DocsCli";
 import DocsExamples from "./pages/docs/DocsExamples";
