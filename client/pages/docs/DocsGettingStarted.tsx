@@ -123,6 +123,33 @@ const deploymentChecklist = [
   },
 ];
 
+const platformHighlights = [
+  {
+    title: "Unified dashboard",
+    description:
+      "Monitor deployments, review incidents, and share announcements with stakeholders from a single console.",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Passport identity",
+    description:
+      "Give every builder a portable profile that aggregates achievements, verified skills, and mentorship history.",
+    icon: IdCard,
+  },
+  {
+    title: "Community and mentorship",
+    description:
+      "Pair emerging studios with advisors, host showcase events, and recruit collaborators through the community hub.",
+    icon: Users,
+  },
+  {
+    title: "Live ops analytics",
+    description:
+      "Track real-time KPIs, automate status updates, and route alerts into your team&apos;s notification channels.",
+    icon: ActivitySquare,
+  },
+];
+
 const explorationLinks = [
   {
     title: "Platform Walkthrough",
