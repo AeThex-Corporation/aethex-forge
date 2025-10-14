@@ -198,7 +198,7 @@ export default function DocsGettingStarted() {
         ))}
       </section>
 
-      <section className="space-y-4">
+      <section id="next-steps" className="space-y-4">
         <div className="flex items-center gap-3">
           <Layers className="h-6 w-6 text-purple-400" />
           <h3 className="text-2xl font-semibold text-white">Next steps</h3>
