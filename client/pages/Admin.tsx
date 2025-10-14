@@ -52,6 +52,19 @@ export default function Admin() {
     metrics?: string;
     specialties?: string[];
   };
+  type ProjectApplication = {
+    id: string;
+    status?: string | null;
+    applicant_email?: string | null;
+    applicant_name?: string | null;
+    created_at?: string | null;
+    notes?: string | null;
+    projects?: {
+      id?: string | null;
+      title?: string | null;
+      user_id?: string | null;
+    } | null;
+  };
   const [studios, setStudios] = useState<Studio[]>([
     {
       name: "Lone Star Studio",
