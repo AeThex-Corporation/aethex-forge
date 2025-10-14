@@ -137,7 +137,7 @@ const integrationIdeas = [
 export default function DocsExamples() {
   return (
     <div className="space-y-12">
-      <section className="space-y-4">
+      <section id="overview" className="space-y-4">
         <Badge className="bg-emerald-500/20 text-emerald-100 uppercase tracking-wide">
           <Blocks className="mr-2 h-3 w-3" />
           Examples & Templates
