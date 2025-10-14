@@ -265,7 +265,7 @@ export default function DocsApiReference() {
         </Card>
       </section>
 
-      <section className="rounded-2xl border border-blue-500/40 bg-blue-900/20 p-8">
+      <section id="resources" className="rounded-2xl border border-blue-500/40 bg-blue-900/20 p-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <h3 className="text-2xl font-semibold text-white">Ship production-ready integrations</h3>
