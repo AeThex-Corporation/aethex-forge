@@ -19,6 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminStatCard from "@/components/admin/AdminStatCard";
+import AdminMemberManager from "@/components/admin/AdminMemberManager";
+import AdminAchievementManager from "@/components/admin/AdminAchievementManager";
 import {
   Shield,
   Users,
@@ -29,6 +31,8 @@ import {
   UserCog,
   Settings,
   ExternalLink,
+  ClipboardList,
+  Loader2,
 } from "lucide-react";
 
 export default function Admin() {
