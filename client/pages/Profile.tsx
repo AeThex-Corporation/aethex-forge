@@ -7,11 +7,7 @@ import {
   aethexAchievementService,
   type AethexAchievement,
 } from "@/lib/aethex-database-adapter";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -81,7 +77,9 @@ const Profile = () => {
       if (!user?.id) return;
       setLoadingAchievements(true);
       try {
-        const data = await aethexAchievementService.getUserAchievements(user.id);
+        const data = await aethexAchievementService.getUserAchievements(
+          user.id,
+        );
         setAchievements(data.slice(0, 6));
       } catch (error) {
         console.warn("Failed to load achievements for profile overview", error);
@@ -182,12 +180,18 @@ const Profile = () => {
                   </CardTitle>
                   <CardDescription className="flex flex-wrap items-center justify-center gap-2 text-sm">
                     {profile.user_type ? (
-                      <Badge variant="outline" className="capitalize border-aethex-400/60 text-aethex-200">
+                      <Badge
+                        variant="outline"
+                        className="capitalize border-aethex-400/60 text-aethex-200"
+                      >
                         {profile.user_type.replace(/_/g, " ")}
                       </Badge>
                     ) : null}
                     {profile.experience_level ? (
-                      <Badge variant="outline" className="capitalize border-purple-400/50 text-purple-200">
+                      <Badge
+                        variant="outline"
+                        className="capitalize border-purple-400/50 text-purple-200"
+                      >
                         {profile.experience_level}
                       </Badge>
                     ) : null}
@@ -224,10 +228,19 @@ const Profile = () => {
                 </div>
                 <Separator className="bg-border/40" />
                 <div className="flex flex-col gap-3">
-                  <Button asChild className="bg-gradient-to-r from-aethex-500 to-neon-blue">
-                    <Link to={dashboardSettingsHref}>Edit profile in Dashboard</Link>
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-aethex-500 to-neon-blue"
+                  >
+                    <Link to={dashboardSettingsHref}>
+                      Edit profile in Dashboard
+                    </Link>
                   </Button>
-                  <Button asChild variant="outline" className="border-border/50">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-border/50"
+                  >
                     <Link to={passportHref}>View AeThex Passport</Link>
                   </Button>
                 </div>
@@ -241,7 +254,9 @@ const Profile = () => {
                     <Shield className="h-5 w-5 text-aethex-300" />
                     Progress snapshot
                   </CardTitle>
-                  <CardDescription>Where you stand across AeThex programs.</CardDescription>
+                  <CardDescription>
+                    Where you stand across AeThex programs.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -251,12 +266,18 @@ const Profile = () => {
                         className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/50 p-4 transition hover:border-aethex-400/60"
                       >
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-muted-foreground">{label}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {label}
+                          </p>
                           <Icon className="h-5 w-5 text-aethex-300" />
                         </div>
-                        <p className="text-xl font-semibold text-white">{value}</p>
+                        <p className="text-xl font-semibold text-white">
+                          {value}
+                        </p>
                         {helper ? (
-                          <p className="text-xs text-muted-foreground">{helper}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {helper}
+                          </p>
                         ) : null}
                       </div>
                     ))}
@@ -271,13 +292,16 @@ const Profile = () => {
                     About {profile.full_name || username}
                   </CardTitle>
                   <CardDescription>
-                    Community presence, specialties, and how to collaborate with you.
+                    Community presence, specialties, and how to collaborate with
+                    you.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="rounded-lg border border-border/40 bg-background/50 p-4">
-                      <p className="text-sm font-medium text-foreground/80">Role focus</p>
+                      <p className="text-sm font-medium text-foreground/80">
+                        Role focus
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         {profile.user_type
                           ? profile.user_type.replace(/_/g, " ")
@@ -285,15 +309,20 @@ const Profile = () => {
                       </p>
                     </div>
                     <div className="rounded-lg border border-border/40 bg-background/50 p-4">
-                      <p className="text-sm font-medium text-foreground/80">Experience level</p>
+                      <p className="text-sm font-medium text-foreground/80">
+                        Experience level
+                      </p>
                       <p className="text-sm text-muted-foreground">
-                        {profile.experience_level || "Let collaborators know your seniority."}
+                        {profile.experience_level ||
+                          "Let collaborators know your seniority."}
                       </p>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-foreground/80">Links & presence</h3>
+                    <h3 className="text-sm font-medium text-foreground/80">
+                      Links & presence
+                    </h3>
                     {socialLinks.length ? (
                       <div className="flex flex-wrap gap-2">
                         {socialLinks.map((link) => (
@@ -329,7 +358,8 @@ const Profile = () => {
                     Recent achievements
                   </CardTitle>
                   <CardDescription>
-                    Milestones you&apos;ve unlocked across AeThex games and programs.
+                    Milestones you&apos;ve unlocked across AeThex games and
+                    programs.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -349,7 +379,10 @@ const Profile = () => {
                             <p className="font-medium text-foreground">
                               {achievement.name}
                             </p>
-                            <Badge variant="outline" className="border-amber-400/60 text-amber-200">
+                            <Badge
+                              variant="outline"
+                              className="border-amber-400/60 text-amber-200"
+                            >
                               +{achievement.xp_reward} XP
                             </Badge>
                           </div>
@@ -361,7 +394,8 @@ const Profile = () => {
                     </div>
                   ) : (
                     <p className="rounded border border-dashed border-border/40 bg-background/40 p-4 text-sm text-muted-foreground">
-                      Start contributing to unlock your first AeThex achievement.
+                      Start contributing to unlock your first AeThex
+                      achievement.
                     </p>
                   )}
                 </CardContent>

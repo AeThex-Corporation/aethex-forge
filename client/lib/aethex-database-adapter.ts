@@ -382,7 +382,10 @@ export const aethexUserService = {
       let err = anyResp.error;
       if (err) {
         const message = String(err?.message || err);
-        if (message.includes("relationship") || message.includes("schema cache")) {
+        if (
+          message.includes("relationship") ||
+          message.includes("schema cache")
+        ) {
           // Fallback: fetch profiles, then batch-fetch achievements and map xp rewards
           const { data: profilesOnly, error: profilesErr } = await supabase
             .from("user_profiles")
@@ -399,7 +402,9 @@ export const aethexUserService = {
             throw new Error(profilesErr?.message || String(profilesErr));
           }
 
-          const ids = Array.isArray(profilesOnly) ? profilesOnly.map((p: any) => p.id).filter(Boolean) : [];
+          const ids = Array.isArray(profilesOnly)
+            ? profilesOnly.map((p: any) => p.id).filter(Boolean)
+            : [];
 
           let uaRows: any[] = [];
           if (ids.length) {
@@ -414,7 +419,9 @@ export const aethexUserService = {
             uaRows = Array.isArray(uaData) ? uaData : [];
           }
 
-          const achievementIds = Array.from(new Set(uaRows.map((r) => r.achievement_id).filter(Boolean)));
+          const achievementIds = Array.from(
+            new Set(uaRows.map((r) => r.achievement_id).filter(Boolean)),
+          );
           let achievementMap: Record<string, number> = {};
           if (achievementIds.length) {
             const { data: achData, error: achErr } = await supabase
@@ -433,7 +440,11 @@ export const aethexUserService = {
           const enrichedProfiles = (profilesOnly || []).map((p: any) => {
             const userAchievements = uaRows
               .filter((r) => r.user_id === p.id)
-              .map((r) => ({ achievements: { xp_reward: achievementMap[r.achievement_id] || 0 } }));
+              .map((r) => ({
+                achievements: {
+                  xp_reward: achievementMap[r.achievement_id] || 0,
+                },
+              }));
             return { ...p, user_achievements: userAchievements };
           });
 

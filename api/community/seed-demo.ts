@@ -124,8 +124,14 @@ const DEMO_POSTS: DemoPost[] = [
 ];
 
 const FOLLOW_PAIRS: Array<{ followerEmail: string; followingEmail: string }> = [
-  { followerEmail: "mrpiglr+demo@aethex.dev", followingEmail: "updates@aethex.dev" },
-  { followerEmail: "mrpiglr+demo@aethex.dev", followingEmail: "labs@aethex.dev" },
+  {
+    followerEmail: "mrpiglr+demo@aethex.dev",
+    followingEmail: "updates@aethex.dev",
+  },
+  {
+    followerEmail: "mrpiglr+demo@aethex.dev",
+    followingEmail: "labs@aethex.dev",
+  },
   { followerEmail: "labs@aethex.dev", followingEmail: "updates@aethex.dev" },
 ];
 
@@ -140,8 +146,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const seededUsers: any[] = [];
 
     for (const demoUser of DEMO_USERS) {
-      const { data: searchResult, error: searchError } = await admin.auth.admin
-        .listUsers({ email: demoUser.email });
+      const { data: searchResult, error: searchError } =
+        await admin.auth.admin.listUsers({ email: demoUser.email });
       if (searchError) throw searchError;
 
       let authUser = searchResult.users?.[0];
@@ -226,7 +232,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         continue;
       }
 
-      const createdAt = new Date(now - post.hoursAgo * 3600 * 1000).toISOString();
+      const createdAt = new Date(
+        now - post.hoursAgo * 3600 * 1000,
+      ).toISOString();
       const { data: insertedPost, error: insertPostError } = await admin
         .from("community_posts")
         .insert({
@@ -257,18 +265,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       seededPosts.push(insertedPost);
     }
 
-    const followRows = FOLLOW_PAIRS.flatMap(({ followerEmail, followingEmail }) => {
-      const followerId = userMap.get(followerEmail);
-      const followingId = userMap.get(followingEmail);
-      if (!followerId || !followingId) return [];
-      return [
-        {
-          follower_id: followerId,
-          following_id: followingId,
-          created_at: new Date().toISOString(),
-        },
-      ];
-    });
+    const followRows = FOLLOW_PAIRS.flatMap(
+      ({ followerEmail, followingEmail }) => {
+        const followerId = userMap.get(followerEmail);
+        const followingId = userMap.get(followingEmail);
+        if (!followerId || !followingId) return [];
+        return [
+          {
+            follower_id: followerId,
+            following_id: followingId,
+            created_at: new Date().toISOString(),
+          },
+        ];
+      },
+    );
 
     if (followRows.length) {
       const { error: followError } = await admin
@@ -288,9 +298,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
     const sanitizedPosts = Array.from(
       new Map(
-        seededPosts
-          .filter(Boolean)
-          .map((post: any) => [post.id, post]),
+        seededPosts.filter(Boolean).map((post: any) => [post.id, post]),
       ).values(),
     );
 

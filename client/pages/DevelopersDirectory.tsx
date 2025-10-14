@@ -109,19 +109,21 @@ interface DeveloperCardProps {
 const DeveloperCard = ({ profile }: DeveloperCardProps) => {
   const realmStyle =
     realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
-  const fallbackBanner = realmBannerFallbacks[profile.user_type] ||
+  const fallbackBanner =
+    realmBannerFallbacks[profile.user_type] ||
     "from-slate-900 via-slate-800 to-slate-900";
   const isGodMode = (profile.level ?? 1) >= 100;
   const passportHref = profile.username
     ? `/passport/${profile.username}`
     : `/passport/${profile.id}`;
   const name = profile.full_name || profile.username || "AeThex Explorer";
-  const initials = name
-    .split(" ")
-    .filter(Boolean)
-    .map((segment) => segment[0]?.toUpperCase())
-    .join("")
-    .slice(0, 2) || "AE";
+  const initials =
+    name
+      .split(" ")
+      .filter(Boolean)
+      .map((segment) => segment[0]?.toUpperCase())
+      .join("")
+      .slice(0, 2) || "AE";
   const totalXp = Math.max(0, Math.floor(Number(profile.total_xp ?? 0)));
   const levelValue = Math.max(1, Math.floor(Number(profile.level ?? 1)));
   const loyaltyPoints = Math.max(
@@ -225,9 +227,7 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
       </CardHeader>
       <CardContent className="space-y-4 pt-0">
         {profile.bio && (
-          <p className="text-sm text-slate-300 line-clamp-3">
-            {profile.bio}
-          </p>
+          <p className="text-sm text-slate-300 line-clamp-3">{profile.bio}</p>
         )}
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-slate-200">

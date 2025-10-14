@@ -19,12 +19,16 @@ export function createServer() {
 
   // Admin-backed API (service role)
   try {
-    const ownerEmail = (process.env.AETHEX_OWNER_EMAIL || "mrpiglr@gmail.com").toLowerCase();
+    const ownerEmail = (
+      process.env.AETHEX_OWNER_EMAIL || "mrpiglr@gmail.com"
+    ).toLowerCase();
     const isTableMissing = (err: any) => {
       const code = err?.code;
       const message = String(err?.message || err?.hint || err?.details || "");
       return (
-        code === "42P01" || message.includes("relation") || message.includes("does not exist")
+        code === "42P01" ||
+        message.includes("relation") ||
+        message.includes("does not exist")
       );
     };
 
@@ -391,9 +395,7 @@ export function createServer() {
         }
         return res.json(data || []);
       } catch (e: any) {
-        return res
-          .status(500)
-          .json({ error: e?.message || String(e) });
+        return res.status(500).json({ error: e?.message || String(e) });
       }
     });
   } catch (e) {

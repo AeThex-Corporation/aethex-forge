@@ -74,7 +74,11 @@ const curriculumModules: CurriculumModule[] = [
       "Establish core mastery of the AeThex platform, from environment setup to shipping your first interactive experience.",
     duration: "2.5 hrs",
     level: "foundation",
-    focus: ["Workspace onboarding", "Project scaffolding", "Passport + identity"],
+    focus: [
+      "Workspace onboarding",
+      "Project scaffolding",
+      "Passport + identity",
+    ],
     learningGoals: [
       "Configure a production-ready AeThex project",
       "Understand AeThex Passport, identity, and role models",
@@ -242,12 +246,14 @@ const curriculumHighlights = [
   },
   {
     title: "Project-based milestones",
-    description: "Each module culminates in a capstone aligned to AeThex deliverables.",
+    description:
+      "Each module culminates in a capstone aligned to AeThex deliverables.",
     icon: Target,
   },
   {
     title: "Built with real data",
-    description: "Lessons reference live dashboards, Passport identities, and Supabase schemas.",
+    description:
+      "Lessons reference live dashboards, Passport identities, and Supabase schemas.",
     icon: Lightbulb,
   },
 ];
@@ -273,19 +279,22 @@ const curriculumStats = [
 const supplementalResources = [
   {
     title: "AeThex Playbooks",
-    description: "Download ready-made GTM, community, and growth playbooks to complement each module.",
+    description:
+      "Download ready-made GTM, community, and growth playbooks to complement each module.",
     cta: "Browse playbooks",
     href: "/docs/examples#playbooks",
   },
   {
     title: "Live Mentorship Sessions",
-    description: "Join weekly office hours with AeThex engineers and producers to review your progress.",
+    description:
+      "Join weekly office hours with AeThex engineers and producers to review your progress.",
     cta: "Reserve a seat",
     href: "/mentorship",
   },
   {
     title: "Certification Exams",
-    description: "Validate mastery with AeThex Builder and Operator certifications once you finish the track.",
+    description:
+      "Validate mastery with AeThex Builder and Operator certifications once you finish the track.",
     cta: "View certification guide",
     href: "/docs/platform#certification",
   },
@@ -305,9 +314,9 @@ export default function DocsCurriculum() {
               Structured learning paths for builders, operators, and labs teams
             </h1>
             <p className="max-w-3xl text-base text-slate-200 sm:text-lg">
-              Progress through sequenced modules that combine documentation, interactive labs, and
-              project-based assignments. Graduate with deployment-ready AeThex experiences and
-              certification badges.
+              Progress through sequenced modules that combine documentation,
+              interactive labs, and project-based assignments. Graduate with
+              deployment-ready AeThex experiences and certification badges.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
@@ -343,8 +352,9 @@ export default function DocsCurriculum() {
               <Compass className="h-6 w-6 text-purple-300" /> Curriculum roadmap
             </CardTitle>
             <CardDescription className="text-slate-300">
-              Expand each module to view lessons, formats, and key objectives. Every module ends with a
-              capstone milestone that prepares you for certification.
+              Expand each module to view lessons, formats, and key objectives.
+              Every module ends with a capstone milestone that prepares you for
+              certification.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -379,7 +389,9 @@ export default function DocsCurriculum() {
                         <h3 className="text-lg font-semibold text-white sm:text-xl">
                           {module.title}
                         </h3>
-                        <p className="text-sm text-slate-300">{module.description}</p>
+                        <p className="text-sm text-slate-300">
+                          {module.description}
+                        </p>
                       </div>
                     </div>
                   </AccordionTrigger>
@@ -439,7 +451,8 @@ export default function DocsCurriculum() {
                                 className="mt-3 h-8 w-fit gap-2 rounded-full border border-slate-800/60 bg-slate-900/50 px-3 text-xs text-slate-200 hover:border-purple-500/50 hover:text-white"
                               >
                                 <Link to={lesson.path}>
-                                  Review lesson <ArrowRight className="h-3.5 w-3.5" />
+                                  Review lesson{" "}
+                                  <ArrowRight className="h-3.5 w-3.5" />
                                 </Link>
                               </Button>
                             </div>
@@ -464,7 +477,8 @@ export default function DocsCurriculum() {
                           </div>
                         ) : (
                           <p className="text-sm text-purple-100/80">
-                            Coming soon — the AeThex team is curating the next advanced mission.
+                            Coming soon — the AeThex team is curating the next
+                            advanced mission.
                           </p>
                         )}
                       </div>
@@ -483,7 +497,8 @@ export default function DocsCurriculum() {
                 Why this curriculum works
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Blending documentation, live labs, and project work keeps teams aligned and measurable.
+                Blending documentation, live labs, and project work keeps teams
+                aligned and measurable.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -514,10 +529,12 @@ export default function DocsCurriculum() {
           <Card className="border-slate-800 bg-slate-900/70 shadow-xl">
             <CardHeader className="space-y-2">
               <CardTitle className="flex items-center gap-2 text-xl text-white">
-                <BookOpenCheck className="h-5 w-5 text-purple-300" /> Supplemental resources
+                <BookOpenCheck className="h-5 w-5 text-purple-300" />{" "}
+                Supplemental resources
               </CardTitle>
               <CardDescription className="text-slate-300">
-                Extend the curriculum with live mentorship, playbooks, and certification tracks.
+                Extend the curriculum with live mentorship, playbooks, and
+                certification tracks.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -526,8 +543,12 @@ export default function DocsCurriculum() {
                   key={resource.title}
                   className="space-y-2 rounded-2xl border border-slate-800/60 bg-slate-950/70 p-4"
                 >
-                  <p className="text-sm font-semibold text-white">{resource.title}</p>
-                  <p className="text-sm text-slate-300">{resource.description}</p>
+                  <p className="text-sm font-semibold text-white">
+                    {resource.title}
+                  </p>
+                  <p className="text-sm text-slate-300">
+                    {resource.description}
+                  </p>
                   <Button
                     asChild
                     variant="ghost"
@@ -544,36 +565,48 @@ export default function DocsCurriculum() {
 
           <Card className="border-slate-800 bg-slate-900/70 shadow-xl">
             <CardHeader>
-              <CardTitle className="text-xl text-white">Team readiness checklist</CardTitle>
+              <CardTitle className="text-xl text-white">
+                Team readiness checklist
+              </CardTitle>
               <CardDescription className="text-slate-300">
-                Confirm prerequisites before starting the Builder or Advanced tracks.
+                Confirm prerequisites before starting the Builder or Advanced
+                tracks.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-start gap-3 rounded-2xl border border-slate-800/60 bg-slate-950/70 p-4">
                 <Calculator className="mt-1 h-5 w-5 text-purple-200" />
                 <div>
-                  <p className="text-sm font-semibold text-white">Account + billing configured</p>
+                  <p className="text-sm font-semibold text-white">
+                    Account + billing configured
+                  </p>
                   <p className="text-sm text-slate-300">
-                    Ensure Supabase, billing providers, and environment variables are ready for production load.
+                    Ensure Supabase, billing providers, and environment
+                    variables are ready for production load.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3 rounded-2xl border border-slate-800/60 bg-slate-950/70 p-4">
                 <Sparkles className="mt-1 h-5 w-5 text-purple-200" />
                 <div>
-                  <p className="text-sm font-semibold text-white">Core team enrolled</p>
+                  <p className="text-sm font-semibold text-white">
+                    Core team enrolled
+                  </p>
                   <p className="text-sm text-slate-300">
-                    Identify product, engineering, and operations owners to steward each module.
+                    Identify product, engineering, and operations owners to
+                    steward each module.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3 rounded-2xl border border-slate-800/60 bg-slate-950/70 p-4">
                 <Layers className="mt-1 h-5 w-5 text-purple-200" />
                 <div>
-                  <p className="text-sm font-semibold text-white">Backlog aligned to modules</p>
+                  <p className="text-sm font-semibold text-white">
+                    Backlog aligned to modules
+                  </p>
                   <p className="text-sm text-slate-300">
-                    Map existing sprints to module milestones so curriculum progress mirrors roadmap delivery.
+                    Map existing sprints to module milestones so curriculum
+                    progress mirrors roadmap delivery.
                   </p>
                 </div>
               </div>
@@ -585,13 +618,19 @@ export default function DocsCurriculum() {
       <Separator className="border-slate-800/70" />
 
       <section className="rounded-3xl border border-slate-800/60 bg-slate-900/70 p-8 text-center">
-        <h2 className="text-2xl font-semibold text-white">Ready to certify your AeThex team?</h2>
+        <h2 className="text-2xl font-semibold text-white">
+          Ready to certify your AeThex team?
+        </h2>
         <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-300">
-          Track your completion inside the AeThex admin panel, then schedule a certification review with the
-          AeThex Labs crew. We award badges directly to your Passport once requirements are verified.
+          Track your completion inside the AeThex admin panel, then schedule a
+          certification review with the AeThex Labs crew. We award badges
+          directly to your Passport once requirements are verified.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Button asChild className="gap-2 rounded-full bg-purple-600 text-white hover:bg-purple-500">
+          <Button
+            asChild
+            className="gap-2 rounded-full bg-purple-600 text-white hover:bg-purple-500"
+          >
             <Link to="/mentorship">
               Join mentorship cohort <ArrowRight className="h-4 w-4" />
             </Link>

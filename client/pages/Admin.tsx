@@ -86,8 +86,9 @@ export default function Admin() {
       specialties: ["Simulation", "AI/ML", "Economy"],
     },
   ]);
-  const [projectApplications, setProjectApplications] =
-    useState<ProjectApplication[]>([]);
+  const [projectApplications, setProjectApplications] = useState<
+    ProjectApplication[]
+  >([]);
   const [projectApplicationsLoading, setProjectApplicationsLoading] =
     useState(false);
   type OpportunityApplication = {
@@ -103,8 +104,9 @@ export default function Admin() {
     submitted_at?: string | null;
     message?: string | null;
   };
-  const [opportunityApplications, setOpportunityApplications] =
-    useState<OpportunityApplication[]>([]);
+  const [opportunityApplications, setOpportunityApplications] = useState<
+    OpportunityApplication[]
+  >([]);
   const [opportunityApplicationsLoading, setOpportunityApplicationsLoading] =
     useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
@@ -311,7 +313,8 @@ export default function Admin() {
         value: opportunityApplicationsLoading
           ? "…"
           : opportunityApplications.length.toString(),
-        description: "Contributor & career submissions captured via Opportunities.",
+        description:
+          "Contributor & career submissions captured via Opportunities.",
         trend: opportunityApplicationsLoading
           ? "Syncing applicant data…"
           : `${opportunityApplications.filter((app) => (app.status ?? "new").toLowerCase() === "new").length} awaiting review`,
@@ -1016,7 +1019,10 @@ export default function Admin() {
                       <div className="grid gap-2">
                         {projectApplications.slice(0, 6).map((app) => (
                           <div
-                            key={app.id || `${app.applicant_email ?? "applicant"}-${app.projects?.id ?? "project"}`}
+                            key={
+                              app.id ||
+                              `${app.applicant_email ?? "applicant"}-${app.projects?.id ?? "project"}`
+                            }
                             className="space-y-1 rounded border border-border/30 bg-background/40 p-3"
                           >
                             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -1043,7 +1049,8 @@ export default function Admin() {
                       </div>
                     ) : (
                       <p>
-                        No project applications on file. Encourage partners to apply via briefs.
+                        No project applications on file. Encourage partners to
+                        apply via briefs.
                       </p>
                     )}
                   </CardContent>
@@ -1059,7 +1066,8 @@ export default function Admin() {
                       <CardTitle>Opportunity applications</CardTitle>
                     </div>
                     <CardDescription>
-                      View contributor and career submissions captured on the Opportunities page.
+                      View contributor and career submissions captured on the
+                      Opportunities page.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
@@ -1092,7 +1100,10 @@ export default function Admin() {
                       <div className="grid gap-2">
                         {opportunityApplications.slice(0, 6).map((app) => (
                           <div
-                            key={app.id || `${app.email ?? "candidate"}-${app.submitted_at ?? "time"}`}
+                            key={
+                              app.id ||
+                              `${app.email ?? "candidate"}-${app.submitted_at ?? "time"}`
+                            }
                             className="space-y-2 rounded border border-border/30 bg-background/40 p-3"
                           >
                             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -1165,7 +1176,8 @@ export default function Admin() {
                       </div>
                     ) : (
                       <p>
-                        No opportunity applications yet. Share the Opportunities page to grow the pipeline.
+                        No opportunity applications yet. Share the Opportunities
+                        page to grow the pipeline.
                       </p>
                     )}
                   </CardContent>
