@@ -410,24 +410,100 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   ) => {
     setLoading(true);
     try {
+      const metadata: Record<string, unknown> = {};
+      if (userData?.full_name || (userData as any)?.fullName) {
+        metadata.full_name = (userData.full_name || (userData as any).fullName)!
+          .toString()
+          .trim();
+      }
+      if (userData?.username) {
+        metadata.username = userData.username;
+      }
+      if ((userData as any)?.user_type || (userData as any)?.userType) {
+        metadata.user_type =
+          (userData as any)?.user_type ?? (userData as any)?.userType;
+      }
+
+      const redirectTo =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/login?verified=1`
+          : undefined;
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: redirectTo,
+          data: metadata,
+        },
       });
 
       if (error) throw error;
 
-      if (data.user) {
-        aethexToast.success({
-          title: "Account created!",
-          description:
-            "Please check your email to verify your account, then sign in.",
-        });
+      let emailSent = false;
+      let verificationUrl: string | undefined;
+
+      if (typeof fetch === "function") {
+        try {
+          const response = await fetch("/api/auth/send-verification-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              redirectTo,
+              fullName:
+                (metadata.full_name as string | undefined) ??
+                (data.user?.user_metadata as any)?.full_name ??
+                null,
+            }),
+          });
+
+          const payload = await response.json().catch(() => ({}));
+
+          if (!response.ok) {
+            throw new Error(payload?.error || "Failed to queue verification email");
+          }
+
+          emailSent = Boolean(payload?.sent);
+          verificationUrl = payload?.verificationUrl;
+
+          if (!emailSent && verificationUrl) {
+            aethexToast.warning({
+              title: "Email service unavailable",
+              description:
+                "We could not send the verification email automatically. Copy the link shown after closing this message to verify manually.",
+            });
+          }
+        } catch (sendError: any) {
+          console.error("Verification email error", sendError);
+          aethexToast.warning({
+            title: "Verification email pending",
+            description:
+              "Account created, but we could not deliver the verification email automatically. Use the resend option or contact support.",
+          });
+        }
       }
+
+      if (data.user) {
+        if (emailSent) {
+          aethexToast.success({
+            title: "Verify your email",
+            description: `We sent a confirmation to ${email}.`,
+          });
+        } else {
+          aethexToast.info({
+            title: "Verify your account",
+            description:
+              "Your account was created. If no email arrives, use the manual verification link or contact support.",
+          });
+        }
+      }
+
+      return { emailSent, verificationUrl } as const;
     } catch (error: any) {
       aethexToast.error({
         title: "Sign up failed",
-        description: error.message,
+        description: error?.message || "Unable to create your account.",
       });
       throw error;
     } finally {
