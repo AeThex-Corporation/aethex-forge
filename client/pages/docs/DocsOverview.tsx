@@ -13,6 +13,7 @@ import {
   Code,
   Terminal,
   Video,
+  LayoutDashboard,
   FileText,
   ArrowRight,
   Rocket,
