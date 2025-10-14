@@ -331,6 +331,151 @@ export default function Welcome({
         </CardContent>
       </Card>
 
+      {/* Email Verification Reminder */}
+      <Card
+        className={`max-w-2xl mx-auto bg-background/40 backdrop-blur ${verificationBorderClass}`}
+      >
+        <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex h-11 w-11 items-center justify-center rounded-full ${verificationIconBg}`}
+            >
+              <VerificationIcon className="h-5 w-5" />
+            </div>
+            <div>
+              <CardTitle className="text-base">
+                {isVerified ? "Email verified" : "Verify your email to continue"}
+              </CardTitle>
+              <CardDescription className={verificationDescriptionClass}>
+                {isVerified
+                  ? `You're verified with ${emailAddress || "your email address"}.`
+                  : `Confirm ${emailAddress || "your email"} so you can sign back in after onboarding.`}
+              </CardDescription>
+            </div>
+          </div>
+          <Badge className={verificationBadgeClass}>
+            {isVerified ? "Verified" : "Action required"}
+          </Badge>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm">
+          {isVerified ? (
+            <p className="text-foreground/80">
+              You're good to go. Keep this email handy for account recovery and
+              notifications.
+            </p>
+          ) : (
+            <>
+              <p className="text-foreground/80">
+                Check your inbox for the AeThex verification email. You must
+                confirm it before you can sign in again.
+              </p>
+              <ul className="list-disc space-y-1 pl-5 text-foreground/70">
+                <li>Look in your spam or promotions folder.</li>
+                <li>
+                  Add
+                  <span className="mx-1 font-mono text-xs text-foreground/80">
+                    support@aethex.biz
+                  </span>
+                  to your safe sender list.
+                </li>
+                <li>Use the buttons below to resend or check your status.</li>
+              </ul>
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-border/50"
+                  onClick={handleResendVerification}
+                  disabled={isSendingVerification}
+                >
+                  {isSendingVerification && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Resend verification email
+                </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="bg-aethex-500/20 text-aethex-100 border border-aethex-500/40"
+                  onClick={handleCheckVerification}
+                  disabled={isCheckingVerification}
+                >
+                  {isCheckingVerification && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  I verified, check again
+                </Button>
+              </div>
+              {fallbackVerificationLink ? (
+                <div className="space-y-2 rounded border border-border/40 bg-background/60 p-3">
+                  <p className="text-xs text-muted-foreground">
+                    Email delivery failed. Copy this link into your browser to
+                    verify manually:
+                  </p>
+                  <p className="break-all rounded bg-background/80 px-3 py-2 font-mono text-[11px] text-foreground/90">
+                    {fallbackVerificationLink}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="border-aethex-400/40"
+                      onClick={() =>
+                        window.open(
+                          fallbackVerificationLink,
+                          "_blank",
+                          "noopener",
+                        )
+                      }
+                    >
+                      Open verification link
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      className="text-aethex-300 hover:text-aethex-200"
+                      onClick={() => {
+                        if (
+                          typeof navigator !== "undefined" &&
+                          navigator.clipboard?.writeText
+                        ) {
+                          navigator.clipboard
+                            .writeText(fallbackVerificationLink)
+                            .then(() =>
+                              toastInfo({
+                                title: "Link copied",
+                                description:
+                                  "Paste the link into your browser to verify.",
+                              }),
+                            )
+                            .catch(() =>
+                              toastWarning({
+                                title: "Copy failed",
+                                description:
+                                  "Copy the link manually from the box above.",
+                              }),
+                            );
+                        } else {
+                          toastWarning({
+                            title: "Copy unavailable",
+                            description:
+                              "Copy the link manually from the box above.",
+                          });
+                        }
+                      }}
+                    >
+                      Copy link
+                    </Button>
+                  </div>
+                </div>
+              ) : null}
+            </>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Achievement Badge */}
       {achievement && (
         <Card className="max-w-2xl mx-auto border border-emerald-500/40 bg-emerald-500/10">
