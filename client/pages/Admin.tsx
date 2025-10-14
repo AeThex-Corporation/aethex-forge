@@ -663,55 +663,15 @@ export default function Admin() {
             </TabsContent>
 
             <TabsContent value="community" className="space-y-6">
-              <Card className="bg-card/60 border-border/40 backdrop-blur">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-cyan-300" />
-                    <CardTitle>Member directory</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Showing {displayProfiles.length} of {totalMembers} profiles.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {displayProfiles.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">
-                      No profiles were returned from the identity service. Trigger a refresh or invite teammates to join AeThex.
-                    </p>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full text-sm">
-                        <thead>
-                          <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                            <th className="pb-2 pr-4 font-medium">Name</th>
-                            <th className="pb-2 pr-4 font-medium">Email</th>
-                            <th className="pb-2 pr-4 font-medium">Role</th>
-                            <th className="pb-2 font-medium">Loyalty</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border/30">
-                          {displayProfiles.map((profile) => (
-                            <tr key={profile.id} className="text-foreground/90">
-                              <td className="py-2 pr-4">
-                                {profile.full_name || profile.username || "Unknown"}
-                              </td>
-                              <td className="py-2 pr-4 text-muted-foreground">
-                                {profile.email || "—"}
-                              </td>
-                              <td className="py-2 pr-4">
-                                <Badge variant="outline">{profile.role || "member"}</Badge>
-                              </td>
-                              <td className="py-2 text-muted-foreground">
-                                {profile.loyalty_points ?? 0}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <AdminMemberManager
+                profiles={managedProfiles}
+                selectedId={selectedMemberId}
+                onSelectedIdChange={(id) => setSelectedMemberId(id)}
+                onRefresh={loadProfiles}
+                ownerEmail={ownerEmail}
+              />
+
+              <AdminAchievementManager targetUser={selectedMember} />
 
               <Card className="bg-card/60 border-border/40 backdrop-blur">
                 <CardHeader>
