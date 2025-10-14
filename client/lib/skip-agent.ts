@@ -348,6 +348,11 @@ const loadSkipAgent = async (): Promise<void> => {
     return;
   }
 
+  if (isDocsPath()) {
+    // Prevent any network activity from documentation routes
+    return;
+  }
+
   if (typeof window === "undefined" || typeof document === "undefined") {
     return;
   }
