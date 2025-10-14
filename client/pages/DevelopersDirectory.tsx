@@ -108,49 +108,128 @@ interface DeveloperCardProps {
 const DeveloperCard = ({ profile }: DeveloperCardProps) => {
   const realmStyle =
     realmBadgeStyles[profile.user_type] || "bg-aethex-500 text-white";
+  const fallbackBanner = realmBannerFallbacks[profile.user_type] ||
+    "from-slate-900 via-slate-800 to-slate-900";
   const isGodMode = (profile.level ?? 1) >= 100;
   const passportHref = profile.username
     ? `/passport/${profile.username}`
     : `/passport/${profile.id}`;
+  const name = profile.full_name || profile.username || "AeThex Explorer";
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .map((segment) => segment[0]?.toUpperCase())
+    .join("")
+    .slice(0, 2) || "AE";
+  const availabilityLabel = getAvailabilityLabel(profile as any);
+  const availabilityStyles = getAvailabilityStyles(availabilityLabel);
+  const experienceLabel = profile.experience_level
+    ? profile.experience_level.replace("_", " ")
+    : null;
+
   return (
-    <Card className="group h-full border border-slate-800 bg-slate-900/60 transition-transform hover:-translate-y-1 hover:border-aethex-400/60">
-      <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Badge
-              className={cn("text-xs uppercase tracking-wider", realmStyle)}
-            >
-              {profile.user_type.replace("_", " ")}
-            </Badge>
-            {isGodMode && (
-              <Badge className="bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-500 text-slate-900 text-[10px] font-semibold shadow">
-                GOD Mode
-              </Badge>
-            )}
+    <Card className="group h-full overflow-hidden border border-slate-800 bg-slate-950/60 shadow-xl transition-transform hover:-translate-y-1 hover:border-aethex-400/60">
+      <div className="relative h-28 w-full overflow-hidden sm:h-32">
+        <div
+          className={cn(
+            "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105",
+            profile.banner_url
+              ? undefined
+              : `bg-gradient-to-r ${fallbackBanner}`,
+          )}
+          style={
+            profile.banner_url
+              ? { backgroundImage: `url(${profile.banner_url})` }
+              : undefined
+          }
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
+      </div>
+      <CardHeader className="space-y-4 pt-6">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <Avatar className="h-16 w-16 border-2 border-slate-900 bg-slate-900 shadow-lg">
+              <AvatarImage
+                src={profile.avatar_url || undefined}
+                alt={`${name} avatar`}
+              />
+              <AvatarFallback className="bg-slate-800 text-slate-100">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge
+                  className={cn("text-xs uppercase tracking-wider", realmStyle)}
+                >
+                  {profile.user_type.replace("_", " ")}
+                </Badge>
+                {experienceLabel && (
+                  <Badge
+                    variant="outline"
+                    className="border-slate-700/60 text-xs uppercase tracking-wide text-slate-200"
+                  >
+                    {experienceLabel}
+                  </Badge>
+                )}
+                {isGodMode && (
+                  <Badge className="bg-gradient-to-r from-yellow-400 via-amber-200 to-yellow-500 text-slate-900 text-[10px] font-semibold shadow">
+                    GOD Mode
+                  </Badge>
+                )}
+              </div>
+              <CardTitle className="text-xl text-white">{name}</CardTitle>
+              {profile.email && (
+                <CardDescription className="text-slate-300">
+                  {profile.email}
+                </CardDescription>
+              )}
+              <div className="flex flex-wrap items-center gap-2 text-xs text-slate-300">
+                {profile.location && (
+                  <span className="inline-flex items-center gap-1">
+                    {profile.location}
+                  </span>
+                )}
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "inline-flex items-center gap-2 border-slate-700/70 bg-slate-900/60 text-xs font-medium",
+                    availabilityStyles.badge,
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "h-2 w-2 rounded-full shadow-inner",
+                      availabilityStyles.dot,
+                    )}
+                  />
+                  {availabilityLabel}
+                </Badge>
+              </div>
+            </div>
           </div>
           <Badge
             variant="outline"
-            className="border-slate-700/70 text-slate-300"
+            className="border-slate-700/70 bg-slate-900/60 text-slate-300"
           >
             Level {profile.level ?? 1}
           </Badge>
         </div>
-        <CardTitle className="text-xl text-white">
-          {profile.full_name || profile.username || "AeThex Explorer"}
-        </CardTitle>
-        {profile.email && (
-          <CardDescription className="text-slate-300">
-            {profile.email}
-          </CardDescription>
-        )}
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-3">
+      <CardContent className="space-y-4 pt-0">
+        {profile.bio && (
+          <p className="text-sm text-slate-300 line-clamp-3">
+            {profile.bio}
+          </p>
+        )}
+        <div className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-slate-200">
             <div className="text-xs uppercase tracking-wider text-slate-400">
               XP
             </div>
-            <div className="text-lg font-semibold">{profile.total_xp ?? 0}</div>
+            <div className="text-lg font-semibold">
+              {profile.total_xp ?? 0}
+            </div>
           </div>
           <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-slate-200">
             <div className="text-xs uppercase tracking-wider text-slate-400">
@@ -160,9 +239,17 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
               {(profile as any)?.loyalty_points ?? 0}
             </div>
           </div>
+          <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-slate-200">
+            <div className="text-xs uppercase tracking-wider text-slate-400">
+              Streak
+            </div>
+            <div className="text-lg font-semibold">
+              {(profile.current_streak ?? 0).toLocaleString()} days
+            </div>
+          </div>
         </div>
         <div className="flex flex-wrap gap-2 text-xs text-slate-300">
-          {(profile as any)?.skills?.slice(0, 3)?.map((skill: string) => (
+          {(profile as any)?.skills?.slice(0, 4)?.map((skill: string) => (
             <Badge
               key={skill}
               variant="outline"
@@ -171,12 +258,12 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
               {skill}
             </Badge>
           ))}
-          {((profile as any)?.skills?.length || 0) > 3 && (
+          {((profile as any)?.skills?.length || 0) > 4 && (
             <Badge
               variant="outline"
               className="border-slate-700/70 text-slate-200"
             >
-              +{((profile as any)?.skills?.length || 0) - 3}
+              +{((profile as any)?.skills?.length || 0) - 4}
             </Badge>
           )}
         </div>
