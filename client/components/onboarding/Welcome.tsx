@@ -8,9 +8,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
+import {
+  CheckCircle,
+  ArrowRight,
+  Sparkles,
+  ShieldCheck,
+  MailCheck,
+  MailWarning,
+  Loader2,
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import type { AethexAchievement } from "@/lib/aethex-database-adapter";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useAethexToast } from "@/hooks/use-aethex-toast";
 
 interface WelcomeProps {
   data: OnboardingData;
