@@ -180,7 +180,7 @@ export default function DocsGettingStarted() {
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
+      <section id="deployment-checklist" className="grid gap-6 lg:grid-cols-3">
         {deploymentChecklist.map((item) => (
           <Card key={item.title} className="bg-slate-900/60 border-slate-700">
             <CardHeader>
