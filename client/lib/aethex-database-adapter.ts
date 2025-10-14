@@ -417,8 +417,7 @@ export const aethexUserService = {
         total_xp: totalXp,
         level: levelValue,
         loyalty_points: loyaltyPoints,
-        achievements_count: achievements.length,
-      } as AethexUserProfile & { achievements_count: number };
+      } as AethexUserProfile;
     });
   },
 
