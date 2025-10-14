@@ -1036,6 +1036,125 @@ export default function Admin() {
                 <Card className="bg-card/60 border-border/40 backdrop-blur">
                   <CardHeader>
                     <div className="flex items-center gap-2">
+                      <Users className="h-5 w-5 text-emerald-300" />
+                      <CardTitle>Opportunity applications</CardTitle>
+                    </div>
+                    <CardDescription>
+                      View contributor and career submissions captured on the Opportunities page.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm text-muted-foreground">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p>
+                        {opportunityApplicationsLoading
+                          ? "Loading opportunity applicants…"
+                          : `${opportunityApplications.length} submissions`}
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={loadOpportunityApplications}
+                        disabled={opportunityApplicationsLoading}
+                      >
+                        {opportunityApplicationsLoading ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <RefreshCw className="mr-2 h-4 w-4" />
+                        )}
+                        Refresh
+                      </Button>
+                    </div>
+                    {opportunityApplicationsLoading ? (
+                      <div className="flex items-center gap-2 text-sm">
+                        <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
+                        Syncing with Supabase…
+                      </div>
+                    ) : opportunityApplications.length ? (
+                      <div className="grid gap-2">
+                        {opportunityApplications.slice(0, 6).map((app) => (
+                          <div
+                            key={app.id || `${app.email ?? "candidate"}-${app.submitted_at ?? "time"}`}
+                            className="space-y-2 rounded border border-border/30 bg-background/40 p-3"
+                          >
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <div>
+                                <p className="font-medium text-foreground">
+                                  {app.full_name || app.email || "Anonymous"}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {app.email || "No email provided"}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="capitalize">
+                                  {(app.type ?? "contributor").toLowerCase()}
+                                </Badge>
+                                <Badge variant="outline" className="capitalize">
+                                  {(app.status ?? "new").toLowerCase()}
+                                </Badge>
+                              </div>
+                            </div>
+                            <div className="grid gap-1 text-xs text-muted-foreground">
+                              {app.role_interest ? (
+                                <p>
+                                  <span className="font-medium text-foreground/80">
+                                    Role:
+                                  </span>{" "}
+                                  {app.role_interest}
+                                </p>
+                              ) : null}
+                              {app.primary_skill ? (
+                                <p>
+                                  <span className="font-medium text-foreground/80">
+                                    Skill:
+                                  </span>{" "}
+                                  {app.primary_skill}
+                                </p>
+                              ) : null}
+                              {app.availability ? (
+                                <p>
+                                  <span className="font-medium text-foreground/80">
+                                    Availability:
+                                  </span>{" "}
+                                  {app.availability}
+                                </p>
+                              ) : null}
+                              {app.experience_level ? (
+                                <p>
+                                  <span className="font-medium text-foreground/80">
+                                    Experience:
+                                  </span>{" "}
+                                  {app.experience_level}
+                                </p>
+                              ) : null}
+                              {app.submitted_at ? (
+                                <p>
+                                  <span className="font-medium text-foreground/80">
+                                    Submitted:
+                                  </span>{" "}
+                                  {new Date(app.submitted_at).toLocaleString()}
+                                </p>
+                              ) : null}
+                            </div>
+                            {app.message ? (
+                              <p className="rounded bg-background/60 p-2 text-xs text-muted-foreground">
+                                {app.message}
+                              </p>
+                            ) : null}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p>
+                        No opportunity applications yet. Share the Opportunities page to grow the pipeline.
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
                       <Activity className="h-5 w-5 text-orange-300" />
                       <CardTitle>System status</CardTitle>
                     </div>
