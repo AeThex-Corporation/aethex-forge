@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { aethexToast } from "@/lib/aethex-toast";
 import {
@@ -17,20 +17,28 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AdminStatCard from "@/components/admin/AdminStatCard";
 import {
   Shield,
-  UserCog,
-  Rocket,
-  Settings,
   Users,
-  Activity,
+  Rocket,
   PenTool,
+  Command,
+  Activity,
+  UserCog,
+  Settings,
+  ExternalLink,
 } from "lucide-react";
 
 export default function Admin() {
   const { user, loading, roles } = useAuth();
   const navigate = useNavigate();
-  const isOwner = Array.isArray(roles) && roles.includes("owner");
+  const ownerEmail = "mrpiglr@gmail.com";
+  const normalizedEmail = user?.email?.toLowerCase() ?? "";
+  const isOwner =
+    (Array.isArray(roles) && roles.includes("owner")) ||
+    normalizedEmail === ownerEmail;
   const [managedProfiles, setManagedProfiles] = useState<AethexUserProfile[]>(
     [],
   );
