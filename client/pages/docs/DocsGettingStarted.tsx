@@ -262,6 +262,33 @@ export default function DocsGettingStarted() {
         ))}
       </section>
 
+      <section id="platform-highlights" className="space-y-6">
+        <div className="flex items-center gap-3">
+          <LayoutDashboard className="h-6 w-6 text-purple-400" />
+          <h3 className="text-2xl font-semibold text-white">Explore the platform</h3>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          {platformHighlights.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Card key={item.title} className="bg-slate-900/60 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white text-lg flex items-center gap-3">
+                    <Icon className="h-5 w-5 text-purple-300" />
+                    {item.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-300 text-sm leading-relaxed">
+                    {item.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </section>
+
       <section id="setup-workflow" className="space-y-6">
         <div className="flex items-center gap-3">
           <PlugZap className="h-6 w-6 text-purple-400" />
