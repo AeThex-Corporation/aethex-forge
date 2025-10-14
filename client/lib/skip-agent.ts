@@ -213,8 +213,21 @@ const createSkipAgentTheme = () => {
   document.head.appendChild(style);
 };
 
+const isDocsPath = () => {
+  try {
+    return typeof window !== "undefined" && window.location.pathname.startsWith("/docs");
+  } catch (e) {
+    return false;
+  }
+};
+
 const isSkipAgentReachable = async (): Promise<boolean> => {
   if (!shouldEnableSkipAgent) {
+    return false;
+  }
+
+  if (isDocsPath()) {
+    // Never check or initialize the agent from documentation routes.
     return false;
   }
 
