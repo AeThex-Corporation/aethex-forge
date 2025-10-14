@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import SupabaseStatus from "./SupabaseStatus";
 import { useAuth } from "@/contexts/AuthContext";
+import NotificationBell from "@/components/notifications/NotificationBell";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +25,6 @@ import {
   User,
   Settings,
   LogOut,
-  Bell,
   Sparkles,
   UserCircle,
   Menu,
@@ -252,9 +252,7 @@ export default function CodeLayout({ children }: LayoutProps) {
                         <Link to="/onboarding">Complete Setup</Link>
                       </Button>
                     )}
-                    <Button variant="ghost" size="sm" className="hover-lift">
-                      <Bell className="h-4 w-4" />
-                    </Button>
+                    <NotificationBell />
                     {!profile && (
                       <Button
                         variant="ghost"
