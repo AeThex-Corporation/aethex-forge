@@ -128,7 +128,7 @@ export function FeedItemCard({
                 <span className="font-medium text-foreground">
                   {item.comments.toLocaleString()}
                 </span>
-                <span className="hidden xs:inline">Comments</span>
+                <span className="hidden sm:inline">Comments</span>
               </Button>
             </div>
             <div className="flex items-center gap-2">
