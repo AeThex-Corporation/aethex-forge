@@ -297,7 +297,7 @@ export default function Admin() {
       {
         title: "Pending project applications",
         value: projectApplicationsLoading
-          ? "���"
+          ? "…"
           : pendingProjectApplications.toString(),
         description: "Project collaboration requests awaiting review.",
         trend: projectApplicationsLoading
@@ -314,9 +314,9 @@ export default function Admin() {
         description: "Contributor & career submissions captured via Opportunities.",
         trend: opportunityApplicationsLoading
           ? "Syncing applicant data…"
-          : `${opportunityApplications.filter((app) => (app.status ?? "new").toLowerCase() === "new").length} new this week`,
+          : `${opportunityApplications.filter((app) => (app.status ?? "new").toLowerCase() === "new").length} awaiting review`,
         icon: Rocket,
-        tone: "teal" as const,
+        tone: "green" as const,
       },
     ],
     [
