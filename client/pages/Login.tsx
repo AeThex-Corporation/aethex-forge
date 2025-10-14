@@ -328,7 +328,10 @@ export default function Login() {
                     ? "Already have an account?"
                     : "Don't have an account?"}{" "}
                   <button
-                    onClick={() => setIsSignUp(!isSignUp)}
+                    onClick={() => {
+                      setIsSignUp((prev) => !prev);
+                      setManualVerificationLink(null);
+                    }}
                     className="text-aethex-400 hover:underline font-medium"
                   >
                     {isSignUp ? "Sign In" : "Join AeThex"}
