@@ -95,6 +95,14 @@ const resourceSections = [
     badge: "6 tutorials",
   },
   {
+    title: "Platform Experience",
+    description: "Understand dashboard, passport, and collaboration spaces",
+    icon: LayoutDashboard,
+    href: "/docs/platform",
+    items: ["Dashboard", "Passport", "Community", "Mentorship"],
+    badge: "New",
+  },
+  {
     title: "API Reference",
     description: "Complete API documentation with examples",
     icon: Code,
