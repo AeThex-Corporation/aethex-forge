@@ -117,6 +117,7 @@ const App = () => (
               <Route path="/docs" element={<DocsLayout />}>
                 <Route index element={<DocsOverview />} />
                 <Route path="tutorials" element={<DocsTutorials />} />
+                <Route path="curriculum" element={<DocsCurriculum />} />
                 <Route
                   path="getting-started"
                   element={<DocsGettingStarted />}
