@@ -501,7 +501,7 @@ export default function Admin() {
         action: () => setActiveTab("community"),
       },
     ],
-    [navigate],
+    [navigate, setActiveTab],
   );
 
   useEffect(() => {
