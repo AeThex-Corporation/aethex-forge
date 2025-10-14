@@ -337,7 +337,7 @@ export default function Admin() {
   );
 
   const totalMembers = managedProfiles.length;
-  const publishedPosts = blogPosts.length;
+  const publishedPosts = resolvedBlogPosts.length;
   const featuredStudios = studios.length;
   const pendingProjectApplications = projectApplications.filter((app) => {
     const status = (app.status ?? "").toLowerCase();
