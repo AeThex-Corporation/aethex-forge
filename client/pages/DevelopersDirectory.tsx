@@ -43,6 +43,64 @@ const realmBadgeStyles: Record<string, string> = {
   customer: "bg-gradient-to-r from-amber-400 to-aethex-700 text-white",
 };
 
+const realmBannerFallbacks: Record<string, string> = {
+  game_developer: "from-purple-900/70 via-indigo-800/50 to-slate-900",
+  client: "from-blue-900/70 via-sky-800/50 to-slate-900",
+  community_member: "from-emerald-900/70 via-teal-800/50 to-slate-900",
+  customer: "from-amber-900/70 via-orange-800/50 to-slate-900",
+};
+
+const getAvailabilityLabel = (
+  profile: AethexUserProfile & { [key: string]: unknown },
+): string => {
+  const explicit =
+    (profile as any)?.availability_status ??
+    (profile as any)?.availability ??
+    (profile as any)?.availability_label ??
+    (profile as any)?.status;
+  if (typeof explicit === "string" && explicit.trim()) {
+    return explicit.trim();
+  }
+
+  if ((profile as any)?.is_available === false) {
+    return "Currently booked";
+  }
+  if ((profile as any)?.is_available === true) {
+    return "Open for new projects";
+  }
+
+  const xp = Number(profile.total_xp ?? 0);
+  const level = Number(profile.level ?? 0);
+
+  if (xp >= 5000 || level >= 50) {
+    return "Waitlist only";
+  }
+  if (xp >= 1500 || level >= 20) {
+    return "Limited availability";
+  }
+  return "Open for collaboration";
+};
+
+const getAvailabilityStyles = (label: string) => {
+  const normalized = label.toLowerCase();
+  if (normalized.includes("waitlist") || normalized.includes("booked")) {
+    return {
+      badge: "border-rose-500/40 bg-rose-500/10 text-rose-100",
+      dot: "bg-rose-400",
+    };
+  }
+  if (normalized.includes("limited") || normalized.includes("select")) {
+    return {
+      badge: "border-amber-400/40 bg-amber-400/10 text-amber-100",
+      dot: "bg-amber-300",
+    };
+  }
+  return {
+    badge: "border-emerald-400/40 bg-emerald-400/10 text-emerald-100",
+    dot: "bg-emerald-300",
+  };
+};
+
 interface DeveloperCardProps {
   profile: AethexUserProfile & { email?: string | null };
 }
