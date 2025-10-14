@@ -30,54 +30,54 @@ import {
   FileText,
 } from "lucide-react";
 
-const embedSettings = [
+const connectorFields = [
   {
-    name: "buttonSize",
-    description: "Controls the floating launcher dimensions in pixels.",
-    defaultValue: "60",
+    name: "key",
+    description: "Unique identifier referenced across dashboards, APIs, and audit logs.",
+    defaultValue: '"analytics-segment"',
   },
   {
-    name: "buttonPosition",
-    description: "Places the launcher in one of four corners (e.g. bottom-right).",
-    defaultValue: "bottom-right",
+    name: "category",
+    description: "Integration taxonomy aligned with AeThex surfaces (analytics, identity, commerce, ops).",
+    defaultValue: '"analytics"',
   },
   {
-    name: "buttonOffset",
-    description: "Fine-tunes horizontal/vertical offsets from the viewport edge.",
-    defaultValue: "{ x: 32, y: 32 }",
+    name: "capabilities",
+    description: "Feature flags that unlock widgets, automation hooks, and data pipelines.",
+    defaultValue: "['metrics', 'webhooks']",
   },
   {
-    name: "iframeWidth",
-    description: "Maximum width of the opened assistant panel.",
-    defaultValue: "448",
+    name: "connectionMode",
+    description: "Determines how credentials are managed (oauth, apiKey, managedVault).",
+    defaultValue: '"oauth"',
   },
   {
-    name: "iframeHeight",
-    description: "Viewport height percentage for the assistant panel.",
-    defaultValue: "85vh",
+    name: "webhookEndpoint",
+    description: "Optional callback URL for outbound events delivered by AeThex.",
+    defaultValue: '"https://app.example.com/aethex/webhooks"',
   },
   {
-    name: "tooltipText",
-    description: "Copy shown when hovering the launcher button.",
-    defaultValue: "Need a hand?\\nAeThex Copilot is live.",
+    name: "uiEmbeds",
+    description: "Declarative config describing dashboard cards, modals, or launchers this integration renders.",
+    defaultValue: "[{ surface: 'dashboard', placement: 'sidebar' }]",
   },
 ];
 
 const troubleshooting = [
   {
-    title: "Failed to fetch status",
+    title: "OAuth handshake fails",
     detail:
-      "If the HelloSkip API cannot be reached, the embed skips initialization. Verify outbound network access or retry when the environment regains connectivity.",
+      "Confirm the integration's redirect URI matches the value registered in the partner console. AeThex surfaces expose the required callback under Settings → Integrations.",
   },
   {
-    title: "Agent inactive",
+    title: "Webhook retries exhausted",
     detail:
-      "Status responses containing `active: false` mean the agent is disabled. Update the agent inside HelloSkip or switch the data-agent-id.",
+      "Inspect delivery attempts in the Integrations dashboard. Update retry policies or verify your endpoint responds with a 2xx status within 10 seconds.",
   },
   {
-    title: "Styling conflicts",
+    title: "Embedded widget styling",
     detail:
-      "AeThex injects a dedicated theme stylesheet. Ensure no additional overrides remove the `.skip-agent-*` classes or the gradient tokens defined in `global.css`.",
+      "Override component tokens through the integration theme utilities or wrap the widget in a container that inherits AeThex gradient variables.",
   },
 ];
 
@@ -89,12 +89,11 @@ export default function DocsIntegrations() {
           <Puzzle className="mr-2 h-3 w-3" />
           Integrations
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">Embedding partner services in AeThex</h2>
+        <h2 className="text-3xl font-semibold text-white">Connecting partner services to AeThex</h2>
         <p className="text-gray-300 max-w-3xl">
-          AeThex supports secure, theme-aware embeds for third-party agents and tools. This guide covers the
-          HelloSkip support assistant that ships with the platform and outlines patterns you can reuse for future
-          integrations. The router-aware <code className="bg-black/40 px-2">SkipAgentController</code> keeps the
-          experience out of the documentation space while still making it available across the rest of the site.
+          AeThex Integrations wrap third-party analytics, identity, payments, and live-ops tooling behind a consistent
+          runtime, security model, and visual system. Use this guide to register new connectors, surface partner UI in
+          product flows, and automate data exchange without hand-rolled plumbing.
         </p>
       </section>
 
@@ -108,15 +107,14 @@ export default function DocsIntegrations() {
           </CardHeader>
           <CardContent className="space-y-4 text-gray-300 text-sm leading-relaxed">
             <p>
-              The HelloSkip agent utilities live in <code className="bg-black/40 px-2">lib/skip-agent.ts</code>. They lazily fetch the
-              runtime once and gate initialization behind a guarded status check at
-              <code className="bg-black/40 px-2">/api/agent/status</code>. If the endpoint is unreachable or reports an inactive agent,
-              the embed is skipped to avoid client-side errors.
+              Integration manifests are stored in the AeThex Integrations service and synced across the dashboard and
+              runtime. Client components resolve connector metadata through the shared API helpers, ensuring credentials
+              and capability flags stay consistent with server state.
             </p>
             <p>
-              When healthy, the loader injects HelloSkip&apos;s global object and calls
-              <code className="bg-black/40 px-2">window.SkipAgent.embed</code> with AeThex-specific sizing, copy, and z-index values.
-              A companion stylesheet applies the gradient, border, and focus treatments to match the site aesthetic.
+              During hydration the runtime mounts partner SDKs behind AeThex loaders, applying sandboxed execution where
+              required. Use lifecycle hooks to emit analytics, hydrate widgets with scoped credentials, and gate access
+              through the same role-based policies used elsewhere in the platform.
             </p>
           </CardContent>
         </Card>
@@ -130,14 +128,13 @@ export default function DocsIntegrations() {
           </CardHeader>
           <CardContent className="space-y-3 text-gray-300 text-sm">
             <p>
-              AeThex provides a handcrafted theme in <code className="bg-black/40 px-2">SKIP_AGENT_THEME</code>. It uses the gradient
-              palette defined in <code className="bg-black/40 px-2">global.css</code> to restyle the floating launcher, tooltip, and
-              assistant container.
+              Use the integration theming utilities to adapt partner widgets to AeThex gradients, typography, and focus
+              states. Tokens flow through CSS variables defined in <code className="bg-black/40 px-2">global.css</code>, so embeds stay
+              visually aligned with dashboards and consumer apps.
             </p>
             <p>
-              Add additional overrides by extending the same template literal and keeping selectors scoped to
-              <code className="bg-black/40 px-2">.skip-agent-*</code>. The embed only injects the style block once via the
-              <code className="bg-black/40 px-2">createSkipAgentTheme</code> helper.
+              Extend styling with scoped class names or CSS variables exported by the partner SDK. When shipping multiple
+              widgets, prefer design tokens over hard-coded overrides to keep dark-mode and accessibility tweaks in sync.
             </p>
           </CardContent>
         </Card>
@@ -159,17 +156,16 @@ export default function DocsIntegrations() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {embedSettings.map((setting) => (
-                  <TableRow key={setting.name}>
-                    <TableCell className="font-mono text-indigo-200">{setting.name}</TableCell>
-                    <TableCell className="text-gray-300">{setting.description}</TableCell>
-                    <TableCell className="text-gray-400 text-sm">{setting.defaultValue}</TableCell>
+                {connectorFields.map((field) => (
+                  <TableRow key={field.name}>
+                    <TableCell className="font-mono text-indigo-200">{field.name}</TableCell>
+                    <TableCell className="text-gray-300">{field.description}</TableCell>
+                    <TableCell className="text-gray-400 text-sm">{field.defaultValue}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
               <TableCaption>
-                Update values inside <code className="bg-black/40 px-1">SKIP_AGENT_EMBED_OPTIONS</code> in
-                <code className="bg-black/40 px-1">client/lib/skip-agent.ts</code>.
+                Manage manifests in the Integrations dashboard or via the Admin API to keep environments in sync.
               </TableCaption>
             </Table>
           </CardContent>
@@ -186,10 +182,9 @@ export default function DocsIntegrations() {
           </CardHeader>
           <CardContent className="space-y-3 text-gray-300 text-sm">
             <ul className="list-disc space-y-2 pl-5">
-              <li>Keep the preflight status check in place for stability in staging or offline previews.</li>
-              <li>Reuse the router gating pattern in <code className="bg-black/40 px-1">SkipAgentController</code> for embeds that should
-                disappear on specific routes.</li>
-              <li>Wrap additional embeds in the same helper to maintain a single initialization flag.</li>
+              <li>Store credentials in AeThex-managed vaults and rotate them from the dashboard rather than hard-coding.</li>
+              <li>Limit embed rendering to audiences that have access to the underlying data to avoid leaking partner UI.</li>
+              <li>Log integration events through the shared telemetry helpers so support can trace partner-side failures.</li>
             </ul>
           </CardContent>
         </Card>
@@ -198,17 +193,17 @@ export default function DocsIntegrations() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white text-lg">
               <RefreshCw className="h-5 w-5 text-indigo-300" />
-              Updating the agent
+              Lifecycle management
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-gray-300 text-sm">
             <p>
-              To switch agents, update <code className="bg-black/40 px-1">SKIP_AGENT_ID</code>. If the HelloSkip host changes,
-              adjust <code className="bg-black/40 px-1">SKIP_AGENT_SRC</code>—the origin is derived automatically for status checks.
+              Promote integration changes through staging first. AeThex snapshots connector manifests per environment so
+              you can test credentials, capability flags, and UI placements without impacting production users.
             </p>
             <p>
-              For full replacements, swap the fetch target to your new integration and continue calling the same
-              <code className="bg-black/40 px-1">embedSkipAgent</code> helper to retain theme and lifecycle management.
+              When partners publish SDK updates, pin versions in your manifest, document the change log, and coordinate
+              rollout windows with stakeholders subscribing to the integration.
             </p>
           </CardContent>
         </Card>
@@ -240,8 +235,8 @@ export default function DocsIntegrations() {
           <div className="space-y-2">
             <h3 className="text-2xl font-semibold text-white">Further reading</h3>
             <p className="text-gray-300 text-sm max-w-2xl">
-              Manage integration documentation centrally in Builder CMS or export static knowledge base pages. Use the
-              same theming primitives to embed other providers consistently across the platform.
+              Manage integration documentation centrally in Builder CMS or export static guides for partner teams. Keep
+              manifests, onboarding playbooks, and support runbooks together so each connector has a clear owner.
             </p>
           </div>
           <div className="flex gap-3">
