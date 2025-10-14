@@ -26,7 +26,6 @@ import { aethexToast } from "@/lib/aethex-toast";
 import { cn } from "@/lib/utils";
 import {
   Link,
-  Navigate,
   Route,
   Routes,
   useLocation,
