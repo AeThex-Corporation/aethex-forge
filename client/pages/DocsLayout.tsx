@@ -32,6 +32,12 @@ const navigation = [
     icon: BookOpen,
   },
   {
+    name: "Curriculum",
+    href: "/docs/curriculum",
+    icon: GraduationCap,
+    badge: "New",
+  },
+  {
     name: "Platform",
     href: "/docs/platform",
     icon: LayoutDashboard,
