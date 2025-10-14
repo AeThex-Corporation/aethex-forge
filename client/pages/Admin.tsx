@@ -261,6 +261,74 @@ export default function Admin() {
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
 
+  const resolvedBlogPosts = blogPosts.length ? blogPosts : blogSeedPosts;
+
+  const blogHighlights = useMemo(
+    () =>
+      resolvedBlogPosts.slice(0, 4).map((post) => ({
+        slug: post.slug || String(post.id || "post"),
+        title: post.title || "Untitled",
+        category: post.category || "General",
+        date: post.date || post.published_at || null,
+      })),
+    [resolvedBlogPosts],
+  );
+
+  type ChangelogEntry = (typeof changelogEntries)[number];
+
+  const latestChangelog = useMemo<ChangelogEntry[]>(
+    () => changelogEntries.slice(0, 3),
+    [],
+  );
+
+  const statusSnapshot = useMemo(
+    () => [
+      {
+        name: "Core API",
+        status: "operational" as const,
+        uptime: "99.98%",
+        responseTime: 145,
+        icon: Server,
+      },
+      {
+        name: "Database",
+        status: "operational" as const,
+        uptime: "99.99%",
+        responseTime: 89,
+        icon: Database,
+      },
+      {
+        name: "Realtime",
+        status: "operational" as const,
+        uptime: "99.95%",
+        responseTime: 112,
+        icon: Wifi,
+      },
+      {
+        name: "Deploy & CDN",
+        status: "operational" as const,
+        uptime: "99.94%",
+        responseTime: 76,
+        icon: Zap,
+      },
+    ],
+    [],
+  );
+
+  const overallStatus = useMemo(() => {
+    const hasOutage = statusSnapshot.some((service) => service.status === "outage");
+    if (hasOutage) return { label: "Service disruption", tone: "bg-red-500", Icon: XCircle };
+    const hasDegraded = statusSnapshot.some((service) => service.status === "degraded");
+    if (hasDegraded)
+      return { label: "Partial degradation", tone: "bg-yellow-500", Icon: AlertTriangle };
+    return { label: "All systems operational", tone: "bg-emerald-500", Icon: CheckCircle };
+  }, [statusSnapshot]);
+
+  const blogReach = useMemo(
+    () => resolvedBlogPosts.reduce((total, post) => total + (post.likes ?? 0), 0),
+    [resolvedBlogPosts],
+  );
+
   const selectedMember = useMemo(
     () =>
       managedProfiles.find((profile) => profile.id === selectedMemberId) ??
