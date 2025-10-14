@@ -35,10 +35,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [manualVerificationLink, setManualVerificationLink] = useState<string | null>(null);
   const navigate = useNavigate();
   const { signIn, signUp, signInWithOAuth, user, loading, profileComplete } =
     useAuth();
-  const { success: toastSuccess, error: toastError } = useAethexToast();
+  const { info: toastInfo, error: toastError } = useAethexToast();
 
   // After auth resolves and a user exists, navigate to dashboard
   useEffect(() => {
