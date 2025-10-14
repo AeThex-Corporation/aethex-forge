@@ -178,6 +178,11 @@ const Opportunities = () => {
   const [submittingContributor, setSubmittingContributor] = useState(false);
   const [submittingCareer, setSubmittingCareer] = useState(false);
 
+  const profileWebsite =
+    profile && typeof (profile as any).website_url === "string"
+      ? ((profile as any).website_url as string)
+      : "";
+
   const [contributorForm, setContributorForm] = useState<ContributorFormState>({
     fullName: "",
     email: "",
