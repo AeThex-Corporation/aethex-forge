@@ -11,7 +11,7 @@ import BlogNewsletterSection from "@/components/blog/BlogNewsletterSection";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Compass, Layers, ListFilter, Newspaper } from "lucide-react";
+import { ArrowRight, Layers, ListFilter, Newspaper } from "lucide-react";
 import type { BlogCategory, BlogPost } from "@/components/blog/types";
 
 const buildSlug = (post: BlogPost): string => post.slug || post.id?.toString() || "article";
