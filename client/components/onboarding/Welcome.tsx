@@ -164,6 +164,14 @@ export default function Welcome({
   };
 
   const VerificationIcon = isVerified ? MailCheck : MailWarning;
+  const verificationBorderClass = isVerified ? "border-emerald-500/40" : "border-amber-500/40";
+  const verificationIconBg = isVerified ? "bg-emerald-500 text-white" : "bg-amber-500 text-white";
+  const verificationBadgeClass = isVerified
+    ? "bg-emerald-500/20 text-emerald-100 border border-emerald-500/40"
+    : "bg-amber-500/20 text-amber-100 border border-amber-500/40";
+  const verificationDescriptionClass = isVerified
+    ? "text-emerald-100/80"
+    : "text-amber-100/80";
 
   const getUserTypeLabel = () => {
     switch (data.userType) {
