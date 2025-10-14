@@ -197,7 +197,8 @@ export default function DocsGettingStarted() {
         <p className="text-gray-300 max-w-3xl">
           This guide walks through the minimum setup required to ship a production-ready AeThex application.
           Complete the prerequisites, initialize a workspace with the CLI, and review the deployment checklist
-          before inviting collaborators.
+          before inviting collaborators. Use the platform highlights below to brief product, community, and live-ops
+          teams on everything available beyond deployment.
         </p>
       </section>
 
