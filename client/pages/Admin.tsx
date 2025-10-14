@@ -369,6 +369,48 @@ export default function Admin() {
     );
   }).length;
 
+  const infrastructureMetrics = useMemo(() => {
+    if (!statusSnapshot.length) {
+      return {
+        averageResponseTime: null as number | null,
+        averageUptime: null as number | null,
+        degradedServices: 0,
+        healthyServices: 0,
+        totalServices: 0,
+      };
+    }
+
+    const totalServices = statusSnapshot.length;
+    const degradedServices = statusSnapshot.filter(
+      (service) => service.status !== "operational",
+    ).length;
+    const averageResponseTime = Math.round(
+      statusSnapshot.reduce((sum, service) => sum + service.responseTime, 0) /
+        totalServices,
+    );
+    const uptimeAccumulator = statusSnapshot.reduce(
+      (acc, service) => {
+        const numeric = Number.parseFloat(service.uptime);
+        if (Number.isFinite(numeric)) {
+          return { total: acc.total + numeric, count: acc.count + 1 };
+        }
+        return acc;
+      },
+      { total: 0, count: 0 },
+    );
+    const averageUptime = uptimeAccumulator.count
+      ? uptimeAccumulator.total / uptimeAccumulator.count
+      : null;
+
+    return {
+      averageResponseTime,
+      averageUptime,
+      degradedServices,
+      healthyServices: totalServices - degradedServices,
+      totalServices,
+    };
+  }, [statusSnapshot]);
+
   const overviewStats = useMemo(
     () => [
       {
