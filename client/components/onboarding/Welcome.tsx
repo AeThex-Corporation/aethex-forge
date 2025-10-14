@@ -37,6 +37,132 @@ export default function Welcome({
   isFinishing,
   achievement,
 }: WelcomeProps) {
+  const { user, refreshProfile } = useAuth();
+  const { success: toastSuccess, error: toastError, warning: toastWarning, info: toastInfo } =
+    useAethexToast();
+
+  const emailAddress = data.personalInfo.email || user?.email || "";
+  const deriveConfirmed = (source?: any) =>
+    Boolean(source?.email_confirmed_at || source?.confirmed_at);
+
+  const [isVerified, setIsVerified] = useState<boolean>(() => deriveConfirmed(user));
+  const [isSendingVerification, setIsSendingVerification] = useState(false);
+  const [isCheckingVerification, setIsCheckingVerification] = useState(false);
+  const [fallbackVerificationLink, setFallbackVerificationLink] = useState<string | null>(null);
+
+  const fullNameValue = `${(data.personalInfo.firstName || "").trim()} ${(data.personalInfo.lastName || "").trim()}`
+    .trim() ||
+    ((user as any)?.user_metadata?.full_name as string | undefined);
+
+  useEffect(() => {
+    const confirmed = deriveConfirmed(user);
+    setIsVerified(confirmed);
+    if (confirmed) {
+      setFallbackVerificationLink(null);
+    }
+  }, [user]);
+
+  const handleResendVerification = async () => {
+    if (!emailAddress) {
+      toastError({
+        title: "Email unavailable",
+        description: "We couldn't determine which email to verify.",
+      });
+      return;
+    }
+
+    setIsSendingVerification(true);
+    setFallbackVerificationLink(null);
+
+    try {
+      const redirectTo =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/login?verified=1`
+          : undefined;
+
+      const response = await fetch("/api/auth/send-verification-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailAddress,
+          redirectTo,
+          fullName: fullNameValue,
+        }),
+      });
+
+      const payload = await response.json().catch(() => ({} as Record<string, any>));
+
+      if (!response.ok) {
+        throw new Error(payload?.error || "Failed to send verification email");
+      }
+
+      const sent = Boolean(payload?.sent);
+      const manualLink = typeof payload?.verificationUrl === "string" ? payload.verificationUrl : null;
+
+      if (sent) {
+        toastSuccess({
+          title: "Verification email sent",
+          description: `We sent a confirmation message to ${emailAddress}.`,
+        });
+      } else {
+        toastWarning({
+          title: "Email service unavailable",
+          description:
+            payload?.message ||
+            "We couldn't send the verification email automatically. Use the manual link below.",
+        });
+      }
+
+      if (manualLink && !sent) {
+        setFallbackVerificationLink(manualLink);
+      }
+    } catch (error: any) {
+      console.error("Resend verification failed", error);
+      toastError({
+        title: "Verification email failed",
+        description: error?.message || "Unable to send verification email right now.",
+      });
+    } finally {
+      setIsSendingVerification(false);
+    }
+  };
+
+  const handleCheckVerification = async () => {
+    setIsCheckingVerification(true);
+    try {
+      const { data: authData, error } = await supabase.auth.getUser();
+      if (error) throw error;
+
+      const confirmed = deriveConfirmed(authData?.user);
+      if (confirmed) {
+        setIsVerified(true);
+        setFallbackVerificationLink(null);
+        toastSuccess({
+          title: "Email verified",
+          description: "You're all set. You can sign in with this email.",
+        });
+        try {
+          await refreshProfile();
+        } catch (refreshError) {
+          console.warn("Unable to refresh profile after verification", refreshError);
+        }
+      } else {
+        toastInfo({
+          title: "Verification pending",
+          description: "We still don't see the confirmation. Check your inbox or resend the email.",
+        });
+      }
+    } catch (error: any) {
+      console.error("Check verification failed", error);
+      toastError({
+        title: "Unable to verify",
+        description: error?.message || "We couldn't confirm your email status yet.",
+      });
+    } finally {
+      setIsCheckingVerification(false);
+    }
+  };
+
   const getUserTypeLabel = () => {
     switch (data.userType) {
       case "game-developer":
