@@ -3,6 +3,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 import { aethexToast } from "@/lib/aethex-toast";
 import {
   aethexUserService,
@@ -21,6 +22,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminStatCard from "@/components/admin/AdminStatCard";
 import AdminMemberManager from "@/components/admin/AdminMemberManager";
 import AdminAchievementManager from "@/components/admin/AdminAchievementManager";
+import { changelogEntries } from "@/pages/Changelog";
+import { blogSeedPosts } from "@/data/blogSeed";
 import {
   Shield,
   Users,
@@ -34,6 +37,13 @@ import {
   ClipboardList,
   Loader2,
   RefreshCw,
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
+  Server,
+  Database,
+  Wifi,
+  Zap,
 } from "lucide-react";
 
 export default function Admin() {
