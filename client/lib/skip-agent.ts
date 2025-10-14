@@ -197,7 +197,7 @@ const getRuntimeConfig = () => {
 
 const getAgentSrc = () => {
   const cfg = getRuntimeConfig();
-  return cfg?.src ?? SKIP_AGENT_SRC;
+  return cfg?.src ?? (SKIP_AGENT_SRC ? SKIP_AGENT_SRC : null);
 };
 
 const getAgentId = () => {
