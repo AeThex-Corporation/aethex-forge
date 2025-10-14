@@ -61,7 +61,7 @@ const docsTutorials: DocsTutorial[] = [
     tags: ["platform", "basics", "quickstart"],
     isNew: true,
     type: "video",
-    path: "/docs/tutorials/quickstart",
+    path: "/docs/getting-started",
   },
   {
     id: "2",
@@ -77,7 +77,7 @@ const docsTutorials: DocsTutorial[] = [
     likes: 287,
     tags: ["setup", "configuration", "projects"],
     type: "article",
-    path: "/docs/tutorials/project-setup",
+    path: "/docs/getting-started#setup-workflow",
   },
   {
     id: "3",
@@ -93,7 +93,7 @@ const docsTutorials: DocsTutorial[] = [
     likes: 198,
     tags: ["api", "integration", "authentication"],
     type: "interactive",
-    path: "/docs/tutorials/api-integration",
+    path: "/docs/api",
   },
   {
     id: "4",
@@ -109,7 +109,7 @@ const docsTutorials: DocsTutorial[] = [
     likes: 523,
     tags: ["games", "development", "tools"],
     type: "video",
-    path: "/docs/tutorials/game-development",
+    path: "/docs/examples#code-gallery",
   },
   {
     id: "5",
@@ -125,7 +125,7 @@ const docsTutorials: DocsTutorial[] = [
     likes: 165,
     tags: ["database", "optimization", "patterns"],
     type: "article",
-    path: "/docs/tutorials/database-patterns",
+    path: "/docs/api#core-endpoints",
   },
   {
     id: "6",
@@ -142,7 +142,7 @@ const docsTutorials: DocsTutorial[] = [
     tags: ["ai", "machine-learning", "integration"],
     isNew: true,
     type: "interactive",
-    path: "/docs/tutorials/ai-integration",
+    path: "/docs/examples#templates",
   },
 ];
 
