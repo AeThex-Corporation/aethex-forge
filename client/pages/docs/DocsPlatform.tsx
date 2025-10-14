@@ -143,7 +143,7 @@ const resourceLinks = [
   },
   {
     title: "Configure OAuth",
-    href: "/settings/oauth",
+    href: "/docs/api#authentication",
     label: "Manage identity",
   },
   {
