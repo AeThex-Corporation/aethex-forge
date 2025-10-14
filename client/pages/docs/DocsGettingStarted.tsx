@@ -157,6 +157,11 @@ const explorationLinks = [
     href: "/dashboard",
   },
   {
+    title: "Platform documentation",
+    description: "Share the high-level platform overview with non-technical teammates.",
+    href: "/docs/platform",
+  },
+  {
     title: "API Reference",
     description: "Review authentication flows, REST endpoints, and webhook schemas.",
     href: "/docs/api",
