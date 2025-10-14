@@ -362,9 +362,24 @@ export default function Admin() {
         title: "Published posts",
         value: publishedPosts ? publishedPosts.toString() : "0",
         description: "Blog entries stored in Supabase content tables.",
-        trend: loadingPosts ? "Refreshing content…" : "Latest sync up to date",
+        trend: loadingPosts
+          ? "Refreshing content…"
+          : blogHighlights.length
+          ? `Latest: ${blogHighlights[0].title}`
+          : "Curate new stories",
         icon: PenTool,
         tone: "purple" as const,
+      },
+      {
+        title: "Blog engagement",
+        value: blogReach ? `${blogReach.toLocaleString()} applause` : "—",
+        description: "Aggregate reactions across highlighted AeThex posts.",
+        trend:
+          blogHighlights.length > 1
+            ? `Next up: ${blogHighlights[1].title}`
+            : "Share a new update",
+        icon: Activity,
+        tone: "red" as const,
       },
       {
         title: "Featured studios",
