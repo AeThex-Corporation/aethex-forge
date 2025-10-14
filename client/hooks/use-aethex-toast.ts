@@ -33,7 +33,7 @@ export const useAethexToast = () => {
   const error = (options: AethexToastOptions) => {
     return baseToast({
       title: `⚡ ${options.title || "Error"}`,
-      description: options.description,
+      description: normalize(options.description),
       duration: options.duration || 5000,
       variant: "destructive",
     });
@@ -42,7 +42,7 @@ export const useAethexToast = () => {
   const warning = (options: AethexToastOptions) => {
     return baseToast({
       title: `⚠️ ${options.title || "Warning"}`,
-      description: options.description,
+      description: normalize(options.description),
       duration: options.duration || 5000,
       variant: "warning" as any,
     });
@@ -51,7 +51,7 @@ export const useAethexToast = () => {
   const info = (options: AethexToastOptions) => {
     return baseToast({
       title: `ℹ️ ${options.title || "Information"}`,
-      description: options.description,
+      description: normalize(options.description),
       duration: options.duration || 5000,
       variant: "info" as any,
     });
