@@ -132,6 +132,95 @@ export default function Admin() {
 
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const totalMembers = managedProfiles.length;
+  const publishedPosts = blogPosts.length;
+  const featuredStudios = studios.length;
+
+  const overviewStats = useMemo(
+    () => [
+      {
+        title: "Total members",
+        value: totalMembers ? totalMembers.toString() : "—",
+        description: "Profiles synced from AeThex identity service.",
+        trend: totalMembers ? `${totalMembers} active profiles` : "Awaiting sync",
+        icon: Users,
+        tone: "blue" as const,
+      },
+      {
+        title: "Published posts",
+        value: publishedPosts ? publishedPosts.toString() : "0",
+        description: "Blog entries stored in Supabase content tables.",
+        trend: loadingPosts ? "Refreshing content…" : "Latest sync up to date",
+        icon: PenTool,
+        tone: "purple" as const,
+      },
+      {
+        title: "Featured studios",
+        value: featuredStudios ? featuredStudios.toString() : "0",
+        description: "Studios highlighted on community landing pages.",
+        trend: "Synced nightly from partner directory",
+        icon: Rocket,
+        tone: "green" as const,
+      },
+      {
+        title: "Security posture",
+        value: "Owner",
+        description: `Admin access scoped to ${ownerEmail}.`,
+        trend: "Multi-role privileges active",
+        icon: Shield,
+        tone: "orange" as const,
+      },
+    ],
+    [featuredStudios, loadingPosts, ownerEmail, publishedPosts, totalMembers],
+  );
+
+  const quickActions = useMemo(
+    () => [
+      {
+        label: "Review dashboard",
+        description: "Jump to the live product dashboard and KPIs.",
+        icon: Activity,
+        action: () => navigate("/dashboard"),
+      },
+      {
+        label: "Manage content",
+        description: "Create, edit, and publish new blog updates.",
+        icon: PenTool,
+        action: () => setActiveTab("content"),
+      },
+      {
+        label: "Member directory",
+        description: "Audit profiles, roles, and onboarding progress.",
+        icon: Users,
+        action: () => setActiveTab("community"),
+      },
+      {
+        label: "Operations runbook",
+        description: "Review featured studios and partner programs.",
+        icon: Settings,
+        action: () => setActiveTab("operations"),
+      },
+      {
+        label: "Open Builder CMS",
+        description: "Edit marketing pages and landing content in Builder.io.",
+        icon: ExternalLink,
+        action: () => {
+          if (typeof window !== "undefined") {
+            window.open("https://builder.io", "_blank", "noopener");
+          }
+        },
+      },
+      {
+        label: "Invite teammates",
+        description: "Send access links and assign admin roles.",
+        icon: UserCog,
+        action: () => setActiveTab("community"),
+      },
+    ],
+    [navigate],
+  );
 
   useEffect(() => {
     (async () => {
