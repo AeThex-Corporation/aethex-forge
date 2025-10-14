@@ -383,20 +383,62 @@ export const aethexUserService = {
       if (err) {
         const message = String(err?.message || err);
         if (message.includes("relationship") || message.includes("schema cache")) {
-          resp = await supabase
+          // Fallback: fetch profiles, then batch-fetch achievements and map xp rewards
+          const { data: profilesOnly, error: profilesErr } = await supabase
             .from("user_profiles")
-            .select(
-              `
-            *,
-            user_achievements: user_achievements!inner (
-              achievements: achievements!inner ( xp_reward )
-            )
-          `,
-            )
+            .select("*")
             .order("updated_at", { ascending: false })
             .limit(limit);
-          anyResp = resp as any;
-          err = anyResp.error;
+
+          if (profilesErr) {
+            if (isTableMissing(profilesErr)) {
+              throw new Error(
+                'Supabase table "user_profiles" is missing. Please run the required migrations.',
+              );
+            }
+            throw new Error(profilesErr?.message || String(profilesErr));
+          }
+
+          const ids = Array.isArray(profilesOnly) ? profilesOnly.map((p: any) => p.id).filter(Boolean) : [];
+
+          let uaRows: any[] = [];
+          if (ids.length) {
+            const { data: uaData, error: uaErr } = await supabase
+              .from("user_achievements")
+              .select("user_id, achievement_id")
+              .in("user_id", ids);
+            if (uaErr && (uaErr as any)?.code !== "PGRST116") {
+              // if user_achievements missing, ignore and continue without earned xp
+              throw uaErr;
+            }
+            uaRows = Array.isArray(uaData) ? uaData : [];
+          }
+
+          const achievementIds = Array.from(new Set(uaRows.map((r) => r.achievement_id).filter(Boolean)));
+          let achievementMap: Record<string, number> = {};
+          if (achievementIds.length) {
+            const { data: achData, error: achErr } = await supabase
+              .from("achievements")
+              .select("id, xp_reward")
+              .in("id", achievementIds);
+            if (achErr && (achErr as any)?.code !== "PGRST116") {
+              throw achErr;
+            }
+            (achData || []).forEach((a: any) => {
+              achievementMap[a.id] = Number(a.xp_reward || 0);
+            });
+          }
+
+          // build user_achievements array in the same shape expected by mapping logic
+          const enrichedProfiles = (profilesOnly || []).map((p: any) => {
+            const userAchievements = uaRows
+              .filter((r) => r.user_id === p.id)
+              .map((r) => ({ achievements: { xp_reward: achievementMap[r.achievement_id] || 0 } }));
+            return { ...p, user_achievements: userAchievements };
+          });
+
+          anyResp = { data: enrichedProfiles, error: null } as any;
+          err = null;
         }
         if (err) {
           if (isTableMissing(err)) {
