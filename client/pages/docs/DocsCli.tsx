@@ -95,7 +95,7 @@ export default function DocsCli() {
         </p>
       </section>
 
-      <section className="space-y-4">
+      <section id="commands" className="space-y-4">
         <div className="flex items-center gap-3">
           <Cpu className="h-6 w-6 text-amber-300" />
           <h3 className="text-2xl font-semibold text-white">Command catalog</h3>
