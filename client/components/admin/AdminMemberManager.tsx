@@ -255,11 +255,19 @@ const AdminMemberManager = ({
       await onRefresh();
     } catch (error: any) {
       console.error("Failed to update profile", error);
+      const extractErrorMessage = (err: any) => {
+        if (!err) return "Supabase rejected the update. Review payload and RLS policies.";
+        if (typeof err === "string") return err;
+        if (err.message) return err.message;
+        try {
+          return JSON.stringify(err);
+        } catch (e) {
+          return String(err);
+        }
+      };
       aethexToast.error({
         title: "Profile update failed",
-        description:
-          error?.message ||
-          "Supabase rejected the update. Review payload and RLS policies.",
+        description: extractErrorMessage(error),
       });
     } finally {
       setSavingProfile(false);
