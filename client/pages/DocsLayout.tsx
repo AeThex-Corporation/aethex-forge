@@ -53,7 +53,7 @@ const navigation = [
   {
     name: "Integrations",
     href: "/docs/integrations",
-    icon: Terminal,
+    icon: Puzzle,
   },
 ];
 
