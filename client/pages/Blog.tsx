@@ -174,8 +174,31 @@ export default function Blog() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/blog?limit=50");
-        const data = res.ok ? await res.json() : [];
+        let res = await fetch("/api/blog?limit=50");
+        let data: any = [];
+        try {
+          if (res.ok) data = await res.json();
+        } catch (err) {
+          // fallback to Supabase REST if server API not available (dev)
+          try {
+            const sbUrl = import.meta.env.VITE_SUPABASE_URL;
+            const sbKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+            if (sbUrl && sbKey) {
+              const url = `${sbUrl.replace(/\/$/, "")}/rest/v1/blog_posts?select=id,slug,title,excerpt,author,date,read_time,category,image,likes,comments,published_at&order=published_at.desc&limit=50`;
+              const sbRes = await fetch(url, {
+                headers: {
+                  apikey: sbKey as string,
+                  Authorization: `Bearer ${sbKey}`,
+                },
+              });
+              if (sbRes.ok) data = await sbRes.json();
+            }
+          } catch (e) {
+            console.warn("Supabase fallback failed:", e);
+            data = [];
+          }
+        }
+
         if (!cancelled && Array.isArray(data)) {
           const mapped: BlogPost[] = data.map((r: any) => ({
             id: r.id,
