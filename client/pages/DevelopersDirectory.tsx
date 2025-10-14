@@ -121,6 +121,12 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
     .map((segment) => segment[0]?.toUpperCase())
     .join("")
     .slice(0, 2) || "AE";
+  const totalXp = Math.max(0, Math.floor(Number(profile.total_xp ?? 0)));
+  const levelValue = Math.max(1, Math.floor(Number(profile.level ?? 1)));
+  const loyaltyPoints = Math.max(
+    0,
+    Math.floor(Number((profile as any)?.loyalty_points ?? totalXp)),
+  );
   const availabilityLabel = getAvailabilityLabel(profile as any);
   const availabilityStyles = getAvailabilityStyles(availabilityLabel);
   const experienceLabel = profile.experience_level
@@ -212,7 +218,7 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
             variant="outline"
             className="border-slate-700/70 bg-slate-900/60 text-slate-300"
           >
-            Level {profile.level ?? 1}
+            Level {levelValue.toLocaleString()}
           </Badge>
         </div>
       </CardHeader>
@@ -228,7 +234,7 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
               XP
             </div>
             <div className="text-lg font-semibold">
-              {profile.total_xp ?? 0}
+              {totalXp.toLocaleString()}
             </div>
           </div>
           <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-slate-200">
@@ -236,7 +242,7 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
               Loyalty
             </div>
             <div className="text-lg font-semibold">
-              {(profile as any)?.loyalty_points ?? 0}
+              {loyaltyPoints.toLocaleString()}
             </div>
           </div>
           <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-slate-200">
