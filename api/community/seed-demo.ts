@@ -190,7 +190,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .select()
           .single();
         if (insertProfileError) throw insertProfileError;
-        seededUsers.push(insertProfileError ? null : insertedProfile);
+        seededUsers.push(insertedProfile);
       } else {
         seededUsers.push(existingProfile);
       }
@@ -254,7 +254,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         )
         .single();
       if (insertPostError) throw insertPostError;
-      seededPosts.push(insertPostError ? null : insertedPost);
+      seededPosts.push(insertedPost);
     }
 
     const followRows = FOLLOW_PAIRS.flatMap(({ followerEmail, followingEmail }) => {
@@ -274,14 +274,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const { error: followError } = await admin
         .from("user_follows")
         .upsert(followRows, {
-          onConflict: "follower_id,following_id" as any,
-          ignoreDuplicates: true as any,
-        });
+          onConflict: "follower_id,following_id",
+        } as any);
       if (followError) throw followError;
     }
 
-    const sanitizedUsers = seededUsers.filter(Boolean);
-    const sanitizedPosts = seededPosts.filter(Boolean);
+    const sanitizedUsers = Array.from(
+      new Map(
+        seededUsers
+          .filter(Boolean)
+          .map((profile: any) => [profile.id, profile]),
+      ).values(),
+    );
+    const sanitizedPosts = Array.from(
+      new Map(
+        seededPosts
+          .filter(Boolean)
+          .map((post: any) => [post.id, post]),
+      ).values(),
+    );
 
     return res.status(200).json({
       ok: true,
