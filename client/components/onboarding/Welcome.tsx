@@ -103,7 +103,27 @@ export default function Welcome({
         .catch(() => ({}) as Record<string, any>);
 
       if (!response.ok) {
-        throw new Error(payload?.error || "Failed to send verification email");
+        // If server returned a manual verification link despite the error, surface it to the user.
+        const manualLink =
+          typeof payload?.verificationUrl === "string" ? payload.verificationUrl : null;
+
+        if (manualLink) {
+          setFallbackVerificationLink(manualLink);
+          toastWarning({
+            title: payload?.message || "Partial failure",
+            description:
+              (payload?.error as string) ||
+              "We couldn't send the email automatically; use the manual link below.",
+          });
+        } else {
+          toastError({
+            title: "Verification email failed",
+            description: payload?.error || payload?.message || "Failed to send verification email",
+          });
+        }
+
+        setIsSendingVerification(false);
+        return;
       }
 
       const sent = Boolean(payload?.sent);
