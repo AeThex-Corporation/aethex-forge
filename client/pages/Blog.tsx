@@ -1,72 +1,34 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-import Layout from "@/components/Layout";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import LoadingScreen from "@/components/LoadingScreen";
-import { aethexToast } from "@/lib/aethex-toast";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  PenTool,
-  Calendar,
-  User,
-  ArrowRight,
-  Search,
-  Filter,
-  Bookmark,
-  Share,
-  ThumbsUp,
-  MessageCircle,
-  TrendingUp,
-} from "lucide-react";
+import Layout from "@/components/Layout";
+import LoadingScreen from "@/components/LoadingScreen";
+import { useAethexToast } from "@/hooks/use-aethex-toast";
+import BlogHero from "@/components/blog/BlogHero";
+import BlogTrendingRail from "@/components/blog/BlogTrendingRail";
+import BlogCategoryChips from "@/components/blog/BlogCategoryChips";
+import BlogPostGrid from "@/components/blog/BlogPostGrid";
+import BlogNewsletterSection from "@/components/blog/BlogNewsletterSection";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Compass, Layers, ListFilter, Newspaper } from "lucide-react";
+import type { BlogCategory, BlogPost } from "@/components/blog/types";
 
-type BlogPost = {
-  id?: string | number;
-  slug?: string;
-  title: string;
-  excerpt: string;
-  author: string;
-  date: string;
-  readTime?: string;
-  category?: string;
-  image?: string | null;
-  likes?: number;
-  comments?: number;
-  trending?: boolean;
-};
+const buildSlug = (post: BlogPost): string => post.slug || post.id?.toString() || "article";
 
-const normalizeCategory = (value?: string) =>
-  value
-    ? value
-        .toString()
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-    : "general";
-
-const buildSlug = (post: BlogPost): string => {
-  const base = (post.slug || post.id || post.title || "").toString();
-  const sanitized = base
+const normalizeCategory = (value?: string | null) =>
+  (value || "general")
+    .toString()
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return sanitized || "article";
-};
+    .replace(/[^a-z0-9]+/g, "-");
 
-export default function Blog() {
+const Blog = () => {
+  const toast = useAethexToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const toastShownRef = useRef(false);
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [featuredPost, setFeaturedPost] = useState<BlogPost | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   const staticPosts = useMemo<BlogPost[]>(
     () => [
@@ -238,442 +200,258 @@ export default function Blog() {
     let cancelled = false;
     (async () => {
       try {
-        let res = await fetch("/api/blog?limit=50");
+        const res = await fetch("/api/blog?limit=50");
         let data: any = [];
         try {
-          if (res.ok) data = await res.json();
-        } catch (err) {
-          // fallback to Supabase REST if server API not available (dev)
+          if (res.ok) {
+            data = await res.json();
+          }
+        } catch (error) {
+          console.warn("Failed to parse blog API response, falling back to Supabase", error);
+        }
+
+        if ((!Array.isArray(data) || !data.length) && import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY) {
           try {
-            const sbUrl = import.meta.env.VITE_SUPABASE_URL;
-            const sbKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-            if (sbUrl && sbKey) {
-              const url = `${sbUrl.replace(/\/$/, "")}/rest/v1/blog_posts?select=id,slug,title,excerpt,author,date,read_time,category,image,likes,comments,published_at&order=published_at.desc&limit=50`;
-              const sbRes = await fetch(url, {
-                headers: {
-                  apikey: sbKey as string,
-                  Authorization: `Bearer ${sbKey}`,
-                },
-              });
-              if (sbRes.ok) data = await sbRes.json();
+            const sbUrl = import.meta.env.VITE_SUPABASE_URL.replace(/\/$/, "");
+            const url = `${sbUrl}/rest/v1/blog_posts?select=slug,title,excerpt,author,date,read_time,category,image,likes,comments,published_at&order=published_at.desc&limit=50`;
+            const fallbackRes = await fetch(url, {
+              headers: {
+                apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+              },
+            });
+            if (fallbackRes.ok) {
+              data = await fallbackRes.json();
             }
-          } catch (e) {
-            console.warn("Supabase fallback failed:", e);
-            data = [];
+          } catch (error) {
+            console.warn("Supabase fallback failed", error);
           }
         }
 
         if (!cancelled && Array.isArray(data)) {
-          const mapped: BlogPost[] = data.map((r: any) => ({
-            id: r.id,
-            slug: r.slug ?? r.id ?? undefined,
-            title: r.title,
-            excerpt: r.excerpt,
-            author: r.author,
-            date: r.date,
-            readTime: r.read_time ?? r.readTime,
-            category: r.category ?? "General",
-            image: r.image ?? null,
-            likes: typeof r.likes === "number" ? r.likes : 0,
-            comments: typeof r.comments === "number" ? r.comments : 0,
-            trending: Boolean(r.trending),
+          const mapped: BlogPost[] = data.map((record: any) => ({
+            id: record.id ?? record.slug,
+            slug: record.slug,
+            title: record.title,
+            excerpt: record.excerpt ?? record.summary ?? null,
+            author: record.author ?? "AeThex Team",
+            date: record.date ?? record.published_at,
+            readTime: record.read_time ?? record.readTime ?? null,
+            category: record.category ?? "General",
+            image: record.image ?? null,
+            likes: typeof record.likes === "number" ? record.likes : null,
+            comments: typeof record.comments === "number" ? record.comments : null,
+            trending: Boolean(record.trending) || (typeof record.likes === "number" && record.likes > 250),
+            body: record.body_html ?? record.body ?? null,
           }));
           setPosts(mapped);
-          const highlighted = mapped.find((post) => post.trending) ?? mapped[0] ?? null;
-          setFeaturedPost(highlighted);
         }
-      } catch (e) {
-        console.warn("Blog fetch failed:", e);
+      } catch (error) {
+        console.warn("Blog fetch failed", error);
+        toast.system("Loaded curated AeThex articles");
       } finally {
         if (!cancelled) {
           setIsLoading(false);
-          if (!toastShownRef.current) {
-            aethexToast.system("AeThex Blog loaded successfully");
-            toastShownRef.current = true;
-          }
         }
       }
     })();
+
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [toast]);
 
-  useEffect(() => {
-    if (selectedCategory === "all") {
-      return;
-    }
-    const dataset = posts.length ? posts : staticPosts;
-    const hasCategory = dataset.some(
-      (post) => normalizeCategory(post.category) === selectedCategory,
-    );
-    if (!hasCategory) {
-      setSelectedCategory("all");
-    }
-  }, [posts, staticPosts, selectedCategory]);
-
-  const categories = useMemo(() => {
-    const dataset = posts.length ? posts : staticPosts;
-    const counts = new Map<string, { name: string; count: number }>();
-    dataset.forEach((post) => {
-      const name = post.category || "General";
-      const id = normalizeCategory(name);
-      const existing = counts.get(id);
-      counts.set(id, {
-        name,
-        count: (existing?.count ?? 0) + 1,
-      });
-    });
-    const preferredOrder = [
-      "technology",
-      "tutorials",
-      "research",
-      "company-news",
-      "general",
-    ];
-    const ordered: { id: string; name: string; count: number }[] = [];
-    preferredOrder.forEach((id) => {
-      const entry = counts.get(id);
-      if (entry) {
-        ordered.push({ id, name: entry.name, count: entry.count });
-        counts.delete(id);
-      }
-    });
-    counts.forEach((value, id) => {
-      ordered.push({ id, name: value.name, count: value.count });
-    });
-    return [
-      { id: "all", name: "All Posts", count: dataset.length },
-      ...ordered,
-    ];
-  }, [posts, staticPosts]);
+  const dataset = posts.length ? posts : staticPosts;
 
   const filteredPosts = useMemo(() => {
-    const dataset = posts.length ? posts : staticPosts;
-    if (selectedCategory === "all") {
-      return dataset;
-    }
-    return dataset.filter(
-      (post) => normalizeCategory(post.category) === selectedCategory,
-    );
-  }, [posts, staticPosts, selectedCategory]);
+    const query = searchQuery.trim().toLowerCase();
+    return dataset.filter((post) => {
+      const matchesCategory =
+        selectedCategory === "all" || normalizeCategory(post.category) === selectedCategory;
+      if (!matchesCategory) return false;
 
-  const activeFeaturedPost = useMemo(() => {
-    const dataset = posts.length ? posts : staticPosts;
-    const scoped = selectedCategory === "all" ? dataset : filteredPosts;
-    const scopedPosts = scoped.length ? scoped : dataset;
-    const featuredSlug = featuredPost ? buildSlug(featuredPost) : null;
-    if (featuredSlug) {
-      const matchingFeatured = scopedPosts.find(
-        (post) => buildSlug(post) === featuredSlug,
-      );
-      if (matchingFeatured) {
-        return matchingFeatured;
-      }
+      if (!query) return true;
+      const haystack = [post.title, post.excerpt, post.author]
+        .filter(Boolean)
+        .map((value) => value!.toLowerCase())
+        .join(" ");
+      return haystack.includes(query);
+    });
+  }, [dataset, selectedCategory, searchQuery]);
+
+  const featuredPost = useMemo(() => {
+    if (!filteredPosts.length) {
+      return dataset.find((post) => post.trending) ?? dataset[0] ?? null;
     }
-    return (
-      scopedPosts.find((post) => post.trending) ??
-      (featuredSlug
-        ? dataset.find((post) => buildSlug(post) === featuredSlug)
-        : null) ??
-      dataset.find((post) => post.trending) ??
-      scopedPosts[0] ??
-      dataset[0] ??
-      null
-    );
-  }, [featuredPost, filteredPosts, posts, staticPosts, selectedCategory]);
+    return filteredPosts.find((post) => post.trending) ?? filteredPosts[0] ?? null;
+  }, [dataset, filteredPosts]);
 
   const displayedPosts = useMemo(() => {
-    if (!activeFeaturedPost) {
-      return filteredPosts;
-    }
-    const featuredSlug = buildSlug(activeFeaturedPost);
-    return filteredPosts.filter((post) => buildSlug(post) !== featuredSlug);
-  }, [filteredPosts, activeFeaturedPost]);
+    if (!featuredPost) return filteredPosts;
+    return filteredPosts.filter((post) => buildSlug(post) !== buildSlug(featuredPost));
+  }, [filteredPosts, featuredPost]);
 
-  const placeholderImage = "/placeholder.svg";
+  const trendingPosts = useMemo(() => {
+    const sorted = [...dataset]
+      .filter((post) => post.trending || (post.likes ?? 0) >= 200)
+      .sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0));
+    return sorted.slice(0, 3);
+  }, [dataset]);
+
+  const categories: BlogCategory[] = useMemo(() => {
+    const counts = new Map<string, BlogCategory>();
+    dataset.forEach((post) => {
+      const id = normalizeCategory(post.category);
+      const name = post.category || "General";
+      counts.set(id, {
+        id,
+        name,
+        count: (counts.get(id)?.count ?? 0) + 1,
+      });
+    });
+
+    const ordered = [
+      { id: "all", name: "All posts", count: dataset.length },
+      ...Array.from(counts.values()).sort((a, b) => b.count - a.count),
+    ];
+
+    return ordered;
+  }, [dataset]);
+
+  const insights = useMemo(
+    () => [
+      {
+        label: "Teams publishing",
+        value: new Set(dataset.map((post) => (post.author || "AeThex Team").split(" ")[0])).size,
+        helper: "Active contributors this month",
+        icon: <Layers className="h-4 w-4" />,
+      },
+      {
+        label: "Focus areas",
+        value: new Set(dataset.map((post) => post.category || "General")).size,
+        helper: "Distinct categories covered",
+        icon: <ListFilter className="h-4 w-4" />,
+      },
+      {
+        label: "Stories published",
+        value: dataset.length,
+        helper: "All-time AeThex blog posts",
+        icon: <Newspaper className="h-4 w-4" />,
+      },
+    ],
+    [dataset],
+  );
 
   if (isLoading) {
-    return (
-      <LoadingScreen
-        message="Loading AeThex Blog..."
-        showProgress={true}
-        duration={1000}
-      />
-    );
+    return <LoadingScreen message="Loading AeThex blog" showProgress />;
   }
+
+  const handleResetFilters = () => {
+    setSelectedCategory("all");
+    setSearchQuery("");
+  };
 
   return (
     <Layout>
-      <div className="min-h-screen bg-aethex-gradient">
-        {/* Hero Section */}
-        <section className="relative py-20 lg:py-32">
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <div className="max-w-4xl mx-auto space-y-8">
-              <Badge
-                variant="outline"
-                className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle"
+      <div className="bg-slate-950 text-foreground">
+        <BlogHero
+          featured={featuredPost}
+          totalCount={dataset.length}
+          search={searchQuery}
+          onSearchChange={setSearchQuery}
+          onViewAll={handleResetFilters}
+        />
+
+        <section className="border-b border-border/30 bg-background/60 py-12">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                  Filter by track
+                </p>
+                <h2 className="text-2xl font-semibold text-white">Navigate the AeThex knowledge graph</h2>
+              </div>
+              <Button variant="ghost" size="sm" onClick={handleResetFilters} className="self-start lg:self-auto">
+                Reset filters
+              </Button>
+            </div>
+            <div className="mt-6">
+              <BlogCategoryChips
+                categories={categories}
+                selected={selectedCategory}
+                onSelect={setSelectedCategory}
+              />
+            </div>
+          </div>
+        </section>
+
+        <BlogTrendingRail posts={trendingPosts} />
+
+        <section className="border-b border-border/30 bg-background/80 py-16">
+          <div className="container mx-auto grid gap-6 px-4 md:grid-cols-3">
+            {insights.map((insight) => (
+              <Card
+                key={insight.label}
+                className="border-border/40 bg-background/60 backdrop-blur transition hover:border-aethex-400/50"
               >
-                <PenTool className="h-3 w-3 mr-1" />
-                AeThex Blog
-              </Badge>
-
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient-purple">
-                  Insights & Innovation
-                </span>
-              </h1>
-
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Stay updated with the latest developments in game technology, AI
-                research, and industry insights from the AeThex team.
-              </p>
-
-              {/* Search and Filter */}
-              <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Search articles..."
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border/50 bg-background/50 backdrop-blur-sm focus:border-aethex-400 focus:outline-none"
-                  />
-                </div>
-                <Button
-                  variant="outline"
-                  className="flex items-center space-x-2"
-                >
-                  <Filter className="h-4 w-4" />
-                  <span>Filter</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Categories */}
-        <section className="py-8 bg-background/30">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
-              {categories.map((category, index) => (
-                <Button
-                  key={category.id}
-                  variant={
-                    selectedCategory === category.id ? "default" : "outline"
-                  }
-                  size="sm"
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`animate-scale-in ${
-                    selectedCategory === category.id
-                      ? "bg-gradient-to-r from-aethex-500 to-neon-blue"
-                      : ""
-                  }`}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  {category.name} ({category.count})
-                </Button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Post */}
-        {activeFeaturedPost && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <Card className="max-w-4xl mx-auto overflow-hidden border-border/50 hover:border-aethex-400/50 transition-all duration-300 animate-scale-in">
-                <div className="md:flex">
-                  <div className="md:w-1/2">
-                    <img
-                      src={activeFeaturedPost.image ?? placeholderImage}
-                      alt={activeFeaturedPost.title}
-                      className="w-full h-64 md:h-full object-cover"
-                    />
+                <CardContent className="flex items-center gap-4 p-6">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border/30 bg-background/70 text-aethex-200">
+                    {insight.icon}
+                  </span>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{insight.label}</p>
+                    <p className="text-2xl font-semibold text-white">{insight.value}</p>
+                    <p className="text-xs text-muted-foreground">{insight.helper}</p>
                   </div>
-                  <div className="md:w-1/2 p-8">
-                    <Badge className="mb-4 bg-gradient-to-r from-aethex-500 to-neon-blue">
-                      Featured
-                    </Badge>
-                    <CardTitle className="text-2xl mb-4 text-gradient">
-                      {activeFeaturedPost.title}
-                    </CardTitle>
-                    <CardDescription className="text-base mb-6">
-                      {activeFeaturedPost.excerpt}
-                    </CardDescription>
-
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <div className="flex items-center space-x-1">
-                          <User className="h-4 w-4" />
-                          <span>{activeFeaturedPost.author || "AeThex Team"}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{activeFeaturedPost.date}</span>
-                        </div>
-                      </div>
-                      {activeFeaturedPost.readTime && (
-                        <Badge variant="outline">{activeFeaturedPost.readTime}</Badge>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <Button asChild>
-                        <Link to={`/blog/${buildSlug(activeFeaturedPost)}`}>
-                          Read Article
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </Link>
-                      </Button>
-                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <div className="flex items-center space-x-1">
-                          <ThumbsUp className="h-4 w-4" />
-                          <span>{activeFeaturedPost.likes ?? 0}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <MessageCircle className="h-4 w-4" />
-                          <span>{activeFeaturedPost.comments ?? 0}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                </CardContent>
               </Card>
-            </div>
-          </section>
-        )}
-
-        {/* Recent Posts */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 animate-slide-up">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
-                Recent Articles
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Latest insights and tutorials from our team
-              </p>
-            </div>
-
-            {displayedPosts.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                {displayedPosts.map((post, index) => (
-                  <Card
-                    key={buildSlug(post)}
-                    className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-slide-up"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-2">
-                        <Badge variant="outline" className="text-xs">
-                          {post.category || "General"}
-                        </Badge>
-                        {post.trending && (
-                          <Badge className="bg-gradient-to-r from-orange-500 to-red-600 text-xs">
-                            <TrendingUp className="h-3 w-3 mr-1" />
-                            Trending
-                          </Badge>
-                        )}
-                      </div>
-                      <CardTitle className="text-lg hover:text-gradient transition-colors cursor-pointer">
-                        {post.title}
-                      </CardTitle>
-                      <CardDescription className="text-sm">
-                        {post.excerpt}
-                      </CardDescription>
-                    </CardHeader>
-
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <div className="flex items-center space-x-2">
-                          <User className="h-3 w-3" />
-                          <span>{post.author || "AeThex Team"}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Calendar className="h-3 w-3" />
-                          <span>{post.date || "Coming soon"}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        {post.readTime ? (
-                          <Badge variant="outline" className="text-xs">
-                            {post.readTime}
-                          </Badge>
-                        ) : (
-                          <span className="text-xs text-muted-foreground">
-                            Quick read
-                          </span>
-                        )}
-                        <div className="flex items-center space-x-3">
-                          <Button size="sm" variant="ghost">
-                            <Bookmark className="h-3 w-3" />
-                          </Button>
-                          <Button size="sm" variant="ghost">
-                            <Share className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                          <div className="flex items-center space-x-1">
-                            <ThumbsUp className="h-3 w-3" />
-                            <span>{post.likes ?? 0}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <MessageCircle className="h-3 w-3" />
-                            <span>{post.comments ?? 0}</span>
-                          </div>
-                        </div>
-                        <Button size="sm" asChild>
-                          <Link to={`/blog/${buildSlug(post)}`}>
-                            Read More
-                          </Link>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="max-w-3xl mx-auto rounded-lg border border-border/40 bg-background/60 p-10 text-center text-muted-foreground animate-slide-up">
-                No articles available in this category yet. Please check back soon.
-              </div>
-            )}
+            ))}
           </div>
         </section>
 
-        {/* Newsletter CTA */}
-        <section className="py-20 bg-background/30">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple">
-                Stay in the Loop
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Subscribe to our newsletter for the latest articles, tutorials,
-                and technology insights delivered directly to your inbox.
-              </p>
+        <section className="py-20">
+          <div className="container mx-auto space-y-12 px-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Latest updates</p>
+                <h2 className="text-3xl font-semibold text-white">Fresh from the AeThex ship room</h2>
+              </div>
+              <Button asChild variant="outline" className="self-start border-border/60 text-sm">
+                <Link to="/changelog">
+                  View changelog
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-lg border border-border/50 bg-background/50 backdrop-blur-sm focus:border-aethex-400 focus:outline-none"
-                />
-                <Button className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue">
-                  Subscribe
+            <BlogPostGrid posts={displayedPosts} />
+          </div>
+        </section>
+
+        <BlogNewsletterSection />
+
+        <section className="bg-background/70 py-16">
+          <div className="container mx-auto px-4">
+            <div className="rounded-2xl border border-border/40 bg-background/80 p-8">
+              <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Explore more</p>
+                  <h3 className="text-2xl font-semibold text-white">Dive into AeThex documentation</h3>
+                  <p className="max-w-2xl text-sm text-muted-foreground">
+                    Looking for implementation guides, deployment recipes, or program onboarding materials?
+                    Visit our documentation hub for developer tutorials, platform references, and community playbooks.
+                  </p>
+                </div>
+                <Button asChild className="bg-gradient-to-r from-aethex-500 to-neon-blue">
+                  <Link to="/docs">Open documentation hub</Link>
                 </Button>
               </div>
-
-              <p className="text-sm text-muted-foreground">
-                Join 10,000+ developers getting weekly insights. Unsubscribe
-                anytime.
-              </p>
             </div>
           </div>
         </section>
       </div>
     </Layout>
   );
-}
+};
+
+export default Blog;
