@@ -973,9 +973,9 @@ export default function Admin() {
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p>
-                        {applicationsLoading
+                        {projectApplicationsLoading
                           ? "Loading application data…"
-                          : `${applications.length} total submissions (${pendingApplications} waiting)`}
+                          : `${projectApplications.length} total submissions (${pendingProjectApplications} waiting)`}
                       </p>
                       <Button
                         variant="outline"
