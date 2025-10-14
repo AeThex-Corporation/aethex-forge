@@ -19,6 +19,37 @@ import {
   Code,
 } from "lucide-react";
 
+const docCategories = [
+  {
+    title: "Getting Started",
+    description: "Quick start guides and tutorials for beginners",
+    docs: 12,
+    sections: ["Installation", "First Steps", "Basic Concepts", "Hello World"],
+    color: "from-green-500 to-emerald-600",
+  },
+  {
+    title: "API Reference",
+    description: "Complete API documentation with examples",
+    docs: 45,
+    sections: ["Authentication", "Endpoints", "SDKs", "Rate Limits"],
+    color: "from-blue-500 to-cyan-600",
+  },
+  {
+    title: "Tutorials",
+    description: "Step-by-step guides for common use cases",
+    docs: 28,
+    sections: ["Game Development", "Web Apps", "Mobile Apps", "AI Integration"],
+    color: "from-purple-500 to-indigo-600",
+  },
+  {
+    title: "CLI Tools",
+    description: "Command-line interface documentation",
+    docs: 15,
+    sections: ["Installation", "Commands", "Configuration", "Scripts"],
+    color: "from-orange-500 to-red-600",
+  },
+];
+
 const prerequisites = [
   {
     title: "AeThex Account",
