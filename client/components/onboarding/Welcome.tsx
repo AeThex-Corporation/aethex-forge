@@ -83,6 +83,21 @@ export default function Welcome({
     setFallbackVerificationLink(null);
 
     try {
+      // First try Supabase to send via your configured SMTP
+      const { error: resendError } = await supabase.auth.resend({
+        type: "signup",
+        email: emailAddress,
+      } as any);
+
+      if (!resendError) {
+        toastSuccess({
+          title: "Verification email sent",
+          description: `We sent a confirmation message to ${emailAddress}.`,
+        });
+        return;
+      }
+
+      // Fallback to server-generated link (and optional Resend delivery)
       const redirectTo =
         typeof window !== "undefined"
           ? `${window.location.origin}/login?verified=1`
@@ -103,7 +118,6 @@ export default function Welcome({
         .catch(() => ({}) as Record<string, any>);
 
       if (!response.ok) {
-        // If server returned a manual verification link despite the error, surface it to the user.
         const manualLink =
           typeof payload?.verificationUrl === "string"
             ? payload.verificationUrl
@@ -126,8 +140,6 @@ export default function Welcome({
               "Failed to send verification email",
           });
         }
-
-        setIsSendingVerification(false);
         return;
       }
 
