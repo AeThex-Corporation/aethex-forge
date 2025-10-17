@@ -143,6 +143,33 @@ export function createServer() {
       }
 
       const verified = Boolean(user?.email_confirmed_at || user?.confirmed_at);
+
+      if (verified) {
+        try {
+          // Look up the Founding Member achievement
+          const { data: ach, error: aErr } = await adminSupabase
+            .from("achievements")
+            .select("id")
+            .eq("name", "Founding Member")
+            .maybeSingle();
+
+          if (!aErr && ach?.id) {
+            // Award it if not already awarded
+            const { error: uaErr } = await adminSupabase
+              .from("user_achievements")
+              .upsert(
+                { user_id: user.id, achievement_id: ach.id },
+                { onConflict: "user_id,achievement_id" as any },
+              );
+            if (uaErr) {
+              console.warn("Failed to award Founding Member:", uaErr);
+            }
+          }
+        } catch (awardErr) {
+          console.warn("Awarding achievement on verification failed", awardErr);
+        }
+      }
+
       return res.json({ verified, user });
     } catch (e: any) {
       console.error("[API] check verification exception", e);
