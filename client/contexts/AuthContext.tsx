@@ -440,65 +440,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (error) throw error;
 
-      let emailSent = false;
+      // Supabase sends the confirmation email automatically (SMTP or default provider)
+      let emailSent = true;
       let verificationUrl: string | undefined;
 
-      if (typeof fetch === "function") {
-        try {
-          const response = await fetch("/api/auth/send-verification-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email,
-              redirectTo,
-              fullName:
-                (metadata.full_name as string | undefined) ??
-                (data.user?.user_metadata as any)?.full_name ??
-                null,
-            }),
-          });
-
-          const payload = await response.json().catch(() => ({}));
-
-          if (!response.ok) {
-            throw new Error(
-              payload?.error || "Failed to queue verification email",
-            );
-          }
-
-          emailSent = Boolean(payload?.sent);
-          verificationUrl = payload?.verificationUrl;
-
-          if (!emailSent && verificationUrl) {
-            aethexToast.warning({
-              title: "Email service unavailable",
-              description:
-                "We could not send the verification email automatically. Copy the link shown after closing this message to verify manually.",
-            });
-          }
-        } catch (sendError: any) {
-          console.error("Verification email error", sendError);
-          aethexToast.warning({
-            title: "Verification email pending",
-            description:
-              "Account created, but we could not deliver the verification email automatically. Use the resend option or contact support.",
-          });
-        }
-      }
-
       if (data.user) {
-        if (emailSent) {
-          aethexToast.success({
-            title: "Verify your email",
-            description: `We sent a confirmation to ${email}.`,
-          });
-        } else {
-          aethexToast.info({
-            title: "Verify your account",
-            description:
-              "Your account was created. If no email arrives, use the manual verification link or contact support.",
-          });
-        }
+        aethexToast.success({
+          title: "Verify your email",
+          description: `We sent a confirmation to ${email}.`,
+        });
       }
 
       return { emailSent, verificationUrl } as const;
