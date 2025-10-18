@@ -10,6 +10,8 @@ import {
   aethexAchievementService,
 } from "@/lib/aethex-database-adapter";
 import { communityService } from "@/lib/supabase-service";
+import { aethexCollabService } from "@/lib/aethex-collab-service";
+import { aethexSocialService } from "@/lib/aethex-social-service";
 import PostComposer from "@/components/social/PostComposer";
 import OAuthConnections, {
   ProviderDescriptor,
