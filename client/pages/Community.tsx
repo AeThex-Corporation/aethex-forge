@@ -1724,7 +1724,7 @@ export default function Community() {
   );
 
   const handleReportSubmit = useCallback(
-    (submitEvent: FormEvent<HTMLFormElement>) => {
+    async (submitEvent: FormEvent<HTMLFormElement>) => {
       submitEvent.preventDefault();
       const trimmedDetails = reportForm.details.trim();
 
@@ -1740,12 +1740,31 @@ export default function Community() {
         return;
       }
 
-      aethexToast.system(
-        "Report submitted. Our moderation team will review shortly.",
-      );
-      setReportForm({ reason: "", details: "" });
+      try {
+        const resp = await fetch("/api/moderation/reports", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reporter_id: (profile as any)?.id || null,
+            target_type: "other",
+            target_id: null,
+            reason: reportForm.reason,
+            details: trimmedDetails,
+          }),
+        });
+        if (!resp.ok) {
+          const msg = await resp.text();
+          throw new Error(msg || "Failed to submit report");
+        }
+        aethexToast.system(
+          "Report submitted. Our moderation team will review shortly.",
+        );
+        setReportForm({ reason: "", details: "" });
+      } catch (e: any) {
+        aethexToast.system(String(e?.message || e));
+      }
     },
-    [reportForm],
+    [reportForm, profile],
   );
 
   if (isLoading) {
