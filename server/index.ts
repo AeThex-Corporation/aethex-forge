@@ -134,20 +134,32 @@ export function createServer() {
       let user: any = null;
       let listResp: any = null;
       try {
-        listResp = await admin.listUsers({ page: 1, perPage: 200, email: targetEmail } as any);
+        listResp = await admin.listUsers({
+          page: 1,
+          perPage: 200,
+          email: targetEmail,
+        } as any);
       } catch (e) {
         listResp = null;
       }
 
       const initialUsers: any[] = (listResp?.data?.users as any[]) || [];
-      user = initialUsers.find((u: any) => String(u?.email || '').toLowerCase() === targetEmail) || null;
+      user =
+        initialUsers.find(
+          (u: any) => String(u?.email || "").toLowerCase() === targetEmail,
+        ) || null;
 
       if (!user) {
         // Pagination fallback (limited scan)
         for (let page = 1; page <= 5 && !user; page++) {
-          const resp = await admin.listUsers({ page, perPage: 200 } as any).catch(() => null);
+          const resp = await admin
+            .listUsers({ page, perPage: 200 } as any)
+            .catch(() => null);
           const users = (resp?.data?.users as any[]) || [];
-          user = users.find((u: any) => String(u?.email || '').toLowerCase() === targetEmail) || null;
+          user =
+            users.find(
+              (u: any) => String(u?.email || "").toLowerCase() === targetEmail,
+            ) || null;
         }
       }
 
