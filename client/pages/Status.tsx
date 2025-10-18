@@ -175,6 +175,12 @@ export default function Status() {
     setIsRefreshing(false);
   };
 
+  useEffect(() => {
+    fetchStatus();
+    const t = setInterval(fetchStatus, 60000);
+    return () => clearInterval(t);
+  }, []);
+
   const overall = getOverallStatus();
 
   return (
