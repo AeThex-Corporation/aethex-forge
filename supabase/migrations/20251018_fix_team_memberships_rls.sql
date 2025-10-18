@@ -33,4 +33,7 @@ for delete
 to authenticated
 using (user_id = auth.uid());
 
+-- Drop legacy teams_read policy that referenced public.team_members (recursive)
+drop policy if exists teams_read on public.teams;
+
 commit;
