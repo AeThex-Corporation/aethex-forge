@@ -175,4 +175,67 @@ export const aethexSocialService = {
     });
     if (!resp.ok) throw new Error(await resp.text());
   },
+
+  // Mentorship
+  async listMentors(params?: { expertise?: string[]; q?: string; available?: boolean; limit?: number }) {
+    const qs = new URLSearchParams();
+    if (params?.expertise?.length) qs.set("expertise", params.expertise.join(","));
+    if (params?.q) qs.set("q", params.q);
+    if (typeof params?.available === "boolean") qs.set("available", String(params.available));
+    if (params?.limit) qs.set("limit", String(params.limit));
+    const resp = await fetch(`/api/mentors${qs.toString() ? `?${qs.toString()}` : ""}`);
+    if (!resp.ok) return [] as any[];
+    return (await resp.json()) as any[];
+  },
+
+  async applyToBeMentor(
+    userId: string,
+    input: { bio?: string | null; expertise: string[]; hourlyRate?: number | null; available?: boolean },
+  ) {
+    const resp = await fetch("/api/mentors/apply", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: userId,
+        bio: input.bio ?? null,
+        expertise: input.expertise || [],
+        hourly_rate: typeof input.hourlyRate === "number" ? input.hourlyRate : null,
+        available: typeof input.available === "boolean" ? input.available : true,
+      }),
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    return await resp.json();
+  },
+
+  async requestMentorship(menteeId: string, mentorId: string, message?: string) {
+    const resp = await fetch("/api/mentorship/request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mentee_id: menteeId, mentor_id: mentorId, message: message || null }),
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    return await resp.json();
+  },
+
+  async listMentorshipRequests(userId: string, role?: "mentor" | "mentee") {
+    const qs = new URLSearchParams({ user_id: userId });
+    if (role) qs.set("role", role);
+    const resp = await fetch(`/api/mentorship/requests?${qs.toString()}`);
+    if (!resp.ok) return [] as any[];
+    return (await resp.json()) as any[];
+  },
+
+  async updateMentorshipRequestStatus(
+    id: string,
+    actorId: string,
+    status: "accepted" | "rejected" | "cancelled",
+  ) {
+    const resp = await fetch(`/api/mentorship/requests/${encodeURIComponent(id)}/status`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ actor_id: actorId, status }),
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    return await resp.json();
+  },
 };
