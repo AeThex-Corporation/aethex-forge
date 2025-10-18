@@ -55,57 +55,8 @@ export default function Realms() {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {visible.map((realm, i) => {
-            const Icon = realm.icon;
-            const active = lastRealm === realm.id;
-            return (
-              <Card key={realm.id} className={cn("relative border border-border/50 transition-all hover:border-aethex-400/50", active && "border-aethex-400/70 shadow-lg")} style={{ animationDelay: `${i * 0.05}s` }}>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className={cn("flex h-12 w-12 items-center justify-center rounded-xl text-white shadow", `bg-gradient-to-br ${realm.gradient}`)}>
-                      <Icon className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-base">{realm.title}</CardTitle>
-                      <CardDescription>{realm.name}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">{realm.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {realm.highlights.slice(0, 3).map((h) => (
-                      <Badge key={h} variant="outline" className="text-xs">{h}</Badge>
-                    ))}
-                  </div>
-                  <div className="pt-2">
-                    {active ? (
-                      <Button disabled variant="outline">Current Realm</Button>
-                    ) : (
-                      <Button
-                        onClick={async () => {
-                          setActivating(realm.id);
-                          try {
-                            await updateProfile({ user_type: realm.id } as any);
-                            navigate("/dashboard", { replace: true });
-                          } finally {
-                            setActivating(null);
-                          }
-                        }}
-                        disabled={activating === realm.id}
-                      >
-                        {activating === realm.id ? "Activating…" : "Activate Realm"}
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-                {active && (
-                  <div className="pointer-events-none absolute inset-x-0 -top-px h-1 bg-gradient-to-r from-aethex-400 via-neon-blue to-aethex-400" />
-                )}
-              </Card>
-            );
-          })}
+        <div className="mt-6 flex justify-end">
+          <Button onClick={() => navigate("/dashboard")}>Open Dashboard</Button>
         </div>
       </div>
     </Layout>
