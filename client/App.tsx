@@ -52,6 +52,7 @@ import Explore from "./pages/Explore";
 import ResetPassword from "./pages/ResetPassword";
 import { Navigate } from "react-router-dom";
 import FourOhFourPage from "./pages/404";
+import SignupRedirect from "./pages/SignupRedirect";
 
 const queryClient = new QueryClient();
 
