@@ -3,7 +3,6 @@ import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import PostComposer from "@/components/social/PostComposer";
 import { FeedItemCard } from "@/components/social/FeedItemCard";
-import { communityService } from "@/lib/supabase-service";
 import { ensureDemoSeed, getDemoPosts } from "@/lib/demo-feed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
