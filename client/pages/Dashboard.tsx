@@ -1200,7 +1200,7 @@ export default function Dashboard() {
                         Your active development projects
                       </CardDescription>
                     </div>
-                    <Button variant="outline" size="sm" className="hover-lift">
+                    <Button variant="outline" size="sm" className="hover-lift" onClick={() => navigate("/projects")}>
                       View All
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </Button>
