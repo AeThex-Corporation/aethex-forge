@@ -212,6 +212,7 @@ export function createServer() {
       const targets = [
         { name: "avatars", public: true },
         { name: "banners", public: true },
+        { name: "post_media", public: true },
       ];
       const { data: buckets } = await (
         adminSupabase as any
