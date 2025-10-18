@@ -28,6 +28,16 @@ import {
   User,
   Info,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
