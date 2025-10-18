@@ -53,7 +53,7 @@ export const REALM_OPTIONS: RealmOption[] = [
   {
     id: "game_developer",
     name: "Development Forge",
-    title: "Game Developer",
+    title: "Game Development",
     description:
       "Build immersive experiences, collaborate with other creators, and unlock our full suite of development tools.",
     icon: GamepadIcon,
@@ -69,7 +69,7 @@ export const REALM_OPTIONS: RealmOption[] = [
   {
     id: "client",
     name: "Strategist Nexus",
-    title: "Client",
+    title: "Consulting",
     description:
       "Engage AeThex teams for bespoke solutions, product consulting, and strategic execution across every milestone.",
     icon: BriefcaseIcon,
@@ -85,7 +85,7 @@ export const REALM_OPTIONS: RealmOption[] = [
   {
     id: "community_member",
     name: "Innovation Commons",
-    title: "Community Member",
+    title: "Community",
     description:
       "Connect with innovators, share discoveries, and access exclusive research, events, and community resources.",
     icon: UsersIcon,
@@ -101,7 +101,7 @@ export const REALM_OPTIONS: RealmOption[] = [
   {
     id: "customer",
     name: "Experience Hub",
-    title: "Customer",
+    title: "Get Started",
     description:
       "Discover AeThex products, manage licenses, and access tailored support for every experience you launch.",
     icon: ShoppingCartIcon,
