@@ -352,6 +352,14 @@ export default function Dashboard() {
         setUserPosts([]);
       }
 
+      // Load invites
+      try {
+        const mine = await aethexSocialService.listInvites(user!.id);
+        setInvites(Array.isArray(mine) ? mine : []);
+      } catch {
+        setInvites([]);
+      }
+
       // Load project applications (if table exists)
       try {
         const { data, error } = await supabase
