@@ -177,7 +177,7 @@ export default function Roadmap() {
         {/* Phases */}
         <section className="container mx-auto px-4 pb-8">
           <div className="grid gap-6 md:grid-cols-2">
-            {["now","month1","month2","month3"].map((phase) => {
+            {(focusedPhase ? [focusedPhase] : ["now","month1","month2","month3"]).map((phase) => {
               const Icon = PhaseIcon[phase] || Target;
               const items = QUESTS.filter((q) => q.phase === phase);
               const title = phase === "now" ? "Now" : phase === "month1" ? "Month 1" : phase === "month2" ? "Month 2" : "Month 3";
