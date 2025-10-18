@@ -32,9 +32,10 @@ import {
 
 interface LayoutProps {
   children: React.ReactNode;
+  hideFooter?: boolean;
 }
 
-export default function CodeLayout({ children }: LayoutProps) {
+export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   const location = useLocation();
   const { user, profile, roles, signOut, loading, profileComplete } = useAuth();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
@@ -371,6 +372,7 @@ export default function CodeLayout({ children }: LayoutProps) {
 
       <main className="flex-1 w-full overflow-x-hidden">{children}</main>
 
+      {!hideFooter && (
       <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-up">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -591,6 +593,7 @@ export default function CodeLayout({ children }: LayoutProps) {
           </div>
         </div>
       </footer>
+      )}
 
       {/* Supabase Configuration Status */}
       <SupabaseStatus />
