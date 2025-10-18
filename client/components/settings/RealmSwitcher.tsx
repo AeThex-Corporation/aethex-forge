@@ -160,7 +160,12 @@ const RealmSwitcher = memo(function RealmSwitcher({
 }: RealmSwitcherProps) {
   const { roles } = useAuth();
   const canSeeStaff = useMemo(
-    () => roles.some((r) => ["owner", "admin", "founder", "staff", "employee"].includes(r.toLowerCase())),
+    () =>
+      roles.some((r) =>
+        ["owner", "admin", "founder", "staff", "employee"].includes(
+          r.toLowerCase(),
+        ),
+      ),
     [roles],
   );
   const visibleOptions = useMemo(

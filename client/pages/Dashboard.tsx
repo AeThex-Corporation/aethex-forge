@@ -85,7 +85,9 @@ export default function Dashboard() {
   const [invites, setInvites] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]); // earned achievements
   const [allAchievements, setAllAchievements] = useState<any[]>([]);
-  const [achievementFilter, setAchievementFilter] = useState<"all" | "earned" | "locked">("earned");
+  const [achievementFilter, setAchievementFilter] = useState<
+    "all" | "earned" | "locked"
+  >("earned");
   const [followingIds, setFollowingIds] = useState<string[]>([]);
   const [followerIds, setFollowerIds] = useState<string[]>([]);
   const [connectionsList, setConnectionsList] = useState<any[]>([]);
@@ -1148,33 +1150,48 @@ export default function Dashboard() {
                           Your network
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          People you follow, your followers, and direct connections.
+                          People you follow, your followers, and direct
+                          connections.
                         </p>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <Card className="bg-card/50 border-border/50">
                           <CardHeader>
-                            <CardTitle className="text-base">Following</CardTitle>
+                            <CardTitle className="text-base">
+                              Following
+                            </CardTitle>
                             <CardDescription>
                               {followingIds.length} people
                             </CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-2">
                             {followingIds.length === 0 ? (
-                              <div className="text-sm text-muted-foreground">You're not following anyone yet.</div>
+                              <div className="text-sm text-muted-foreground">
+                                You're not following anyone yet.
+                              </div>
                             ) : (
                               followingIds.slice(0, 6).map((id) => (
-                                <div key={id} className="flex items-center justify-between p-2 rounded border border-border/40">
-                                  <div className="text-xs text-muted-foreground truncate">{id}</div>
+                                <div
+                                  key={id}
+                                  className="flex items-center justify-between p-2 rounded border border-border/40"
+                                >
+                                  <div className="text-xs text-muted-foreground truncate">
+                                    {id}
+                                  </div>
                                   <Button
                                     size="sm"
                                     variant="outline"
                                     onClick={async () => {
                                       if (!user) return;
                                       try {
-                                        await aethexSocialService.unfollowUser(user.id, id);
-                                        setFollowingIds((s) => s.filter((x) => x !== id));
+                                        await aethexSocialService.unfollowUser(
+                                          user.id,
+                                          id,
+                                        );
+                                        setFollowingIds((s) =>
+                                          s.filter((x) => x !== id),
+                                        );
                                       } catch {}
                                     }}
                                   >
@@ -1188,26 +1205,40 @@ export default function Dashboard() {
 
                         <Card className="bg-card/50 border-border/50">
                           <CardHeader>
-                            <CardTitle className="text-base">Followers</CardTitle>
+                            <CardTitle className="text-base">
+                              Followers
+                            </CardTitle>
                             <CardDescription>
                               {followerIds.length} people
                             </CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-2">
                             {followerIds.length === 0 ? (
-                              <div className="text-sm text-muted-foreground">No followers yet.</div>
+                              <div className="text-sm text-muted-foreground">
+                                No followers yet.
+                              </div>
                             ) : (
                               followerIds.slice(0, 6).map((id) => (
-                                <div key={id} className="flex items-center justify-between p-2 rounded border border-border/40">
-                                  <div className="text-xs text-muted-foreground truncate">{id}</div>
+                                <div
+                                  key={id}
+                                  className="flex items-center justify-between p-2 rounded border border-border/40"
+                                >
+                                  <div className="text-xs text-muted-foreground truncate">
+                                    {id}
+                                  </div>
                                   <Button
                                     size="sm"
                                     variant="outline"
                                     onClick={async () => {
                                       if (!user) return;
                                       try {
-                                        await aethexSocialService.followUser(user.id, id);
-                                        setFollowingIds((s) => Array.from(new Set([...s, id])));
+                                        await aethexSocialService.followUser(
+                                          user.id,
+                                          id,
+                                        );
+                                        setFollowingIds((s) =>
+                                          Array.from(new Set([...s, id])),
+                                        );
                                       } catch {}
                                     }}
                                   >
@@ -1221,25 +1252,41 @@ export default function Dashboard() {
 
                         <Card className="bg-card/50 border-border/50">
                           <CardHeader>
-                            <CardTitle className="text-base">Connections</CardTitle>
+                            <CardTitle className="text-base">
+                              Connections
+                            </CardTitle>
                             <CardDescription>
                               {connectionsList.length} people
                             </CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-2">
                             {connectionsList.length === 0 ? (
-                              <div className="text-sm text-muted-foreground">No direct connections yet.</div>
+                              <div className="text-sm text-muted-foreground">
+                                No direct connections yet.
+                              </div>
                             ) : (
                               connectionsList.slice(0, 6).map((row: any) => {
-                                const up = row.user_profiles || row.profile || null;
-                                const label = up?.full_name || up?.username || row.connection_id || "User";
+                                const up =
+                                  row.user_profiles || row.profile || null;
+                                const label =
+                                  up?.full_name ||
+                                  up?.username ||
+                                  row.connection_id ||
+                                  "User";
                                 const id = row.connection_id || up?.id;
                                 const isFollowing = followingIds.includes(id);
                                 return (
-                                  <div key={id} className="flex items-center justify-between p-2 rounded border border-border/40">
+                                  <div
+                                    key={id}
+                                    className="flex items-center justify-between p-2 rounded border border-border/40"
+                                  >
                                     <div className="text-xs truncate">
-                                      <span className="font-medium">{label}</span>
-                                      <span className="text-muted-foreground ml-2">{id}</span>
+                                      <span className="font-medium">
+                                        {label}
+                                      </span>
+                                      <span className="text-muted-foreground ml-2">
+                                        {id}
+                                      </span>
                                     </div>
                                     <div className="flex gap-2">
                                       <Button
@@ -1249,11 +1296,21 @@ export default function Dashboard() {
                                           if (!user || !id) return;
                                           try {
                                             if (isFollowing) {
-                                              await aethexSocialService.unfollowUser(user.id, id);
-                                              setFollowingIds((s) => s.filter((x) => x !== id));
+                                              await aethexSocialService.unfollowUser(
+                                                user.id,
+                                                id,
+                                              );
+                                              setFollowingIds((s) =>
+                                                s.filter((x) => x !== id),
+                                              );
                                             } else {
-                                              await aethexSocialService.followUser(user.id, id);
-                                              setFollowingIds((s) => Array.from(new Set([...s, id])));
+                                              await aethexSocialService.followUser(
+                                                user.id,
+                                                id,
+                                              );
+                                              setFollowingIds((s) =>
+                                                Array.from(new Set([...s, id])),
+                                              );
                                             }
                                           } catch {}
                                         }}
@@ -1526,100 +1583,124 @@ export default function Dashboard() {
               {/* Achievements */}
               <Card className="bg-card/50 border-border/50 animate-slide-up">
                 <CardHeader>
-                <CardTitle className="text-gradient">Achievements</CardTitle>
-                <CardDescription>
-                  Your progress and accomplishments
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between mb-4 gap-3">
-                  <div className="text-sm text-muted-foreground">
-                    Earned {achievements.length} / {allAchievements.length}
+                  <CardTitle className="text-gradient">Achievements</CardTitle>
+                  <CardDescription>
+                    Your progress and accomplishments
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between mb-4 gap-3">
+                    <div className="text-sm text-muted-foreground">
+                      Earned {achievements.length} / {allAchievements.length}
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant={
+                          achievementFilter === "earned" ? "default" : "outline"
+                        }
+                        onClick={() => setAchievementFilter("earned")}
+                      >
+                        Earned
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={
+                          achievementFilter === "locked" ? "default" : "outline"
+                        }
+                        onClick={() => setAchievementFilter("locked")}
+                      >
+                        Locked
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={
+                          achievementFilter === "all" ? "default" : "outline"
+                        }
+                        onClick={() => setAchievementFilter("all")}
+                      >
+                        All
+                      </Button>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant={achievementFilter === "earned" ? "default" : "outline"}
-                      onClick={() => setAchievementFilter("earned")}
-                    >
-                      Earned
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant={achievementFilter === "locked" ? "default" : "outline"}
-                      onClick={() => setAchievementFilter("locked")}
-                    >
-                      Locked
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant={achievementFilter === "all" ? "default" : "outline"}
-                      onClick={() => setAchievementFilter("all")}
-                    >
-                      All
-                    </Button>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {(() => {
-                    const earnedIds = new Set((achievements || []).map((a: any) => a.id));
-                    const source = (achievementFilter === "earned"
-                      ? (achievements || [])
-                      : achievementFilter === "locked"
-                      ? (allAchievements || []).filter((a: any) => !earnedIds.has(a.id))
-                      : (allAchievements || [])).map((a: any) => ({ ...a, earned: earnedIds.has(a.id) }));
-                    if (!source.length) {
-                      return (
-                        <div className="col-span-full text-center py-8 text-muted-foreground">
-                          <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                          <p>No achievements to display.</p>
-                        </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(() => {
+                      const earnedIds = new Set(
+                        (achievements || []).map((a: any) => a.id),
                       );
-                    }
-                    return source
-                      .sort((a: any, b: any) => Number(b.earned) - Number(a.earned))
-                      .map((achievement: any, index: number) => {
-                        const Icon = getAchievementIcon(achievement.icon || "star");
+                      const source = (
+                        achievementFilter === "earned"
+                          ? achievements || []
+                          : achievementFilter === "locked"
+                            ? (allAchievements || []).filter(
+                                (a: any) => !earnedIds.has(a.id),
+                              )
+                            : allAchievements || []
+                      ).map((a: any) => ({
+                        ...a,
+                        earned: earnedIds.has(a.id),
+                      }));
+                      if (!source.length) {
                         return (
-                          <div
-                            key={achievement.id || index}
-                            className={`p-4 rounded-lg border transition-all duration-300 hover-lift animate-scale-in ${
-                              achievement.earned
-                                ? "border-aethex-400/50 bg-aethex-500/10"
-                                : "border-border/30 opacity-60"
-                            }`}
-                            style={{ animationDelay: `${index * 0.05}s` }}
-                          >
-                            <div className="flex items-center justify-between gap-3">
-                              <div className="flex items-center gap-3">
-                                <div
-                                  className={`p-2 rounded-lg ${
-                                    achievement.earned
-                                      ? "bg-gradient-to-r from-aethex-500 to-neon-blue"
-                                      : "bg-muted"
-                                  }`}
-                                >
-                                  <Icon
-                                    className={`h-5 w-5 ${achievement.earned ? "text-white" : "text-muted-foreground"}`}
-                                  />
-                                </div>
-                                <div>
-                                  <h4 className={`font-semibold ${achievement.earned ? "text-gradient" : ""}`}>
-                                    {achievement.title}
-                                  </h4>
-                                  <p className="text-sm text-muted-foreground">{achievement.description}</p>
-                                </div>
-                              </div>
-                              {achievement.earned && (
-                                <Star className="h-5 w-5 text-yellow-500" />
-                              )}
-                            </div>
+                          <div className="col-span-full text-center py-8 text-muted-foreground">
+                            <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                            <p>No achievements to display.</p>
                           </div>
                         );
-                      });
-                  })()}
-                </div>
-              </CardContent>
+                      }
+                      return source
+                        .sort(
+                          (a: any, b: any) =>
+                            Number(b.earned) - Number(a.earned),
+                        )
+                        .map((achievement: any, index: number) => {
+                          const Icon = getAchievementIcon(
+                            achievement.icon || "star",
+                          );
+                          return (
+                            <div
+                              key={achievement.id || index}
+                              className={`p-4 rounded-lg border transition-all duration-300 hover-lift animate-scale-in ${
+                                achievement.earned
+                                  ? "border-aethex-400/50 bg-aethex-500/10"
+                                  : "border-border/30 opacity-60"
+                              }`}
+                              style={{ animationDelay: `${index * 0.05}s` }}
+                            >
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-3">
+                                  <div
+                                    className={`p-2 rounded-lg ${
+                                      achievement.earned
+                                        ? "bg-gradient-to-r from-aethex-500 to-neon-blue"
+                                        : "bg-muted"
+                                    }`}
+                                  >
+                                    <Icon
+                                      className={`h-5 w-5 ${achievement.earned ? "text-white" : "text-muted-foreground"}`}
+                                    />
+                                  </div>
+                                  <div>
+                                    <h4
+                                      className={`font-semibold ${achievement.earned ? "text-gradient" : ""}`}
+                                    >
+                                      {achievement.title}
+                                    </h4>
+                                    <p className="text-sm text-muted-foreground">
+                                      {achievement.description}
+                                    </p>
+                                  </div>
+                                </div>
+                                {achievement.earned && (
+                                  <Star className="h-5 w-5 text-yellow-500" />
+                                )}
+                              </div>
+                            </div>
+                          );
+                        });
+                    })()}
+                  </div>
+                </CardContent>
               </Card>
 
               {/* Teams & Invitations */}
