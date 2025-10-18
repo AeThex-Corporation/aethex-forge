@@ -243,33 +243,11 @@ export default function Feed() {
     [toast, user?.id],
   );
 
-  const handleComment = useCallback(
-    async (postId: string) => {
-      if (!user?.id) {
-        toast({ description: "Please sign in to comment." });
-        return;
-      }
-      const content = prompt("Add a comment:")?.trim();
-      if (!content) return;
-      try {
-        const created = await communityService.addComment(
-          postId,
-          user.id,
-          content,
-        );
-        if (created) {
-          setItems((prev) =>
-            prev.map((it) =>
-              it.id === postId ? { ...it, comments: it.comments + 1 } : it,
-            ),
-          );
-        }
-      } catch (e) {
-        console.warn("Comment failed", e);
-      }
-    },
-    [toast, user?.id],
-  );
+  const handleComment = useCallback((postId: string) => {
+    setItems((prev) =>
+      prev.map((it) => (it.id === postId ? { ...it, comments: it.comments + 1 } : it)),
+    );
+  }, []);
 
   const filteredItems = useMemo(() => {
     if (activeFilter === "following") {
@@ -472,7 +450,10 @@ export default function Feed() {
                     Compose
                   </Button>
                 </div>
-                <PostComposer onPosted={() => fetchFeed()} />
+                <PostComposer
+                  onPosted={() => fetchFeed()}
+                  suggestedTags={trendingTopics.map((t) => t.topic.replace(/^#/, "")).slice(0, 8)}
+                />
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/30 bg-background/60 p-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-aethex-300" />
