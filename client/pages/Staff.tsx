@@ -40,6 +40,45 @@ export default function Staff() {
   }, [user, roles, hasAccess, loading, navigate]);
 
   const [activeTab, setActiveTab] = useState("overview");
+  const [openReports, setOpenReports] = useState<any[]>([]);
+  const [mentorshipAll, setMentorshipAll] = useState<any[]>([]);
+  const [loadingData, setLoadingData] = useState(false);
+
+  const refresh = async () => {
+    setLoadingData(true);
+    try {
+      const [r1, r2] = await Promise.all([
+        fetch("/api/moderation/reports?status=open&limit=100"),
+        fetch("/api/mentorship/requests/all?limit=50&status=pending"),
+      ]);
+      const reports = r1.ok ? await r1.json() : [];
+      const m = r2.ok ? await r2.json() : [];
+      setOpenReports(Array.isArray(reports) ? reports : []);
+      setMentorshipAll(Array.isArray(m) ? m : []);
+    } catch (e) {
+      /* ignore */
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user && hasAccess) refresh();
+  }, [user, hasAccess]);
+
+  const updateReportStatus = async (id: string, status: "resolved" | "ignored" | "open") => {
+    try {
+      const resp = await fetch(`/api/moderation/reports/${encodeURIComponent(id)}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (resp.ok) {
+        aethexToast.success({ title: "Updated", description: `Report marked ${status}` });
+        refresh();
+      }
+    } catch {}
+  };
 
   return (
     <Layout>
@@ -68,11 +107,11 @@ export default function Staff() {
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-muted-foreground">Open reports</div>
-                    <div className="text-xl font-semibold">0</div>
+                    <div className="text-xl font-semibold">{openReports.length}</div>
                   </div>
                   <div className="flex items-center justify-between mt-3">
                     <div className="text-sm text-muted-foreground">Mentorship requests</div>
-                    <div className="text-xl font-semibold">0</div>
+                    <div className="text-xl font-semibold">{mentorshipAll.length}</div>
                   </div>
                 </CardContent>
               </Card>
@@ -113,7 +152,28 @@ export default function Staff() {
                 <CardDescription>Flagged content and actions</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">No items in queue.</p>
+                {loadingData && (
+                  <p className="text-sm text-muted-foreground">Loading…</p>
+                )}
+                {!loadingData && openReports.length === 0 && (
+                  <p className="text-sm text-muted-foreground">No items in queue.</p>
+                )}
+                <div className="space-y-3">
+                  {openReports.map((r) => (
+                    <div key={r.id} className="rounded border border-border/50 p-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-sm font-medium">{r.reason}</div>
+                          <div className="text-xs text-muted-foreground">{r.details}</div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" onClick={() => updateReportStatus(r.id, "ignored")}>Ignore</Button>
+                          <Button size="sm" onClick={() => updateReportStatus(r.id, "resolved")}>Resolve</Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -125,7 +185,27 @@ export default function Staff() {
                 <CardDescription>Review recent mentor/mentee activity</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">No requests to review.</p>
+                {loadingData && (
+                  <p className="text-sm text-muted-foreground">Loading…</p>
+                )}
+                {!loadingData && mentorshipAll.length === 0 && (
+                  <p className="text-sm text-muted-foreground">No requests to review.</p>
+                )}
+                <div className="space-y-3">
+                  {mentorshipAll.map((req) => (
+                    <div key={req.id} className="rounded border border-border/50 p-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-sm font-medium">{req.mentee?.full_name || req.mentee?.username} → {req.mentor?.full_name || req.mentor?.username}</div>
+                          <div className="text-xs text-muted-foreground">{req.message || "No message"}</div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Badge variant="outline" className="text-xs capitalize">{req.status}</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 <Separator className="my-4" />
                 <div className="flex gap-2">
                   <Button asChild><a href="/community/mentorship">Open requests</a></Button>
