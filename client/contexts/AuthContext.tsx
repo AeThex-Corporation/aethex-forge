@@ -649,6 +649,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (typeof window !== "undefined") {
       try {
         window.localStorage.removeItem("onboarding_complete");
+        window.localStorage.removeItem("aethex_onboarding_progress_v1");
         const shouldRemove = (key: string) =>
           key.startsWith("sb-") ||
           key.includes("supabase") ||
