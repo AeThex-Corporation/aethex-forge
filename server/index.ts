@@ -1183,9 +1183,12 @@ export function createServer() {
     // Mentorship API
     app.get("/api/mentors", async (req, res) => {
       const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 20));
-      const available = String(req.query.available || "true").toLowerCase() !== "false";
+      const available =
+        String(req.query.available || "true").toLowerCase() !== "false";
       const expertise = String(req.query.expertise || "").trim();
-      const q = String(req.query.q || "").trim().toLowerCase();
+      const q = String(req.query.q || "")
+        .trim()
+        .toLowerCase();
       try {
         const { data, error } = await adminSupabase
           .from("mentors")
@@ -1206,15 +1209,21 @@ export function createServer() {
             .map((s) => s.trim().toLowerCase())
             .filter(Boolean);
           if (terms.length) {
-            rows = rows.filter((r: any) =>
-              Array.isArray(r.expertise) && r.expertise.some((e: string) => terms.includes(String(e).toLowerCase())),
+            rows = rows.filter(
+              (r: any) =>
+                Array.isArray(r.expertise) &&
+                r.expertise.some((e: string) =>
+                  terms.includes(String(e).toLowerCase()),
+                ),
             );
           }
         }
         if (q) {
           rows = rows.filter((r: any) => {
             const up = (r as any).user_profiles || {};
-            const name = String(up.full_name || up.username || "").toLowerCase();
+            const name = String(
+              up.full_name || up.username || "",
+            ).toLowerCase();
             const bio = String(r.bio || up.bio || "").toLowerCase();
             return name.includes(q) || bio.includes(q);
           });
@@ -1226,7 +1235,8 @@ export function createServer() {
     });
 
     app.post("/api/mentors/apply", async (req, res) => {
-      const { user_id, bio, expertise, hourly_rate, available } = (req.body || {}) as {
+      const { user_id, bio, expertise, hourly_rate, available } = (req.body ||
+        {}) as {
         user_id?: string;
         bio?: string | null;
         expertise?: string[];
@@ -1271,7 +1281,9 @@ export function createServer() {
         message?: string | null;
       };
       if (!mentee_id || !mentor_id) {
-        return res.status(400).json({ error: "mentee_id and mentor_id required" });
+        return res
+          .status(400)
+          .json({ error: "mentee_id and mentor_id required" });
       }
       if (mentee_id === mentor_id) {
         return res.status(400).json({ error: "cannot request yourself" });
@@ -1290,7 +1302,10 @@ export function createServer() {
             .select("full_name, username")
             .eq("id", mentee_id)
             .maybeSingle();
-          const menteeName = (mentee as any)?.full_name || (mentee as any)?.username || "Someone";
+          const menteeName =
+            (mentee as any)?.full_name ||
+            (mentee as any)?.username ||
+            "Someone";
           await adminSupabase.from("notifications").insert({
             user_id: mentor_id,
             type: "info",
@@ -1345,7 +1360,10 @@ export function createServer() {
         if (upErr) return res.status(500).json({ error: upErr.message });
 
         try {
-          const target = status === "cancelled" ? (reqRow as any).mentor_id : (reqRow as any).mentee_id;
+          const target =
+            status === "cancelled"
+              ? (reqRow as any).mentor_id
+              : (reqRow as any).mentee_id;
           const title =
             status === "accepted"
               ? "Mentorship accepted"
@@ -1414,14 +1432,23 @@ export function createServer() {
 
     // Moderation API
     app.post("/api/moderation/reports", async (req, res) => {
-      const { reporter_id, target_type, target_id, reason, details } = (req.body || {}) as any;
+      const { reporter_id, target_type, target_id, reason, details } =
+        (req.body || {}) as any;
       if (!target_type || !reason) {
-        return res.status(400).json({ error: "target_type and reason required" });
+        return res
+          .status(400)
+          .json({ error: "target_type and reason required" });
       }
       try {
         const { data, error } = await adminSupabase
           .from("moderation_reports")
-          .insert({ reporter_id: reporter_id || null, target_type, target_id: target_id || null, reason, details: details || null } as any)
+          .insert({
+            reporter_id: reporter_id || null,
+            target_type,
+            target_id: target_id || null,
+            reason,
+            details: details || null,
+          } as any)
           .select()
           .single();
         if (error) return res.status(500).json({ error: error.message });

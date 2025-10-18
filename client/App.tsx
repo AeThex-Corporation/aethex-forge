@@ -144,8 +144,14 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/community" element={<Community />} />
-              <Route path="/community/mentorship" element={<MentorshipRequest />} />
-              <Route path="/community/mentorship/apply" element={<MentorApply />} />
+              <Route
+                path="/community/mentorship"
+                element={<MentorshipRequest />}
+              />
+              <Route
+                path="/community/mentorship/apply"
+                element={<MentorApply />}
+              />
               <Route path="/community/:tabId" element={<Community />} />
               <Route path="/staff" element={<Staff />} />
               <Route path="/support" element={<Support />} />
