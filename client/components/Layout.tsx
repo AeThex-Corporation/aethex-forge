@@ -74,7 +74,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   return (
     <div className="min-h-screen bg-aethex-gradient">
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-2 min-w-0">
+        <div className="container mx-auto flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-2 min-w-0">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 hover-glow group shrink-0">
             <div className="flex items-center space-x-3">
@@ -90,15 +90,15 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center flex-1 mx-3 overflow-x-auto">
-            <div className="flex items-center gap-6 flex-nowrap whitespace-nowrap">
+          <nav className="hidden md:flex items-center flex-1 mx-3">
+            <div className="flex items-center gap-x-6 gap-y-2 flex-wrap">
               {navItems.map((item, index) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={scrollToTop}
                   className={cn(
-                    "relative shrink-0 px-1 text-sm font-medium transition-colors duration-200 hover:text-aethex-400",
+                    "relative px-1 text-sm font-medium transition-colors duration-200 hover:text-aethex-400",
                     location.pathname === item.href
                       ? "text-aethex-500"
                       : "text-muted-foreground",
