@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 export default function Realms() {
-  const { profile, roles, updateProfile } = useAuth();
+  const { user, profile, roles, updateProfile } = useAuth();
   const navigate = useNavigate();
   const [activating, setActivating] = useState<string | null>(null);
   const [selectedRealm, setSelectedRealm] = useState<RealmKey | null>((profile as any)?.user_type ?? null);
@@ -44,9 +44,14 @@ export default function Realms() {
             hasChanges={selectedRealm !== ((profile as any)?.user_type ?? null) || experience !== ((profile as any)?.experience_level || "beginner")}
             onSave={async () => {
               if (!selectedRealm) return;
+              if (!user) {
+                navigate("/onboarding");
+                return;
+              }
               setSaving(true);
               try {
                 await updateProfile({ user_type: selectedRealm, experience_level: experience } as any);
+                navigate("/dashboard", { replace: true });
               } finally {
                 setSaving(false);
               }
@@ -56,7 +61,7 @@ export default function Realms() {
         </div>
 
         <div className="mt-6 flex justify-end">
-          <Button onClick={() => navigate("/dashboard")}>Open Dashboard</Button>
+          <Button onClick={() => navigate(user ? "/dashboard" : "/onboarding")}>{user ? "Open Dashboard" : "Start Onboarding"}</Button>
         </div>
       </div>
     </Layout>
