@@ -98,38 +98,63 @@ export default function Realms() {
         <section className="mt-12 space-y-6">
           <div>
             <Badge variant="outline">Contributor network</Badge>
-            <h2 className="mt-2 text-2xl font-semibold">Mentors, Maintainers, and Shipmates</h2>
-            <p className="text-muted-foreground">Grow the platform with us—teach, steward projects, and ship products together.</p>
+            <h2 className="mt-2 text-2xl font-semibold">
+              Mentors, Maintainers, and Shipmates
+            </h2>
+            <p className="text-muted-foreground">
+              Grow the platform with us—teach, steward projects, and ship
+              products together.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
                 <CardTitle>Mentors</CardTitle>
-                <CardDescription>Guide builders through 1:1 sessions, clinics, and code reviews.</CardDescription>
+                <CardDescription>
+                  Guide builders through 1:1 sessions, clinics, and code
+                  reviews.
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex gap-2">
-                <Button asChild><Link to="/community/mentorship/apply">Become a mentor</Link></Button>
-                <Button asChild variant="outline"><Link to="/community/mentorship">Request mentorship</Link></Button>
+                <Button asChild>
+                  <Link to="/community/mentorship/apply">Become a mentor</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to="/community/mentorship">Request mentorship</Link>
+                </Button>
               </CardContent>
             </Card>
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
                 <CardTitle>Maintainers</CardTitle>
-                <CardDescription>Own modules, triage issues, and lead roadmap execution.</CardDescription>
+                <CardDescription>
+                  Own modules, triage issues, and lead roadmap execution.
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex gap-2">
-                <Button asChild variant="outline"><Link to="/developers">Browse developers</Link></Button>
-                <Button asChild><Link to="/projects/new">Start a project</Link></Button>
+                <Button asChild variant="outline">
+                  <Link to="/developers">Browse developers</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/projects/new">Start a project</Link>
+                </Button>
               </CardContent>
             </Card>
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
                 <CardTitle>Shipmates</CardTitle>
-                <CardDescription>Join product squads shipping across Labs, Platform, and Community.</CardDescription>
+                <CardDescription>
+                  Join product squads shipping across Labs, Platform, and
+                  Community.
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex gap-2">
-                <Button asChild><Link to="/teams">Open Teams</Link></Button>
-                <Button asChild variant="outline"><Link to="/labs">Explore Labs</Link></Button>
+                <Button asChild>
+                  <Link to="/teams">Open Teams</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to="/labs">Explore Labs</Link>
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -138,14 +163,20 @@ export default function Realms() {
         <section className="mt-12 space-y-6">
           <div>
             <Badge variant="outline">Teams hiring now</Badge>
-            <h2 className="mt-2 text-2xl font-semibold">Across Labs, Platform, and Community</h2>
-            <p className="text-muted-foreground">Apply to active squads and help us accelerate delivery.</p>
+            <h2 className="mt-2 text-2xl font-semibold">
+              Across Labs, Platform, and Community
+            </h2>
+            <p className="text-muted-foreground">
+              Apply to active squads and help us accelerate delivery.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
                 <CardTitle>Labs squads</CardTitle>
-                <CardDescription>R&amp;D and experimental products.</CardDescription>
+                <CardDescription>
+                  R&amp;D and experimental products.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
@@ -154,14 +185,18 @@ export default function Realms() {
                   <li>Mentorship Programs</li>
                 </ul>
                 <div className="mt-3">
-                  <Button asChild size="sm"><Link to="/teams">View openings</Link></Button>
+                  <Button asChild size="sm">
+                    <Link to="/teams">View openings</Link>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
                 <CardTitle>Platform squads</CardTitle>
-                <CardDescription>Core app, APIs, and reliability.</CardDescription>
+                <CardDescription>
+                  Core app, APIs, and reliability.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
@@ -170,7 +205,9 @@ export default function Realms() {
                   <li>Content &amp; Docs</li>
                 </ul>
                 <div className="mt-3">
-                  <Button asChild size="sm"><Link to="/teams">View openings</Link></Button>
+                  <Button asChild size="sm">
+                    <Link to="/teams">View openings</Link>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -186,13 +223,14 @@ export default function Realms() {
                   <li>Creator Success</li>
                 </ul>
                 <div className="mt-3">
-                  <Button asChild size="sm" variant="outline"><Link to="/community">Open community</Link></Button>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/community">Open community</Link>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </div>
         </section>
-
       </div>
     </Layout>
   );
