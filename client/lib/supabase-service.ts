@@ -306,6 +306,56 @@ export const communityService = {
 
     return (Array.isArray(data) ? data : []) as CommunityPost[];
   },
+
+  async likePost(postId: string, userId: string): Promise<number | null> {
+    try {
+      const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      if (resp.ok) {
+        const json = await resp.json();
+        return typeof json?.likes === "number" ? json.likes : null;
+      }
+    } catch {}
+    return null;
+  },
+
+  async unlikePost(postId: string, userId: string): Promise<number | null> {
+    try {
+      const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/unlike`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      if (resp.ok) {
+        const json = await resp.json();
+        return typeof json?.likes === "number" ? json.likes : null;
+      }
+    } catch {}
+    return null;
+  },
+
+  async listComments(postId: string): Promise<any[]> {
+    try {
+      const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/comments`);
+      if (!resp.ok) return [];
+      return await resp.json();
+    } catch {
+      return [];
+    }
+  },
+
+  async addComment(postId: string, userId: string, content: string): Promise<any | null> {
+    const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/comments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: userId, content }),
+    });
+    if (!resp.ok) return null;
+    return await resp.json();
+  },
 };
 
 // Notification Services
