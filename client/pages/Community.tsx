@@ -3289,6 +3289,17 @@ export default function Community() {
                   </div>
                 </div>
               </section>
+              <section id="featured-studios" className="py-16">
+                <div className="container mx-auto px-4">
+                  <SectionHeader
+                    badge="Studios"
+                    title="Featured studios"
+                    description="Studios building with AeThex across games and real-time apps."
+                    align="center"
+                  />
+                  <FeaturedStudiosGrid />
+                </div>
+              </section>
             </TabsContent>
           )}
 
