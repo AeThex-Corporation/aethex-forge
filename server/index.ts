@@ -896,6 +896,68 @@ export function createServer() {
       }
     });
 
+    // Activity bus: publish event and fanout notifications
+    app.post("/api/activity/publish", async (req, res) => {
+      const {
+        actor_id,
+        verb,
+        object_type,
+        object_id,
+        target_user_ids,
+        target_team_id,
+        target_project_id,
+        metadata,
+      } = (req.body || {}) as any;
+      if (!actor_id || !verb || !object_type) {
+        return res.status(400).json({ error: "actor_id, verb, object_type required" });
+      }
+      try {
+        const { data: eventRow, error: evErr } = await adminSupabase
+          .from("activity_events")
+          .insert({ actor_id, verb, object_type, object_id: object_id || null, target_id: target_team_id || target_project_id || null, metadata: metadata || null } as any)
+          .select()
+          .single();
+        if (evErr) return res.status(500).json({ error: evErr.message });
+
+        const notify = async (userId: string, title: string, message?: string) => {
+          await adminSupabase.from("notifications").insert({ user_id: userId, type: "info", title, message: message || null });
+        };
+
+        // Notify explicit targets
+        if (Array.isArray(target_user_ids) && target_user_ids.length) {
+          for (const uid of target_user_ids) {
+            await notify(uid, `${verb} · ${object_type}`, (metadata && metadata.summary) || null);
+          }
+        }
+
+        // Notify team members if provided
+        if (target_team_id) {
+          const { data: members } = await adminSupabase
+            .from("team_memberships")
+            .select("user_id")
+            .eq("team_id", target_team_id);
+          for (const m of (members || [])) {
+            await notify((m as any).user_id, `${verb} · ${object_type}`, (metadata && metadata.summary) || null);
+          }
+        }
+
+        // Notify project members if provided
+        if (target_project_id) {
+          const { data: members } = await adminSupabase
+            .from("project_members")
+            .select("user_id")
+            .eq("project_id", target_project_id);
+          for (const m of (members || [])) {
+            await notify((m as any).user_id, `${verb} · ${object_type}`, (metadata && metadata.summary) || null);
+          }
+        }
+
+        return res.json({ ok: true, event: eventRow });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.post("/api/rewards/apply", async (req, res) => {
       const { user_id, action, amount } = (req.body || {}) as {
         user_id?: string;
