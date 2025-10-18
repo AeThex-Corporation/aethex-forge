@@ -17,6 +17,7 @@ import GameDevelopment from "./pages/GameDevelopment";
 import DevelopmentConsulting from "./pages/DevelopmentConsulting";
 import MentorshipPrograms from "./pages/MentorshipPrograms";
 import ResearchLabs from "./pages/ResearchLabs";
+import RequireAccess from "@/components/RequireAccess";
 import Engage from "./pages/Pricing";
 import DocsLayout from "./pages/DocsLayout";
 import DocsOverview from "./pages/docs/DocsOverview";
