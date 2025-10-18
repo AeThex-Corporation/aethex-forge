@@ -723,12 +723,6 @@ export default function Welcome({
         >
           {isFinishing ? "Finishing..." : "Finish & Go to Dashboard"}
         </Button>
-        <Button asChild variant="outline" className="border-border/50">
-          <Link to="/get-started" className="flex items-center space-x-2">
-            <span>Get Started</span>
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </Button>
         <Button
           asChild
           variant="secondary"
