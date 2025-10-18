@@ -153,20 +153,6 @@ export default function Explore() {
 
   return (
     <Layout>
-      {/* Hero + Sticky Subnav */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-aethex-900/40 via-background to-neon-blue/10" />
-        <div className="container mx-auto px-4 relative z-10 py-16 sm:py-20">
-          <div className="max-w-6xl mx-auto text-center space-y-6">
-            <h1 className="text-3xl lg:text-5xl font-extrabold tracking-tight">
-              <span className="text-gradient">Explore AeThex</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Our impact across the digital landscape
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* Achievements Section */}
       <section id="overview" className="py-16 sm:py-20 bg-background/30">
