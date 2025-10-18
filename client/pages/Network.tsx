@@ -13,15 +13,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import { aethexSocialService } from "@/lib/aethex-social-service";
 import { UserPlus, UserCheck } from "lucide-react";
 
 export default function Network() {
   const { user, profile, loading } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [recommended, setRecommended] = useState<any[]>([]);
   const [following, setFollowing] = useState<string[]>([]);
+  const [connections, setConnections] = useState<any[]>([]);
+  const [endorsements, setEndorsements] = useState<any[]>([]);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteSending, setInviteSending] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -37,6 +44,10 @@ export default function Network() {
         setRecommended(recs);
         const flw = await aethexSocialService.getFollowing(user.id);
         setFollowing(flw);
+        const conns = await aethexSocialService.getConnections(user.id);
+        setConnections(conns);
+        const ends = await aethexSocialService.getEndorsements(user.id);
+        setEndorsements(ends);
       } finally {
         setIsLoading(false);
       }
@@ -54,6 +65,35 @@ export default function Network() {
     } else {
       await aethexSocialService.followUser(user.id, targetId);
       setFollowing((s) => Array.from(new Set([...s, targetId])));
+    }
+  };
+
+  const handleInvite = async () => {
+    if (!user) return;
+    const email = inviteEmail.trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      toast({ variant: "destructive", title: "Invalid email" });
+      return;
+    }
+    setInviteSending(true);
+    try {
+      await aethexSocialService.sendInvite(user.id, email, null);
+      toast({ description: "Invitation sent" });
+      setInviteEmail("");
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Failed to send invite", description: e?.message || "Try again later" });
+    } finally {
+      setInviteSending(false);
+    }
+  };
+
+  const handleEndorse = async (targetId: string, skill: string) => {
+    if (!user) return;
+    try {
+      await aethexSocialService.endorseSkill(user.id, targetId, skill);
+      toast({ description: `Endorsed for ${skill}` });
+    } catch (e: any) {
+      toast({ variant: "destructive", title: "Failed to endorse", description: e?.message || "Try again later" });
     }
   };
 
