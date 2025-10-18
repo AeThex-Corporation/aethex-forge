@@ -705,7 +705,7 @@ export function createServer() {
           .single();
         if (error) return res.status(500).json({ error: error.message });
 
-        const inviteUrl = `${baseUrl}/signup?invite=${encodeURIComponent(token)}`;
+        const inviteUrl = `${baseUrl}/login?invite=${encodeURIComponent(token)}`;
 
         if (emailService.isConfigured) {
           try {
