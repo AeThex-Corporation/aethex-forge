@@ -326,6 +326,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   }, [user, profile, roles]);
 
+  const inviteProcessedRef = useRef(false);
+  useEffect(() => {
+    if (inviteProcessedRef.current) return;
+    if (!user) return;
+    try {
+      const qs = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+      const token = qs?.get("invite");
+      if (!token) return;
+      inviteProcessedRef.current = true;
+      import("@/lib/aethex-social-service").then(async (mod) => {
+        try {
+          await mod.aethexSocialService.acceptInvite(token, user.id);
+          try {
+            aethexToast.success({ title: "Invitation accepted", description: "You're now connected." });
+          } catch {}
+        } catch (e) {
+          console.warn("Invite accept failed", e);
+        } finally {
+          try {
+            const url = new URL(window.location.href);
+            url.searchParams.delete("invite");
+            window.history.replaceState({}, "", url.toString());
+          } catch {}
+        }
+      });
+    } catch {}
+  }, [user]);
+
   const refreshAuthState = useCallback(async () => {
     try {
       const { data } = await supabase.auth.getSession();
