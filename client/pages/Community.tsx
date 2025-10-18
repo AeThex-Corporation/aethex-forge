@@ -25,6 +25,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { cn } from "@/lib/utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import FeaturedStudiosGrid from "@/components/community/FeaturedStudiosGrid";
 import {
   useCallback,
   useEffect,
