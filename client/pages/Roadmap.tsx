@@ -214,6 +214,10 @@ export default function Roadmap() {
           </div>
         </section>
 
+        <section className="container mx-auto px-4 pb-8">
+          <Achievements earnedXp={earnedXp} phaseClaims={phaseClaims} />
+        </section>
+
         {/* Sneak peeks */}
         <section id="sneak-peeks" className="container mx-auto px-4 pb-16">
           <div className="mb-4">
