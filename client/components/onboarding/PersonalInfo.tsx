@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
 
 interface PersonalInfoProps {
   data: OnboardingData;
@@ -17,6 +19,8 @@ export default function PersonalInfo({
   nextStep,
   prevStep,
 }: PersonalInfoProps) {
+  const { user, signUp } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
   const handleInputChange = (field: string, value: string) => {
     updateData({
       personalInfo: {
@@ -26,10 +30,18 @@ export default function PersonalInfo({
     });
   };
 
+  const passwordsValid = () => {
+    if (user) return true;
+    const pwd = data.personalInfo.password?.trim() || "";
+    const confirm = data.personalInfo.confirmPassword?.trim() || "";
+    return pwd.length >= 8 && pwd === confirm;
+  };
+
   const isValid =
     data.personalInfo.firstName &&
     data.personalInfo.lastName &&
-    data.personalInfo.email;
+    data.personalInfo.email &&
+    passwordsValid();
 
   const getUserTypeLabel = () => {
     switch (data.userType) {
@@ -44,6 +56,36 @@ export default function PersonalInfo({
       default:
         return "User";
     }
+  };
+
+  const handleContinue = async () => {
+    if (!isValid) return;
+    if (!user) {
+      try {
+        setSubmitting(true);
+        const fullName = `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim();
+        const userTypeMap: Record<string, string> = {
+          "game-developer": "game_developer",
+          client: "client",
+          member: "game_developer",
+          customer: "customer",
+        };
+        await signUp(
+          data.personalInfo.email,
+          data.personalInfo.password || "",
+          {
+            full_name: fullName,
+            user_type: userTypeMap[data.userType || "member"] as any,
+            username: data.personalInfo.firstName.replace(/\s+/g, "_") || "user",
+          } as any,
+        );
+      } catch (e) {
+        setSubmitting(false);
+        return; // error toast handled by AuthContext
+      }
+    }
+    setSubmitting(false);
+    nextStep();
   };
 
   return (
@@ -96,6 +138,39 @@ export default function PersonalInfo({
           />
         </div>
 
+        {!user && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-sm font-medium">
+                Password (min 8 chars) *
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                value={data.personalInfo.password || ""}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                placeholder="Create a password"
+                className="bg-background/50 border-border/50 focus:border-aethex-400"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                Confirm Password *
+              </Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={data.personalInfo.confirmPassword || ""}
+                onChange={(e) =>
+                  handleInputChange("confirmPassword", e.target.value)
+                }
+                placeholder="Re-enter password"
+                className="bg-background/50 border-border/50 focus:border-aethex-400"
+              />
+            </div>
+          </>
+        )}
+
         {(data.userType === "client" || data.userType === "game-developer") && (
           <div className="space-y-2">
             <Label htmlFor="company" className="text-sm font-medium">
@@ -128,14 +203,15 @@ export default function PersonalInfo({
         </Button>
 
         <Button
-          onClick={nextStep}
+          onClick={handleContinue}
           disabled={
+            submitting ||
             !isValid ||
             (data.userType === "client" && !data.personalInfo.company)
           }
           className="flex items-center space-x-2 bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift interactive-scale glow-blue group disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <span>Continue</span>
+          <span>{submitting ? "Creating account…" : "Continue"}</span>
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>
       </div>
