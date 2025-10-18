@@ -55,6 +55,8 @@ export default function Staff() {
   const [openReports, setOpenReports] = useState<any[]>([]);
   const [mentorshipAll, setMentorshipAll] = useState<any[]>([]);
   const [loadingData, setLoadingData] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
+  const [users, setUsers] = useState<any[]>([]);
 
   const refresh = async () => {
     setLoadingData(true);
@@ -77,6 +79,19 @@ export default function Staff() {
   useEffect(() => {
     if (user && hasAccess) refresh();
   }, [user, hasAccess]);
+
+  const loadUsers = async () => {
+    try {
+      const params = new URLSearchParams();
+      if (searchQ.trim()) params.set("q", searchQ.trim());
+      params.set("limit", "25");
+      const resp = await fetch(`/api/staff/users?${params.toString()}`);
+      const data = resp.ok ? await resp.json() : [];
+      setUsers(Array.isArray(data) ? data : []);
+    } catch {
+      setUsers([]);
+    }
+  };
 
   const updateReportStatus = async (
     id: string,
@@ -307,10 +322,39 @@ export default function Staff() {
                   Search, roles, and quick actions
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  User tools coming soon.
-                </p>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <input
+                    className="w-full rounded border border-border/50 bg-background px-3 py-2 text-sm"
+                    placeholder="Search by name or username"
+                    value={searchQ}
+                    onChange={(e) => setSearchQ(e.target.value)}
+                  />
+                  <Button onClick={loadUsers} variant="outline">
+                    Search
+                  </Button>
+                </div>
+                <div className="rounded border border-border/50">
+                  {users.length === 0 ? (
+                    <p className="p-3 text-sm text-muted-foreground">No users found.</p>
+                  ) : (
+                    <div className="divide-y divide-border/50">
+                      {users.map((u) => (
+                        <div key={u.id} className="flex items-center justify-between p-3">
+                          <div>
+                            <div className="text-sm font-medium">
+                              {u.full_name || u.username || u.id}
+                            </div>
+                            <div className="text-xs text-muted-foreground">{u.username}</div>
+                          </div>
+                          <Badge variant="outline" className="capitalize">
+                            {u.user_type || "unknown"}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
