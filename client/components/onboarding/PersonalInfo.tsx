@@ -63,7 +63,8 @@ export default function PersonalInfo({
     if (!user) {
       try {
         setSubmitting(true);
-        const fullName = `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim();
+        const fullName =
+          `${data.personalInfo.firstName} ${data.personalInfo.lastName}`.trim();
         const userTypeMap: Record<string, string> = {
           "game-developer": "game_developer",
           client: "client",
@@ -76,7 +77,8 @@ export default function PersonalInfo({
           {
             full_name: fullName,
             user_type: userTypeMap[data.userType || "member"] as any,
-            username: data.personalInfo.firstName.replace(/\s+/g, "_") || "user",
+            username:
+              data.personalInfo.firstName.replace(/\s+/g, "_") || "user",
           } as any,
         );
       } catch (e) {
