@@ -718,10 +718,10 @@ export default function Dashboard() {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-gradient-purple">
-                  {activeRealm === "game_developer" && "Developer Dashboard"}
-                  {activeRealm === "client" && "Client Dashboard"}
+                  {activeRealm === "game_developer" && "Game Development Dashboard"}
+                  {activeRealm === "client" && "Consulting Dashboard"}
                   {activeRealm === "community_member" && "Community Dashboard"}
-                  {activeRealm === "customer" && "Customer Dashboard"}
+                  {activeRealm === "customer" && "Get Started Dashboard"}
                   {activeRealm === "staff" && "Staff Dashboard"}
                 </h1>
                 <p className="text-muted-foreground">
