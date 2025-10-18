@@ -103,6 +103,7 @@ const App = () => (
               <Route path="/passport/me" element={<ProfilePassport />} />
               <Route path="/passport/:username" element={<ProfilePassport />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* Service routes */}
               <Route path="/game-development" element={<GameDevelopment />} />
