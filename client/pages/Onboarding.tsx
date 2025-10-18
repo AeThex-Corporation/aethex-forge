@@ -163,45 +163,15 @@ export default function Onboarding() {
         },
       };
       let nextStep = 0;
-      let restored = false;
 
+      // Do not restore from localStorage; clear any legacy key
       if (typeof window !== "undefined") {
         try {
-          const raw = window.localStorage.getItem(ONBOARDING_STORAGE_KEY);
-          if (raw) {
-            const parsed = JSON.parse(raw) as {
-              data?: OnboardingData;
-              step?: number;
-            };
-            if (parsed?.data) {
-              nextData = {
-                ...initialData,
-                ...parsed.data,
-                personalInfo: {
-                  ...initialData.personalInfo,
-                  ...parsed.data.personalInfo,
-                },
-                experience: {
-                  ...initialData.experience,
-                  ...parsed.data.experience,
-                },
-                interests: {
-                  ...initialData.interests,
-                  ...parsed.data.interests,
-                },
-              };
-              if (typeof parsed.step === "number") {
-                nextStep = Math.max(0, Math.min(parsed.step, steps.length - 1));
-              }
-              restored = true;
-            }
-          }
-        } catch (error) {
-          console.warn("Unable to restore onboarding progress:", error);
-        }
+          window.localStorage.removeItem(ONBOARDING_STORAGE_KEY);
+        } catch {}
       }
 
-      if (!restored && user?.id) {
+      if (user?.id) {
         try {
           const [profile, interests] = await Promise.all([
             aethexUserService.getCurrentUser(),
@@ -238,21 +208,13 @@ export default function Onboarding() {
   }, [user, steps.length, mapProfileToOnboardingData]);
 
   useEffect(() => {
-    if (!hydrated || isFinishing) return;
+    // Disable local persistence for onboarding
     if (typeof window === "undefined") return;
     try {
-      const payload = {
-        data,
-        step: currentStep,
-      };
-      window.localStorage.setItem(
-        ONBOARDING_STORAGE_KEY,
-        JSON.stringify(payload),
-      );
-    } catch (error) {
-      console.warn("Unable to persist onboarding progress:", error);
-    }
-  }, [data, currentStep, hydrated, isFinishing]);
+      window.localStorage.removeItem(ONBOARDING_STORAGE_KEY);
+      window.localStorage.removeItem("onboarding_complete");
+    } catch {}
+  }, [hydrated, isFinishing]);
 
   const updateData = useCallback((newData: Partial<OnboardingData>) => {
     setData((prev) => ({
