@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { adminSupabase } from "./supabase";
 import { emailService } from "./email";
+import { randomUUID } from "crypto";
 
 export function createServer() {
   const app = express();
@@ -678,8 +679,7 @@ export function createServer() {
           .json({ error: "inviter_id and invitee_email are required" });
       }
       const email = safeEmail(invitee_email);
-      const token = (globalThis as any).crypto?.randomUUID?.() ||
-        require("crypto").randomUUID();
+      const token = randomUUID();
       try {
         const { data: inviterProfile } = await adminSupabase
           .from("user_profiles")
