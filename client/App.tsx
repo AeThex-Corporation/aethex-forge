@@ -55,6 +55,8 @@ import ProjectBoard from "./pages/ProjectBoard";
 import { Navigate } from "react-router-dom";
 import FourOhFourPage from "./pages/404";
 import SignupRedirect from "./pages/SignupRedirect";
+import MentorshipRequest from "./pages/community/MentorshipRequest";
+import MentorApply from "./pages/community/MentorApply";
 
 const queryClient = new QueryClient();
 
@@ -141,6 +143,8 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/community" element={<Community />} />
+              <Route path="/community/mentorship" element={<MentorshipRequest />} />
+              <Route path="/community/mentorship/apply" element={<MentorApply />} />
               <Route path="/community/:tabId" element={<Community />} />
               <Route path="/support" element={<Support />} />
               <Route path="/status" element={<Status />} />
