@@ -340,6 +340,10 @@ export default function Login() {
                     <button
                       type="button"
                       className="text-aethex-400 hover:underline"
+                      onClick={() => {
+                        setResetEmail(email || "");
+                        setShowReset(true);
+                      }}
                     >
                       Forgot password?
                     </button>
