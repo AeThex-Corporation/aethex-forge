@@ -1179,6 +1179,211 @@ export function createServer() {
         return res.status(500).json({ error: e?.message || String(e) });
       }
     });
+
+    // Mentorship API
+    app.get("/api/mentors", async (req, res) => {
+      const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 20));
+      const available = String(req.query.available || "true").toLowerCase() !== "false";
+      const expertise = String(req.query.expertise || "").trim();
+      const q = String(req.query.q || "").trim().toLowerCase();
+      try {
+        const { data, error } = await adminSupabase
+          .from("mentors")
+          .select(
+            `user_id, bio, expertise, available, hourly_rate, created_at, updated_at, user_profiles:user_id ( id, username, full_name, avatar_url, bio )`,
+          )
+          .eq("available", available)
+          .order("updated_at", { ascending: false })
+          .limit(limit);
+        if (error) return res.status(500).json({ error: error.message });
+        let rows = (data || []) as any[];
+        if (expertise) {
+          const terms = expertise
+            .split(",")
+            .map((s) => s.trim().toLowerCase())
+            .filter(Boolean);
+          if (terms.length) {
+            rows = rows.filter((r: any) =>
+              Array.isArray(r.expertise) && r.expertise.some((e: string) => terms.includes(String(e).toLowerCase())),
+            );
+          }
+        }
+        if (q) {
+          rows = rows.filter((r: any) => {
+            const up = (r as any).user_profiles || {};
+            const name = String(up.full_name || up.username || "").toLowerCase();
+            const bio = String(r.bio || up.bio || "").toLowerCase();
+            return name.includes(q) || bio.includes(q);
+          });
+        }
+        return res.json(rows);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/mentors/apply", async (req, res) => {
+      const { user_id, bio, expertise, hourly_rate, available } = (req.body || {}) as {
+        user_id?: string;
+        bio?: string | null;
+        expertise?: string[];
+        hourly_rate?: number | null;
+        available?: boolean | null;
+      };
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      try {
+        const payload: any = {
+          user_id,
+          bio: bio ?? null,
+          expertise: Array.isArray(expertise) ? expertise : [],
+          available: available ?? true,
+          hourly_rate: typeof hourly_rate === "number" ? hourly_rate : null,
+        };
+        const { data, error } = await adminSupabase
+          .from("mentors")
+          .upsert(payload, { onConflict: "user_id" as any })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+
+        try {
+          await adminSupabase.from("notifications").insert({
+            user_id,
+            type: "success",
+            title: "Mentor profile updated",
+            message: "Your mentor availability and expertise are saved.",
+          });
+        } catch {}
+
+        return res.json(data || payload);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/mentorship/request", async (req, res) => {
+      const { mentee_id, mentor_id, message } = (req.body || {}) as {
+        mentee_id?: string;
+        mentor_id?: string;
+        message?: string | null;
+      };
+      if (!mentee_id || !mentor_id) {
+        return res.status(400).json({ error: "mentee_id and mentor_id required" });
+      }
+      if (mentee_id === mentor_id) {
+        return res.status(400).json({ error: "cannot request yourself" });
+      }
+      try {
+        const { data, error } = await adminSupabase
+          .from("mentorship_requests")
+          .insert({ mentee_id, mentor_id, message: message || null } as any)
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+
+        try {
+          const { data: mentee } = await adminSupabase
+            .from("user_profiles")
+            .select("full_name, username")
+            .eq("id", mentee_id)
+            .maybeSingle();
+          const menteeName = (mentee as any)?.full_name || (mentee as any)?.username || "Someone";
+          await adminSupabase.from("notifications").insert({
+            user_id: mentor_id,
+            type: "info",
+            title: "Mentorship request",
+            message: `${menteeName} requested mentorship.`,
+          });
+        } catch {}
+
+        return res.json({ ok: true, request: data });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/mentorship/requests/:id/status", async (req, res) => {
+      const id = String(req.params.id || "");
+      const { actor_id, status } = (req.body || {}) as {
+        actor_id?: string;
+        status?: string;
+      };
+      if (!id || !actor_id || !status) {
+        return res.status(400).json({ error: "id, actor_id, status required" });
+      }
+      const allowed = ["accepted", "rejected", "cancelled"];
+      if (!allowed.includes(String(status))) {
+        return res.status(400).json({ error: "invalid status" });
+      }
+      try {
+        const { data: reqRow, error } = await adminSupabase
+          .from("mentorship_requests")
+          .select("id, mentor_id, mentee_id, status")
+          .eq("id", id)
+          .maybeSingle();
+        if (error) return res.status(500).json({ error: error.message });
+        if (!reqRow) return res.status(404).json({ error: "not_found" });
+
+        const isMentor = (reqRow as any).mentor_id === actor_id;
+        const isMentee = (reqRow as any).mentee_id === actor_id;
+        if ((status === "accepted" || status === "rejected") && !isMentor) {
+          return res.status(403).json({ error: "forbidden" });
+        }
+        if (status === "cancelled" && !isMentee) {
+          return res.status(403).json({ error: "forbidden" });
+        }
+
+        const { data, error: upErr } = await adminSupabase
+          .from("mentorship_requests")
+          .update({ status })
+          .eq("id", id)
+          .select()
+          .single();
+        if (upErr) return res.status(500).json({ error: upErr.message });
+
+        try {
+          const target = status === "cancelled" ? (reqRow as any).mentor_id : (reqRow as any).mentee_id;
+          const title =
+            status === "accepted"
+              ? "Mentorship accepted"
+              : status === "rejected"
+                ? "Mentorship rejected"
+                : "Mentorship cancelled";
+          await adminSupabase.from("notifications").insert({
+            user_id: target,
+            type: "info",
+            title,
+            message: null,
+          });
+        } catch {}
+
+        return res.json({ ok: true, request: data });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.get("/api/mentorship/requests", async (req, res) => {
+      const userId = String(req.query.user_id || "");
+      const role = String(req.query.role || "").toLowerCase();
+      if (!userId) return res.status(400).json({ error: "user_id required" });
+      try {
+        let query = adminSupabase
+          .from("mentorship_requests")
+          .select(
+            `*, mentor:user_profiles!mentorship_requests_mentor_id_fkey ( id, full_name, username, avatar_url ), mentee:user_profiles!mentorship_requests_mentee_id_fkey ( id, full_name, username, avatar_url )`,
+          )
+          .order("created_at", { ascending: false });
+        if (role === "mentor") query = query.eq("mentor_id", userId);
+        else if (role === "mentee") query = query.eq("mentee_id", userId);
+        else query = query.or(`mentor_id.eq.${userId},mentee_id.eq.${userId}`);
+        const { data, error } = await query;
+        if (error) return res.status(500).json({ error: error.message });
+        return res.json(data || []);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
