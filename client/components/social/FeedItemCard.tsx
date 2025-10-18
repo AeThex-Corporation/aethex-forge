@@ -71,7 +71,11 @@ export function FeedItemCard({
     if (!content) return;
     setSubmittingComment(true);
     try {
-      const created = await communityService.addComment(item.id, user.id, content);
+      const created = await communityService.addComment(
+        item.id,
+        user.id,
+        content,
+      );
       if (created) {
         setComments((prev) => [...prev, created]);
         setCommentText("");
@@ -219,23 +223,35 @@ export function FeedItemCard({
           <div className="rounded-2xl border border-border/40 bg-background/80 p-4 space-y-3">
             <div className="space-y-2 max-h-60 overflow-auto pr-1">
               {loadingComments ? (
-                <p className="text-sm text-muted-foreground">Loading comments…</p>
+                <p className="text-sm text-muted-foreground">
+                  Loading comments…
+                </p>
               ) : comments.length === 0 ? (
-                <p className="text-sm text-muted-foreground">Be the first to comment.</p>
+                <p className="text-sm text-muted-foreground">
+                  Be the first to comment.
+                </p>
               ) : (
                 comments.map((c) => (
                   <div key={c.id} className="flex items-start gap-3">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={c.user_profiles?.avatar_url || undefined} />
+                      <AvatarImage
+                        src={c.user_profiles?.avatar_url || undefined}
+                      />
                       <AvatarFallback>
-                        {(c.user_profiles?.full_name || c.user_profiles?.username || "U")[0]?.toUpperCase() || "U"}
+                        {(c.user_profiles?.full_name ||
+                          c.user_profiles?.username ||
+                          "U")[0]?.toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
                     <div>
                       <div className="text-sm font-medium">
-                        {c.user_profiles?.full_name || c.user_profiles?.username || "Member"}
+                        {c.user_profiles?.full_name ||
+                          c.user_profiles?.username ||
+                          "Member"}
                       </div>
-                      <div className="text-sm text-foreground/90 whitespace-pre-wrap">{c.content}</div>
+                      <div className="text-sm text-foreground/90 whitespace-pre-wrap">
+                        {c.content}
+                      </div>
                     </div>
                   </div>
                 ))
@@ -248,7 +264,10 @@ export function FeedItemCard({
                 onChange={(e) => setCommentText(e.target.value)}
                 className="min-h-[44px]"
               />
-              <Button onClick={submitComment} disabled={submittingComment || !commentText.trim()}>
+              <Button
+                onClick={submitComment}
+                disabled={submittingComment || !commentText.trim()}
+              >
                 {submittingComment ? "Posting…" : "Post"}
               </Button>
             </div>

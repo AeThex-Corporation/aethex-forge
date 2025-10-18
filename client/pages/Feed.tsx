@@ -245,7 +245,9 @@ export default function Feed() {
 
   const handleComment = useCallback((postId: string) => {
     setItems((prev) =>
-      prev.map((it) => (it.id === postId ? { ...it, comments: it.comments + 1 } : it)),
+      prev.map((it) =>
+        it.id === postId ? { ...it, comments: it.comments + 1 } : it,
+      ),
     );
   }, []);
 
@@ -452,7 +454,9 @@ export default function Feed() {
                 </div>
                 <PostComposer
                   onPosted={() => fetchFeed()}
-                  suggestedTags={trendingTopics.map((t) => t.topic.replace(/^#/, "")).slice(0, 8)}
+                  suggestedTags={trendingTopics
+                    .map((t) => t.topic.replace(/^#/, ""))
+                    .slice(0, 8)}
                 />
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/30 bg-background/60 p-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">

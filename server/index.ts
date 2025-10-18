@@ -1183,11 +1183,15 @@ export function createServer() {
     // Staff: users search/listing
     app.get("/api/staff/users", async (req, res) => {
       const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 20));
-      const q = String(req.query.q || "").trim().toLowerCase();
+      const q = String(req.query.q || "")
+        .trim()
+        .toLowerCase();
       try {
         const { data, error } = await adminSupabase
           .from("user_profiles")
-          .select("id, username, full_name, avatar_url, user_type, created_at, updated_at")
+          .select(
+            "id, username, full_name, avatar_url, user_type, created_at, updated_at",
+          )
           .order("created_at", { ascending: false })
           .limit(limit);
         if (error) return res.status(500).json({ error: error.message });

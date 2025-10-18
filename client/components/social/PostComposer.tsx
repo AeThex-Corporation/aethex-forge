@@ -112,10 +112,18 @@ export default function PostComposer({
             ? "New photo"
             : "Update");
 
-      const inlineTags = Array.from((text.match(/#[\p{L}0-9_]+/gu) || []).map((t) => t.replace(/^#/, "").toLowerCase()));
+      const inlineTags = Array.from(
+        (text.match(/#[\p{L}0-9_]+/gu) || []).map((t) =>
+          t.replace(/^#/, "").toLowerCase(),
+        ),
+      );
       const baseTags = mediaType === "none" ? ["update"] : [mediaType, "feed"];
       const combinedTags = Array.from(
-        new Set([...baseTags, ...selectedTags.map((t) => t.toLowerCase()), ...inlineTags]).values(),
+        new Set([
+          ...baseTags,
+          ...selectedTags.map((t) => t.toLowerCase()),
+          ...inlineTags,
+        ]).values(),
       );
 
       await communityService.createPost({
