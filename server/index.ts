@@ -200,6 +200,35 @@ export function createServer() {
     }
   });
 
+  // Storage administration endpoints (service role)
+  app.post("/api/storage/ensure-buckets", async (_req, res) => {
+    if (!adminSupabase) {
+      return res.status(500).json({ error: "Supabase admin client unavailable" });
+    }
+    try {
+      const targets = [
+        { name: "avatars", public: true },
+        { name: "banners", public: true },
+      ];
+      const { data: buckets } = await (adminSupabase as any).storage.listBuckets();
+      const existing = new Set((buckets || []).map((b: any) => b.name));
+      const created: string[] = [];
+      for (const t of targets) {
+        if (!existing.has(t.name)) {
+          const { error } = await (adminSupabase as any).storage.createBucket(t.name, { public: t.public });
+          if (error) {
+            console.warn("Failed to create bucket", t.name, error);
+          } else {
+            created.push(t.name);
+          }
+        }
+      }
+      return res.json({ ok: true, created });
+    } catch (e: any) {
+      return res.status(500).json({ error: e?.message || String(e) });
+    }
+  });
+
   // Admin-backed API (service role)
   try {
     const ownerEmail = (
