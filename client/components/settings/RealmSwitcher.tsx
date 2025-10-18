@@ -115,6 +115,22 @@ export const REALM_OPTIONS: RealmOption[] = [
       "Insight dashboards",
     ],
   },
+  {
+    id: "staff",
+    name: "Operations Command",
+    title: "AeThex Staff",
+    description:
+      "Internal realm for site staff and employees: operations dashboards, moderation, and admin tooling.",
+    icon: Shield,
+    gradient: "from-sky-600 to-indigo-700",
+    route: "/staff",
+    routeLabel: "Staff",
+    highlights: [
+      "Moderation & triage",
+      "Operational dashboards",
+      "Internal tools & audits",
+    ],
+  },
 ];
 
 const EXPERIENCE_OPTIONS = [
