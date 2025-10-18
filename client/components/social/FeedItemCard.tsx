@@ -48,9 +48,7 @@ export function FeedItemCard({
               <CardTitle className="text-lg font-semibold text-foreground">
                 {item.authorName}
               </CardTitle>
-              <CardDescription>
-                {item.caption ? item.caption.slice(0, 120) : "Shared an update"}
-              </CardDescription>
+              {/* Removed snippet to avoid duplicate text with full caption below */}
             </div>
           </div>
           <Button
