@@ -23,6 +23,7 @@ import AdminMemberManager from "@/components/admin/AdminMemberManager";
 import AdminAchievementManager from "@/components/admin/AdminAchievementManager";
 import AdminStatusOverview from "@/components/admin/AdminStatusOverview";
 import AdminChangelogDigest from "@/components/admin/AdminChangelogDigest";
+import AdminSystemMap from "@/components/admin/AdminSystemMap";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
