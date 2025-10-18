@@ -104,6 +104,7 @@ const App = () => (
               <Route path="/passport/me" element={<ProfilePassport />} />
               <Route path="/passport/:username" element={<ProfilePassport />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignupRedirect />} />
               <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* Service routes */}
