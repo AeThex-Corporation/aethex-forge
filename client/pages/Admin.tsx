@@ -1164,15 +1164,18 @@ export default function Admin() {
                       </div>
                     ))}
                     <div className="flex flex-wrap justify-between gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() =>
-                          setStudios([...studios, { name: "New Studio" }])
-                        }
-                      >
-                        Add studio
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() =>
+                            setStudios([...studios, { name: "New Studio" }])
+                          }
+                        >
+                          Add studio
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => navigate("/community#featured-studios")}>Open community</Button>
+                      </div>
                       <Button
                         size="sm"
                         onClick={async () => {
