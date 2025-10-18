@@ -827,6 +827,10 @@ export default function Admin() {
               </div>
             </TabsContent>
 
+            <TabsContent value="system-map" className="space-y-6">
+              <AdminSystemMap />
+            </TabsContent>
+
             <TabsContent value="content" className="space-y-6">
               <Card className="bg-card/60 border-border/40 backdrop-blur">
                 <CardHeader>
