@@ -390,6 +390,48 @@ export default function Login() {
           </div>
         </div>
       </div>
+
+      <Dialog open={showReset} onOpenChange={setShowReset}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reset your password</DialogTitle>
+            <DialogDescription>
+              Enter the email associated with your account. We'll send a reset link.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <Label htmlFor="resetEmail" className="text-sm font-medium">
+              Email Address
+            </Label>
+            <Input
+              id="resetEmail"
+              type="email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              placeholder="you@example.com"
+            />
+          </div>
+          <DialogFooter className="sm:justify-end">
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button
+              onClick={async () => {
+                if (!resetEmail) return;
+                setIsLoading(true);
+                try {
+                  await requestPasswordReset(resetEmail);
+                  setShowReset(false);
+                } catch {}
+                setIsLoading(false);
+              }}
+              disabled={!resetEmail || isLoading}
+            >
+              Send reset link
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 }
