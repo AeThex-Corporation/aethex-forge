@@ -1201,15 +1201,13 @@ export default function Dashboard() {
                         </Button>
                       </div>
                       <Separator className="my-6" />
-                      <RealmSwitcher
-                        selectedRealm={userRealm}
-                        onRealmChange={setUserRealm}
-                        selectedExperience={experienceLevel}
-                        onExperienceChange={setExperienceLevel}
-                        hasChanges={hasRealmChanges}
-                        onSave={handleRealmSave}
-                        saving={savingRealm}
-                      />
+                      <div className="rounded border border-border/40 p-3 flex items-center justify-between">
+                        <div>
+                          <div className="font-medium">Realm & Path</div>
+                          <div className="text-sm text-muted-foreground">Manage your realm preferences on the Realms page.</div>
+                        </div>
+                        <Button variant="outline" onClick={() => navigate("/realms")}>Open Realms</Button>
+                      </div>
                     </TabsContent>
 
                     <TabsContent value="connections" className="space-y-6">
