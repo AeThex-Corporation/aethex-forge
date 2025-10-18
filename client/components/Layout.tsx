@@ -42,6 +42,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
   const navigation = [
     { name: "Home", href: "/" },
+    { name: "Portal", href: "/portal" },
     { name: "Get Started", href: "/onboarding" },
     { name: "Engage", href: "/engage" },
     { name: "Developers", href: "/developers" },
@@ -52,6 +53,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
   const userNavigation = [
     { name: "Dashboard", href: "/dashboard" },
+    { name: "Portal", href: "/portal" },
     { name: "Feed", href: "/feed" },
     { name: "Engage", href: "/engage" },
     { name: "Developers", href: "/developers" },
