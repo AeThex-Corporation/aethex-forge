@@ -180,6 +180,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           "demo_profiles",
           "demo_posts",
           "demo_seed_v1",
+          "aethex_onboarding_progress_v1",
+          "onboarding_complete",
         ].forEach((key) => window.localStorage.removeItem(key));
         storageClearedRef.current = true;
       } catch {
