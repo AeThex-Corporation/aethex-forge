@@ -469,8 +469,8 @@ export default function Dashboard() {
       case "Start New Project":
         navigate("/projects/new");
         break;
-      case "Join Team":
-        navigate("/community");
+      case "Create Team":
+        navigate("/teams");
         break;
       case "Access Labs":
         navigate("/research");
