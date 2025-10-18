@@ -223,7 +223,10 @@ const PassportSummary = ({
                 >
                   <div className="flex items-center gap-2 text-slate-100">
                     <span className="text-xl">
-                      {getAchievementEmoji(achievement.icon as any, achievement.name)}
+                      {getAchievementEmoji(
+                        achievement.icon as any,
+                        achievement.name,
+                      )}
                     </span>
                     <span className="text-sm font-medium">
                       {achievement.name}

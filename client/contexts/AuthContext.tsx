@@ -331,7 +331,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (inviteProcessedRef.current) return;
     if (!user) return;
     try {
-      const qs = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+      const qs =
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search)
+          : null;
       const token = qs?.get("invite");
       if (!token) return;
       inviteProcessedRef.current = true;
@@ -339,7 +342,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           await mod.aethexSocialService.acceptInvite(token, user.id);
           try {
-            aethexToast.success({ title: "Invitation accepted", description: "You're now connected." });
+            aethexToast.success({
+              title: "Invitation accepted",
+              description: "You're now connected.",
+            });
           } catch {}
         } catch (e) {
           console.warn("Invite accept failed", e);

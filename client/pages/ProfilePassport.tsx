@@ -431,13 +431,17 @@ const ProfilePassport = () => {
                       <div className="flex items-center gap-3 text-white">
                         <span className="text-3xl">
                           {((): string => {
-                            const key = String(achievement.icon || achievement.name || "").toLowerCase();
+                            const key = String(
+                              achievement.icon || achievement.name || "",
+                            ).toLowerCase();
                             if (/founding|founder/.test(key)) return "🎖️";
-                            if (/trophy|award|medal|badge/.test(key)) return "🏆";
+                            if (/trophy|award|medal|badge/.test(key))
+                              return "🏆";
                             if (/welcome/.test(key)) return "🎉";
                             if (/star/.test(key)) return "⭐";
                             if (/rocket|launch/.test(key)) return "🚀";
-                            return typeof achievement.icon === "string" && achievement.icon.length <= 3
+                            return typeof achievement.icon === "string" &&
+                              achievement.icon.length <= 3
                               ? (achievement.icon as string)
                               : "🏅";
                           })()}
@@ -487,14 +491,26 @@ const ProfilePassport = () => {
                   </Link>
                 </Button>
               ) : profile.email ? (
-                <Button asChild variant="outline" className="border-slate-700/70 text-slate-100">
-                  <a href={`mailto:${profile.email}?subject=${encodeURIComponent("Collaboration invite")}&body=${encodeURIComponent("Hi, I'd like to collaborate on a project.")}`}>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-slate-700/70 text-slate-100"
+                >
+                  <a
+                    href={`mailto:${profile.email}?subject=${encodeURIComponent("Collaboration invite")}&body=${encodeURIComponent("Hi, I'd like to collaborate on a project.")}`}
+                  >
                     Invite to collaborate
                   </a>
                 </Button>
               ) : (
-                <Button asChild variant="outline" className="border-slate-700/70 text-slate-100">
-                  <Link to={`/contact?topic=collaboration&about=${encodeURIComponent(profile.username || profile.full_name || "member")}`}>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-slate-700/70 text-slate-100"
+                >
+                  <Link
+                    to={`/contact?topic=collaboration&about=${encodeURIComponent(profile.username || profile.full_name || "member")}`}
+                  >
                     Invite to collaborate
                   </Link>
                 </Button>

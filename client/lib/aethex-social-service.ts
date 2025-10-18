@@ -10,13 +10,19 @@ export const aethexSocialService = {
         .limit(limit);
 
       if (error) {
-        console.error("Failed to load recommended profiles:", (error as any)?.message || error);
+        console.error(
+          "Failed to load recommended profiles:",
+          (error as any)?.message || error,
+        );
         return [];
       }
 
       return (data || []) as any[];
     } catch (error) {
-      console.error("Unexpected error loading recommended profiles:", (error as any)?.message || error);
+      console.error(
+        "Unexpected error loading recommended profiles:",
+        (error as any)?.message || error,
+      );
       return [];
     }
   },
@@ -29,13 +35,19 @@ export const aethexSocialService = {
         .eq("follower_id", userId);
 
       if (error) {
-        console.error("Failed to load following list:", (error as any)?.message || error);
+        console.error(
+          "Failed to load following list:",
+          (error as any)?.message || error,
+        );
         return [];
       }
 
       return (data as any[]).map((r: any) => r.following_id);
     } catch (error) {
-      console.error("Unexpected error loading following list:", (error as any)?.message || error);
+      console.error(
+        "Unexpected error loading following list:",
+        (error as any)?.message || error,
+      );
       return [];
     }
   },
@@ -67,17 +79,27 @@ export const aethexSocialService = {
     const resp = await fetch("/api/invites", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ inviter_id: inviterId, invitee_email: email, message }),
+      body: JSON.stringify({
+        inviter_id: inviterId,
+        invitee_email: email,
+        message,
+      }),
     });
     if (!resp.ok) {
       const err = await resp.text();
       throw new Error(err || "Failed to send invite");
     }
-    return (await resp.json()) as { ok: boolean; inviteUrl: string; token: string };
+    return (await resp.json()) as {
+      ok: boolean;
+      inviteUrl: string;
+      token: string;
+    };
   },
 
   async listInvites(inviterId: string) {
-    const resp = await fetch(`/api/invites?inviter_id=${encodeURIComponent(inviterId)}`);
+    const resp = await fetch(
+      `/api/invites?inviter_id=${encodeURIComponent(inviterId)}`,
+    );
     if (!resp.ok) return [];
     return await resp.json();
   },
@@ -129,7 +151,9 @@ export const aethexSocialService = {
 
   async endorseSkill(endorserId: string, endorsedId: string, skill: string) {
     const payload = { endorser_id: endorserId, endorsed_id: endorsedId, skill };
-    const { error } = await supabase.from("endorsements").insert(payload as any);
+    const { error } = await supabase
+      .from("endorsements")
+      .insert(payload as any);
     if (error) throw new Error(error.message || "Unable to endorse");
     await this.applyReward(endorsedId, "endorsement_received", 2);
   },

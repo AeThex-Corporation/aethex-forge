@@ -82,7 +82,11 @@ export default function Network() {
       toast({ description: "Invitation sent" });
       setInviteEmail("");
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Failed to send invite", description: e?.message || "Try again later" });
+      toast({
+        variant: "destructive",
+        title: "Failed to send invite",
+        description: e?.message || "Try again later",
+      });
     } finally {
       setInviteSending(false);
     }
@@ -94,7 +98,11 @@ export default function Network() {
       await aethexSocialService.endorseSkill(user.id, targetId, skill);
       toast({ description: `Endorsed for ${skill}` });
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Failed to endorse", description: e?.message || "Try again later" });
+      toast({
+        variant: "destructive",
+        title: "Failed to endorse",
+        description: e?.message || "Try again later",
+      });
     }
   };
 
@@ -252,7 +260,10 @@ export default function Network() {
                   const p = (c as any).user_profiles || {};
                   const display = p.full_name || p.username || c.connection_id;
                   return (
-                    <div key={c.connection_id} className="flex items-center justify-between p-3 rounded-lg border border-border/50">
+                    <div
+                      key={c.connection_id}
+                      className="flex items-center justify-between p-3 rounded-lg border border-border/50"
+                    >
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
                           <AvatarImage src={p.avatar_url || undefined} />
@@ -260,15 +271,21 @@ export default function Network() {
                         </Avatar>
                         <div>
                           <div className="font-medium">{display}</div>
-                          <div className="text-xs text-muted-foreground">Connected</div>
+                          <div className="text-xs text-muted-foreground">
+                            Connected
+                          </div>
                         </div>
                       </div>
-                      <Button size="sm" variant="outline">Message</Button>
+                      <Button size="sm" variant="outline">
+                        Message
+                      </Button>
                     </div>
                   );
                 })}
                 {connections.length === 0 && (
-                  <div className="text-sm text-muted-foreground">No connections yet.</div>
+                  <div className="text-sm text-muted-foreground">
+                    No connections yet.
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -330,14 +347,19 @@ export default function Network() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader>
                 <CardTitle>Endorsements</CardTitle>
-                <CardDescription>Recognize skills of your peers</CardDescription>
+                <CardDescription>
+                  Recognize skills of your peers
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {connections.slice(0, 6).map((c) => {
                   const p = (c as any).user_profiles || {};
                   const display = p.full_name || p.username || c.connection_id;
                   return (
-                    <div key={`endorse-${c.connection_id}`} className="flex items-center justify-between p-3 rounded-lg border border-border/50">
+                    <div
+                      key={`endorse-${c.connection_id}`}
+                      className="flex items-center justify-between p-3 rounded-lg border border-border/50"
+                    >
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
                           <AvatarImage src={p.avatar_url || undefined} />
@@ -346,8 +368,22 @@ export default function Network() {
                         <div className="text-sm">{display}</div>
                       </div>
                       <div className="flex gap-2 flex-wrap">
-                        {(["Leadership","Systems","Frontend","Backend"] as const).map((skill) => (
-                          <Button key={skill} size="xs" variant="outline" onClick={() => handleEndorse(c.connection_id, skill)}>
+                        {(
+                          [
+                            "Leadership",
+                            "Systems",
+                            "Frontend",
+                            "Backend",
+                          ] as const
+                        ).map((skill) => (
+                          <Button
+                            key={skill}
+                            size="xs"
+                            variant="outline"
+                            onClick={() =>
+                              handleEndorse(c.connection_id, skill)
+                            }
+                          >
                             {skill}
                           </Button>
                         ))}

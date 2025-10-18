@@ -621,10 +621,11 @@ export function createServer() {
 
     // Invites API
     const baseUrl =
-      process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "https://aethex.biz";
+      process.env.PUBLIC_BASE_URL ||
+      process.env.SITE_URL ||
+      "https://aethex.biz";
 
-    const safeEmail = (v?: string | null) =>
-      (v || "").trim().toLowerCase();
+    const safeEmail = (v?: string | null) => (v || "").trim().toLowerCase();
 
     const accrue = async (
       userId: string,
@@ -731,7 +732,8 @@ export function createServer() {
 
     app.get("/api/invites", async (req, res) => {
       const inviter = String(req.query.inviter_id || "");
-      if (!inviter) return res.status(400).json({ error: "inviter_id required" });
+      if (!inviter)
+        return res.status(400).json({ error: "inviter_id required" });
       try {
         const { data, error } = await adminSupabase
           .from("invites")
@@ -751,7 +753,9 @@ export function createServer() {
         acceptor_id?: string;
       };
       if (!token || !acceptor_id) {
-        return res.status(400).json({ error: "token and acceptor_id required" });
+        return res
+          .status(400)
+          .json({ error: "token and acceptor_id required" });
       }
       try {
         const { data: invite, error } = await adminSupabase
@@ -766,7 +770,11 @@ export function createServer() {
         const now = new Date().toISOString();
         const { error: upErr } = await adminSupabase
           .from("invites")
-          .update({ status: "accepted", accepted_by: acceptor_id, accepted_at: now })
+          .update({
+            status: "accepted",
+            accepted_by: acceptor_id,
+            accepted_at: now,
+          })
           .eq("id", (invite as any).id);
         if (upErr) return res.status(500).json({ error: upErr.message });
 
@@ -785,10 +793,14 @@ export function createServer() {
         if (inviterId) {
           await accrue(inviterId, "xp", 100, "invite_accepted", { token });
           await accrue(inviterId, "loyalty", 50, "invite_accepted", { token });
-          await accrue(inviterId, "reputation", 2, "invite_accepted", { token });
+          await accrue(inviterId, "reputation", 2, "invite_accepted", {
+            token,
+          });
         }
         await accrue(acceptor_id, "xp", 50, "invite_accepted", { token });
-        await accrue(acceptor_id, "reputation", 1, "invite_accepted", { token });
+        await accrue(acceptor_id, "reputation", 1, "invite_accepted", {
+          token,
+        });
 
         return res.json({ ok: true });
       } catch (e: any) {
