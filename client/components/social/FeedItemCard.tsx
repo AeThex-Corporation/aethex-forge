@@ -19,6 +19,8 @@ interface FeedItemCardProps {
   isFollowing: boolean;
   onToggleFollow: (authorId: string) => void;
   onShare: (postId: string) => void;
+  onLike: (postId: string) => void;
+  onComment: (postId: string) => void;
 }
 
 export function FeedItemCard({
@@ -26,6 +28,8 @@ export function FeedItemCard({
   isFollowing,
   onToggleFollow,
   onShare,
+  onLike,
+  onComment,
 }: FeedItemCardProps) {
   const [muted, setMuted] = useState(true);
   const hasMedia = item.mediaType !== "none" && Boolean(item.mediaUrl);
