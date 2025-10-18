@@ -866,6 +866,11 @@ export default function Dashboard() {
                             type="file"
                             accept="image/*"
                             onChange={async (e) => {
+                              const ensureBuckets = async () => {
+                                try {
+                                  await fetch("/api/storage/ensure-buckets", { method: "POST" });
+                                } catch {}
+                              };
                               const file = e.target.files?.[0];
                               if (!file || !user) return;
                               const storeDataUrl = () =>
@@ -878,10 +883,17 @@ export default function Dashboard() {
                                   reader.readAsDataURL(file);
                                 });
                               try {
+                                await ensureBuckets();
                                 const path = `${user.id}/avatar-${Date.now()}-${file.name}`;
-                                const { error } = await supabase.storage
+                                let { error } = await supabase.storage
                                   .from("avatars")
                                   .upload(path, file, { upsert: true });
+                                if (error && /bucket/i.test(error?.message || "")) {
+                                  await ensureBuckets();
+                                  ({ error } = await supabase.storage
+                                    .from("avatars")
+                                    .upload(path, file, { upsert: true }));
+                                }
                                 if (error) throw error;
                                 const { data } = supabase.storage
                                   .from("avatars")
@@ -927,6 +939,11 @@ export default function Dashboard() {
                             type="file"
                             accept="image/*"
                             onChange={async (e) => {
+                              const ensureBuckets = async () => {
+                                try {
+                                  await fetch("/api/storage/ensure-buckets", { method: "POST" });
+                                } catch {}
+                              };
                               const file = e.target.files?.[0];
                               if (!file || !user) return;
                               const storeDataUrl = () =>
@@ -939,10 +956,17 @@ export default function Dashboard() {
                                   reader.readAsDataURL(file);
                                 });
                               try {
+                                await ensureBuckets();
                                 const path = `${user.id}/banner-${Date.now()}-${file.name}`;
-                                const { error } = await supabase.storage
+                                let { error } = await supabase.storage
                                   .from("banners")
                                   .upload(path, file, { upsert: true });
+                                if (error && /bucket/i.test(error?.message || "")) {
+                                  await ensureBuckets();
+                                  ({ error } = await supabase.storage
+                                    .from("banners")
+                                    .upload(path, file, { upsert: true }));
+                                }
                                 if (error) throw error;
                                 const { data } = supabase.storage
                                   .from("banners")
