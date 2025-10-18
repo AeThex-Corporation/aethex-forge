@@ -1195,7 +1195,10 @@ export function createServer() {
           .eq("available", available)
           .order("updated_at", { ascending: false })
           .limit(limit);
-        if (error) return res.status(500).json({ error: error.message });
+        if (error) {
+          if (isTableMissing(error)) return res.json([]);
+          return res.status(500).json({ error: error.message });
+        }
         let rows = (data || []) as any[];
         if (expertise) {
           const terms = expertise
@@ -1378,7 +1381,10 @@ export function createServer() {
         else if (role === "mentee") query = query.eq("mentee_id", userId);
         else query = query.or(`mentor_id.eq.${userId},mentee_id.eq.${userId}`);
         const { data, error } = await query;
-        if (error) return res.status(500).json({ error: error.message });
+        if (error) {
+          if (isTableMissing(error)) return res.json([]);
+          return res.status(500).json({ error: error.message });
+        }
         return res.json(data || []);
       } catch (e: any) {
         return res.status(500).json({ error: e?.message || String(e) });
