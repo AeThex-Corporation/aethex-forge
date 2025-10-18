@@ -14,7 +14,7 @@ import RealmSwitcher, {
 } from "@/components/settings/RealmSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 export default function Realms() {
