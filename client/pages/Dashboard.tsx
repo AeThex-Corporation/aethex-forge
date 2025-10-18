@@ -81,6 +81,8 @@ export default function Dashboard() {
   const [savingProfile, setSavingProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState([]);
+  const [teams, setTeams] = useState<any[]>([]);
+  const [invites, setInvites] = useState<any[]>([]);
   const [achievements, setAchievements] = useState([]);
   const [profileCompletion, setProfileCompletion] = useState(0);
   const [stats, setStats] = useState({
