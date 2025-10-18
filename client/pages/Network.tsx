@@ -239,8 +239,39 @@ export default function Network() {
             </Card>
           </div>
 
-          {/* Discover People */}
-          <div className="lg:col-span-8">
+          {/* Connections + Discover + Endorsements */}
+          <div className="lg:col-span-8 space-y-6">
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader>
+                <CardTitle>My connections</CardTitle>
+                <CardDescription>People you’re connected with</CardDescription>
+              </CardHeader>
+              <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {connections.map((c) => {
+                  const p = (c as any).user_profiles || {};
+                  const display = p.full_name || p.username || c.connection_id;
+                  return (
+                    <div key={c.connection_id} className="flex items-center justify-between p-3 rounded-lg border border-border/50">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={p.avatar_url || undefined} />
+                          <AvatarFallback>{(display || "U")[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-medium">{display}</div>
+                          <div className="text-xs text-muted-foreground">Connected</div>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="outline">Message</Button>
+                    </div>
+                  );
+                })}
+                {connections.length === 0 && (
+                  <div className="text-sm text-muted-foreground">No connections yet.</div>
+                )}
+              </CardContent>
+            </Card>
+
             <Card className="bg-card/50 border-border/50">
               <CardHeader>
                 <CardTitle>Discover People</CardTitle>
@@ -290,6 +321,42 @@ export default function Network() {
                 {recommended.length === 0 && (
                   <div className="text-sm text-muted-foreground">
                     No people found yet.
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader>
+                <CardTitle>Endorsements</CardTitle>
+                <CardDescription>Recognize skills of your peers</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {connections.slice(0, 6).map((c) => {
+                  const p = (c as any).user_profiles || {};
+                  const display = p.full_name || p.username || c.connection_id;
+                  return (
+                    <div key={`endorse-${c.connection_id}`} className="flex items-center justify-between p-3 rounded-lg border border-border/50">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={p.avatar_url || undefined} />
+                          <AvatarFallback>{(display || "U")[0]}</AvatarFallback>
+                        </Avatar>
+                        <div className="text-sm">{display}</div>
+                      </div>
+                      <div className="flex gap-2 flex-wrap">
+                        {(["Leadership","Systems","Frontend","Backend"] as const).map((skill) => (
+                          <Button key={skill} size="xs" variant="outline" onClick={() => handleEndorse(c.connection_id, skill)}>
+                            {skill}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+                {endorsements.length > 0 && (
+                  <div className="text-xs text-muted-foreground">
+                    You have received {endorsements.length} endorsements.
                   </div>
                 )}
               </CardContent>
