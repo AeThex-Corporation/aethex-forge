@@ -860,9 +860,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           await supabase.auth.getSession();
         } catch {}
-        const { data, error } = await supabase.auth.updateUser({
-          password: newPassword,
-        });
+        const { data, error } = await withTimeout(
+          supabase.auth.updateUser({ password: newPassword }),
+          8000,
+          "Password update timed out"
+        );
         if (error) throw error;
         if (data?.user) {
           aethexToast.success({
