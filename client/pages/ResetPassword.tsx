@@ -21,19 +21,35 @@ export default function ResetPassword() {
   const [confirm, setConfirm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [linkError, setLinkError] = useState<string | null>(null);
+  const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
-  const { updatePassword } = useAuth();
-  const { error: toastError, success: toastSuccess } = useAethexToast();
+  const { updatePassword, requestPasswordReset } = useAuth();
+  const { error: toastError, success: toastSuccess, info: toastInfo } = useAethexToast();
 
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        // Ensure recovery session is established from URL parameters
+        const hash = typeof window !== "undefined" ? window.location.hash.replace(/^#/, "") : "";
+        const params = new URLSearchParams(hash);
+        const urlError = params.get("error");
+        const urlErrorDesc = params.get("error_description");
+        if (urlError) {
+          setLinkError(urlErrorDesc || "Reset link is invalid or has expired.");
+          return;
+        }
         try {
           await supabase.auth.exchangeCodeForSession(window.location.href);
-        } catch {}
-        await supabase.auth.getSession();
+        } catch (e: any) {
+          setLinkError("Reset link is invalid or has expired.");
+          return;
+        }
+        const { data } = await supabase.auth.getSession();
+        if (!data?.session) {
+          setLinkError("Reset link is invalid or has expired.");
+          return;
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -92,51 +108,91 @@ export default function ResetPassword() {
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12 flex items-center justify-center">
         <div className="container mx-auto px-4 max-w-md">
-          <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
-            <CardHeader className="text-center space-y-2">
-              <CardTitle className="text-2xl text-gradient-purple">
-                Set a new password
-              </CardTitle>
-              <CardDescription>
-                Enter and confirm your new password
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">
-                    New Password
-                  </Label>
+          {linkError ? (
+            <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
+              <CardHeader className="text-center space-y-2">
+                <CardTitle className="text-2xl text-gradient-purple">Reset link expired</CardTitle>
+                <CardDescription>
+                  {linkError || "The link is invalid or has expired. Request a new reset link."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <Label htmlFor="resetEmail" className="text-sm font-medium">Email Address</Label>
                   <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter a new password"
-                    minLength={6}
-                    required
+                    id="resetEmail"
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="you@example.com"
                   />
+                  <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => navigate("/login")}>Back to login</Button>
+                    <Button
+                      onClick={async () => {
+                        if (!resetEmail) {
+                          toastInfo({ title: "Enter your email", description: "We will send a fresh reset link." });
+                          return;
+                        }
+                        try {
+                          await requestPasswordReset(resetEmail);
+                        } catch {}
+                      }}
+                      disabled={!resetEmail}
+                    >
+                      Send new reset link
+                    </Button>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirm" className="text-sm font-medium">
-                    Confirm Password
-                  </Label>
-                  <Input
-                    id="confirm"
-                    type="password"
-                    value={confirm}
-                    onChange={(e) => setConfirm(e.target.value)}
-                    placeholder="Re-enter your new password"
-                    minLength={6}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={submitting}>
-                  {submitting ? "Updating..." : "Update Password"}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
+              <CardHeader className="text-center space-y-2">
+                <CardTitle className="text-2xl text-gradient-purple">
+                  Set a new password
+                </CardTitle>
+                <CardDescription>
+                  Enter and confirm your new password
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-sm font-medium">
+                      New Password
+                    </Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter a new password"
+                      minLength={6}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm" className="text-sm font-medium">
+                      Confirm Password
+                    </Label>
+                    <Input
+                      id="confirm"
+                      type="password"
+                      value={confirm}
+                      onChange={(e) => setConfirm(e.target.value)}
+                      placeholder="Re-enter your new password"
+                      minLength={6}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" disabled={submitting}>
+                    {submitting ? "Updating..." : "Update Password"}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </Layout>
