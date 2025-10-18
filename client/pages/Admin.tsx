@@ -1041,6 +1041,8 @@ export default function Admin() {
 
               <AdminAchievementManager targetUser={selectedMember} />
 
+              <AdminSpotlightManager profiles={managedProfiles} />
+
               <Card className="bg-card/60 border-border/40 backdrop-blur">
                 <CardHeader>
                   <div className="flex items-center gap-2">
