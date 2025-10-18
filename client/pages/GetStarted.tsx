@@ -2,7 +2,9 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { UserPlus, Settings, LayoutDashboard, BookOpen, Users, LifeBuoy, ArrowRight, CheckCircle } from "lucide-react";
 
 export default function GetStarted() {
@@ -38,6 +40,15 @@ export default function GetStarted() {
     { title: "Community", desc: "Share progress & find collaborators", icon: Users, href: "/community", color: "from-indigo-500 to-purple-500" },
     { title: "Support", desc: "We’re here to help", icon: LifeBuoy, href: "/support", color: "from-amber-500 to-orange-500" },
   ];
+
+  const navigate = useNavigate();
+  const { user, profileComplete, loading } = useAuth();
+
+  useEffect(() => {
+    if (loading) return;
+    if (user && profileComplete) navigate("/dashboard", { replace: true });
+    if (user && !profileComplete) navigate("/onboarding", { replace: true });
+  }, [user, profileComplete, loading, navigate]);
 
   return (
     <Layout>
