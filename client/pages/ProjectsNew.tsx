@@ -79,10 +79,12 @@ export default function ProjectsNew() {
         throw new Error("Project creation failed");
       }
     } catch (err: any) {
-      console.error("Error creating project:", err);
+      const { normalizeErrorMessage } = await import("@/lib/error-utils");
+      const msg = normalizeErrorMessage(err);
+      console.error("Error creating project:", msg, err);
       aethexToast.error({
         title: "Failed to create project",
-        description: err?.message || "Please try again.",
+        description: msg,
       });
     } finally {
       setIsSubmitting(false);
