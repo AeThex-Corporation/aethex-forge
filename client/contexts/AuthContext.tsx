@@ -844,7 +844,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           description: `We sent a password reset link to ${email}.`,
         });
       } catch (error: any) {
-        const msg = String(error?.message || error || "Failed to send reset email");
+        const msg = String(
+          error?.message || error || "Failed to send reset email",
+        );
         aethexToast.error({ title: "Reset failed", description: msg });
         throw new Error(msg);
       }
@@ -869,7 +871,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           });
         }
       } catch (error: any) {
-        const msg = String(error?.message || error || "Failed to update password");
+        const msg = String(
+          error?.message || error || "Failed to update password",
+        );
         aethexToast.error({ title: "Update failed", description: msg });
         throw new Error(msg);
       }

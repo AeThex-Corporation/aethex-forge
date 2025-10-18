@@ -51,8 +51,15 @@ export default function Login() {
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
-  const { signIn, signUp, signInWithOAuth, user, loading, profileComplete, requestPasswordReset } =
-    useAuth();
+  const {
+    signIn,
+    signUp,
+    signInWithOAuth,
+    user,
+    loading,
+    profileComplete,
+    requestPasswordReset,
+  } = useAuth();
   const { info: toastInfo, error: toastError } = useAethexToast();
 
   // After auth resolves and a user exists, navigate to dashboard
@@ -396,7 +403,8 @@ export default function Login() {
           <DialogHeader>
             <DialogTitle>Reset your password</DialogTitle>
             <DialogDescription>
-              Enter the email associated with your account. We'll send a reset link.
+              Enter the email associated with your account. We'll send a reset
+              link.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">

@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -40,21 +46,33 @@ export default function ResetPassword() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!password || password.length < 6) {
-      toastError({ title: "Invalid password", description: "Minimum 6 characters." });
+      toastError({
+        title: "Invalid password",
+        description: "Minimum 6 characters.",
+      });
       return;
     }
     if (password !== confirm) {
-      toastError({ title: "Passwords do not match", description: "Please re-enter matching passwords." });
+      toastError({
+        title: "Passwords do not match",
+        description: "Please re-enter matching passwords.",
+      });
       return;
     }
     setSubmitting(true);
     try {
       await updatePassword(password);
-      toastSuccess({ title: "Password updated", description: "Please sign in with your new password." });
+      toastSuccess({
+        title: "Password updated",
+        description: "Please sign in with your new password.",
+      });
       navigate("/login", { replace: true });
     } catch (err: any) {
       // Error already toasted in context; keep here for safety
-      toastError({ title: "Update failed", description: err?.message || "Try again." });
+      toastError({
+        title: "Update failed",
+        description: err?.message || "Try again.",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -62,7 +80,11 @@ export default function ResetPassword() {
 
   if (isLoading) {
     return (
-      <LoadingScreen message="Preparing password reset..." showProgress={true} duration={1500} />
+      <LoadingScreen
+        message="Preparing password reset..."
+        showProgress={true}
+        duration={1500}
+      />
     );
   }
 
@@ -72,13 +94,19 @@ export default function ResetPassword() {
         <div className="container mx-auto px-4 max-w-md">
           <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
             <CardHeader className="text-center space-y-2">
-              <CardTitle className="text-2xl text-gradient-purple">Set a new password</CardTitle>
-              <CardDescription>Enter and confirm your new password</CardDescription>
+              <CardTitle className="text-2xl text-gradient-purple">
+                Set a new password
+              </CardTitle>
+              <CardDescription>
+                Enter and confirm your new password
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium">New Password</Label>
+                  <Label htmlFor="password" className="text-sm font-medium">
+                    New Password
+                  </Label>
                   <Input
                     id="password"
                     type="password"
@@ -90,7 +118,9 @@ export default function ResetPassword() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirm" className="text-sm font-medium">Confirm Password</Label>
+                  <Label htmlFor="confirm" className="text-sm font-medium">
+                    Confirm Password
+                  </Label>
                   <Input
                     id="confirm"
                     type="password"
