@@ -509,30 +509,10 @@ export default function Dashboard() {
   const showProfileSetup = !profileComplete;
 
   const statsDisplay = [
-    {
-      label: "Active Projects",
-      value: stats.activeProjects,
-      icon: Rocket,
-      color: "from-blue-500 to-purple-600",
-    },
-    {
-      label: "Completed Tasks",
-      value: 47,
-      icon: Trophy,
-      color: "from-green-500 to-blue-600",
-    },
-    {
-      label: "Team Members",
-      value: 8,
-      icon: Users,
-      color: "from-purple-500 to-pink-600",
-    },
-    {
-      label: "Performance Score",
-      value: "94%",
-      icon: TrendingUp,
-      color: "from-orange-500 to-red-600",
-    },
+    { label: "Active Projects", value: stats.activeProjects, icon: Rocket, color: "from-blue-500 to-purple-600" },
+    { label: "Completed Tasks", value: stats.completedTasks, icon: Trophy, color: "from-green-500 to-blue-600" },
+    { label: "Team Members", value: stats.teamMembers, icon: Users, color: "from-purple-500 to-pink-600" },
+    { label: "Performance Score", value: stats.performanceScore, icon: TrendingUp, color: "from-orange-500 to-red-600" },
   ];
 
   const getProgressPercentage = (project: any) => {
