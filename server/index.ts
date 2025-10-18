@@ -116,28 +116,29 @@ export function createServer() {
       return res.status(400).json({ error: "email is required" });
     }
 
-    if (!adminSupabase?.auth?.admin) {
+    if (!adminSupabase) {
       return res
         .status(500)
         .json({ error: "Supabase admin client unavailable" });
     }
 
     try {
-      const { data, error } = await adminSupabase.auth.admin.listUsers({
-        email,
-      });
+      const targetEmail = String(email).trim().toLowerCase();
+
+      // Query auth.users directly with the service role
+      const { data: user, error } = await (adminSupabase as any)
+        .from("auth.users")
+        .select("id, email, email_confirmed_at, confirmed_at")
+        .eq("email", targetEmail)
+        .maybeSingle();
+
       if (error) {
-        console.error("[API] listUsers error:", error);
-        const errMsg =
-          typeof error === "string"
-            ? error
-            : error?.message || JSON.stringify(error);
+        console.error("[API] auth.users query error:", error);
         return res
           .status((error as any)?.status ?? 500)
-          .json({ error: errMsg });
+          .json({ error: (error as any)?.message || "Query failed" });
       }
 
-      const user = (data as any)?.users?.[0] ?? null;
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -146,7 +147,6 @@ export function createServer() {
 
       if (verified) {
         try {
-          // Look up the Founding Member achievement
           const { data: ach, error: aErr } = await adminSupabase
             .from("achievements")
             .select("id")
@@ -154,7 +154,6 @@ export function createServer() {
             .maybeSingle();
 
           if (!aErr && ach?.id) {
-            // Award it if not already awarded
             const { error: uaErr } = await adminSupabase
               .from("user_achievements")
               .upsert(
