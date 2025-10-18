@@ -235,7 +235,7 @@ export default function Welcome({
               (Object.keys(payload || {}).length
                 ? JSON.stringify(payload)
                 : "Server check failed");
-            console.error("Server check-verification failed", payload);
+            console.error("Server check-verification failed:", serverMessage);
             toastError({
               title: "Unable to verify",
               description: serverMessage,
