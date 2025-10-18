@@ -67,4 +67,51 @@ export const emailService = {
       reply_to: verifySupportEmail,
     });
   },
+
+  async sendInviteEmail(params: {
+    to: string;
+    inviteUrl: string;
+    inviterName?: string | null;
+    message?: string | null;
+  }) {
+    if (!resendClient) {
+      throw new Error("Email service is not configured. Set RESEND_API_KEY.");
+    }
+
+    const { to, inviteUrl, inviterName, message } = params;
+    const safeInviter = inviterName?.trim() || "An AeThex member";
+
+    const subject = `${safeInviter} invited you to collaborate on AeThex`;
+
+    const html = `
+      <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #0f172a;">
+        <h2 style="color: #0ea5e9;">You're invited to AeThex</h2>
+        <p><strong>${safeInviter}</strong> sent you an invitation to connect and collaborate on AeThex.</p>
+        ${message ? `<blockquote style="margin:16px 0; padding:12px 16px; background:#f1f5f9; border-left:4px solid #38bdf8; color:#334155;">${message}</blockquote>` : ""}
+        <p style="margin: 24px 0;">
+          <a href="${inviteUrl}" style="background: linear-gradient(135deg, #0ea5e9, #22c55e); color: #fff; padding: 12px 20px; border-radius: 999px; text-decoration: none; font-weight: 600; display: inline-block;">Accept invitation</a>
+        </p>
+        <p>If the button does not work, paste this link into your browser:</p>
+        <p style="word-break: break-all; font-size: 14px; color: #334155;">${inviteUrl}</p>
+      </div>
+    `;
+
+    const text = [
+      `You're invited to AeThex by ${safeInviter}.`,
+      message ? `\nMessage: ${message}` : "",
+      "\nAccept here:",
+      inviteUrl,
+    ].join("\n");
+
+    await resendClient.emails.send({
+      from: defaultFromAddress,
+      to,
+      subject,
+      html,
+      text,
+      headers: { "X-AeThex-Email": "invite" },
+      tags: [{ name: "template", value: "invite" }],
+      reply_to: verifySupportEmail,
+    });
+  },
 };
