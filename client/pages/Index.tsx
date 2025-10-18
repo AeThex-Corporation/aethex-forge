@@ -94,7 +94,7 @@ export default function Index() {
       title: "Dashboard",
       description: "Your projects, applications, and rewards — in one place",
       icon: LayoutDashboard,
-      color: "from-blue-500 to-purple-600",
+      color: "from-rose-500 to-amber-500",
       link: "/dashboard",
       tags: ["Overview", "Rewards"],
     },
@@ -102,7 +102,7 @@ export default function Index() {
       title: "Community Feed",
       description: "Share progress, discover collaborators, and stay updated",
       icon: Users,
-      color: "from-purple-500 to-pink-600",
+      color: "from-indigo-500 to-cyan-500",
       link: "/feed",
       tags: ["Posts", "Collab"],
     },
@@ -110,7 +110,7 @@ export default function Index() {
       title: "Developer Passport",
       description: "A public profile with verifiable achievements",
       icon: IdCard,
-      color: "from-green-500 to-blue-600",
+      color: "from-fuchsia-500 to-violet-600",
       link: "/passport/me",
       tags: ["Profile", "Badges"],
     },
@@ -118,7 +118,7 @@ export default function Index() {
       title: "Docs & CLI",
       description: "Guides, API reference, and tooling to ship faster",
       icon: Microscope,
-      color: "from-orange-500 to-red-600",
+      color: "from-lime-500 to-emerald-600",
       link: "/docs",
       tags: ["Guides", "API"],
     },
@@ -316,11 +316,12 @@ export default function Index() {
                 return (
                   <Card
                     key={`old-${index}`}
-                    className={`relative overflow-hidden rounded-xl border transition-all duration-500 group ${
+                    className={`relative overflow-hidden rounded-xl border transition-all duration-500 group animate-fade-in ${
                       isActive
                         ? "border-aethex-500/60 glow-blue"
                         : "border-border/30 hover:border-aethex-400/50"
                     } bg-card/60 backdrop-blur-sm hover:translate-y-[-2px] hover:shadow-[0_8px_30px_rgba(80,80,120,0.25)]`}
+                    style={{ animationDelay: `${index * 0.08}s` }}
                   >
                     <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/6 via-transparent to-white/0" />
                     <CardContent className="p-5 sm:p-6 flex flex-col items-center text-center gap-3">
@@ -362,11 +363,12 @@ export default function Index() {
                 return (
                   <Card
                     key={`platform-${index}`}
-                    className={`relative overflow-hidden rounded-xl border transition-all duration-500 group ${
+                    className={`relative overflow-hidden rounded-xl border transition-all duration-500 group animate-fade-in ${
                       isActive
                         ? "border-aethex-500/60 glow-blue"
                         : "border-border/30 hover:border-aethex-400/50"
                     } bg-card/60 backdrop-blur-sm hover:translate-y-[-2px] hover:shadow-[0_8px_30px_rgba(80,80,120,0.25)]`}
+                    style={{ animationDelay: `${(index + 4) * 0.08}s` }}
                   >
                     <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/6 via-transparent to-white/0" />
                     <CardContent className="p-5 sm:p-6 flex flex-col items-center text-center gap-3">
