@@ -5,6 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 import { Sparkles, Lock, Gift, Rocket, Target, Flame, Eye, CheckCircle2, TimerReset } from "lucide-react";
+import ThemeToggle, { type RoadmapTheme } from "@/components/roadmap/ThemeToggle";
+import GalaxyMap from "@/components/roadmap/GalaxyMap";
+import Achievements from "@/components/roadmap/Achievements";
+import VoteWidget from "@/components/roadmap/VoteWidget";
 
 interface Quest {
   id: string;
