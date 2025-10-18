@@ -45,57 +45,82 @@ export default function Index() {
     return () => clearInterval(interval);
   }, []);
 
-  const features = [
+  type FeatureCard = {
+    title: string;
+    description: string;
+    icon: any;
+    color: string; // tailwind gradient from-to
+    link?: string;
+    tags?: string[];
+  };
+
+  const features: FeatureCard[] = [
     {
       title: "Game Development",
       description: "Full‑cycle production and tooling",
       icon: Zap,
       color: "from-blue-500 to-purple-600",
+      link: "/game-development",
+      tags: ["Studios", "Indie"],
     },
     {
       title: "Product Design",
       description: "UX/UI, prototyping, and branding",
       icon: Target,
       color: "from-purple-500 to-pink-600",
+      link: "/consulting",
+      tags: ["UX/UI", "Brand"],
     },
     {
       title: "Platform Engineering",
       description: "Web, mobile, and backend foundations",
       icon: Users,
       color: "from-green-500 to-blue-600",
+      link: "/consulting",
+      tags: ["Web", "Backend"],
     },
     {
       title: "Community & Growth",
       description: "Programs, content, and engagement",
       icon: TrendingUp,
       color: "from-orange-500 to-red-600",
+      link: "/community",
+      tags: ["Programs", "Content"],
     },
   ];
 
-  const platformFeatures = [
+  const platformFeatures: FeatureCard[] = [
     {
       title: "Dashboard",
       description: "Your projects, applications, and rewards — in one place",
       icon: LayoutDashboard,
       color: "from-blue-500 to-purple-600",
+      link: "/dashboard",
+      tags: ["Overview", "Rewards"],
     },
     {
       title: "Community Feed",
       description: "Share progress, discover collaborators, and stay updated",
       icon: Users,
       color: "from-purple-500 to-pink-600",
+      link: "/feed",
+      tags: ["Posts", "Collab"],
     },
     {
       title: "Developer Passport",
       description: "A public profile with verifiable achievements",
       icon: IdCard,
       color: "from-green-500 to-blue-600",
+      link: "/passport/me",
+      tags: ["Profile", "Badges"],
     },
     {
       title: "Docs & CLI",
       description: "Guides, API reference, and tooling to ship faster",
       icon: Microscope,
       color: "from-orange-500 to-red-600",
+      link: "/docs",
+      tags: ["Guides", "API"],
     },
   ];
 
