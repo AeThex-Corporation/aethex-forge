@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { aethexCollabService } from "@/lib/aethex-collab-service";
 import LoadingScreen from "@/components/LoadingScreen";
+import { aethexToast } from "@/lib/aethex-toast";
 
 export default function Teams() {
   const { user, profile, loading } = useAuth();
@@ -44,11 +46,19 @@ export default function Teams() {
     if (!user?.id) return;
     if (!canCreate) return;
     setCreating(true);
+    const tempId = `temp-${Date.now()}`;
+    const optimistic = { team_id: tempId, teams: { id: tempId, name: name.trim(), description: description.trim() || null, visibility: "private" } } as any;
+    setTeams((prev) => [optimistic, ...prev]);
+    setName("");
+    setDescription("");
+    let created: any | null = null;
     try {
-      const team = await aethexCollabService.createTeam(user.id, name.trim(), description.trim() || null, "private");
-      setName("");
-      setDescription("");
-      setTeams((prev) => [{ team_id: team.id, teams: team }, ...prev]);
+      created = await aethexCollabService.createTeam(user.id, optimistic.teams.name, optimistic.teams.description, "private");
+      setTeams((prev) => prev.map((t: any) => (t.team_id === tempId ? { team_id: created.id, teams: created } : t)));
+      aethexToast.success({ title: "Team created" });
+    } catch (e: any) {
+      setTeams((prev) => prev.filter((t: any) => t.team_id !== tempId));
+      aethexToast.error({ title: "Failed to create team", description: e?.message || "Try again later." });
     } finally {
       setCreating(false);
     }
