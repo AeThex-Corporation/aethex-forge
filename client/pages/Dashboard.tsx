@@ -86,6 +86,9 @@ export default function Dashboard() {
   const [achievements, setAchievements] = useState<any[]>([]); // earned achievements
   const [allAchievements, setAllAchievements] = useState<any[]>([]);
   const [achievementFilter, setAchievementFilter] = useState<"all" | "earned" | "locked">("earned");
+  const [followingIds, setFollowingIds] = useState<string[]>([]);
+  const [followerIds, setFollowerIds] = useState<string[]>([]);
+  const [connectionsList, setConnectionsList] = useState<any[]>([]);
   const [profileCompletion, setProfileCompletion] = useState(0);
   const [stats, setStats] = useState({
     activeProjects: 0,
@@ -360,6 +363,22 @@ export default function Dashboard() {
         setInvites(Array.isArray(mine) ? mine : []);
       } catch {
         setInvites([]);
+      }
+
+      // Load network: following, followers, connections
+      try {
+        const [flw, fol, conns] = await Promise.all([
+          aethexSocialService.getFollowing(user!.id),
+          aethexSocialService.getFollowers(user!.id),
+          aethexSocialService.getConnections(user!.id),
+        ]);
+        setFollowingIds(Array.isArray(flw) ? flw : []);
+        setFollowerIds(Array.isArray(fol) ? fol : []);
+        setConnectionsList(Array.isArray(conns) ? conns : []);
+      } catch (e) {
+        setFollowingIds([]);
+        setFollowerIds([]);
+        setConnectionsList([]);
       }
 
       // Load project applications (if table exists)
@@ -1121,6 +1140,134 @@ export default function Dashboard() {
                         onLink={handleLinkProvider}
                         onUnlink={handleUnlinkProvider}
                       />
+
+                      <Separator className="my-6" />
+
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-semibold text-foreground">
+                          Your network
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          People you follow, your followers, and direct connections.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Card className="bg-card/50 border-border/50">
+                          <CardHeader>
+                            <CardTitle className="text-base">Following</CardTitle>
+                            <CardDescription>
+                              {followingIds.length} people
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-2">
+                            {followingIds.length === 0 ? (
+                              <div className="text-sm text-muted-foreground">You're not following anyone yet.</div>
+                            ) : (
+                              followingIds.slice(0, 6).map((id) => (
+                                <div key={id} className="flex items-center justify-between p-2 rounded border border-border/40">
+                                  <div className="text-xs text-muted-foreground truncate">{id}</div>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={async () => {
+                                      if (!user) return;
+                                      try {
+                                        await aethexSocialService.unfollowUser(user.id, id);
+                                        setFollowingIds((s) => s.filter((x) => x !== id));
+                                      } catch {}
+                                    }}
+                                  >
+                                    Unfollow
+                                  </Button>
+                                </div>
+                              ))
+                            )}
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-card/50 border-border/50">
+                          <CardHeader>
+                            <CardTitle className="text-base">Followers</CardTitle>
+                            <CardDescription>
+                              {followerIds.length} people
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-2">
+                            {followerIds.length === 0 ? (
+                              <div className="text-sm text-muted-foreground">No followers yet.</div>
+                            ) : (
+                              followerIds.slice(0, 6).map((id) => (
+                                <div key={id} className="flex items-center justify-between p-2 rounded border border-border/40">
+                                  <div className="text-xs text-muted-foreground truncate">{id}</div>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={async () => {
+                                      if (!user) return;
+                                      try {
+                                        await aethexSocialService.followUser(user.id, id);
+                                        setFollowingIds((s) => Array.from(new Set([...s, id])));
+                                      } catch {}
+                                    }}
+                                  >
+                                    Follow back
+                                  </Button>
+                                </div>
+                              ))
+                            )}
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-card/50 border-border/50">
+                          <CardHeader>
+                            <CardTitle className="text-base">Connections</CardTitle>
+                            <CardDescription>
+                              {connectionsList.length} people
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-2">
+                            {connectionsList.length === 0 ? (
+                              <div className="text-sm text-muted-foreground">No direct connections yet.</div>
+                            ) : (
+                              connectionsList.slice(0, 6).map((row: any) => {
+                                const up = row.user_profiles || row.profile || null;
+                                const label = up?.full_name || up?.username || row.connection_id || "User";
+                                const id = row.connection_id || up?.id;
+                                const isFollowing = followingIds.includes(id);
+                                return (
+                                  <div key={id} className="flex items-center justify-between p-2 rounded border border-border/40">
+                                    <div className="text-xs truncate">
+                                      <span className="font-medium">{label}</span>
+                                      <span className="text-muted-foreground ml-2">{id}</span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={async () => {
+                                          if (!user || !id) return;
+                                          try {
+                                            if (isFollowing) {
+                                              await aethexSocialService.unfollowUser(user.id, id);
+                                              setFollowingIds((s) => s.filter((x) => x !== id));
+                                            } else {
+                                              await aethexSocialService.followUser(user.id, id);
+                                              setFollowingIds((s) => Array.from(new Set([...s, id])));
+                                            }
+                                          } catch {}
+                                        }}
+                                      >
+                                        {isFollowing ? "Unfollow" : "Follow"}
+                                      </Button>
+                                    </div>
+                                  </div>
+                                );
+                              })
+                            )}
+                          </CardContent>
+                        </Card>
+                      </div>
                     </TabsContent>
 
                     <TabsContent value="notifications" className="space-y-4">
