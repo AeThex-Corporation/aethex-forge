@@ -74,9 +74,9 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   return (
     <div className="min-h-screen bg-aethex-gradient">
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-2 min-w-0">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 hover-glow group">
+          <Link to="/" className="flex items-center space-x-3 hover-glow group shrink-0">
             <div className="flex items-center space-x-3">
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
@@ -90,30 +90,32 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item, index) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={scrollToTop}
-                className={cn(
-                  "relative text-sm font-medium transition-all duration-300 hover:text-aethex-400 hover:scale-105 animate-fade-in",
-                  location.pathname === item.href
-                    ? "text-aethex-500 animate-pulse-glow"
-                    : "text-muted-foreground",
-                )}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {item.name}
-                {location.pathname === item.href && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue animate-scale-in" />
-                )}
-              </Link>
-            ))}
+          <nav className="hidden md:flex items-center flex-1 mx-3 overflow-x-auto">
+            <div className="flex items-center gap-6 flex-nowrap whitespace-nowrap">
+              {navItems.map((item, index) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={scrollToTop}
+                  className={cn(
+                    "relative shrink-0 px-1 text-sm font-medium transition-colors duration-200 hover:text-aethex-400",
+                    location.pathname === item.href
+                      ? "text-aethex-500"
+                      : "text-muted-foreground",
+                  )}
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  {item.name}
+                  {location.pathname === item.href && (
+                    <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue" />
+                  )}
+                </Link>
+              ))}
+            </div>
           </nav>
 
           {/* Auth Section */}
-          <div className="flex items-center gap-2 md:gap-4 animate-slide-left">
+          <div className="flex items-center gap-2 md:gap-4 animate-slide-left shrink-0">
             <div className="md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
