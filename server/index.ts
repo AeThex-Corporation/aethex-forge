@@ -720,9 +720,15 @@ export function createServer() {
           }
         }
 
-        await accrue(inviter_id, "loyalty", 5, "invite_sent", {
-          invitee: email,
-        });
+        await accrue(inviter_id, "loyalty", 5, "invite_sent", { invitee: email });
+        try {
+          await adminSupabase.from("notifications").insert({
+            user_id: inviter_id,
+            type: "info",
+            title: "Invite sent",
+            message: `Invitation sent to ${email}`,
+          });
+        } catch {}
 
         return res.json({ ok: true, invite: data, inviteUrl, token });
       } catch (e: any) {
@@ -793,15 +799,97 @@ export function createServer() {
         if (inviterId) {
           await accrue(inviterId, "xp", 100, "invite_accepted", { token });
           await accrue(inviterId, "loyalty", 50, "invite_accepted", { token });
-          await accrue(inviterId, "reputation", 2, "invite_accepted", {
-            token,
-          });
+          await accrue(inviterId, "reputation", 2, "invite_accepted", { token });
+          try {
+            await adminSupabase.from("notifications").insert({
+              user_id: inviterId,
+              type: "success",
+              title: "Invite accepted",
+              message: "Your invitation was accepted. You're now connected.",
+            });
+          } catch {}
         }
         await accrue(acceptor_id, "xp", 50, "invite_accepted", { token });
-        await accrue(acceptor_id, "reputation", 1, "invite_accepted", {
-          token,
-        });
+        await accrue(acceptor_id, "reputation", 1, "invite_accepted", { token });
+        try {
+          await adminSupabase.from("notifications").insert({
+            user_id: acceptor_id,
+            type: "success",
+            title: "Connected",
+            message: "Connection established via invitation.",
+          });
+        } catch {}
 
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Follow/unfollow with notifications
+    app.post("/api/social/follow", async (req, res) => {
+      const { follower_id, following_id } = (req.body || {}) as { follower_id?: string; following_id?: string };
+      if (!follower_id || !following_id)
+        return res.status(400).json({ error: "follower_id and following_id required" });
+      try {
+        await adminSupabase
+          .from("user_follows")
+          .upsert({ follower_id, following_id } as any, { onConflict: "follower_id,following_id" as any });
+        await accrue(follower_id, "loyalty", 5, "follow_user", { following_id });
+        const { data: follower } = await adminSupabase
+          .from("user_profiles")
+          .select("full_name, username")
+          .eq("id", follower_id)
+          .maybeSingle();
+        const followerName = (follower as any)?.full_name || (follower as any)?.username || "Someone";
+        await adminSupabase.from("notifications").insert({
+          user_id: following_id,
+          type: "info",
+          title: "New follower",
+          message: `${followerName} started following you`,
+        });
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/social/unfollow", async (req, res) => {
+      const { follower_id, following_id } = (req.body || {}) as { follower_id?: string; following_id?: string };
+      if (!follower_id || !following_id)
+        return res.status(400).json({ error: "follower_id and following_id required" });
+      try {
+        await adminSupabase
+          .from("user_follows")
+          .delete()
+          .eq("follower_id", follower_id)
+          .eq("following_id", following_id);
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Endorse with notification
+    app.post("/api/social/endorse", async (req, res) => {
+      const { endorser_id, endorsed_id, skill } = (req.body || {}) as { endorser_id?: string; endorsed_id?: string; skill?: string };
+      if (!endorser_id || !endorsed_id || !skill)
+        return res.status(400).json({ error: "endorser_id, endorsed_id, skill required" });
+      try {
+        await adminSupabase.from("endorsements").insert({ endorser_id, endorsed_id, skill } as any);
+        await accrue(endorsed_id, "reputation", 2, "endorsement_received", { skill, from: endorser_id });
+        const { data: endorser } = await adminSupabase
+          .from("user_profiles")
+          .select("full_name, username")
+          .eq("id", endorser_id)
+          .maybeSingle();
+        const endorserName = (endorser as any)?.full_name || (endorser as any)?.username || "Someone";
+        await adminSupabase.from("notifications").insert({
+          user_id: endorsed_id,
+          type: "success",
+          title: "New endorsement",
+          message: `${endorserName} endorsed you for ${skill}`,
+        });
         return res.json({ ok: true });
       } catch (e: any) {
         return res.status(500).json({ error: e?.message || String(e) });
