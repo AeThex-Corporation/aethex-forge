@@ -96,6 +96,26 @@ export default function Roadmap() {
   );
   const progress = Math.min(100, Math.round((earnedXp / totalXp) * 100));
 
+  const phaseTotals = useMemo(() => {
+    const res: Record<string, { total: number; earned: number; count: number }> = {};
+    for (const q of QUESTS) {
+      const key = q.phase;
+      res[key] = res[key] || { total: 0, earned: 0, count: 0 };
+      res[key].total += q.xp;
+      res[key].count += 1;
+      if (claimed[q.id]) res[key].earned += q.xp;
+    }
+    return res;
+  }, [claimed]);
+
+  const phaseClaims: Record<string, number> = useMemo(() => {
+    const res: Record<string, number> = {};
+    for (const q of QUESTS) {
+      if (claimed[q.id]) res[q.phase] = (res[q.phase] || 0) + 1;
+    }
+    return res;
+  }, [claimed]);
+
   const toggleClaim = (id: string) => setClaimed((m) => ({ ...m, [id]: !m[id] }));
   const toggleUnlock = (id: string) => setUnlocked((m) => ({ ...m, [id]: !m[id] }));
 
