@@ -74,7 +74,10 @@ const App = () => (
               <Route path="/feed" element={<Feed />} />
               <Route path="/teams" element={<Teams />} />
               <Route path="/projects/new" element={<ProjectsNew />} />
-              <Route path="/projects/:projectId/board" element={<ProjectBoard />} />
+              <Route
+                path="/projects/:projectId/board"
+                element={<ProjectBoard />}
+              />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/me" element={<Profile />} />
 

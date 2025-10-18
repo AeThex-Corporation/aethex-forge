@@ -1,5 +1,8 @@
 import { supabase } from "@/lib/supabase";
-import { aethexUserService, aethexNotificationService } from "@/lib/aethex-database-adapter";
+import {
+  aethexUserService,
+  aethexNotificationService,
+} from "@/lib/aethex-database-adapter";
 
 export type TeamVisibility = "public" | "private";
 export type MembershipRole = "owner" | "admin" | "member";
@@ -11,14 +14,21 @@ export const aethexCollabService = {
   async listMyTeams(userId: string) {
     const { data, error } = await supabase
       .from("team_memberships")
-      .select("team_id, teams:team_id ( id, name, slug, description, visibility, created_at )")
+      .select(
+        "team_id, teams:team_id ( id, name, slug, description, visibility, created_at )",
+      )
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
     if (error) return [] as any[];
     return (data || []) as any[];
   },
 
-  async createTeam(ownerId: string, name: string, description?: string | null, visibility: TeamVisibility = "private") {
+  async createTeam(
+    ownerId: string,
+    name: string,
+    description?: string | null,
+    visibility: TeamVisibility = "private",
+  ) {
     // Ensure the owner has a user_profiles row to satisfy FK
     try {
       await aethexUserService.getCurrentUser();
@@ -26,7 +36,12 @@ export const aethexCollabService = {
 
     const { data, error } = await supabase
       .from("teams")
-      .insert({ owner_id: ownerId, name, description: description || null, visibility })
+      .insert({
+        owner_id: ownerId,
+        name,
+        description: description || null,
+        visibility,
+      })
       .select()
       .single();
     if (error) throw new Error(error.message || "Unable to create team");
@@ -52,7 +67,11 @@ export const aethexCollabService = {
     return team;
   },
 
-  async addTeamMember(teamId: string, userId: string, role: MembershipRole = "member") {
+  async addTeamMember(
+    teamId: string,
+    userId: string,
+    role: MembershipRole = "member",
+  ) {
     const { error } = await supabase
       .from("team_memberships")
       .insert({ team_id: teamId, user_id: userId, role });
@@ -60,7 +79,11 @@ export const aethexCollabService = {
   },
 
   // Projects
-  async addProjectMember(projectId: string, userId: string, role: ProjectRole = "contributor") {
+  async addProjectMember(
+    projectId: string,
+    userId: string,
+    role: ProjectRole = "contributor",
+  ) {
     const { error } = await supabase
       .from("project_members")
       .insert({ project_id: projectId, user_id: userId, role });
@@ -70,7 +93,9 @@ export const aethexCollabService = {
   async listProjectMembers(projectId: string) {
     const { data, error } = await supabase
       .from("project_members")
-      .select("user_id, role, user:user_id ( id, full_name, username, avatar_url )")
+      .select(
+        "user_id, role, user:user_id ( id, full_name, username, avatar_url )",
+      )
       .eq("project_id", projectId);
     if (error) return [] as any[];
     return (data || []) as any[];
@@ -87,10 +112,22 @@ export const aethexCollabService = {
     return (data || []) as any[];
   },
 
-  async createTask(projectId: string, title: string, description?: string | null, assigneeId?: string | null, dueDate?: string | null) {
+  async createTask(
+    projectId: string,
+    title: string,
+    description?: string | null,
+    assigneeId?: string | null,
+    dueDate?: string | null,
+  ) {
     const { data, error } = await supabase
       .from("project_tasks")
-      .insert({ project_id: projectId, title, description: description || null, assignee_id: assigneeId || null, due_date: dueDate || null })
+      .insert({
+        project_id: projectId,
+        title,
+        description: description || null,
+        assignee_id: assigneeId || null,
+        due_date: dueDate || null,
+      })
       .select()
       .single();
     if (error) throw new Error(error.message || "Unable to create task");

@@ -509,10 +509,30 @@ export default function Dashboard() {
   const showProfileSetup = !profileComplete;
 
   const statsDisplay = [
-    { label: "Active Projects", value: stats.activeProjects, icon: Rocket, color: "from-blue-500 to-purple-600" },
-    { label: "Completed Tasks", value: stats.completedTasks, icon: Trophy, color: "from-green-500 to-blue-600" },
-    { label: "Team Members", value: stats.teamMembers, icon: Users, color: "from-purple-500 to-pink-600" },
-    { label: "Performance Score", value: stats.performanceScore, icon: TrendingUp, color: "from-orange-500 to-red-600" },
+    {
+      label: "Active Projects",
+      value: stats.activeProjects,
+      icon: Rocket,
+      color: "from-blue-500 to-purple-600",
+    },
+    {
+      label: "Completed Tasks",
+      value: stats.completedTasks,
+      icon: Trophy,
+      color: "from-green-500 to-blue-600",
+    },
+    {
+      label: "Team Members",
+      value: stats.teamMembers,
+      icon: Users,
+      color: "from-purple-500 to-pink-600",
+    },
+    {
+      label: "Performance Score",
+      value: stats.performanceScore,
+      icon: TrendingUp,
+      color: "from-orange-500 to-red-600",
+    },
   ];
 
   const getProgressPercentage = (project: any) => {
@@ -561,10 +581,18 @@ export default function Dashboard() {
   };
 
   const quickActions = [
-    { title: "Start New Project", icon: Rocket, color: "from-blue-500 to-purple-600" },
+    {
+      title: "Start New Project",
+      icon: Rocket,
+      color: "from-blue-500 to-purple-600",
+    },
     { title: "Create Team", icon: Users, color: "from-green-500 to-blue-600" },
     { title: "Access Labs", icon: Zap, color: "from-yellow-500 to-orange-600" },
-    { title: "View Analytics", icon: BarChart3, color: "from-purple-500 to-pink-600" },
+    {
+      title: "View Analytics",
+      icon: BarChart3,
+      color: "from-purple-500 to-pink-600",
+    },
   ];
 
   if (isLoading) {
@@ -1200,7 +1228,12 @@ export default function Dashboard() {
                         Your active development projects
                       </CardDescription>
                     </div>
-                    <Button variant="outline" size="sm" className="hover-lift" onClick={() => navigate("/projects")}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="hover-lift"
+                      onClick={() => navigate("/projects")}
+                    >
                       View All
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </Button>
@@ -1266,7 +1299,13 @@ export default function Dashboard() {
                           >
                             {getPriorityFromTech(project.technologies || [])}
                           </Badge>
-                          <Button variant="outline" size="sm" onClick={() => navigate(`/projects/${project.id}/board`)}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              navigate(`/projects/${project.id}/board`)
+                            }
+                          >
                             Open Board
                           </Button>
                         </div>
@@ -1406,14 +1445,27 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {teams.length === 0 ? (
-                      <div className="text-sm text-muted-foreground">No teams yet.</div>
+                      <div className="text-sm text-muted-foreground">
+                        No teams yet.
+                      </div>
                     ) : (
                       teams.slice(0, 6).map((t: any) => {
                         const team = (t as any).teams || t;
                         return (
-                          <div key={team.id} className="flex items-center justify-between p-3 rounded border border-border/40">
-                            <div className="font-medium text-sm">{team.name}</div>
-                            <Button variant="ghost" size="sm" onClick={() => navigate("/teams")}>Open</Button>
+                          <div
+                            key={team.id}
+                            className="flex items-center justify-between p-3 rounded border border-border/40"
+                          >
+                            <div className="font-medium text-sm">
+                              {team.name}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => navigate("/teams")}
+                            >
+                              Open
+                            </Button>
                           </div>
                         );
                       })
@@ -1428,15 +1480,34 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {invites.length === 0 ? (
-                      <div className="text-sm text-muted-foreground">No invites yet.</div>
+                      <div className="text-sm text-muted-foreground">
+                        No invites yet.
+                      </div>
                     ) : (
                       invites.slice(0, 6).map((inv: any) => (
-                        <div key={inv.id} className="flex items-center justify-between p-3 rounded border border-border/40">
+                        <div
+                          key={inv.id}
+                          className="flex items-center justify-between p-3 rounded border border-border/40"
+                        >
                           <div className="text-sm">
-                            <div className="font-medium">{inv.invitee_email}</div>
-                            <div className="text-xs text-muted-foreground">{inv.status}</div>
+                            <div className="font-medium">
+                              {inv.invitee_email}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {inv.status}
+                            </div>
                           </div>
-                          <Button variant="ghost" size="sm" onClick={() => navigator.clipboard.writeText(`${location.origin}/login?invite=${inv.token}`)}>Copy link</Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              navigator.clipboard.writeText(
+                                `${location.origin}/login?invite=${inv.token}`,
+                              )
+                            }
+                          >
+                            Copy link
+                          </Button>
                         </div>
                       ))
                     )}

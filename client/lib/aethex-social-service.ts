@@ -56,7 +56,10 @@ export const aethexSocialService = {
     const resp = await fetch("/api/social/follow", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ follower_id: followerId, following_id: followingId }),
+      body: JSON.stringify({
+        follower_id: followerId,
+        following_id: followingId,
+      }),
     });
     if (!resp.ok) throw new Error(await resp.text());
   },
@@ -65,7 +68,10 @@ export const aethexSocialService = {
     const resp = await fetch("/api/social/unfollow", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ follower_id: followerId, following_id: followingId }),
+      body: JSON.stringify({
+        follower_id: followerId,
+        following_id: followingId,
+      }),
     });
     if (!resp.ok) throw new Error(await resp.text());
   },
@@ -148,7 +154,11 @@ export const aethexSocialService = {
     const resp = await fetch("/api/social/endorse", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ endorser_id: endorserId, endorsed_id: endorsedId, skill }),
+      body: JSON.stringify({
+        endorser_id: endorserId,
+        endorsed_id: endorsedId,
+        skill,
+      }),
     });
     if (!resp.ok) throw new Error(await resp.text());
   },
