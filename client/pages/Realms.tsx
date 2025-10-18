@@ -4,12 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { REALM_OPTIONS, RealmKey } from "@/components/settings/RealmSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 export default function Realms() {
-  const { profile, roles } = useAuth();
+  const { profile, roles, updateProfile } = useAuth();
+  const navigate = useNavigate();
+  const [activating, setActivating] = useState<string | null>(null);
   const lastRealm = (profile as any)?.user_type as RealmKey | undefined;
   const canSeeStaff = useMemo(
     () => roles.some((r) => ["owner", "admin", "founder", "staff", "employee"].includes(r.toLowerCase())),
@@ -53,10 +55,24 @@ export default function Realms() {
                     ))}
                   </div>
                   <div className="pt-2">
-                    {/* Navigates to dashboard and sets realm via query param */}
-                    <Button asChild>
-                      <Link to={`/dashboard?realm=${realm.id}`}>Open Dashboard</Link>
-                    </Button>
+                    {active ? (
+                      <Button disabled variant="outline">Current Realm</Button>
+                    ) : (
+                      <Button
+                        onClick={async () => {
+                          setActivating(realm.id);
+                          try {
+                            await updateProfile({ user_type: realm.id } as any);
+                            navigate("/dashboard", { replace: true });
+                          } finally {
+                            setActivating(null);
+                          }
+                        }}
+                        disabled={activating === realm.id}
+                      >
+                        {activating === realm.id ? "Activating…" : "Activate Realm"}
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
                 {active && (
