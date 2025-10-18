@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminStatCard from "@/components/admin/AdminStatCard";
 import AdminMemberManager from "@/components/admin/AdminMemberManager";
 import AdminAchievementManager from "@/components/admin/AdminAchievementManager";
+import AdminSpotlightManager from "@/components/admin/AdminSpotlightManager";
 import AdminStatusOverview from "@/components/admin/AdminStatusOverview";
 import AdminChangelogDigest from "@/components/admin/AdminChangelogDigest";
 import AdminSystemMap from "@/components/admin/AdminSystemMap";
