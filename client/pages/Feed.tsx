@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { aethexSocialService } from "@/lib/aethex-social-service";
 import { cn } from "@/lib/utils";
+import { normalizeErrorMessage } from "@/lib/error-utils";
 import { communityService, realtimeService } from "@/lib/supabase-service";
 import {
   ArrowUpRight,
@@ -89,6 +90,26 @@ export default function Feed() {
     "all" | "following" | "trending"
   >("all");
 
+  const mapPostsToFeedItems = useCallback(
+    (source: any[]): FeedItem[] =>
+      (Array.isArray(source) ? source : []).map((p: any) => {
+        const meta = parseContent(p.content);
+        const author = p.user_profiles || {};
+        return {
+          id: p.id,
+          authorId: p.author_id,
+          authorName: author.full_name || author.username || "Community member",
+          authorAvatar: author.avatar_url,
+          caption: meta.text,
+          mediaUrl: meta.mediaUrl,
+          mediaType: meta.mediaType,
+          likes: p.likes_count ?? 0,
+          comments: p.comments_count ?? 0,
+        };
+      }),
+    [],
+  );
+
   const fetchFeed = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -99,24 +120,6 @@ export default function Feed() {
       } else {
         setFollowing([]);
       }
-
-      const mapPostsToFeedItems = (source: any[]): FeedItem[] =>
-        (Array.isArray(source) ? source : []).map((p: any) => {
-          const meta = parseContent(p.content);
-          const author = p.user_profiles || {};
-          return {
-            id: p.id,
-            authorId: p.author_id,
-            authorName:
-              author.full_name || author.username || "Community member",
-            authorAvatar: author.avatar_url,
-            caption: meta.text,
-            mediaUrl: meta.mediaUrl,
-            mediaType: meta.mediaType,
-            likes: p.likes_count ?? 0,
-            comments: p.comments_count ?? 0,
-          };
-        });
 
       let mapped = mapPostsToFeedItems(posts);
 
@@ -147,11 +150,20 @@ export default function Feed() {
       setItems(mapped);
     } catch (error) {
       console.error("Failed to load feed", error);
-      setItems([]);
+      toast({
+        variant: "destructive",
+        title: "Failed to load feed",
+        description: normalizeErrorMessage(error),
+      });
+      try {
+        ensureDemoSeed();
+        const demoPosts = getDemoPosts();
+        setItems(mapPostsToFeedItems(demoPosts));
+      } catch {}
     } finally {
       setIsLoading(false);
     }
-  }, [user?.id]);
+  }, [aethexSocialService, communityService, mapPostsToFeedItems, toast, user?.id]);
 
   useEffect(() => {
     fetchFeed();
