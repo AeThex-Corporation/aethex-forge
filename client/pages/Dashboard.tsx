@@ -277,9 +277,9 @@ export default function Dashboard() {
 
     // Only redirect to login when auth is resolved and there's no user
     if (!user && !authLoading) {
-      console.log("No user after auth resolved, redirecting to login");
+      console.log("No user after auth resolved, redirecting to onboarding");
       setIsLoading(false);
-      navigate("/login", { replace: true });
+      navigate("/onboarding", { replace: true });
       return;
     }
 
