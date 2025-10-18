@@ -263,14 +263,23 @@ export const communityService = {
     try {
       const resp = await fetch(`/api/posts?limit=${encodeURIComponent(String(limit))}`);
       if (resp.ok) {
-        const payload = await resp.json();
-        return (Array.isArray(payload) ? payload : []) as CommunityPost[];
+        const ct = resp.headers.get("content-type") || "";
+        if (ct.includes("application/json") || ct.includes("json")) {
+          const payload = await resp.json();
+          return (Array.isArray(payload) ? payload : []) as CommunityPost[];
+        } else {
+          const text = await resp.text();
+          console.warn("API fallback returned non-JSON content-type:", ct, text.slice(0, 120));
+        }
+      } else {
+        console.warn("API fallback /api/posts not ok:", resp.status, resp.statusText);
       }
     } catch (apiErr) {
       console.error("API fallback for getPosts failed:", (apiErr as any)?.message || apiErr);
     }
 
-    throw new Error("Unable to load posts");
+    // As a last resort, return an empty array so callers can apply their own demo fallback without surfacing an error toast
+    return [] as CommunityPost[];
   },
 
   async createPost(
