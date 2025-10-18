@@ -160,6 +160,20 @@ export default function Roadmap() {
           </div>
         </section>
 
+        <section className="container mx-auto px-4 pb-6">
+          <div className="grid gap-3 md:grid-cols-[1fr_1fr]">
+            <ThemeToggle value={theme} onChange={setTheme} />
+            <GalaxyMap
+              phases={["now","month1","month2","month3"].map((id) => ({
+                id: id as Quest["phase"],
+                label: id === "now" ? "Now" : id === "month1" ? "Month 1" : id === "month2" ? "Month 2" : "Month 3",
+                percent: phaseTotals[id]?.total ? Math.round((phaseTotals[id].earned / phaseTotals[id].total) * 100) : 0,
+              }))}
+              onSelect={(id) => setFocusedPhase(id)}
+            />
+          </div>
+        </section>
+
         {/* Phases */}
         <section className="container mx-auto px-4 pb-8">
           <div className="grid gap-6 md:grid-cols-2">
