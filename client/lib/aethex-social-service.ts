@@ -10,13 +10,13 @@ export const aethexSocialService = {
         .limit(limit);
 
       if (error) {
-        console.error("Failed to load recommended profiles:", error);
+        console.error("Failed to load recommended profiles:", (error as any)?.message || error);
         return [];
       }
 
       return (data || []) as any[];
     } catch (error) {
-      console.error("Unexpected error loading recommended profiles:", error);
+      console.error("Unexpected error loading recommended profiles:", (error as any)?.message || error);
       return [];
     }
   },
@@ -29,13 +29,13 @@ export const aethexSocialService = {
         .eq("follower_id", userId);
 
       if (error) {
-        console.error("Failed to load following list:", error);
+        console.error("Failed to load following list:", (error as any)?.message || error);
         return [];
       }
 
       return (data as any[]).map((r: any) => r.following_id);
     } catch (error) {
-      console.error("Unexpected error loading following list:", error);
+      console.error("Unexpected error loading following list:", (error as any)?.message || error);
       return [];
     }
   },
