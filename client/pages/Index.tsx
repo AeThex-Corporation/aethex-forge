@@ -303,7 +303,8 @@ export default function Index() {
                   Crafting Digital Realities
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up">
-                  Where vision meets execution. We craft experiences through design, development, and community.
+                  Where vision meets execution. We craft experiences through
+                  design, development, and community.
                 </p>
               </div>
             </div>
@@ -325,14 +326,22 @@ export default function Index() {
                   >
                     <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/6 via-transparent to-white/0" />
                     <CardContent className="p-5 sm:p-6 flex flex-col items-center text-center gap-3">
-                      <div className={`relative w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} grid place-items-center shadow-inner`}>
+                      <div
+                        className={`relative w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} grid place-items-center shadow-inner`}
+                      >
                         <div className="absolute -inset-[2px] rounded-xl bg-gradient-to-r from-white/20 to-transparent blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                         <Icon className="h-6 w-6 text-white drop-shadow" />
                       </div>
-                      <h3 className="font-semibold text-sm tracking-wide">{feature.title}</h3>
+                      <h3 className="font-semibold text-sm tracking-wide">
+                        {feature.title}
+                      </h3>
                       <div className="flex flex-wrap justify-center gap-2 min-h-[24px]">
                         {(feature.tags || []).slice(0, 2).map((tag, i) => (
-                          <Badge key={i} variant="outline" className="border-white/10 text-xs text-foreground/80">
+                          <Badge
+                            key={i}
+                            variant="outline"
+                            className="border-white/10 text-xs text-foreground/80"
+                          >
                             {tag}
                           </Badge>
                         ))}
@@ -340,10 +349,15 @@ export default function Index() {
                       <p className="text-xs text-muted-foreground line-clamp-2">
                         {feature.description}
                       </p>
-                      <div className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${feature.color} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                      <div
+                        className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${feature.color} opacity-60 group-hover:opacity-100 transition-opacity`}
+                      />
                       {feature.link ? (
                         <div className="pt-1">
-                          <Link to={feature.link} className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200">
+                          <Link
+                            to={feature.link}
+                            className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200"
+                          >
                             Explore
                             <ArrowRight className="h-3 w-3" />
                           </Link>
@@ -372,14 +386,22 @@ export default function Index() {
                   >
                     <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/6 via-transparent to-white/0" />
                     <CardContent className="p-5 sm:p-6 flex flex-col items-center text-center gap-3">
-                      <div className={`relative w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} grid place-items-center shadow-inner`}>
+                      <div
+                        className={`relative w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} grid place-items-center shadow-inner`}
+                      >
                         <div className="absolute -inset-[2px] rounded-xl bg-gradient-to-r from-white/20 to-transparent blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
                         <Icon className="h-6 w-6 text-white drop-shadow" />
                       </div>
-                      <h3 className="font-semibold text-sm tracking-wide">{feature.title}</h3>
+                      <h3 className="font-semibold text-sm tracking-wide">
+                        {feature.title}
+                      </h3>
                       <div className="flex flex-wrap justify-center gap-2 min-h-[24px]">
                         {(feature.tags || []).slice(0, 2).map((tag, i) => (
-                          <Badge key={i} variant="outline" className="border-white/10 text-xs text-foreground/80">
+                          <Badge
+                            key={i}
+                            variant="outline"
+                            className="border-white/10 text-xs text-foreground/80"
+                          >
                             {tag}
                           </Badge>
                         ))}
@@ -387,10 +409,15 @@ export default function Index() {
                       <p className="text-xs text-muted-foreground line-clamp-2">
                         {feature.description}
                       </p>
-                      <div className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${feature.color} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                      <div
+                        className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${feature.color} opacity-60 group-hover:opacity-100 transition-opacity`}
+                      />
                       {feature.link ? (
                         <div className="pt-1">
-                          <Link to={feature.link} className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200">
+                          <Link
+                            to={feature.link}
+                            className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200"
+                          >
                             Explore
                             <ArrowRight className="h-3 w-3" />
                           </Link>

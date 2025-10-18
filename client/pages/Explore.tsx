@@ -8,7 +8,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { Microscope, Sparkles, ArrowRight, Rocket, Layers, Users, BookOpen, Terminal, Shield, Compass } from "lucide-react";
+import {
+  Microscope,
+  Sparkles,
+  ArrowRight,
+  Rocket,
+  Layers,
+  Users,
+  BookOpen,
+  Terminal,
+  Shield,
+  Compass,
+} from "lucide-react";
 import { useMemo } from "react";
 
 export default function Explore() {
@@ -153,7 +164,6 @@ export default function Explore() {
 
   return (
     <Layout>
-
       {/* Achievements Section */}
       <section id="overview" className="py-16 sm:py-20 bg-background/30">
         <div className="container mx-auto px-4">
@@ -194,8 +204,12 @@ export default function Explore() {
       <section id="services" className="py-16 sm:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gradient">Core Areas</h2>
-            <p className="text-muted-foreground mt-2">Services, programs, resources, and community</p>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
+              Core Areas
+            </h2>
+            <p className="text-muted-foreground mt-2">
+              Services, programs, resources, and community
+            </p>
           </div>
 
           {(() => {
@@ -221,13 +235,18 @@ export default function Explore() {
                           </div>
                         )}
                       </div>
-                      <CardDescription className={`text-sm ${offering.descriptionClass}`}>
+                      <CardDescription
+                        className={`text-sm ${offering.descriptionClass}`}
+                      >
                         {offering.description}
                       </CardDescription>
                       {offering.tags && (
                         <div className="flex flex-wrap gap-2 pt-1">
                           {offering.tags.map((t: string) => (
-                            <span key={t} className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-white/80">
+                            <span
+                              key={t}
+                              className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-white/80"
+                            >
                               {t}
                             </span>
                           ))}
@@ -236,7 +255,10 @@ export default function Explore() {
                     </CardHeader>
                     <CardContent className="relative pt-2 mt-auto">
                       {offering.link ? (
-                        <Button asChild className={`w-full ${offering.buttonClass || "bg-gradient-to-r from-aethex-500 to-neon-blue"}`}>
+                        <Button
+                          asChild
+                          className={`w-full ${offering.buttonClass || "bg-gradient-to-r from-aethex-500 to-neon-blue"}`}
+                        >
                           <Link to={offering.link}>Learn More</Link>
                         </Button>
                       ) : (
@@ -248,25 +270,43 @@ export default function Explore() {
                               className={`w-full ${offering.actions[0].buttonClass || "border-border"}`}
                             >
                               {offering.actions[0].external ? (
-                                <a href={offering.actions[0].href} target="_blank" rel="noreferrer">{offering.actions[0].label}</a>
+                                <a
+                                  href={offering.actions[0].href}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  {offering.actions[0].label}
+                                </a>
                               ) : (
-                                <Link to={offering.actions[0].href}>{offering.actions[0].label}</Link>
+                                <Link to={offering.actions[0].href}>
+                                  {offering.actions[0].label}
+                                </Link>
                               )}
                             </Button>
                           ) : null}
                           {offering.actions && offering.actions.length > 1 ? (
                             <div className="mt-2 flex flex-wrap gap-3 justify-center text-xs text-muted-foreground">
-                              {offering.actions.slice(1).map((a: any) => (
+                              {offering.actions.slice(1).map((a: any) =>
                                 a.external ? (
-                                  <a key={a.label} href={a.href} target="_blank" rel="noreferrer" className="hover:text-foreground/80">
+                                  <a
+                                    key={a.label}
+                                    href={a.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="hover:text-foreground/80"
+                                  >
                                     {a.label}
                                   </a>
                                 ) : (
-                                  <Link key={a.label} to={a.href} className="hover:text-foreground/80">
+                                  <Link
+                                    key={a.label}
+                                    to={a.href}
+                                    className="hover:text-foreground/80"
+                                  >
                                     {a.label}
                                   </Link>
-                                )
-                              ))}
+                                ),
+                              )}
                             </div>
                           ) : null}
                         </>
@@ -287,20 +327,36 @@ export default function Explore() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent" />
             <CardContent className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 rounded-full border border-yellow-400/40 px-3 py-1 text-xs uppercase tracking-widest">R&D</div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-yellow-400/40 px-3 py-1 text-xs uppercase tracking-widest">
+                  R&D
+                </div>
                 <h3 className="text-2xl font-bold flex items-center gap-2">
                   <Microscope className="h-5 w-5 text-yellow-300" /> AeThex Labs
                 </h3>
                 <p className="text-yellow-100/80">
-                  Experimental interfaces, prototypes, and internal tooling. Enter the BlackSite to see what's next.
+                  Experimental interfaces, prototypes, and internal tooling.
+                  Enter the BlackSite to see what's next.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-end">
-                <Button asChild className="bg-yellow-400 text-black hover:bg-yellow-300">
+                <Button
+                  asChild
+                  className="bg-yellow-400 text-black hover:bg-yellow-300"
+                >
                   <Link to="/research">Open Interface</Link>
                 </Button>
-                <Button asChild variant="outline" className="border-yellow-400/60 text-yellow-200 hover:bg-yellow-500/10">
-                  <a href="https://labs.aethex.biz" target="_blank" rel="noreferrer">Visit labs.aethex.biz</a>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-yellow-400/60 text-yellow-200 hover:bg-yellow-500/10"
+                >
+                  <a
+                    href="https://labs.aethex.biz"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Visit labs.aethex.biz
+                  </a>
                 </Button>
               </div>
             </CardContent>
@@ -309,7 +365,10 @@ export default function Explore() {
       </section>
 
       {/* Technology Showcase */}
-      <section id="technology" className="py-16 sm:py-20 relative overflow-hidden">
+      <section
+        id="technology"
+        className="py-16 sm:py-20 relative overflow-hidden"
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/20 via-transparent to-neon-blue/20" />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -325,12 +384,48 @@ export default function Explore() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
               {[
-                { name: "Game Studios", status: "Active", color: "from-purple-500 to-blue-600", icon: Rocket, desc: "Production pipelines, content tooling, and live ops." },
-                { name: "Design Systems", status: "Evolving", color: "from-blue-500 to-green-600", icon: Layers, desc: "Unified components and patterns across apps." },
-                { name: "Creator Tools", status: "Live", color: "from-green-500 to-yellow-600", icon: Terminal, desc: "CLI, automation, and workflow accelerators." },
-                { name: "Launch Ops", status: "Scaling", color: "from-yellow-500 to-red-600", icon: Shield, desc: "Release orchestration, quality gates, and metrics." },
-                { name: "Content Pipeline", status: "In Progress", color: "from-red-500 to-purple-600", icon: BookOpen, desc: "Publishing, assets, and distribution systems." },
-                { name: "Edge Experiences", status: "Deployed", color: "from-purple-500 to-pink-600", icon: Users, desc: "Low-latency interfaces on the edge." },
+                {
+                  name: "Game Studios",
+                  status: "Active",
+                  color: "from-purple-500 to-blue-600",
+                  icon: Rocket,
+                  desc: "Production pipelines, content tooling, and live ops.",
+                },
+                {
+                  name: "Design Systems",
+                  status: "Evolving",
+                  color: "from-blue-500 to-green-600",
+                  icon: Layers,
+                  desc: "Unified components and patterns across apps.",
+                },
+                {
+                  name: "Creator Tools",
+                  status: "Live",
+                  color: "from-green-500 to-yellow-600",
+                  icon: Terminal,
+                  desc: "CLI, automation, and workflow accelerators.",
+                },
+                {
+                  name: "Launch Ops",
+                  status: "Scaling",
+                  color: "from-yellow-500 to-red-600",
+                  icon: Shield,
+                  desc: "Release orchestration, quality gates, and metrics.",
+                },
+                {
+                  name: "Content Pipeline",
+                  status: "In Progress",
+                  color: "from-red-500 to-purple-600",
+                  icon: BookOpen,
+                  desc: "Publishing, assets, and distribution systems.",
+                },
+                {
+                  name: "Edge Experiences",
+                  status: "Deployed",
+                  color: "from-purple-500 to-pink-600",
+                  icon: Users,
+                  desc: "Low-latency interfaces on the edge.",
+                },
               ].map((tech, index) => (
                 <Card
                   key={index}
@@ -340,16 +435,24 @@ export default function Explore() {
                   <CardContent className="p-6 space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-md bg-gradient-to-r ${tech.color} grid place-items-center`}>
+                        <div
+                          className={`w-9 h-9 rounded-md bg-gradient-to-r ${tech.color} grid place-items-center`}
+                        >
                           {/* @ts-ignore */}
                           <tech.icon className="h-4 w-4 text-white" />
                         </div>
-                        <h3 className="font-semibold text-foreground">{tech.name}</h3>
+                        <h3 className="font-semibold text-foreground">
+                          {tech.name}
+                        </h3>
                       </div>
-                      <span className="text-xs px-2 py-0.5 rounded-full border border-white/10 text-muted-foreground">{tech.status}</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full border border-white/10 text-muted-foreground">
+                        {tech.status}
+                      </span>
                     </div>
                     <p className="text-sm text-muted-foreground">{tech.desc}</p>
-                    <div className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${tech.color} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                    <div
+                      className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${tech.color} opacity-60 group-hover:opacity-100 transition-opacity`}
+                    />
                   </CardContent>
                 </Card>
               ))}

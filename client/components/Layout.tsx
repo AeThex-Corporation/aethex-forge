@@ -76,7 +76,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
         <div className="container mx-auto flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-2 min-w-0">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 hover-glow group shrink-0">
+          <Link
+            to="/"
+            className="flex items-center space-x-3 hover-glow group shrink-0"
+          >
             <div className="flex items-center space-x-3">
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
@@ -375,226 +378,226 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
       <main className="flex-1 w-full overflow-x-hidden">{children}</main>
 
       {!hideFooter && (
-      <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-up">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Company Info */}
-            <div className="space-y-4 animate-fade-in">
-              <div className="flex items-center space-x-3 group">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
-                  alt="AeThex Logo"
-                  className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
-                />
-                <span className="font-bold text-gradient group-hover:animate-pulse">
-                  AeThex
-                </span>
+        <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-up">
+          <div className="container mx-auto px-4 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* Company Info */}
+              <div className="space-y-4 animate-fade-in">
+                <div className="flex items-center space-x-3 group">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
+                    alt="AeThex Logo"
+                    className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
+                  />
+                  <span className="font-bold text-gradient group-hover:animate-pulse">
+                    AeThex
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground hover:text-muted-foreground/80 transition-colors">
+                  Pushing the boundaries of technology through cutting-edge
+                  research and breakthrough discoveries.
+                </p>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                    Queen Creek, Arizona
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                    <a
+                      href="mailto:info@aethex.biz"
+                      className="hover:text-aethex-400 transition-colors"
+                    >
+                      info@aethex.biz
+                    </a>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                    (346) 556-7100
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground hover:text-muted-foreground/80 transition-colors">
-                Pushing the boundaries of technology through cutting-edge
-                research and breakthrough discoveries.
+
+              {/* Services */}
+              <div
+                className="space-y-4 animate-slide-up"
+                style={{ animationDelay: "0.1s" }}
+              >
+                <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
+                  Services
+                </h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>
+                    <Link
+                      to="/game-development"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Game Development
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/consulting"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Development Consulting
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/mentorship"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Mentorship Programs
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/research"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Research & Labs
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Company */}
+              <div
+                className="space-y-4 animate-slide-up"
+                style={{ animationDelay: "0.2s" }}
+              >
+                <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
+                  Company
+                </h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>
+                    <Link
+                      to="/about"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      About AeThex
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/opportunities"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Opportunities
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/community"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Community Hub
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/changelog"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Changelog
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/status"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      System Status
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Resources */}
+              <div
+                className="space-y-4 animate-slide-up"
+                style={{ animationDelay: "0.3s" }}
+              >
+                <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
+                  Resources
+                </h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>
+                    <Link
+                      to="/docs"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Documentation
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/tutorials"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Tutorials
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/blog"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Blog
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/support"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Support Center
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div
+              className="mt-8 pt-8 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center animate-fade-in"
+              style={{ animationDelay: "0.4s" }}
+            >
+              <p className="text-xs text-muted-foreground hover:text-aethex-400 transition-colors">
+                © 2024 AeThex Corporation. All rights reserved.
               </p>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
-                  Queen Creek, Arizona
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
-                  <a
-                    href="mailto:info@aethex.biz"
-                    className="hover:text-aethex-400 transition-colors"
-                  >
-                    info@aethex.biz
-                  </a>
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
-                  (346) 556-7100
-                </p>
+              <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+                <Link
+                  to="/privacy"
+                  onClick={scrollToTop}
+                  className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  to="/terms"
+                  onClick={scrollToTop}
+                  className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105"
+                >
+                  Terms of Service
+                </Link>
               </div>
             </div>
-
-            {/* Services */}
-            <div
-              className="space-y-4 animate-slide-up"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
-                Services
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link
-                    to="/game-development"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Game Development
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/consulting"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Development Consulting
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/mentorship"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Mentorship Programs
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/research"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Research & Labs
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div
-              className="space-y-4 animate-slide-up"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
-                Company
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link
-                    to="/about"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    About AeThex
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/opportunities"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Opportunities
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/community"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Community Hub
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/changelog"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Changelog
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/status"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    System Status
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Resources */}
-            <div
-              className="space-y-4 animate-slide-up"
-              style={{ animationDelay: "0.3s" }}
-            >
-              <h3 className="font-semibold text-foreground hover:text-gradient transition-all duration-300">
-                Resources
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link
-                    to="/docs"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Documentation
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/tutorials"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Tutorials
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/blog"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/support"
-                    onClick={scrollToTop}
-                    className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    Support Center
-                  </Link>
-                </li>
-              </ul>
-            </div>
           </div>
-
-          <div
-            className="mt-8 pt-8 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center animate-fade-in"
-            style={{ animationDelay: "0.4s" }}
-          >
-            <p className="text-xs text-muted-foreground hover:text-aethex-400 transition-colors">
-              © 2024 AeThex Corporation. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-              <Link
-                to="/privacy"
-                onClick={scrollToTop}
-                className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms"
-                onClick={scrollToTop}
-                className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105"
-              >
-                Terms of Service
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+        </footer>
       )}
 
       {/* Supabase Configuration Status */}

@@ -49,7 +49,10 @@ export default function ResetPassword() {
         const access_token = params.get("access_token");
         const refresh_token = params.get("refresh_token");
         if (access_token && refresh_token) {
-          const { error: setErr } = await supabase.auth.setSession({ access_token, refresh_token });
+          const { error: setErr } = await supabase.auth.setSession({
+            access_token,
+            refresh_token,
+          });
           if (setErr) {
             setLinkError("Reset link is invalid or has expired.");
             return;

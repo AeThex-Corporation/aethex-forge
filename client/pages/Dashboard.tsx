@@ -868,7 +868,9 @@ export default function Dashboard() {
                             onChange={async (e) => {
                               const ensureBuckets = async () => {
                                 try {
-                                  await fetch("/api/storage/ensure-buckets", { method: "POST" });
+                                  await fetch("/api/storage/ensure-buckets", {
+                                    method: "POST",
+                                  });
                                 } catch {}
                               };
                               const file = e.target.files?.[0];
@@ -888,7 +890,10 @@ export default function Dashboard() {
                                 let { error } = await supabase.storage
                                   .from("avatars")
                                   .upload(path, file, { upsert: true });
-                                if (error && /bucket/i.test(error?.message || "")) {
+                                if (
+                                  error &&
+                                  /bucket/i.test(error?.message || "")
+                                ) {
                                   await ensureBuckets();
                                   ({ error } = await supabase.storage
                                     .from("avatars")
@@ -941,7 +946,9 @@ export default function Dashboard() {
                             onChange={async (e) => {
                               const ensureBuckets = async () => {
                                 try {
-                                  await fetch("/api/storage/ensure-buckets", { method: "POST" });
+                                  await fetch("/api/storage/ensure-buckets", {
+                                    method: "POST",
+                                  });
                                 } catch {}
                               };
                               const file = e.target.files?.[0];
@@ -961,7 +968,10 @@ export default function Dashboard() {
                                 let { error } = await supabase.storage
                                   .from("banners")
                                   .upload(path, file, { upsert: true });
-                                if (error && /bucket/i.test(error?.message || "")) {
+                                if (
+                                  error &&
+                                  /bucket/i.test(error?.message || "")
+                                ) {
                                   await ensureBuckets();
                                   ({ error } = await supabase.storage
                                     .from("banners")
