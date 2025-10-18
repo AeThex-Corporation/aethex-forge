@@ -2,7 +2,7 @@ import Layout from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { REALM_OPTIONS, RealmKey } from "@/components/settings/RealmSwitcher";
+import RealmSwitcher, { REALM_OPTIONS, RealmKey } from "@/components/settings/RealmSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,9 @@ export default function Realms() {
   const { profile, roles, updateProfile } = useAuth();
   const navigate = useNavigate();
   const [activating, setActivating] = useState<string | null>(null);
+  const [selectedRealm, setSelectedRealm] = useState<RealmKey | null>((profile as any)?.user_type ?? null);
+  const [experience, setExperience] = useState<string>((profile as any)?.experience_level || "beginner");
+  const [saving, setSaving] = useState(false);
   const lastRealm = (profile as any)?.user_type as RealmKey | undefined;
   const canSeeStaff = useMemo(
     () => roles.some((r) => ["owner", "admin", "founder", "staff", "employee"].includes(r.toLowerCase())),
@@ -30,6 +33,28 @@ export default function Realms() {
           <h1 className="text-3xl font-bold">Choose your realm</h1>
           <p className="text-muted-foreground">Your dashboard adapts to the selected realm. Last used realm is highlighted.</p>
         </div>
+
+        {/* Realm & Path manager */}
+        <div className="mb-8">
+          <RealmSwitcher
+            selectedRealm={selectedRealm}
+            onRealmChange={setSelectedRealm}
+            selectedExperience={experience}
+            onExperienceChange={setExperience}
+            hasChanges={selectedRealm !== ((profile as any)?.user_type ?? null) || experience !== ((profile as any)?.experience_level || "beginner")}
+            onSave={async () => {
+              if (!selectedRealm) return;
+              setSaving(true);
+              try {
+                await updateProfile({ user_type: selectedRealm, experience_level: experience } as any);
+              } finally {
+                setSaving(false);
+              }
+            }}
+            saving={saving}
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {visible.map((realm, i) => {
             const Icon = realm.icon;
