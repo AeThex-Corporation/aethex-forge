@@ -486,13 +486,17 @@ const ProfilePassport = () => {
                     Manage connections
                   </Link>
                 </Button>
+              ) : profile.email ? (
+                <Button asChild variant="outline" className="border-slate-700/70 text-slate-100">
+                  <a href={`mailto:${profile.email}?subject=${encodeURIComponent("Collaboration invite")}&body=${encodeURIComponent("Hi, I'd like to collaborate on a project.")}`}>
+                    Invite to collaborate
+                  </a>
+                </Button>
               ) : (
-                <Button
-                  asChild
-                  variant="outline"
-                  className="border-slate-700/70 text-slate-100"
-                >
-                  <Link to="/dashboard">Invite to collaborate</Link>
+                <Button asChild variant="outline" className="border-slate-700/70 text-slate-100">
+                  <Link to={`/contact?topic=collaboration&about=${encodeURIComponent(profile.username || profile.full_name || "member")}`}>
+                    Invite to collaborate
+                  </Link>
                 </Button>
               )}
             </div>
