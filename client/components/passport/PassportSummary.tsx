@@ -89,6 +89,16 @@ const PassportSummary = ({
     : Math.min(((totalXp % 1000) / 1000) * 100, 100);
   const featureAchievements = achievements.slice(0, MAX_HERO_ACHIEVEMENTS);
 
+  const getAchievementEmoji = (icon?: string, name?: string) => {
+    const key = (icon || name || "").toLowerCase();
+    if (/founding|founder/.test(key)) return "🎖️";
+    if (/trophy|award|medal|badge/.test(key)) return "🏆";
+    if (/welcome/.test(key)) return "🎉";
+    if (/star/.test(key)) return "⭐";
+    if (/rocket|launch/.test(key)) return "🚀";
+    return icon && icon.length <= 3 ? icon : "✨";
+  };
+
   return (
     <Card className="bg-gradient-to-br from-slate-950/90 via-slate-900/70 to-slate-950/90 border border-slate-800 shadow-2xl">
       <CardHeader className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -212,7 +222,9 @@ const PassportSummary = ({
                   className="rounded-xl border border-slate-800 bg-slate-900/40 p-4"
                 >
                   <div className="flex items-center gap-2 text-slate-100">
-                    <span className="text-xl">{achievement.icon || "✨"}</span>
+                    <span className="text-xl">
+                      {getAchievementEmoji(achievement.icon as any, achievement.name)}
+                    </span>
                     <span className="text-sm font-medium">
                       {achievement.name}
                     </span>
