@@ -253,7 +253,7 @@ export default function Index() {
   }
 
   return (
-    <Layout>
+    <Layout hideFooter>
       {/* Hero Section - Geometric Design */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Geometric Background Pattern */}
