@@ -27,7 +27,7 @@ interface UserTypeSelectionProps {
 const userTypes = [
   {
     id: "game-developer" as UserType,
-    title: "Game Developer",
+    title: "Game Development",
     description:
       "Join our development community, access tools, mentorship, and collaborate on cutting-edge game projects.",
     icon: GamepadIcon,
@@ -41,7 +41,7 @@ const userTypes = [
   },
   {
     id: "client" as UserType,
-    title: "Client",
+    title: "Consulting",
     description:
       "Partner with us for custom game development, consulting services, and technical solutions.",
     icon: BriefcaseIcon,
@@ -55,7 +55,7 @@ const userTypes = [
   },
   {
     id: "member" as UserType,
-    title: "Community Member",
+    title: "Community",
     description:
       "Be part of our innovation community with access to research, networking, and exclusive content.",
     icon: UsersIcon,
@@ -69,7 +69,7 @@ const userTypes = [
   },
   {
     id: "customer" as UserType,
-    title: "Customer",
+    title: "Get Started",
     description:
       "Explore our games, tools, and products designed to enhance your gaming and development experience.",
     icon: ShoppingCartIcon,
