@@ -167,6 +167,28 @@ export default function Network() {
 
             <Card className="bg-card/50 border-border/50">
               <CardHeader>
+                <CardTitle>Invite collaborator</CardTitle>
+                <CardDescription>Grow your network</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="name@company.com"
+                    value={inviteEmail}
+                    onChange={(e) => setInviteEmail(e.target.value)}
+                  />
+                  <Button onClick={handleInvite} disabled={inviteSending}>
+                    Send
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Accepted invites boost your loyalty, XP, and reputation.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader>
                 <CardTitle>Recommendations</CardTitle>
                 <CardDescription>
                   People who align with your interests
