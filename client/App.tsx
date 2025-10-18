@@ -57,6 +57,7 @@ import FourOhFourPage from "./pages/404";
 import SignupRedirect from "./pages/SignupRedirect";
 import MentorshipRequest from "./pages/community/MentorshipRequest";
 import MentorApply from "./pages/community/MentorApply";
+import Staff from "./pages/Staff";
 
 const queryClient = new QueryClient();
 
@@ -146,6 +147,7 @@ const App = () => (
               <Route path="/community/mentorship" element={<MentorshipRequest />} />
               <Route path="/community/mentorship/apply" element={<MentorApply />} />
               <Route path="/community/:tabId" element={<Community />} />
+              <Route path="/staff" element={<Staff />} />
               <Route path="/support" element={<Support />} />
               <Route path="/status" element={<Status />} />
               <Route path="/changelog" element={<Changelog />} />
