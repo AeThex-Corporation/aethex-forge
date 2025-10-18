@@ -59,23 +59,23 @@ export default function Index() {
       title: "Game Development",
       description: "Full‑cycle production and tooling",
       icon: Zap,
-      color: "from-blue-500 to-purple-600",
+      color: "from-sky-500 to-indigo-600",
       link: "/game-development",
-      tags: ["Studios", "Indie"],
+      tags: ["Studios", "Tools"],
     },
     {
       title: "Product Design",
       description: "UX/UI, prototyping, and branding",
       icon: Target,
-      color: "from-purple-500 to-pink-600",
+      color: "from-rose-500 to-fuchsia-600",
       link: "/consulting",
-      tags: ["UX/UI", "Brand"],
+      tags: ["UX", "Branding"],
     },
     {
       title: "Platform Engineering",
       description: "Web, mobile, and backend foundations",
       icon: Users,
-      color: "from-green-500 to-blue-600",
+      color: "from-emerald-500 to-teal-600",
       link: "/consulting",
       tags: ["Web", "Backend"],
     },
@@ -83,7 +83,7 @@ export default function Index() {
       title: "Community & Growth",
       description: "Programs, content, and engagement",
       icon: TrendingUp,
-      color: "from-orange-500 to-red-600",
+      color: "from-amber-500 to-orange-600",
       link: "/community",
       tags: ["Programs", "Content"],
     },
@@ -291,7 +291,7 @@ export default function Index() {
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-10 pb-24 sm:pb-28">
           <div className="text-center space-y-12">
             {/* Title */}
             <div className="space-y-6 animate-scale-in">
@@ -403,7 +403,7 @@ export default function Index() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row justify-center gap-6 animate-slide-up">
+            <div className="flex flex-col sm:flex-row justify-center gap-6 animate-slide-up mb-8 sm:mb-10">
               <Button
                 asChild
                 size="lg"
