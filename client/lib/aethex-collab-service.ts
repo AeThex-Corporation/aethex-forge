@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { aethexUserService, aethexNotificationService } from "@/lib/aethex-database-adapter";
 
 export type TeamVisibility = "public" | "private";
 export type MembershipRole = "owner" | "admin" | "member";
@@ -18,6 +19,11 @@ export const aethexCollabService = {
   },
 
   async createTeam(ownerId: string, name: string, description?: string | null, visibility: TeamVisibility = "private") {
+    // Ensure the owner has a user_profiles row to satisfy FK
+    try {
+      await aethexUserService.getCurrentUser();
+    } catch {}
+
     const { data, error } = await supabase
       .from("teams")
       .insert({ owner_id: ownerId, name, description: description || null, visibility })
@@ -26,9 +32,23 @@ export const aethexCollabService = {
     if (error) throw new Error(error.message || "Unable to create team");
 
     const team = data as any;
-    await supabase
-      .from("team_memberships")
-      .insert({ team_id: team.id, user_id: ownerId, role: "owner" as const });
+    // Add creator as owner member (non-blocking if policy prevents)
+    try {
+      await supabase
+        .from("team_memberships")
+        .insert({ team_id: team.id, user_id: ownerId, role: "owner" as const });
+    } catch {}
+
+    // Emit a fresh notification so bell shows current activity
+    try {
+      await aethexNotificationService.createNotification(
+        ownerId,
+        "success",
+        "Team created",
+        `Team ${name} created successfully`,
+      );
+    } catch {}
+
     return team;
   },
 
