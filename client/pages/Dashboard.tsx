@@ -1266,12 +1266,8 @@ export default function Dashboard() {
                           >
                             {getPriorityFromTech(project.technologies || [])}
                           </Badge>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="hover-lift"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
+                          <Button variant="outline" size="sm" onClick={() => navigate(`/projects/${project.id}/board`)}>
+                            Open Board
                           </Button>
                         </div>
                       </div>
