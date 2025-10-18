@@ -894,6 +894,112 @@ export function createServer() {
       }
     });
 
+    // Community post likes
+    app.post("/api/community/posts/:id/like", async (req, res) => {
+      const postId = req.params.id;
+      const { user_id } = (req.body || {}) as { user_id?: string };
+      if (!postId || !user_id)
+        return res.status(400).json({ error: "post id and user_id required" });
+      try {
+        const { error: likeErr } = await adminSupabase
+          .from("community_post_likes")
+          .upsert({ post_id: postId, user_id } as any, {
+            onConflict: "post_id,user_id" as any,
+          });
+        if (likeErr) return res.status(500).json({ error: likeErr.message });
+        const { data: c } = await adminSupabase
+          .from("community_post_likes")
+          .select("post_id", { count: "exact", head: true })
+          .eq("post_id", postId);
+        const count = (c as any)?.length ? (c as any).length : (c as any)?.count || null;
+        if (typeof count === "number") {
+          await adminSupabase
+            .from("community_posts")
+            .update({ likes_count: count })
+            .eq("id", postId);
+        }
+        return res.json({ ok: true, likes: typeof count === "number" ? count : undefined });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/community/posts/:id/unlike", async (req, res) => {
+      const postId = req.params.id;
+      const { user_id } = (req.body || {}) as { user_id?: string };
+      if (!postId || !user_id)
+        return res.status(400).json({ error: "post id and user_id required" });
+      try {
+        await adminSupabase
+          .from("community_post_likes")
+          .delete()
+          .eq("post_id", postId)
+          .eq("user_id", user_id);
+        const { data: c } = await adminSupabase
+          .from("community_post_likes")
+          .select("post_id", { count: "exact", head: true })
+          .eq("post_id", postId);
+        const count = (c as any)?.length ? (c as any).length : (c as any)?.count || null;
+        if (typeof count === "number") {
+          await adminSupabase
+            .from("community_posts")
+            .update({ likes_count: count })
+            .eq("id", postId);
+        }
+        return res.json({ ok: true, likes: typeof count === "number" ? count : undefined });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Community post comments
+    app.get("/api/community/posts/:id/comments", async (req, res) => {
+      const postId = req.params.id;
+      try {
+        const { data, error } = await adminSupabase
+          .from("community_comments")
+          .select("*, user_profiles:user_id ( id, full_name, username, avatar_url )")
+          .eq("post_id", postId)
+          .order("created_at", { ascending: true });
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/community/posts/:id/comments", async (req, res) => {
+      const postId = req.params.id;
+      const { user_id, content } = (req.body || {}) as {
+        user_id?: string;
+        content?: string;
+      };
+      if (!user_id || !content)
+        return res.status(400).json({ error: "user_id and content required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("community_comments")
+          .insert({ post_id: postId, user_id, content } as any)
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        const { data: agg } = await adminSupabase
+          .from("community_comments")
+          .select("post_id", { count: "exact", head: true })
+          .eq("post_id", postId);
+        const count = (agg as any)?.count || null;
+        if (typeof count === "number") {
+          await adminSupabase
+            .from("community_posts")
+            .update({ comments_count: count })
+            .eq("id", postId);
+        }
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     // Endorse with notification
     app.post("/api/social/endorse", async (req, res) => {
       const { endorser_id, endorsed_id, skill } = (req.body || {}) as {
