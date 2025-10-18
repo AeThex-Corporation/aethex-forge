@@ -104,4 +104,33 @@ export const aethexSocialService = {
     if (!resp.ok) return false;
     return true;
   },
+
+  async getConnections(userId: string) {
+    const { data, error } = await supabase
+      .from("user_connections")
+      .select(
+        `connection_id, created_at, user_profiles:connection_id ( id, full_name, username, avatar_url, bio )`,
+      )
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    if (error) return [] as any[];
+    return (data || []) as any[];
+  },
+
+  async getEndorsements(userId: string) {
+    const { data, error } = await supabase
+      .from("endorsements")
+      .select("endorser_id, skill, created_at")
+      .eq("endorsed_id", userId)
+      .order("created_at", { ascending: false });
+    if (error) return [] as any[];
+    return (data || []) as any[];
+  },
+
+  async endorseSkill(endorserId: string, endorsedId: string, skill: string) {
+    const payload = { endorser_id: endorserId, endorsed_id: endorsedId, skill };
+    const { error } = await supabase.from("endorsements").insert(payload as any);
+    if (error) throw new Error(error.message || "Unable to endorse");
+    await this.applyReward(endorsedId, "endorsement_received", 2);
+  },
 };
