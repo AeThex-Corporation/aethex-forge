@@ -61,6 +61,7 @@ import MentorApply from "./pages/community/MentorApply";
 import Staff from "./pages/Staff";
 import Realms from "./pages/Realms";
 import Investors from "./pages/Investors";
+import Roadmap from "./pages/Roadmap";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +79,7 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/realms" element={<Realms />} />
               <Route path="/investors" element={<Investors />} />
+              <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/teams" element={<Teams />} />
