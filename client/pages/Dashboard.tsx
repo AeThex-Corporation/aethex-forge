@@ -83,7 +83,9 @@ export default function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [teams, setTeams] = useState<any[]>([]);
   const [invites, setInvites] = useState<any[]>([]);
-  const [achievements, setAchievements] = useState([]);
+  const [achievements, setAchievements] = useState<any[]>([]); // earned achievements
+  const [allAchievements, setAllAchievements] = useState<any[]>([]);
+  const [achievementFilter, setAchievementFilter] = useState<"all" | "earned" | "locked">("earned");
   const [profileCompletion, setProfileCompletion] = useState(0);
   const [stats, setStats] = useState({
     activeProjects: 0,
@@ -384,16 +386,21 @@ export default function Dashboard() {
         console.warn("checkAndAwardProjectAchievements failed:", e);
       }
 
-      // Load user's achievements with error handling
-      let userAchievements = [];
+      // Load achievements (all and earned)
+      let userAchievements: any[] = [];
+      let catalog: any[] = [];
       try {
-        userAchievements = await aethexAchievementService.getUserAchievements(
-          user!.id,
-        );
-        setAchievements(userAchievements);
+        const [earnedList, allList] = await Promise.all([
+          aethexAchievementService.getUserAchievements(user!.id),
+          aethexAchievementService.getAllAchievements(),
+        ]);
+        userAchievements = earnedList || [];
+        catalog = allList || [];
       } catch (achievementError) {
         console.warn("Could not load achievements:", achievementError);
-        setAchievements([]);
+      } finally {
+        setAchievements(userAchievements);
+        setAllAchievements(catalog);
       }
 
       // Load follower count for real collaboration insight
@@ -1372,68 +1379,100 @@ export default function Dashboard() {
               {/* Achievements */}
               <Card className="bg-card/50 border-border/50 animate-slide-up">
                 <CardHeader>
-                  <CardTitle className="text-gradient">Achievements</CardTitle>
-                  <CardDescription>
-                    Your progress and accomplishments
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {achievements.length === 0 ? (
-                      <div className="col-span-full text-center py-8 text-muted-foreground">
-                        <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>
-                          No achievements unlocked yet. Complete projects to
-                          earn achievements!
-                        </p>
-                      </div>
-                    ) : (
-                      achievements.map((achievement: any, index) => {
-                        const Icon = getAchievementIcon(
-                          achievement.icon || "star",
-                        );
+                <CardTitle className="text-gradient">Achievements</CardTitle>
+                <CardDescription>
+                  Your progress and accomplishments
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between mb-4 gap-3">
+                  <div className="text-sm text-muted-foreground">
+                    Earned {achievements.length} / {allAchievements.length}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant={achievementFilter === "earned" ? "default" : "outline"}
+                      onClick={() => setAchievementFilter("earned")}
+                    >
+                      Earned
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={achievementFilter === "locked" ? "default" : "outline"}
+                      onClick={() => setAchievementFilter("locked")}
+                    >
+                      Locked
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={achievementFilter === "all" ? "default" : "outline"}
+                      onClick={() => setAchievementFilter("all")}
+                    >
+                      All
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(() => {
+                    const earnedIds = new Set((achievements || []).map((a: any) => a.id));
+                    const source = (achievementFilter === "earned"
+                      ? (achievements || [])
+                      : achievementFilter === "locked"
+                      ? (allAchievements || []).filter((a: any) => !earnedIds.has(a.id))
+                      : (allAchievements || [])).map((a: any) => ({ ...a, earned: earnedIds.has(a.id) }));
+                    if (!source.length) {
+                      return (
+                        <div className="col-span-full text-center py-8 text-muted-foreground">
+                          <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>No achievements to display.</p>
+                        </div>
+                      );
+                    }
+                    return source
+                      .sort((a: any, b: any) => Number(b.earned) - Number(a.earned))
+                      .map((achievement: any, index: number) => {
+                        const Icon = getAchievementIcon(achievement.icon || "star");
                         return (
                           <div
-                            key={index}
+                            key={achievement.id || index}
                             className={`p-4 rounded-lg border transition-all duration-300 hover-lift animate-scale-in ${
                               achievement.earned
                                 ? "border-aethex-400/50 bg-aethex-500/10"
                                 : "border-border/30 opacity-60"
                             }`}
-                            style={{ animationDelay: `${index * 0.1}s` }}
+                            style={{ animationDelay: `${index * 0.05}s` }}
                           >
-                            <div className="flex items-center space-x-3">
-                              <div
-                                className={`p-2 rounded-lg ${
-                                  achievement.earned
-                                    ? "bg-gradient-to-r from-aethex-500 to-neon-blue"
-                                    : "bg-muted"
-                                }`}
-                              >
-                                <Icon
-                                  className={`h-5 w-5 ${achievement.earned ? "text-white" : "text-muted-foreground"}`}
-                                />
-                              </div>
-                              <div>
-                                <h4
-                                  className={`font-semibold ${achievement.earned ? "text-gradient" : ""}`}
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`p-2 rounded-lg ${
+                                    achievement.earned
+                                      ? "bg-gradient-to-r from-aethex-500 to-neon-blue"
+                                      : "bg-muted"
+                                  }`}
                                 >
-                                  {achievement.title}
-                                </h4>
-                                <p className="text-sm text-muted-foreground">
-                                  {achievement.description}
-                                </p>
+                                  <Icon
+                                    className={`h-5 w-5 ${achievement.earned ? "text-white" : "text-muted-foreground"}`}
+                                  />
+                                </div>
+                                <div>
+                                  <h4 className={`font-semibold ${achievement.earned ? "text-gradient" : ""}`}>
+                                    {achievement.title}
+                                  </h4>
+                                  <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                                </div>
                               </div>
                               {achievement.earned && (
-                                <Star className="h-5 w-5 text-yellow-500 animate-pulse" />
+                                <Star className="h-5 w-5 text-yellow-500" />
                               )}
                             </div>
                           </div>
                         );
-                      })
-                    )}
-                  </div>
-                </CardContent>
+                      });
+                  })()}
+                </div>
+              </CardContent>
               </Card>
 
               {/* Teams & Invitations */}
