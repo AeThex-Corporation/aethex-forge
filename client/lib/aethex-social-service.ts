@@ -52,6 +52,19 @@ export const aethexSocialService = {
     }
   },
 
+  async getFollowers(userId: string): Promise<string[]> {
+    try {
+      const { data, error } = await supabase
+        .from("user_follows")
+        .select("follower_id")
+        .eq("following_id", userId);
+      if (error) return [];
+      return (data as any[]).map((r: any) => r.follower_id);
+    } catch {
+      return [];
+    }
+  },
+
   async followUser(followerId: string, followingId: string): Promise<void> {
     const resp = await fetch("/api/social/follow", {
       method: "POST",
