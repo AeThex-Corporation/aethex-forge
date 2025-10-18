@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { Microscope, Sparkles, ArrowRight } from "lucide-react";
+import { Microscope, Sparkles, ArrowRight, Rocket, Layers, Users, BookOpen, Terminal, Shield, Compass } from "lucide-react";
 import { useMemo } from "react";
 
 export default function Explore() {
@@ -29,6 +29,7 @@ export default function Explore() {
         description: "Studios and indie support",
         link: "/game-development",
         tags: ["Studios", "Tools"],
+        icon: Rocket,
         cardClass:
           "border-blue-500/40 bg-gradient-to-br from-blue-950/60 via-indigo-950/30 to-purple-900/40 text-blue-100 hover:border-blue-400/80 hover:shadow-[0_0_25px_rgba(59,130,246,0.35)]",
         titleClass: "text-blue-100",
@@ -41,6 +42,7 @@ export default function Explore() {
         description: "Architecture & delivery",
         link: "/consulting",
         tags: ["Architecture", "Delivery"],
+        icon: Layers,
         cardClass:
           "border-fuchsia-500/40 bg-gradient-to-br from-fuchsia-950/60 via-rose-950/30 to-purple-900/40 text-fuchsia-100 hover:border-fuchsia-400/80 hover:shadow-[0_0_25px_rgba(217,70,239,0.35)]",
         titleClass: "text-fuchsia-100",
@@ -53,6 +55,7 @@ export default function Explore() {
         description: "Programs and guidance",
         link: "/mentorship",
         tags: ["Programs", "Guidance"],
+        icon: Users,
         cardClass:
           "border-emerald-500/40 bg-gradient-to-br from-emerald-950/60 via-teal-950/30 to-blue-900/40 text-emerald-100 hover:border-emerald-400/80 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]",
         titleClass: "text-emerald-100",
@@ -70,6 +73,7 @@ export default function Explore() {
         title: "Documentation",
         description: "Guides and tutorials",
         tags: ["Guides", "Tutorials"],
+        icon: BookOpen,
         cardClass:
           "border-cyan-400/40 bg-gradient-to-br from-cyan-950/50 via-sky-950/25 to-blue-900/30 text-cyan-100 hover:border-cyan-300/70 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]",
         titleClass: "text-cyan-100",
@@ -95,6 +99,7 @@ export default function Explore() {
         title: "Community",
         description: "News and discussions",
         tags: ["Blog", "Hub"],
+        icon: Shield,
         cardClass:
           "border-orange-400/40 bg-gradient-to-br from-amber-950/50 via-orange-950/25 to-rose-900/30 text-orange-100 hover:border-orange-300/70 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]",
         titleClass: "text-orange-100",
@@ -120,6 +125,7 @@ export default function Explore() {
         title: "Company",
         description: "About and contact",
         tags: ["About", "Contact"],
+        icon: Compass,
         cardClass:
           "border-indigo-400/40 bg-gradient-to-br from-indigo-950/50 via-blue-950/25 to-slate-900/30 text-indigo-100 hover:border-indigo-300/70 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]",
         titleClass: "text-indigo-100",
@@ -147,8 +153,53 @@ export default function Explore() {
 
   return (
     <Layout>
+      {/* Hero + Sticky Subnav */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-aethex-900/40 via-background to-neon-blue/10" />
+        <div className="container mx-auto px-4 relative z-10 py-16 sm:py-20">
+          <div className="max-w-6xl mx-auto text-center space-y-6">
+            <h1 className="text-3xl lg:text-5xl font-extrabold tracking-tight">
+              <span className="text-gradient">Explore AeThex</span>
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Our impact across the digital landscape
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              {[
+                { label: "Overview", href: "#overview" },
+                { label: "Services", href: "#services" },
+                { label: "Labs", href: "#labs" },
+                { label: "Resources", href: "#resources" },
+                { label: "Technology", href: "#technology" },
+              ].map((item) => (
+                <a key={item.href} href={item.href} className="px-3 py-1.5 text-sm rounded-full border border-border/50 hover:border-aethex-400/60 hover:text-aethex-300 transition-colors">
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="sticky top-16 z-40 border-t border-b border-border/30 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container mx-auto px-4">
+            <div className="flex gap-4 overflow-x-auto py-3 text-sm">
+              {[
+                { label: "Overview", href: "#overview" },
+                { label: "Services", href: "#services" },
+                { label: "Labs", href: "#labs" },
+                { label: "Resources", href: "#resources" },
+                { label: "Technology", href: "#technology" },
+              ].map((item) => (
+                <a key={item.href} href={item.href} className="px-3 py-1.5 rounded-lg border border-border/40 hover:border-aethex-400/60 hover:text-aethex-300 transition-colors whitespace-nowrap">
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Achievements Section */}
-      <section className="py-16 sm:py-20 bg-background/30">
+      <section id="overview" className="py-16 sm:py-20 bg-background/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16 animate-slide-up">
@@ -184,7 +235,7 @@ export default function Explore() {
       </section>
 
       {/* Offerings Overview */}
-      <section className="py-16 sm:py-20">
+      <section id="services" className="py-16 sm:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
@@ -224,10 +275,20 @@ export default function Explore() {
                 style={{ animationDelay: `${idx * 0.08}s` }}
               >
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
-                <CardHeader className="relative space-y-2">
-                  <CardTitle className={`text-lg ${offering.titleClass}`}>
-                    {offering.title}
-                  </CardTitle>
+                <CardHeader className="relative space-y-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className={`text-lg ${offering.titleClass}`}>
+                      {offering.title}
+                    </CardTitle>
+                    {offering.icon && (
+                      <div className="w-9 h-9 rounded-md bg-white/10 grid place-items-center">
+                        {offering.icon && (
+                          // @ts-ignore
+                          <offering.icon className="h-4 w-4" />
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <CardDescription
                     className={`text-sm ${offering.descriptionClass}`}
                   >
@@ -251,7 +312,7 @@ export default function Explore() {
               </Card>
             ))}
 
-            <Card className="relative overflow-hidden border border-yellow-400/40 bg-black/80 text-yellow-100 shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 hover:-translate-y-1 hover:border-yellow-300 group">
+            <Card id="labs" className="relative overflow-hidden border border-yellow-400/40 bg-black/80 text-yellow-100 shadow-[0_0_20px_rgba(250,204,21,0.15)] transition-all duration-500 hover:-translate-y-1 hover:border-yellow-300 group">
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
               <CardHeader className="relative space-y-2">
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -294,10 +355,20 @@ export default function Explore() {
                 style={{ animationDelay: `${idx * 0.08}s` }}
               >
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-35 transition-opacity duration-500" />
-                <CardHeader className="relative space-y-2">
-                  <CardTitle className={`text-lg ${offering.titleClass}`}>
-                    {offering.title}
-                  </CardTitle>
+                <CardHeader className="relative space-y-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className={`text-lg ${offering.titleClass}`}>
+                      {offering.title}
+                    </CardTitle>
+                    {offering.icon && (
+                      <div className="w-9 h-9 rounded-md bg-white/10 grid place-items-center">
+                        {offering.icon && (
+                          // @ts-ignore
+                          <offering.icon className="h-4 w-4" />
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <CardDescription
                     className={`text-sm ${offering.descriptionClass}`}
                   >
@@ -344,7 +415,7 @@ export default function Explore() {
       </section>
 
       {/* Technology Showcase */}
-      <section className="py-16 sm:py-20 relative overflow-hidden">
+      <section id="technology" className="py-16 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/20 via-transparent to-neon-blue/20" />
 
         <div className="container mx-auto px-4 relative z-10">
