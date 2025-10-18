@@ -25,6 +25,7 @@ import AdminSpotlightManager from "@/components/admin/AdminSpotlightManager";
 import AdminStatusOverview from "@/components/admin/AdminStatusOverview";
 import AdminChangelogDigest from "@/components/admin/AdminChangelogDigest";
 import AdminSystemMap from "@/components/admin/AdminSystemMap";
+import AdminMentorshipManager from "@/components/admin/AdminMentorshipManager";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
@@ -720,6 +721,7 @@ export default function Admin() {
               <TabsTrigger value="system-map">System Map</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
               <TabsTrigger value="community">Community</TabsTrigger>
+              <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
               <TabsTrigger value="operations">Operations</TabsTrigger>
             </TabsList>
 
@@ -1067,7 +1069,7 @@ export default function Admin() {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => navigate("/mentorship")}
+                    onClick={() => setActiveTab("mentorship")}
                   >
                     Manage mentorships
                   </Button>
@@ -1080,6 +1082,10 @@ export default function Admin() {
                   </Button>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            <TabsContent value="mentorship" className="space-y-6">
+              <AdminMentorshipManager />
             </TabsContent>
 
             <TabsContent value="operations" className="space-y-6">
