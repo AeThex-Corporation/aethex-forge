@@ -35,7 +35,8 @@ export type RealmKey =
   | "game_developer"
   | "client"
   | "community_member"
-  | "customer";
+  | "customer"
+  | "staff";
 
 export interface RealmOption {
   id: RealmKey;
