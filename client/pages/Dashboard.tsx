@@ -561,18 +561,10 @@ export default function Dashboard() {
   };
 
   const quickActions = [
-    {
-      title: "Start New Project",
-      icon: Rocket,
-      color: "from-blue-500 to-purple-600",
-    },
-    { title: "Join Team", icon: Users, color: "from-green-500 to-blue-600" },
+    { title: "Start New Project", icon: Rocket, color: "from-blue-500 to-purple-600" },
+    { title: "Create Team", icon: Users, color: "from-green-500 to-blue-600" },
     { title: "Access Labs", icon: Zap, color: "from-yellow-500 to-orange-600" },
-    {
-      title: "View Analytics",
-      icon: BarChart3,
-      color: "from-purple-500 to-pink-600",
-    },
+    { title: "View Analytics", icon: BarChart3, color: "from-purple-500 to-pink-600" },
   ];
 
   if (isLoading) {
