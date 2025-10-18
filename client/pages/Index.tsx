@@ -319,41 +319,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Achievements Section */}
-      <section className="py-16 sm:py-20 bg-background/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16 animate-slide-up">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
-                Powering Innovation Worldwide
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Our impact across the digital landscape
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {achievements.map((achievement, index) => (
-                <div
-                  key={index}
-                  className="text-center space-y-4 animate-scale-in hover-lift"
-                  style={{ animationDelay: `${index * 0.2}s` }}
-                >
-                  <div className="relative">
-                    <div className="text-4xl lg:text-5xl font-bold text-gradient-purple animate-pulse-glow">
-                      {achievement.metric}
-                    </div>
-                    <div className="absolute -inset-2 bg-gradient-to-r from-aethex-400/20 to-neon-blue/20 rounded-lg blur-xl opacity-50" />
-                  </div>
-                  <p className="text-sm text-muted-foreground uppercase tracking-wider">
-                    {achievement.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Offerings Overview */}
       <section className="py-16 sm:py-20">
