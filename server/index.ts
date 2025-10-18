@@ -1180,6 +1180,40 @@ export function createServer() {
       }
     });
 
+    // Investors: capture interest
+    app.post("/api/investors/interest", async (req, res) => {
+      const { name, email, amount, accredited, message } = (req.body || {}) as {
+        name?: string; email?: string; amount?: string; accredited?: boolean; message?: string;
+      };
+      if (!email) return res.status(400).json({ error: "email required" });
+      try {
+        const subject = `Investor interest: ${name || email}`;
+        const body = [
+          `Name: ${name || "N/A"}`,
+          `Email: ${email}`,
+          `Amount: ${amount || "N/A"}`,
+          `Accredited: ${accredited ? "Yes" : "No / Unknown"}`,
+          message ? `\nMessage:\n${message}` : "",
+        ].join("\n");
+        try {
+          const { emailService } = await import("./email");
+          if (emailService.isConfigured) {
+            await (emailService as any).sendInviteEmail({
+              to: process.env.VERIFY_SUPPORT_EMAIL || "support@aethex.biz",
+              inviteUrl: "https://aethex.dev/investors",
+              inviterName: name || email,
+              message: body,
+            });
+          }
+        } catch (e) {
+          /* ignore email errors to not block */
+        }
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     // Staff: users search/listing
     app.get("/api/staff/users", async (req, res) => {
       const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 20));
