@@ -164,36 +164,6 @@ export default function Explore() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Our impact across the digital landscape
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              {[
-                { label: "Overview", href: "#overview" },
-                { label: "Services", href: "#services" },
-                { label: "Labs", href: "#labs" },
-                { label: "Resources", href: "#resources" },
-                { label: "Technology", href: "#technology" },
-              ].map((item) => (
-                <a key={item.href} href={item.href} className="px-3 py-1.5 text-sm rounded-full border border-border/50 hover:border-aethex-400/60 hover:text-aethex-300 transition-colors">
-                  {item.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="sticky top-16 z-40 border-t border-b border-border/30 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container mx-auto px-4">
-            <div className="flex gap-4 overflow-x-auto py-3 text-sm">
-              {[
-                { label: "Overview", href: "#overview" },
-                { label: "Services", href: "#services" },
-                { label: "Labs", href: "#labs" },
-                { label: "Resources", href: "#resources" },
-                { label: "Technology", href: "#technology" },
-              ].map((item) => (
-                <a key={item.href} href={item.href} className="px-3 py-1.5 rounded-lg border border-border/40 hover:border-aethex-400/60 hover:text-aethex-300 transition-colors whitespace-nowrap">
-                  {item.label}
-                </a>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -234,130 +204,79 @@ export default function Explore() {
         </div>
       </section>
 
-      {/* Offerings Overview */}
+      {/* Core Areas */}
       <section id="services" className="py-16 sm:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
-              Everything We Offer
-            </h2>
-            <p className="text-muted-foreground mt-2">
-              Explore services, programs, resources, and community
-            </p>
-
+            <h2 className="text-3xl lg:text-4xl font-bold text-gradient">Core Areas</h2>
+            <p className="text-muted-foreground mt-2">Services, programs, resources, and community</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {serviceOfferings.map((offering, idx) => (
-              <Card
-                key={offering.title}
-                className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
-                style={{ animationDelay: `${idx * 0.08}s` }}
-              >
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
-                <CardHeader className="relative space-y-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className={`text-lg ${offering.titleClass}`}>
-                      {offering.title}
-                    </CardTitle>
-                    {offering.icon && (
-                      <div className="w-9 h-9 rounded-md bg-white/10 grid place-items-center">
+          {(() => {
+            const combined = [...serviceOfferings, ...resourceOfferings];
+            return (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {combined.map((offering: any, idx: number) => (
+                  <Card
+                    key={offering.title}
+                    className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
+                    style={{ animationDelay: `${idx * 0.06}s` }}
+                  >
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+                    <CardHeader className="relative space-y-3">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className={`text-lg ${offering.titleClass}`}>
+                          {offering.title}
+                        </CardTitle>
                         {offering.icon && (
-                          // @ts-ignore
-                          <offering.icon className="h-4 w-4" />
+                          <div className="w-9 h-9 rounded-md bg-white/10 grid place-items-center">
+                            {/* @ts-ignore */}
+                            <offering.icon className="h-4 w-4" />
+                          </div>
                         )}
                       </div>
-                    )}
-                  </div>
-                  <CardDescription
-                    className={`text-sm ${offering.descriptionClass}`}
-                  >
-                    {offering.description}
-                  </CardDescription>
-                  {offering.tags && (
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {offering.tags.map((t: string) => (
-                        <span key={t} className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-white/80">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </CardHeader>
-                <CardContent className="relative pt-2">
-                  <Button asChild className={`w-full ${offering.buttonClass}`}>
-                    <Link to={offering.link}>Learn More</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            {resourceOfferings.map((offering, idx) => (
-              <Card
-                key={offering.title}
-                className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
-                style={{ animationDelay: `${idx * 0.08}s` }}
-              >
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-35 transition-opacity duration-500" />
-                <CardHeader className="relative space-y-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className={`text-lg ${offering.titleClass}`}>
-                      {offering.title}
-                    </CardTitle>
-                    {offering.icon && (
-                      <div className="w-9 h-9 rounded-md bg-white/10 grid place-items-center">
-                        {offering.icon && (
-                          // @ts-ignore
-                          <offering.icon className="h-4 w-4" />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <CardDescription
-                    className={`text-sm ${offering.descriptionClass}`}
-                  >
-                    {offering.description}
-                  </CardDescription>
-                  {offering.tags && (
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {offering.tags.map((t: string) => (
-                        <span key={t} className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-white/80">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </CardHeader>
-                <CardContent className="relative">
-                  <div className="flex flex-wrap gap-2">
-                    {offering.actions.map((action) => (
-                      <Button
-                        key={action.label}
-                        asChild
-                        variant={action.variant as any}
-                        className={`flex-1 min-w-[120px] ${action.buttonClass}`}
-                      >
-                        {action.external ? (
-                          <a
-                            href={action.href}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {action.label}
-                          </a>
-                        ) : (
-                          <Link to={action.href}>{action.label}</Link>
-                        )}
-                      </Button>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                      <CardDescription className={`text-sm ${offering.descriptionClass}`}>
+                        {offering.description}
+                      </CardDescription>
+                      {offering.tags && (
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {offering.tags.map((t: string) => (
+                            <span key={t} className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-white/80">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </CardHeader>
+                    <CardContent className="relative pt-2">
+                      {offering.link ? (
+                        <Button asChild className={`w-full ${offering.buttonClass || "border-border"}`}>
+                          <Link to={offering.link}>Learn More</Link>
+                        </Button>
+                      ) : (
+                        <div className="flex flex-wrap gap-2">
+                          {offering.actions?.map((action: any) => (
+                            <Button
+                              key={action.label}
+                              asChild
+                              variant={action.variant as any}
+                              className={`flex-1 min-w-[120px] ${action.buttonClass}`}
+                            >
+                              {action.external ? (
+                                <a href={action.href} target="_blank" rel="noreferrer">{action.label}</a>
+                              ) : (
+                                <Link to={action.href}>{action.label}</Link>
+                              )}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            );
+          })()}
         </div>
       </section>
 
