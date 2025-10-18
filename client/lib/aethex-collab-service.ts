@@ -57,6 +57,16 @@ export const aethexCollabService = {
   },
 
   // Tasks
+  async listProjectTasks(projectId: string) {
+    const { data, error } = await supabase
+      .from("project_tasks")
+      .select("*, assignee:assignee_id ( id, full_name, username, avatar_url )")
+      .eq("project_id", projectId)
+      .order("created_at", { ascending: true });
+    if (error) return [] as any[];
+    return (data || []) as any[];
+  },
+
   async createTask(projectId: string, title: string, description?: string | null, assigneeId?: string | null, dueDate?: string | null) {
     const { data, error } = await supabase
       .from("project_tasks")
