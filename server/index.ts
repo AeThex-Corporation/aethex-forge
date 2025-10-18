@@ -152,7 +152,7 @@ export function createServer() {
       }
 
       if (!user) {
-        return res.status(404).json({ error: "User not found" });
+        return res.json({ verified: false, user: null, reason: "not_found" });
       }
 
       const verified = Boolean(user?.email_confirmed_at || user?.confirmed_at);
