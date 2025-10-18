@@ -25,6 +25,8 @@ export interface OnboardingData {
     firstName: string;
     lastName: string;
     email: string;
+    password?: string;
+    confirmPassword?: string;
     company?: string;
   };
   experience: {
@@ -44,6 +46,8 @@ const initialData: OnboardingData = {
     firstName: "",
     lastName: "",
     email: "",
+    password: "",
+    confirmPassword: "",
     company: "",
   },
   experience: {
