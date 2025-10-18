@@ -911,14 +911,19 @@ export function createServer() {
           .from("community_post_likes")
           .select("post_id", { count: "exact", head: true })
           .eq("post_id", postId);
-        const count = (c as any)?.length ? (c as any).length : (c as any)?.count || null;
+        const count = (c as any)?.length
+          ? (c as any).length
+          : (c as any)?.count || null;
         if (typeof count === "number") {
           await adminSupabase
             .from("community_posts")
             .update({ likes_count: count })
             .eq("id", postId);
         }
-        return res.json({ ok: true, likes: typeof count === "number" ? count : undefined });
+        return res.json({
+          ok: true,
+          likes: typeof count === "number" ? count : undefined,
+        });
       } catch (e: any) {
         return res.status(500).json({ error: e?.message || String(e) });
       }
@@ -939,14 +944,19 @@ export function createServer() {
           .from("community_post_likes")
           .select("post_id", { count: "exact", head: true })
           .eq("post_id", postId);
-        const count = (c as any)?.length ? (c as any).length : (c as any)?.count || null;
+        const count = (c as any)?.length
+          ? (c as any).length
+          : (c as any)?.count || null;
         if (typeof count === "number") {
           await adminSupabase
             .from("community_posts")
             .update({ likes_count: count })
             .eq("id", postId);
         }
-        return res.json({ ok: true, likes: typeof count === "number" ? count : undefined });
+        return res.json({
+          ok: true,
+          likes: typeof count === "number" ? count : undefined,
+        });
       } catch (e: any) {
         return res.status(500).json({ error: e?.message || String(e) });
       }
@@ -958,7 +968,9 @@ export function createServer() {
       try {
         const { data, error } = await adminSupabase
           .from("community_comments")
-          .select("*, user_profiles:user_id ( id, full_name, username, avatar_url )")
+          .select(
+            "*, user_profiles:user_id ( id, full_name, username, avatar_url )",
+          )
           .eq("post_id", postId)
           .order("created_at", { ascending: true });
         if (error) return res.status(500).json({ error: error.message });
@@ -1077,14 +1089,12 @@ export function createServer() {
           title: string,
           message?: string,
         ) => {
-          await adminSupabase
-            .from("notifications")
-            .insert({
-              user_id: userId,
-              type: "info",
-              title,
-              message: message || null,
-            });
+          await adminSupabase.from("notifications").insert({
+            user_id: userId,
+            type: "info",
+            title,
+            message: message || null,
+          });
         };
 
         // Notify explicit targets

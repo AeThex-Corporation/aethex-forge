@@ -58,7 +58,10 @@ const ProfilePassport = () => {
     (AethexUserProfile & { email?: string | null }) | null
   >(null);
   const [achievements, setAchievements] = useState<AethexAchievement[]>([]);
-  const [followStats, setFollowStats] = useState<{ followers: number; following: number }>({ followers: 0, following: 0 });
+  const [followStats, setFollowStats] = useState<{
+    followers: number;
+    following: number;
+  }>({ followers: 0, following: 0 });
   const [degree, setDegree] = useState<string>("");
   const [projects, setProjects] = useState<ProjectPreview[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
@@ -266,7 +269,11 @@ const ProfilePassport = () => {
             aethexSocialService.getFollowing(resolvedId),
             aethexSocialService.getFollowers(resolvedId),
           ]);
-          if (!cancelled) setFollowStats({ following: followingIds.length, followers: followerIds.length });
+          if (!cancelled)
+            setFollowStats({
+              following: followingIds.length,
+              followers: followerIds.length,
+            });
         } catch {}
         try {
           const me = user?.id || null;
@@ -276,9 +283,13 @@ const ProfilePassport = () => {
             if (first.has(resolvedId)) setDegree("1st");
             else {
               const secondLists = await Promise.all(
-                Array.from(first).slice(0, 50).map((id) => aethexSocialService.getConnections(id)),
+                Array.from(first)
+                  .slice(0, 50)
+                  .map((id) => aethexSocialService.getConnections(id)),
               );
-              const second = new Set(secondLists.flat().map((c: any) => c.connection_id));
+              const second = new Set(
+                secondLists.flat().map((c: any) => c.connection_id),
+              );
               setDegree(second.has(resolvedId) ? "2nd" : "3rd+");
             }
           } else if (me && resolvedId && me === resolvedId) {
@@ -547,14 +558,22 @@ const ProfilePassport = () => {
               )}
             </div>
             <div className="flex flex-wrap gap-2 text-sm text-slate-300">
-              <Badge variant="outline" className="border-slate-700/70 bg-slate-900/40">
+              <Badge
+                variant="outline"
+                className="border-slate-700/70 bg-slate-900/40"
+              >
                 Followers: {followStats.followers}
               </Badge>
-              <Badge variant="outline" className="border-slate-700/70 bg-slate-900/40">
+              <Badge
+                variant="outline"
+                className="border-slate-700/70 bg-slate-900/40"
+              >
                 Following: {followStats.following}
               </Badge>
               {degree && (
-                <Badge className="bg-aethex-500/20 text-aethex-100">{degree} degree</Badge>
+                <Badge className="bg-aethex-500/20 text-aethex-100">
+                  {degree} degree
+                </Badge>
               )}
               {profile.github_url && (
                 <Button

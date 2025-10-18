@@ -255,9 +255,15 @@ export const communityService = {
       if (!error) {
         return (Array.isArray(data) ? data : []) as CommunityPost[];
       }
-      console.warn("Supabase getPosts relational select failed:", (error as any)?.message || error);
+      console.warn(
+        "Supabase getPosts relational select failed:",
+        (error as any)?.message || error,
+      );
     } catch (e) {
-      console.warn("Supabase getPosts relational select threw:", (e as any)?.message || e);
+      console.warn(
+        "Supabase getPosts relational select threw:",
+        (e as any)?.message || e,
+      );
     }
 
     // 2) Fallback to simple posts select, then hydrate author profiles manually
@@ -269,7 +275,9 @@ export const communityService = {
         .order("created_at", { ascending: false })
         .limit(limit);
       if (!postsErr && Array.isArray(posts) && posts.length) {
-        const authorIds = Array.from(new Set(posts.map((p: any) => p.author_id).filter(Boolean)));
+        const authorIds = Array.from(
+          new Set(posts.map((p: any) => p.author_id).filter(Boolean)),
+        );
         let profilesById: Record<string, any> = {};
         if (authorIds.length) {
           const { data: profiles, error: profErr } = await supabase
@@ -278,20 +286,39 @@ export const communityService = {
             .in("id", authorIds);
           if (!profErr && Array.isArray(profiles)) {
             profilesById = Object.fromEntries(
-              profiles.map((u: any) => [u.id, { username: u.username, full_name: u.full_name, avatar_url: u.avatar_url }]),
+              profiles.map((u: any) => [
+                u.id,
+                {
+                  username: u.username,
+                  full_name: u.full_name,
+                  avatar_url: u.avatar_url,
+                },
+              ]),
             );
           }
         }
-        return posts.map((p: any) => ({ ...p, user_profiles: profilesById[p.author_id] || null })) as CommunityPost[];
+        return posts.map((p: any) => ({
+          ...p,
+          user_profiles: profilesById[p.author_id] || null,
+        })) as CommunityPost[];
       }
-      if (postsErr) console.warn("Supabase getPosts simple select failed:", (postsErr as any)?.message || postsErr);
+      if (postsErr)
+        console.warn(
+          "Supabase getPosts simple select failed:",
+          (postsErr as any)?.message || postsErr,
+        );
     } catch (e2) {
-      console.warn("Supabase getPosts simple select threw:", (e2 as any)?.message || e2);
+      console.warn(
+        "Supabase getPosts simple select threw:",
+        (e2 as any)?.message || e2,
+      );
     }
 
     // 3) Final fallback to API if available
     try {
-      const resp = await fetch(`/api/posts?limit=${encodeURIComponent(String(limit))}`);
+      const resp = await fetch(
+        `/api/posts?limit=${encodeURIComponent(String(limit))}`,
+      );
       if (resp.ok) {
         const ct = resp.headers.get("content-type") || "";
         if (ct.includes("application/json") || ct.includes("json")) {
@@ -299,13 +326,24 @@ export const communityService = {
           return (Array.isArray(payload) ? payload : []) as CommunityPost[];
         } else {
           const text = await resp.text();
-          console.warn("API fallback returned non-JSON content-type:", ct, text.slice(0, 120));
+          console.warn(
+            "API fallback returned non-JSON content-type:",
+            ct,
+            text.slice(0, 120),
+          );
         }
       } else {
-        console.warn("API fallback /api/posts not ok:", resp.status, resp.statusText);
+        console.warn(
+          "API fallback /api/posts not ok:",
+          resp.status,
+          resp.statusText,
+        );
       }
     } catch (apiErr) {
-      console.error("API fallback for getPosts failed:", (apiErr as any)?.message || apiErr);
+      console.error(
+        "API fallback for getPosts failed:",
+        (apiErr as any)?.message || apiErr,
+      );
     }
 
     // Return actual empty array (no demo/mocks)
@@ -364,11 +402,14 @@ export const communityService = {
 
   async likePost(postId: string, userId: string): Promise<number | null> {
     try {
-      const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/like`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId }),
-      });
+      const resp = await fetch(
+        `/api/community/posts/${encodeURIComponent(postId)}/like`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: userId }),
+        },
+      );
       if (resp.ok) {
         const json = await resp.json();
         return typeof json?.likes === "number" ? json.likes : null;
@@ -379,11 +420,14 @@ export const communityService = {
 
   async unlikePost(postId: string, userId: string): Promise<number | null> {
     try {
-      const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/unlike`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId }),
-      });
+      const resp = await fetch(
+        `/api/community/posts/${encodeURIComponent(postId)}/unlike`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: userId }),
+        },
+      );
       if (resp.ok) {
         const json = await resp.json();
         return typeof json?.likes === "number" ? json.likes : null;
@@ -394,7 +438,9 @@ export const communityService = {
 
   async listComments(postId: string): Promise<any[]> {
     try {
-      const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/comments`);
+      const resp = await fetch(
+        `/api/community/posts/${encodeURIComponent(postId)}/comments`,
+      );
       if (!resp.ok) return [];
       return await resp.json();
     } catch {
@@ -402,12 +448,19 @@ export const communityService = {
     }
   },
 
-  async addComment(postId: string, userId: string, content: string): Promise<any | null> {
-    const resp = await fetch(`/api/community/posts/${encodeURIComponent(postId)}/comments`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: userId, content }),
-    });
+  async addComment(
+    postId: string,
+    userId: string,
+    content: string,
+  ): Promise<any | null> {
+    const resp = await fetch(
+      `/api/community/posts/${encodeURIComponent(postId)}/comments`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, content }),
+      },
+    );
     if (!resp.ok) return null;
     return await resp.json();
   },

@@ -133,7 +133,13 @@ export default function Feed() {
     } finally {
       setIsLoading(false);
     }
-  }, [aethexSocialService, communityService, mapPostsToFeedItems, toast, user?.id]);
+  }, [
+    aethexSocialService,
+    communityService,
+    mapPostsToFeedItems,
+    toast,
+    user?.id,
+  ]);
 
   useEffect(() => {
     fetchFeed();
@@ -246,10 +252,16 @@ export default function Feed() {
       const content = prompt("Add a comment:")?.trim();
       if (!content) return;
       try {
-        const created = await communityService.addComment(postId, user.id, content);
+        const created = await communityService.addComment(
+          postId,
+          user.id,
+          content,
+        );
         if (created) {
           setItems((prev) =>
-            prev.map((it) => (it.id === postId ? { ...it, comments: it.comments + 1 } : it)),
+            prev.map((it) =>
+              it.id === postId ? { ...it, comments: it.comments + 1 } : it,
+            ),
           );
         }
       } catch (e) {
