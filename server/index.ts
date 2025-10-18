@@ -1390,6 +1390,86 @@ export function createServer() {
         return res.status(500).json({ error: e?.message || String(e) });
       }
     });
+
+    // Staff: list all mentorship requests (limited)
+    app.get("/api/mentorship/requests/all", async (req, res) => {
+      const limit = Math.max(1, Math.min(200, Number(req.query.limit) || 50));
+      const status = String(req.query.status || "").toLowerCase();
+      try {
+        let query = adminSupabase
+          .from("mentorship_requests")
+          .select(
+            `*, mentor:user_profiles!mentorship_requests_mentor_id_fkey ( id, full_name, username, avatar_url ), mentee:user_profiles!mentorship_requests_mentee_id_fkey ( id, full_name, username, avatar_url )`,
+          )
+          .order("created_at", { ascending: false })
+          .limit(limit);
+        if (status) query = query.eq("status", status);
+        const { data, error } = await query;
+        if (error) return res.status(500).json({ error: error.message });
+        return res.json(data || []);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Moderation API
+    app.post("/api/moderation/reports", async (req, res) => {
+      const { reporter_id, target_type, target_id, reason, details } = (req.body || {}) as any;
+      if (!target_type || !reason) {
+        return res.status(400).json({ error: "target_type and reason required" });
+      }
+      try {
+        const { data, error } = await adminSupabase
+          .from("moderation_reports")
+          .insert({ reporter_id: reporter_id || null, target_type, target_id: target_id || null, reason, details: details || null } as any)
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        return res.json(data);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.get("/api/moderation/reports", async (req, res) => {
+      const status = String(req.query.status || "open").toLowerCase();
+      const limit = Math.max(1, Math.min(200, Number(req.query.limit) || 50));
+      try {
+        const { data, error } = await adminSupabase
+          .from("moderation_reports")
+          .select(
+            `*, reporter:user_profiles!moderation_reports_reporter_id_fkey ( id, full_name, username, avatar_url )`,
+          )
+          .eq("status", status)
+          .order("created_at", { ascending: false })
+          .limit(limit);
+        if (error) return res.status(500).json({ error: error.message });
+        return res.json(data || []);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/moderation/reports/:id/status", async (req, res) => {
+      const id = String(req.params.id || "");
+      const { status } = (req.body || {}) as { status?: string };
+      const allowed = ["open", "resolved", "ignored"];
+      if (!id || !status || !allowed.includes(String(status))) {
+        return res.status(400).json({ error: "invalid input" });
+      }
+      try {
+        const { data, error } = await adminSupabase
+          .from("moderation_reports")
+          .update({ status })
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        return res.json(data);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
