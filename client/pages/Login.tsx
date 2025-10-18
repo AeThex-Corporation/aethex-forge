@@ -48,8 +48,10 @@ export default function Login() {
   const [manualVerificationLink, setManualVerificationLink] = useState<
     string | null
   >(null);
+  const [showReset, setShowReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
-  const { signIn, signUp, signInWithOAuth, user, loading, profileComplete } =
+  const { signIn, signUp, signInWithOAuth, user, loading, profileComplete, requestPasswordReset } =
     useAuth();
   const { info: toastInfo, error: toastError } = useAethexToast();
 
