@@ -430,7 +430,17 @@ const ProfilePassport = () => {
                     <CardContent className="flex h-full flex-col justify-between gap-3 p-5">
                       <div className="flex items-center gap-3 text-white">
                         <span className="text-3xl">
-                          {achievement.icon || "🏅"}
+                          {((): string => {
+                            const key = String(achievement.icon || achievement.name || "").toLowerCase();
+                            if (/founding|founder/.test(key)) return "🎖️";
+                            if (/trophy|award|medal|badge/.test(key)) return "🏆";
+                            if (/welcome/.test(key)) return "🎉";
+                            if (/star/.test(key)) return "⭐";
+                            if (/rocket|launch/.test(key)) return "🚀";
+                            return typeof achievement.icon === "string" && achievement.icon.length <= 3
+                              ? (achievement.icon as string)
+                              : "🏅";
+                          })()}
                         </span>
                         <div>
                           <h3 className="text-lg font-semibold">
