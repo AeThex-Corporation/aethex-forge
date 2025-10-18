@@ -159,6 +159,15 @@ const RealmSwitcher = memo(function RealmSwitcher({
   onSave,
   saving,
 }: RealmSwitcherProps) {
+  const { roles } = useAuth();
+  const canSeeStaff = useMemo(
+    () => roles.some((r) => ["owner", "admin", "founder", "staff", "employee"].includes(r.toLowerCase())),
+    [roles],
+  );
+  const visibleOptions = useMemo(
+    () => REALM_OPTIONS.filter((o) => (o.id === "staff" ? canSeeStaff : true)),
+    [canSeeStaff],
+  );
   return (
     <div className="space-y-6">
       <div className="space-y-2">
