@@ -3226,7 +3226,10 @@ export default function Community() {
           {activeTab === "featured" && (
             <TabsContent value="featured" className="mt-0">
               {/* Featured Developers */}
-              <section id="featured-developers" className="py-20 bg-background/30">
+              <section
+                id="featured-developers"
+                className="py-20 bg-background/30"
+              >
                 <div className="container mx-auto px-4">
                   <SectionHeader
                     badge="Community Leaders"

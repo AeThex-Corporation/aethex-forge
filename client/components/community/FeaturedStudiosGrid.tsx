@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 interface Studio {
@@ -30,13 +36,26 @@ export default function FeaturedStudiosGrid() {
     })();
   }, []);
 
-  if (loading) return <p className="text-sm text-muted-foreground text-center">Loading studios…</p>;
-  if (!studios.length) return <p className="text-sm text-muted-foreground text-center">No featured studios yet.</p>;
+  if (loading)
+    return (
+      <p className="text-sm text-muted-foreground text-center">
+        Loading studios…
+      </p>
+    );
+  if (!studios.length)
+    return (
+      <p className="text-sm text-muted-foreground text-center">
+        No featured studios yet.
+      </p>
+    );
 
   return (
     <div className="grid gap-6 md:grid-cols-3">
       {studios.map((s) => (
-        <Card key={s.id || s.name} className="border-border/50 bg-background/80 backdrop-blur">
+        <Card
+          key={s.id || s.name}
+          className="border-border/50 bg-background/80 backdrop-blur"
+        >
           <CardHeader>
             <CardTitle className="text-lg">{s.name}</CardTitle>
             {s.tagline ? <CardDescription>{s.tagline}</CardDescription> : null}

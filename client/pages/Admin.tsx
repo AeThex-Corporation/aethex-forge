@@ -736,12 +736,27 @@ export default function Admin() {
                     trend={stat.trend}
                     icon={stat.icon}
                     tone={stat.tone}
-                    actions={stat.title === "Featured studios" ? (
-                      <div className="flex gap-2">
-                        <Button size="sm" variant="outline" onClick={() => navigate("/community#featured-studios")}>Open community</Button>
-                        <Button size="sm" onClick={() => setActiveTab("operations")}>Manage studios</Button>
-                      </div>
-                    ) : undefined}
+                    actions={
+                      stat.title === "Featured studios" ? (
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              navigate("/community#featured-studios")
+                            }
+                          >
+                            Open community
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => setActiveTab("operations")}
+                          >
+                            Manage studios
+                          </Button>
+                        </div>
+                      ) : undefined
+                    }
                   />
                 ))}
               </div>
@@ -1180,7 +1195,15 @@ export default function Admin() {
                         >
                           Add studio
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => navigate("/community#featured-studios")}>Open community</Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() =>
+                            navigate("/community#featured-studios")
+                          }
+                        >
+                          Open community
+                        </Button>
                       </div>
                       <Button
                         size="sm"

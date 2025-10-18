@@ -12,7 +12,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { aethexToast } from "@/lib/aethex-toast";
 import { cn } from "@/lib/utils";
@@ -49,11 +55,27 @@ interface MentorshipRequestRow {
   message?: string | null;
   status: "pending" | "accepted" | "rejected" | "cancelled";
   created_at?: string | null;
-  mentor?: { id?: string; full_name?: string | null; username?: string | null; avatar_url?: string | null } | null;
-  mentee?: { id?: string; full_name?: string | null; username?: string | null; avatar_url?: string | null } | null;
+  mentor?: {
+    id?: string;
+    full_name?: string | null;
+    username?: string | null;
+    avatar_url?: string | null;
+  } | null;
+  mentee?: {
+    id?: string;
+    full_name?: string | null;
+    username?: string | null;
+    avatar_url?: string | null;
+  } | null;
 }
 
-const statusOptions = ["all", "pending", "accepted", "rejected", "cancelled"] as const;
+const statusOptions = [
+  "all",
+  "pending",
+  "accepted",
+  "rejected",
+  "cancelled",
+] as const;
 
 type StatusFilter = (typeof statusOptions)[number];
 
@@ -88,7 +110,10 @@ export default function AdminMentorshipManager() {
       const data = await resp.json();
       setMentors(Array.isArray(data) ? data : []);
     } catch (e: any) {
-      aethexToast.error({ title: "Failed to load mentors", description: String(e?.message || e) });
+      aethexToast.error({
+        title: "Failed to load mentors",
+        description: String(e?.message || e),
+      });
       setMentors([]);
     } finally {
       setLoadingMentors(false);
@@ -101,12 +126,17 @@ export default function AdminMentorshipManager() {
       const params = new URLSearchParams();
       params.set("limit", "100");
       if (statusFilter !== "all") params.set("status", statusFilter);
-      const resp = await fetch(`/api/mentorship/requests/all?${params.toString()}`);
+      const resp = await fetch(
+        `/api/mentorship/requests/all?${params.toString()}`,
+      );
       if (!resp.ok) throw new Error(await resp.text().catch(() => "Failed"));
       const data = await resp.json();
       setRequests(Array.isArray(data) ? data : []);
     } catch (e: any) {
-      aethexToast.error({ title: "Failed to load requests", description: String(e?.message || e) });
+      aethexToast.error({
+        title: "Failed to load requests",
+        description: String(e?.message || e),
+      });
       setRequests([]);
     } finally {
       setLoadingRequests(false);
@@ -146,20 +176,35 @@ export default function AdminMentorshipManager() {
         bio: merged.bio ?? null,
         expertise: Array.isArray(merged.expertise) ? merged.expertise : [],
         available: !!merged.available,
-        hourly_rate: typeof merged.hourly_rate === "number" ? merged.hourly_rate : null,
+        hourly_rate:
+          typeof merged.hourly_rate === "number" ? merged.hourly_rate : null,
       };
       const resp = await fetch("/api/mentors/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!resp.ok) throw new Error(await resp.text().catch(() => "Save failed"));
+      if (!resp.ok)
+        throw new Error(await resp.text().catch(() => "Save failed"));
       const updated = await resp.json();
       draftsRef.current[m.user_id] = {};
-      setMentors((prev) => prev.map((row) => (row.user_id === m.user_id ? { ...row, ...updated } : row)));
-      aethexToast.success({ title: "Mentor saved", description: merged.user_profiles?.full_name || merged.user_profiles?.username || merged.user_id });
+      setMentors((prev) =>
+        prev.map((row) =>
+          row.user_id === m.user_id ? { ...row, ...updated } : row,
+        ),
+      );
+      aethexToast.success({
+        title: "Mentor saved",
+        description:
+          merged.user_profiles?.full_name ||
+          merged.user_profiles?.username ||
+          merged.user_id,
+      });
     } catch (e: any) {
-      aethexToast.error({ title: "Save failed", description: String(e?.message || e) });
+      aethexToast.error({
+        title: "Save failed",
+        description: String(e?.message || e),
+      });
     }
   };
 
@@ -168,7 +213,12 @@ export default function AdminMentorshipManager() {
     if (!q) return mentors;
     return mentors.filter((m) => {
       const up = m.user_profiles || {};
-      const haystack = [up.full_name, up.username, m.bio, (m.expertise || []).join(" ")]
+      const haystack = [
+        up.full_name,
+        up.username,
+        m.bio,
+        (m.expertise || []).join(" "),
+      ]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();
@@ -184,19 +234,40 @@ export default function AdminMentorshipManager() {
             <GraduationCap className="h-5 w-5 text-aethex-300" />
             <CardTitle>Mentors directory</CardTitle>
           </div>
-          <CardDescription>Search, filter, and update mentor availability.</CardDescription>
+          <CardDescription>
+            Search, filter, and update mentor availability.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex-1 min-w-[240px]">
-              <Input placeholder="Search mentors" value={mentorQ} onChange={(e) => setMentorQ(e.target.value)} />
+              <Input
+                placeholder="Search mentors"
+                value={mentorQ}
+                onChange={(e) => setMentorQ(e.target.value)}
+              />
             </div>
             <div className="flex items-center gap-2">
-              <Switch id="availableOnly" checked={availableOnly} onCheckedChange={setAvailableOnly} />
-              <Label htmlFor="availableOnly" className="text-sm">Available only</Label>
+              <Switch
+                id="availableOnly"
+                checked={availableOnly}
+                onCheckedChange={setAvailableOnly}
+              />
+              <Label htmlFor="availableOnly" className="text-sm">
+                Available only
+              </Label>
             </div>
-            <Button variant="outline" size="sm" onClick={loadMentors} disabled={loadingMentors}>
-              {loadingMentors ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadMentors}
+              disabled={loadingMentors}
+            >
+              {loadingMentors ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCw className="mr-2 h-4 w-4" />
+              )}
               Refresh
             </Button>
           </div>
@@ -230,7 +301,13 @@ export default function AdminMentorshipManager() {
               <Tag className="mr-2 h-4 w-4" /> Add tag
             </Button>
             {expertiseFilter.length > 0 && (
-              <Button variant="ghost" size="sm" onClick={() => setExpertiseFilter([])}>Clear tags</Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setExpertiseFilter([])}
+              >
+                Clear tags
+              </Button>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
@@ -243,9 +320,13 @@ export default function AdminMentorshipManager() {
 
           <div className="rounded border border-border/40">
             {loadingMentors ? (
-              <div className="p-4 text-sm text-muted-foreground">Loading mentors…</div>
+              <div className="p-4 text-sm text-muted-foreground">
+                Loading mentors…
+              </div>
             ) : filteredMentors.length === 0 ? (
-              <div className="p-4 text-sm text-muted-foreground">No mentors found.</div>
+              <div className="p-4 text-sm text-muted-foreground">
+                No mentors found.
+              </div>
             ) : (
               <ScrollArea className="max-h-[560px]">
                 <div className="divide-y divide-border/40">
@@ -259,15 +340,34 @@ export default function AdminMentorshipManager() {
                           <div className="min-w-[240px]">
                             <div className="flex items-center gap-2">
                               <Users className="h-4 w-4 text-aethex-300" />
-                              <div className="font-medium text-foreground">{up.full_name || up.username || m.user_id}</div>
-                              <Badge variant="outline" className={cn("text-xs capitalize", merged.available ? "border-green-500/50 text-green-300" : "border-yellow-500/50 text-yellow-300")}>{merged.available ? "available" : "unavailable"}</Badge>
+                              <div className="font-medium text-foreground">
+                                {up.full_name || up.username || m.user_id}
+                              </div>
+                              <Badge
+                                variant="outline"
+                                className={cn(
+                                  "text-xs capitalize",
+                                  merged.available
+                                    ? "border-green-500/50 text-green-300"
+                                    : "border-yellow-500/50 text-yellow-300",
+                                )}
+                              >
+                                {merged.available ? "available" : "unavailable"}
+                              </Badge>
                             </div>
-                            <div className="mt-1 text-xs text-muted-foreground">{up.username ? `@${up.username}` : null}</div>
+                            <div className="mt-1 text-xs text-muted-foreground">
+                              {up.username ? `@${up.username}` : null}
+                            </div>
                           </div>
 
                           <div className="grid gap-2 md:grid-cols-3 flex-1 min-w-[320px]">
                             <div>
-                              <Label htmlFor={`rate-${m.user_id}`} className="text-xs">Hourly rate (USD)</Label>
+                              <Label
+                                htmlFor={`rate-${m.user_id}`}
+                                className="text-xs"
+                              >
+                                Hourly rate (USD)
+                              </Label>
                               <div className="flex items-center gap-2">
                                 <DollarSign className="h-4 w-4 text-muted-foreground" />
                                 <Input
@@ -275,23 +375,55 @@ export default function AdminMentorshipManager() {
                                   type="number"
                                   min="0"
                                   step="1"
-                                  value={typeof merged.hourly_rate === "number" ? merged.hourly_rate : (merged.hourly_rate ?? "")}
-                                  onChange={(e) => setDraft(m.user_id, { hourly_rate: e.target.value === "" ? null : Number(e.target.value) })}
+                                  value={
+                                    typeof merged.hourly_rate === "number"
+                                      ? merged.hourly_rate
+                                      : (merged.hourly_rate ?? "")
+                                  }
+                                  onChange={(e) =>
+                                    setDraft(m.user_id, {
+                                      hourly_rate:
+                                        e.target.value === ""
+                                          ? null
+                                          : Number(e.target.value),
+                                    })
+                                  }
                                 />
                               </div>
                             </div>
                             <div>
                               <Label className="text-xs">Availability</Label>
                               <div className="flex items-center gap-2 mt-1">
-                                <Switch checked={!!merged.available} onCheckedChange={(v) => setDraft(m.user_id, { available: v })} />
-                                <span className="text-xs text-muted-foreground">{merged.available ? "Accepting requests" : "Not accepting"}</span>
+                                <Switch
+                                  checked={!!merged.available}
+                                  onCheckedChange={(v) =>
+                                    setDraft(m.user_id, { available: v })
+                                  }
+                                />
+                                <span className="text-xs text-muted-foreground">
+                                  {merged.available
+                                    ? "Accepting requests"
+                                    : "Not accepting"}
+                                </span>
                               </div>
                             </div>
                             <div>
-                              <Label className="text-xs">Expertise (comma separated)</Label>
+                              <Label className="text-xs">
+                                Expertise (comma separated)
+                              </Label>
                               <Input
-                                value={(Array.isArray(merged.expertise) ? merged.expertise : []).join(", ")}
-                                onChange={(e) => setDraft(m.user_id, { expertise: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
+                                value={(Array.isArray(merged.expertise)
+                                  ? merged.expertise
+                                  : []
+                                ).join(", ")}
+                                onChange={(e) =>
+                                  setDraft(m.user_id, {
+                                    expertise: e.target.value
+                                      .split(",")
+                                      .map((s) => s.trim())
+                                      .filter(Boolean),
+                                  })
+                                }
                               />
                             </div>
                           </div>
@@ -302,14 +434,22 @@ export default function AdminMentorshipManager() {
                             <Textarea
                               rows={2}
                               value={merged.bio ?? ""}
-                              onChange={(e) => setDraft(m.user_id, { bio: e.target.value })}
+                              onChange={(e) =>
+                                setDraft(m.user_id, { bio: e.target.value })
+                              }
                             />
                           </div>
                           <div className="flex items-end justify-end gap-2">
-                            <Button size="sm" variant="outline" onClick={() => {
-                              draftsRef.current[m.user_id] = {};
-                              setMentors((prev) => prev.slice());
-                            }}>Reset</Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                draftsRef.current[m.user_id] = {};
+                                setMentors((prev) => prev.slice());
+                              }}
+                            >
+                              Reset
+                            </Button>
                             <Button size="sm" onClick={() => saveMentor(m)}>
                               <Save className="mr-2 h-4 w-4" /> Save
                             </Button>
@@ -331,24 +471,42 @@ export default function AdminMentorshipManager() {
             <MessageSquareText className="h-5 w-5 text-aethex-300" />
             <CardTitle>Mentorship requests</CardTitle>
           </div>
-          <CardDescription>Review mentor/mentee activity and statuses.</CardDescription>
+          <CardDescription>
+            Review mentor/mentee activity and statuses.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Label className="text-sm">Status</Label>
-              <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
-                <SelectTrigger className="w-[160px]"><SelectValue placeholder="Status" /></SelectTrigger>
+              <Select
+                value={statusFilter}
+                onValueChange={(v) => setStatusFilter(v as StatusFilter)}
+              >
+                <SelectTrigger className="w-[160px]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
                 <SelectContent>
                   {statusOptions.map((s) => (
-                    <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>
+                    <SelectItem key={s} value={s} className="capitalize">
+                      {s}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={loadRequests} disabled={loadingRequests}>
-                {loadingRequests ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={loadRequests}
+                disabled={loadingRequests}
+              >
+                {loadingRequests ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                )}
                 Refresh
               </Button>
               <Button size="sm" asChild>
@@ -362,9 +520,13 @@ export default function AdminMentorshipManager() {
 
           <div className="rounded border border-border/40">
             {loadingRequests ? (
-              <div className="p-4 text-sm text-muted-foreground">Loading requests…</div>
+              <div className="p-4 text-sm text-muted-foreground">
+                Loading requests…
+              </div>
             ) : requests.length === 0 ? (
-              <div className="p-4 text-sm text-muted-foreground">No requests found.</div>
+              <div className="p-4 text-sm text-muted-foreground">
+                No requests found.
+              </div>
             ) : (
               <ScrollArea className="max-h-[560px]">
                 <div className="divide-y divide-border/40">
@@ -373,15 +535,27 @@ export default function AdminMentorshipManager() {
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="text-sm font-medium">
-                            {(r.mentee?.full_name || r.mentee?.username || r.mentee_id) + " → " + (r.mentor?.full_name || r.mentor?.username || r.mentor_id)}
+                            {(r.mentee?.full_name ||
+                              r.mentee?.username ||
+                              r.mentee_id) +
+                              " → " +
+                              (r.mentor?.full_name ||
+                                r.mentor?.username ||
+                                r.mentor_id)}
                           </div>
-                          <div className="text-xs text-muted-foreground mt-0.5">{r.message || "No message"}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">
+                            {r.message || "No message"}
+                          </div>
                           {r.created_at ? (
-                            <div className="text-[11px] text-muted-foreground mt-1">{new Date(r.created_at).toLocaleString()}</div>
+                            <div className="text-[11px] text-muted-foreground mt-1">
+                              {new Date(r.created_at).toLocaleString()}
+                            </div>
                           ) : null}
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="capitalize">{r.status}</Badge>
+                          <Badge variant="outline" className="capitalize">
+                            {r.status}
+                          </Badge>
                         </div>
                       </div>
                     </div>

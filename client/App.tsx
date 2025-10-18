@@ -119,16 +119,22 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* Service routes */}
-              <Route path="/game-development" element={
-                <RequireAccess allowedRealms={["game_developer", "staff"]}>
-                  <GameDevelopment />
-                </RequireAccess>
-              } />
-              <Route path="/consulting" element={
-                <RequireAccess allowedRealms={["client", "staff"]}>
-                  <DevelopmentConsulting />
-                </RequireAccess>
-              } />
+              <Route
+                path="/game-development"
+                element={
+                  <RequireAccess allowedRealms={["game_developer", "staff"]}>
+                    <GameDevelopment />
+                  </RequireAccess>
+                }
+              />
+              <Route
+                path="/consulting"
+                element={
+                  <RequireAccess allowedRealms={["client", "staff"]}>
+                    <DevelopmentConsulting />
+                  </RequireAccess>
+                }
+              />
               <Route path="/mentorship" element={<MentorshipPrograms />} />
               <Route path="/engage" element={<Engage />} />
               <Route
