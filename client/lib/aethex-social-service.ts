@@ -62,4 +62,46 @@ export const aethexSocialService = {
       throw new Error(error.message || "Unable to unfollow user");
     }
   },
+
+  async sendInvite(inviterId: string, email: string, message?: string | null) {
+    const resp = await fetch("/api/invites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ inviter_id: inviterId, invitee_email: email, message }),
+    });
+    if (!resp.ok) {
+      const err = await resp.text();
+      throw new Error(err || "Failed to send invite");
+    }
+    return (await resp.json()) as { ok: boolean; inviteUrl: string; token: string };
+  },
+
+  async listInvites(inviterId: string) {
+    const resp = await fetch(`/api/invites?inviter_id=${encodeURIComponent(inviterId)}`);
+    if (!resp.ok) return [];
+    return await resp.json();
+  },
+
+  async acceptInvite(token: string, acceptorId: string) {
+    const resp = await fetch("/api/invites/accept", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, acceptor_id: acceptorId }),
+    });
+    if (!resp.ok) {
+      const err = await resp.text();
+      throw new Error(err || "Failed to accept invite");
+    }
+    return await resp.json();
+  },
+
+  async applyReward(userId: string, action: string, amount?: number) {
+    const resp = await fetch("/api/rewards/apply", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: userId, action, amount }),
+    });
+    if (!resp.ok) return false;
+    return true;
+  },
 };
