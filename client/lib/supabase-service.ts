@@ -234,10 +234,11 @@ export const achievementService = {
 // Community Services
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
-    const { data, error } = await supabase
-      .from("community_posts")
-      .select(
-        `
+    try {
+      const { data, error } = await supabase
+        .from("community_posts")
+        .select(
+          `
         *,
         user_profiles (
           username,
@@ -245,16 +246,31 @@ export const communityService = {
           avatar_url
         )
       `,
-      )
-      .eq("is_published", true)
-      .order("created_at", { ascending: false })
-      .limit(limit);
+        )
+        .eq("is_published", true)
+        .order("created_at", { ascending: false })
+        .limit(limit);
 
-    if (error) {
-      throw error;
+      if (!error) {
+        return (Array.isArray(data) ? data : []) as CommunityPost[];
+      }
+
+      console.warn("Supabase getPosts failed, falling back to API:", (error as any)?.message || error);
+    } catch (e) {
+      console.warn("Supabase getPosts threw, falling back to API:", (e as any)?.message || e);
     }
 
-    return (Array.isArray(data) ? data : []) as CommunityPost[];
+    try {
+      const resp = await fetch(`/api/posts?limit=${encodeURIComponent(String(limit))}`);
+      if (resp.ok) {
+        const payload = await resp.json();
+        return (Array.isArray(payload) ? payload : []) as CommunityPost[];
+      }
+    } catch (apiErr) {
+      console.error("API fallback for getPosts failed:", (apiErr as any)?.message || apiErr);
+    }
+
+    throw new Error("Unable to load posts");
   },
 
   async createPost(
