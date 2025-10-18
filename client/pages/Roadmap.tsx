@@ -264,6 +264,9 @@ export default function Roadmap() {
               </Card>
             ))}
           </div>
+          <div className="mt-8">
+            <VoteWidget options={PEEKS.map((p) => ({ id: p.id, label: p.title }))} />
+          </div>
         </section>
       </div>
     </Layout>
