@@ -26,6 +26,7 @@ import AdminStatusOverview from "@/components/admin/AdminStatusOverview";
 import AdminChangelogDigest from "@/components/admin/AdminChangelogDigest";
 import AdminSystemMap from "@/components/admin/AdminSystemMap";
 import AdminMentorshipManager from "@/components/admin/AdminMentorshipManager";
+import AdminRoadmap from "@/components/admin/AdminRoadmap";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
@@ -719,6 +720,7 @@ export default function Admin() {
             <TabsList className="w-full justify-start gap-2 overflow-x-auto border border-border/40 bg-background/40 px-1 py-1 backdrop-blur">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="system-map">System Map</TabsTrigger>
+              <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
               <TabsTrigger value="community">Community</TabsTrigger>
               <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
@@ -854,6 +856,10 @@ export default function Admin() {
 
             <TabsContent value="system-map" className="space-y-6">
               <AdminSystemMap />
+            </TabsContent>
+
+            <TabsContent value="roadmap" className="space-y-6">
+              <AdminRoadmap />
             </TabsContent>
 
             <TabsContent value="content" className="space-y-6">
