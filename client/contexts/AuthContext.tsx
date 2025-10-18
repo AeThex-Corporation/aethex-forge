@@ -48,6 +48,8 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<AethexUserProfile>) => Promise<void>;
   refreshProfile: () => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<void>;
+  updatePassword: (newPassword: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -97,6 +99,16 @@ const missingProviderFallback: AuthContextType = {
     );
   },
   refreshProfile: async () => {
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
+  },
+  requestPasswordReset: async () => {
+    throw new Error(
+      "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
+    );
+  },
+  updatePassword: async () => {
     throw new Error(
       "AuthProvider is not mounted. Please ensure your app is wrapped with <AuthProvider>.",
     );
@@ -816,6 +828,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     signOut,
     updateProfile,
     refreshProfile,
+    requestPasswordReset: async (email: string) => {
+      if (!email) throw new Error("Email is required");
+      try {
+        const redirectTo =
+          typeof window !== "undefined"
+            ? `${window.location.origin}/reset-password`
+            : undefined;
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo,
+        });
+        if (error) throw error;
+        aethexToast.info({
+          title: "Check your email",
+          description: `We sent a password reset link to ${email}.`,
+        });
+      } catch (error: any) {
+        const msg = String(error?.message || error || "Failed to send reset email");
+        aethexToast.error({ title: "Reset failed", description: msg });
+        throw new Error(msg);
+      }
+    },
+    updatePassword: async (newPassword: string) => {
+      if (!newPassword || newPassword.length < 6) {
+        throw new Error("Password must be at least 6 characters long.");
+      }
+      try {
+        // Ensure session from recovery link is present
+        try {
+          await supabase.auth.getSession();
+        } catch {}
+        const { data, error } = await supabase.auth.updateUser({
+          password: newPassword,
+        });
+        if (error) throw error;
+        if (data?.user) {
+          aethexToast.success({
+            title: "Password updated",
+            description: "You can now sign in with your new password.",
+          });
+        }
+      } catch (error: any) {
+        const msg = String(error?.message || error || "Failed to update password");
+        aethexToast.error({ title: "Update failed", description: msg });
+        throw new Error(msg);
+      }
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
