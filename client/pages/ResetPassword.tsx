@@ -46,11 +46,21 @@ export default function ResetPassword() {
           setLinkError(urlErrorDesc || "Reset link is invalid or has expired.");
           return;
         }
-        try {
-          await supabase.auth.exchangeCodeForSession(window.location.href);
-        } catch (e: any) {
-          setLinkError("Reset link is invalid or has expired.");
-          return;
+        const access_token = params.get("access_token");
+        const refresh_token = params.get("refresh_token");
+        if (access_token && refresh_token) {
+          const { error: setErr } = await supabase.auth.setSession({ access_token, refresh_token });
+          if (setErr) {
+            setLinkError("Reset link is invalid or has expired.");
+            return;
+          }
+        } else {
+          try {
+            await supabase.auth.exchangeCodeForSession(window.location.href);
+          } catch (e: any) {
+            setLinkError("Reset link is invalid or has expired.");
+            return;
+          }
         }
         const { data } = await supabase.auth.getSession();
         if (!data?.session) {
