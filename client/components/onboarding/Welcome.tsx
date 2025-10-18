@@ -299,6 +299,32 @@ export default function Welcome({
     }
   };
 
+  const autoResendTriggeredRef = useRef(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!emailAddress) return;
+    if (isVerified) return;
+    if (autoResendTriggeredRef.current) return;
+
+    const key = `auto_resend_v1:${String(emailAddress).toLowerCase()}`;
+    try {
+      if (window.localStorage.getItem(key) === "1") return;
+      autoResendTriggeredRef.current = true;
+      window.localStorage.setItem(key, "1");
+      // Fire-and-forget; handler manages its own toasts/states
+      handleResendVerification().catch(() => {
+        /* ignore */
+      });
+    } catch {
+      if (!autoResendTriggeredRef.current) {
+        autoResendTriggeredRef.current = true;
+        handleResendVerification().catch(() => {
+          /* ignore */
+        });
+      }
+    }
+  }, [emailAddress, isVerified]);
+
   const VerificationIcon = isVerified ? MailCheck : MailWarning;
   const verificationBorderClass = isVerified
     ? "border-emerald-500/40"
