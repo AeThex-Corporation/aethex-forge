@@ -28,6 +28,7 @@ export default function Explore() {
         title: "Game Development",
         description: "Studios and indie support",
         link: "/game-development",
+        tags: ["Studios", "Tools"],
         cardClass:
           "border-blue-500/40 bg-gradient-to-br from-blue-950/60 via-indigo-950/30 to-purple-900/40 text-blue-100 hover:border-blue-400/80 hover:shadow-[0_0_25px_rgba(59,130,246,0.35)]",
         titleClass: "text-blue-100",
@@ -39,6 +40,7 @@ export default function Explore() {
         title: "Consulting",
         description: "Architecture & delivery",
         link: "/consulting",
+        tags: ["Architecture", "Delivery"],
         cardClass:
           "border-fuchsia-500/40 bg-gradient-to-br from-fuchsia-950/60 via-rose-950/30 to-purple-900/40 text-fuchsia-100 hover:border-fuchsia-400/80 hover:shadow-[0_0_25px_rgba(217,70,239,0.35)]",
         titleClass: "text-fuchsia-100",
@@ -50,6 +52,7 @@ export default function Explore() {
         title: "Mentorship",
         description: "Programs and guidance",
         link: "/mentorship",
+        tags: ["Programs", "Guidance"],
         cardClass:
           "border-emerald-500/40 bg-gradient-to-br from-emerald-950/60 via-teal-950/30 to-blue-900/40 text-emerald-100 hover:border-emerald-400/80 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]",
         titleClass: "text-emerald-100",
@@ -66,6 +69,7 @@ export default function Explore() {
       {
         title: "Documentation",
         description: "Guides and tutorials",
+        tags: ["Guides", "Tutorials"],
         cardClass:
           "border-cyan-400/40 bg-gradient-to-br from-cyan-950/50 via-sky-950/25 to-blue-900/30 text-cyan-100 hover:border-cyan-300/70 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]",
         titleClass: "text-cyan-100",
@@ -90,6 +94,7 @@ export default function Explore() {
       {
         title: "Community",
         description: "News and discussions",
+        tags: ["Blog", "Hub"],
         cardClass:
           "border-orange-400/40 bg-gradient-to-br from-amber-950/50 via-orange-950/25 to-rose-900/30 text-orange-100 hover:border-orange-300/70 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]",
         titleClass: "text-orange-100",
@@ -114,6 +119,7 @@ export default function Explore() {
       {
         title: "Company",
         description: "About and contact",
+        tags: ["About", "Contact"],
         cardClass:
           "border-indigo-400/40 bg-gradient-to-br from-indigo-950/50 via-blue-950/25 to-slate-900/30 text-indigo-100 hover:border-indigo-300/70 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]",
         titleClass: "text-indigo-100",
@@ -187,13 +193,35 @@ export default function Explore() {
             <p className="text-muted-foreground mt-2">
               Explore services, programs, resources, and community
             </p>
+
+            {/* Quick Links */}
+            <div className="mt-6 flex flex-wrap justify-center gap-3 animate-fade-in">
+              {[
+                { label: "Dashboard", href: "/dashboard" },
+                { label: "Feed", href: "/feed" },
+                { label: "Passport", href: "/passport/me" },
+                { label: "Docs", href: "/docs" },
+                { label: "Community", href: "/community" },
+              ].map((q, i) => (
+                <Button
+                  key={q.label}
+                  asChild
+                  variant="outline"
+                  className="border-border/50 hover:border-aethex-400/50"
+                  style={{ animationDelay: `${i * 0.05}s` }}
+                >
+                  <Link to={q.href}>{q.label}</Link>
+                </Button>
+              ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {serviceOfferings.map((offering) => (
+            {serviceOfferings.map((offering, idx) => (
               <Card
                 key={offering.title}
                 className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
+                style={{ animationDelay: `${idx * 0.08}s` }}
               >
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
                 <CardHeader className="relative space-y-2">
@@ -205,6 +233,15 @@ export default function Explore() {
                   >
                     {offering.description}
                   </CardDescription>
+                  {offering.tags && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {offering.tags.map((t: string) => (
+                        <span key={t} className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-white/80">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </CardHeader>
                 <CardContent className="relative pt-2">
                   <Button asChild className={`w-full ${offering.buttonClass}`}>
@@ -250,10 +287,11 @@ export default function Explore() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            {resourceOfferings.map((offering) => (
+            {resourceOfferings.map((offering, idx) => (
               <Card
                 key={offering.title}
                 className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
+                style={{ animationDelay: `${idx * 0.08}s` }}
               >
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-35 transition-opacity duration-500" />
                 <CardHeader className="relative space-y-2">
@@ -265,6 +303,15 @@ export default function Explore() {
                   >
                     {offering.description}
                   </CardDescription>
+                  {offering.tags && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {offering.tags.map((t: string) => (
+                        <span key={t} className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-white/80">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </CardHeader>
                 <CardContent className="relative">
                   <div className="flex flex-wrap gap-2">
