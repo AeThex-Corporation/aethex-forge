@@ -53,7 +53,7 @@ export default function Investors() {
   const activateClientRealm = async () => {
     try {
       await updateProfile({ user_type: "client" as any });
-      toast({ title: "Realm set", description: "Client realm activated" });
+      toast({ title: "Realm set", description: "Consulting realm activated" });
     } catch (e: any) {
       toast({ variant: "destructive", description: e?.message || "Could not update realm" });
     }
@@ -171,7 +171,7 @@ export default function Investors() {
                   <CardContent className="space-y-3">
                     <p className="text-sm text-red-100/80">Client realm provides engagement dashboards, briefings, and investor updates. Switch realms anytime from Realms.</p>
                     {user ? (
-                      <Button onClick={activateClientRealm} disabled={isClientRealm} className="bg-red-500 hover:bg-red-400">{isClientRealm ? "Client realm active" : "Activate Client realm"}</Button>
+                      <Button onClick={activateClientRealm} disabled={isClientRealm} className="bg-red-500 hover:bg-red-400">{isClientRealm ? "Consulting realm active" : "Activate Consulting realm"}</Button>
                     ) : (
                       <Button asChild className="bg-red-500 hover:bg-red-400"><Link to="/onboarding">Create account to activate</Link></Button>
                     )}
