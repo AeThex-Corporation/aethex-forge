@@ -234,6 +234,7 @@ export const achievementService = {
 // Community Services
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
+    // 1) Try relational select with embedded author profile
     try {
       const { data, error } = await supabase
         .from("community_posts")
@@ -254,12 +255,41 @@ export const communityService = {
       if (!error) {
         return (Array.isArray(data) ? data : []) as CommunityPost[];
       }
-
-      console.warn("Supabase getPosts failed, falling back to API:", (error as any)?.message || error);
+      console.warn("Supabase getPosts relational select failed:", (error as any)?.message || error);
     } catch (e) {
-      console.warn("Supabase getPosts threw, falling back to API:", (e as any)?.message || e);
+      console.warn("Supabase getPosts relational select threw:", (e as any)?.message || e);
     }
 
+    // 2) Fallback to simple posts select, then hydrate author profiles manually
+    try {
+      const { data: posts, error: postsErr } = await supabase
+        .from("community_posts")
+        .select("*")
+        .eq("is_published", true)
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (!postsErr && Array.isArray(posts) && posts.length) {
+        const authorIds = Array.from(new Set(posts.map((p: any) => p.author_id).filter(Boolean)));
+        let profilesById: Record<string, any> = {};
+        if (authorIds.length) {
+          const { data: profiles, error: profErr } = await supabase
+            .from("user_profiles")
+            .select("id, username, full_name, avatar_url")
+            .in("id", authorIds);
+          if (!profErr && Array.isArray(profiles)) {
+            profilesById = Object.fromEntries(
+              profiles.map((u: any) => [u.id, { username: u.username, full_name: u.full_name, avatar_url: u.avatar_url }]),
+            );
+          }
+        }
+        return posts.map((p: any) => ({ ...p, user_profiles: profilesById[p.author_id] || null })) as CommunityPost[];
+      }
+      if (postsErr) console.warn("Supabase getPosts simple select failed:", (postsErr as any)?.message || postsErr);
+    } catch (e2) {
+      console.warn("Supabase getPosts simple select threw:", (e2 as any)?.message || e2);
+    }
+
+    // 3) Final fallback to API if available
     try {
       const resp = await fetch(`/api/posts?limit=${encodeURIComponent(String(limit))}`);
       if (resp.ok) {
@@ -278,7 +308,7 @@ export const communityService = {
       console.error("API fallback for getPosts failed:", (apiErr as any)?.message || apiErr);
     }
 
-    // As a last resort, return an empty array so callers can apply their own demo fallback without surfacing an error toast
+    // Return actual empty array (no demo/mocks)
     return [] as CommunityPost[];
   },
 
