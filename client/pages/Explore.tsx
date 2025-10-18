@@ -205,11 +205,11 @@ export default function Explore() {
                 {combined.map((offering: any, idx: number) => (
                   <Card
                     key={offering.title}
-                    className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 ${offering.cardClass}`}
+                    className={`relative overflow-hidden border transition-all duration-500 group hover:-translate-y-1 h-full flex flex-col bg-card/60 border-border/50 ${offering.cardClass}`}
                     style={{ animationDelay: `${idx * 0.06}s` }}
                   >
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
-                    <CardHeader className="relative space-y-3">
+                    <CardHeader className="relative space-y-3 min-h-[110px]">
                       <div className="flex items-center justify-between">
                         <CardTitle className={`text-lg ${offering.titleClass}`}>
                           {offering.title}
@@ -234,28 +234,42 @@ export default function Explore() {
                         </div>
                       )}
                     </CardHeader>
-                    <CardContent className="relative pt-2">
+                    <CardContent className="relative pt-2 mt-auto">
                       {offering.link ? (
-                        <Button asChild className={`w-full ${offering.buttonClass || "border-border"}`}>
+                        <Button asChild className={`w-full ${offering.buttonClass || "bg-gradient-to-r from-aethex-500 to-neon-blue"}`}>
                           <Link to={offering.link}>Learn More</Link>
                         </Button>
                       ) : (
-                        <div className="flex flex-wrap gap-2">
-                          {offering.actions?.map((action: any) => (
+                        <>
+                          {offering.actions?.[0] ? (
                             <Button
-                              key={action.label}
                               asChild
-                              variant={action.variant as any}
-                              className={`flex-1 min-w-[120px] ${action.buttonClass}`}
+                              variant={offering.actions[0].variant as any}
+                              className={`w-full ${offering.actions[0].buttonClass || "border-border"}`}
                             >
-                              {action.external ? (
-                                <a href={action.href} target="_blank" rel="noreferrer">{action.label}</a>
+                              {offering.actions[0].external ? (
+                                <a href={offering.actions[0].href} target="_blank" rel="noreferrer">{offering.actions[0].label}</a>
                               ) : (
-                                <Link to={action.href}>{action.label}</Link>
+                                <Link to={offering.actions[0].href}>{offering.actions[0].label}</Link>
                               )}
                             </Button>
-                          ))}
-                        </div>
+                          ) : null}
+                          {offering.actions && offering.actions.length > 1 ? (
+                            <div className="mt-2 flex flex-wrap gap-3 justify-center text-xs text-muted-foreground">
+                              {offering.actions.slice(1).map((a: any) => (
+                                a.external ? (
+                                  <a key={a.label} href={a.href} target="_blank" rel="noreferrer" className="hover:text-foreground/80">
+                                    {a.label}
+                                  </a>
+                                ) : (
+                                  <Link key={a.label} to={a.href} className="hover:text-foreground/80">
+                                    {a.label}
+                                  </Link>
+                                )
+                              ))}
+                            </div>
+                          ) : null}
+                        </>
                       )}
                     </CardContent>
                   </Card>
