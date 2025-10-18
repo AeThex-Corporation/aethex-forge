@@ -46,13 +46,13 @@ export default function PersonalInfo({
   const getUserTypeLabel = () => {
     switch (data.userType) {
       case "game-developer":
-        return "Game Developer";
+        return "Game Development";
       case "client":
-        return "Client";
+        return "Consulting";
       case "member":
-        return "Community Member";
+        return "Community";
       case "customer":
-        return "Customer";
+        return "Get Started";
       default:
         return "User";
     }
