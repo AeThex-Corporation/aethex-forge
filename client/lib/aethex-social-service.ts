@@ -53,26 +53,21 @@ export const aethexSocialService = {
   },
 
   async followUser(followerId: string, followingId: string): Promise<void> {
-    const { error } = await supabase.from("user_follows").insert({
-      follower_id: followerId,
-      following_id: followingId,
+    const resp = await fetch("/api/social/follow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ follower_id: followerId, following_id: followingId }),
     });
-
-    if (error) {
-      throw new Error(error.message || "Unable to follow user");
-    }
+    if (!resp.ok) throw new Error(await resp.text());
   },
 
   async unfollowUser(followerId: string, followingId: string): Promise<void> {
-    const { error } = await supabase
-      .from("user_follows")
-      .delete()
-      .eq("follower_id", followerId)
-      .eq("following_id", followingId);
-
-    if (error) {
-      throw new Error(error.message || "Unable to unfollow user");
-    }
+    const resp = await fetch("/api/social/unfollow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ follower_id: followerId, following_id: followingId }),
+    });
+    if (!resp.ok) throw new Error(await resp.text());
   },
 
   async sendInvite(inviterId: string, email: string, message?: string | null) {
@@ -150,11 +145,11 @@ export const aethexSocialService = {
   },
 
   async endorseSkill(endorserId: string, endorsedId: string, skill: string) {
-    const payload = { endorser_id: endorserId, endorsed_id: endorsedId, skill };
-    const { error } = await supabase
-      .from("endorsements")
-      .insert(payload as any);
-    if (error) throw new Error(error.message || "Unable to endorse");
-    await this.applyReward(endorsedId, "endorsement_received", 2);
+    const resp = await fetch("/api/social/endorse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ endorser_id: endorserId, endorsed_id: endorsedId, skill }),
+    });
+    if (!resp.ok) throw new Error(await resp.text());
   },
 };
