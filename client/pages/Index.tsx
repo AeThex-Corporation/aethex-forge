@@ -16,8 +16,11 @@ import {
   ArrowRight,
   CheckCircle,
   Sparkles,
-  LayoutDashboard,
+  Zap,
+  Target,
   Users,
+  TrendingUp,
+  LayoutDashboard,
   Microscope,
   IdCard,
 } from "lucide-react";
@@ -43,6 +46,33 @@ export default function Index() {
   }, []);
 
   const features = [
+    {
+      title: "Game Development",
+      description: "Full‑cycle production and tooling",
+      icon: Zap,
+      color: "from-blue-500 to-purple-600",
+    },
+    {
+      title: "Product Design",
+      description: "UX/UI, prototyping, and branding",
+      icon: Target,
+      color: "from-purple-500 to-pink-600",
+    },
+    {
+      title: "Platform Engineering",
+      description: "Web, mobile, and backend foundations",
+      icon: Users,
+      color: "from-green-500 to-blue-600",
+    },
+    {
+      title: "Community & Growth",
+      description: "Programs, content, and engagement",
+      icon: TrendingUp,
+      color: "from-orange-500 to-red-600",
+    },
+  ];
+
+  const platformFeatures = [
     {
       title: "Dashboard",
       description: "Your projects, applications, and rewards — in one place",
@@ -245,10 +275,10 @@ export default function Index() {
                   <span className="text-gradient-purple">AeThex</span>
                 </h1>
                 <h2 className="text-2xl lg:text-3xl text-gradient animate-fade-in">
-                  The AeThex Platform
+                  Crafting Digital Realities
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up">
-                  Build in public, grow with community, and manage your work — from profile to production.
+                  Where vision meets execution. We craft experiences through design, development, and community.
                 </p>
               </div>
             </div>
@@ -260,7 +290,38 @@ export default function Index() {
                 const isActive = activeSection === index;
                 return (
                   <Card
-                    key={index}
+                    key={`old-${index}`}
+                    className={`relative overflow-hidden border-2 transition-all duration-500 hover-lift cursor-pointer group ${
+                      isActive
+                        ? "border-aethex-500 glow-blue scale-105"
+                        : "border-border/30 hover:border-aethex-400/50"
+                    }`}
+                    onClick={() => setActiveSection(index)}
+                  >
+                    <CardContent className="p-5 sm:p-6 text-center space-y-3">
+                      <div
+                        className={`mx-auto w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}
+                      >
+                        <Icon className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="font-semibold text-sm">{feature.title}</h3>
+                      <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {feature.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* Platform Feature Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up mt-6">
+              {platformFeatures.map((feature, index) => {
+                const Icon = feature.icon;
+                const isActive = activeSection === index;
+                return (
+                  <Card
+                    key={`platform-${index}`}
                     className={`relative overflow-hidden border-2 transition-all duration-500 hover-lift cursor-pointer group ${
                       isActive
                         ? "border-aethex-500 glow-blue scale-105"
