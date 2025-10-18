@@ -50,6 +50,8 @@ import ProjectsNew from "./pages/ProjectsNew";
 import Opportunities from "./pages/Opportunities";
 import Explore from "./pages/Explore";
 import ResetPassword from "./pages/ResetPassword";
+import Teams from "./pages/Teams";
+import ProjectBoard from "./pages/ProjectBoard";
 import { Navigate } from "react-router-dom";
 import FourOhFourPage from "./pages/404";
 import SignupRedirect from "./pages/SignupRedirect";
@@ -70,11 +72,9 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/feed" element={<Feed />} />
-              <Route
-                path="/network"
-                element={<Navigate to="/feed" replace />}
-              />
+              <Route path="/teams" element={<Teams />} />
               <Route path="/projects/new" element={<ProjectsNew />} />
+              <Route path="/projects/:projectId/board" element={<ProjectBoard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/me" element={<Profile />} />
 
