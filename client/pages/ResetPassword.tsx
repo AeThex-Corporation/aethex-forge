@@ -25,13 +25,20 @@ export default function ResetPassword() {
   const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
   const { updatePassword, requestPasswordReset } = useAuth();
-  const { error: toastError, success: toastSuccess, info: toastInfo } = useAethexToast();
+  const {
+    error: toastError,
+    success: toastSuccess,
+    info: toastInfo,
+  } = useAethexToast();
 
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
-        const hash = typeof window !== "undefined" ? window.location.hash.replace(/^#/, "") : "";
+        const hash =
+          typeof window !== "undefined"
+            ? window.location.hash.replace(/^#/, "")
+            : "";
         const params = new URLSearchParams(hash);
         const urlError = params.get("error");
         const urlErrorDesc = params.get("error_description");
@@ -111,14 +118,19 @@ export default function ResetPassword() {
           {linkError ? (
             <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
               <CardHeader className="text-center space-y-2">
-                <CardTitle className="text-2xl text-gradient-purple">Reset link expired</CardTitle>
+                <CardTitle className="text-2xl text-gradient-purple">
+                  Reset link expired
+                </CardTitle>
                 <CardDescription>
-                  {linkError || "The link is invalid or has expired. Request a new reset link."}
+                  {linkError ||
+                    "The link is invalid or has expired. Request a new reset link."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <Label htmlFor="resetEmail" className="text-sm font-medium">Email Address</Label>
+                  <Label htmlFor="resetEmail" className="text-sm font-medium">
+                    Email Address
+                  </Label>
                   <Input
                     id="resetEmail"
                     type="email"
@@ -127,11 +139,19 @@ export default function ResetPassword() {
                     placeholder="you@example.com"
                   />
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => navigate("/login")}>Back to login</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/login")}
+                    >
+                      Back to login
+                    </Button>
                     <Button
                       onClick={async () => {
                         if (!resetEmail) {
-                          toastInfo({ title: "Enter your email", description: "We will send a fresh reset link." });
+                          toastInfo({
+                            title: "Enter your email",
+                            description: "We will send a fresh reset link.",
+                          });
                           return;
                         }
                         try {
@@ -186,7 +206,11 @@ export default function ResetPassword() {
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={submitting}>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={submitting}
+                  >
                     {submitting ? "Updating..." : "Update Password"}
                   </Button>
                 </form>
