@@ -182,7 +182,7 @@ const RealmSwitcher = memo(function RealmSwitcher({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {REALM_OPTIONS.map((realm, index) => {
+        {visibleOptions.map((realm, index) => {
           const Icon = realm.icon;
           const isActive = selectedRealm === realm.id;
           return (
