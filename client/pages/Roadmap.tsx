@@ -73,6 +73,8 @@ const storageKey = "aethex_roadmap_unlocks_v1";
 export default function Roadmap() {
   const [claimed, setClaimed] = useState<Record<string, boolean>>({});
   const [unlocked, setUnlocked] = useState<Record<string, boolean>>({});
+  const [theme, setTheme] = useState<RoadmapTheme>("space");
+  const [focusedPhase, setFocusedPhase] = useState<Quest["phase"] | null>(null);
 
   useEffect(() => {
     try {
