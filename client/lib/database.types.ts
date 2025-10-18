@@ -478,7 +478,8 @@ export type Database = {
         | "game_developer"
         | "client"
         | "community_member"
-        | "customer";
+        | "customer"
+        | "staff";
     };
     CompositeTypes: {
       [_ in never]: never;
