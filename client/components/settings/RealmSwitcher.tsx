@@ -25,8 +25,11 @@ import {
   Compass,
   ArrowRight,
   Check,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { useMemo, memo, type ComponentType } from "react";
 
 export type RealmKey =
   | "game_developer"
