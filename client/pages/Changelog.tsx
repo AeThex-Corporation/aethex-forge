@@ -57,6 +57,67 @@ interface ChangelogItem {
 
 export const changelogEntries: ChangelogEntry[] = [
   {
+    id: "v1.3.0",
+    version: "1.3.0",
+    date: "2025-10-18",
+    type: "major",
+    category: "Platform Enhancement",
+    title: "Realms consolidation, live Status, feed upgrades, and Investors revamp",
+    description:
+      "Introduces a dedicated Realms management page with realm-aware dashboards, a live system Status page backed by a real API, improved social feed (likes, comments, and trending tags), and a redesigned Investors page with clear legal guidance.",
+    author: "AeThex Development Team",
+    changes: [
+      {
+        type: "added",
+        description:
+          "Live Status backend endpoint (/api/status) with health checks for DB, API, Auth, and CDN; frontend /status now auto-refreshes with real data",
+        impact: "high",
+      },
+      {
+        type: "added",
+        description:
+          "Dedicated /realms page for selecting and activating realms; dashboard adapts to active realm and supports ?realm= for direct navigation",
+        impact: "high",
+      },
+      {
+        type: "added",
+        description:
+          "Navigation updated to include Realms; Investors link moved to footer",
+        impact: "medium",
+      },
+      {
+        type: "added",
+        description:
+          "Investors page redesign with red theme and sections: Mission, Vision, What we do, How we execute, Traction/Roadmap; backend endpoint /api/investors/interest",
+        impact: "medium",
+      },
+      {
+        type: "added",
+        description:
+          "Social feed enhancements: working likes and comments with API; expandable comment textbox; trending hashtag/topic tagging with suggestions",
+        impact: "high",
+      },
+      {
+        type: "improved",
+        description:
+          "Unified unauthorized redirects to /onboarding for a consistent auth flow",
+        impact: "medium",
+      },
+      {
+        type: "improved",
+        description:
+          "Staff area: moderation reports and mentorship requests now load live data with basic moderation actions; new /api/staff/users listing/search",
+        impact: "medium",
+      },
+      {
+        type: "fixed",
+        description:
+          "Resolved \"invalid input value for Enum user_type_enum: \\\"staff\\\"\" by adding \"staff\" to enum via migration",
+        impact: "high",
+      },
+    ],
+  },
+  {
     id: "v1.2.0",
     version: "1.2.0",
     date: "2025-01-08",
