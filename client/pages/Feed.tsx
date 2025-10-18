@@ -3,7 +3,6 @@ import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import PostComposer from "@/components/social/PostComposer";
 import { FeedItemCard } from "@/components/social/FeedItemCard";
-import { ensureDemoSeed, getDemoPosts } from "@/lib/demo-feed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -122,31 +121,6 @@ export default function Feed() {
       }
 
       let mapped = mapPostsToFeedItems(posts);
-
-      if (mapped.length === 0) {
-        try {
-          const response = await fetch("/api/community/seed-demo", {
-            method: "POST",
-          });
-          if (response.ok) {
-            posts = await communityService.getPosts(30);
-            mapped = mapPostsToFeedItems(posts);
-          }
-        } catch (seedError) {
-          console.warn("Community demo seed failed", seedError);
-        }
-      }
-
-      if (mapped.length === 0 && typeof window !== "undefined") {
-        try {
-          ensureDemoSeed();
-          const demoPosts = getDemoPosts();
-          mapped = mapPostsToFeedItems(demoPosts);
-        } catch (fallbackError) {
-          console.warn("Local demo feed fallback failed", fallbackError);
-        }
-      }
-
       setItems(mapped);
     } catch (error) {
       console.error("Failed to load feed", error);
@@ -155,11 +129,7 @@ export default function Feed() {
         title: "Failed to load feed",
         description: normalizeErrorMessage(error),
       });
-      try {
-        ensureDemoSeed();
-        const demoPosts = getDemoPosts();
-        setItems(mapPostsToFeedItems(demoPosts));
-      } catch {}
+      setItems([]);
     } finally {
       setIsLoading(false);
     }
