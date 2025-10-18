@@ -13,18 +13,13 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { SkeletonStats, SkeletonUserPath } from "@/components/Skeleton";
 import { Link } from "react-router-dom";
 import {
-  GamepadIcon,
-  BriefcaseIcon,
-  UsersIcon,
-  ShoppingCartIcon,
   ArrowRight,
   CheckCircle,
   Sparkles,
-  Zap,
-  Target,
+  LayoutDashboard,
   Users,
-  TrendingUp,
   Microscope,
+  IdCard,
 } from "lucide-react";
 
 export default function Index() {
@@ -49,27 +44,27 @@ export default function Index() {
 
   const features = [
     {
-      title: "Game Development",
-      description: "Full‑cycle production and tooling",
-      icon: Zap,
+      title: "Dashboard",
+      description: "Your projects, applications, and rewards — in one place",
+      icon: LayoutDashboard,
       color: "from-blue-500 to-purple-600",
     },
     {
-      title: "Product Design",
-      description: "UX/UI, prototyping, and branding",
-      icon: Target,
+      title: "Community Feed",
+      description: "Share progress, discover collaborators, and stay updated",
+      icon: Users,
       color: "from-purple-500 to-pink-600",
     },
     {
-      title: "Platform Engineering",
-      description: "Web, mobile, and backend foundations",
-      icon: Users,
+      title: "Developer Passport",
+      description: "A public profile with verifiable achievements",
+      icon: IdCard,
       color: "from-green-500 to-blue-600",
     },
     {
-      title: "Community & Growth",
-      description: "Programs, content, and engagement",
-      icon: TrendingUp,
+      title: "Docs & CLI",
+      description: "Guides, API reference, and tooling to ship faster",
+      icon: Microscope,
       color: "from-orange-500 to-red-600",
     },
   ];
@@ -250,11 +245,10 @@ export default function Index() {
                   <span className="text-gradient-purple">AeThex</span>
                 </h1>
                 <h2 className="text-2xl lg:text-3xl text-gradient animate-fade-in">
-                  Crafting Digital Realities
+                  The AeThex Platform
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up">
-                  Where vision meets execution. We craft experiences through
-                  design, development, and community.
+                  Build in public, grow with community, and manage your work — from profile to production.
                 </p>
               </div>
             </div>
