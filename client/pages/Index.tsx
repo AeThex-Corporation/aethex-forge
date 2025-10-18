@@ -308,31 +308,46 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Interactive Features Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up">
+            {/* Interactive Features Grid (Services) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto animate-slide-up">
               {features.map((feature, index) => {
                 const Icon = feature.icon;
                 const isActive = activeSection === index;
                 return (
                   <Card
                     key={`old-${index}`}
-                    className={`relative overflow-hidden border-2 transition-all duration-500 hover-lift cursor-pointer group ${
+                    className={`relative overflow-hidden rounded-xl border transition-all duration-500 group ${
                       isActive
-                        ? "border-aethex-500 glow-blue scale-105"
+                        ? "border-aethex-500/60 glow-blue"
                         : "border-border/30 hover:border-aethex-400/50"
-                    }`}
-                    onClick={() => setActiveSection(index)}
+                    } bg-card/60 backdrop-blur-sm hover:translate-y-[-2px] hover:shadow-[0_8px_30px_rgba(80,80,120,0.25)]`}
                   >
-                    <CardContent className="p-5 sm:p-6 text-center space-y-3">
-                      <div
-                        className={`mx-auto w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}
-                      >
-                        <Icon className="h-6 w-6 text-white" />
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/6 via-transparent to-white/0" />
+                    <CardContent className="p-5 sm:p-6 flex flex-col items-center text-center gap-3">
+                      <div className={`relative w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} grid place-items-center shadow-inner`}>
+                        <div className="absolute -inset-[2px] rounded-xl bg-gradient-to-r from-white/20 to-transparent blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Icon className="h-6 w-6 text-white drop-shadow" />
                       </div>
-                      <h3 className="font-semibold text-sm">{feature.title}</h3>
-                      <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <h3 className="font-semibold text-sm tracking-wide">{feature.title}</h3>
+                      <div className="flex flex-wrap justify-center gap-2 min-h-[24px]">
+                        {(feature.tags || []).slice(0, 2).map((tag, i) => (
+                          <Badge key={i} variant="outline" className="border-white/10 text-xs text-foreground/80">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {feature.description}
                       </p>
+                      <div className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${feature.color} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                      {feature.link ? (
+                        <div className="pt-1">
+                          <Link to={feature.link} className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200">
+                            Explore
+                            <ArrowRight className="h-3 w-3" />
+                          </Link>
+                        </div>
+                      ) : null}
                     </CardContent>
                   </Card>
                 );
@@ -340,30 +355,45 @@ export default function Index() {
             </div>
 
             {/* Platform Feature Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto animate-slide-up mt-6">
               {platformFeatures.map((feature, index) => {
                 const Icon = feature.icon;
                 const isActive = activeSection === index;
                 return (
                   <Card
                     key={`platform-${index}`}
-                    className={`relative overflow-hidden border-2 transition-all duration-500 hover-lift cursor-pointer group ${
+                    className={`relative overflow-hidden rounded-xl border transition-all duration-500 group ${
                       isActive
-                        ? "border-aethex-500 glow-blue scale-105"
+                        ? "border-aethex-500/60 glow-blue"
                         : "border-border/30 hover:border-aethex-400/50"
-                    }`}
-                    onClick={() => setActiveSection(index)}
+                    } bg-card/60 backdrop-blur-sm hover:translate-y-[-2px] hover:shadow-[0_8px_30px_rgba(80,80,120,0.25)]`}
                   >
-                    <CardContent className="p-5 sm:p-6 text-center space-y-3">
-                      <div
-                        className={`mx-auto w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}
-                      >
-                        <Icon className="h-6 w-6 text-white" />
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/6 via-transparent to-white/0" />
+                    <CardContent className="p-5 sm:p-6 flex flex-col items-center text-center gap-3">
+                      <div className={`relative w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} grid place-items-center shadow-inner`}>
+                        <div className="absolute -inset-[2px] rounded-xl bg-gradient-to-r from-white/20 to-transparent blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Icon className="h-6 w-6 text-white drop-shadow" />
                       </div>
-                      <h3 className="font-semibold text-sm">{feature.title}</h3>
-                      <p className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <h3 className="font-semibold text-sm tracking-wide">{feature.title}</h3>
+                      <div className="flex flex-wrap justify-center gap-2 min-h-[24px]">
+                        {(feature.tags || []).slice(0, 2).map((tag, i) => (
+                          <Badge key={i} variant="outline" className="border-white/10 text-xs text-foreground/80">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {feature.description}
                       </p>
+                      <div className={`mt-1 h-[2px] w-16 rounded-full bg-gradient-to-r ${feature.color} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                      {feature.link ? (
+                        <div className="pt-1">
+                          <Link to={feature.link} className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200">
+                            Explore
+                            <ArrowRight className="h-3 w-3" />
+                          </Link>
+                        </div>
+                      ) : null}
                     </CardContent>
                   </Card>
                 );
