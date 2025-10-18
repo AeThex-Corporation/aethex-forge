@@ -41,83 +41,56 @@ interface SystemMetric {
   icon: any;
 }
 
-export default function Status() {
-  const [services, setServices] = useState<ServiceStatus[]>([
-    {
-      name: "AeThex Core API",
-      status: "operational",
-      responseTime: 145,
-      uptime: "99.98%",
-      lastCheck: "30 seconds ago",
-      description: "Main application API and authentication services",
-    },
-    {
-      name: "Database Services",
-      status: "operational",
-      responseTime: 89,
-      uptime: "99.99%",
-      lastCheck: "1 minute ago",
-      description: "Supabase database and storage services",
-    },
-    {
-      name: "CDN & Assets",
-      status: "operational",
-      responseTime: 67,
-      uptime: "99.95%",
-      lastCheck: "45 seconds ago",
-      description: "Content delivery network and static assets",
-    },
-    {
-      name: "Authentication",
-      status: "operational",
-      responseTime: 123,
-      uptime: "99.97%",
-      lastCheck: "2 minutes ago",
-      description: "OAuth and email authentication systems",
-    },
-    {
-      name: "Project Management",
-      status: "degraded",
-      responseTime: 245,
-      uptime: "98.84%",
-      lastCheck: "3 minutes ago",
-      description: "Project creation and management features",
-    },
-  ]);
+function iconFor(name: string) {
+  switch (name) {
+    case "Activity":
+      return Activity;
+    case "Zap":
+      return Zap;
+    case "Globe":
+      return Globe;
+    case "Shield":
+      return Shield;
+    default:
+      return Activity;
+  }
+}
 
-  const [metrics, setMetrics] = useState<SystemMetric[]>([
-    {
-      name: "Global Uptime",
-      value: "99.96",
-      unit: "%",
-      status: "good",
-      icon: Activity,
-    },
-    {
-      name: "Response Time",
-      value: "142",
-      unit: "ms",
-      status: "good",
-      icon: Zap,
-    },
-    {
-      name: "Active Users",
-      value: "1,247",
-      unit: "",
-      status: "good",
-      icon: Globe,
-    },
-    {
-      name: "Error Rate",
-      value: "0.04",
-      unit: "%",
-      status: "good",
-      icon: Shield,
-    },
-  ]);
+export default function Status() {
+  const [services, setServices] = useState<ServiceStatus[]>([]);
+
+  const [metrics, setMetrics] = useState<SystemMetric[]>([]);
 
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchStatus = async () => {
+    try {
+      const resp = await fetch("/api/status");
+      if (!resp.ok) throw new Error("Status API failed");
+      const data = await resp.json();
+      const mappedMetrics: SystemMetric[] = (Array.isArray(data.metrics) ? data.metrics : []).map((it: any) => ({
+        name: String(it.name),
+        value: String(it.value ?? "--"),
+        unit: String(it.unit ?? ""),
+        status: (it.status ?? "good") as any,
+        icon: iconFor(String(it.icon || "Activity")),
+      }));
+      setMetrics(mappedMetrics);
+      const mappedServices: ServiceStatus[] = (Array.isArray(data.services) ? data.services : []).map((it: any) => ({
+        name: String(it.name),
+        status: (it.status ?? "operational") as any,
+        responseTime: Number(it.responseTime) || 0,
+        uptime: String(it.uptime ?? "--"),
+        lastCheck: new Date(it.lastCheck || data.updatedAt || Date.now()).toLocaleTimeString(),
+        description: String(it.description || ""),
+      }));
+      setServices(mappedServices);
+      setLastUpdated(new Date(data.updatedAt || Date.now()));
+    } catch (e) {
+      setMetrics([{ name: "Global Uptime", value: "--", unit: "%", status: "warning", icon: Activity }]);
+    }
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -169,9 +142,7 @@ export default function Status() {
 
   const refreshStatus = async () => {
     setIsRefreshing(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setLastUpdated(new Date());
+    await fetchStatus();
     setIsRefreshing(false);
   };
 
