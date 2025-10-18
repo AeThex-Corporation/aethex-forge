@@ -39,7 +39,7 @@ export default function Staff() {
         title: "Sign in required",
         description: "Staff area requires authentication",
       });
-      navigate("/login");
+      navigate("/onboarding");
       return;
     }
     if (!hasAccess) {
