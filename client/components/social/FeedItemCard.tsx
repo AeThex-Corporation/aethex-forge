@@ -115,14 +115,14 @@ export function FeedItemCard({
         <div className="rounded-2xl border border-border/40 bg-background/80 p-4">
           <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" className="gap-2 pl-2 pr-3" onClick={() => onShare(`${item.id}:like`)}>
+              <Button variant="ghost" size="sm" className="gap-2 pl-2 pr-3" onClick={() => onLike(item.id)}>
                 <Heart className="h-4 w-4 text-aethex-400" />
                 <span className="font-medium text-foreground">
                   {item.likes.toLocaleString()}
                 </span>
                 <span className="hidden sm:inline">Like</span>
               </Button>
-              <Button variant="ghost" size="sm" className="gap-2 pl-2 pr-3" onClick={() => onShare(`${item.id}:comment`)}>
+              <Button variant="ghost" size="sm" className="gap-2 pl-2 pr-3" onClick={() => onComment(item.id)}>
                 <MessageCircle className="h-4 w-4 text-aethex-400" />
                 <span className="font-medium text-foreground">
                   {item.comments.toLocaleString()}
