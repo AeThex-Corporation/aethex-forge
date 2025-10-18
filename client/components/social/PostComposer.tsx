@@ -17,18 +17,26 @@ function readFileAsDataURL(file: File): Promise<string> {
   });
 }
 
-export default function PostComposer({ onPosted }: { onPosted?: () => void }) {
+export default function PostComposer({
+  onPosted,
+  suggestedTags = [],
+}: {
+  onPosted?: () => void;
+  suggestedTags?: string[];
+}) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [text, setText] = useState("");
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaUrlInput, setMediaUrlInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const reset = () => {
     setText("");
     setMediaFile(null);
     setMediaUrlInput("");
+    setSelectedTags([]);
   };
 
   const uploadToStorage = async (file: File): Promise<string | null> => {
@@ -104,12 +112,18 @@ export default function PostComposer({ onPosted }: { onPosted?: () => void }) {
             ? "New photo"
             : "Update");
 
+      const inlineTags = Array.from((text.match(/#[\p{L}0-9_]+/gu) || []).map((t) => t.replace(/^#/, "").toLowerCase()));
+      const baseTags = mediaType === "none" ? ["update"] : [mediaType, "feed"];
+      const combinedTags = Array.from(
+        new Set([...baseTags, ...selectedTags.map((t) => t.toLowerCase()), ...inlineTags]).values(),
+      );
+
       await communityService.createPost({
         author_id: user.id,
         title,
         content,
         category: mediaType === "none" ? "text" : mediaType,
-        tags: mediaType === "none" ? ["update"] : [mediaType, "feed"],
+        tags: combinedTags,
         is_published: true,
       } as any);
 
@@ -131,11 +145,36 @@ export default function PostComposer({ onPosted }: { onPosted?: () => void }) {
     <Card className="bg-background/70 border-border/40">
       <CardContent className="p-4 space-y-3">
         <Textarea
-          placeholder="Share an update…"
+          placeholder="Share an update… Use #hashtags to tag topics"
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="min-h-[80px]"
         />
+        {suggestedTags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {suggestedTags.map((tag) => {
+              const active = selectedTags.includes(tag);
+              return (
+                <Button
+                  key={tag}
+                  type="button"
+                  variant={active ? "default" : "outline"}
+                  size="sm"
+                  className={active ? "bg-aethex-500/80 text-white" : ""}
+                  onClick={() =>
+                    setSelectedTags((prev) =>
+                      prev.includes(tag)
+                        ? prev.filter((t) => t !== tag)
+                        : [...prev, tag],
+                    )
+                  }
+                >
+                  #{tag}
+                </Button>
+              );
+            })}
+          </div>
+        )}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <Input
             type="file"
