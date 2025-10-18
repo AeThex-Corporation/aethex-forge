@@ -58,6 +58,7 @@ import SignupRedirect from "./pages/SignupRedirect";
 import MentorshipRequest from "./pages/community/MentorshipRequest";
 import MentorApply from "./pages/community/MentorApply";
 import Staff from "./pages/Staff";
+import Portal from "./pages/Portal";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +74,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/portal" element={<Portal />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/teams" element={<Teams />} />
