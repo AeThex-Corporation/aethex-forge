@@ -139,7 +139,11 @@ export default function Dashboard() {
       "staff",
     ];
     const current = ((profile as any)?.user_type as RealmKey) ?? null;
-    if (paramRealm && validRealms.includes(paramRealm) && paramRealm !== current) {
+    if (
+      paramRealm &&
+      validRealms.includes(paramRealm) &&
+      paramRealm !== current
+    ) {
       (async () => {
         try {
           await updateProfile({ user_type: paramRealm } as any);
@@ -663,7 +667,9 @@ export default function Dashboard() {
   }
 
   // Determine active realm for dashboard personalization
-  const activeRealm: RealmKey = (userRealm || ((profile as any)?.user_type as RealmKey) || "community_member") as RealmKey;
+  const activeRealm: RealmKey = (userRealm ||
+    ((profile as any)?.user_type as RealmKey) ||
+    "community_member") as RealmKey;
 
   return (
     <Layout>
@@ -718,18 +724,24 @@ export default function Dashboard() {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-gradient-purple">
-                  {activeRealm === "game_developer" && "Game Development Dashboard"}
+                  {activeRealm === "game_developer" &&
+                    "Game Development Dashboard"}
                   {activeRealm === "client" && "Consulting Dashboard"}
                   {activeRealm === "community_member" && "Community Dashboard"}
                   {activeRealm === "customer" && "Get Started Dashboard"}
                   {activeRealm === "staff" && "Staff Dashboard"}
                 </h1>
                 <p className="text-muted-foreground">
-                  Welcome back, {profile?.full_name || user.email?.split("@")[0]} • {streakLabel}
+                  Welcome back,{" "}
+                  {profile?.full_name || user.email?.split("@")[0]} •{" "}
+                  {streakLabel}
                 </p>
                 {longestStreak > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <Badge variant="outline" className="border-aethex-400/40 text-aethex-200">
+                    <Badge
+                      variant="outline"
+                      className="border-aethex-400/40 text-aethex-200"
+                    >
                       Realm: {activeRealm.replace("_", " ")}
                     </Badge>
                   </div>
@@ -887,8 +899,12 @@ export default function Dashboard() {
               {activeRealm === "game_developer" && (
                 <Card className="bg-card/50 border-border/50 animate-fade-in">
                   <CardHeader>
-                    <CardTitle className="text-gradient">Create a Post</CardTitle>
-                    <CardDescription>Share updates, images, or videos</CardDescription>
+                    <CardTitle className="text-gradient">
+                      Create a Post
+                    </CardTitle>
+                    <CardDescription>
+                      Share updates, images, or videos
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <PostComposer onPosted={loadDashboardData} />
@@ -899,14 +915,28 @@ export default function Dashboard() {
               {activeRealm === "community_member" && (
                 <Card className="bg-card/50 border-border/50 animate-fade-in">
                   <CardHeader>
-                    <CardTitle className="text-gradient">Community actions</CardTitle>
-                    <CardDescription>Post to the feed and explore trending topics</CardDescription>
+                    <CardTitle className="text-gradient">
+                      Community actions
+                    </CardTitle>
+                    <CardDescription>
+                      Post to the feed and explore trending topics
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <PostComposer onPosted={() => {}} />
                     <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => navigate("/feed")}>Open Feed</Button>
-                      <Button variant="outline" onClick={() => navigate("/community/mentorship")}>Mentorship</Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => navigate("/feed")}
+                      >
+                        Open Feed
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => navigate("/community/mentorship")}
+                      >
+                        Mentorship
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -915,13 +945,29 @@ export default function Dashboard() {
               {activeRealm === "client" && (
                 <Card className="bg-card/50 border-border/50 animate-fade-in">
                   <CardHeader>
-                    <CardTitle className="text-gradient">Project workspace</CardTitle>
-                    <CardDescription>Kick off engagements and track delivery</CardDescription>
+                    <CardTitle className="text-gradient">
+                      Project workspace
+                    </CardTitle>
+                    <CardDescription>
+                      Kick off engagements and track delivery
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
-                    <Button onClick={() => navigate("/projects/new")}>Start New Project</Button>
-                    <Button variant="outline" onClick={() => navigate("/teams")}>Create Team</Button>
-                    <Button variant="outline" onClick={() => navigate("/consulting")}>Consulting Overview</Button>
+                    <Button onClick={() => navigate("/projects/new")}>
+                      Start New Project
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/teams")}
+                    >
+                      Create Team
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/consulting")}
+                    >
+                      Consulting Overview
+                    </Button>
                   </CardContent>
                 </Card>
               )}
@@ -930,11 +976,20 @@ export default function Dashboard() {
                 <Card className="bg-card/50 border-border/50 animate-fade-in">
                   <CardHeader>
                     <CardTitle className="text-gradient">Get started</CardTitle>
-                    <CardDescription>Explore products and manage access</CardDescription>
+                    <CardDescription>
+                      Explore products and manage access
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
-                    <Button onClick={() => navigate("/get-started")}>Product onboarding</Button>
-                    <Button variant="outline" onClick={() => navigate("/support")}>Support</Button>
+                    <Button onClick={() => navigate("/get-started")}>
+                      Product onboarding
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/support")}
+                    >
+                      Support
+                    </Button>
                   </CardContent>
                 </Card>
               )}
@@ -943,11 +998,17 @@ export default function Dashboard() {
                 <Card className="bg-card/50 border-border/50 animate-fade-in">
                   <CardHeader>
                     <CardTitle className="text-gradient">Operations</CardTitle>
-                    <CardDescription>Moderation and internal tools</CardDescription>
+                    <CardDescription>
+                      Moderation and internal tools
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
-                    <Button onClick={() => navigate("/staff")}>Open Staff Console</Button>
-                    <Button variant="outline" onClick={() => navigate("/feed")}>Community Feed</Button>
+                    <Button onClick={() => navigate("/staff")}>
+                      Open Staff Console
+                    </Button>
+                    <Button variant="outline" onClick={() => navigate("/feed")}>
+                      Community Feed
+                    </Button>
                   </CardContent>
                 </Card>
               )}
@@ -1204,9 +1265,16 @@ export default function Dashboard() {
                       <div className="rounded border border-border/40 p-3 flex items-center justify-between">
                         <div>
                           <div className="font-medium">Realm & Path</div>
-                          <div className="text-sm text-muted-foreground">Manage your realm preferences on the Realms page.</div>
+                          <div className="text-sm text-muted-foreground">
+                            Manage your realm preferences on the Realms page.
+                          </div>
                         </div>
-                        <Button variant="outline" onClick={() => navigate("/realms")}>Open Realms</Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => navigate("/realms")}
+                        >
+                          Open Realms
+                        </Button>
                       </div>
                     </TabsContent>
 

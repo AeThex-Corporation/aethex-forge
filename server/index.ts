@@ -1183,7 +1183,11 @@ export function createServer() {
     // Investors: capture interest
     app.post("/api/investors/interest", async (req, res) => {
       const { name, email, amount, accredited, message } = (req.body || {}) as {
-        name?: string; email?: string; amount?: string; accredited?: boolean; message?: string;
+        name?: string;
+        email?: string;
+        amount?: string;
+        accredited?: boolean;
+        message?: string;
       };
       if (!email) return res.status(400).json({ error: "email required" });
       try {
@@ -1307,18 +1311,28 @@ export function createServer() {
           await fn();
           return { ok: true, ms: Date.now() - t0 };
         } catch (e) {
-          return { ok: false, ms: Date.now() - t0, error: (e as any)?.message || String(e) };
+          return {
+            ok: false,
+            ms: Date.now() - t0,
+            error: (e as any)?.message || String(e),
+          };
         }
       };
 
       // Database check (user_profiles)
       const dbCheck = await time(async () => {
-        await adminSupabase.from("user_profiles").select("id", { head: true, count: "exact" }).limit(1);
+        await adminSupabase
+          .from("user_profiles")
+          .select("id", { head: true, count: "exact" })
+          .limit(1);
       });
 
       // API/Core check (community_posts)
       const apiCheck = await time(async () => {
-        await adminSupabase.from("community_posts").select("id", { head: true, count: "exact" }).limit(1);
+        await adminSupabase
+          .from("community_posts")
+          .select("id", { head: true, count: "exact" })
+          .limit(1);
       });
 
       // Auth check
@@ -1374,7 +1388,8 @@ export function createServer() {
       ];
 
       const avgRt = Math.round(
-        services.reduce((a, s) => a + (Number(s.responseTime) || 0), 0) / services.length,
+        services.reduce((a, s) => a + (Number(s.responseTime) || 0), 0) /
+          services.length,
       );
       const errCount = services.filter((s) => s.status === "outage").length;
       const warnCount = services.filter((s) => s.status === "degraded").length;
@@ -1389,10 +1404,34 @@ export function createServer() {
       } catch {}
 
       const metrics = [
-        { name: "Global Uptime", value: (errCount ? "99.5" : warnCount ? "99.9" : "99.99"), unit: "%", status: errCount ? "critical" : warnCount ? "warning" : "good", icon: "Activity" },
-        { name: "Response Time", value: String(avgRt), unit: "ms", status: avgRt > 800 ? "critical" : avgRt > 400 ? "warning" : "good", icon: "Zap" },
-        { name: "Active Users", value: activeUsers, unit: "", status: "good", icon: "Globe" },
-        { name: "Error Rate", value: String(errCount), unit: " outages", status: errCount ? "critical" : warnCount ? "warning" : "good", icon: "Shield" },
+        {
+          name: "Global Uptime",
+          value: errCount ? "99.5" : warnCount ? "99.9" : "99.99",
+          unit: "%",
+          status: errCount ? "critical" : warnCount ? "warning" : "good",
+          icon: "Activity",
+        },
+        {
+          name: "Response Time",
+          value: String(avgRt),
+          unit: "ms",
+          status: avgRt > 800 ? "critical" : avgRt > 400 ? "warning" : "good",
+          icon: "Zap",
+        },
+        {
+          name: "Active Users",
+          value: activeUsers,
+          unit: "",
+          status: "good",
+          icon: "Globe",
+        },
+        {
+          name: "Error Rate",
+          value: String(errCount),
+          unit: " outages",
+          status: errCount ? "critical" : warnCount ? "warning" : "good",
+          icon: "Shield",
+        },
       ];
 
       res.json({

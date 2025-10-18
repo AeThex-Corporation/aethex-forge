@@ -61,7 +61,6 @@ import Staff from "./pages/Staff";
 import Realms from "./pages/Realms";
 import Investors from "./pages/Investors";
 
-
 const queryClient = new QueryClient();
 
 const App = () => (

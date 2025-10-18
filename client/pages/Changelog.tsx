@@ -62,7 +62,8 @@ export const changelogEntries: ChangelogEntry[] = [
     date: "2025-10-18",
     type: "major",
     category: "Platform Enhancement",
-    title: "Realms consolidation, live Status, feed upgrades, and Investors revamp",
+    title:
+      "Realms consolidation, live Status, feed upgrades, and Investors revamp",
     description:
       "Introduces a dedicated Realms management page with realm-aware dashboards, a live system Status page backed by a real API, improved social feed (likes, comments, and trending tags), and a redesigned Investors page with clear legal guidance.",
     author: "AeThex Development Team",
@@ -112,7 +113,7 @@ export const changelogEntries: ChangelogEntry[] = [
       {
         type: "fixed",
         description:
-          "Resolved \"invalid input value for Enum user_type_enum: \\\"staff\\\"\" by adding \"staff\" to enum via migration",
+          'Resolved "invalid input value for Enum user_type_enum: \\"staff\\"" by adding "staff" to enum via migration',
         impact: "high",
       },
     ],

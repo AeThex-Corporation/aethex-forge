@@ -69,7 +69,9 @@ export default function Status() {
       const resp = await fetch("/api/status");
       if (!resp.ok) throw new Error("Status API failed");
       const data = await resp.json();
-      const mappedMetrics: SystemMetric[] = (Array.isArray(data.metrics) ? data.metrics : []).map((it: any) => ({
+      const mappedMetrics: SystemMetric[] = (
+        Array.isArray(data.metrics) ? data.metrics : []
+      ).map((it: any) => ({
         name: String(it.name),
         value: String(it.value ?? "--"),
         unit: String(it.unit ?? ""),
@@ -77,18 +79,30 @@ export default function Status() {
         icon: iconFor(String(it.icon || "Activity")),
       }));
       setMetrics(mappedMetrics);
-      const mappedServices: ServiceStatus[] = (Array.isArray(data.services) ? data.services : []).map((it: any) => ({
+      const mappedServices: ServiceStatus[] = (
+        Array.isArray(data.services) ? data.services : []
+      ).map((it: any) => ({
         name: String(it.name),
         status: (it.status ?? "operational") as any,
         responseTime: Number(it.responseTime) || 0,
         uptime: String(it.uptime ?? "--"),
-        lastCheck: new Date(it.lastCheck || data.updatedAt || Date.now()).toLocaleTimeString(),
+        lastCheck: new Date(
+          it.lastCheck || data.updatedAt || Date.now(),
+        ).toLocaleTimeString(),
         description: String(it.description || ""),
       }));
       setServices(mappedServices);
       setLastUpdated(new Date(data.updatedAt || Date.now()));
     } catch (e) {
-      setMetrics([{ name: "Global Uptime", value: "--", unit: "%", status: "warning", icon: Activity }]);
+      setMetrics([
+        {
+          name: "Global Uptime",
+          value: "--",
+          unit: "%",
+          status: "warning",
+          icon: Activity,
+        },
+      ]);
     }
   };
 
