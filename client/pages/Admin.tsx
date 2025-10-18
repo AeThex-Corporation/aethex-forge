@@ -715,6 +715,7 @@ export default function Admin() {
           >
             <TabsList className="w-full justify-start gap-2 overflow-x-auto border border-border/40 bg-background/40 px-1 py-1 backdrop-blur">
               <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="system-map">System Map</TabsTrigger>
               <TabsTrigger value="content">Content</TabsTrigger>
               <TabsTrigger value="community">Community</TabsTrigger>
               <TabsTrigger value="operations">Operations</TabsTrigger>
