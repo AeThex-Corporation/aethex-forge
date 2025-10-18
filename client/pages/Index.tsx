@@ -312,7 +312,7 @@ export default function Index() {
                 size="lg"
                 className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
               >
-                <Link to="/explore">Explore AeThex</Link>
+                <Link to="/explore">Explore Platform</Link>
               </Button>
             </div>
           </div>
