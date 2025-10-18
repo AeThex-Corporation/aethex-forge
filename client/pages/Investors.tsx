@@ -107,6 +107,51 @@ export default function Investors() {
 
         <Card>
           <CardHeader>
+            <CardTitle>What is AeThex</CardTitle>
+            <CardDescription>Mission, vision, and how we operate</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid md:grid-cols-3 gap-4 text-sm text-muted-foreground">
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Mission</h4>
+                <p>Empower creators and companies to craft digital experiences faster through world‑class tooling, collaboration, and community.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Vision</h4>
+                <p>An ecosystem where ideas move from concept to playable/productized reality with less friction—open, collaborative, and measurable.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">What we do</h4>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Studios: design, engineering, and production services</li>
+                  <li>Platform: community, mentorship, and workflows</li>
+                  <li>Research: labs, prototypes, and technical content</li>
+                </ul>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4 text-sm text-muted-foreground">
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">How we execute</h4>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Realm���based dashboards for client, community, and staff</li>
+                  <li>Data‑driven delivery and open collaboration</li>
+                  <li>Ethical, security‑first engineering practices</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Traction & roadmap</h4>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Growing community and content footprint</li>
+                  <li>Mentorship and collaboration features shipping</li>
+                  <li>Commerce for merch/digital goods coming online</li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>How to invest (legal paths)</CardTitle>
             <CardDescription>We work with compliant frameworks</CardDescription>
           </CardHeader>
@@ -116,7 +161,7 @@ export default function Investors() {
               <li>Community rounds via Reg CF on a registered funding portal (e.g., Wefunder/StartEngine) for non‑accredited participants.</li>
               <li>Larger public-ready rounds via Reg A+ with audited financials and qualified offering circular.</li>
             </ul>
-            <p>Until an offering is live on a compliant platform, we only collect interest. No funds are accepted on this site.</p>
+            <p>Investment funds are not accepted on this site. Product purchases (merch or digital goods) are separate consumer transactions and do not constitute securities.</p>
           </CardContent>
         </Card>
       </div>
