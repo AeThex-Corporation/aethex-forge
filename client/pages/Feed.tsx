@@ -3,6 +3,7 @@ import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import PostComposer from "@/components/social/PostComposer";
 import { FeedItemCard } from "@/components/social/FeedItemCard";
+import { communityService } from "@/lib/supabase-service";
 import { ensureDemoSeed, getDemoPosts } from "@/lib/demo-feed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -218,15 +219,63 @@ export default function Feed() {
             text: "Check out this post on AeThex",
             url,
           });
-        } else {
-          await navigator.clipboard.writeText(url);
-          toast({ description: "Link copied to clipboard" });
+        } else if (typeof window !== "undefined") {
+          const intent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+            "Check out this post on AeThex",
+          )}&url=${encodeURIComponent(url)}`;
+          window.open(intent, "_blank", "noopener,noreferrer");
+          await navigator.clipboard.writeText(url).catch(() => undefined);
+          toast({ description: "Share link opened (copied to clipboard)" });
         }
       } catch (error) {
         console.warn("Share cancelled", error);
       }
     },
     [toast],
+  );
+
+  const handleLike = useCallback(
+    async (postId: string) => {
+      if (!user?.id) {
+        toast({ description: "Please sign in to like posts." });
+        return;
+      }
+      try {
+        const newCount = await communityService.likePost(postId, user.id);
+        setItems((prev) =>
+          prev.map((it) =>
+            it.id === postId && typeof newCount === "number"
+              ? { ...it, likes: newCount }
+              : it,
+          ),
+        );
+      } catch (e) {
+        console.warn("Like failed", e);
+      }
+    },
+    [toast, user?.id],
+  );
+
+  const handleComment = useCallback(
+    async (postId: string) => {
+      if (!user?.id) {
+        toast({ description: "Please sign in to comment." });
+        return;
+      }
+      const content = prompt("Add a comment:")?.trim();
+      if (!content) return;
+      try {
+        const created = await communityService.addComment(postId, user.id, content);
+        if (created) {
+          setItems((prev) =>
+            prev.map((it) => (it.id === postId ? { ...it, comments: it.comments + 1 } : it)),
+          );
+        }
+      } catch (e) {
+        console.warn("Comment failed", e);
+      }
+    },
+    [toast, user?.id],
   );
 
   const filteredItems = useMemo(() => {
@@ -475,6 +524,8 @@ export default function Feed() {
                       isFollowing={isFollowingAuthor(item.authorId)}
                       onToggleFollow={toggleFollow}
                       onShare={handleShare}
+                      onLike={handleLike}
+                      onComment={handleComment}
                     />
                   ))}
                 </div>
