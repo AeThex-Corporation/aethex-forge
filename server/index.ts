@@ -617,6 +617,220 @@ export function createServer() {
         return res.status(500).json({ error: e?.message || String(e) });
       }
     });
+
+    // Invites API
+    const baseUrl =
+      process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "https://aethex.biz";
+
+    const safeEmail = (v?: string | null) =>
+      (v || "").trim().toLowerCase();
+
+    const accrue = async (
+      userId: string,
+      kind: "xp" | "loyalty" | "reputation",
+      amount: number,
+      type: string,
+      meta?: any,
+    ) => {
+      const amt = Math.max(0, Math.floor(amount));
+      try {
+        await adminSupabase.from("reward_events").insert({
+          user_id: userId,
+          type,
+          points_kind: kind,
+          amount: amt,
+          metadata: meta || null,
+        });
+      } catch {}
+
+      const col =
+        kind === "xp"
+          ? "total_xp"
+          : kind === "loyalty"
+            ? "loyalty_points"
+            : "reputation_score";
+      const { data: row } = await adminSupabase
+        .from("user_profiles")
+        .select(`id, ${col}, level`)
+        .eq("id", userId)
+        .maybeSingle();
+      const current = Number((row as any)?.[col] || 0);
+      const updates: any = { [col]: current + amt };
+      if (col === "total_xp") {
+        const total = current + amt;
+        updates.level = Math.max(1, Math.floor(total / 1000) + 1);
+      }
+      await adminSupabase
+        .from("user_profiles")
+        .update(updates)
+        .eq("id", userId);
+    };
+
+    app.post("/api/invites", async (req, res) => {
+      const { inviter_id, invitee_email, message } = (req.body || {}) as {
+        inviter_id?: string;
+        invitee_email?: string;
+        message?: string | null;
+      };
+      if (!inviter_id || !invitee_email) {
+        return res
+          .status(400)
+          .json({ error: "inviter_id and invitee_email are required" });
+      }
+      const email = safeEmail(invitee_email);
+      const token = (globalThis as any).crypto?.randomUUID?.() ||
+        require("crypto").randomUUID();
+      try {
+        const { data: inviterProfile } = await adminSupabase
+          .from("user_profiles")
+          .select("full_name, username")
+          .eq("id", inviter_id)
+          .maybeSingle();
+        const inviterName =
+          (inviterProfile as any)?.full_name ||
+          (inviterProfile as any)?.username ||
+          "An AeThex member";
+
+        const { data, error } = await adminSupabase
+          .from("invites")
+          .insert({
+            inviter_id,
+            invitee_email: email,
+            token,
+            message: message || null,
+            status: "pending",
+          })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+
+        const inviteUrl = `${baseUrl}/signup?invite=${encodeURIComponent(token)}`;
+
+        if (emailService.isConfigured) {
+          try {
+            await emailService.sendInviteEmail({
+              to: email,
+              inviteUrl,
+              inviterName,
+              message: message || null,
+            });
+          } catch (e: any) {
+            console.warn("Failed to send invite email", e?.message || e);
+          }
+        }
+
+        await accrue(inviter_id, "loyalty", 5, "invite_sent", {
+          invitee: email,
+        });
+
+        return res.json({ ok: true, invite: data, inviteUrl, token });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.get("/api/invites", async (req, res) => {
+      const inviter = String(req.query.inviter_id || "");
+      if (!inviter) return res.status(400).json({ error: "inviter_id required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("invites")
+          .select("*")
+          .eq("inviter_id", inviter)
+          .order("created_at", { ascending: false });
+        if (error) return res.status(500).json({ error: error.message });
+        return res.json(data || []);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/invites/accept", async (req, res) => {
+      const { token, acceptor_id } = (req.body || {}) as {
+        token?: string;
+        acceptor_id?: string;
+      };
+      if (!token || !acceptor_id) {
+        return res.status(400).json({ error: "token and acceptor_id required" });
+      }
+      try {
+        const { data: invite, error } = await adminSupabase
+          .from("invites")
+          .select("*")
+          .eq("token", token)
+          .eq("status", "pending")
+          .maybeSingle();
+        if (error) return res.status(500).json({ error: error.message });
+        if (!invite) return res.status(404).json({ error: "invalid_invite" });
+
+        const now = new Date().toISOString();
+        const { error: upErr } = await adminSupabase
+          .from("invites")
+          .update({ status: "accepted", accepted_by: acceptor_id, accepted_at: now })
+          .eq("id", (invite as any).id);
+        if (upErr) return res.status(500).json({ error: upErr.message });
+
+        const inviterId = (invite as any).inviter_id as string;
+        if (inviterId && inviterId !== acceptor_id) {
+          await adminSupabase
+            .from("user_connections")
+            .upsert({ user_id: inviterId, connection_id: acceptor_id } as any)
+            .catch(() => undefined);
+          await adminSupabase
+            .from("user_connections")
+            .upsert({ user_id: acceptor_id, connection_id: inviterId } as any)
+            .catch(() => undefined);
+        }
+
+        if (inviterId) {
+          await accrue(inviterId, "xp", 100, "invite_accepted", { token });
+          await accrue(inviterId, "loyalty", 50, "invite_accepted", { token });
+          await accrue(inviterId, "reputation", 2, "invite_accepted", { token });
+        }
+        await accrue(acceptor_id, "xp", 50, "invite_accepted", { token });
+        await accrue(acceptor_id, "reputation", 1, "invite_accepted", { token });
+
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/rewards/apply", async (req, res) => {
+      const { user_id, action, amount } = (req.body || {}) as {
+        user_id?: string;
+        action?: string;
+        amount?: number | null;
+      };
+      if (!user_id || !action) {
+        return res.status(400).json({ error: "user_id and action required" });
+      }
+      try {
+        const actionKey = String(action);
+        switch (actionKey) {
+          case "post_created":
+            await accrue(user_id, "xp", amount ?? 25, actionKey);
+            await accrue(user_id, "loyalty", 5, actionKey);
+            break;
+          case "follow_user":
+            await accrue(user_id, "loyalty", 5, actionKey);
+            break;
+          case "endorsement_received":
+            await accrue(user_id, "reputation", amount ?? 2, actionKey);
+            break;
+          case "daily_login":
+            await accrue(user_id, "xp", amount ?? 10, actionKey);
+            await accrue(user_id, "loyalty", 2, actionKey);
+            break;
+          default:
+            await accrue(user_id, "xp", Math.max(0, amount ?? 0), actionKey);
+            break;
+        }
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
