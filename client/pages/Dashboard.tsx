@@ -335,6 +335,14 @@ export default function Dashboard() {
         setProjects([]);
       }
 
+      // Load teams
+      try {
+        const myTeams = await aethexCollabService.listMyTeams(user!.id);
+        setTeams(myTeams);
+      } catch (e) {
+        setTeams([]);
+      }
+
       // Load user's recent posts
       try {
         const posts = await communityService.getUserPosts(user!.id);
