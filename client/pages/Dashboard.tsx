@@ -1396,6 +1396,53 @@ export default function Dashboard() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Teams & Invitations */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="bg-card/50 border-border/50 animate-fade-in">
+                  <CardHeader>
+                    <CardTitle className="text-gradient">My Teams</CardTitle>
+                    <CardDescription>Your memberships</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {teams.length === 0 ? (
+                      <div className="text-sm text-muted-foreground">No teams yet.</div>
+                    ) : (
+                      teams.slice(0, 6).map((t: any) => {
+                        const team = (t as any).teams || t;
+                        return (
+                          <div key={team.id} className="flex items-center justify-between p-3 rounded border border-border/40">
+                            <div className="font-medium text-sm">{team.name}</div>
+                            <Button variant="ghost" size="sm" onClick={() => navigate("/teams")}>Open</Button>
+                          </div>
+                        );
+                      })
+                    )}
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/50 border-border/50 animate-fade-in">
+                  <CardHeader>
+                    <CardTitle className="text-gradient">Invitations</CardTitle>
+                    <CardDescription>Recent invites you sent</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {invites.length === 0 ? (
+                      <div className="text-sm text-muted-foreground">No invites yet.</div>
+                    ) : (
+                      invites.slice(0, 6).map((inv: any) => (
+                        <div key={inv.id} className="flex items-center justify-between p-3 rounded border border-border/40">
+                          <div className="text-sm">
+                            <div className="font-medium">{inv.invitee_email}</div>
+                            <div className="text-xs text-muted-foreground">{inv.status}</div>
+                          </div>
+                          <Button variant="ghost" size="sm" onClick={() => navigator.clipboard.writeText(`${location.origin}/login?invite=${inv.token}`)}>Copy link</Button>
+                        </div>
+                      ))
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
