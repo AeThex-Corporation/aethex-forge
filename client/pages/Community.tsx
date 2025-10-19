@@ -25,6 +25,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 import { cn } from "@/lib/utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import FeaturedStudiosGrid from "@/components/community/FeaturedStudiosGrid";
 import {
   useCallback,
@@ -644,6 +645,7 @@ function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
 }
 
 export default function Community() {
+  const { profile } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
   const [knowledgeQuery, setKnowledgeQuery] = useState("");
