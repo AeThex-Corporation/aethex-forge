@@ -95,11 +95,13 @@ export default function ProjectBoard() {
         projectId,
         title.trim(),
         description.trim() || null,
-        null,
-        null,
+        assigneeId || null,
+        dueDate || null,
       );
       setTitle("");
       setDescription("");
+      setAssigneeId("");
+      setDueDate("");
       await load();
     } finally {
       setCreating(false);
