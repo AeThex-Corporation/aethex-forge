@@ -1,0 +1,5 @@
+Contact: mailto:security@aethex.biz
+Contact: https://aethex.biz/support
+Policy: https://aethex.biz/trust
+Preferred-Languages: en
+Canonical: https://aethex.dev/.well-known/security.txt
