@@ -71,6 +71,8 @@ export default function BlogPost() {
   if (!post) return <FourOhFourPage />;
 
   return (
+    <>
+      <SEO pageTitle={post?.title || "Blog Post"} description={post?.excerpt || undefined} image={post?.image || null} canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -123,5 +125,6 @@ export default function BlogPost() {
         </div>
       </div>
     </Layout>
+  </>
   );
 }
