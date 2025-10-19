@@ -124,6 +124,8 @@ export default function ProjectBoard() {
   if (!user) return null;
 
   return (
+    <>
+      <SEO pageTitle="Project Board" description="Kanban task tracking for your AeThex project: statuses, assignees, and due dates." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
     <Layout>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)] py-10">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-6 space-y-6">
@@ -316,5 +318,6 @@ export default function ProjectBoard() {
         </div>
       </div>
     </Layout>
+  </>
   );
 }
