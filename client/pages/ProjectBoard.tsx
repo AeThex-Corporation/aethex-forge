@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { aethexCollabService } from "@/lib/aethex-collab-service";
 import LoadingScreen from "@/components/LoadingScreen";
+import SEO from "@/components/SEO";
 
 const columns: {
   key: "todo" | "doing" | "done" | "blocked";
