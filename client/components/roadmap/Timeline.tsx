@@ -121,7 +121,7 @@ export default function Timeline({
                     <button
                       key={e.id}
                       className={cn(
-                        "relative w-full rounded-lg border border-border/40 bg-background/70 p-3 text-left transition hover:border-aethex-400/50",
+                        "relative w-full rounded-lg border border-border/40 bg-background/70 p-3 pl-8 text-left transition hover:border-aethex-400/50",
                         e.claimed && "ring-1 ring-emerald-400/30",
                       )}
                       onClick={() => onToggleClaim?.(e.id)}
