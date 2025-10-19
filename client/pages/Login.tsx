@@ -4,6 +4,7 @@ import { aethexUserService } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import {
   Card,
