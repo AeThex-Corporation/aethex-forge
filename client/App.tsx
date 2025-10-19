@@ -68,6 +68,9 @@ import PressKit from "./pages/PressKit";
 import Projects from "./pages/Projects";
 import ProjectsAdmin from "./pages/ProjectsAdmin";
 import Directory from "./pages/Directory";
+import Wix from "./pages/Wix";
+import WixCaseStudies from "./pages/WixCaseStudies";
+import WixFaq from "./pages/WixFaq";
 import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
@@ -197,6 +200,9 @@ const App = () => (
               <Route path="/changelog" element={<Changelog />} />
 
               {/* Informational routes */}
+              <Route path="/wix" element={<Wix />} />
+              <Route path="/wix/case-studies" element={<WixCaseStudies />} />
+              <Route path="/wix/faq" element={<WixFaq />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/get-started" element={<GetStarted />} />
