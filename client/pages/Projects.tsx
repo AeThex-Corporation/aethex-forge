@@ -69,11 +69,6 @@ export default function Projects() {
                 <Button asChild>
                   <a href="/roadmap">Back to Roadmap</a>
                 </Button>
-                <Button asChild variant="outline">
-                  <a href="https://www.linkedin.com/in/andersongladney/details/projects/" target="_blank" rel="noreferrer noopener">
-                    View LinkedIn Projects
-                  </a>
-                </Button>
               </CardContent>
             </Card>
           )}
