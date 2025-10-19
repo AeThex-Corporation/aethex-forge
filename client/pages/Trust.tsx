@@ -122,14 +122,34 @@ export default function Trust() {
             </CardHeader>
             <CardContent className="grid sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
               {[
-                { name: "Anderson Gladney", title: "Founder & CEO", href: "https://www.linkedin.com/in/andersongladney/" },
-                { name: "Dylan Gladney", title: "Founder & COO", href: "https://www.linkedin.com/in/dylangladney/" },
-                { name: "Trevor Davis", title: "Co-Founder & CFO", href: "https://www.linkedin.com/in/trevor-davis-892642324/" },
-                { name: "Braden Eiser", title: "Co-Founder & CTO", href: "https://www.linkedin.com/in/bradeneiser/" },
+                {
+                  name: "Anderson Gladney",
+                  title: "Founder & CEO",
+                  href: "https://www.linkedin.com/in/andersongladney/",
+                },
+                {
+                  name: "Dylan Gladney",
+                  title: "Founder & COO",
+                  href: "https://www.linkedin.com/in/dylangladney/",
+                },
+                {
+                  name: "Trevor Davis",
+                  title: "Co-Founder & CFO",
+                  href: "https://www.linkedin.com/in/trevor-davis-892642324/",
+                },
+                {
+                  name: "Braden Eiser",
+                  title: "Co-Founder & CTO",
+                  href: "https://www.linkedin.com/in/bradeneiser/",
+                },
               ].map((p) => {
                 const unavatar = `https://unavatar.io/${encodeURIComponent(p.href)}`;
                 const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=0D8ABC&color=fff&size=256`;
-                const initials = p.name.split(" ").map((n) => n[0]).join("").toUpperCase();
+                const initials = p.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase();
                 return (
                   <a
                     key={p.name}
@@ -140,13 +160,24 @@ export default function Trust() {
                   >
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
-                        <AvatarImage src={unavatar} alt={p.name} onError={(e) => { (e.currentTarget as HTMLImageElement).src = fallback; }} />
+                        <AvatarImage
+                          src={unavatar}
+                          alt={p.name}
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src =
+                              fallback;
+                          }}
+                        />
                         <AvatarFallback>{initials}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-semibold text-foreground">{p.name}</div>
+                        <div className="font-semibold text-foreground">
+                          {p.name}
+                        </div>
                         <div className="text-xs">{p.title}</div>
-                        <div className="text-xs text-aethex-400 mt-1">LinkedIn ↗</div>
+                        <div className="text-xs text-aethex-400 mt-1">
+                          LinkedIn ↗
+                        </div>
                       </div>
                     </div>
                   </a>
