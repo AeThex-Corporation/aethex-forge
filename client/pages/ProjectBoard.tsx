@@ -131,8 +131,45 @@ export default function ProjectBoard() {
               Project Board
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Track tasks by status. Drag-and-drop coming next.
+              Track tasks by status. Filters, assignees, and due dates enabled.
             </p>
+            <div className="mt-4 grid gap-3 md:grid-cols-4">
+              <Input
+                placeholder="Search tasks…"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+              />
+              <Select value={filterAssignee} onValueChange={setFilterAssignee}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by assignee" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All assignees</SelectItem>
+                  {members.map((m) => (
+                    <SelectItem key={m.user_id} value={m.user_id}>
+                      {m.user?.full_name || m.user?.username || m.user_id}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={filterStatus} onValueChange={setFilterStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All statuses</SelectItem>
+                  <SelectItem value="todo">To do</SelectItem>
+                  <SelectItem value="doing">In progress</SelectItem>
+                  <SelectItem value="done">Done</SelectItem>
+                  <SelectItem value="blocked">Blocked</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => { setQ(""); setFilterAssignee(""); setFilterStatus(""); }}>
+                  Reset filters
+                </Button>
+              </div>
+            </div>
           </section>
 
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
