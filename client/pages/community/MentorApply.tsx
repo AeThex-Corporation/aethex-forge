@@ -100,20 +100,26 @@ export default function MentorApply() {
             <CardHeader>
               <CardTitle>Sign in required</CardTitle>
               <CardDescription>
-                Sign in to create your mentor profile and start receiving requests.
+                Sign in to create your mentor profile and start receiving
+                requests.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex gap-3">
                 <Button
                   onClick={() => {
-                    const next = encodeURIComponent(location.pathname + location.search);
+                    const next = encodeURIComponent(
+                      location.pathname + location.search,
+                    );
                     navigate(`/login?next=${next}`);
                   }}
                 >
                   Sign in
                 </Button>
-                <Button variant="outline" onClick={() => navigate("/community#mentorship")}>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/community#mentorship")}
+                >
                   Back to directory
                 </Button>
               </div>
