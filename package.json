@@ -23,6 +23,7 @@
   "dependencies": {
     "@builder.io/react": "^8.2.8",
     "@supabase/supabase-js": "^2.53.0",
+    "@vercel/analytics": "^1.5.0",
     "dotenv": "^17.2.0",
     "express": "^4.18.2",
     "resend": "^3.4.0",
