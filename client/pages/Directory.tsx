@@ -19,7 +19,7 @@ export default function Directory() {
   const [hideAeThex, setHideAeThex] = useState(true);
   type BasicDev = { id: string; name: string; avatar_url?: string | null; location?: string | null; user_type?: string | null; experience_level?: string | null };
   const [devs, setDevs] = useState<BasicDev[]>([]);
-  type Studio = { id: string; name: string; description?: string | null; type?: string | null; is_recruiting?: boolean | null; recruiting_roles?: string[] | null; tags?: string[] | null; slug?: string | null; visibility?: string | null };
+  type Studio = { id: string; name: string; description?: string | null; type?: string | null; is_recruiting?: boolean | null; recruiting_roles?: string[] | null; tags?: string[] | null; slug?: string | null; visibility?: string | null; members_count?: number };
   const [studios, setStudios] = useState<Studio[]>([]);
 
   useEffect(() => {
@@ -60,18 +60,28 @@ export default function Directory() {
       tags: r.tags ?? null,
       slug: r.slug || null,
       visibility: r.visibility || null,
+      members_count:
+        Array.isArray(r.collective_members) && r.collective_members.length
+          ? Number(r.collective_members[0]?.count ?? 0)
+          : Array.isArray(r.team_memberships) && r.team_memberships.length
+            ? Number(r.team_memberships[0]?.count ?? 0)
+            : undefined,
     });
 
     client
       .from<any>(studiosTable as any)
-      .select(client === devconnect ? "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at" : "id,name,description,visibility,created_at")
+      .select(
+        client === devconnect
+          ? "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)"
+          : "id,name,description,visibility,created_at, team_memberships:team_memberships(count)"
+      )
       .limit(200)
       .then(({ data, error }) => {
         if (!error && Array.isArray(data)) setStudios(data.map(mapStudio));
         else if (client !== supabase) {
           supabase
             .from<any>("teams" as any)
-            .select("id,name,description,visibility,created_at")
+            .select("id,name,description,visibility,created_at, team_memberships:team_memberships(count)")
             .limit(200)
             .then(({ data: d2 }) => setStudios((d2 || []).map(mapStudio)));
         }
@@ -171,15 +181,20 @@ export default function Directory() {
                     </CardHeader>
                     <CardContent className="pt-0 space-y-3">
                       <p className="text-sm text-muted-foreground line-clamp-3">{t.description || ""}</p>
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                        {typeof t.members_count === "number" && (
+                          <span>{t.members_count} members</span>
+                        )}
+                        {(t.recruiting_roles && t.recruiting_roles.length > 0) && (
+                          <span>Roles: {t.recruiting_roles!.join(", ")}</span>
+                        )}
+                      </div>
                       {(t.tags && t.tags.length > 0) && (
                         <div className="flex flex-wrap gap-2">
                           {t.tags!.map((tag) => (
                             <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
                           ))}
                         </div>
-                      )}
-                      {(t.recruiting_roles && t.recruiting_roles.length > 0) && (
-                        <div className="text-xs text-muted-foreground">Roles: {t.recruiting_roles!.join(", ")}</div>
                       )}
                     </CardContent>
                   </Card>
