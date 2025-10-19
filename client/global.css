@@ -99,9 +99,15 @@
 }
 
 @layer utilities {
-  .section-cozy { padding-block: var(--space-section-y); }
-  .gap-cozy { gap: var(--space-5); }
-  .pad-cozy { padding: var(--space-5); }
+  .section-cozy {
+    padding-block: var(--space-section-y);
+  }
+  .gap-cozy {
+    gap: var(--space-5);
+  }
+  .pad-cozy {
+    padding: var(--space-5);
+  }
 
   .text-gradient {
     @apply bg-gradient-to-r from-aethex-400 via-neon-blue to-aethex-600 bg-clip-text text-transparent;

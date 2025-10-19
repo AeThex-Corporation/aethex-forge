@@ -2,7 +2,14 @@ import { useMemo, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CheckCircle2, Circle, Rocket, Target, Flame, Sparkles } from "lucide-react";
+import {
+  CheckCircle2,
+  Circle,
+  Rocket,
+  Target,
+  Flame,
+  Sparkles,
+} from "lucide-react";
 
 export type RoadmapPhase = "now" | "month1" | "month2" | "month3";
 
@@ -25,17 +32,34 @@ export default function Timeline({
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const phases: RoadmapPhase[] = ["now", "month1", "month2", "month3"];
-  const iconFor: Record<RoadmapPhase, any> = { now: Target, month1: Flame, month2: Rocket, month3: Sparkles };
+  const iconFor: Record<RoadmapPhase, any> = {
+    now: Target,
+    month1: Flame,
+    month2: Rocket,
+    month3: Sparkles,
+  };
 
   const grouped = useMemo(() => {
-    const map: Record<RoadmapPhase, TimelineEvent[]> = { now: [], month1: [], month2: [], month3: [] };
+    const map: Record<RoadmapPhase, TimelineEvent[]> = {
+      now: [],
+      month1: [],
+      month2: [],
+      month3: [],
+    };
     for (const e of events) map[e.phase].push(e);
     return map;
   }, [events]);
 
   const scrollToPhase = (p: RoadmapPhase) => {
-    const el = containerRef.current?.querySelector<HTMLDivElement>(`[data-phase="${p}"]`);
-    if (el) el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const el = containerRef.current?.querySelector<HTMLDivElement>(
+      `[data-phase="${p}"]`,
+    );
+    if (el)
+      el.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
     onSelectPhase?.(p);
   };
 
@@ -45,9 +69,22 @@ export default function Timeline({
         <div className="flex items-center gap-2">
           {phases.map((p) => {
             const Icon = iconFor[p];
-            const label = p === "now" ? "Now" : p === "month1" ? "Month 1" : p === "month2" ? "Month 2" : "Month 3";
+            const label =
+              p === "now"
+                ? "Now"
+                : p === "month1"
+                  ? "Month 1"
+                  : p === "month2"
+                    ? "Month 2"
+                    : "Month 3";
             return (
-              <Button key={p} size="sm" variant="outline" onClick={() => scrollToPhase(p)} className="flex items-center gap-2">
+              <Button
+                key={p}
+                size="sm"
+                variant="outline"
+                onClick={() => scrollToPhase(p)}
+                className="flex items-center gap-2"
+              >
                 <Icon className="h-4 w-4 text-aethex-300" /> {label}
               </Button>
             );
@@ -64,9 +101,18 @@ export default function Timeline({
               <div key={p} data-phase={p} className="col-span-3">
                 {/* Phase header */}
                 <div className="mb-2 flex items-center gap-2">
-                  {(() => { const Icon = iconFor[p]; return <Icon className="h-4 w-4 text-aethex-300" />; })()}
+                  {(() => {
+                    const Icon = iconFor[p];
+                    return <Icon className="h-4 w-4 text-aethex-300" />;
+                  })()}
                   <span className="text-sm font-medium">
-                    {p === "now" ? "Now" : p === "month1" ? "Month 1" : p === "month2" ? "Month 2" : "Month 3"}
+                    {p === "now"
+                      ? "Now"
+                      : p === "month1"
+                        ? "Month 1"
+                        : p === "month2"
+                          ? "Month 2"
+                          : "Month 3"}
                   </span>
                 </div>
                 {/* Events for phase */}
@@ -90,15 +136,23 @@ export default function Timeline({
                       </div>
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <div className="text-sm font-medium leading-tight">{e.title}</div>
-                          <div className="text-xs text-muted-foreground">Tap to {e.claimed ? "unclaim" : "claim"} • {e.xp} XP</div>
+                          <div className="text-sm font-medium leading-tight">
+                            {e.title}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            Tap to {e.claimed ? "unclaim" : "claim"} • {e.xp} XP
+                          </div>
                         </div>
-                        <Badge variant="outline" className="shrink-0">{e.xp} XP</Badge>
+                        <Badge variant="outline" className="shrink-0">
+                          {e.xp} XP
+                        </Badge>
                       </div>
                     </button>
                   ))}
                   {grouped[p].length === 0 && (
-                    <div className="rounded border border-border/40 p-3 text-xs text-muted-foreground">No quests yet</div>
+                    <div className="rounded border border-border/40 p-3 text-xs text-muted-foreground">
+                      No quests yet
+                    </div>
                   )}
                 </div>
               </div>

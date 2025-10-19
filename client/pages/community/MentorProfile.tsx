@@ -1,7 +1,13 @@
 import Layout from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { aethexSocialService } from "@/lib/aethex-social-service";
@@ -31,8 +37,15 @@ export default function MentorProfile() {
     const load = async () => {
       setLoading(true);
       try {
-        const rows = (await aethexSocialService.listMentors({ q: username, limit: 50 })) as MentorRow[];
-        const found = rows.find((r) => (r.user_profiles?.username || "").toLowerCase() === (username || "").toLowerCase());
+        const rows = (await aethexSocialService.listMentors({
+          q: username,
+          limit: 50,
+        })) as MentorRow[];
+        const found = rows.find(
+          (r) =>
+            (r.user_profiles?.username || "").toLowerCase() ===
+            (username || "").toLowerCase(),
+        );
         setMentor(found || null);
       } catch {
         setMentor(null);
@@ -43,25 +56,45 @@ export default function MentorProfile() {
     load();
   }, [username]);
 
-  const displayName = useMemo(() => mentor?.user_profiles?.full_name || mentor?.user_profiles?.username || "Mentor", [mentor]);
+  const displayName = useMemo(
+    () =>
+      mentor?.user_profiles?.full_name ||
+      mentor?.user_profiles?.username ||
+      "Mentor",
+    [mentor],
+  );
 
   return (
     <Layout>
       <div className="container mx-auto max-w-7xl px-4 py-12">
         <div className="mb-6">
-          <Badge variant="outline" className="mb-2">Mentorship</Badge>
-          <h1 className="text-3xl font-bold">{loading ? "Loading…" : displayName}</h1>
+          <Badge variant="outline" className="mb-2">
+            Mentorship
+          </Badge>
+          <h1 className="text-3xl font-bold">
+            {loading ? "Loading…" : displayName}
+          </h1>
           {!loading && (
-            <p className="text-muted-foreground mt-1">{mentor?.user_profiles?.bio || mentor?.bio || "Mentor profile"}</p>
+            <p className="text-muted-foreground mt-1">
+              {mentor?.user_profiles?.bio || mentor?.bio || "Mentor profile"}
+            </p>
           )}
         </div>
 
         {loading && (
-          <Card><CardContent className="p-6 text-sm text-muted-foreground">Loading profile…</CardContent></Card>
+          <Card>
+            <CardContent className="p-6 text-sm text-muted-foreground">
+              Loading profile…
+            </CardContent>
+          </Card>
         )}
 
         {!loading && !mentor && (
-          <Card><CardContent className="p-6 text-sm text-muted-foreground">Mentor not found.</CardContent></Card>
+          <Card>
+            <CardContent className="p-6 text-sm text-muted-foreground">
+              Mentor not found.
+            </CardContent>
+          </Card>
         )}
 
         {!loading && mentor && (
@@ -72,10 +105,14 @@ export default function MentorProfile() {
                 <CardDescription>Background and focus areas</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {mentor.bio && <p className="text-sm text-muted-foreground">{mentor.bio}</p>}
+                {mentor.bio && (
+                  <p className="text-sm text-muted-foreground">{mentor.bio}</p>
+                )}
                 <div className="flex flex-wrap gap-2">
                   {(mentor.expertise || []).map((tag) => (
-                    <Badge key={tag} variant="outline">{tag}</Badge>
+                    <Badge key={tag} variant="outline">
+                      {tag}
+                    </Badge>
                   ))}
                 </div>
               </CardContent>
@@ -88,14 +125,30 @@ export default function MentorProfile() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="text-sm">
-                  <div>Availability: {mentor.available ? "Accepting requests" : "Unavailable"}</div>
+                  <div>
+                    Availability:{" "}
+                    {mentor.available ? "Accepting requests" : "Unavailable"}
+                  </div>
                   {typeof mentor.hourly_rate === "number" && (
                     <div>Rate: ${mentor.hourly_rate}/hr</div>
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <Button onClick={() => navigate(`/community/mentorship?m=${mentor.user_profiles?.username || mentor.user_id}`)}>Request mentorship</Button>
-                  <Button variant="outline" onClick={() => navigate("/community/mentorship")}>Back to directory</Button>
+                  <Button
+                    onClick={() =>
+                      navigate(
+                        `/community/mentorship?m=${mentor.user_profiles?.username || mentor.user_id}`,
+                      )
+                    }
+                  >
+                    Request mentorship
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/community/mentorship")}
+                  >
+                    Back to directory
+                  </Button>
                 </div>
               </CardContent>
             </Card>

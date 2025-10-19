@@ -1,11 +1,31 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ExternalLink, Flag, ListChecks, Rocket, Sparkles, Target } from "lucide-react";
+import {
+  CheckCircle2,
+  ExternalLink,
+  Flag,
+  ListChecks,
+  Rocket,
+  Sparkles,
+  Target,
+} from "lucide-react";
 
-const linearProjectUrl = "https://linear.app/duo-simulators/project/aethex-roadmap-8600b796e8ad";
+const linearProjectUrl =
+  "https://linear.app/duo-simulators/project/aethex-roadmap-8600b796e8ad";
 
-const phases: { title: string; timeframe: string; items: string[]; icon: any }[] = [
+const phases: {
+  title: string;
+  timeframe: string;
+  items: string[];
+  icon: any;
+}[] = [
   {
     title: "Access & IA",
     timeframe: "Now — 0–2 weeks",
@@ -65,11 +85,18 @@ export default function AdminRoadmap() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="border-emerald-500/40 text-emerald-300">
+          <Badge
+            variant="outline"
+            className="border-emerald-500/40 text-emerald-300"
+          >
             All systems focused
           </Badge>
           <Button asChild size="sm">
-            <a href={linearProjectUrl} target="_blank" rel="noreferrer noopener">
+            <a
+              href={linearProjectUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               Open Linear project <ExternalLink className="ml-2 h-4 w-4" />
             </a>
           </Button>
@@ -80,7 +107,10 @@ export default function AdminRoadmap() {
         {phases.map((p) => {
           const Icon = p.icon;
           return (
-            <Card key={p.title} className="bg-card/60 border-border/40 backdrop-blur">
+            <Card
+              key={p.title}
+              className="bg-card/60 border-border/40 backdrop-blur"
+            >
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Icon className="h-5 w-5 text-aethex-300" />

@@ -5,7 +5,13 @@ export type RoadmapTheme = "space" | "fantasy" | "city" | "adventure";
 
 const key = "aethex_roadmap_theme_v1";
 
-export default function ThemeToggle({ value, onChange }: { value?: RoadmapTheme; onChange?: (v: RoadmapTheme) => void }) {
+export default function ThemeToggle({
+  value,
+  onChange,
+}: {
+  value?: RoadmapTheme;
+  onChange?: (v: RoadmapTheme) => void;
+}) {
   const [theme, setTheme] = useState<RoadmapTheme>(value || "space");
 
   useEffect(() => {
@@ -29,7 +35,11 @@ export default function ThemeToggle({ value, onChange }: { value?: RoadmapTheme;
   };
 
   return (
-    <Tabs value={theme} onValueChange={(v) => set(v as RoadmapTheme)} className="w-full">
+    <Tabs
+      value={theme}
+      onValueChange={(v) => set(v as RoadmapTheme)}
+      className="w-full"
+    >
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="space">Space</TabsTrigger>
         <TabsTrigger value="fantasy">Fantasy</TabsTrigger>

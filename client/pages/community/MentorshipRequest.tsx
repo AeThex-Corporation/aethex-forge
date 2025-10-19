@@ -281,7 +281,9 @@ export default function MentorshipRequest() {
                       onClick={() => {
                         const uname = m.user_profiles?.username;
                         if (uname) {
-                          navigate(`/community/mentor/${encodeURIComponent(uname)}`);
+                          navigate(
+                            `/community/mentor/${encodeURIComponent(uname)}`,
+                          );
                         }
                       }}
                       className="w-full"
