@@ -89,9 +89,22 @@ export default function Directory() {
 
     if (client === devconnect) {
       fetch(`/api/devconnect/rest/${userTable}?select=*&limit=200`)
-        .then((r) => r.json())
-        .then((data) => Array.isArray(data) && setDevs(data.map(normalize)))
-        .catch(() => setDevs([]));
+        .then(async (r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+        .then((data) => {
+          if (Array.isArray(data) && data.length) return setDevs(data.map(normalize));
+          return devconnect
+            ?.from<any>(userTable as any)
+            .select("*")
+            .limit(200)
+            .then(({ data }) => setDevs((data || []).map(normalize)));
+        })
+        .catch(() => {
+          devconnect
+            ?.from<any>(userTable as any)
+            .select("*")
+            .limit(200)
+            .then(({ data }) => setDevs((data || []).map(normalize)));
+        });
     } else {
       client
         .from<any>(userTable as any)
@@ -124,9 +137,26 @@ export default function Directory() {
         "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
       );
       fetch(`/api/devconnect/rest/${studiosTable}?select=${sel}&limit=200`)
-        .then((r) => r.json())
-        .then((data) => Array.isArray(data) && setStudios(data.map(mapStudio)))
-        .catch(() => setStudios([]));
+        .then(async (r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+        .then((data) => {
+          if (Array.isArray(data) && data.length) return setStudios(data.map(mapStudio));
+          return devconnect
+            ?.from<any>(studiosTable as any)
+            .select(
+              "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
+            )
+            .limit(200)
+            .then(({ data }) => setStudios((data || []).map(mapStudio)));
+        })
+        .catch(() => {
+          devconnect
+            ?.from<any>(studiosTable as any)
+            .select(
+              "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
+            )
+            .limit(200)
+            .then(({ data }) => setStudios((data || []).map(mapStudio)));
+        });
     } else {
       client
         .from<any>(studiosTable as any)
@@ -144,7 +174,7 @@ export default function Directory() {
         fetch(
           `/api/devconnect/rest/collective_members?select=collective_id,profile_id&collective_id=in.(${list})&limit=200`,
         )
-          .then((r) => r.json())
+          .then(async (r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
           .then(async (rows) => {
             const byCollective: Record<string, string[]> = {};
             (rows || []).forEach((row: any) => {
@@ -153,14 +183,21 @@ export default function Directory() {
               if (byCollective[cid].length < 5)
                 byCollective[cid].push(String(row.profile_id));
             });
-            const profileIds = Array.from(
-              new Set(Object.values(byCollective).flat()),
-            );
+            const profileIds = Array.from(new Set(Object.values(byCollective).flat()));
             if (profileIds.length) {
               const pids = encodeURIComponent(profileIds.join(","));
-              const profs = await fetch(
-                `/api/devconnect/rest/profiles?select=id,display_name,avatar_url&id=in.(${pids})`,
-              ).then((r) => r.json());
+              let profs: any[] = [];
+              try {
+                profs = await fetch(
+                  `/api/devconnect/rest/profiles?select=id,display_name,avatar_url&id=in.(${pids})`,
+                ).then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))));
+              } catch {
+                const { data } = await devconnect
+                  ?.from<any>("profiles" as any)
+                  .select("id,display_name,avatar_url")
+                  .in("id", profileIds);
+                profs = data || [];
+              }
               const map: Record<string, StudioMember> = {};
               (profs || []).forEach((p: any) => {
                 map[String(p.id)] = {
