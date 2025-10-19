@@ -1308,6 +1308,51 @@ export function createServer() {
       }
     });
 
+    // Leads: capture website leads (Wix microsite and others)
+    app.post("/api/leads", async (req, res) => {
+      const { name, email, company, website, budget, timeline, message, source } = (req.body || {}) as {
+        name?: string;
+        email?: string;
+        company?: string;
+        website?: string;
+        budget?: string;
+        timeline?: string;
+        message?: string;
+        source?: string;
+      };
+      if (!email) return res.status(400).json({ error: "email required" });
+      try {
+        const lines = [
+          `Source: ${source || "web"}`,
+          `Name: ${name || "N/A"}`,
+          `Email: ${email}`,
+          `Company: ${company || "N/A"}`,
+          `Website: ${website || "N/A"}`,
+          `Budget: ${budget || "N/A"}`,
+          `Timeline: ${timeline || "N/A"}`,
+          message ? `\nMessage:\n${message}` : "",
+        ].join("\n");
+
+        try {
+          if (emailService.isConfigured) {
+            const base = process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "https://aethex.dev";
+            await (emailService as any).sendInviteEmail({
+              to: process.env.VERIFY_SUPPORT_EMAIL || "support@aethex.biz",
+              inviteUrl: `${base}/wix`,
+              inviterName: name || email,
+              message: lines,
+            });
+          }
+        } catch (e) {
+          // continue even if email fails
+        }
+
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     // Staff: users search/listing
     app.get("/api/staff/users", async (req, res) => {
       const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 20));
