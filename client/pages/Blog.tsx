@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
-import SEO from "@/components/SEO";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import BlogHero from "@/components/blog/BlogHero";
@@ -15,7 +14,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Layers, ListFilter, Newspaper } from "lucide-react";
 import type { BlogCategory, BlogPost } from "@/components/blog/types";
-import SEO from "@/components/SEO";
 
 const buildSlug = (post: BlogPost): string =>
   post.slug || post.id?.toString() || "article";
