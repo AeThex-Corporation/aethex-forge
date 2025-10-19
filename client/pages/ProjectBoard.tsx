@@ -168,13 +168,13 @@ export default function ProjectBoard() {
                 />
                 <Select
                   value={filterAssignee}
-                  onValueChange={setFilterAssignee}
+                  onValueChange={(v) => setFilterAssignee(v === "__all__" ? "" : v)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Filter by assignee" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All assignees</SelectItem>
+                    <SelectItem value="__all__">All assignees</SelectItem>
                     {members.map((m) => (
                       <SelectItem key={m.user_id} value={m.user_id}>
                         {m.user?.full_name || m.user?.username || m.user_id}
@@ -182,12 +182,12 @@ export default function ProjectBoard() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Select value={filterStatus} onValueChange={setFilterStatus}>
+                <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v === "__all__" ? "" : v)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All statuses</SelectItem>
+                    <SelectItem value="__all__">All statuses</SelectItem>
                     <SelectItem value="todo">To do</SelectItem>
                     <SelectItem value="doing">In progress</SelectItem>
                     <SelectItem value="done">Done</SelectItem>
@@ -331,12 +331,12 @@ export default function ProjectBoard() {
                   onChange={(e) => setDescription(e.target.value)}
                 />
                 <div className="grid gap-3 md:grid-cols-3">
-                  <Select value={assigneeId} onValueChange={setAssigneeId}>
+                  <Select value={assigneeId} onValueChange={(v) => setAssigneeId(v === "__none__" ? "" : v)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Assign to…" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Unassigned</SelectItem>
+                      <SelectItem value="__none__">Unassigned</SelectItem>
                       {members.map((m) => (
                         <SelectItem key={m.user_id} value={m.user_id}>
                           {m.user?.full_name || m.user?.username || m.user_id}
