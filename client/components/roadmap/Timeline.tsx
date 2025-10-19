@@ -94,11 +94,11 @@ export default function Timeline({
       </div>
 
       <div ref={containerRef} className="mt-4 overflow-x-auto">
-        <div className="min-w-[720px] w-[1200px] lg:w-full relative">
+        <div className="w-full relative">
           <div className="absolute left-0 right-0 top-8 h-0.5 bg-border/50" />
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {phases.map((p, idx) => (
-              <div key={p} data-phase={p} className="col-span-3">
+              <div key={p} data-phase={p} className="col-span-1">
                 {/* Phase header */}
                 <div className="mb-2 flex items-center gap-2">
                   {(() => {
@@ -127,7 +127,7 @@ export default function Timeline({
                       onClick={() => onToggleClaim?.(e.id)}
                       title={e.title}
                     >
-                      <div className="absolute left-[-10px] top-1/2 -translate-y-1/2">
+                      <div className="absolute left-0 -ml-4 top-1/2 -translate-y-1/2">
                         {e.claimed ? (
                           <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                         ) : (
