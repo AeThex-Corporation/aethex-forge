@@ -63,14 +63,17 @@ export default function Login() {
   } = useAuth();
   const { info: toastInfo, error: toastError } = useAethexToast();
 
-  // After auth resolves and a user exists, navigate to dashboard
+  // After auth resolves and a user exists, navigate to next path or dashboard
   useEffect(() => {
     if (!loading && user) {
-      navigate(profileComplete ? "/dashboard" : "/onboarding", {
+      const params = new URLSearchParams(location.search);
+      const next = params.get("next");
+      const safeNext = next && next.startsWith("/") ? next : null;
+      navigate(safeNext || (profileComplete ? "/dashboard" : "/onboarding"), {
         replace: true,
       });
     }
-  }, [user, loading, profileComplete, navigate]);
+  }, [user, loading, profileComplete, navigate, location.search]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
