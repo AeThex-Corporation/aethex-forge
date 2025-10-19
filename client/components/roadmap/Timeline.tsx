@@ -96,7 +96,7 @@ export default function Timeline({
       <div ref={containerRef} className="mt-4 overflow-x-auto">
         <div className="w-full relative">
           <div className="absolute left-0 right-0 top-8 h-0.5 bg-border/50" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {phases.map((p, idx) => (
               <div key={p} data-phase={p} className="col-span-1">
                 {/* Phase header */}
