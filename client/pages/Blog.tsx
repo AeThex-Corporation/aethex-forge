@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import BlogHero from "@/components/blog/BlogHero";
