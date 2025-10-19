@@ -265,6 +265,17 @@ export default function Index() {
 
   return (
     <Layout hideFooter>
+      {/* Top Banner (editable via Admin → Operations) */}
+      {homeBanner?.enabled !== false && (
+        <div className="relative z-20 w-full border-b border-border/30 bg-gradient-to-r from-aethex-900/60 via-background to-neon-blue/20">
+          <div className="container mx-auto px-4 py-2 text-center">
+            <span className="text-sm font-medium tracking-wide text-foreground/90">
+              {homeBanner?.text || "ROBLOX AUTH SOON"}
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section - Geometric Design */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Geometric Background Pattern */}
