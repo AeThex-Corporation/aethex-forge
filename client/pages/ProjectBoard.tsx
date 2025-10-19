@@ -20,7 +20,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { aethexCollabService } from "@/lib/aethex-collab-service";
 import LoadingScreen from "@/components/LoadingScreen";
 import SEO from "@/components/SEO";
@@ -157,7 +164,9 @@ export default function ProjectBoard() {
   return (
     <>
       <SEO
-        pageTitle={projectName ? `${projectName} • Project Board` : "Project Board"}
+        pageTitle={
+          projectName ? `${projectName} • Project Board` : "Project Board"
+        }
         description="Kanban task tracking for your AeThex project: statuses, assignees, and due dates."
         canonical={
           typeof window !== "undefined"
@@ -209,7 +218,9 @@ export default function ProjectBoard() {
                 />
                 <Select
                   value={filterAssignee}
-                  onValueChange={(v) => setFilterAssignee(v === "__all__" ? "" : v)}
+                  onValueChange={(v) =>
+                    setFilterAssignee(v === "__all__" ? "" : v)
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Filter by assignee" />
@@ -223,7 +234,12 @@ export default function ProjectBoard() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v === "__all__" ? "" : v)}>
+                <Select
+                  value={filterStatus}
+                  onValueChange={(v) =>
+                    setFilterStatus(v === "__all__" ? "" : v)
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
@@ -372,7 +388,12 @@ export default function ProjectBoard() {
                   onChange={(e) => setDescription(e.target.value)}
                 />
                 <div className="grid gap-3 md:grid-cols-3">
-                  <Select value={assigneeId} onValueChange={(v) => setAssigneeId(v === "__none__" ? "" : v)}>
+                  <Select
+                    value={assigneeId}
+                    onValueChange={(v) =>
+                      setAssigneeId(v === "__none__" ? "" : v)
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Assign to…" />
                     </SelectTrigger>
