@@ -68,6 +68,7 @@ import PressKit from "./pages/PressKit";
 import Projects from "./pages/Projects";
 import ProjectsAdmin from "./pages/ProjectsAdmin";
 import Directory from "./pages/Directory";
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => (
     <AuthProvider>
       <TooltipProvider>
         <Toaster />
+        <Analytics />
         <BrowserRouter>
           <SkipAgentController />
           <PageTransition>
