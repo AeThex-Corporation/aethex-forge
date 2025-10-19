@@ -27,8 +27,10 @@ interface Contributor {
 export default function ProjectsAdmin() {
   const { user, roles, loading: authLoading } = useAuth();
   const isOwner = Boolean(
-    (user?.email?.toLowerCase() === "mrpiglr@gmail.com") ||
-      (roles || []).some((r) => ["owner", "admin", "founder"].includes(String(r).toLowerCase())),
+    user?.email?.toLowerCase() === "mrpiglr@gmail.com" ||
+      (roles || []).some((r) =>
+        ["owner", "admin", "founder"].includes(String(r).toLowerCase()),
+      ),
   );
   const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
