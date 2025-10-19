@@ -1374,6 +1374,34 @@ export function createServer() {
       }
     });
 
+    // Roblox inbound callback (from HttpService or external automation)
+    app.get("/roblox-callback", (_req, res) => res.json({ ok: true }));
+    app.post("/roblox-callback", async (req, res) => {
+      const shared = process.env.ROBLOX_SHARED_SECRET || process.env.ROBLOX_WEBHOOK_SECRET || "";
+      const sig = String(req.get("x-shared-secret") || req.get("x-roblox-signature") || "");
+      if (shared && sig !== shared) return res.status(401).json({ error: "unauthorized" });
+      try {
+        const payload = {
+          ...((req.body as any) || {}),
+          ip: (req.headers["x-forwarded-for"] as string) || req.ip,
+          ua: req.get("user-agent") || null,
+          received_at: new Date().toISOString(),
+        };
+        // Best-effort persist if table exists
+        try {
+          await adminSupabase.from("roblox_events").insert({
+            event_type: (payload as any).event || null,
+            payload,
+          } as any);
+        } catch (e: any) {
+          // ignore if table missing or RLS blocks
+        }
+        return res.json({ ok: true });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     // Staff: users search/listing
     app.get("/api/staff/users", async (req, res) => {
       const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 20));
