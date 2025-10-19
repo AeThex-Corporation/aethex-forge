@@ -277,7 +277,7 @@ export default function Index() {
       )}
 
       {/* Hero Section - Geometric Design */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-24 sm:pt-36">
         {/* Geometric Background Pattern */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-aethex-900/50 via-background to-aethex-800/50" />
