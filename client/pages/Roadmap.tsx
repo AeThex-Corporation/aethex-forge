@@ -123,7 +123,7 @@ export default function Roadmap() {
   return (
     <Layout>
       <div className="bg-aethex-gradient">
-        <section className="container mx-auto px-4 pt-14 pb-8">
+        <section className="container mx-auto max-w-7xl px-4 section-cozy">
           <div className="mb-6">
             <Badge variant="outline" className="border-aethex-400/50 text-aethex-300">Roadmap</Badge>
             <h1 className="mt-2 text-4xl font-extrabold text-gradient">The AeThex Roadmap</h1>
@@ -159,8 +159,8 @@ export default function Roadmap() {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 pb-6">
-          <div className="grid gap-3 md:grid-cols-[1fr_1fr]">
+        <section className="container mx-auto max-w-7xl px-4 section-cozy">
+          <div className="grid gap-6 md:grid-cols-[1fr_1fr]">
             <GalaxyMap
               phases={["now","month1","month2","month3"].map((id) => ({
                 id: id as Quest["phase"],
@@ -217,12 +217,12 @@ export default function Roadmap() {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 pb-8">
+        <section className="container mx-auto max-w-7xl px-4 section-cozy">
           <Achievements earnedXp={earnedXp} phaseClaims={phaseClaims} />
         </section>
 
         {/* Sneak peeks */}
-        <section id="sneak-peeks" className="container mx-auto px-4 pb-16">
+        <section id="sneak-peeks" className="container mx-auto max-w-7xl px-4 section-cozy">
           <div className="mb-4">
             <Badge variant="outline" className="border-purple-500/40 text-purple-300">Sneak peeks</Badge>
             <h2 className="mt-2 text-2xl font-bold">Dev Drops</h2>
