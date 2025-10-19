@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import LoadingScreen from "@/components/LoadingScreen";
 import { SkeletonStats, SkeletonUserPath } from "@/components/Skeleton";
 import { Link } from "react-router-dom";
+import GamifiedBanner from "@/components/GamifiedBanner";
 import {
   ArrowRight,
   CheckCircle,
@@ -267,16 +268,11 @@ export default function Index() {
     <Layout hideFooter>
       {/* Top Banner (editable via Admin → Operations) */}
       {homeBanner?.enabled !== false && (
-        <>
-          {/* Gamified top banner */}
-          {/* eslint-disable-next-line react/no-unknown-property */}
-          <div data-home-banner>
-            {/* @ts-ignore - component default export */}
-            {/* Using dynamic styling keyed by homeBanner.style */}
-            {/* Prefer emoji prefix in text for style */}
-            {/* The component handles disabled state upstream */}
-          </div>
-        </>
+        <GamifiedBanner
+          text={homeBanner?.text || "ROBLOX AUTH SOON"}
+          enabled={homeBanner?.enabled !== false}
+          style={(homeBanner as any)?.style || null}
+        />
       )}
 
       {/* Hero Section - Geometric Design */}
