@@ -51,6 +51,7 @@ export default function Login() {
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     signIn,
     signUp,
