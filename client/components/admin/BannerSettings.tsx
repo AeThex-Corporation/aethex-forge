@@ -27,7 +27,7 @@ export default function BannerSettings() {
       const resp = await fetch("/api/site-settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key: "home_banner", value: { text, enabled } }),
+        body: JSON.stringify({ key: "home_banner", value: { text, enabled, style } }),
       });
       if (!resp.ok) throw new Error("Save failed");
     } finally {
