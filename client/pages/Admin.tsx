@@ -1108,6 +1108,20 @@ export default function Admin() {
 
             <TabsContent value="operations" className="space-y-6">
               <div className="grid gap-6 lg:grid-cols-2">
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Settings className="h-5 w-5 text-aethex-300" />
+                      <CardTitle>Home banner</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Controls the small notice shown at the top of the home page.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <BannerSettings />
+                  </CardContent>
+                </Card>
                 <Card className="bg-card/60 border-border/40 backdrop-blur lg:col-span-2">
                   <CardHeader>
                     <div className="flex items-center gap-2">
