@@ -144,6 +144,62 @@ export function createServer() {
     }
   });
 
+  // Org domain magic-link sender (Aethex)
+  app.post("/api/auth/send-org-link", async (req, res) => {
+    try {
+      const { email, redirectTo } = (req.body || {}) as { email?: string; redirectTo?: string };
+      const target = String(email || "").trim().toLowerCase();
+      if (!target) return res.status(400).json({ error: "email is required" });
+      const allowed = /@aethex\.dev$/i.test(target);
+      if (!allowed) return res.status(403).json({ error: "domain not allowed" });
+
+      if (!adminSupabase?.auth?.admin) {
+        return res.status(500).json({ error: "Supabase admin unavailable" });
+      }
+
+      const fallbackRedirect =
+        process.env.EMAIL_VERIFY_REDIRECT ??
+        process.env.PUBLIC_BASE_URL ??
+        process.env.SITE_URL ??
+        "https://aethex.dev";
+
+      const toUrl = typeof redirectTo === "string" && redirectTo.startsWith("http") ? redirectTo : fallbackRedirect;
+
+      const { data, error } = await adminSupabase.auth.admin.generateLink({
+        type: "magiclink" as any,
+        email: target,
+        options: { redirectTo: toUrl },
+      } as any);
+
+      if (error) {
+        return res.status(500).json({ error: error.message || String(error) });
+      }
+
+      const actionLink =
+        (data as any)?.properties?.action_link ??
+        (data as any)?.properties?.verification_link ??
+        null;
+
+      if (!actionLink) {
+        return res.status(500).json({ error: "Failed to generate magic link" });
+      }
+
+      if (!emailService.isConfigured) {
+        return res.json({ sent: false, verificationUrl: actionLink });
+      }
+
+      await emailService.sendVerificationEmail({
+        to: target,
+        verificationUrl: actionLink,
+        fullName: null,
+      });
+
+      return res.json({ sent: true });
+    } catch (e: any) {
+      return res.status(500).json({ error: e?.message || String(e) });
+    }
+  });
+
   app.post("/api/auth/check-verification", async (req, res) => {
     const { email } = (req.body || {}) as { email?: string };
 
