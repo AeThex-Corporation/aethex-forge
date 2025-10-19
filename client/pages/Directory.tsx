@@ -119,38 +119,35 @@ export default function Directory() {
             : undefined,
     });
 
-    client
-      .from<any>(studiosTable as any)
-      .select(
-        client === devconnect
-          ? "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)"
-          : "id,name,description,visibility,created_at, team_memberships:team_memberships(count)",
-      )
-      .limit(200)
-      .then(({ data, error }) => {
-        if (!error && Array.isArray(data)) setStudios(data.map(mapStudio));
-        else if (client !== supabase) {
-          supabase
-            .from<any>("teams" as any)
-            .select(
-              "id,name,description,visibility,created_at, team_memberships:team_memberships(count)",
-            )
-            .limit(200)
-            .then(({ data: d2 }) => setStudios((d2 || []).map(mapStudio)));
-        }
-      });
+    if (client === devconnect) {
+      const sel = encodeURIComponent(
+        "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
+      );
+      fetch(`/api/devconnect/rest/${studiosTable}?select=${sel}&limit=200`)
+        .then((r) => r.json())
+        .then((data) => Array.isArray(data) && setStudios(data.map(mapStudio)))
+        .catch(() => setStudios([]));
+    } else {
+      client
+        .from<any>(studiosTable as any)
+        .select(
+          "id,name,description,visibility,created_at, team_memberships:team_memberships(count)",
+        )
+        .limit(200)
+        .then(({ data }) => setStudios((data || []).map(mapStudio)));
+    }
     // Fetch member avatars for studios (DevConnect only)
     if (client === devconnect) {
       const ids = studios.map((s) => s.id).slice(0, 30);
       if (ids.length) {
-        devconnect
-          ?.from<any>("collective_members" as any)
-          .select("collective_id, profile_id")
-          .in("collective_id", ids)
-          .limit(200)
-          .then(async ({ data }) => {
+        const list = encodeURIComponent(ids.join(","));
+        fetch(
+          `/api/devconnect/rest/collective_members?select=collective_id,profile_id&collective_id=in.(${list})&limit=200`,
+        )
+          .then((r) => r.json())
+          .then(async (rows) => {
             const byCollective: Record<string, string[]> = {};
-            (data || []).forEach((row: any) => {
+            (rows || []).forEach((row: any) => {
               const cid = String(row.collective_id);
               if (!byCollective[cid]) byCollective[cid] = [];
               if (byCollective[cid].length < 5)
@@ -160,10 +157,10 @@ export default function Directory() {
               new Set(Object.values(byCollective).flat()),
             );
             if (profileIds.length) {
-              const { data: profs } = await devconnect
-                ?.from<any>("profiles" as any)
-                .select("id, display_name, avatar_url")
-                .in("id", profileIds);
+              const pids = encodeURIComponent(profileIds.join(","));
+              const profs = await fetch(
+                `/api/devconnect/rest/profiles?select=id,display_name,avatar_url&id=in.(${pids})`,
+              ).then((r) => r.json());
               const map: Record<string, StudioMember> = {};
               (profs || []).forEach((p: any) => {
                 map[String(p.id)] = {
