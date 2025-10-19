@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -1788,6 +1789,8 @@ export default function Community() {
   }
 
   return (
+    <>
+      <SEO pageTitle="Community" description="AeThex Community: share progress, discover collaborators, and stay updated." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
     <Layout>
       <div className="min-h-screen bg-aethex-gradient">
         {/* Hero Section */}
@@ -4630,5 +4633,6 @@ export default function Community() {
         )}
       </div>
     </Layout>
+  </>
   );
 }
