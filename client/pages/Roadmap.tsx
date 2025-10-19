@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 import { Sparkles, Lock, Gift, Rocket, Target, Flame, Eye, CheckCircle2, TimerReset } from "lucide-react";
-import ThemeToggle, { type RoadmapTheme } from "@/components/roadmap/ThemeToggle";
+import Timeline from "@/components/roadmap/Timeline";
 import GalaxyMap from "@/components/roadmap/GalaxyMap";
 import Achievements from "@/components/roadmap/Achievements";
 import VoteWidget from "@/components/roadmap/VoteWidget";
@@ -73,7 +73,6 @@ const storageKey = "aethex_roadmap_unlocks_v1";
 export default function Roadmap() {
   const [claimed, setClaimed] = useState<Record<string, boolean>>({});
   const [unlocked, setUnlocked] = useState<Record<string, boolean>>({});
-  const [theme, setTheme] = useState<RoadmapTheme>("space");
   const [focusedPhase, setFocusedPhase] = useState<Quest["phase"] | null>(null);
 
   useEffect(() => {
@@ -162,7 +161,6 @@ export default function Roadmap() {
 
         <section className="container mx-auto px-4 pb-6">
           <div className="grid gap-3 md:grid-cols-[1fr_1fr]">
-            <ThemeToggle value={theme} onChange={setTheme} />
             <GalaxyMap
               phases={["now","month1","month2","month3"].map((id) => ({
                 id: id as Quest["phase"],
@@ -170,6 +168,11 @@ export default function Roadmap() {
                 percent: phaseTotals[id]?.total ? Math.round((phaseTotals[id].earned / phaseTotals[id].total) * 100) : 0,
               }))}
               onSelect={(id) => setFocusedPhase(id)}
+            />
+            <Timeline
+              events={QUESTS.map((q) => ({ id: q.id, title: q.title, phase: q.phase, xp: q.xp, claimed: !!claimed[q.id] }))}
+              onSelectPhase={(p) => setFocusedPhase(p)}
+              onToggleClaim={(id) => toggleClaim(id)}
             />
           </div>
         </section>
