@@ -207,17 +207,53 @@ export default function ProjectBoard() {
                             {t.description}
                           </p>
                         ) : null}
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {columns.map((k) => (
+                        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                            {t.assignee ? (
+                              <span className="inline-flex items-center gap-1">
+                                <span className="inline-block h-4 w-4 rounded-full bg-cover bg-center" style={{ backgroundImage: `url(${t.assignee.avatar_url || ""})` }} />
+                                {t.assignee.full_name || t.assignee.username || "Assignee"}
+                              </span>
+                            ) : (
+                              <span>Unassigned</span>
+                            )}
+                            {t.due_date ? (
+                              <span>• Due {new Date(t.due_date).toLocaleDateString()}</span>
+                            ) : null}
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {columns.map((k) => (
+                              <Button
+                                key={`${t.id}-${k.key}`}
+                                size="xs"
+                                variant="outline"
+                                onClick={() => move(t.id, k.key)}
+                              >
+                                {k.title}
+                              </Button>
+                            ))}
                             <Button
-                              key={`${t.id}-${k.key}`}
                               size="xs"
-                              variant="outline"
-                              onClick={() => move(t.id, k.key)}
+                              variant="ghost"
+                              onClick={async () => {
+                                if (!user?.id) return;
+                                await aethexCollabService.updateTask(t.id, { assignee_id: user.id });
+                                await load();
+                              }}
                             >
-                              {k.title}
+                              Assign me
                             </Button>
-                          ))}
+                            <Button
+                              size="xs"
+                              variant="destructive"
+                              onClick={async () => {
+                                await aethexCollabService.deleteTask(t.id);
+                                await load();
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))
