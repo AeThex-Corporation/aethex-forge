@@ -896,8 +896,7 @@ export default function Community() {
     {
       id: "directory",
       title: "Browse Creators & Studios",
-      description:
-        "Discover non‑AeThex developers and independent studios.",
+      description: "Discover non‑AeThex developers and independent studios.",
       href: "/directory",
       label: "Open directory",
     },
