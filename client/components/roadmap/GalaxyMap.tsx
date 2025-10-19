@@ -17,7 +17,7 @@ export default function GalaxyMap({ phases, onSelect }: { phases: PhaseSummary[]
   };
 
   return (
-    <div className="relative rounded-xl border border-border/40 bg-background/50 p-4 overflow-hidden">
+    <div className="relative rounded-xl border border-border/40 bg-background/50 p-6 overflow-hidden">
       <div className="pointer-events-none absolute inset-0 opacity-30" aria-hidden>
         <svg className="h-full w-full" viewBox="0 0 800 240" preserveAspectRatio="none">
           <defs>
@@ -32,7 +32,7 @@ export default function GalaxyMap({ phases, onSelect }: { phases: PhaseSummary[]
         </svg>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative">
         {phases.map((p) => {
           const Icon = iconFor[p.id];
           return (
