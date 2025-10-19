@@ -3,14 +3,22 @@ export interface ShowcaseLink {
   href: string;
 }
 
+export interface ShowcaseContributor {
+  name: string;
+  title?: string;
+  avatar?: string;
+}
+
 export interface ShowcaseProject {
   id: string;
   title: string;
   role?: string;
+  orgUnit?: "Studio" | "Labs" | "Platform" | "Community";
   timeframe?: string;
   description?: string;
   tags?: string[];
   links?: ShowcaseLink[];
+  contributors?: ShowcaseContributor[];
   image?: string;
 }
 
@@ -18,56 +26,81 @@ export const SHOWCASE: ShowcaseProject[] = [
   {
     id: "aethex-dev-connect",
     title: "AeThex | Dev-Connect",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Platform",
     timeframe: "Jul 2025 – Present",
     description:
-      "Connecting the Roblox creator community with profiles, collaboration tools, and opportunity matching — built and maintained by the AeThex Studio team.",
-    tags: ["AeThex", "Community", "Roblox", "Web"],
+      "Connecting the Roblox creator community with profiles, collaboration tools, and opportunity matching. Operated by AeThex Platform.",
+    tags: ["Platform", "Community", "Roblox", "Web"],
+    contributors: [
+      { name: "AeThex Platform Team", avatar: "/placeholder.svg" },
+    ],
   },
   {
     id: "aethex-exchange",
     title: "AeThex | Exchange",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Platform",
     timeframe: "Jul 2025 – Present",
     description:
-      "Studio-run marketplace for buying, selling, and trading digital goods and services across the AeThex ecosystem.",
-    tags: ["AeThex", "Marketplace", "Commerce"],
+      "Marketplace for buying, selling, and trading digital goods and services across the AeThex ecosystem.",
+    tags: ["Platform", "Marketplace", "Commerce"],
+    contributors: [
+      { name: "AeThex Commerce", avatar: "/placeholder.svg" },
+    ],
   },
   {
     id: "rodeo-roundup",
     title: "Rodeo RoundUp",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Studio",
     timeframe: "Jul 2025 – Present",
     description:
-      "A studio-built app for discovering and tracking rodeos nearby with structured event data, maps, and alerts.",
-    tags: ["Mobile", "Events", "Maps"],
+      "App for discovering and tracking rodeos nearby with structured event data, maps, and alerts.",
+    tags: ["Studio", "Mobile", "Events", "Maps"],
+    contributors: [
+      { name: "Studio Build Team", avatar: "/placeholder.svg" },
+    ],
   },
   {
     id: "hells-highway",
     title: "Hell's Highway: A Wrong Turn",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Studio",
     timeframe: "Apr 2025 – Present",
     description:
-      "A studio IP: haul cargo across a hostile wasteland and battle road pirates in high‑octane vehicular combat.",
-    tags: ["Game", "Combat", "Vehicles"],
+      "Studio IP: haul cargo across a hostile wasteland and battle road pirates in high‑octane vehicular combat.",
+    tags: ["Studio", "Game", "Combat", "Vehicles"],
+    contributors: [
+      { name: "Design Guild", avatar: "/placeholder.svg" },
+      { name: "Engineering", avatar: "/placeholder.svg" },
+    ],
   },
   {
     id: "aethex-gameforge",
     title: "AeThex | GameForge",
-    role: "AeThex Labs",
+    role: "AeThex",
+    orgUnit: "Labs",
     timeframe: "Jan 2025 – Present",
     description:
-      "Our internal game development toolkit and build pipeline utilities for rapid prototyping and shipping.",
-    tags: ["AeThex", "Toolkit", "DevTools"],
+      "Internal game development toolkit and build pipeline utilities for rapid prototyping and shipping.",
+    tags: ["Labs", "Toolkit", "DevTools"],
+    contributors: [
+      { name: "Labs Automation", avatar: "/placeholder.svg" },
+    ],
   },
   {
     id: "lone-star-bar",
     title: "Lone Star Bar",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Studio",
     timeframe: "Mar 2024 – Present",
     description:
-      "A 17+ social game on Roblox from AeThex Studio, focusing on immersive spaces and social mechanics.",
-    tags: ["Roblox", "Social", "Game"],
+      "17+ social game on Roblox focusing on immersive spaces and social mechanics.",
+    tags: ["Studio", "Roblox", "Social", "Game"],
+    contributors: [
+      { name: "Social Experiences", avatar: "/placeholder.svg" },
+    ],
     links: [
       {
         label: "Roblox",
@@ -78,10 +111,14 @@ export const SHOWCASE: ShowcaseProject[] = [
   {
     id: "crooked-are-we",
     title: "Crooked Are We",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Studio",
     timeframe: "Nov 2022 – Present",
-    description: "A narrative‑driven initiative produced by AeThex Studio.",
-    tags: ["AeThex", "Narrative", "Production"],
+    description: "Narrative‑driven initiative produced by AeThex Studio.",
+    tags: ["Studio", "Narrative", "Production"],
+    contributors: [
+      { name: "Story Group", avatar: "/placeholder.svg" },
+    ],
     links: [
       { label: "Show project", href: "https://aethex.co/crooked-are-we" },
     ],
@@ -89,20 +126,28 @@ export const SHOWCASE: ShowcaseProject[] = [
   {
     id: "all-in-one-inspire-2025",
     title: "ALL IN ONE {INSPIRE 2025}",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Studio",
     timeframe: "Aug 2025",
     description:
-      "Our team directed and shipped a polished prototype game in 86 hours for INSPIRE 2025.",
-    tags: ["Game Jam", "Leadership", "Prototype"],
+      "Studio directed and shipped a polished prototype game in 86 hours for INSPIRE 2025.",
+    tags: ["Studio", "Game Jam", "Leadership", "Prototype"],
+    contributors: [
+      { name: "Strike Team", avatar: "/placeholder.svg" },
+    ],
   },
   {
     id: "the-prototypes-control",
     title: "The Prototypes Control",
-    role: "AeThex Studio",
+    role: "AeThex",
+    orgUnit: "Studio",
     timeframe: "2025",
     description:
-      "Roblox DevRel Challenge 2025 entry by AeThex Studio focused on rapid prototyping and control schemes.",
-    tags: ["Roblox", "Prototype", "Challenge"],
+      "Roblox DevRel Challenge 2025 entry focused on rapid prototyping and control schemes.",
+    tags: ["Studio", "Roblox", "Prototype", "Challenge"],
+    contributors: [
+      { name: "Prototype Unit", avatar: "/placeholder.svg" },
+    ],
     links: [
       {
         label: "Roblox",
