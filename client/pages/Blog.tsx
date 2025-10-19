@@ -208,6 +208,8 @@ const Blog = () => {
   };
 
   return (
+    <>
+      <SEO pageTitle="Blog" description="Insights and updates from AeThex: tutorials, platform news, and community highlights." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
     <Layout>
       <div className="bg-slate-950 text-foreground">
         <BlogHero
@@ -337,6 +339,7 @@ const Blog = () => {
         </section>
       </div>
     </Layout>
+  </>
   );
 };
 
