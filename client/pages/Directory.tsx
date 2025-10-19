@@ -87,20 +87,18 @@ export default function Directory() {
       total_xp: u.total_xp || u.xp || null,
     });
 
-    client
-      .from<any>(userTable as any)
-      .select("*")
-      .limit(200)
-      .then(({ data, error }) => {
-        if (!error && Array.isArray(data)) setDevs(data.map(normalize));
-        else if (client !== supabase) {
-          supabase
-            .from<any>("user_profiles" as any)
-            .select("*")
-            .limit(200)
-            .then(({ data: d2 }) => setDevs((d2 || []).map(normalize)));
-        }
-      });
+    if (client === devconnect) {
+      fetch(`/api/devconnect/rest/${userTable}?select=*&limit=200`)
+        .then((r) => r.json())
+        .then((data) => Array.isArray(data) && setDevs(data.map(normalize)))
+        .catch(() => setDevs([]));
+    } else {
+      client
+        .from<any>(userTable as any)
+        .select("*")
+        .limit(200)
+        .then(({ data }) => setDevs((data || []).map(normalize)));
+    }
 
     const studiosTable = client === devconnect ? "collectives" : "teams";
     const mapStudio = (r: any): Studio => ({
