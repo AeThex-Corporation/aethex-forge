@@ -894,6 +894,14 @@ export default function Community() {
       label: "View tour",
     },
     {
+      id: "directory",
+      title: "Browse Creators & Studios",
+      description:
+        "Discover non‑AeThex developers and independent studios.",
+      href: "/directory",
+      label: "Open directory",
+    },
+    {
       id: "starter-kit",
       title: "Starter Resource Kit",
       description:
