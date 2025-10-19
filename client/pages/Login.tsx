@@ -273,6 +273,9 @@ export default function Login() {
                 </div>
               </div>
 
+              {/* Aethex Org Login (Magic Link) */}
+              <OrgLogin />
+
               {/* Email/Password Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 {isSignUp && (
