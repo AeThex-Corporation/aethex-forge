@@ -451,8 +451,19 @@ export default function Index() {
                 size="lg"
                 className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
               >
-                <Link to="/explore">Explore Platform</Link>
+                <Link to="/wix">Wix Studio Partnership</Link>
               </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="lg"
+                className="hover-lift text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
+              >
+                <a href="https://aethex.net" target="_blank" rel="noreferrer">Visit aethex.net</a>
+              </Button>
+            </div>
+            <div className="mt-2 text-sm text-muted-foreground">
+              Official Wix Studio Partner — <Link to="/wix" className="text-aethex-300 hover:text-aethex-200 underline">learn more</Link>
             </div>
           </div>
         </div>
