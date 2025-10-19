@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -265,7 +266,13 @@ export default function Index() {
   }
 
   return (
-    <Layout hideFooter>
+    <>
+      <SEO
+        pageTitle="Home"
+        description="AeThex: Where vision meets execution. Build, learn, and grow through design, development, and community."
+        canonical={typeof window !== 'undefined' ? window.location.href : undefined as any}
+      />
+      <Layout hideFooter>
       {/* Top Banner (editable via Admin → Operations) */}
       {homeBanner?.enabled !== false && (
         <GamifiedBanner
@@ -487,5 +494,6 @@ export default function Index() {
         </div>
       </section>
     </Layout>
+    </>
   );
 }
