@@ -108,9 +108,26 @@
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "AeThex",
+          legalName: "AeThex Corporation",
           url: origin,
           logo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=png&width=512",
           areaServed: "Worldwide",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Queen Creek",
+            addressRegion: "AZ",
+            addressCountry: "US"
+          },
+          contactPoint: [{
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: "info@aethex.biz",
+            telephone: "+1-346-556-7100"
+          }],
+          sameAs: [
+            "https://aethex.biz",
+            "https://aethex.dev"
+          ]
         });
         // Website
         addJSONLD({
