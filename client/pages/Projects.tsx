@@ -49,7 +49,6 @@ export default function Projects() {
       .finally(() => setLoading(false));
   }, []);
 
-
   const items = useMemo(
     () => (dbItems && dbItems.length ? dbItems : SHOWCASE),
     [dbItems],
@@ -76,7 +75,12 @@ export default function Projects() {
               </p>
             </div>
             {isOwner && (
-              <Button asChild variant="outline" size="sm" title="Open Projects Admin">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                title="Open Projects Admin"
+              >
                 <a href="/projects/admin">Open Admin</a>
               </Button>
             )}
@@ -95,7 +99,8 @@ export default function Projects() {
               <CardHeader>
                 <CardTitle>No projects yet</CardTitle>
                 <CardDescription>
-                  Add entries in <code>code/client/data/showcase.ts</code> or use /projects/admin.
+                  Add entries in <code>code/client/data/showcase.ts</code> or
+                  use /projects/admin.
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center gap-2 pt-0 pb-6">
