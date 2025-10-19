@@ -242,6 +242,17 @@ export default function Index() {
     },
   ];
 
+  const [homeBanner, setHomeBanner] = useState<{ text: string; enabled?: boolean; style?: string } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/site-settings?key=home_banner")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((v) => {
+        if (v && typeof v === "object") setHomeBanner(v as any);
+      })
+      .catch(() => void 0);
+  }, []);
+
   if (isLoading) {
     return (
       <LoadingScreen
