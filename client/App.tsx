@@ -63,6 +63,7 @@ import Staff from "./pages/Staff";
 import Realms from "./pages/Realms";
 import Investors from "./pages/Investors";
 import Roadmap from "./pages/Roadmap";
+import Trust from "./pages/Trust";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +82,7 @@ const App = () => (
               <Route path="/realms" element={<Realms />} />
               <Route path="/investors" element={<Investors />} />
               <Route path="/roadmap" element={<Roadmap />} />
+              <Route path="/trust" element={<Trust />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/teams" element={<Teams />} />
