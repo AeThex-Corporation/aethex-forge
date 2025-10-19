@@ -104,8 +104,8 @@ export default function Directory() {
         Array.isArray(r.collective_members) && r.collective_members.length
           ? Number(r.collective_members[0]?.count ?? 0)
           : Array.isArray(r.team_memberships) && r.team_memberships.length
-          ? Number(r.team_memberships[0]?.count ?? 0)
-          : undefined,
+            ? Number(r.team_memberships[0]?.count ?? 0)
+            : undefined,
     });
 
     async function tryFetch(url: string) {
@@ -232,7 +232,9 @@ export default function Directory() {
             byCollective[cid].push(String(row.profile_id));
         });
 
-        const profileIds = Array.from(new Set(Object.values(byCollective).flat()));
+        const profileIds = Array.from(
+          new Set(Object.values(byCollective).flat()),
+        );
         if (!profileIds.length) return;
 
         const pids = encodeURIComponent(profileIds.join(","));
@@ -266,7 +268,8 @@ export default function Directory() {
             ...s,
             members: (Object.prototype.hasOwnProperty.call(byCollective, s.id)
               ? byCollective[s.id]
-              : [])
+              : []
+            )
               .map((pid) => map[pid])
               .filter(Boolean),
           })),
