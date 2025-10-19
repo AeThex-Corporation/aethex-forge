@@ -6,6 +6,7 @@ export default function BannerSettings() {
   const [text, setText] = useState("ROBLOX AUTH SOON");
   const [enabled, setEnabled] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [style, setStyle] = useState<string>("quest");
 
   useEffect(() => {
     fetch("/api/site-settings?key=home_banner")
