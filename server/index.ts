@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import { adminSupabase } from "./supabase";
 import { emailService } from "./email";
-import { randomUUID } from "crypto";
+import { randomUUID, createHash } from "crypto";
 
 export function createServer() {
   const app = express();
