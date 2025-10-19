@@ -72,7 +72,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     ? `/passport/${profile.username}`
     : "/passport/me";
 
-  const navItems = user ? userNavigation : navigation;
+  const navItems: { name: string; href: string }[] = [];
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -100,29 +100,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center flex-1 mx-3">
-            <div className="flex items-center gap-x-6 gap-y-2 flex-wrap">
-              {navItems.map((item, index) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={scrollToTop}
-                  className={cn(
-                    "relative px-1 text-sm font-medium transition-colors duration-200 hover:text-aethex-400",
-                    location.pathname === item.href
-                      ? "text-aethex-500"
-                      : "text-muted-foreground",
-                  )}
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  {item.name}
-                  {location.pathname === item.href && (
-                    <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-aethex-400 to-neon-blue" />
-                  )}
-                </Link>
-              ))}
-            </div>
-          </nav>
+          <nav className="hidden md:flex items-center flex-1 mx-3" />
 
           {/* Auth Section */}
           <div className="flex items-center gap-2 md:gap-4 animate-slide-left shrink-0">
@@ -148,29 +126,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       Access any section without leaving your flow.
                     </SheetDescription>
                   </SheetHeader>
-                  <nav className="mt-6 flex flex-col gap-2">
-                    {navItems.map((item) => (
-                      <SheetClose asChild key={item.name}>
-                        <Link
-                          to={item.href}
-                          onClick={scrollToTop}
-                          className={cn(
-                            "flex items-center justify-between rounded-lg border border-transparent px-3 py-2 text-base font-medium transition-colors",
-                            location.pathname === item.href
-                              ? "bg-aethex-500/15 text-aethex-200"
-                              : "text-muted-foreground hover:border-aethex-400/40 hover:text-aethex-300",
-                          )}
-                        >
-                          <span>{item.name}</span>
-                          {location.pathname === item.href && (
-                            <span className="text-xs font-semibold uppercase tracking-widest text-aethex-300">
-                              Active
-                            </span>
-                          )}
-                        </Link>
-                      </SheetClose>
-                    ))}
-                  </nav>
+                  <nav className="mt-6 flex flex-col gap-2" />
                   <div className="mt-8 space-y-3 border-t border-border/40 pt-4">
                     {loading ? (
                       <div className="space-y-2">
