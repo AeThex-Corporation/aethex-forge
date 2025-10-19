@@ -143,6 +143,113 @@ export default function About() {
             ))}
           </div>
 
+          {/* Vision */}
+          <Card className="bg-card/50 border-border/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Rocket className="h-5 w-5" /> Vision
+              </CardTitle>
+              <CardDescription>
+                A builder-first network that turns ideas into shipping products faster.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>
+                  We’re unifying services, platform, and community into a single operating layer
+                  for creators and teams. Profiles, collaboration, mentorship, and delivery run as
+                  one system—so momentum compounds.
+                </p>
+                <p>
+                  The long game: a trusted ecosystem where reputation, assets, and learning follow
+                  you across projects.
+                </p>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {[
+                  "Quality over hype",
+                  "Open + composable",
+                  "Measure outcomes",
+                  "Own your data",
+                ].map((t) => (
+                  <div key={t} className="rounded-lg border border-border/50 p-3 text-sm">
+                    {t}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Platform Overview */}
+          <Card className="bg-card/50 border-border/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Cpu className="h-5 w-5" /> Platform Overview
+              </CardTitle>
+              <CardDescription>
+                What’s live today and what’s rolling out next.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  title: "Community Hub",
+                  desc: "Profiles, feed, follows, reactions, and spotlights.",
+                  href: "/community",
+                },
+                {
+                  title: "Mentorship Network",
+                  desc: "Directory, mentor profiles, and request workflow.",
+                  href: "/community/mentorship",
+                },
+                {
+                  title: "Developer Passport",
+                  desc: "Unified identity with achievements and portfolio.",
+                  href: "/passport/me",
+                },
+                {
+                  title: "Admin Console",
+                  desc: "Members, mentorship, content, and ops controls.",
+                  href: "/admin",
+                },
+                {
+                  title: "Roadmap & Dev Drops",
+                  desc: "Public roadmap, voting, and feature showcases.",
+                  href: "/roadmap",
+                },
+                {
+                  title: "Studios & Opportunities",
+                  desc: "Featured studios, hiring signals, and bounties.",
+                  href: "/opportunities",
+                },
+                {
+                  title: "Docs & Curriculum",
+                  desc: "Guides, examples, and integrations for builders.",
+                  href: "/docs",
+                },
+                {
+                  title: "Investors Portal",
+                  desc: "Overview, thesis, and secure outreach.",
+                  href: "/investors",
+                },
+                {
+                  title: "Realms & Access",
+                  desc: "Role-based access across client, community, staff.",
+                  href: "/realms",
+                },
+              ].map((f) => (
+                <a
+                  key={f.title}
+                  href={f.href}
+                  className="block rounded-lg border border-border/50 p-4 hover:border-aethex-400/50 transition"
+                >
+                  <div className="font-semibold">{f.title}</div>
+                  <p className="text-sm text-muted-foreground mt-1">{f.desc}</p>
+                </a>
+              ))}
+            </CardContent>
+          </Card>
+
           <Card className="bg-card/50 border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -185,19 +292,9 @@ export default function About() {
                   desc: "Indie tools and game mods shared with small dev circles.",
                 },
                 {
-                  year: "2013",
-                  title: "Early indie projects",
-                  desc: "Shipped community prototypes; grew a network of collaborators.",
-                },
-                {
                   year: "2015",
                   title: "Community hub v1",
                   desc: "Forums, showcases, and lightweight collaboration features.",
-                },
-                {
-                  year: "2017",
-                  title: "Cloud-native foundations",
-                  desc: "Scaled infra, observability, and CI/CD to support growth.",
                 },
                 {
                   year: "2019",
@@ -205,24 +302,29 @@ export default function About() {
                   desc: "Live updates, notifications, and multiplayer primitives.",
                 },
                 {
-                  year: "2021",
-                  title: "Open-source toolkit",
-                  desc: "Reusable UI, data, and deployment patterns for rapid builds.",
-                },
-                {
                   year: "2023",
-                  title: "Community events",
-                  desc: "Mentorship programs, workshops, and collaborative sprints.",
+                  title: "Creator network",
+                  desc: "Dashboard foundations and social graph refresh.",
                 },
                 {
-                  year: "2024",
-                  title: "Network + Dashboard",
-                  desc: "Creator-centric dashboard and social graph foundations.",
+                  year: "2024 Q4",
+                  title: "Mentorship launch",
+                  desc: "Public mentor directory, profiles, and request flow.",
                 },
                 {
-                  year: "2025",
-                  title: "Realtime feed",
-                  desc: "Vertical feed with follows, reactions, and guided onboarding.",
+                  year: "2025 Q1",
+                  title: "Realms + Admin",
+                  desc: "Role-based access and consolidated admin console.",
+                },
+                {
+                  year: "2025 Q2",
+                  title: "Roadmap + Dev Drops",
+                  desc: "Public roadmap with voting and feature spotlights.",
+                },
+                {
+                  year: "2025 Q3",
+                  title: "Investors portal",
+                  desc: "Thesis, traction, and secure outreach channel.",
                 },
               ].map((item) => (
                 <div key={item.year} className="flex items-start gap-3">
