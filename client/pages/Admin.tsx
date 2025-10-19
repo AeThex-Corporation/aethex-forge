@@ -234,6 +234,8 @@ export default function Admin() {
 
   if (!user || !isOwner) {
     return (
+      <>
+        <SEO pageTitle="Admin" description="Administrative controls for AeThex." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
       <Layout>
         <div className="min-h-screen bg-aethex-gradient py-12">
           <div className="container mx-auto px-4 max-w-3xl">
@@ -257,6 +259,7 @@ export default function Admin() {
           </div>
         </div>
       </Layout>
+    </>
     );
   }
 
@@ -659,6 +662,8 @@ export default function Admin() {
   };
 
   return (
+    <>
+      <SEO pageTitle="Admin" description="Administrative controls for AeThex: content, community, operations, and status." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12">
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
@@ -1497,5 +1502,6 @@ export default function Admin() {
         </div>
       </div>
     </Layout>
+  </>
   );
 }
