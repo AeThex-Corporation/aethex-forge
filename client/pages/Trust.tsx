@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Shield, Gavel, Building2, FileText, Activity, Megaphone, CheckCircle2 } from "lucide-react";
+import { Shield, Gavel, Building2, FileText, Activity, Megaphone, CheckCircle2, Users } from "lucide-react";
 
 export default function Trust() {
   return (
@@ -40,13 +40,46 @@ export default function Trust() {
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground space-y-2">
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Executive leadership details are being published in phased updates alongside board/advisor disclosures.</li>
+                  <li>Phased disclosures cadence: Phase 1 (executive roster + roles), Phase 2 (board/advisor bios and affiliations), Phase 3 (jurisdictional filings & compliance references).</li>
                   <li>Operational policies and escalation paths are documented in the Transparency hub.</li>
                   <li>Verified channels: website, docs, and official social accounts noted below.</li>
                 </ul>
+                <div className="text-xs text-muted-foreground/80">Last updated: {new Date().toISOString().slice(0,10)}</div>
               </CardContent>
             </Card>
           </div>
+
+          <Card className="bg-card/50 border-border/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><Users className="h-5 w-5" /> Executive Leadership</CardTitle>
+              <CardDescription>Current executive team and public profiles</CardDescription>
+            </CardHeader>
+            <CardContent className="grid sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
+              {[{
+                name: "Anderson Gladney",
+                title: "Founder & CEO",
+                href: "https://www.linkedin.com/in/andersongladney/"
+              },{
+                name: "Dylan Gladney",
+                title: "Founder & COO",
+                href: "https://www.linkedin.com/in/dylangladney/"
+              },{
+                name: "Trevor Davis",
+                title: "Co-Founder & CFO",
+                href: "https://www.linkedin.com/in/trevor-davis-892642324/"
+              },{
+                name: "Braden Eiser",
+                title: "Co-Founder & CTO",
+                href: "https://www.linkedin.com/in/bradeneiser/"
+              }].map((p)=> (
+                <a key={p.name} href={p.href} target="_blank" rel="noreferrer" className="rounded-lg border border-border/50 p-3 hover:border-aethex-400/50 transition">
+                  <div className="font-semibold text-foreground">{p.name}</div>
+                  <div className="text-xs">{p.title}</div>
+                  <div className="text-xs text-aethex-400 mt-1">LinkedIn ↗</div>
+                </a>
+              ))}
+            </CardContent>
+          </Card>
 
           <Card className="bg-card/50 border-border/50">
             <CardHeader>
