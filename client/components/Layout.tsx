@@ -78,7 +78,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   return (
     <div className="min-h-screen bg-aethex-gradient">
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
-        <div className="container mx-auto flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-2 min-w-0">
+        <div className="container mx-auto max-w-7xl flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-2 min-w-0">
           {/* Logo */}
           <Link
             to="/"
@@ -383,7 +383,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
       {!hideFooter && (
         <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-up">
-          <div className="container mx-auto px-4 py-12">
+          <div className="container mx-auto max-w-7xl px-4 py-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {/* Company Info */}
               <div className="space-y-4 animate-fade-in">
