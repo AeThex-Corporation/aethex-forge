@@ -17,6 +17,7 @@ function initials(name?: string | null) {
 export default function Directory() {
   const [query, setQuery] = useState("");
   const [hideAeThex, setHideAeThex] = useState(true);
+  const source = devconnect ? "DevConnect" : "AeThex";
   type BasicDev = { id: string; name: string; avatar_url?: string | null; location?: string | null; user_type?: string | null; experience_level?: string | null };
   const [devs, setDevs] = useState<BasicDev[]>([]);
   type Studio = { id: string; name: string; description?: string | null; type?: string | null; is_recruiting?: boolean | null; recruiting_roles?: string[] | null; tags?: string[] | null; slug?: string | null; visibility?: string | null; members_count?: number };
@@ -121,6 +122,10 @@ export default function Directory() {
               <Badge variant="outline" className="border-aethex-400/50 text-aethex-300">Directory</Badge>
               <h1 className="mt-2 text-4xl font-extrabold text-gradient">Creators & Studios</h1>
               <p className="text-muted-foreground max-w-2xl mt-1">Browse non‑AeThex creators and studios. Opt‑in visibility; public info only.</p>
+              <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                <span>Source:</span>
+                <Badge variant="outline" className="uppercase tracking-wide">{source}</Badge>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <label className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -144,7 +149,7 @@ export default function Directory() {
             <TabsContent value="devs">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {filteredDevs.map((u) => (
-                  <Card key={u.id} className="border-border/40 bg-card/60 backdrop-blur">
+                  <Card key={u.id} className="border-border/40 bg-card/60 backdrop-blur transition hover:border-aethex-400/50">
                     <CardContent className="p-4 flex items-center gap-4">
                       <Avatar className="h-12 w-12">
                         <AvatarImage src={u.avatar_url || undefined} alt={u.name || "Developer"} />
@@ -167,7 +172,7 @@ export default function Directory() {
             <TabsContent value="studios">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {filteredStudios.map((t) => (
-                  <Card key={t.id} className="border-border/40 bg-card/60 backdrop-blur">
+                  <Card key={t.id} className="border-border/40 bg-card/60 backdrop-blur transition hover:border-aethex-400/50">
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between gap-2">
                         <CardTitle className="text-lg">{t.name}</CardTitle>
