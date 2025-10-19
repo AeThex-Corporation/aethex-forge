@@ -356,19 +356,35 @@ export function createServer() {
     app.get("/api/roblox/oauth/start", (req, res) => {
       try {
         const clientId = process.env.ROBLOX_OAUTH_CLIENT_ID;
-        if (!clientId) return res.status(500).json({ error: "Roblox OAuth not configured" });
+        if (!clientId)
+          return res.status(500).json({ error: "Roblox OAuth not configured" });
 
-        const baseSite = process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "https://aethex.dev";
-        const redirectUri = (typeof req.query.redirect_uri === "string" && req.query.redirect_uri.startsWith("http"))
-          ? String(req.query.redirect_uri)
-          : (process.env.ROBLOX_OAUTH_REDIRECT_URI || `${baseSite}/roblox-callback`);
+        const baseSite =
+          process.env.PUBLIC_BASE_URL ||
+          process.env.SITE_URL ||
+          "https://aethex.dev";
+        const redirectUri =
+          typeof req.query.redirect_uri === "string" &&
+          req.query.redirect_uri.startsWith("http")
+            ? String(req.query.redirect_uri)
+            : process.env.ROBLOX_OAUTH_REDIRECT_URI ||
+              `${baseSite}/roblox-callback`;
 
-        const scope = String(req.query.scope || process.env.ROBLOX_OAUTH_SCOPE || "openid");
+        const scope = String(
+          req.query.scope || process.env.ROBLOX_OAUTH_SCOPE || "openid",
+        );
         const state = String(req.query.state || randomUUID());
 
         // PKCE
-        const codeVerifier = Buffer.from(randomUUID() + randomUUID()).toString("base64url").slice(0, 64);
-        const codeChallenge = createHash("sha256").update(codeVerifier).digest("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+        const codeVerifier = Buffer.from(randomUUID() + randomUUID())
+          .toString("base64url")
+          .slice(0, 64);
+        const codeChallenge = createHash("sha256")
+          .update(codeVerifier)
+          .digest("base64")
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+$/g, "");
 
         const params = new URLSearchParams({
           client_id: clientId,
@@ -382,9 +398,24 @@ export function createServer() {
         const authorizeUrl = `https://apis.roblox.com/oauth/authorize?${params.toString()}`;
 
         // set short-lived cookies for verifier/state (for callback validation)
-        const secure = req.secure || (req.get("x-forwarded-proto") === "https") || process.env.NODE_ENV === "production";
-        res.cookie("roblox_oauth_state", state, { httpOnly: true, sameSite: "lax", secure, maxAge: 10 * 60 * 1000, path: "/" });
-        res.cookie("roblox_oauth_code_verifier", codeVerifier, { httpOnly: true, sameSite: "lax", secure, maxAge: 10 * 60 * 1000, path: "/" });
+        const secure =
+          req.secure ||
+          req.get("x-forwarded-proto") === "https" ||
+          process.env.NODE_ENV === "production";
+        res.cookie("roblox_oauth_state", state, {
+          httpOnly: true,
+          sameSite: "lax",
+          secure,
+          maxAge: 10 * 60 * 1000,
+          path: "/",
+        });
+        res.cookie("roblox_oauth_code_verifier", codeVerifier, {
+          httpOnly: true,
+          sameSite: "lax",
+          secure,
+          maxAge: 10 * 60 * 1000,
+          path: "/",
+        });
 
         if (String(req.query.json || "").toLowerCase() === "true") {
           return res.json({ authorizeUrl, state });
@@ -1420,9 +1451,15 @@ export function createServer() {
     // Roblox inbound callback (from HttpService or external automation)
     app.get("/roblox-callback", (_req, res) => res.json({ ok: true }));
     app.post("/roblox-callback", async (req, res) => {
-      const shared = process.env.ROBLOX_SHARED_SECRET || process.env.ROBLOX_WEBHOOK_SECRET || "";
-      const sig = String(req.get("x-shared-secret") || req.get("x-roblox-signature") || "");
-      if (shared && sig !== shared) return res.status(401).json({ error: "unauthorized" });
+      const shared =
+        process.env.ROBLOX_SHARED_SECRET ||
+        process.env.ROBLOX_WEBHOOK_SECRET ||
+        "";
+      const sig = String(
+        req.get("x-shared-secret") || req.get("x-roblox-signature") || "",
+      );
+      if (shared && sig !== shared)
+        return res.status(401).json({ error: "unauthorized" });
       try {
         const payload = {
           ...((req.body as any) || {}),
