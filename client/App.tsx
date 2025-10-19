@@ -65,6 +65,7 @@ import Investors from "./pages/Investors";
 import Roadmap from "./pages/Roadmap";
 import Trust from "./pages/Trust";
 import PressKit from "./pages/PressKit";
+import Projects from "./pages/Projects";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ const App = () => (
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/trust" element={<Trust />} />
               <Route path="/press" element={<PressKit />} />
+              <Route path="/projects" element={<Projects />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/teams" element={<Teams />} />
