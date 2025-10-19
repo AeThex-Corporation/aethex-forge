@@ -39,6 +39,77 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
+function OrgLogin() {
+  const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const isValid = /@aethex\.dev$/i.test(email);
+  return (
+    <div className="space-y-3 p-3 rounded border border-border/40 bg-background/50">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-medium">Aethex Login (org)</div>
+        <Badge variant="outline" className="uppercase">@aethex.dev</Badge>
+      </div>
+      {sent ? (
+        <Alert className="border-aethex-400/30 bg-aethex-500/10 text-foreground">
+          <AlertTitle>Check your inbox</AlertTitle>
+          <AlertDescription>
+            We sent a magic link to {email}. If email isn’t configured, a manual link is shown below.
+          </AlertDescription>
+          {sent.startsWith("http") && (
+            <p className="mt-2 break-all rounded bg-background/60 px-3 py-2 font-mono text-xs text-foreground/90">{sent}</p>
+          )}
+        </Alert>
+      ) : null}
+      {error ? (
+        <Alert className="border-red-400/30 bg-red-500/10 text-foreground">
+          <AlertTitle>Request failed</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      ) : null}
+      <div className="grid gap-2 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <Input
+            type="email"
+            placeholder="name@aethex.dev"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <Button
+          type="button"
+          disabled={!isValid || sending}
+          onClick={async () => {
+            setSending(true);
+            setError(null);
+            setSent(null);
+            try {
+              const r = await fetch("/api/auth/send-org-link", {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ email, redirectTo: window.location.origin + "/dashboard" }),
+              });
+              if (!r.ok) {
+                const msg = await r.text().catch(() => "");
+                throw new Error(msg || String(r.status));
+              }
+              const data = await r.json().catch(() => ({}));
+              setSent(data?.verificationUrl ?? "sent");
+            } catch (e: any) {
+              setError(e?.message || "Unexpected error");
+            } finally {
+              setSending(false);
+            }
+          }}
+        >
+          {sending ? "Sending…" : "Send magic link"}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
