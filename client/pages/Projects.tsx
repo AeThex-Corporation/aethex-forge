@@ -7,14 +7,46 @@ import { SHOWCASE, type ShowcaseProject } from "@/data/showcase";
 import { useEffect, useMemo, useState } from "react";
 import { fetchBuilderList, getBuilderApiKey } from "@/lib/builder";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 export default function Projects() {
   const { roles } = useAuth();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
+  const [dbItems, setDbItems] = useState<ShowcaseProject[] | null>(null);
   const [cmsItems, setCmsItems] = useState<ShowcaseProject[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Try Supabase first (public read with RLS)
+    setLoading(true);
+    supabase
+      .from<any>("showcase_projects" as any)
+      .select(
+        "id,title,org_unit,role,timeframe,description,tags,image, links:showcase_project_links(label,href), contributors:showcase_contributors(name,title,avatar)"
+      )
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (!error && Array.isArray(data) && data.length) {
+          const mapped: ShowcaseProject[] = data.map((r: any) => ({
+            id: r.id,
+            title: r.title,
+            orgUnit: r.org_unit as any,
+            role: r.role ?? undefined,
+            timeframe: r.timeframe ?? undefined,
+            description: r.description ?? undefined,
+            tags: r.tags ?? [],
+            image: r.image ?? undefined,
+            links: r.links ?? [],
+            contributors: r.contributors ?? [],
+          }));
+          setDbItems(mapped);
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (dbItems && dbItems.length) return; // Skip CMS if DB has content
     const apiKey = getBuilderApiKey();
     if (!apiKey) return;
     setLoading(true);
@@ -36,9 +68,9 @@ export default function Projects() {
       })
       .catch(() => setCmsItems(null))
       .finally(() => setLoading(false));
-  }, []);
+  }, [dbItems]);
 
-  const items = useMemo(() => (cmsItems && cmsItems.length ? cmsItems : SHOWCASE), [cmsItems]);
+  const items = useMemo(() => (dbItems && dbItems.length ? dbItems : cmsItems && cmsItems.length ? cmsItems : SHOWCASE), [dbItems, cmsItems]);
   const hasProjects = Array.isArray(items) && items.length > 0;
 
   return (
