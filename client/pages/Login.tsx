@@ -339,6 +339,19 @@ export default function Login() {
                   <Mail className="h-4 w-4 mr-2" />
                   Continue with Google
                 </Button>
+                <Button
+                  variant="outline"
+                  className="w-full hover-lift interactive-scale"
+                  onClick={() => {
+                    const u = new URL(window.location.origin + "/api/roblox/oauth/start");
+                    const next = new URLSearchParams(window.location.search).get("next");
+                    if (next && next.startsWith("/")) u.searchParams.set("state", next);
+                    window.location.href = u.toString();
+                  }}
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Continue with Roblox
+                </Button>
               </div>
 
               <div className="relative">
