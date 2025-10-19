@@ -581,6 +581,15 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       Support Center
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      to="/trust"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Transparency
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
