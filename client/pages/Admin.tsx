@@ -663,7 +663,7 @@ export default function Admin() {
   return (
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12">
-        <div className="container mx-auto px-4 max-w-6xl space-y-8">
+        <div className="container mx-auto px-4 max-w-7xl space-y-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold text-gradient">
