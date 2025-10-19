@@ -72,11 +72,19 @@ export default function ProjectBoard() {
       done: [],
       blocked: [],
     };
-    for (const t of tasks) {
+    const normalized = tasks.filter((t) => {
+      if (q && !String(t.title || "").toLowerCase().includes(q.toLowerCase()) && !String(t.description || "").toLowerCase().includes(q.toLowerCase())) {
+        return false;
+      }
+      if (filterAssignee && String(t.assignee_id || "") !== filterAssignee) return false;
+      if (filterStatus && String(t.status || "") !== filterStatus) return false;
+      return true;
+    });
+    for (const t of normalized) {
       map[t.status || "todo"].push(t);
     }
     return map;
-  }, [tasks]);
+  }, [tasks, q, filterAssignee, filterStatus]);
 
   const handleCreate = async () => {
     if (!user?.id || !projectId) return;
