@@ -22,7 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface MentorRow {
   user_id: string;
@@ -40,8 +40,9 @@ interface MentorRow {
 }
 
 export default function MentorshipRequest() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mentors, setMentors] = useState<MentorRow[]>([]);
   const [query, setQuery] = useState("");
   const [expertiseInput, setExpertiseInput] = useState("");
@@ -53,15 +54,7 @@ export default function MentorshipRequest() {
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (!loading && !user) {
-      aethexToast.info({
-        title: "Sign in required",
-        description: "Please sign in to request mentorship",
-      });
-      navigate("/login");
-    }
-  }, [user, loading, navigate]);
+  // Allow public browsing; only require sign-in when sending a request
 
   const loadMentors = async () => {
     setLoadingMentors(true);
@@ -106,6 +99,15 @@ export default function MentorshipRequest() {
   };
 
   const onOpenRequest = (m: MentorRow) => {
+    if (!user) {
+      aethexToast.info({
+        title: "Sign in required",
+        description: "Sign in to send a mentorship request.",
+      });
+      const next = encodeURIComponent(location.pathname + location.search);
+      navigate(`/login?next=${next}`);
+      return;
+    }
     setSelectedMentor(m);
     setMessage("");
     setDialogOpen(true);
