@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -275,6 +276,8 @@ export default function MentorshipPrograms() {
   }
 
   return (
+    <>
+      <SEO pageTitle="Mentorship" description="AeThex mentorship programs: 1:1 guidance, workshops, and boot camps to accelerate your journey." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
     <Layout>
       <div className="min-h-screen bg-aethex-gradient">
         {/* Hero Section */}
@@ -680,5 +683,6 @@ export default function MentorshipPrograms() {
         </section>
       </div>
     </Layout>
+  </>
   );
 }
