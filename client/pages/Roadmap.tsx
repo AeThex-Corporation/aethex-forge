@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { aethexToast } from "@/lib/aethex-toast";
 import {
   Sparkles,
   Lock,
@@ -162,6 +164,7 @@ export default function Roadmap() {
   const [claimed, setClaimed] = useState<Record<string, boolean>>({});
   const [unlocked, setUnlocked] = useState<Record<string, boolean>>({});
   const [focusedPhase, setFocusedPhase] = useState<Quest["phase"] | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     try {
@@ -208,8 +211,18 @@ export default function Roadmap() {
 
   const toggleClaim = (id: string) =>
     setClaimed((m) => ({ ...m, [id]: !m[id] }));
-  const toggleUnlock = (id: string) =>
+  const toggleUnlock = (id: string) => {
+    if (!user) {
+      try {
+        aethexToast.info({
+          title: "Sign in required",
+          description: "Create an account to unlock Dev Drops and save progress.",
+        });
+      } catch {}
+      return;
+    }
     setUnlocked((m) => ({ ...m, [id]: !m[id] }));
+  };
 
   const PhaseIcon: Record<string, any> = {
     now: Target,
@@ -455,6 +468,9 @@ export default function Roadmap() {
                       size="sm"
                       variant="outline"
                       onClick={() => toggleUnlock(p.id)}
+                      disabled={!user}
+                      className={!user ? "cursor-not-allowed opacity-60" : undefined}
+                      title={!user ? "Sign in to unlock" : undefined}
                     >
                       {unlocked[p.id] ? (
                         <>
