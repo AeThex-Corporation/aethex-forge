@@ -15,6 +15,7 @@ export default function BannerSettings() {
         if (v && typeof v === "object") {
           setText(String((v as any).text || "ROBLOX AUTH SOON"));
           setEnabled((v as any).enabled !== false);
+          if ((v as any).style) setStyle(String((v as any).style));
         }
       })
       .catch(() => void 0);
