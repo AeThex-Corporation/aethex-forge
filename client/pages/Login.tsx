@@ -246,6 +246,8 @@ export default function Login() {
   }
 
   return (
+    <>
+      <SEO pageTitle="Login" description="Sign in to your AeThex account to access the dashboard and community." canonical={typeof window !== 'undefined' ? window.location.href : undefined as any} />
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12 flex items-center justify-center">
         <div className="container mx-auto px-4 max-w-md">
@@ -547,5 +549,6 @@ export default function Login() {
         </DialogContent>
       </Dialog>
     </Layout>
+  </>
   );
 }
