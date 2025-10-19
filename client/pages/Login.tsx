@@ -343,7 +343,8 @@ export default function Login() {
                   variant="outline"
                   className="w-full hover-lift interactive-scale"
                   onClick={() => {
-                    const u = new URL(window.location.origin + "/api/roblox/oauth/start");
+                    const apiBase = (import.meta as any)?.env?.VITE_API_BASE || window.location.origin;
+                    const u = new URL("/api/roblox/oauth/start", apiBase);
                     const next = new URLSearchParams(window.location.search).get("next");
                     if (next && next.startsWith("/")) u.searchParams.set("state", next);
                     window.location.href = u.toString();
