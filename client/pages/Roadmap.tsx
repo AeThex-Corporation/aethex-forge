@@ -220,8 +220,8 @@ export default function Roadmap() {
 
   return (
     <Layout>
-      <div className="bg-aethex-gradient">
-        <section className="container mx-auto max-w-7xl px-4 section-cozy">
+      <div className="min-h-screen bg-aethex-gradient py-12">
+        <section className="container mx-auto max-w-6xl px-4">
           <div className="mb-6">
             <Badge
               variant="outline"
@@ -280,7 +280,7 @@ export default function Roadmap() {
           </div>
         </section>
 
-        <section className="container mx-auto max-w-7xl px-4 section-cozy">
+        <section className="container mx-auto max-w-6xl px-4">
           <div className="grid gap-6 md:grid-cols-[1fr_1fr]">
             <GalaxyMap
               phases={["now", "month1", "month2", "month3"].map((id) => ({
@@ -316,7 +316,7 @@ export default function Roadmap() {
         </section>
 
         {/* Phases */}
-        <section className="container mx-auto px-4 pb-8">
+        <section className="container mx-auto max-w-6xl px-4">
           <div className="grid gap-6 md:grid-cols-2">
             {(focusedPhase
               ? [focusedPhase]
@@ -384,7 +384,7 @@ export default function Roadmap() {
           </div>
         </section>
 
-        <section className="container mx-auto max-w-7xl px-4 section-cozy">
+        <section className="container mx-auto max-w-6xl px-4">
           <Achievements earnedXp={earnedXp} phaseClaims={phaseClaims} />
         </section>
 
