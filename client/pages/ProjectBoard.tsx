@@ -281,14 +281,34 @@ export default function ProjectBoard() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
-              <div className="flex justify-end">
-                <Button
-                  onClick={handleCreate}
-                  disabled={creating || !title.trim()}
-                  className="rounded-full bg-gradient-to-r from-aethex-500 to-neon-blue text-white"
-                >
-                  {creating ? "Creating..." : "Create task"}
-                </Button>
+              <div className="grid gap-3 md:grid-cols-3">
+                <Select value={assigneeId} onValueChange={setAssigneeId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Assign to…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Unassigned</SelectItem>
+                    {members.map((m) => (
+                      <SelectItem key={m.user_id} value={m.user_id}>
+                        {m.user?.full_name || m.user?.username || m.user_id}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                />
+                <div className="flex justify-end">
+                  <Button
+                    onClick={handleCreate}
+                    disabled={creating || !title.trim()}
+                    className="rounded-full bg-gradient-to-r from-aethex-500 to-neon-blue text-white"
+                  >
+                    {creating ? "Creating..." : "Create task"}
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
