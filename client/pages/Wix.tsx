@@ -1,11 +1,9 @@
 import Layout from "@/components/Layout";
 import WixHero from "@/components/wix/WixHero";
 import ServiceCard from "@/components/wix/ServiceCard";
-import PricingTable from "@/components/wix/PricingTable";
 import FAQList from "@/components/wix/FAQ";
 import LeadForm from "@/components/wix/LeadForm";
 import services from "@/data/wix/services";
-import pricing from "@/data/wix/pricing";
 import faqs from "@/data/wix/faqs";
 
 export default function Wix() {
@@ -21,11 +19,6 @@ export default function Wix() {
               <ServiceCard key={s.id} name={s.name} summary={s.summary} highlights={s.highlights} />
             ))}
           </div>
-        </section>
-
-        <section className="container mx-auto px-4 py-10">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">Pricing</h2>
-          <PricingTable tiers={pricing} />
         </section>
 
         <LeadForm />
