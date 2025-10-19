@@ -17,23 +17,34 @@ function initials(name?: string | null) {
 export default function Directory() {
   const [query, setQuery] = useState("");
   const [hideAeThex, setHideAeThex] = useState(true);
-  const [devs, setDevs] = useState<any[]>([]);
+  type BasicDev = { id: string; name: string; avatar_url?: string | null; location?: string | null; user_type?: string | null; experience_level?: string | null };
+  const [devs, setDevs] = useState<BasicDev[]>([]);
   const [studios, setStudios] = useState<any[]>([]);
 
   useEffect(() => {
     const client = devconnect || supabase;
+    const userTable = client === devconnect ? "profiles" : "user_profiles";
+    const normalize = (u: any): BasicDev => ({
+      id: String(u.id),
+      name: u.full_name || u.display_name || u.username || "Developer",
+      avatar_url: u.avatar_url || u.image_url || u.photo_url || null,
+      location: u.location || u.city || u.country || null,
+      user_type: u.user_type || u.role || null,
+      experience_level: u.experience_level || u.seniority || null,
+    });
+
     client
-      .from<any>("user_profiles" as any)
-      .select("id,full_name,username,avatar_url,location,user_type,experience_level,website_url,github_url,linkedin_url")
+      .from<any>(userTable as any)
+      .select("*")
       .limit(200)
       .then(({ data, error }) => {
-        if (!error && data) setDevs(data);
+        if (!error && Array.isArray(data)) setDevs(data.map(normalize));
         else if (client !== supabase) {
           supabase
             .from<any>("user_profiles" as any)
-            .select("id,full_name,username,avatar_url,location,user_type,experience_level,website_url,github_url,linkedin_url")
+            .select("*")
             .limit(200)
-            .then(({ data: d2 }) => setDevs(d2 || []));
+            .then(({ data: d2 }) => setDevs((d2 || []).map(normalize)));
         }
       });
 
@@ -59,8 +70,7 @@ export default function Directory() {
       if (hideAeThex && u.user_type === "staff") return false;
       if (!q) return true;
       return (
-        (u.full_name || "").toLowerCase().includes(q) ||
-        (u.username || "").toLowerCase().includes(q) ||
+        (u.name || "").toLowerCase().includes(q) ||
         (u.location || "").toLowerCase().includes(q)
       );
     });
@@ -112,11 +122,11 @@ export default function Directory() {
                   <Card key={u.id} className="border-border/40 bg-card/60 backdrop-blur">
                     <CardContent className="p-4 flex items-center gap-4">
                       <Avatar className="h-12 w-12">
-                        <AvatarImage src={u.avatar_url || undefined} alt={u.full_name || u.username || "Developer"} />
-                        <AvatarFallback>{initials(u.full_name || u.username)}</AvatarFallback>
+                        <AvatarImage src={u.avatar_url || undefined} alt={u.name || "Developer"} />
+                        <AvatarFallback>{initials(u.name)}</AvatarFallback>
                       </Avatar>
                       <div className="min-w-0">
-                        <div className="font-medium truncate">{u.full_name || u.username || "Developer"}</div>
+                        <div className="font-medium truncate">{u.name || "Developer"}</div>
                         <div className="text-xs text-muted-foreground truncate">{u.location || "Global"}</div>
                         <div className="mt-1 flex flex-wrap gap-2">
                           <Badge variant="outline">{u.user_type}</Badge>
