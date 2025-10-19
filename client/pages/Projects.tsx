@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SHOWCASE } from "@/data/showcase";
-import { cn } from "@/lib/utils";
 
 export default function Projects() {
   const hasProjects = Array.isArray(SHOWCASE) && SHOWCASE.length > 0;
