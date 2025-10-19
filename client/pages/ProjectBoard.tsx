@@ -54,6 +54,8 @@ export default function ProjectBoard() {
     try {
       const rows = await aethexCollabService.listProjectTasks(projectId);
       setTasks(rows);
+      const m = await aethexCollabService.listProjectMembers(projectId);
+      setMembers(m);
     } finally {
       setIsLoading(false);
     }
