@@ -54,6 +54,21 @@ export default function BannerSettings() {
           />
         </div>
       </div>
+      <div className="grid gap-2 md:grid-cols-4">
+        <label className="text-sm text-muted-foreground md:col-span-1">Style</label>
+        <div className="md:col-span-3">
+          <select
+            className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+            value={style}
+            onChange={(e) => setStyle(e.target.value)}
+          >
+            <option value="quest">Quest</option>
+            <option value="info">Info</option>
+            <option value="arcade">Arcade</option>
+            <option value="alert">Alert</option>
+          </select>
+        </div>
+      </div>
       <div className="flex justify-end">
         <Button size="sm" onClick={save} disabled={saving}>
           {saving ? "Saving…" : "Save banner"}
