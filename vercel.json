@@ -7,7 +7,7 @@
       "source": "/api/:path*",
       "destination": "https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef.fly.dev/api/:path*"
     },
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
