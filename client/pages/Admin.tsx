@@ -211,11 +211,7 @@ export default function Admin() {
   }, [loadOpportunityApplications]);
 
   useEffect(() => {
-    if (!loading) {
-      if (!user) {
-        navigate("/login", { replace: true });
-      }
-    }
+    // Do not redirect unauthenticated users; show inline access UI instead
   }, [user, loading, navigate]);
 
   useEffect(() => {
@@ -224,7 +220,7 @@ export default function Admin() {
     }
   }, [managedProfiles, selectedMemberId]);
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <LoadingScreen
         message="Verifying admin access..."
@@ -234,7 +230,7 @@ export default function Admin() {
     );
   }
 
-  if (!isOwner) {
+  if (!user || !isOwner) {
     return (
       <Layout>
         <div className="min-h-screen bg-aethex-gradient py-12">
