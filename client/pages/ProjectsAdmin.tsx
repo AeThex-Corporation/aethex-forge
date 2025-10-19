@@ -29,7 +29,9 @@ export default function ProjectsAdmin() {
   const isOwner = Boolean(
     user?.email?.toLowerCase() === "mrpiglr@gmail.com" ||
       (roles || []).some((r) =>
-        ["owner", "admin", "founder", "staff"].includes(String(r).toLowerCase()),
+        ["owner", "admin", "founder", "staff"].includes(
+          String(r).toLowerCase(),
+        ),
       ),
   );
   const [list, setList] = useState<any[]>([]);

@@ -49,16 +49,21 @@ function OrgLogin() {
     <div className="space-y-3 p-3 rounded border border-border/40 bg-background/50">
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">Aethex Login (org)</div>
-        <Badge variant="outline" className="uppercase">@aethex.dev</Badge>
+        <Badge variant="outline" className="uppercase">
+          @aethex.dev
+        </Badge>
       </div>
       {sent ? (
         <Alert className="border-aethex-400/30 bg-aethex-500/10 text-foreground">
           <AlertTitle>Check your inbox</AlertTitle>
           <AlertDescription>
-            We sent a magic link to {email}. If email isn’t configured, a manual link is shown below.
+            We sent a magic link to {email}. If email isn’t configured, a manual
+            link is shown below.
           </AlertDescription>
           {sent.startsWith("http") && (
-            <p className="mt-2 break-all rounded bg-background/60 px-3 py-2 font-mono text-xs text-foreground/90">{sent}</p>
+            <p className="mt-2 break-all rounded bg-background/60 px-3 py-2 font-mono text-xs text-foreground/90">
+              {sent}
+            </p>
           )}
         </Alert>
       ) : null}
@@ -88,7 +93,10 @@ function OrgLogin() {
               const r = await fetch("/api/auth/send-org-link", {
                 method: "POST",
                 headers: { "content-type": "application/json" },
-                body: JSON.stringify({ email, redirectTo: window.location.origin + "/dashboard" }),
+                body: JSON.stringify({
+                  email,
+                  redirectTo: window.location.origin + "/dashboard",
+                }),
               });
               if (!r.ok) {
                 const msg = await r.text().catch(() => "");

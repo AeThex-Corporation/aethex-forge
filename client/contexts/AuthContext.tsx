@@ -271,11 +271,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // Auto-seed owner roles if logging in as site owner
         const normalizedEmail = userProfile?.email?.toLowerCase();
         if (normalizedEmail === "mrpiglr@gmail.com" && !r.includes("owner")) {
-          const seeded = Array.from(new Set(["owner", "admin", "founder", ...r]));
+          const seeded = Array.from(
+            new Set(["owner", "admin", "founder", ...r]),
+          );
           await aethexRoleService.setUserRoles(userId, seeded);
           r = seeded;
         }
-        if (normalizedEmail && /@aethex\.dev$/i.test(normalizedEmail) && !r.includes("staff")) {
+        if (
+          normalizedEmail &&
+          /@aethex\.dev$/i.test(normalizedEmail) &&
+          !r.includes("staff")
+        ) {
           const seeded = Array.from(new Set(["staff", ...r]));
           await aethexRoleService.setUserRoles(userId, seeded);
           r = seeded;

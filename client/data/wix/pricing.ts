@@ -12,7 +12,8 @@ export const pricing: PricingTier[] = [
     id: "starter",
     name: "Starter",
     price: "From $2,500",
-    description: "Single-page or small brochure site with strong SEO and fast turnaround.",
+    description:
+      "Single-page or small brochure site with strong SEO and fast turnaround.",
     features: [
       "1–3 pages",
       "Wix Studio setup and theme",

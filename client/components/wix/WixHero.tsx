@@ -10,7 +10,10 @@ export default function WixHero() {
         <CardContent className="p-6 md:p-10">
           <div className="flex flex-col gap-4 md:gap-6">
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="border-aethex-400/50 text-aethex-300">
+              <Badge
+                variant="outline"
+                className="border-aethex-400/50 text-aethex-300"
+              >
                 Official Wix Agency Partner
               </Badge>
             </div>
@@ -18,8 +21,9 @@ export default function WixHero() {
               Wix & Wix Studio Sites — designed, built, and scaled by AeThex
             </h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-3xl">
-              We ship fast, accessible, and SEO-ready sites using Wix Studio. From launch
-              microsites to full eCommerce, your team gets a site you can actually edit.
+              We ship fast, accessible, and SEO-ready sites using Wix Studio.
+              From launch microsites to full eCommerce, your team gets a site
+              you can actually edit.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild>
@@ -32,7 +36,13 @@ export default function WixHero() {
                 <Link to="/wix/faq">FAQ</Link>
               </Button>
               <Button asChild variant="outline">
-                <a href="https://www.wix.com/studio/community/partners/aethex" target="_blank" rel="noreferrer">Wix Partner Profile</a>
+                <a
+                  href="https://www.wix.com/studio/community/partners/aethex"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Wix Partner Profile
+                </a>
               </Button>
             </div>
           </div>

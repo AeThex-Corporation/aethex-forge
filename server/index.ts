@@ -147,11 +147,17 @@ export function createServer() {
   // Org domain magic-link sender (Aethex)
   app.post("/api/auth/send-org-link", async (req, res) => {
     try {
-      const { email, redirectTo } = (req.body || {}) as { email?: string; redirectTo?: string };
-      const target = String(email || "").trim().toLowerCase();
+      const { email, redirectTo } = (req.body || {}) as {
+        email?: string;
+        redirectTo?: string;
+      };
+      const target = String(email || "")
+        .trim()
+        .toLowerCase();
       if (!target) return res.status(400).json({ error: "email is required" });
       const allowed = /@aethex\.dev$/i.test(target);
-      if (!allowed) return res.status(403).json({ error: "domain not allowed" });
+      if (!allowed)
+        return res.status(403).json({ error: "domain not allowed" });
 
       if (!adminSupabase?.auth?.admin) {
         return res.status(500).json({ error: "Supabase admin unavailable" });
@@ -163,7 +169,10 @@ export function createServer() {
         process.env.SITE_URL ??
         "https://aethex.dev";
 
-      const toUrl = typeof redirectTo === "string" && redirectTo.startsWith("http") ? redirectTo : fallbackRedirect;
+      const toUrl =
+        typeof redirectTo === "string" && redirectTo.startsWith("http")
+          ? redirectTo
+          : fallbackRedirect;
 
       const { data, error } = await adminSupabase.auth.admin.generateLink({
         type: "magiclink" as any,
@@ -1310,7 +1319,16 @@ export function createServer() {
 
     // Leads: capture website leads (Wix microsite and others)
     app.post("/api/leads", async (req, res) => {
-      const { name, email, company, website, budget, timeline, message, source } = (req.body || {}) as {
+      const {
+        name,
+        email,
+        company,
+        website,
+        budget,
+        timeline,
+        message,
+        source,
+      } = (req.body || {}) as {
         name?: string;
         email?: string;
         company?: string;
@@ -1335,7 +1353,10 @@ export function createServer() {
 
         try {
           if (emailService.isConfigured) {
-            const base = process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "https://aethex.dev";
+            const base =
+              process.env.PUBLIC_BASE_URL ||
+              process.env.SITE_URL ||
+              "https://aethex.dev";
             await (emailService as any).sendInviteEmail({
               to: process.env.VERIFY_SUPPORT_EMAIL || "support@aethex.biz",
               inviteUrl: `${base}/wix`,

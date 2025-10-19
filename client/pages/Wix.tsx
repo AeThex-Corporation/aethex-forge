@@ -13,10 +13,17 @@ export default function Wix() {
         <WixHero />
 
         <section className="container mx-auto px-4 py-10">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">What we build</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+            What we build
+          </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (
-              <ServiceCard key={s.id} name={s.name} summary={s.summary} highlights={s.highlights} />
+              <ServiceCard
+                key={s.id}
+                name={s.name}
+                summary={s.summary}
+                highlights={s.highlights}
+              />
             ))}
           </div>
         </section>
