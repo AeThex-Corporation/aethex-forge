@@ -37,6 +37,12 @@ export default function ProjectBoard() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [creating, setCreating] = useState(false);
+  const [members, setMembers] = useState<any[]>([]);
+  const [assigneeId, setAssigneeId] = useState<string>("");
+  const [dueDate, setDueDate] = useState<string>("");
+  const [q, setQ] = useState<string>("");
+  const [filterAssignee, setFilterAssignee] = useState<string>("");
+  const [filterStatus, setFilterStatus] = useState<string>("");
 
   useEffect(() => {
     if (!loading && !user) navigate("/login", { replace: true });
