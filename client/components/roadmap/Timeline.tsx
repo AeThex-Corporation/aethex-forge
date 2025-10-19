@@ -127,7 +127,7 @@ export default function Timeline({
                       onClick={() => onToggleClaim?.(e.id)}
                       title={e.title}
                     >
-                      <div className="absolute left-0 -ml-4 top-1/2 -translate-y-1/2">
+                      <div className="absolute left-2 top-1/2 -translate-y-1/2">
                         {e.claimed ? (
                           <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                         ) : (
