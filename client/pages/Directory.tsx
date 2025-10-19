@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
-import { devconnect, hasDevConnect } from "@/lib/supabase-devconnect";
+import { devconnect } from "@/lib/supabase-devconnect";
 import { useEffect, useMemo, useState } from "react";
 
 function initials(name?: string | null) {
@@ -18,10 +20,14 @@ export default function Directory() {
   const [query, setQuery] = useState("");
   const [hideAeThex, setHideAeThex] = useState(true);
   const source = devconnect ? "DevConnect" : "AeThex";
-  type BasicDev = { id: string; name: string; avatar_url?: string | null; location?: string | null; user_type?: string | null; experience_level?: string | null };
+  type BasicDev = { id: string; name: string; avatar_url?: string | null; location?: string | null; user_type?: string | null; experience_level?: string | null; tags?: string[] | null; verified?: boolean; updated_at?: string | null; total_xp?: number | null };
   const [devs, setDevs] = useState<BasicDev[]>([]);
-  type Studio = { id: string; name: string; description?: string | null; type?: string | null; is_recruiting?: boolean | null; recruiting_roles?: string[] | null; tags?: string[] | null; slug?: string | null; visibility?: string | null; members_count?: number };
+  type StudioMember = { id: string; name: string; avatar_url?: string | null };
+  type Studio = { id: string; name: string; description?: string | null; type?: string | null; is_recruiting?: boolean | null; recruiting_roles?: string[] | null; tags?: string[] | null; slug?: string | null; visibility?: string | null; members_count?: number; members?: StudioMember[] };
   const [studios, setStudios] = useState<Studio[]>([]);
+  const [skillFilter, setSkillFilter] = useState<string>("all");
+  const [regionFilter, setRegionFilter] = useState<string>("all");
+  const [sortMode, setSortMode] = useState<string>("relevance");
 
   useEffect(() => {
     const client = devconnect || supabase;
@@ -33,6 +39,10 @@ export default function Directory() {
       location: u.location || u.city || u.country || null,
       user_type: u.user_type || u.role || null,
       experience_level: u.experience_level || u.seniority || null,
+      tags: u.tags || u.skills || null,
+      verified: Boolean(u.is_verified || (u.subscription && String(u.subscription).toLowerCase().includes("pro")) || (u.badges && String(u.badges).toLowerCase().includes("verified"))),
+      updated_at: u.updated_at || null,
+      total_xp: u.total_xp || u.xp || null,
     });
 
     client
@@ -87,11 +97,43 @@ export default function Directory() {
             .then(({ data: d2 }) => setStudios((d2 || []).map(mapStudio)));
         }
       });
+    // Fetch member avatars for studios (DevConnect only)
+    if (client === devconnect) {
+      const ids = studios.map((s) => s.id).slice(0, 30);
+      if (ids.length) {
+        devconnect
+          ?.from<any>("collective_members" as any)
+          .select("collective_id, profile_id")
+          .in("collective_id", ids)
+          .limit(200)
+          .then(async ({ data }) => {
+            const byCollective: Record<string, string[]> = {};
+            (data || []).forEach((row: any) => {
+              const cid = String(row.collective_id);
+              if (!byCollective[cid]) byCollective[cid] = [];
+              if (byCollective[cid].length < 5) byCollective[cid].push(String(row.profile_id));
+            });
+            const profileIds = Array.from(new Set(Object.values(byCollective).flat()));
+            if (profileIds.length) {
+              const { data: profs } = await devconnect
+                ?.from<any>("profiles" as any)
+                .select("id, display_name, avatar_url")
+                .in("id", profileIds);
+              const map: Record<string, StudioMember> = {};
+              (profs || []).forEach((p: any) => {
+                map[String(p.id)] = { id: String(p.id), name: p.display_name || "Member", avatar_url: p.avatar_url || null };
+              });
+              setStudios((prev) => prev.map((s) => ({ ...s, members: (byCollective[s.id] || []).map((pid) => map[pid]).filter(Boolean) })));
+            }
+          })
+          .catch(() => {});
+      }
+    }
   }, []);
 
   const filteredDevs = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return devs.filter((u) => {
+    let list = devs.filter((u) => {
       if (hideAeThex && u.user_type === "staff") return false;
       if (!q) return true;
       return (
@@ -99,7 +141,20 @@ export default function Directory() {
         (u.location || "").toLowerCase().includes(q)
       );
     });
-  }, [devs, query, hideAeThex]);
+
+    if (skillFilter !== "all") {
+      list = list.filter((u) => (u.tags || []).map(String).map((s) => s.toLowerCase()).includes(skillFilter.toLowerCase()) || (u.user_type || "").toLowerCase() === skillFilter.toLowerCase());
+    }
+    if (regionFilter !== "all") {
+      list = list.filter((u) => (u.location || "").toLowerCase().includes(regionFilter.toLowerCase()));
+    }
+    if (sortMode === "active") {
+      list = [...list].sort((a, b) => (b.total_xp || 0) - (a.total_xp || 0));
+    } else if (sortMode === "recent") {
+      list = [...list].sort((a, b) => new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime());
+    }
+    return list;
+  }, [devs, query, hideAeThex, skillFilter, regionFilter, sortMode]);
 
   const filteredStudios = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -134,8 +189,45 @@ export default function Directory() {
               </label>
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-3">
-            <Input placeholder="Search name, handle, or location" value={query} onChange={(e) => setQuery(e.target.value)} />
+          <div className="mt-4 grid gap-3 md:grid-cols-4">
+            <Input placeholder="Search name, handle, or location" value={query} onChange={(e) => setQuery(e.target.value)} className="md:col-span-2" />
+            <Select value={skillFilter} onValueChange={setSkillFilter}>
+              <SelectTrigger aria-label="Skill">
+                <SelectValue placeholder="Skill / Role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All skills</SelectItem>
+                {[...new Set(devs.flatMap((d) => (d.tags || []).map(String)).concat(devs.map((d) => d.user_type || []).flat()))]
+                  .filter(Boolean)
+                  .slice(0, 30)
+                  .map((s) => (
+                    <SelectItem key={String(s)} value={String(s)}>{String(s)}</SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <Select value={regionFilter} onValueChange={setRegionFilter}>
+              <SelectTrigger aria-label="Region">
+                <SelectValue placeholder="Region" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All regions</SelectItem>
+                {[...new Set(devs.map((d) => (d.location || "").split(",").pop()?.trim()).filter(Boolean))]
+                  .slice(0, 30)
+                  .map((r) => (
+                    <SelectItem key={String(r)} value={String(r)}>{String(r)}</SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <Select value={sortMode} onValueChange={setSortMode}>
+              <SelectTrigger aria-label="Sort">
+                <SelectValue placeholder="Sort" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="relevance">Relevance</SelectItem>
+                <SelectItem value="active">Most active</SelectItem>
+                <SelectItem value="recent">Recently updated</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </section>
 
@@ -147,6 +239,9 @@ export default function Directory() {
             </TabsList>
 
             <TabsContent value="devs">
+              <div className="mb-4 rounded-lg border border-border/40 bg-background/60 p-3 text-xs text-muted-foreground">
+                Showing {filteredDevs.length} creators from <span className="font-medium">{source}</span>
+              </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {filteredDevs.map((u) => (
                   <Card key={u.id} className="border-border/40 bg-card/60 backdrop-blur transition hover:border-aethex-400/50">
@@ -156,11 +251,19 @@ export default function Directory() {
                         <AvatarFallback>{initials(u.name)}</AvatarFallback>
                       </Avatar>
                       <div className="min-w-0">
-                        <div className="font-medium truncate">{u.name || "Developer"}</div>
+                        <div className="font-medium truncate flex items-center gap-2">
+                          {u.name || "Developer"}
+                          {u.verified && (
+                            <Badge className="bg-emerald-500/10 text-emerald-200 border-emerald-400/40">Verified</Badge>
+                          )}
+                        </div>
                         <div className="text-xs text-muted-foreground truncate">{u.location || "Global"}</div>
                         <div className="mt-1 flex flex-wrap gap-2">
-                          <Badge variant="outline">{u.user_type}</Badge>
+                          {u.user_type && <Badge variant="outline">{u.user_type}</Badge>}
                           {u.experience_level && <Badge variant="outline">{u.experience_level}</Badge>}
+                          {(u.tags || []).slice(0, 3).map((t) => (
+                            <Badge key={String(t)} variant="outline" className="text-xs">{String(t)}</Badge>
+                          ))}
                         </div>
                       </div>
                     </CardContent>
@@ -170,6 +273,9 @@ export default function Directory() {
             </TabsContent>
 
             <TabsContent value="studios">
+              <div className="mb-4 rounded-lg border border-border/40 bg-background/60 p-3 text-xs text-muted-foreground">
+                Showing {filteredStudios.length} studios from <span className="font-medium">{source}</span>
+              </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {filteredStudios.map((t) => (
                   <Card key={t.id} className="border-border/40 bg-card/60 backdrop-blur transition hover:border-aethex-400/50">
@@ -186,12 +292,29 @@ export default function Directory() {
                     </CardHeader>
                     <CardContent className="pt-0 space-y-3">
                       <p className="text-sm text-muted-foreground line-clamp-3">{t.description || ""}</p>
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                        {typeof t.members_count === "number" && (
-                          <span>{t.members_count} members</span>
-                        )}
-                        {(t.recruiting_roles && t.recruiting_roles.length > 0) && (
-                          <span>Roles: {t.recruiting_roles!.join(", ")}</span>
+                      {t.members && t.members.length > 0 && (
+                        <div className="flex -space-x-2">
+                          {t.members.slice(0,5).map((m) => (
+                            <Avatar key={m.id} className="h-7 w-7 ring-2 ring-background">
+                              <AvatarImage src={m.avatar_url || undefined} alt={m.name} />
+                              <AvatarFallback>{initials(m.name)}</AvatarFallback>
+                            </Avatar>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-3">
+                          {typeof t.members_count === "number" && (
+                            <span>{t.members_count} members</span>
+                          )}
+                          {(t.recruiting_roles && t.recruiting_roles.length > 0) && (
+                            <span>Roles: {t.recruiting_roles!.join(", ")}</span>
+                          )}
+                        </div>
+                        {t.slug && (
+                          <Button asChild size="sm" variant="outline">
+                            <a href={`https://devconnect.sbs/collectives/${t.slug}`} target="_blank" rel="noreferrer noopener">Apply</a>
+                          </Button>
                         )}
                       </div>
                       {(t.tags && t.tags.length > 0) && (
