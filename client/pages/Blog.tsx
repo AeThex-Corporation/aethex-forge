@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Layers, ListFilter, Newspaper } from "lucide-react";
 import type { BlogCategory, BlogPost } from "@/components/blog/types";
+import SEO from "@/components/SEO";
 
 const buildSlug = (post: BlogPost): string =>
   post.slug || post.id?.toString() || "article";
