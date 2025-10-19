@@ -21,17 +21,36 @@ export default function Directory() {
   const [studios, setStudios] = useState<any[]>([]);
 
   useEffect(() => {
-    supabase
+    const client = devconnect || supabase;
+    client
       .from<any>("user_profiles" as any)
       .select("id,full_name,username,avatar_url,location,user_type,experience_level,website_url,github_url,linkedin_url")
       .limit(200)
-      .then(({ data }) => setDevs(data || []));
+      .then(({ data, error }) => {
+        if (!error && data) setDevs(data);
+        else if (client !== supabase) {
+          supabase
+            .from<any>("user_profiles" as any)
+            .select("id,full_name,username,avatar_url,location,user_type,experience_level,website_url,github_url,linkedin_url")
+            .limit(200)
+            .then(({ data: d2 }) => setDevs(d2 || []));
+        }
+      });
 
-    supabase
+    client
       .from<any>("teams" as any)
       .select("id,name,description,visibility,created_at")
       .limit(200)
-      .then(({ data }) => setStudios(data || []));
+      .then(({ data, error }) => {
+        if (!error && data) setStudios(data);
+        else if (client !== supabase) {
+          supabase
+            .from<any>("teams" as any)
+            .select("id,name,description,visibility,created_at")
+            .limit(200)
+            .then(({ data: d2 }) => setStudios(d2 || []));
+        }
+      });
   }, []);
 
   const filteredDevs = useMemo(() => {
