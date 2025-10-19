@@ -352,6 +352,49 @@ export function createServer() {
       );
     };
 
+    // Roblox OAuth: start (build authorize URL with PKCE and redirect)
+    app.get("/api/roblox/oauth/start", (req, res) => {
+      try {
+        const clientId = process.env.ROBLOX_OAUTH_CLIENT_ID;
+        if (!clientId) return res.status(500).json({ error: "Roblox OAuth not configured" });
+
+        const baseSite = process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "https://aethex.dev";
+        const redirectUri = (typeof req.query.redirect_uri === "string" && req.query.redirect_uri.startsWith("http"))
+          ? String(req.query.redirect_uri)
+          : (process.env.ROBLOX_OAUTH_REDIRECT_URI || `${baseSite}/roblox-callback`);
+
+        const scope = String(req.query.scope || process.env.ROBLOX_OAUTH_SCOPE || "openid");
+        const state = String(req.query.state || randomUUID());
+
+        // PKCE
+        const codeVerifier = Buffer.from(randomUUID() + randomUUID()).toString("base64url").slice(0, 64);
+        const codeChallenge = createHash("sha256").update(codeVerifier).digest("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+
+        const params = new URLSearchParams({
+          client_id: clientId,
+          response_type: "code",
+          redirect_uri: redirectUri,
+          scope,
+          state,
+          code_challenge: codeChallenge,
+          code_challenge_method: "S256",
+        });
+        const authorizeUrl = `https://apis.roblox.com/oauth/authorize?${params.toString()}`;
+
+        // set short-lived cookies for verifier/state (for callback validation)
+        const secure = req.secure || (req.get("x-forwarded-proto") === "https") || process.env.NODE_ENV === "production";
+        res.cookie("roblox_oauth_state", state, { httpOnly: true, sameSite: "lax", secure, maxAge: 10 * 60 * 1000, path: "/" });
+        res.cookie("roblox_oauth_code_verifier", codeVerifier, { httpOnly: true, sameSite: "lax", secure, maxAge: 10 * 60 * 1000, path: "/" });
+
+        if (String(req.query.json || "").toLowerCase() === "true") {
+          return res.json({ authorizeUrl, state });
+        }
+        return res.redirect(302, authorizeUrl);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.get("/api/health", async (_req, res) => {
       try {
         const { error } = await adminSupabase
