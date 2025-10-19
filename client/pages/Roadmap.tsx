@@ -127,7 +127,7 @@ export default function Roadmap() {
           <div className="mb-6">
             <Badge variant="outline" className="border-aethex-400/50 text-aethex-300">Roadmap</Badge>
             <h1 className="mt-2 text-4xl font-extrabold text-gradient">The AeThex Roadmap</h1>
-            <p className="text-muted-foreground max-w-2xl mt-1">Follow along, earn XP, and unlock sneak peeks. We drip new content like Rockstar DLC.</p>
+            <p className="text-muted-foreground max-w-2xl mt-1">Follow along, earn XP, and unlock sneak peeks. New drops roll out regularly.</p>
           </div>
 
           <div className="rounded-lg border border-border/40 bg-background/60 p-4 backdrop-blur">
@@ -225,7 +225,7 @@ export default function Roadmap() {
         <section id="sneak-peeks" className="container mx-auto px-4 pb-16">
           <div className="mb-4">
             <Badge variant="outline" className="border-purple-500/40 text-purple-300">Sneak peeks</Badge>
-            <h2 className="mt-2 text-2xl font-bold">Rockstar dripfeed</h2>
+            <h2 className="mt-2 text-2xl font-bold">Dev Drops</h2>
             <p className="text-sm text-muted-foreground">Unlock previews as we get closer. Collect them all.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
