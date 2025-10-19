@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -20,9 +20,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { aethexCollabService } from "@/lib/aethex-collab-service";
 import LoadingScreen from "@/components/LoadingScreen";
 import SEO from "@/components/SEO";
+import { supabase } from "@/lib/supabase";
 
 const columns: {
   key: "todo" | "doing" | "done" | "blocked";
@@ -41,6 +43,7 @@ export default function ProjectBoard() {
   const { projectId } = useParams<{ projectId: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const [tasks, setTasks] = useState<any[]>([]);
+  const [projectName, setProjectName] = useState<string>("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [creating, setCreating] = useState(false);
@@ -54,6 +57,18 @@ export default function ProjectBoard() {
   useEffect(() => {
     if (!loading && !user) navigate("/login", { replace: true });
   }, [loading, user, navigate]);
+
+  const loadProject = async () => {
+    if (!projectId) return;
+    try {
+      const { data } = await supabase
+        .from("projects")
+        .select("id,name,slug")
+        .eq("id", projectId)
+        .maybeSingle();
+      setProjectName((data as any)?.name || "");
+    } catch {}
+  };
 
   const load = async () => {
     if (!projectId) return;
@@ -69,6 +84,7 @@ export default function ProjectBoard() {
   };
 
   useEffect(() => {
+    loadProject();
     load();
   }, [projectId]);
 
@@ -141,7 +157,7 @@ export default function ProjectBoard() {
   return (
     <>
       <SEO
-        pageTitle="Project Board"
+        pageTitle={projectName ? `${projectName} • Project Board` : "Project Board"}
         description="Kanban task tracking for your AeThex project: statuses, assignees, and due dates."
         canonical={
           typeof window !== "undefined"
@@ -153,8 +169,33 @@ export default function ProjectBoard() {
         <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)] py-10">
           <div className="mx-auto w-full max-w-6xl px-4 lg:px-6 space-y-6">
             <section className="rounded-3xl border border-border/40 bg-background/80 p-6 shadow-2xl backdrop-blur">
+              <Breadcrumb className="mb-2">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link to="/projects">Projects</Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    {projectName ? (
+                      <BreadcrumbLink asChild>
+                        <Link to={`/projects/${projectId}`}>{projectName}</Link>
+                      </BreadcrumbLink>
+                    ) : (
+                      <BreadcrumbLink asChild>
+                        <Link to="#">Project</Link>
+                      </BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Board</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
               <h1 className="text-3xl font-semibold text-foreground">
-                Project Board
+                {projectName || "Project Board"}
               </h1>
               <p className="mt-1 text-sm text-muted-foreground">
                 Track tasks by status. Filters, assignees, and due dates
