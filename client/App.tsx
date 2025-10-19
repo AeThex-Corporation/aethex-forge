@@ -58,6 +58,7 @@ import FourOhFourPage from "./pages/404";
 import SignupRedirect from "./pages/SignupRedirect";
 import MentorshipRequest from "./pages/community/MentorshipRequest";
 import MentorApply from "./pages/community/MentorApply";
+import MentorProfile from "./pages/community/MentorProfile";
 import Staff from "./pages/Staff";
 import Realms from "./pages/Realms";
 import Investors from "./pages/Investors";
@@ -172,6 +173,10 @@ const App = () => (
               <Route
                 path="/community/mentorship/apply"
                 element={<MentorApply />}
+              />
+              <Route
+                path="/community/mentor/:username"
+                element={<MentorProfile />}
               />
               <Route path="/community/:tabId" element={<Community />} />
               <Route path="/staff" element={<Staff />} />
