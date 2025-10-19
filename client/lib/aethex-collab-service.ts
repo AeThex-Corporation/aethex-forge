@@ -142,6 +142,31 @@ export const aethexCollabService = {
     if (error) throw new Error(error.message || "Unable to update task");
   },
 
+  async updateTask(
+    taskId: string,
+    patch: Partial<{
+      title: string;
+      description: string | null;
+      assignee_id: string | null;
+      due_date: string | null;
+      status: TaskStatus;
+    }>,
+  ) {
+    const { data, error } = await supabase
+      .from("project_tasks")
+      .update(patch as any)
+      .eq("id", taskId)
+      .select()
+      .single();
+    if (error) throw new Error(error.message || "Unable to update task");
+    return data as any;
+  },
+
+  async deleteTask(taskId: string) {
+    const { error } = await supabase.from("project_tasks").delete().eq("id", taskId);
+    if (error) throw new Error(error.message || "Unable to delete task");
+  },
+
   // Activity bus publish
   async publishActivity(params: {
     actor_id: string;
