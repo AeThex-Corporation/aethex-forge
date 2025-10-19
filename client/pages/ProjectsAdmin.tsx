@@ -83,6 +83,23 @@ export default function ProjectsAdmin() {
     }
   };
 
+  if (authLoading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-aethex-gradient py-12">
+          <section className="container mx-auto max-w-3xl px-4">
+            <Card className="bg-card/60 border-border/40 backdrop-blur">
+              <CardHeader>
+                <CardTitle>Loading</CardTitle>
+                <CardDescription>Checking access…</CardDescription>
+              </CardHeader>
+            </Card>
+          </section>
+        </div>
+      </Layout>
+    );
+  }
+
   if (!isOwner) {
     return (
       <Layout>
