@@ -40,7 +40,7 @@ export default function Timeline({
   };
 
   return (
-    <div className="rounded-xl border border-border/40 bg-background/60 p-4 backdrop-blur">
+    <div className="rounded-xl border border-border/40 bg-background/60 p-6 backdrop-blur">
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-2">
           {phases.map((p) => {
@@ -59,7 +59,7 @@ export default function Timeline({
       <div ref={containerRef} className="mt-4 overflow-x-auto">
         <div className="min-w-[720px] w-[1200px] lg:w-full relative">
           <div className="absolute left-0 right-0 top-8 h-0.5 bg-border/50" />
-          <div className="grid grid-cols-12 gap-4">
+          <div className="grid grid-cols-12 gap-6">
             {phases.map((p, idx) => (
               <div key={p} data-phase={p} className="col-span-3">
                 {/* Phase header */}
