@@ -41,6 +41,7 @@ export default function ProjectsAdmin() {
   });
 
   useEffect(() => {
+    if (authLoading) return;
     if (!isOwner) return;
     setLoading(true);
     supabase
@@ -49,7 +50,7 @@ export default function ProjectsAdmin() {
       .order("created_at", { ascending: false })
       .then(({ data }) => setList(data || []))
       .finally(() => setLoading(false));
-  }, [isOwner]);
+  }, [authLoading, isOwner]);
 
   const create = async () => {
     const tags = (draft.tags || "")
