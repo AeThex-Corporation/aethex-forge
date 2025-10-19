@@ -235,31 +235,42 @@ export default function Admin() {
   if (!user || !isOwner) {
     return (
       <>
-        <SEO pageTitle="Admin" description="Administrative controls for AeThex." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
-      <Layout>
-        <div className="min-h-screen bg-aethex-gradient py-12">
-          <div className="container mx-auto px-4 max-w-3xl">
-            <Card className="bg-red-500/10 border-red-500/30 backdrop-blur">
-              <CardHeader>
-                <CardTitle className="text-red-400">Access denied</CardTitle>
-                <CardDescription>
-                  This panel is restricted to {ownerEmail}. If you need access,
-                  contact the site owner.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex gap-2">
-                <Button onClick={() => navigate("/dashboard")}>
-                  Go to dashboard
-                </Button>
-                <Button variant="outline" onClick={() => navigate("/support")}>
-                  Contact support
-                </Button>
-              </CardContent>
-            </Card>
+        <SEO
+          pageTitle="Admin"
+          description="Administrative controls for AeThex."
+          canonical={
+            typeof window !== "undefined"
+              ? window.location.href
+              : (undefined as any)
+          }
+        />
+        <Layout>
+          <div className="min-h-screen bg-aethex-gradient py-12">
+            <div className="container mx-auto px-4 max-w-3xl">
+              <Card className="bg-red-500/10 border-red-500/30 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="text-red-400">Access denied</CardTitle>
+                  <CardDescription>
+                    This panel is restricted to {ownerEmail}. If you need
+                    access, contact the site owner.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex gap-2">
+                  <Button onClick={() => navigate("/dashboard")}>
+                    Go to dashboard
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/support")}
+                  >
+                    Contact support
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-        </div>
-      </Layout>
-    </>
+        </Layout>
+      </>
     );
   }
 
@@ -663,87 +674,582 @@ export default function Admin() {
 
   return (
     <>
-      <SEO pageTitle="Admin" description="Administrative controls for AeThex: content, community, operations, and status." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
-    <Layout>
-      <div className="min-h-screen bg-aethex-gradient py-12">
-        <div className="container mx-auto px-4 max-w-7xl space-y-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-gradient">
-                Admin Control Center
-              </h1>
-              <p className="text-muted-foreground">
-                Unified oversight for AeThex operations, content, and community.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Badge
-                  variant="outline"
-                  className="border-green-500/50 text-green-300"
-                >
-                  Owner
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-blue-500/50 text-blue-300"
-                >
-                  Admin
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-purple-500/50 text-purple-300"
-                >
-                  Founder
-                </Badge>
+      <SEO
+        pageTitle="Admin"
+        description="Administrative controls for AeThex: content, community, operations, and status."
+        canonical={
+          typeof window !== "undefined"
+            ? window.location.href
+            : (undefined as any)
+        }
+      />
+      <Layout>
+        <div className="min-h-screen bg-aethex-gradient py-12">
+          <div className="container mx-auto px-4 max-w-7xl space-y-8">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold text-gradient">
+                  Admin Control Center
+                </h1>
+                <p className="text-muted-foreground">
+                  Unified oversight for AeThex operations, content, and
+                  community.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge
+                    variant="outline"
+                    className="border-green-500/50 text-green-300"
+                  >
+                    Owner
+                  </Badge>
+                  <Badge
+                    variant="outline"
+                    className="border-blue-500/50 text-blue-300"
+                  >
+                    Admin
+                  </Badge>
+                  <Badge
+                    variant="outline"
+                    className="border-purple-500/50 text-purple-300"
+                  >
+                    Founder
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Signed in as{" "}
+                  <span className="text-foreground">
+                    {normalizedEmail || ownerEmail}
+                  </span>
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Signed in as{" "}
-                <span className="text-foreground">
-                  {normalizedEmail || ownerEmail}
-                </span>
-              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Dashboard
+                </Button>
+                <Button variant="outline" onClick={() => navigate("/profile")}>
+                  Profile
+                </Button>
+                <Button onClick={() => setActiveTab("content")}>
+                  Create update
+                </Button>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="outline" onClick={() => navigate("/dashboard")}>
-                Dashboard
-              </Button>
-              <Button variant="outline" onClick={() => navigate("/profile")}>
-                Profile
-              </Button>
-              <Button onClick={() => setActiveTab("content")}>
-                Create update
-              </Button>
-            </div>
-          </div>
 
-          <Tabs
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="space-y-6"
-          >
-            <TabsList className="w-full justify-start gap-2 overflow-x-auto border border-border/40 bg-background/40 px-1 py-1 backdrop-blur">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="system-map">System Map</TabsTrigger>
-              <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
-              <TabsTrigger value="content">Content</TabsTrigger>
-              <TabsTrigger value="community">Community</TabsTrigger>
-              <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
-              <TabsTrigger value="operations">Operations</TabsTrigger>
-            </TabsList>
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="space-y-6"
+            >
+              <TabsList className="w-full justify-start gap-2 overflow-x-auto border border-border/40 bg-background/40 px-1 py-1 backdrop-blur">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="system-map">System Map</TabsTrigger>
+                <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
+                <TabsTrigger value="content">Content</TabsTrigger>
+                <TabsTrigger value="community">Community</TabsTrigger>
+                <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
+                <TabsTrigger value="operations">Operations</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="overview" className="space-y-6">
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {overviewStats.map((stat) => (
-                  <AdminStatCard
-                    key={stat.title}
-                    title={stat.title}
-                    value={stat.value}
-                    description={stat.description}
-                    trend={stat.trend}
-                    icon={stat.icon}
-                    tone={stat.tone}
-                    actions={
-                      stat.title === "Featured studios" ? (
+              <TabsContent value="overview" className="space-y-6">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                  {overviewStats.map((stat) => (
+                    <AdminStatCard
+                      key={stat.title}
+                      title={stat.title}
+                      value={stat.value}
+                      description={stat.description}
+                      trend={stat.trend}
+                      icon={stat.icon}
+                      tone={stat.tone}
+                      actions={
+                        stat.title === "Featured studios" ? (
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() =>
+                                navigate("/community#featured-studios")
+                              }
+                            >
+                              Open community
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() => setActiveTab("operations")}
+                            >
+                              Manage studios
+                            </Button>
+                          </div>
+                        ) : undefined
+                      }
+                    />
+                  ))}
+                </div>
+
+                <div className="grid gap-6 xl:grid-cols-2">
+                  <AdminStatusOverview
+                    services={statusSnapshot}
+                    overall={overallStatus}
+                    onViewStatus={() => navigate("/status")}
+                  />
+
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Command className="h-5 w-5 text-aethex-300" />
+                        <CardTitle>Quick actions</CardTitle>
+                      </div>
+                      <CardDescription>
+                        Launch frequent administrative workflows.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid gap-3">
+                      {quickActions.map(
+                        ({ label, description, icon: ActionIcon, action }) => (
+                          <button
+                            key={label}
+                            type="button"
+                            onClick={action}
+                            className="group flex items-start gap-3 rounded-lg border border-border/30 bg-background/40 px-4 py-3 text-left transition hover:border-aethex-400/60 hover:bg-background/60"
+                          >
+                            <ActionIcon className="mt-0.5 h-5 w-5 text-aethex-400 transition group-hover:text-aethex-200" />
+                            <div className="space-y-1">
+                              <p className="font-medium text-foreground">
+                                {label}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {description}
+                              </p>
+                            </div>
+                          </button>
+                        ),
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <AdminChangelogDigest
+                    entries={latestChangelog}
+                    onViewChangelog={() => navigate("/changelog")}
+                  />
+
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Shield className="h-5 w-5 text-green-400" />
+                        <CardTitle>Access control</CardTitle>
+                      </div>
+                      <CardDescription>
+                        Owner-only access enforced via Supabase roles.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm text-muted-foreground">
+                      <ul className="space-y-2 leading-relaxed">
+                        <li>
+                          Owner email:{" "}
+                          <span className="text-foreground">{ownerEmail}</span>
+                        </li>
+                        <li>
+                          Roles are provisioned automatically on owner sign-in.
+                        </li>
+                        <li>
+                          Grant additional admins by updating Supabase role
+                          assignments.
+                        </li>
+                      </ul>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setActiveTab("community")}
+                        >
+                          View members
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate("/support")}
+                        >
+                          Contact support
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="system-map" className="space-y-6">
+                <AdminSystemMap />
+              </TabsContent>
+
+              <TabsContent value="roadmap" className="space-y-6">
+                <AdminRoadmap />
+              </TabsContent>
+
+              <TabsContent value="content" className="space-y-6">
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <PenTool className="h-5 w-5 text-aethex-300" />
+                      <CardTitle>Content overview</CardTitle>
+                    </div>
+                    <CardDescription>
+                      {publishedPosts} published{" "}
+                      {publishedPosts === 1 ? "post" : "posts"} ·{" "}
+                      {loadingPosts
+                        ? "refreshing content…"
+                        : "latest Supabase sync"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground space-y-2">
+                    <p>
+                      Drafts and announcements appear instantly on the public
+                      blog after saving. Use scheduled releases for major
+                      updates and keep thumbnails optimised for 1200×630.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <PenTool className="h-5 w-5 text-aethex-400" />
+                      <CardTitle className="text-lg">Blog posts</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Manage blog content stored in Supabase
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={loadingPosts}
+                        onClick={async () => {
+                          try {
+                            setLoadingPosts(true);
+                            const res = await fetch("/api/blog?limit=100");
+                            const data = res.ok ? await res.json() : [];
+                            if (Array.isArray(data)) setBlogPosts(data);
+                          } finally {
+                            setLoadingPosts(false);
+                          }
+                        }}
+                      >
+                        {loadingPosts ? "Refreshing…" : "Refresh"}
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() =>
+                          setBlogPosts([
+                            {
+                              title: "New Post",
+                              slug: "new-post",
+                              category: "General",
+                            },
+                            ...blogPosts,
+                          ])
+                        }
+                      >
+                        Add post
+                      </Button>
+                    </div>
+
+                    {blogPosts.length === 0 && (
+                      <p className="text-sm text-muted-foreground">
+                        No posts loaded yet. Use “Refresh” or “Add post” to
+                        start managing content.
+                      </p>
+                    )}
+
+                    {blogPosts.map((p, i) => (
+                      <div
+                        key={p.id || p.slug || i}
+                        className="space-y-2 rounded border border-border/40 bg-background/40 p-3"
+                      >
+                        <div className="grid gap-2 md:grid-cols-2">
+                          <input
+                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                            placeholder="Title"
+                            value={p.title || ""}
+                            onChange={(e) => {
+                              const next = blogPosts.slice();
+                              next[i] = { ...next[i], title: e.target.value };
+                              setBlogPosts(next);
+                            }}
+                          />
+                          <input
+                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                            placeholder="Slug"
+                            value={p.slug || ""}
+                            onChange={(e) => {
+                              const next = blogPosts.slice();
+                              next[i] = { ...next[i], slug: e.target.value };
+                              setBlogPosts(next);
+                            }}
+                          />
+                        </div>
+                        <div className="grid gap-2 md:grid-cols-2">
+                          <input
+                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                            placeholder="Author"
+                            value={p.author || ""}
+                            onChange={(e) => {
+                              const n = blogPosts.slice();
+                              n[i] = { ...n[i], author: e.target.value };
+                              setBlogPosts(n);
+                            }}
+                          />
+                          <input
+                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                            placeholder="Date"
+                            value={p.date || ""}
+                            onChange={(e) => {
+                              const n = blogPosts.slice();
+                              n[i] = { ...n[i], date: e.target.value };
+                              setBlogPosts(n);
+                            }}
+                          />
+                        </div>
+                        <div className="grid gap-2 md:grid-cols-3">
+                          <input
+                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                            placeholder="Read time (e.g., 8 min read)"
+                            value={p.read_time || ""}
+                            onChange={(e) => {
+                              const n = blogPosts.slice();
+                              n[i] = { ...n[i], read_time: e.target.value };
+                              setBlogPosts(n);
+                            }}
+                          />
+                          <input
+                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                            placeholder="Category"
+                            value={p.category || ""}
+                            onChange={(e) => {
+                              const n = blogPosts.slice();
+                              n[i] = { ...n[i], category: e.target.value };
+                              setBlogPosts(n);
+                            }}
+                          />
+                          <input
+                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                            placeholder="Image URL"
+                            value={p.image || ""}
+                            onChange={(e) => {
+                              const n = blogPosts.slice();
+                              n[i] = { ...n[i], image: e.target.value };
+                              setBlogPosts(n);
+                            }}
+                          />
+                        </div>
+                        <textarea
+                          className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                          rows={2}
+                          placeholder="Excerpt"
+                          value={p.excerpt || ""}
+                          onChange={(e) => {
+                            const n = blogPosts.slice();
+                            n[i] = { ...n[i], excerpt: e.target.value };
+                            setBlogPosts(n);
+                          }}
+                        />
+                        <textarea
+                          className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                          rows={6}
+                          placeholder="Body HTML"
+                          value={p.body_html || ""}
+                          onChange={(e) => {
+                            const n = blogPosts.slice();
+                            n[i] = { ...n[i], body_html: e.target.value };
+                            setBlogPosts(n);
+                          }}
+                        />
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => deletePost(i)}
+                          >
+                            Delete
+                          </Button>
+                          <Button size="sm" onClick={() => savePost(i)}>
+                            Save
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="community" className="space-y-6">
+                <AdminMemberManager
+                  profiles={managedProfiles}
+                  selectedId={selectedMemberId}
+                  onSelectedIdChange={(id) => setSelectedMemberId(id)}
+                  onRefresh={loadProfiles}
+                  ownerEmail={ownerEmail}
+                />
+
+                <AdminAchievementManager targetUser={selectedMember} />
+
+                <AdminSpotlightManager profiles={managedProfiles} />
+
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <UserCog className="h-5 w-5 text-teal-300" />
+                      <CardTitle>Community actions</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Grow the network and celebrate contributors.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-wrap gap-2">
+                    <Button size="sm" onClick={() => navigate("/community")}>
+                      Open community hub
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setActiveTab("mentorship")}
+                    >
+                      Manage mentorships
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => navigate("/support")}
+                    >
+                      Support queue
+                    </Button>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="mentorship" className="space-y-6">
+                <AdminMentorshipManager />
+              </TabsContent>
+
+              <TabsContent value="operations" className="space-y-6">
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Settings className="h-5 w-5 text-aethex-300" />
+                        <CardTitle>Home banner</CardTitle>
+                      </div>
+                      <CardDescription>
+                        Controls the small notice shown at the top of the home
+                        page.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <BannerSettings />
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-card/60 border-border/40 backdrop-blur lg:col-span-2">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Settings className="h-5 w-5 text-yellow-300" />
+                        <CardTitle>Featured studios</CardTitle>
+                      </div>
+                      <CardDescription>
+                        Control studios highlighted across AeThex experiences.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {studios.map((s, i) => (
+                        <div
+                          key={`${s.name}-${i}`}
+                          className="space-y-2 rounded border border-border/40 bg-background/40 p-3"
+                        >
+                          <div className="grid gap-2 md:grid-cols-2">
+                            <input
+                              className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                              value={s.name}
+                              onChange={(e) => {
+                                const next = studios.slice();
+                                next[i] = { ...next[i], name: e.target.value };
+                                setStudios(next);
+                              }}
+                              placeholder="Studio name"
+                            />
+                            <input
+                              className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                              value={s.tagline || ""}
+                              onChange={(e) => {
+                                const next = studios.slice();
+                                next[i] = {
+                                  ...next[i],
+                                  tagline: e.target.value,
+                                };
+                                setStudios(next);
+                              }}
+                              placeholder="Tagline"
+                            />
+                          </div>
+                          <div className="grid gap-2 md:grid-cols-2">
+                            <input
+                              className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                              value={s.metrics || ""}
+                              onChange={(e) => {
+                                const next = studios.slice();
+                                next[i] = {
+                                  ...next[i],
+                                  metrics: e.target.value,
+                                };
+                                setStudios(next);
+                              }}
+                              placeholder="Metrics (e.g., 1B+ sessions)"
+                            />
+                            <input
+                              className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
+                              value={(s.specialties || []).join(", ")}
+                              onChange={(e) => {
+                                const next = studios.slice();
+                                next[i] = {
+                                  ...next[i],
+                                  specialties: e.target.value
+                                    .split(",")
+                                    .map((v) => v.trim())
+                                    .filter(Boolean),
+                                };
+                                setStudios(next);
+                              }}
+                              placeholder="Specialties (comma separated)"
+                            />
+                          </div>
+                          <div className="flex justify-end">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() =>
+                                setStudios(
+                                  studios.filter((_, idx) => idx !== i),
+                                )
+                              }
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="flex flex-wrap justify-between gap-2">
                         <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              setStudios([...studios, { name: "New Studio" }])
+                            }
+                          >
+                            Add studio
+                          </Button>
                           <Button
                             size="sm"
                             variant="outline"
@@ -753,755 +1259,289 @@ export default function Admin() {
                           >
                             Open community
                           </Button>
-                          <Button
-                            size="sm"
-                            onClick={() => setActiveTab("operations")}
-                          >
-                            Manage studios
-                          </Button>
                         </div>
-                      ) : undefined
-                    }
-                  />
-                ))}
-              </div>
-
-              <div className="grid gap-6 xl:grid-cols-2">
-                <AdminStatusOverview
-                  services={statusSnapshot}
-                  overall={overallStatus}
-                  onViewStatus={() => navigate("/status")}
-                />
-
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Command className="h-5 w-5 text-aethex-300" />
-                      <CardTitle>Quick actions</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Launch frequent administrative workflows.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="grid gap-3">
-                    {quickActions.map(
-                      ({ label, description, icon: ActionIcon, action }) => (
-                        <button
-                          key={label}
-                          type="button"
-                          onClick={action}
-                          className="group flex items-start gap-3 rounded-lg border border-border/30 bg-background/40 px-4 py-3 text-left transition hover:border-aethex-400/60 hover:bg-background/60"
-                        >
-                          <ActionIcon className="mt-0.5 h-5 w-5 text-aethex-400 transition group-hover:text-aethex-200" />
-                          <div className="space-y-1">
-                            <p className="font-medium text-foreground">
-                              {label}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {description}
-                            </p>
-                          </div>
-                        </button>
-                      ),
-                    )}
-                  </CardContent>
-                </Card>
-
-                <AdminChangelogDigest
-                  entries={latestChangelog}
-                  onViewChangelog={() => navigate("/changelog")}
-                />
-
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-green-400" />
-                      <CardTitle>Access control</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Owner-only access enforced via Supabase roles.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-muted-foreground">
-                    <ul className="space-y-2 leading-relaxed">
-                      <li>
-                        Owner email:{" "}
-                        <span className="text-foreground">{ownerEmail}</span>
-                      </li>
-                      <li>
-                        Roles are provisioned automatically on owner sign-in.
-                      </li>
-                      <li>
-                        Grant additional admins by updating Supabase role
-                        assignments.
-                      </li>
-                    </ul>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setActiveTab("community")}
-                      >
-                        View members
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => navigate("/support")}
-                      >
-                        Contact support
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="system-map" className="space-y-6">
-              <AdminSystemMap />
-            </TabsContent>
-
-            <TabsContent value="roadmap" className="space-y-6">
-              <AdminRoadmap />
-            </TabsContent>
-
-            <TabsContent value="content" className="space-y-6">
-              <Card className="bg-card/60 border-border/40 backdrop-blur">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <PenTool className="h-5 w-5 text-aethex-300" />
-                    <CardTitle>Content overview</CardTitle>
-                  </div>
-                  <CardDescription>
-                    {publishedPosts} published{" "}
-                    {publishedPosts === 1 ? "post" : "posts"} ·{" "}
-                    {loadingPosts
-                      ? "refreshing content…"
-                      : "latest Supabase sync"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground space-y-2">
-                  <p>
-                    Drafts and announcements appear instantly on the public blog
-                    after saving. Use scheduled releases for major updates and
-                    keep thumbnails optimised for 1200×630.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card/60 border-border/40 backdrop-blur">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <PenTool className="h-5 w-5 text-aethex-400" />
-                    <CardTitle className="text-lg">Blog posts</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Manage blog content stored in Supabase
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={loadingPosts}
-                      onClick={async () => {
-                        try {
-                          setLoadingPosts(true);
-                          const res = await fetch("/api/blog?limit=100");
-                          const data = res.ok ? await res.json() : [];
-                          if (Array.isArray(data)) setBlogPosts(data);
-                        } finally {
-                          setLoadingPosts(false);
-                        }
-                      }}
-                    >
-                      {loadingPosts ? "Refreshing…" : "Refresh"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() =>
-                        setBlogPosts([
-                          {
-                            title: "New Post",
-                            slug: "new-post",
-                            category: "General",
-                          },
-                          ...blogPosts,
-                        ])
-                      }
-                    >
-                      Add post
-                    </Button>
-                  </div>
-
-                  {blogPosts.length === 0 && (
-                    <p className="text-sm text-muted-foreground">
-                      No posts loaded yet. Use “Refresh” or “Add post” to start
-                      managing content.
-                    </p>
-                  )}
-
-                  {blogPosts.map((p, i) => (
-                    <div
-                      key={p.id || p.slug || i}
-                      className="space-y-2 rounded border border-border/40 bg-background/40 p-3"
-                    >
-                      <div className="grid gap-2 md:grid-cols-2">
-                        <input
-                          className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                          placeholder="Title"
-                          value={p.title || ""}
-                          onChange={(e) => {
-                            const next = blogPosts.slice();
-                            next[i] = { ...next[i], title: e.target.value };
-                            setBlogPosts(next);
-                          }}
-                        />
-                        <input
-                          className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                          placeholder="Slug"
-                          value={p.slug || ""}
-                          onChange={(e) => {
-                            const next = blogPosts.slice();
-                            next[i] = { ...next[i], slug: e.target.value };
-                            setBlogPosts(next);
-                          }}
-                        />
-                      </div>
-                      <div className="grid gap-2 md:grid-cols-2">
-                        <input
-                          className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                          placeholder="Author"
-                          value={p.author || ""}
-                          onChange={(e) => {
-                            const n = blogPosts.slice();
-                            n[i] = { ...n[i], author: e.target.value };
-                            setBlogPosts(n);
-                          }}
-                        />
-                        <input
-                          className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                          placeholder="Date"
-                          value={p.date || ""}
-                          onChange={(e) => {
-                            const n = blogPosts.slice();
-                            n[i] = { ...n[i], date: e.target.value };
-                            setBlogPosts(n);
-                          }}
-                        />
-                      </div>
-                      <div className="grid gap-2 md:grid-cols-3">
-                        <input
-                          className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                          placeholder="Read time (e.g., 8 min read)"
-                          value={p.read_time || ""}
-                          onChange={(e) => {
-                            const n = blogPosts.slice();
-                            n[i] = { ...n[i], read_time: e.target.value };
-                            setBlogPosts(n);
-                          }}
-                        />
-                        <input
-                          className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                          placeholder="Category"
-                          value={p.category || ""}
-                          onChange={(e) => {
-                            const n = blogPosts.slice();
-                            n[i] = { ...n[i], category: e.target.value };
-                            setBlogPosts(n);
-                          }}
-                        />
-                        <input
-                          className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                          placeholder="Image URL"
-                          value={p.image || ""}
-                          onChange={(e) => {
-                            const n = blogPosts.slice();
-                            n[i] = { ...n[i], image: e.target.value };
-                            setBlogPosts(n);
-                          }}
-                        />
-                      </div>
-                      <textarea
-                        className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                        rows={2}
-                        placeholder="Excerpt"
-                        value={p.excerpt || ""}
-                        onChange={(e) => {
-                          const n = blogPosts.slice();
-                          n[i] = { ...n[i], excerpt: e.target.value };
-                          setBlogPosts(n);
-                        }}
-                      />
-                      <textarea
-                        className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                        rows={6}
-                        placeholder="Body HTML"
-                        value={p.body_html || ""}
-                        onChange={(e) => {
-                          const n = blogPosts.slice();
-                          n[i] = { ...n[i], body_html: e.target.value };
-                          setBlogPosts(n);
-                        }}
-                      />
-                      <div className="flex justify-end gap-2">
                         <Button
                           size="sm"
-                          variant="outline"
-                          onClick={() => deletePost(i)}
-                        >
-                          Delete
-                        </Button>
-                        <Button size="sm" onClick={() => savePost(i)}>
-                          Save
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="community" className="space-y-6">
-              <AdminMemberManager
-                profiles={managedProfiles}
-                selectedId={selectedMemberId}
-                onSelectedIdChange={(id) => setSelectedMemberId(id)}
-                onRefresh={loadProfiles}
-                ownerEmail={ownerEmail}
-              />
-
-              <AdminAchievementManager targetUser={selectedMember} />
-
-              <AdminSpotlightManager profiles={managedProfiles} />
-
-              <Card className="bg-card/60 border-border/40 backdrop-blur">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <UserCog className="h-5 w-5 text-teal-300" />
-                    <CardTitle>Community actions</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Grow the network and celebrate contributors.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-wrap gap-2">
-                  <Button size="sm" onClick={() => navigate("/community")}>
-                    Open community hub
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setActiveTab("mentorship")}
-                  >
-                    Manage mentorships
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => navigate("/support")}
-                  >
-                    Support queue
-                  </Button>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="mentorship" className="space-y-6">
-              <AdminMentorshipManager />
-            </TabsContent>
-
-            <TabsContent value="operations" className="space-y-6">
-              <div className="grid gap-6 lg:grid-cols-2">
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Settings className="h-5 w-5 text-aethex-300" />
-                      <CardTitle>Home banner</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Controls the small notice shown at the top of the home page.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <BannerSettings />
-                  </CardContent>
-                </Card>
-                <Card className="bg-card/60 border-border/40 backdrop-blur lg:col-span-2">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Settings className="h-5 w-5 text-yellow-300" />
-                      <CardTitle>Featured studios</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Control studios highlighted across AeThex experiences.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {studios.map((s, i) => (
-                      <div
-                        key={`${s.name}-${i}`}
-                        className="space-y-2 rounded border border-border/40 bg-background/40 p-3"
-                      >
-                        <div className="grid gap-2 md:grid-cols-2">
-                          <input
-                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                            value={s.name}
-                            onChange={(e) => {
-                              const next = studios.slice();
-                              next[i] = { ...next[i], name: e.target.value };
-                              setStudios(next);
-                            }}
-                            placeholder="Studio name"
-                          />
-                          <input
-                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                            value={s.tagline || ""}
-                            onChange={(e) => {
-                              const next = studios.slice();
-                              next[i] = { ...next[i], tagline: e.target.value };
-                              setStudios(next);
-                            }}
-                            placeholder="Tagline"
-                          />
-                        </div>
-                        <div className="grid gap-2 md:grid-cols-2">
-                          <input
-                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                            value={s.metrics || ""}
-                            onChange={(e) => {
-                              const next = studios.slice();
-                              next[i] = { ...next[i], metrics: e.target.value };
-                              setStudios(next);
-                            }}
-                            placeholder="Metrics (e.g., 1B+ sessions)"
-                          />
-                          <input
-                            className="bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
-                            value={(s.specialties || []).join(", ")}
-                            onChange={(e) => {
-                              const next = studios.slice();
-                              next[i] = {
-                                ...next[i],
-                                specialties: e.target.value
-                                  .split(",")
-                                  .map((v) => v.trim())
-                                  .filter(Boolean),
-                              };
-                              setStudios(next);
-                            }}
-                            placeholder="Specialties (comma separated)"
-                          />
-                        </div>
-                        <div className="flex justify-end">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() =>
-                              setStudios(studios.filter((_, idx) => idx !== i))
-                            }
-                          >
-                            Remove
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="flex flex-wrap justify-between gap-2">
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() =>
-                            setStudios([...studios, { name: "New Studio" }])
-                          }
-                        >
-                          Add studio
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() =>
-                            navigate("/community#featured-studios")
-                          }
-                        >
-                          Open community
-                        </Button>
-                      </div>
-                      <Button
-                        size="sm"
-                        onClick={async () => {
-                          const resp = await fetch("/api/featured-studios", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ studios }),
-                          });
-                          if (!resp.ok) {
-                            aethexToast.error({
-                              title: "Save failed",
-                              description:
-                                "Unable to persist featured studios.",
+                          onClick={async () => {
+                            const resp = await fetch("/api/featured-studios", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({ studios }),
                             });
-                          } else {
-                            aethexToast.success({
-                              title: "Studios saved",
-                              description:
-                                "Featured studios updated successfully.",
-                            });
-                          }
-                        }}
-                      >
-                        Save studios
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <ClipboardList className="h-5 w-5 text-sky-300" />
-                      <CardTitle>Project applications</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Review collaboration requests and prioritize approvals.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-muted-foreground">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <p>
-                        {projectApplicationsLoading
-                          ? "Loading application data…"
-                          : `${projectApplications.length} total submissions (${pendingProjectApplications} waiting)`}
-                      </p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={loadProjectApplications}
-                        disabled={projectApplicationsLoading}
-                      >
-                        {projectApplicationsLoading ? (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        ) : (
-                          <RefreshCw className="mr-2 h-4 w-4" />
-                        )}
-                        Refresh
-                      </Button>
-                    </div>
-                    {projectApplicationsLoading ? (
-                      <div className="flex items-center gap-2 text-sm">
-                        <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
-                        Synchronizing with Supabase…
-                      </div>
-                    ) : projectApplications.length ? (
-                      <div className="grid gap-2">
-                        {projectApplications.slice(0, 6).map((app) => (
-                          <div
-                            key={
-                              app.id ||
-                              `${app.applicant_email ?? "applicant"}-${app.projects?.id ?? "project"}`
+                            if (!resp.ok) {
+                              aethexToast.error({
+                                title: "Save failed",
+                                description:
+                                  "Unable to persist featured studios.",
+                              });
+                            } else {
+                              aethexToast.success({
+                                title: "Studios saved",
+                                description:
+                                  "Featured studios updated successfully.",
+                              });
                             }
-                            className="space-y-1 rounded border border-border/30 bg-background/40 p-3"
-                          >
-                            <div className="flex flex-wrap items-center justify-between gap-2">
-                              <p className="font-medium text-foreground">
-                                {app.applicant_name ||
-                                  app.applicant_email ||
-                                  "Unknown applicant"}
-                              </p>
-                              <Badge variant="outline" className="capitalize">
-                                {(app.status ?? "pending").toLowerCase()}
-                              </Badge>
-                            </div>
-                            <p className="text-xs text-muted-foreground">
-                              {app.projects?.title ?? "No project title"}
-                            </p>
-                            {app.created_at ? (
-                              <p className="text-[11px] text-muted-foreground/80">
-                                Submitted{" "}
-                                {new Date(app.created_at).toLocaleString()}
-                              </p>
-                            ) : null}
-                          </div>
-                        ))}
+                          }}
+                        >
+                          Save studios
+                        </Button>
                       </div>
-                    ) : (
-                      <p>
-                        No project applications on file. Encourage partners to
-                        apply via briefs.
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
 
-                <Card
-                  id="opportunity-applications"
-                  className="bg-card/60 border-border/40 backdrop-blur"
-                >
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Users className="h-5 w-5 text-emerald-300" />
-                      <CardTitle>Opportunity applications</CardTitle>
-                    </div>
-                    <CardDescription>
-                      View contributor and career submissions captured on the
-                      Opportunities page.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-muted-foreground">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <p>
-                        {opportunityApplicationsLoading
-                          ? "Loading opportunity applicants…"
-                          : `${opportunityApplications.length} submissions`}
-                      </p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={loadOpportunityApplications}
-                        disabled={opportunityApplicationsLoading}
-                      >
-                        {opportunityApplicationsLoading ? (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        ) : (
-                          <RefreshCw className="mr-2 h-4 w-4" />
-                        )}
-                        Refresh
-                      </Button>
-                    </div>
-                    {opportunityApplicationsLoading ? (
-                      <div className="flex items-center gap-2 text-sm">
-                        <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
-                        Syncing with Supabase…
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <ClipboardList className="h-5 w-5 text-sky-300" />
+                        <CardTitle>Project applications</CardTitle>
                       </div>
-                    ) : opportunityApplications.length ? (
-                      <div className="grid gap-2">
-                        {opportunityApplications.slice(0, 6).map((app) => (
-                          <div
-                            key={
-                              app.id ||
-                              `${app.email ?? "candidate"}-${app.submitted_at ?? "time"}`
-                            }
-                            className="space-y-2 rounded border border-border/30 bg-background/40 p-3"
-                          >
-                            <div className="flex flex-wrap items-center justify-between gap-2">
-                              <div>
+                      <CardDescription>
+                        Review collaboration requests and prioritize approvals.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p>
+                          {projectApplicationsLoading
+                            ? "Loading application data…"
+                            : `${projectApplications.length} total submissions (${pendingProjectApplications} waiting)`}
+                        </p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={loadProjectApplications}
+                          disabled={projectApplicationsLoading}
+                        >
+                          {projectApplicationsLoading ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <RefreshCw className="mr-2 h-4 w-4" />
+                          )}
+                          Refresh
+                        </Button>
+                      </div>
+                      {projectApplicationsLoading ? (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
+                          Synchronizing with Supabase…
+                        </div>
+                      ) : projectApplications.length ? (
+                        <div className="grid gap-2">
+                          {projectApplications.slice(0, 6).map((app) => (
+                            <div
+                              key={
+                                app.id ||
+                                `${app.applicant_email ?? "applicant"}-${app.projects?.id ?? "project"}`
+                              }
+                              className="space-y-1 rounded border border-border/30 bg-background/40 p-3"
+                            >
+                              <div className="flex flex-wrap items-center justify-between gap-2">
                                 <p className="font-medium text-foreground">
-                                  {app.full_name || app.email || "Anonymous"}
+                                  {app.applicant_name ||
+                                    app.applicant_email ||
+                                    "Unknown applicant"}
                                 </p>
-                                <p className="text-xs text-muted-foreground">
-                                  {app.email || "No email provided"}
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-2">
                                 <Badge variant="outline" className="capitalize">
-                                  {(app.type ?? "contributor").toLowerCase()}
-                                </Badge>
-                                <Badge variant="outline" className="capitalize">
-                                  {(app.status ?? "new").toLowerCase()}
+                                  {(app.status ?? "pending").toLowerCase()}
                                 </Badge>
                               </div>
-                            </div>
-                            <div className="grid gap-1 text-xs text-muted-foreground">
-                              {app.role_interest ? (
-                                <p>
-                                  <span className="font-medium text-foreground/80">
-                                    Role:
-                                  </span>{" "}
-                                  {app.role_interest}
-                                </p>
-                              ) : null}
-                              {app.primary_skill ? (
-                                <p>
-                                  <span className="font-medium text-foreground/80">
-                                    Skill:
-                                  </span>{" "}
-                                  {app.primary_skill}
-                                </p>
-                              ) : null}
-                              {app.availability ? (
-                                <p>
-                                  <span className="font-medium text-foreground/80">
-                                    Availability:
-                                  </span>{" "}
-                                  {app.availability}
-                                </p>
-                              ) : null}
-                              {app.experience_level ? (
-                                <p>
-                                  <span className="font-medium text-foreground/80">
-                                    Experience:
-                                  </span>{" "}
-                                  {app.experience_level}
-                                </p>
-                              ) : null}
-                              {app.submitted_at ? (
-                                <p>
-                                  <span className="font-medium text-foreground/80">
-                                    Submitted:
-                                  </span>{" "}
-                                  {new Date(app.submitted_at).toLocaleString()}
-                                </p>
-                              ) : null}
-                            </div>
-                            {app.message ? (
-                              <p className="rounded bg-background/60 p-2 text-xs text-muted-foreground">
-                                {app.message}
+                              <p className="text-xs text-muted-foreground">
+                                {app.projects?.title ?? "No project title"}
                               </p>
-                            ) : null}
-                          </div>
-                        ))}
+                              {app.created_at ? (
+                                <p className="text-[11px] text-muted-foreground/80">
+                                  Submitted{" "}
+                                  {new Date(app.created_at).toLocaleString()}
+                                </p>
+                              ) : null}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p>
+                          No project applications on file. Encourage partners to
+                          apply via briefs.
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <Card
+                    id="opportunity-applications"
+                    className="bg-card/60 border-border/40 backdrop-blur"
+                  >
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Users className="h-5 w-5 text-emerald-300" />
+                        <CardTitle>Opportunity applications</CardTitle>
                       </div>
-                    ) : (
+                      <CardDescription>
+                        View contributor and career submissions captured on the
+                        Opportunities page.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p>
+                          {opportunityApplicationsLoading
+                            ? "Loading opportunity applicants…"
+                            : `${opportunityApplications.length} submissions`}
+                        </p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={loadOpportunityApplications}
+                          disabled={opportunityApplicationsLoading}
+                        >
+                          {opportunityApplicationsLoading ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <RefreshCw className="mr-2 h-4 w-4" />
+                          )}
+                          Refresh
+                        </Button>
+                      </div>
+                      {opportunityApplicationsLoading ? (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Loader2 className="h-4 w-4 animate-spin text-aethex-300" />
+                          Syncing with Supabase…
+                        </div>
+                      ) : opportunityApplications.length ? (
+                        <div className="grid gap-2">
+                          {opportunityApplications.slice(0, 6).map((app) => (
+                            <div
+                              key={
+                                app.id ||
+                                `${app.email ?? "candidate"}-${app.submitted_at ?? "time"}`
+                              }
+                              className="space-y-2 rounded border border-border/30 bg-background/40 p-3"
+                            >
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                  <p className="font-medium text-foreground">
+                                    {app.full_name || app.email || "Anonymous"}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground">
+                                    {app.email || "No email provided"}
+                                  </p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Badge
+                                    variant="outline"
+                                    className="capitalize"
+                                  >
+                                    {(app.type ?? "contributor").toLowerCase()}
+                                  </Badge>
+                                  <Badge
+                                    variant="outline"
+                                    className="capitalize"
+                                  >
+                                    {(app.status ?? "new").toLowerCase()}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <div className="grid gap-1 text-xs text-muted-foreground">
+                                {app.role_interest ? (
+                                  <p>
+                                    <span className="font-medium text-foreground/80">
+                                      Role:
+                                    </span>{" "}
+                                    {app.role_interest}
+                                  </p>
+                                ) : null}
+                                {app.primary_skill ? (
+                                  <p>
+                                    <span className="font-medium text-foreground/80">
+                                      Skill:
+                                    </span>{" "}
+                                    {app.primary_skill}
+                                  </p>
+                                ) : null}
+                                {app.availability ? (
+                                  <p>
+                                    <span className="font-medium text-foreground/80">
+                                      Availability:
+                                    </span>{" "}
+                                    {app.availability}
+                                  </p>
+                                ) : null}
+                                {app.experience_level ? (
+                                  <p>
+                                    <span className="font-medium text-foreground/80">
+                                      Experience:
+                                    </span>{" "}
+                                    {app.experience_level}
+                                  </p>
+                                ) : null}
+                                {app.submitted_at ? (
+                                  <p>
+                                    <span className="font-medium text-foreground/80">
+                                      Submitted:
+                                    </span>{" "}
+                                    {new Date(
+                                      app.submitted_at,
+                                    ).toLocaleString()}
+                                  </p>
+                                ) : null}
+                              </div>
+                              {app.message ? (
+                                <p className="rounded bg-background/60 p-2 text-xs text-muted-foreground">
+                                  {app.message}
+                                </p>
+                              ) : null}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p>
+                          No opportunity applications yet. Share the
+                          Opportunities page to grow the pipeline.
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Activity className="h-5 w-5 text-orange-300" />
+                        <CardTitle>System status</CardTitle>
+                      </div>
+                      <CardDescription>
+                        Auth, database, and realtime services.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground space-y-1">
+                      <p>Auth: Operational</p>
+                      <p>Database: Operational (mock fallback available)</p>
+                      <p>Realtime: Operational</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <UserCog className="h-5 w-5 text-teal-300" />
+                        <CardTitle>Your account</CardTitle>
+                      </div>
+                      <CardDescription>
+                        Owner privileges are active.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground space-y-2">
+                      <p>Signed in as {user.email}.</p>
                       <p>
-                        No opportunity applications yet. Share the Opportunities
-                        page to grow the pipeline.
+                        You have full administrative access across AeThex
+                        services.
                       </p>
-                    )}
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Activity className="h-5 w-5 text-orange-300" />
-                      <CardTitle>System status</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Auth, database, and realtime services.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground space-y-1">
-                    <p>Auth: Operational</p>
-                    <p>Database: Operational (mock fallback available)</p>
-                    <p>Realtime: Operational</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <UserCog className="h-5 w-5 text-teal-300" />
-                      <CardTitle>Your account</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Owner privileges are active.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground space-y-2">
-                    <p>Signed in as {user.email}.</p>
-                    <p>
-                      You have full administrative access across AeThex
-                      services.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
-      </div>
-    </Layout>
-  </>
+      </Layout>
+    </>
   );
 }

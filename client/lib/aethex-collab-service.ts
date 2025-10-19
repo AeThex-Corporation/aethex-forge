@@ -163,7 +163,10 @@ export const aethexCollabService = {
   },
 
   async deleteTask(taskId: string) {
-    const { error } = await supabase.from("project_tasks").delete().eq("id", taskId);
+    const { error } = await supabase
+      .from("project_tasks")
+      .delete()
+      .eq("id", taskId);
     if (error) throw new Error(error.message || "Unable to delete task");
   },
 

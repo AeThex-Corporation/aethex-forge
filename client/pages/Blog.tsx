@@ -208,137 +208,145 @@ const Blog = () => {
 
   return (
     <>
-      <SEO pageTitle="Blog" description="Insights and updates from AeThex: tutorials, platform news, and community highlights." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
-    <Layout>
-      <div className="bg-slate-950 text-foreground">
-        <BlogHero
-          featured={featuredPost}
-          totalCount={dataset.length}
-          search={searchQuery}
-          onSearchChange={setSearchQuery}
-          onViewAll={handleResetFilters}
-        />
+      <SEO
+        pageTitle="Blog"
+        description="Insights and updates from AeThex: tutorials, platform news, and community highlights."
+        canonical={
+          typeof window !== "undefined"
+            ? window.location.href
+            : (undefined as any)
+        }
+      />
+      <Layout>
+        <div className="bg-slate-950 text-foreground">
+          <BlogHero
+            featured={featuredPost}
+            totalCount={dataset.length}
+            search={searchQuery}
+            onSearchChange={setSearchQuery}
+            onViewAll={handleResetFilters}
+          />
 
-        <section className="border-b border-border/30 bg-background/60 py-12">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
-                  Filter by track
-                </p>
-                <h2 className="text-2xl font-semibold text-white">
-                  Navigate the AeThex knowledge graph
-                </h2>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleResetFilters}
-                className="self-start lg:self-auto"
-              >
-                Reset filters
-              </Button>
-            </div>
-            <div className="mt-6">
-              <BlogCategoryChips
-                categories={categories}
-                selected={selectedCategory}
-                onSelect={setSelectedCategory}
-              />
-            </div>
-          </div>
-        </section>
-
-        <BlogTrendingRail posts={trendingPosts} />
-
-        <section className="border-b border-border/30 bg-background/80 py-16">
-          <div className="container mx-auto grid gap-6 px-4 md:grid-cols-3">
-            {insights.map((insight) => (
-              <Card
-                key={insight.label}
-                className="border-border/40 bg-background/60 backdrop-blur transition hover:border-aethex-400/50"
-              >
-                <CardContent className="flex items-center gap-4 p-6">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border/30 bg-background/70 text-aethex-200">
-                    {insight.icon}
-                  </span>
-                  <div>
-                    <p className="text-sm text-muted-foreground">
-                      {insight.label}
-                    </p>
-                    <p className="text-2xl font-semibold text-white">
-                      {insight.value}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {insight.helper}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <section className="py-20">
-          <div className="container mx-auto space-y-12 px-4">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
-                  Latest updates
-                </p>
-                <h2 className="text-3xl font-semibold text-white">
-                  Fresh from the AeThex ship room
-                </h2>
-              </div>
-              <Button
-                asChild
-                variant="outline"
-                className="self-start border-border/60 text-sm"
-              >
-                <Link to="/changelog">
-                  View changelog
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-
-            <BlogPostGrid posts={displayedPosts} />
-          </div>
-        </section>
-
-        <BlogNewsletterSection />
-
-        <section className="bg-background/70 py-16">
-          <div className="container mx-auto px-4">
-            <div className="rounded-2xl border border-border/40 bg-background/80 p-8">
-              <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <section className="border-b border-border/30 bg-background/60 py-12">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="space-y-2">
                   <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
-                    Explore more
+                    Filter by track
                   </p>
-                  <h3 className="text-2xl font-semibold text-white">
-                    Dive into AeThex documentation
-                  </h3>
-                  <p className="max-w-2xl text-sm text-muted-foreground">
-                    Looking for implementation guides, deployment recipes, or
-                    program onboarding materials? Visit our documentation hub
-                    for developer tutorials, platform references, and community
-                    playbooks.
+                  <h2 className="text-2xl font-semibold text-white">
+                    Navigate the AeThex knowledge graph
+                  </h2>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleResetFilters}
+                  className="self-start lg:self-auto"
+                >
+                  Reset filters
+                </Button>
+              </div>
+              <div className="mt-6">
+                <BlogCategoryChips
+                  categories={categories}
+                  selected={selectedCategory}
+                  onSelect={setSelectedCategory}
+                />
+              </div>
+            </div>
+          </section>
+
+          <BlogTrendingRail posts={trendingPosts} />
+
+          <section className="border-b border-border/30 bg-background/80 py-16">
+            <div className="container mx-auto grid gap-6 px-4 md:grid-cols-3">
+              {insights.map((insight) => (
+                <Card
+                  key={insight.label}
+                  className="border-border/40 bg-background/60 backdrop-blur transition hover:border-aethex-400/50"
+                >
+                  <CardContent className="flex items-center gap-4 p-6">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full border border-border/30 bg-background/70 text-aethex-200">
+                      {insight.icon}
+                    </span>
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        {insight.label}
+                      </p>
+                      <p className="text-2xl font-semibold text-white">
+                        {insight.value}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {insight.helper}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          <section className="py-20">
+            <div className="container mx-auto space-y-12 px-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                    Latest updates
                   </p>
+                  <h2 className="text-3xl font-semibold text-white">
+                    Fresh from the AeThex ship room
+                  </h2>
                 </div>
                 <Button
                   asChild
-                  className="bg-gradient-to-r from-aethex-500 to-neon-blue"
+                  variant="outline"
+                  className="self-start border-border/60 text-sm"
                 >
-                  <Link to="/docs">Open documentation hub</Link>
+                  <Link to="/changelog">
+                    View changelog
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
               </div>
+
+              <BlogPostGrid posts={displayedPosts} />
             </div>
-          </div>
-        </section>
-      </div>
-    </Layout>
-  </>
+          </section>
+
+          <BlogNewsletterSection />
+
+          <section className="bg-background/70 py-16">
+            <div className="container mx-auto px-4">
+              <div className="rounded-2xl border border-border/40 bg-background/80 p-8">
+                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                  <div className="space-y-2">
+                    <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                      Explore more
+                    </p>
+                    <h3 className="text-2xl font-semibold text-white">
+                      Dive into AeThex documentation
+                    </h3>
+                    <p className="max-w-2xl text-sm text-muted-foreground">
+                      Looking for implementation guides, deployment recipes, or
+                      program onboarding materials? Visit our documentation hub
+                      for developer tutorials, platform references, and
+                      community playbooks.
+                    </p>
+                  </div>
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-aethex-500 to-neon-blue"
+                  >
+                    <Link to="/docs">Open documentation hub</Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </Layout>
+    </>
   );
 };
 

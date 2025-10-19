@@ -27,7 +27,10 @@ export default function BannerSettings() {
       const resp = await fetch("/api/site-settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key: "home_banner", value: { text, enabled, style } }),
+        body: JSON.stringify({
+          key: "home_banner",
+          value: { text, enabled, style },
+        }),
       });
       if (!resp.ok) throw new Error("Save failed");
     } finally {
@@ -38,13 +41,17 @@ export default function BannerSettings() {
   return (
     <div className="space-y-3">
       <div className="grid gap-2 md:grid-cols-4">
-        <label className="text-sm text-muted-foreground md:col-span-1">Enabled</label>
+        <label className="text-sm text-muted-foreground md:col-span-1">
+          Enabled
+        </label>
         <div className="md:col-span-3">
           <Switch checked={enabled} onCheckedChange={setEnabled} />
         </div>
       </div>
       <div className="grid gap-2 md:grid-cols-4">
-        <label className="text-sm text-muted-foreground md:col-span-1">Banner text</label>
+        <label className="text-sm text-muted-foreground md:col-span-1">
+          Banner text
+        </label>
         <div className="md:col-span-3">
           <input
             className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"
@@ -55,7 +62,9 @@ export default function BannerSettings() {
         </div>
       </div>
       <div className="grid gap-2 md:grid-cols-4">
-        <label className="text-sm text-muted-foreground md:col-span-1">Style</label>
+        <label className="text-sm text-muted-foreground md:col-span-1">
+          Style
+        </label>
         <div className="md:col-span-3">
           <select
             className="w-full bg-background/50 border border-border/40 rounded px-2 py-1 text-sm"

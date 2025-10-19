@@ -454,7 +454,8 @@ export function createServer() {
           return res.status(500).json({ error: error.message });
         }
         const map: Record<string, any> = {};
-        for (const row of data || []) map[(row as any).key] = (row as any).value;
+        for (const row of data || [])
+          map[(row as any).key] = (row as any).value;
         return res.json(map);
       } catch (e: any) {
         return res.status(500).json({ error: e?.message || String(e) });
@@ -463,7 +464,10 @@ export function createServer() {
 
     app.post("/api/site-settings", async (req, res) => {
       try {
-        const { key, value } = (req.body || {}) as { key?: string; value?: any };
+        const { key, value } = (req.body || {}) as {
+          key?: string;
+          value?: any;
+        };
         if (!key || typeof key !== "string") {
           return res.status(400).json({ error: "key required" });
         }
@@ -472,7 +476,10 @@ export function createServer() {
           .from("site_settings")
           .upsert(payload, { onConflict: "key" as any });
         if (error) {
-          if (isTableMissing(error)) return res.status(400).json({ error: "site_settings table missing" });
+          if (isTableMissing(error))
+            return res
+              .status(400)
+              .json({ error: "site_settings table missing" });
           return res.status(500).json({ error: error.message });
         }
         return res.json({ ok: true });

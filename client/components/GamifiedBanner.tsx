@@ -8,12 +8,15 @@ type Props = {
   style?: string | null;
 };
 
-const ACCENTS: Record<string, {
-  grad: string;
-  glowRing: string;
-  pill: string;
-  icon: any;
-}> = {
+const ACCENTS: Record<
+  string,
+  {
+    grad: string;
+    glowRing: string;
+    pill: string;
+    icon: any;
+  }
+> = {
   quest: {
     grad: "from-emerald-500/20 via-aethex-500/15 to-neon-blue/20",
     glowRing:
@@ -58,7 +61,9 @@ export function GamifiedBanner({ text, enabled, style }: Props) {
 
   const parts = useMemo(() => {
     // If user prefixed an emoji, use it
-    const m = /^([\p{Emoji}\p{Extended_Pictographic}]+)\s*(.*)$/u.exec(text || "");
+    const m = /^([\p{Emoji}\p{Extended_Pictographic}]+)\s*(.*)$/u.exec(
+      text || "",
+    );
     return {
       emoji: m?.[1] || "🎮",
       body: (m?.[2] || text || "").trim(),

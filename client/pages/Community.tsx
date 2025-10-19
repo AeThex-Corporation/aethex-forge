@@ -1790,349 +1790,511 @@ export default function Community() {
 
   return (
     <>
-      <SEO pageTitle="Community" description="AeThex Community: share progress, discover collaborators, and stay updated." canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
-    <Layout>
-      <div className="min-h-screen bg-aethex-gradient">
-        {/* Hero Section */}
-        <section className="relative py-20 lg:py-32">
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <div className="max-w-4xl mx-auto space-y-8">
-              <Badge
-                variant="outline"
-                className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle"
-              >
-                <Users className="h-3 w-3 mr-1" />
-                AeThex Community
-              </Badge>
-
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-gradient-purple">
-                  Join the Innovation Network
-                </span>
-              </h1>
-
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Connect with developers, creators, and innovators from around
-                the world. Share knowledge, collaborate on projects, and grow
-                together.
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift"
-                >
-                  <Link to="/discord" className="flex items-center space-x-2">
-                    <MessageSquare className="h-5 w-5" />
-                    <span>Join Discord</span>
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
+      <SEO
+        pageTitle="Community"
+        description="AeThex Community: share progress, discover collaborators, and stay updated."
+        canonical={
+          typeof window !== "undefined"
+            ? window.location.href
+            : (undefined as any)
+        }
+      />
+      <Layout>
+        <div className="min-h-screen bg-aethex-gradient">
+          {/* Hero Section */}
+          <section className="relative py-20 lg:py-32">
+            <div className="container mx-auto px-4 text-center relative z-10">
+              <div className="max-w-4xl mx-auto space-y-8">
+                <Badge
                   variant="outline"
-                  size="lg"
-                  className="border-border/50 hover-lift"
+                  className="border-aethex-400/50 text-aethex-400 animate-bounce-gentle"
                 >
-                  <Link to="/github">View Projects</Link>
-                </Button>
+                  <Users className="h-3 w-3 mr-1" />
+                  AeThex Community
+                </Badge>
+
+                <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+                  <span className="text-gradient-purple">
+                    Join the Innovation Network
+                  </span>
+                </h1>
+
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                  Connect with developers, creators, and innovators from around
+                  the world. Share knowledge, collaborate on projects, and grow
+                  together.
+                </p>
+
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift"
+                  >
+                    <Link to="/discord" className="flex items-center space-x-2">
+                      <MessageSquare className="h-5 w-5" />
+                      <span>Join Discord</span>
+                      <ArrowRight className="h-5 w-5" />
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="border-border/50 hover-lift"
+                  >
+                    <Link to="/github">View Projects</Link>
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <Tabs
-          value={activeTab}
-          onValueChange={handleTabChange}
-          className="space-y-12"
-        >
-          <div className="container mx-auto px-4">
-            <div className="overflow-x-auto pb-2">
-              <TabsList className="flex w-max flex-nowrap gap-2 rounded-2xl border border-border/60 bg-background/60 p-2">
-                {communityTabItems.map((tab) => (
-                  <TabsTrigger
-                    key={tab.id}
-                    value={tab.id}
-                    className="rounded-xl px-4 py-2 text-sm font-semibold text-muted-foreground transition whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-aethex-500/20 data-[state=active]:to-neon-blue/20 data-[state=active]:text-foreground data-[state=active]:shadow"
-                  >
-                    {tab.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+          <Tabs
+            value={activeTab}
+            onValueChange={handleTabChange}
+            className="space-y-12"
+          >
+            <div className="container mx-auto px-4">
+              <div className="overflow-x-auto pb-2">
+                <TabsList className="flex w-max flex-nowrap gap-2 rounded-2xl border border-border/60 bg-background/60 p-2">
+                  {communityTabItems.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className="rounded-xl px-4 py-2 text-sm font-semibold text-muted-foreground transition whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-aethex-500/20 data-[state=active]:to-neon-blue/20 data-[state=active]:text-foreground data-[state=active]:shadow"
+                    >
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
             </div>
-          </div>
 
-          {activeTab === "new-members" && (
-            <TabsContent value="new-members" className="mt-0">
-              {/* New Member Hub */}
-              <section className="py-20 bg-background/40">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="New Member Hub"
-                    title="Start strong in your first 7 days"
-                    description="Follow a guided path, watch the welcome tour, and unlock your first achievements fast."
-                    align="left"
-                  />
-                  <div className="grid gap-8 lg:grid-cols-[2fr,3fr]">
-                    <Card className="relative overflow-hidden border-border/60 bg-background/80 backdrop-blur-xl">
-                      <CardContent className="p-0">
-                        <div className="relative aspect-video bg-gradient-to-br from-aethex-500/30 via-background to-neon-blue/30 flex items-center justify-center">
-                          <div className="flex flex-col items-center space-y-4">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/80 border border-aethex-400/50 shadow-lg shadow-aethex-500/20">
-                              <Play className="h-8 w-8 text-aethex-400" />
+            {activeTab === "new-members" && (
+              <TabsContent value="new-members" className="mt-0">
+                {/* New Member Hub */}
+                <section className="py-20 bg-background/40">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="New Member Hub"
+                      title="Start strong in your first 7 days"
+                      description="Follow a guided path, watch the welcome tour, and unlock your first achievements fast."
+                      align="left"
+                    />
+                    <div className="grid gap-8 lg:grid-cols-[2fr,3fr]">
+                      <Card className="relative overflow-hidden border-border/60 bg-background/80 backdrop-blur-xl">
+                        <CardContent className="p-0">
+                          <div className="relative aspect-video bg-gradient-to-br from-aethex-500/30 via-background to-neon-blue/30 flex items-center justify-center">
+                            <div className="flex flex-col items-center space-y-4">
+                              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/80 border border-aethex-400/50 shadow-lg shadow-aethex-500/20">
+                                <Play className="h-8 w-8 text-aethex-400" />
+                              </div>
+                              <div className="text-center space-y-2">
+                                <h3 className="text-xl font-semibold text-gradient">
+                                  Welcome to AeThex
+                                </h3>
+                                <p className="text-sm text-muted-foreground max-w-sm">
+                                  Learn how to customise your profile, meet
+                                  mentors, and ship your first contribution.
+                                </p>
+                              </div>
+                              <Button asChild>
+                                <a
+                                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="flex items-center space-x-2"
+                                >
+                                  <span>Watch welcome briefing</span>
+                                  <ArrowRight className="h-4 w-4" />
+                                </a>
+                              </Button>
                             </div>
-                            <div className="text-center space-y-2">
-                              <h3 className="text-xl font-semibold text-gradient">
-                                Welcome to AeThex
-                              </h3>
-                              <p className="text-sm text-muted-foreground max-w-sm">
-                                Learn how to customise your profile, meet
-                                mentors, and ship your first contribution.
-                              </p>
-                            </div>
-                            <Button asChild>
-                              <a
-                                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex items-center space-x-2"
-                              >
-                                <span>Watch welcome briefing</span>
-                                <ArrowRight className="h-4 w-4" />
-                              </a>
-                            </Button>
+                            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_rgba(80,199,255,0.25),_transparent_70%)]" />
                           </div>
-                          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_rgba(80,199,255,0.25),_transparent_70%)]" />
-                        </div>
-                        <div className="p-6 space-y-4">
-                          <h3 className="text-lg font-semibold text-foreground">
-                            Orientation snapshot
-                          </h3>
-                          <div className="grid gap-3">
-                            <div className="flex items-center justify-between text-sm text-muted-foreground">
-                              <span>Average onboarding time</span>
-                              <span className="font-semibold text-aethex-400">
-                                22 mins
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between text-sm text-muted-foreground">
-                              <span>Mentors online right now</span>
-                              <span className="font-semibold text-aethex-400">
-                                18
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between text-sm text-muted-foreground">
-                              <span>Starter quests completed this week</span>
-                              <span className="font-semibold text-aethex-400">
-                                412
-                              </span>
+                          <div className="p-6 space-y-4">
+                            <h3 className="text-lg font-semibold text-foreground">
+                              Orientation snapshot
+                            </h3>
+                            <div className="grid gap-3">
+                              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                <span>Average onboarding time</span>
+                                <span className="font-semibold text-aethex-400">
+                                  22 mins
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                <span>Mentors online right now</span>
+                                <span className="font-semibold text-aethex-400">
+                                  18
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                <span>Starter quests completed this week</span>
+                                <span className="font-semibold text-aethex-400">
+                                  412
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <div className="grid gap-6">
-                      <Card className="border-border/60 bg-background/80">
-                        <CardHeader className="space-y-2">
-                          <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                            <CheckCircle className="h-4 w-4 text-aethex-400" />
-                            First steps checklist
-                          </div>
-                          <CardTitle className="text-2xl">
-                            Ship your first wins this week
-                          </CardTitle>
-                          <CardDescription>
-                            Work through the essentials and unlock the New
-                            Recruit badge.
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <ul className="space-y-4">
-                            {newMemberSteps.map((step) => {
-                              const Icon = step.icon;
-                              return (
-                                <li key={step.id} className="flex gap-4">
-                                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                                    <Icon className="h-5 w-5" />
-                                  </div>
-                                  <div className="space-y-1">
-                                    <p className="font-semibold text-foreground">
-                                      {step.title}
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                      {step.description}
-                                    </p>
-                                  </div>
-                                </li>
-                              );
-                            })}
-                          </ul>
                         </CardContent>
                       </Card>
 
+                      <div className="grid gap-6">
+                        <Card className="border-border/60 bg-background/80">
+                          <CardHeader className="space-y-2">
+                            <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                              <CheckCircle className="h-4 w-4 text-aethex-400" />
+                              First steps checklist
+                            </div>
+                            <CardTitle className="text-2xl">
+                              Ship your first wins this week
+                            </CardTitle>
+                            <CardDescription>
+                              Work through the essentials and unlock the New
+                              Recruit badge.
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <ul className="space-y-4">
+                              {newMemberSteps.map((step) => {
+                                const Icon = step.icon;
+                                return (
+                                  <li key={step.id} className="flex gap-4">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                      <Icon className="h-5 w-5" />
+                                    </div>
+                                    <div className="space-y-1">
+                                      <p className="font-semibold text-foreground">
+                                        {step.title}
+                                      </p>
+                                      <p className="text-sm text-muted-foreground">
+                                        {step.description}
+                                      </p>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="border-border/60 bg-background/80">
+                          <CardHeader className="space-y-2">
+                            <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                              <Sparkles className="h-4 w-4 text-aethex-400" />
+                              Quick wins
+                            </div>
+                            <CardTitle className="text-2xl">
+                              Jump into the right resources
+                            </CardTitle>
+                            <CardDescription>
+                              Explore guides and shortcuts tailored for
+                              first-time members.
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="space-y-3">
+                              {newMemberResources.map((resource) => (
+                                <div
+                                  key={resource.id}
+                                  className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/60 p-4 hover:border-aethex-400/40 transition-colors"
+                                >
+                                  <div className="flex items-center justify-between gap-3">
+                                    <div>
+                                      <p className="font-semibold text-foreground">
+                                        {resource.title}
+                                      </p>
+                                      <p className="text-sm text-muted-foreground">
+                                        {resource.description}
+                                      </p>
+                                    </div>
+                                    <ArrowRight className="h-4 w-4 text-aethex-400" />
+                                  </div>
+                                  <Button
+                                    asChild
+                                    variant="outline"
+                                    size="sm"
+                                    className="w-fit"
+                                  >
+                                    <Link to={resource.href}>
+                                      {resource.label}
+                                    </Link>
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "knowledge" && (
+              <TabsContent value="knowledge" className="mt-0">
+                {/* Knowledge Base */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Knowledge Base"
+                      title="Search answers and how-to guides"
+                      description="Get instant access to FAQs, tutorials, and troubleshooting playbooks maintained by the community."
+                      align="left"
+                    />
+                    <div className="grid gap-8 lg:grid-cols-[2fr,3fr]">
                       <Card className="border-border/60 bg-background/80">
-                        <CardHeader className="space-y-2">
+                        <CardHeader className="space-y-3">
                           <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                            <Sparkles className="h-4 w-4 text-aethex-400" />
-                            Quick wins
+                            <Search className="h-4 w-4 text-aethex-400" />
+                            Search the library
                           </div>
                           <CardTitle className="text-2xl">
-                            Jump into the right resources
+                            Find step-by-step help
                           </CardTitle>
                           <CardDescription>
-                            Explore guides and shortcuts tailored for first-time
-                            members.
+                            Enter a topic, tool, or problem and we will surface
+                            curated guides written by mentors and staff.
                           </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="space-y-3">
-                            {newMemberResources.map((resource) => (
-                              <div
-                                key={resource.id}
-                                className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/60 p-4 hover:border-aethex-400/40 transition-colors"
-                              >
-                                <div className="flex items-center justify-between gap-3">
-                                  <div>
-                                    <p className="font-semibold text-foreground">
-                                      {resource.title}
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                      {resource.description}
-                                    </p>
+                          <form
+                            onSubmit={handleKnowledgeSearch}
+                            className="space-y-3"
+                          >
+                            <div className="relative">
+                              <Input
+                                value={knowledgeQuery}
+                                onChange={(event) =>
+                                  setKnowledgeQuery(event.target.value)
+                                }
+                                placeholder="e.g. Deploying multiplayer servers"
+                                className="pl-10 bg-background/60 border-border/60"
+                                aria-label="Search knowledge base"
+                              />
+                              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                            </div>
+                            <Button
+                              type="submit"
+                              className="w-full justify-center"
+                            >
+                              Search articles
+                            </Button>
+                          </form>
+                          <div className="space-y-2">
+                            <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                              Quick suggestions
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {knowledgeSuggestions.map((suggestion) => (
+                                <Button
+                                  key={suggestion}
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  className="border-border/60"
+                                  onClick={() => setKnowledgeQuery(suggestion)}
+                                >
+                                  {suggestion}
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        {knowledgeBaseTopics.map((topic) => {
+                          const Icon = topic.icon;
+                          return (
+                            <Card
+                              key={topic.id}
+                              className="border-border/50 bg-background/70 transition-all duration-300 hover:-translate-y-1 hover:border-aethex-400/60"
+                            >
+                              <CardHeader className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Icon className="h-5 w-5 text-aethex-300" />
+                                    {topic.articles} articles
                                   </div>
-                                  <ArrowRight className="h-4 w-4 text-aethex-400" />
+                                  <Badge
+                                    variant="outline"
+                                    className="border-border/60"
+                                  >
+                                    Updated weekly
+                                  </Badge>
                                 </div>
+                                <CardTitle className="text-lg text-foreground">
+                                  {topic.title}
+                                </CardTitle>
+                                <CardDescription>
+                                  {topic.description}
+                                </CardDescription>
+                              </CardHeader>
+                              <CardContent>
                                 <Button
                                   asChild
                                   variant="outline"
                                   size="sm"
                                   className="w-fit"
                                 >
-                                  <Link to={resource.href}>
-                                    {resource.label}
-                                  </Link>
+                                  <Link to={topic.href}>Explore resources</Link>
                                 </Button>
-                              </div>
-                            ))}
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "mentorship" && (
+              <TabsContent value="mentorship" className="mt-0">
+                {/* Mentorship Program */}
+                <section className="py-20 bg-background/20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Mentorship"
+                      title="Level up with experienced guides"
+                      description="Match with mentors for technical deep dives, creative direction, and career coaching."
+                      align="left"
+                    />
+                    <div className="grid gap-8 lg:grid-cols-[3fr,2fr]">
+                      <Card className="border-border/60 bg-background/80">
+                        <CardHeader className="space-y-3">
+                          <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                            <Sparkles className="h-4 w-4 text-aethex-400" />
+                            Mentor spotlight
+                          </div>
+                          <CardTitle className="text-2xl">
+                            Kick off a guided sprint
+                          </CardTitle>
+                          <CardDescription>
+                            Submit your goals and interests, and we’ll connect
+                            you with mentors who ship in similar spaces.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <ul className="space-y-3 text-sm text-muted-foreground">
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="h-4 w-4 text-aethex-400" />
+                              1:1 sessions and group clinics each week
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="h-4 w-4 text-aethex-400" />
+                              Direct feedback on builds, pitch decks, and
+                              production plans
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <CheckCircle className="h-4 w-4 text-aethex-400" />
+                              Priority invites to closed playtests and God Mode
+                              rewards
+                            </li>
+                          </ul>
+                          <div className="flex flex-col sm:flex-row gap-3">
+                            <Button asChild className="flex-1">
+                              <Link to="/community/mentorship">
+                                Request mentorship
+                              </Link>
+                            </Button>
+                            <Button
+                              asChild
+                              variant="outline"
+                              className="flex-1"
+                            >
+                              <Link to="/community/mentorship/apply">
+                                Become a mentor
+                              </Link>
+                            </Button>
                           </div>
                         </CardContent>
                       </Card>
+                      <div className="grid gap-4">
+                        {mentorshipTracks.map((track) => {
+                          const Icon = track.icon;
+                          return (
+                            <div
+                              key={track.id}
+                              className="rounded-xl border border-border/50 bg-background/70 p-5 hover:border-aethex-400/50 transition"
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                  <Icon className="h-5 w-5" />
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-lg font-semibold text-foreground">
+                                    {track.title}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {track.description}
+                                  </p>
+                                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                                    {track.mentors} mentors available
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
+                </section>
+              </TabsContent>
+            )}
 
-          {activeTab === "knowledge" && (
-            <TabsContent value="knowledge" className="mt-0">
-              {/* Knowledge Base */}
-              <section className="py-20">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Knowledge Base"
-                    title="Search answers and how-to guides"
-                    description="Get instant access to FAQs, tutorials, and troubleshooting playbooks maintained by the community."
-                    align="left"
-                  />
-                  <div className="grid gap-8 lg:grid-cols-[2fr,3fr]">
-                    <Card className="border-border/60 bg-background/80">
-                      <CardHeader className="space-y-3">
-                        <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                          <Search className="h-4 w-4 text-aethex-400" />
-                          Search the library
-                        </div>
-                        <CardTitle className="text-2xl">
-                          Find step-by-step help
-                        </CardTitle>
-                        <CardDescription>
-                          Enter a topic, tool, or problem and we will surface
-                          curated guides written by mentors and staff.
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <form
-                          onSubmit={handleKnowledgeSearch}
-                          className="space-y-3"
-                        >
-                          <div className="relative">
-                            <Input
-                              value={knowledgeQuery}
-                              onChange={(event) =>
-                                setKnowledgeQuery(event.target.value)
-                              }
-                              placeholder="e.g. Deploying multiplayer servers"
-                              className="pl-10 bg-background/60 border-border/60"
-                              aria-label="Search knowledge base"
-                            />
-                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                          </div>
-                          <Button
-                            type="submit"
-                            className="w-full justify-center"
-                          >
-                            Search articles
-                          </Button>
-                        </form>
-                        <div className="space-y-2">
-                          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                            Quick suggestions
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {knowledgeSuggestions.map((suggestion) => (
-                              <Button
-                                key={suggestion}
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                className="border-border/60"
-                                onClick={() => setKnowledgeQuery(suggestion)}
-                              >
-                                {suggestion}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      {knowledgeBaseTopics.map((topic) => {
-                        const Icon = topic.icon;
+            {activeTab === "case-studies" && (
+              <TabsContent value="case-studies" className="mt-0">
+                {/* Case Studies */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Case Studies"
+                      title="See how teams scale with AeThex"
+                      description="Deep dives into projects that leveraged the community for momentum, funding, and retention."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-3">
+                      {caseStudyHighlights.map((study) => {
+                        const Icon = study.icon;
                         return (
                           <Card
-                            key={topic.id}
-                            className="border-border/50 bg-background/70 transition-all duration-300 hover:-translate-y-1 hover:border-aethex-400/60"
+                            key={study.id}
+                            className="relative overflow-hidden border-border/60 bg-background/80 backdrop-blur-xl"
                           >
-                            <CardHeader className="space-y-3">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <Icon className="h-5 w-5 text-aethex-300" />
-                                  {topic.articles} articles
-                                </div>
-                                <Badge
-                                  variant="outline"
-                                  className="border-border/60"
-                                >
-                                  Updated weekly
-                                </Badge>
+                            <div className="absolute inset-0 bg-gradient-to-br from-aethex-500/10 via-transparent to-neon-blue/10" />
+                            <CardHeader className="relative space-y-3">
+                              <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                                <Icon className="h-5 w-5 text-aethex-300" />
+                                {study.metricLabel}
                               </div>
-                              <CardTitle className="text-lg text-foreground">
-                                {topic.title}
+                              <CardTitle className="text-2xl text-foreground">
+                                {study.title}
                               </CardTitle>
-                              <CardDescription>
-                                {topic.description}
-                              </CardDescription>
+                              <p className="text-sm font-semibold text-aethex-300">
+                                {study.metricValue}
+                              </p>
                             </CardHeader>
-                            <CardContent>
+                            <CardContent className="relative space-y-4">
+                              <p className="text-sm text-muted-foreground leading-relaxed">
+                                {study.summary}
+                              </p>
                               <Button
                                 asChild
                                 variant="outline"
                                 size="sm"
                                 className="w-fit"
                               >
-                                <Link to={topic.href}>Explore resources</Link>
+                                <Link
+                                  to={`/community/case-studies/${study.id}`}
+                                >
+                                  Read full story
+                                </Link>
                               </Button>
                             </CardContent>
                           </Card>
@@ -2140,622 +2302,1461 @@ export default function Community() {
                       })}
                     </div>
                   </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
+                </section>
+              </TabsContent>
+            )}
 
-          {activeTab === "mentorship" && (
-            <TabsContent value="mentorship" className="mt-0">
-              {/* Mentorship Program */}
-              <section className="py-20 bg-background/20">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Mentorship"
-                    title="Level up with experienced guides"
-                    description="Match with mentors for technical deep dives, creative direction, and career coaching."
-                    align="left"
-                  />
-                  <div className="grid gap-8 lg:grid-cols-[3fr,2fr]">
-                    <Card className="border-border/60 bg-background/80">
-                      <CardHeader className="space-y-3">
-                        <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                          <Sparkles className="h-4 w-4 text-aethex-400" />
-                          Mentor spotlight
+            {activeTab === "leaderboards" && (
+              <TabsContent value="leaderboards" className="mt-0">
+                {/* Leaderboards */}
+                <section className="py-20 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Gamification"
+                      title="Celebrate contributions across the network"
+                      description="Track streaks, highlight achievements, and fuel friendly competition among builders."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-3">
+                      {leaderboardCategories.map((category) => {
+                        const Icon = category.icon;
+                        return (
+                          <Card
+                            key={category.id}
+                            className="border border-border/50 bg-background/70 shadow-sm hover:border-aethex-400/50 transition"
+                          >
+                            <CardHeader className="space-y-3">
+                              <div className="flex items-center justify-between text-sm uppercase tracking-wide text-muted-foreground">
+                                <span className="flex items-center gap-2">
+                                  <Icon className="h-4 w-4 text-aethex-300" />
+                                  {category.title}
+                                </span>
+                                <Badge
+                                  variant="outline"
+                                  className="border-border/50"
+                                >
+                                  Updated daily
+                                </Badge>
+                              </div>
+                              <CardDescription>
+                                {category.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                              <ol className="space-y-1 text-sm">
+                                {category.leaders.map((leader, index) => (
+                                  <li
+                                    key={leader}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <span className="text-muted-foreground">
+                                      #{index + 1}
+                                    </span>
+                                    <span className="font-medium text-foreground">
+                                      {leader}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ol>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-8 text-left">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="border-border/60"
+                      >
+                        <Link to="/community/leaderboards">
+                          View full leaderboards
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "newsletter" && (
+              <TabsContent value="newsletter" className="mt-0">
+                {/* Community Newsletter */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Community Briefing"
+                      title="Get the top discussions in your inbox"
+                      description="Stay ahead with weekly highlights, upcoming events, and featured creators curated by the AeThex team."
+                      align="left"
+                    />
+                    <Card className="border-border/60 bg-background/80 max-w-3xl">
+                      <CardContent className="space-y-4 p-6 lg:p-8">
+                        <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
+                            <Mail className="h-4 w-4 text-aethex-300" />
+                            Weekly digest
+                          </div>
+                          <p>
+                            Each Monday we share major updates, spotlight
+                            champions, and surface new opportunities—no noise,
+                            just impact.
+                          </p>
                         </div>
-                        <CardTitle className="text-2xl">
-                          Kick off a guided sprint
-                        </CardTitle>
-                        <CardDescription>
-                          Submit your goals and interests, and we’ll connect you
-                          with mentors who ship in similar spaces.
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <ul className="space-y-3 text-sm text-muted-foreground">
-                          <li className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-aethex-400" />
-                            1:1 sessions and group clinics each week
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-aethex-400" />
-                            Direct feedback on builds, pitch decks, and
-                            production plans
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-aethex-400" />
-                            Priority invites to closed playtests and God Mode
-                            rewards
-                          </li>
-                        </ul>
-                        <div className="flex flex-col sm:flex-row gap-3">
-                          <Button asChild className="flex-1">
-                            <Link to="/community/mentorship">
-                              Request mentorship
-                            </Link>
+                        <form
+                          onSubmit={handleNewsletterSignup}
+                          className="flex flex-col gap-3 sm:flex-row"
+                        >
+                          <Input
+                            type="email"
+                            required
+                            value={newsletterEmail}
+                            onChange={(event) =>
+                              setNewsletterEmail(event.target.value)
+                            }
+                            placeholder="you@example.com"
+                            className="bg-background/60 border-border/60"
+                            aria-label="Email address"
+                          />
+                          <Button type="submit" className="sm:w-auto">
+                            Subscribe
                           </Button>
-                          <Button asChild variant="outline" className="flex-1">
-                            <Link to="/community/mentorship/apply">
-                              Become a mentor
-                            </Link>
-                          </Button>
-                        </div>
+                        </form>
+                        <p className="text-xs text-muted-foreground">
+                          We respect your time—unsubscribe anytime with a single
+                          click.
+                        </p>
                       </CardContent>
                     </Card>
-                    <div className="grid gap-4">
-                      {mentorshipTracks.map((track) => {
-                        const Icon = track.icon;
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "growth" && (
+              <TabsContent value="growth" className="mt-0">
+                {/* Professional Growth & Fun */}
+                <section className="py-20 bg-background/20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Professional Growth & Fun"
+                      title="Discover new opportunities and show your AeThex pride"
+                      description="Connect with studios, earn bounties, and rock exclusive merch designed by the community."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-2">
+                      {opportunityHighlights.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <Card
+                            key={item.id}
+                            className="border-border/50 bg-background/75 transition hover:-translate-y-1 hover:border-aethex-400/50"
+                          >
+                            <CardHeader className="space-y-3">
+                              <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                                <Icon className="h-4 w-4 text-aethex-300" />
+                                {item.title}
+                              </div>
+                              <CardDescription>
+                                {item.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                              <div className="grid gap-3 sm:grid-cols-2">
+                                {item.metrics.map((metric) => (
+                                  <div
+                                    key={metric.label}
+                                    className="rounded-lg border border-border/40 bg-background/60 p-3 text-sm"
+                                  >
+                                    <p className="text-muted-foreground">
+                                      {metric.label}
+                                    </p>
+                                    <p className="text-xl font-semibold text-foreground">
+                                      {metric.value}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                              <Button
+                                asChild
+                                variant="outline"
+                                className="w-fit"
+                              >
+                                <Link to={item.href}>{item.ctaLabel}</Link>
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "activities" && (
+              <TabsContent value="activities" className="mt-0">
+                {/* Content & Activities */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Content & Activities"
+                      title="Create, compete, and build the universe together"
+                      description="From lore summits to fan-art showcases, the community drives the culture forward."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                      {creativeActivities.map((activity) => {
+                        const Icon = activity.icon;
+                        return (
+                          <Card
+                            key={activity.id}
+                            className="border-border/50 bg-background/75 hover:border-aethex-400/50 transition"
+                          >
+                            <CardHeader className="space-y-3">
+                              <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                                <Icon className="h-4 w-4 text-aethex-300" />
+                                {activity.title}
+                              </div>
+                              <CardDescription>
+                                {activity.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <ul className="space-y-2 text-xs text-muted-foreground">
+                                {activity.highlights.map((highlight) => (
+                                  <li
+                                    key={highlight}
+                                    className="flex items-start gap-2"
+                                  >
+                                    <ArrowRight className="mt-0.5 h-3 w-3 text-aethex-400" />
+                                    <span>{highlight}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="w-fit"
+                              >
+                                <Link to={activity.href}>Join in</Link>
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "recognition" && (
+              <TabsContent value="recognition" className="mt-0">
+                {/* Recognition & Roles */}
+                <section className="py-20 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Recognition & Roles"
+                      title="Support champions powering the community"
+                      description="Formal programs that reward ambassadors, creators, and playtest squads for their impact."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-3">
+                      {recognitionPrograms.map((program) => {
+                        const Icon = program.icon;
+                        return (
+                          <Card
+                            key={program.id}
+                            className="border-border/50 bg-background/75 hover:border-aethex-400/60 transition"
+                          >
+                            <CardHeader className="space-y-3">
+                              <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                                <Icon className="h-4 w-4 text-aethex-300" />
+                                {program.title}
+                              </div>
+                              <CardDescription>
+                                {program.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <ul className="space-y-2 text-xs text-muted-foreground">
+                                {program.perks.map((perk) => (
+                                  <li
+                                    key={perk}
+                                    className="flex items-start gap-2"
+                                  >
+                                    <ArrowRight className="mt-0.5 h-3 w-3 text-aethex-400" />
+                                    <span>{perk}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="w-fit"
+                              >
+                                <Link to={program.href}>
+                                  {program.ctaLabel}
+                                </Link>
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "features" && (
+              <TabsContent value="features" className="mt-0">
+                {/* Community Features */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Community Features"
+                      title="Form squads and celebrate your setup"
+                      description="Tools that make it easy to find teammates and showcase the spaces where you build."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-2">
+                      {socialFeatures.map((feature) => {
+                        const Icon = feature.icon;
+                        return (
+                          <Card
+                            key={feature.id}
+                            className="border-border/50 bg-background/80 hover:border-aethex-400/50 transition"
+                          >
+                            <CardHeader className="space-y-3">
+                              <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
+                                <Icon className="h-4 w-4 text-aethex-300" />
+                                {feature.title}
+                              </div>
+                              <CardDescription>
+                                {feature.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <ul className="space-y-2 text-xs text-muted-foreground">
+                                {feature.bullets.map((bullet) => (
+                                  <li
+                                    key={bullet}
+                                    className="flex items-start gap-2"
+                                  >
+                                    <ArrowRight className="mt-0.5 h-3 w-3 text-aethex-400" />
+                                    <span>{bullet}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="w-fit"
+                              >
+                                <Link to={feature.href}>Explore</Link>
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "stats" && (
+              <TabsContent value="stats" className="mt-0">
+                {/* Community Stats */}
+                <section className="py-16 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                      {stats.map((stat, index) => {
+                        const Icon = stat.icon;
                         return (
                           <div
-                            key={track.id}
-                            className="rounded-xl border border-border/50 bg-background/70 p-5 hover:border-aethex-400/50 transition"
+                            key={stat.label}
+                            className="text-center space-y-3 animate-scale-in"
+                            style={{ animationDelay: `${index * 0.1}s` }}
                           >
-                            <div className="flex items-start gap-3">
-                              <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                                <Icon className="h-5 w-5" />
+                            <div className="flex justify-center">
+                              <div className="p-3 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border border-aethex-400/20">
+                                <Icon className="h-6 w-6 text-aethex-400" />
                               </div>
-                              <div className="space-y-1">
-                                <p className="text-lg font-semibold text-foreground">
-                                  {track.title}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {track.description}
-                                </p>
-                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                                  {track.mentors} mentors available
-                                </p>
+                            </div>
+                            <div>
+                              <div className="text-3xl font-bold text-gradient">
+                                {stat.value}
                               </div>
+                              <p className="text-sm text-muted-foreground uppercase tracking-wide">
+                                {stat.label}
+                              </p>
                             </div>
                           </div>
                         );
                       })}
                     </div>
                   </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
+                </section>
+              </TabsContent>
+            )}
 
-          {activeTab === "case-studies" && (
-            <TabsContent value="case-studies" className="mt-0">
-              {/* Case Studies */}
-              <section className="py-20">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Case Studies"
-                    title="See how teams scale with AeThex"
-                    description="Deep dives into projects that leveraged the community for momentum, funding, and retention."
-                    align="left"
-                  />
-                  <div className="grid gap-6 md:grid-cols-3">
-                    {caseStudyHighlights.map((study) => {
-                      const Icon = study.icon;
-                      return (
-                        <Card
-                          key={study.id}
-                          className="relative overflow-hidden border-border/60 bg-background/80 backdrop-blur-xl"
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-br from-aethex-500/10 via-transparent to-neon-blue/10" />
-                          <CardHeader className="relative space-y-3">
-                            <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                              <Icon className="h-5 w-5 text-aethex-300" />
-                              {study.metricLabel}
+            {activeTab === "platforms" && (
+              <TabsContent value="platforms" className="mt-0">
+                {/* Community Platforms */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <div className="text-center mb-16 animate-slide-up">
+                      <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
+                        Connect on Your Favorite Platform
+                      </h2>
+                      <p className="text-lg text-muted-foreground">
+                        Multiple ways to engage with the AeThex community
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                      {platforms.map((platform, index) => {
+                        const Icon = platform.icon;
+                        return (
+                          <Card
+                            key={platform.name}
+                            className="text-center border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
+                            style={{ animationDelay: `${index * 0.2}s` }}
+                          >
+                            <CardHeader>
+                              <div
+                                className={`mx-auto w-16 h-16 rounded-lg bg-gradient-to-r ${platform.color} flex items-center justify-center mb-4`}
+                              >
+                                <Icon className="h-8 w-8 text-white" />
+                              </div>
+                              <CardTitle className="text-xl">
+                                {platform.name}
+                              </CardTitle>
+                              <CardDescription>
+                                {platform.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                              <div className="grid grid-cols-1 gap-2 text-sm">
+                                <div className="flex justify-between">
+                                  <span>Members:</span>
+                                  <span className="font-semibold text-aethex-400">
+                                    {platform.members}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Activity:</span>
+                                  <span className="font-semibold text-aethex-400">
+                                    {platform.activity}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <Button asChild className="w-full">
+                                <Link to={platform.link}>
+                                  Join Now
+                                  <ArrowRight className="h-4 w-4 ml-2" />
+                                </Link>
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "devconnect" && (
+              <TabsContent value="devconnect" className="mt-0">
+                {/* DevConnect Spotlight */}
+                <section className="relative py-20 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/40 via-transparent to-neon-blue/30" />
+                  <div className="container mx-auto px-4 relative z-10">
+                    <div className="max-w-5xl mx-auto grid lg:grid-cols-[2fr_3fr] gap-10 items-center">
+                      <div className="space-y-6 animate-slide-left">
+                        <Badge className="bg-gradient-to-r from-aethex-500 to-neon-blue w-fit">
+                          New Platform
+                        </Badge>
+                        <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
+                          Introducing DevConnect
+                        </h2>
+                        <p className="text-lg text-muted-foreground">
+                          DevConnect is our dedicated hub for platform teams
+                          building the next wave of AeThex experiences. Launch
+                          collabs, monitor live services, and activate the
+                          Studio network — all from one command center.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          <Button
+                            asChild
+                            size="lg"
+                            className="bg-gradient-to-r from-neon-blue to-aethex-500 hover:from-neon-blue/90 hover:to-aethex-500/90 glow-blue hover-lift"
+                          >
+                            <a
+                              href="https://devconnect.sbs"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex items-center space-x-2"
+                            >
+                              <span>Launch DevConnect</span>
+                              <ArrowRight className="h-5 w-5" />
+                            </a>
+                          </Button>
+                          <Button
+                            asChild
+                            variant="outline"
+                            size="lg"
+                            className="border-border/60"
+                          >
+                            <Link to="/contact">Talk with AeThex Team</Link>
+                          </Button>
+                        </div>
+                      </div>
+                      <Card className="border-border/40 bg-background/80 backdrop-blur-xl shadow-lg shadow-aethex-500/10 animate-slide-right">
+                        <CardContent className="p-8 space-y-6">
+                          <div className="grid gap-4">
+                            {devConnectHighlights.map((highlight, index) => {
+                              const Icon = highlight.icon;
+                              return (
+                                <div
+                                  key={highlight.title}
+                                  className="flex items-start gap-4 p-4 rounded-xl border border-border/40 bg-background/60"
+                                >
+                                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 text-aethex-300">
+                                    <Icon className="h-5 w-5" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <h3 className="font-semibold text-foreground">
+                                      {highlight.title}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                      {highlight.description}
+                                    </p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <div className="rounded-lg border border-aethex-400/40 bg-gradient-to-r from-aethex-500/10 to-neon-blue/10 p-4 text-sm text-muted-foreground">
+                            DevConnect syncs directly with AeThex developer
+                            profiles, so your activity, streaks, and
+                            achievements follow you across every build.
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "forums" && (
+              <TabsContent value="forums" className="mt-0">
+                {/* Forums & Discussion */}
+                <section className="py-20 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Forums & Discussions"
+                      title="Deep-dive with peers in dedicated boards"
+                      description="Launch structured conversations for strategy, support, and storytelling."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-3">
+                      {forumSpaces.map((space, index) => {
+                        const Icon = space.icon;
+                        return (
+                          <Card
+                            key={space.id}
+                            className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift"
+                            style={{ animationDelay: `${index * 0.1}s` }}
+                          >
+                            <CardHeader className="space-y-4">
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex items-start gap-3">
+                                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                    <Icon className="h-5 w-5" />
+                                  </div>
+                                  <div>
+                                    <CardTitle className="text-lg">
+                                      {space.name}
+                                    </CardTitle>
+                                    <CardDescription>
+                                      {space.description}
+                                    </CardDescription>
+                                  </div>
+                                </div>
+                                <Badge
+                                  variant="outline"
+                                  className="border-border/50"
+                                >
+                                  {space.threads} threads
+                                </Badge>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                              <div className="flex items-center justify-between text-xs text-muted-foreground uppercase tracking-wide">
+                                <span>{space.activeToday} active today</span>
+                                <span className="flex items-center gap-2">
+                                  <MessageCircle className="h-3.5 w-3.5" />{" "}
+                                  Latest
+                                </span>
+                              </div>
+                              <div className="rounded-lg border border-border/40 bg-background/80 p-4">
+                                <p className="text-sm font-medium text-foreground">
+                                  {space.latestThread.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  by {space.latestThread.author} •{" "}
+                                  {space.latestThread.timeAgo}
+                                </p>
+                              </div>
+                              <Button
+                                asChild
+                                variant="ghost"
+                                className="w-full justify-between text-sm"
+                              >
+                                <Link to={`/forums/${space.id}`}>
+                                  Enter space
+                                  <ArrowRight className="h-4 w-4" />
+                                </Link>
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "feedback" && (
+              <TabsContent value="feedback" className="mt-0">
+                {/* Feedback & Roadmap */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Feedback & Roadmap"
+                      title="Collect insights and close the loop with players"
+                      description="Organise bug reports, balance discussions, and feature ideas in a transparent queue."
+                      align="left"
+                    />
+                    <div className="grid gap-8 lg:grid-cols-[2fr_3fr]">
+                      <div className="space-y-6">
+                        {feedbackChannels.map((channel) => {
+                          const Icon = channel.icon;
+                          return (
+                            <Card
+                              key={channel.id}
+                              className="border-border/50 bg-background/80 backdrop-blur"
+                            >
+                              <CardHeader className="space-y-3">
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                      <Icon className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                      <CardTitle className="text-lg">
+                                        {channel.title}
+                                      </CardTitle>
+                                      <CardDescription>
+                                        {channel.description}
+                                      </CardDescription>
+                                    </div>
+                                  </div>
+                                  <Badge
+                                    variant="outline"
+                                    className="border-aethex-400/40 text-aethex-200"
+                                  >
+                                    {channel.submissionsThisWeek} this week
+                                  </Badge>
+                                </div>
+                                <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                                  Stewarded by {channel.owner}
+                                </p>
+                              </CardHeader>
+                              <CardContent className="space-y-3">
+                                <div className="flex flex-wrap gap-2">
+                                  {channel.statuses.map((status) => (
+                                    <Badge
+                                      key={status.label}
+                                      className={cn(
+                                        "text-xs",
+                                        feedbackToneStyles[status.tone],
+                                      )}
+                                    >
+                                      {status.label}: {status.count}
+                                    </Badge>
+                                  ))}
+                                </div>
+                                <Button
+                                  asChild
+                                  variant="ghost"
+                                  className="w-full justify-between text-sm"
+                                >
+                                  <Link to="/feedback">
+                                    Submit feedback
+                                    <ArrowRight className="h-4 w-4" />
+                                  </Link>
+                                </Button>
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
+                      </div>
+                      <Card className="border-border/50 bg-background/80 backdrop-blur">
+                        <CardHeader>
+                          <CardTitle>Live roadmap snapshot</CardTitle>
+                          <CardDescription>
+                            Track what the team is shipping next based on player
+                            momentum.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {roadmapSnapshot.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/80 p-4 sm:flex-row sm:items-center sm:justify-between"
+                            >
+                              <div>
+                                <p className="font-medium text-foreground">
+                                  {item.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {item.eta}
+                                </p>
+                              </div>
+                              <Badge
+                                className={feedbackToneStyles[item.statusTone]}
+                              >
+                                {item.status}
+                              </Badge>
                             </div>
-                            <CardTitle className="text-2xl text-foreground">
-                              {study.title}
-                            </CardTitle>
-                            <p className="text-sm font-semibold text-aethex-300">
-                              {study.metricValue}
+                          ))}
+                          <Button
+                            asChild
+                            variant="outline"
+                            className="w-full border-aethex-400/40"
+                          >
+                            <Link to="/roadmap">Open public roadmap</Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "polls" && (
+              <TabsContent value="polls" className="mt-0">
+                {/* Community Polls */}
+                <section className="py-20 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Community Polls"
+                      title="Let players steer the next big moves"
+                      description="Run lightweight polls to validate cosmetics, roadmap priorities, and upcoming events."
+                      align="center"
+                    />
+                    <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+                      {polls.map((poll) => (
+                        <PollCard
+                          key={poll.id}
+                          poll={poll}
+                          selectedOption={pollSelections[poll.id]}
+                          onSelect={(optionId) =>
+                            handlePollVote(poll.id, optionId)
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "collaboration" && (
+              <TabsContent value="collaboration" className="mt-0">
+                {/* Real-time Collaboration */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Real-time Collaboration"
+                      title="Integrated chat with Discord-style presence"
+                      description="Spin up voice, text, and co-working rooms that bridge seamlessly with our forums and developer hubs."
+                      align="left"
+                    />
+                    <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
+                      <Card className="border-border/50 bg-background/80 backdrop-blur">
+                        <CardHeader>
+                          <CardTitle>Active channels</CardTitle>
+                          <CardDescription>
+                            See who’s online and jump into the conversations
+                            that matter right now.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {chatChannels.map((channel) => {
+                            const Icon = channel.icon;
+                            return (
+                              <div
+                                key={channel.id}
+                                className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-3"
+                              >
+                                <div className="flex items-start justify-between gap-3">
+                                  <div className="flex items-start gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                      <Icon className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                      <p className="font-medium text-foreground">
+                                        {channel.name}
+                                      </p>
+                                      <p className="text-sm text-muted-foreground">
+                                        {channel.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <Badge
+                                    variant="outline"
+                                    className="border-aethex-400/40 text-aethex-200"
+                                  >
+                                    {channel.participants} members
+                                  </Badge>
+                                </div>
+                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                  <span>Synced with Discord</span>
+                                  <span className="flex items-center gap-1 text-emerald-200">
+                                    <Sparkles className="h-3 w-3" />{" "}
+                                    {channel.activeNow} live now
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </CardContent>
+                      </Card>
+                      <Card className="border-border/50 bg-background/80 backdrop-blur">
+                        <CardHeader>
+                          <CardTitle>
+                            Why players love integrated chat
+                          </CardTitle>
+                          <CardDescription>
+                            Keep every squad aligned across devices with
+                            presence, threads, and recordings.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <ul className="space-y-3 text-sm text-muted-foreground">
+                            {chatFeatures.map((feature) => (
+                              <li
+                                key={feature}
+                                className="flex items-start gap-3"
+                              >
+                                <CheckCircle className="mt-0.5 h-4 w-4 text-aethex-400" />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <Button asChild className="w-full">
+                            <Link to="/chat">Launch real-time hub</Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "events" && (
+              <TabsContent value="events" className="mt-0">
+                {/* Upcoming Events */}
+                <section className="py-20 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Events"
+                      title="Upcoming events"
+                      description="Join our community events and level up your skills."
+                      align="center"
+                    />
+                    <div className="max-w-4xl mx-auto space-y-6">
+                      {events.map((event, index) => (
+                        <EventCard
+                          key={event.id}
+                          event={event}
+                          animationDelay={index * 0.12}
+                          isRegistered={Boolean(registeredEvents[event.id])}
+                          registrant={registeredEvents[event.id]}
+                          onRegister={(payload) =>
+                            handleEventRegistration(event, payload)
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "profiles" && (
+              <TabsContent value="profiles" className="mt-0">
+                {/* Developer Profile Highlights */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Developer Profiles"
+                      title="Showcase your journey across AeThex"
+                      description="Developer profiles blend achievements, portfolio pieces, and social proof so collaborators can find you fast."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-3">
+                      {profileHighlights.map((highlight) => {
+                        const Icon = highlight.icon;
+                        return (
+                          <Card
+                            key={highlight.id}
+                            className="border-border/50 bg-background/80 backdrop-blur"
+                          >
+                            <CardHeader className="space-y-3">
+                              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                <Icon className="h-6 w-6" />
+                              </div>
+                              <CardTitle className="text-lg">
+                                {highlight.title}
+                              </CardTitle>
+                              <CardDescription>
+                                {highlight.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="rounded-lg border border-border/40 bg-background/80 p-4">
+                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                                  {highlight.metricLabel}
+                                </p>
+                                <p className="text-2xl font-semibold text-gradient-purple">
+                                  {highlight.metricValue}
+                                </p>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "featured" && (
+              <TabsContent value="featured" className="mt-0">
+                {/* Featured Developers */}
+                <section
+                  id="featured-developers"
+                  className="py-20 bg-background/30"
+                >
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Community Leaders"
+                      title="Featured developers"
+                      description="Highlighting builders who mentor others, ship mods, and level up the entire network."
+                      align="center"
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                      {contributors.map((contributor, index) => (
+                        <Card
+                          key={contributor.name}
+                          className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
+                          style={{ animationDelay: `${index * 0.2}s` }}
+                        >
+                          <CardContent className="p-6 space-y-4 text-center">
+                            <img
+                              src={contributor.avatar}
+                              alt={contributor.name}
+                              className="w-20 h-20 rounded-full mx-auto ring-4 ring-aethex-400/20"
+                            />
+                            <div className="space-y-1">
+                              <h3 className="font-semibold text-lg text-gradient">
+                                {contributor.name}
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                {contributor.title}
+                              </p>
+                            </div>
+                            <Badge variant="outline" className="mx-auto">
+                              {contributor.speciality}
+                            </Badge>
+                            <p className="text-sm text-muted-foreground text-left">
+                              {contributor.bio}
                             </p>
-                          </CardHeader>
-                          <CardContent className="relative space-y-4">
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                              {study.summary}
-                            </p>
+                            <div className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-2 text-left">
+                              <p className="text-sm font-medium text-foreground">
+                                {contributor.recentContribution}
+                              </p>
+                              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                <span>{contributor.reputation}</span>
+                                <span>
+                                  {contributor.contributions} contributions
+                                </span>
+                              </div>
+                            </div>
+                            <Badge className="bg-aethex-500/10 text-aethex-200 border border-aethex-400/40">
+                              {contributor.badge}
+                            </Badge>
                             <Button
                               asChild
                               variant="outline"
-                              size="sm"
-                              className="w-fit"
+                              className="w-full border-aethex-400/40"
                             >
-                              <Link to={`/community/case-studies/${study.id}`}>
-                                Read full story
+                              <Link to={contributor.profileUrl}>
+                                View passport
                               </Link>
                             </Button>
                           </CardContent>
                         </Card>
-                      );
-                    })}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
+                </section>
+                <section id="featured-studios" className="py-16">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Studios"
+                      title="Featured studios"
+                      description="Studios building with AeThex across games and real-time apps."
+                      align="center"
+                    />
+                    <FeaturedStudiosGrid />
+                  </div>
+                </section>
+              </TabsContent>
+            )}
 
-          {activeTab === "leaderboards" && (
-            <TabsContent value="leaderboards" className="mt-0">
-              {/* Leaderboards */}
-              <section className="py-20 bg-background/30">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Gamification"
-                    title="Celebrate contributions across the network"
-                    description="Track streaks, highlight achievements, and fuel friendly competition among builders."
-                    align="left"
-                  />
-                  <div className="grid gap-6 md:grid-cols-3">
-                    {leaderboardCategories.map((category) => {
-                      const Icon = category.icon;
-                      return (
-                        <Card
-                          key={category.id}
-                          className="border border-border/50 bg-background/70 shadow-sm hover:border-aethex-400/50 transition"
-                        >
-                          <CardHeader className="space-y-3">
-                            <div className="flex items-center justify-between text-sm uppercase tracking-wide text-muted-foreground">
-                              <span className="flex items-center gap-2">
-                                <Icon className="h-4 w-4 text-aethex-300" />
-                                {category.title}
-                              </span>
-                              <Badge
-                                variant="outline"
-                                className="border-border/50"
+            {activeTab === "workshop" && (
+              <TabsContent value="workshop" className="mt-0">
+                {/* Workshop & Mod Support */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Workshop & Mods"
+                      title="Build, share, and iterate with the community workshop"
+                      description="Mods, templates, and toolkits come with analytics so teams can iterate quickly."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-3">
+                      {workshopItems.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <Card
+                            key={item.id}
+                            className="border-border/50 bg-background/80 backdrop-blur"
+                          >
+                            <CardHeader className="space-y-3">
+                              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
+                                <Icon className="h-6 w-6" />
+                              </div>
+                              <CardTitle className="text-lg">
+                                {item.title}
+                              </CardTitle>
+                              <CardDescription>
+                                {item.description}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                <span>Downloads</span>
+                                <span className="font-semibold text-aethex-200">
+                                  {item.downloads.toLocaleString()}
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                <span>Rating</span>
+                                <span className="font-semibold text-aethex-200">
+                                  {item.rating.toFixed(1)}
+                                </span>
+                              </div>
+                              <p className="text-xs text-muted-foreground">
+                                Created by {item.author}
+                              </p>
+                              <Button
+                                asChild
+                                variant="ghost"
+                                className="w-full justify-between text-sm"
                               >
-                                Updated daily
-                              </Badge>
-                            </div>
-                            <CardDescription>
-                              {category.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-2">
-                            <ol className="space-y-1 text-sm">
-                              {category.leaders.map((leader, index) => (
-                                <li
-                                  key={leader}
-                                  className="flex items-center gap-2"
-                                >
-                                  <span className="text-muted-foreground">
-                                    #{index + 1}
-                                  </span>
-                                  <span className="font-medium text-foreground">
-                                    {leader}
-                                  </span>
-                                </li>
-                              ))}
-                            </ol>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
+                                <Link to={`/workshop/${item.id}`}>
+                                  View asset
+                                  <ArrowRight className="h-4 w-4" />
+                                </Link>
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="mt-8 text-left">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="border-border/60"
-                    >
-                      <Link to="/community/leaderboards">
-                        View full leaderboards
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
+                </section>
+              </TabsContent>
+            )}
 
-          {activeTab === "newsletter" && (
-            <TabsContent value="newsletter" className="mt-0">
-              {/* Community Newsletter */}
-              <section className="py-20">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Community Briefing"
-                    title="Get the top discussions in your inbox"
-                    description="Stay ahead with weekly highlights, upcoming events, and featured creators curated by the AeThex team."
-                    align="left"
-                  />
-                  <Card className="border-border/60 bg-background/80 max-w-3xl">
-                    <CardContent className="space-y-4 p-6 lg:p-8">
-                      <div className="flex flex-col gap-3 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
-                          <Mail className="h-4 w-4 text-aethex-300" />
-                          Weekly digest
-                        </div>
-                        <p>
-                          Each Monday we share major updates, spotlight
-                          champions, and surface new opportunities—no noise,
-                          just impact.
-                        </p>
-                      </div>
-                      <form
-                        onSubmit={handleNewsletterSignup}
-                        className="flex flex-col gap-3 sm:flex-row"
-                      >
-                        <Input
-                          type="email"
-                          required
-                          value={newsletterEmail}
-                          onChange={(event) =>
-                            setNewsletterEmail(event.target.value)
-                          }
-                          placeholder="you@example.com"
-                          className="bg-background/60 border-border/60"
-                          aria-label="Email address"
-                        />
-                        <Button type="submit" className="sm:w-auto">
-                          Subscribe
-                        </Button>
-                      </form>
-                      <p className="text-xs text-muted-foreground">
-                        We respect your time—unsubscribe anytime with a single
-                        click.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </section>
-            </TabsContent>
-          )}
-
-          {activeTab === "growth" && (
-            <TabsContent value="growth" className="mt-0">
-              {/* Professional Growth & Fun */}
-              <section className="py-20 bg-background/20">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Professional Growth & Fun"
-                    title="Discover new opportunities and show your AeThex pride"
-                    description="Connect with studios, earn bounties, and rock exclusive merch designed by the community."
-                    align="left"
-                  />
-                  <div className="grid gap-6 md:grid-cols-2">
-                    {opportunityHighlights.map((item) => {
-                      const Icon = item.icon;
-                      return (
+            {activeTab === "media" && (
+              <TabsContent value="media" className="mt-0">
+                {/* Media Galleries */}
+                <section className="py-20 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Media Galleries"
+                      title="Show off your best captures and recaps"
+                      description="Screenshots, artwork, and videos are curated into themed galleries to inspire the community."
+                      align="left"
+                    />
+                    <div className="grid gap-6 md:grid-cols-3">
+                      {mediaGallery.map((item) => (
                         <Card
                           key={item.id}
-                          className="border-border/50 bg-background/75 transition hover:-translate-y-1 hover:border-aethex-400/50"
+                          className="border-border/40 bg-background/80 backdrop-blur overflow-hidden"
                         >
-                          <CardHeader className="space-y-3">
-                            <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                              <Icon className="h-4 w-4 text-aethex-300" />
-                              {item.title}
+                          <div className="relative">
+                            <img
+                              src={item.thumbnail}
+                              alt={item.title}
+                              className="h-48 w-full object-cover"
+                              loading="lazy"
+                            />
+                            <Badge className="absolute left-4 top-4 bg-background/80 backdrop-blur border-border/60">
+                              {item.type}
+                            </Badge>
+                          </div>
+                          <CardContent className="space-y-3 p-5">
+                            <div className="space-y-1">
+                              <h3 className="font-semibold text-foreground">
+                                {item.title}
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                by {item.author}
+                              </p>
                             </div>
-                            <CardDescription>
-                              {item.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-4">
-                            <div className="grid gap-3 sm:grid-cols-2">
-                              {item.metrics.map((metric) => (
+                            <div className="flex items-center justify-between text-sm text-muted-foreground">
+                              <span className="flex items-center gap-2">
+                                <Heart className="h-4 w-4 text-aethex-400" />
+                                {item.likes}
+                              </span>
+                              <Button
+                                asChild
+                                variant="ghost"
+                                className="px-0 text-sm"
+                              >
+                                <Link to={`/gallery/${item.id}`}>
+                                  Open gallery
+                                </Link>
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "spotlight" && (
+              <TabsContent value="spotlight" className="mt-0">
+                {/* Creator Spotlight */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Creator Spotlight"
+                      title="Recognising standout community creators"
+                      description="Spotlight creators whose mods, art, and systems elevate the AeThex ecosystem."
+                      align="center"
+                    />
+                    <div className="grid gap-6 lg:grid-cols-2 max-w-6xl mx-auto">
+                      {spotlightCreators.map((creator) => (
+                        <Card
+                          key={creator.id}
+                          className="border-border/50 bg-background/80 backdrop-blur"
+                        >
+                          <CardContent className="p-6 space-y-5">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                              <div className="flex items-center gap-3">
+                                <img
+                                  src={creator.avatar}
+                                  alt={creator.name}
+                                  className="h-14 w-14 rounded-full ring-4 ring-aethex-400/20"
+                                />
+                                <div>
+                                  <p className="text-lg font-semibold text-gradient">
+                                    {creator.name}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {creator.role}
+                                  </p>
+                                </div>
+                              </div>
+                              <Badge className="bg-aethex-500/10 border-aethex-400/40 text-aethex-200">
+                                Featured creator
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {creator.highlight}
+                            </p>
+                            <div className="grid grid-cols-3 gap-3">
+                              {creator.metrics.map((metric) => (
                                 <div
-                                  key={metric.label}
-                                  className="rounded-lg border border-border/40 bg-background/60 p-3 text-sm"
+                                  key={`${creator.id}-${metric.label}`}
+                                  className="rounded-lg border border-border/40 bg-background/80 p-3 text-center"
                                 >
-                                  <p className="text-muted-foreground">
+                                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
                                     {metric.label}
                                   </p>
-                                  <p className="text-xl font-semibold text-foreground">
+                                  <p className="text-lg font-semibold text-foreground">
                                     {metric.value}
                                   </p>
                                 </div>
                               ))}
                             </div>
-                            <Button asChild variant="outline" className="w-fit">
-                              <Link to={item.href}>{item.ctaLabel}</Link>
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
-
-          {activeTab === "activities" && (
-            <TabsContent value="activities" className="mt-0">
-              {/* Content & Activities */}
-              <section className="py-20">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Content & Activities"
-                    title="Create, compete, and build the universe together"
-                    description="From lore summits to fan-art showcases, the community drives the culture forward."
-                    align="left"
-                  />
-                  <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-                    {creativeActivities.map((activity) => {
-                      const Icon = activity.icon;
-                      return (
-                        <Card
-                          key={activity.id}
-                          className="border-border/50 bg-background/75 hover:border-aethex-400/50 transition"
-                        >
-                          <CardHeader className="space-y-3">
-                            <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                              <Icon className="h-4 w-4 text-aethex-300" />
-                              {activity.title}
-                            </div>
-                            <CardDescription>
-                              {activity.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-3">
-                            <ul className="space-y-2 text-xs text-muted-foreground">
-                              {activity.highlights.map((highlight) => (
-                                <li
-                                  key={highlight}
-                                  className="flex items-start gap-2"
-                                >
-                                  <ArrowRight className="mt-0.5 h-3 w-3 text-aethex-400" />
-                                  <span>{highlight}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                              className="w-fit"
-                            >
-                              <Link to={activity.href}>Join in</Link>
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
-
-          {activeTab === "recognition" && (
-            <TabsContent value="recognition" className="mt-0">
-              {/* Recognition & Roles */}
-              <section className="py-20 bg-background/30">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Recognition & Roles"
-                    title="Support champions powering the community"
-                    description="Formal programs that reward ambassadors, creators, and playtest squads for their impact."
-                    align="left"
-                  />
-                  <div className="grid gap-6 md:grid-cols-3">
-                    {recognitionPrograms.map((program) => {
-                      const Icon = program.icon;
-                      return (
-                        <Card
-                          key={program.id}
-                          className="border-border/50 bg-background/75 hover:border-aethex-400/60 transition"
-                        >
-                          <CardHeader className="space-y-3">
-                            <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                              <Icon className="h-4 w-4 text-aethex-300" />
-                              {program.title}
-                            </div>
-                            <CardDescription>
-                              {program.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-3">
-                            <ul className="space-y-2 text-xs text-muted-foreground">
-                              {program.perks.map((perk) => (
-                                <li
-                                  key={perk}
-                                  className="flex items-start gap-2"
-                                >
-                                  <ArrowRight className="mt-0.5 h-3 w-3 text-aethex-400" />
-                                  <span>{perk}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                              className="w-fit"
-                            >
-                              <Link to={program.href}>{program.ctaLabel}</Link>
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
-
-          {activeTab === "features" && (
-            <TabsContent value="features" className="mt-0">
-              {/* Community Features */}
-              <section className="py-20">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Community Features"
-                    title="Form squads and celebrate your setup"
-                    description="Tools that make it easy to find teammates and showcase the spaces where you build."
-                    align="left"
-                  />
-                  <div className="grid gap-6 md:grid-cols-2">
-                    {socialFeatures.map((feature) => {
-                      const Icon = feature.icon;
-                      return (
-                        <Card
-                          key={feature.id}
-                          className="border-border/50 bg-background/80 hover:border-aethex-400/50 transition"
-                        >
-                          <CardHeader className="space-y-3">
-                            <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground">
-                              <Icon className="h-4 w-4 text-aethex-300" />
-                              {feature.title}
-                            </div>
-                            <CardDescription>
-                              {feature.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-3">
-                            <ul className="space-y-2 text-xs text-muted-foreground">
-                              {feature.bullets.map((bullet) => (
-                                <li
-                                  key={bullet}
-                                  className="flex items-start gap-2"
-                                >
-                                  <ArrowRight className="mt-0.5 h-3 w-3 text-aethex-400" />
-                                  <span>{bullet}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                              className="w-fit"
-                            >
-                              <Link to={feature.href}>Explore</Link>
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
-
-          {activeTab === "stats" && (
-            <TabsContent value="stats" className="mt-0">
-              {/* Community Stats */}
-              <section className="py-16 bg-background/30">
-                <div className="container mx-auto px-4">
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                    {stats.map((stat, index) => {
-                      const Icon = stat.icon;
-                      return (
-                        <div
-                          key={stat.label}
-                          className="text-center space-y-3 animate-scale-in"
-                          style={{ animationDelay: `${index * 0.1}s` }}
-                        >
-                          <div className="flex justify-center">
-                            <div className="p-3 rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border border-aethex-400/20">
-                              <Icon className="h-6 w-6 text-aethex-400" />
-                            </div>
-                          </div>
-                          <div>
-                            <div className="text-3xl font-bold text-gradient">
-                              {stat.value}
-                            </div>
-                            <p className="text-sm text-muted-foreground uppercase tracking-wide">
-                              {stat.label}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
-
-          {activeTab === "platforms" && (
-            <TabsContent value="platforms" className="mt-0">
-              {/* Community Platforms */}
-              <section className="py-20">
-                <div className="container mx-auto px-4">
-                  <div className="text-center mb-16 animate-slide-up">
-                    <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
-                      Connect on Your Favorite Platform
-                    </h2>
-                    <p className="text-lg text-muted-foreground">
-                      Multiple ways to engage with the AeThex community
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                    {platforms.map((platform, index) => {
-                      const Icon = platform.icon;
-                      return (
-                        <Card
-                          key={platform.name}
-                          className="text-center border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
-                          style={{ animationDelay: `${index * 0.2}s` }}
-                        >
-                          <CardHeader>
-                            <div
-                              className={`mx-auto w-16 h-16 rounded-lg bg-gradient-to-r ${platform.color} flex items-center justify-center mb-4`}
-                            >
-                              <Icon className="h-8 w-8 text-white" />
-                            </div>
-                            <CardTitle className="text-xl">
-                              {platform.name}
-                            </CardTitle>
-                            <CardDescription>
-                              {platform.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-4">
-                            <div className="grid grid-cols-1 gap-2 text-sm">
-                              <div className="flex justify-between">
-                                <span>Members:</span>
-                                <span className="font-semibold text-aethex-400">
-                                  {platform.members}
-                                </span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span>Activity:</span>
-                                <span className="font-semibold text-aethex-400">
-                                  {platform.activity}
-                                </span>
-                              </div>
-                            </div>
-
                             <Button asChild className="w-full">
-                              <Link to={platform.link}>
-                                Join Now
-                                <ArrowRight className="h-4 w-4 ml-2" />
+                              <Link to={creator.link}>
+                                View creator profile
                               </Link>
                             </Button>
                           </CardContent>
                         </Card>
-                      );
-                    })}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </section>
-            </TabsContent>
-          )}
+                </section>
+              </TabsContent>
+            )}
 
-          {activeTab === "devconnect" && (
-            <TabsContent value="devconnect" className="mt-0">
+            {activeTab === "governance" && (
+              <TabsContent value="governance" className="mt-0">
+                {/* Community Governance */}
+                <section className="py-20 bg-background/30">
+                  <div className="container mx-auto px-4">
+                    <SectionHeader
+                      badge="Community Governance"
+                      title="Clear guidelines, empowered moderators"
+                      description="We invest in tools and processes so every player feels safe, heard, and respected."
+                      align="left"
+                    />
+                    <div className="grid gap-8 lg:grid-cols-[2fr_3fr]">
+                      <Card className="border-border/50 bg-background/80 backdrop-blur">
+                        <CardHeader className="flex items-start justify-between gap-4">
+                          <div>
+                            <CardTitle>Community guidelines</CardTitle>
+                            <CardDescription>
+                              Expectations for every player and contributor.
+                            </CardDescription>
+                          </div>
+                          <Badge
+                            variant="outline"
+                            className="border-aethex-400/40 text-aethex-200"
+                          >
+                            Updated weekly
+                          </Badge>
+                        </CardHeader>
+                        <CardContent>
+                          <ul className="space-y-3">
+                            {moderationGuidelines.map((guideline) => (
+                              <li
+                                key={guideline.title}
+                                className="flex items-start gap-3"
+                              >
+                                <Shield className="mt-0.5 h-4 w-4 text-aethex-400" />
+                                <div>
+                                  <p className="text-sm font-medium text-foreground">
+                                    {guideline.title}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {guideline.description}
+                                  </p>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                      <div className="grid gap-8">
+                        <Card className="border-border/50 bg-background/80 backdrop-blur">
+                          <CardHeader>
+                            <CardTitle>Moderation toolkit</CardTitle>
+                            <CardDescription>
+                              Equip community managers with actionable,
+                              auditable controls.
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent className="grid gap-4 sm:grid-cols-3">
+                            {moderationTools.map((tool) => {
+                              const Icon = tool.icon;
+                              return (
+                                <div
+                                  key={tool.id}
+                                  className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-3"
+                                >
+                                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-aethex-500/10 text-aethex-300">
+                                    <Icon className="h-5 w-5" />
+                                  </div>
+                                  <p className="text-sm font-medium text-foreground">
+                                    {tool.title}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {tool.description}
+                                  </p>
+                                </div>
+                              );
+                            })}
+                          </CardContent>
+                        </Card>
+                        <Card className="border-border/50 bg-background/80 backdrop-blur">
+                          <CardHeader>
+                            <CardTitle>Submit a report</CardTitle>
+                            <CardDescription>
+                              Reports are routed to the right channel owners for
+                              fast follow-up.
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <form
+                              onSubmit={handleReportSubmit}
+                              className="space-y-4"
+                            >
+                              <div className="space-y-2">
+                                <Label htmlFor="report-reason">Reason</Label>
+                                <select
+                                  id="report-reason"
+                                  value={reportForm.reason}
+                                  onChange={(event) =>
+                                    setReportForm((prev) => ({
+                                      ...prev,
+                                      reason: event.target.value,
+                                    }))
+                                  }
+                                  className="w-full rounded-lg border border-border/50 bg-background/80 px-3 py-2 text-sm focus:border-aethex-400 focus:outline-none focus:ring-2 focus:ring-aethex-400/40"
+                                >
+                                  <option value="">Select a reason</option>
+                                  {reportReasons.map((reason) => (
+                                    <option key={reason.id} value={reason.id}>
+                                      {reason.label}
+                                    </option>
+                                  ))}
+                                </select>
+                                {selectedReportReason && (
+                                  <p className="text-xs text-muted-foreground">
+                                    {selectedReportReason.description}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="report-details">Details</Label>
+                                <Textarea
+                                  id="report-details"
+                                  value={reportForm.details}
+                                  onChange={(event) =>
+                                    setReportForm((prev) => ({
+                                      ...prev,
+                                      details: event.target.value,
+                                    }))
+                                  }
+                                  placeholder="Share links, timestamps, or context so moderators can follow up quickly."
+                                  rows={4}
+                                />
+                              </div>
+                              <Button type="submit" className="w-full">
+                                Submit report
+                              </Button>
+                            </form>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+
+            {activeTab === "cta" && (
+              <TabsContent value="cta" className="mt-0">
+                {/* CTA Section */}
+                <section className="py-20">
+                  <div className="container mx-auto px-4 text-center">
+                    <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
+                      <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple">
+                        Ready to Join Our Community?
+                      </h2>
+                      <p className="text-xl text-muted-foreground">
+                        Connect with thousands of developers, share your
+                        projects, and grow your skills in our supportive and
+                        innovative community.
+                      </p>
+
+                      <div className="flex flex-col sm:flex-row justify-center gap-4">
+                        <Button
+                          asChild
+                          size="lg"
+                          className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
+                        >
+                          <Link
+                            to="/discord"
+                            className="flex items-center space-x-2"
+                          >
+                            <Heart className="h-5 w-5" />
+                            <span>Join Community</span>
+                            <ArrowRight className="h-5 w-5" />
+                          </Link>
+                        </Button>
+                        <Button
+                          asChild
+                          variant="outline"
+                          size="lg"
+                          className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
+                        >
+                          <Link to="/events">View All Events</Link>
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-8 mt-12">
+                        <div className="text-center">
+                          <Coffee className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                          <h3 className="font-semibold">Weekly Meetups</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Virtual coffee chats
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <Star className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                          <h3 className="font-semibold">Recognition</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Contributor rewards
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <TrendingUp className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
+                          <h3 className="font-semibold">Growth</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Learn & advance
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </TabsContent>
+            )}
+          </Tabs>
+
+          {false && (
+            <>
               {/* DevConnect Spotlight */}
               <section className="relative py-20 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/40 via-transparent to-neon-blue/30" />
@@ -2835,11 +3836,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "forums" && (
-            <TabsContent value="forums" className="mt-0">
               {/* Forums & Discussion */}
               <section className="py-20 bg-background/30">
                 <div className="container mx-auto px-4">
@@ -2914,11 +3911,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "feedback" && (
-            <TabsContent value="feedback" className="mt-0">
               {/* Feedback & Roadmap */}
               <section className="py-20">
                 <div className="container mx-auto px-4">
@@ -3033,11 +4026,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "polls" && (
-            <TabsContent value="polls" className="mt-0">
               {/* Community Polls */}
               <section className="py-20 bg-background/30">
                 <div className="container mx-auto px-4">
@@ -3061,11 +4050,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "collaboration" && (
-            <TabsContent value="collaboration" className="mt-0">
               {/* Real-time Collaboration */}
               <section className="py-20">
                 <div className="container mx-auto px-4">
@@ -3153,11 +4138,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "events" && (
-            <TabsContent value="events" className="mt-0">
               {/* Upcoming Events */}
               <section className="py-20 bg-background/30">
                 <div className="container mx-auto px-4">
@@ -3183,11 +4164,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "profiles" && (
-            <TabsContent value="profiles" className="mt-0">
               {/* Developer Profile Highlights */}
               <section className="py-20">
                 <div className="container mx-auto px-4">
@@ -3232,16 +4209,9 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "featured" && (
-            <TabsContent value="featured" className="mt-0">
               {/* Featured Developers */}
-              <section
-                id="featured-developers"
-                className="py-20 bg-background/30"
-              >
+              <section className="py-20 bg-background/30">
                 <div className="container mx-auto px-4">
                   <SectionHeader
                     badge="Community Leaders"
@@ -3305,22 +4275,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-              <section id="featured-studios" className="py-16">
-                <div className="container mx-auto px-4">
-                  <SectionHeader
-                    badge="Studios"
-                    title="Featured studios"
-                    description="Studios building with AeThex across games and real-time apps."
-                    align="center"
-                  />
-                  <FeaturedStudiosGrid />
-                </div>
-              </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "workshop" && (
-            <TabsContent value="workshop" className="mt-0">
               {/* Workshop & Mod Support */}
               <section className="py-20">
                 <div className="container mx-auto px-4">
@@ -3382,11 +4337,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "media" && (
-            <TabsContent value="media" className="mt-0">
               {/* Media Galleries */}
               <section className="py-20 bg-background/30">
                 <div className="container mx-auto px-4">
@@ -3443,11 +4394,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "spotlight" && (
-            <TabsContent value="spotlight" className="mt-0">
               {/* Creator Spotlight */}
               <section className="py-20">
                 <div className="container mx-auto px-4">
@@ -3511,11 +4458,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "governance" && (
-            <TabsContent value="governance" className="mt-0">
               {/* Community Governance */}
               <section className="py-20 bg-background/30">
                 <div className="container mx-auto px-4">
@@ -3657,11 +4600,7 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
-          )}
 
-          {activeTab === "cta" && (
-            <TabsContent value="cta" className="mt-0">
               {/* CTA Section */}
               <section className="py-20">
                 <div className="container mx-auto px-4 text-center">
@@ -3726,913 +4665,10 @@ export default function Community() {
                   </div>
                 </div>
               </section>
-            </TabsContent>
+            </>
           )}
-        </Tabs>
-
-        {false && (
-          <>
-            {/* DevConnect Spotlight */}
-            <section className="relative py-20 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-aethex-900/40 via-transparent to-neon-blue/30" />
-              <div className="container mx-auto px-4 relative z-10">
-                <div className="max-w-5xl mx-auto grid lg:grid-cols-[2fr_3fr] gap-10 items-center">
-                  <div className="space-y-6 animate-slide-left">
-                    <Badge className="bg-gradient-to-r from-aethex-500 to-neon-blue w-fit">
-                      New Platform
-                    </Badge>
-                    <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
-                      Introducing DevConnect
-                    </h2>
-                    <p className="text-lg text-muted-foreground">
-                      DevConnect is our dedicated hub for platform teams
-                      building the next wave of AeThex experiences. Launch
-                      collabs, monitor live services, and activate the Studio
-                      network — all from one command center.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <Button
-                        asChild
-                        size="lg"
-                        className="bg-gradient-to-r from-neon-blue to-aethex-500 hover:from-neon-blue/90 hover:to-aethex-500/90 glow-blue hover-lift"
-                      >
-                        <a
-                          href="https://devconnect.sbs"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center space-x-2"
-                        >
-                          <span>Launch DevConnect</span>
-                          <ArrowRight className="h-5 w-5" />
-                        </a>
-                      </Button>
-                      <Button
-                        asChild
-                        variant="outline"
-                        size="lg"
-                        className="border-border/60"
-                      >
-                        <Link to="/contact">Talk with AeThex Team</Link>
-                      </Button>
-                    </div>
-                  </div>
-                  <Card className="border-border/40 bg-background/80 backdrop-blur-xl shadow-lg shadow-aethex-500/10 animate-slide-right">
-                    <CardContent className="p-8 space-y-6">
-                      <div className="grid gap-4">
-                        {devConnectHighlights.map((highlight, index) => {
-                          const Icon = highlight.icon;
-                          return (
-                            <div
-                              key={highlight.title}
-                              className="flex items-start gap-4 p-4 rounded-xl border border-border/40 bg-background/60"
-                            >
-                              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 text-aethex-300">
-                                <Icon className="h-5 w-5" />
-                              </div>
-                              <div className="space-y-1">
-                                <h3 className="font-semibold text-foreground">
-                                  {highlight.title}
-                                </h3>
-                                <p className="text-sm text-muted-foreground">
-                                  {highlight.description}
-                                </p>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className="rounded-lg border border-aethex-400/40 bg-gradient-to-r from-aethex-500/10 to-neon-blue/10 p-4 text-sm text-muted-foreground">
-                        DevConnect syncs directly with AeThex developer
-                        profiles, so your activity, streaks, and achievements
-                        follow you across every build.
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </section>
-
-            {/* Forums & Discussion */}
-            <section className="py-20 bg-background/30">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Forums & Discussions"
-                  title="Deep-dive with peers in dedicated boards"
-                  description="Launch structured conversations for strategy, support, and storytelling."
-                  align="left"
-                />
-                <div className="grid gap-6 md:grid-cols-3">
-                  {forumSpaces.map((space, index) => {
-                    const Icon = space.icon;
-                    return (
-                      <Card
-                        key={space.id}
-                        className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift"
-                        style={{ animationDelay: `${index * 0.1}s` }}
-                      >
-                        <CardHeader className="space-y-4">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-3">
-                              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                                <Icon className="h-5 w-5" />
-                              </div>
-                              <div>
-                                <CardTitle className="text-lg">
-                                  {space.name}
-                                </CardTitle>
-                                <CardDescription>
-                                  {space.description}
-                                </CardDescription>
-                              </div>
-                            </div>
-                            <Badge
-                              variant="outline"
-                              className="border-border/50"
-                            >
-                              {space.threads} threads
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div className="flex items-center justify-between text-xs text-muted-foreground uppercase tracking-wide">
-                            <span>{space.activeToday} active today</span>
-                            <span className="flex items-center gap-2">
-                              <MessageCircle className="h-3.5 w-3.5" /> Latest
-                            </span>
-                          </div>
-                          <div className="rounded-lg border border-border/40 bg-background/80 p-4">
-                            <p className="text-sm font-medium text-foreground">
-                              {space.latestThread.title}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              by {space.latestThread.author} •{" "}
-                              {space.latestThread.timeAgo}
-                            </p>
-                          </div>
-                          <Button
-                            asChild
-                            variant="ghost"
-                            className="w-full justify-between text-sm"
-                          >
-                            <Link to={`/forums/${space.id}`}>
-                              Enter space
-                              <ArrowRight className="h-4 w-4" />
-                            </Link>
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-
-            {/* Feedback & Roadmap */}
-            <section className="py-20">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Feedback & Roadmap"
-                  title="Collect insights and close the loop with players"
-                  description="Organise bug reports, balance discussions, and feature ideas in a transparent queue."
-                  align="left"
-                />
-                <div className="grid gap-8 lg:grid-cols-[2fr_3fr]">
-                  <div className="space-y-6">
-                    {feedbackChannels.map((channel) => {
-                      const Icon = channel.icon;
-                      return (
-                        <Card
-                          key={channel.id}
-                          className="border-border/50 bg-background/80 backdrop-blur"
-                        >
-                          <CardHeader className="space-y-3">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                                  <Icon className="h-5 w-5" />
-                                </div>
-                                <div>
-                                  <CardTitle className="text-lg">
-                                    {channel.title}
-                                  </CardTitle>
-                                  <CardDescription>
-                                    {channel.description}
-                                  </CardDescription>
-                                </div>
-                              </div>
-                              <Badge
-                                variant="outline"
-                                className="border-aethex-400/40 text-aethex-200"
-                              >
-                                {channel.submissionsThisWeek} this week
-                              </Badge>
-                            </div>
-                            <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                              Stewarded by {channel.owner}
-                            </p>
-                          </CardHeader>
-                          <CardContent className="space-y-3">
-                            <div className="flex flex-wrap gap-2">
-                              {channel.statuses.map((status) => (
-                                <Badge
-                                  key={status.label}
-                                  className={cn(
-                                    "text-xs",
-                                    feedbackToneStyles[status.tone],
-                                  )}
-                                >
-                                  {status.label}: {status.count}
-                                </Badge>
-                              ))}
-                            </div>
-                            <Button
-                              asChild
-                              variant="ghost"
-                              className="w-full justify-between text-sm"
-                            >
-                              <Link to="/feedback">
-                                Submit feedback
-                                <ArrowRight className="h-4 w-4" />
-                              </Link>
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                  <Card className="border-border/50 bg-background/80 backdrop-blur">
-                    <CardHeader>
-                      <CardTitle>Live roadmap snapshot</CardTitle>
-                      <CardDescription>
-                        Track what the team is shipping next based on player
-                        momentum.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {roadmapSnapshot.map((item) => (
-                        <div
-                          key={item.id}
-                          className="flex flex-col gap-2 rounded-lg border border-border/40 bg-background/80 p-4 sm:flex-row sm:items-center sm:justify-between"
-                        >
-                          <div>
-                            <p className="font-medium text-foreground">
-                              {item.title}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {item.eta}
-                            </p>
-                          </div>
-                          <Badge
-                            className={feedbackToneStyles[item.statusTone]}
-                          >
-                            {item.status}
-                          </Badge>
-                        </div>
-                      ))}
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="w-full border-aethex-400/40"
-                      >
-                        <Link to="/roadmap">Open public roadmap</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </section>
-
-            {/* Community Polls */}
-            <section className="py-20 bg-background/30">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Community Polls"
-                  title="Let players steer the next big moves"
-                  description="Run lightweight polls to validate cosmetics, roadmap priorities, and upcoming events."
-                  align="center"
-                />
-                <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-                  {polls.map((poll) => (
-                    <PollCard
-                      key={poll.id}
-                      poll={poll}
-                      selectedOption={pollSelections[poll.id]}
-                      onSelect={(optionId) => handlePollVote(poll.id, optionId)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Real-time Collaboration */}
-            <section className="py-20">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Real-time Collaboration"
-                  title="Integrated chat with Discord-style presence"
-                  description="Spin up voice, text, and co-working rooms that bridge seamlessly with our forums and developer hubs."
-                  align="left"
-                />
-                <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
-                  <Card className="border-border/50 bg-background/80 backdrop-blur">
-                    <CardHeader>
-                      <CardTitle>Active channels</CardTitle>
-                      <CardDescription>
-                        See who’s online and jump into the conversations that
-                        matter right now.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {chatChannels.map((channel) => {
-                        const Icon = channel.icon;
-                        return (
-                          <div
-                            key={channel.id}
-                            className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-3"
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="flex items-start gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                                  <Icon className="h-5 w-5" />
-                                </div>
-                                <div>
-                                  <p className="font-medium text-foreground">
-                                    {channel.name}
-                                  </p>
-                                  <p className="text-sm text-muted-foreground">
-                                    {channel.description}
-                                  </p>
-                                </div>
-                              </div>
-                              <Badge
-                                variant="outline"
-                                className="border-aethex-400/40 text-aethex-200"
-                              >
-                                {channel.participants} members
-                              </Badge>
-                            </div>
-                            <div className="flex items-center justify-between text-xs text-muted-foreground">
-                              <span>Synced with Discord</span>
-                              <span className="flex items-center gap-1 text-emerald-200">
-                                <Sparkles className="h-3 w-3" />{" "}
-                                {channel.activeNow} live now
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </CardContent>
-                  </Card>
-                  <Card className="border-border/50 bg-background/80 backdrop-blur">
-                    <CardHeader>
-                      <CardTitle>Why players love integrated chat</CardTitle>
-                      <CardDescription>
-                        Keep every squad aligned across devices with presence,
-                        threads, and recordings.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <ul className="space-y-3 text-sm text-muted-foreground">
-                        {chatFeatures.map((feature) => (
-                          <li key={feature} className="flex items-start gap-3">
-                            <CheckCircle className="mt-0.5 h-4 w-4 text-aethex-400" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button asChild className="w-full">
-                        <Link to="/chat">Launch real-time hub</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </section>
-
-            {/* Upcoming Events */}
-            <section className="py-20 bg-background/30">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Events"
-                  title="Upcoming events"
-                  description="Join our community events and level up your skills."
-                  align="center"
-                />
-                <div className="max-w-4xl mx-auto space-y-6">
-                  {events.map((event, index) => (
-                    <EventCard
-                      key={event.id}
-                      event={event}
-                      animationDelay={index * 0.12}
-                      isRegistered={Boolean(registeredEvents[event.id])}
-                      registrant={registeredEvents[event.id]}
-                      onRegister={(payload) =>
-                        handleEventRegistration(event, payload)
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Developer Profile Highlights */}
-            <section className="py-20">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Developer Profiles"
-                  title="Showcase your journey across AeThex"
-                  description="Developer profiles blend achievements, portfolio pieces, and social proof so collaborators can find you fast."
-                  align="left"
-                />
-                <div className="grid gap-6 md:grid-cols-3">
-                  {profileHighlights.map((highlight) => {
-                    const Icon = highlight.icon;
-                    return (
-                      <Card
-                        key={highlight.id}
-                        className="border-border/50 bg-background/80 backdrop-blur"
-                      >
-                        <CardHeader className="space-y-3">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                            <Icon className="h-6 w-6" />
-                          </div>
-                          <CardTitle className="text-lg">
-                            {highlight.title}
-                          </CardTitle>
-                          <CardDescription>
-                            {highlight.description}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="rounded-lg border border-border/40 bg-background/80 p-4">
-                            <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                              {highlight.metricLabel}
-                            </p>
-                            <p className="text-2xl font-semibold text-gradient-purple">
-                              {highlight.metricValue}
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-
-            {/* Featured Developers */}
-            <section className="py-20 bg-background/30">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Community Leaders"
-                  title="Featured developers"
-                  description="Highlighting builders who mentor others, ship mods, and level up the entire network."
-                  align="center"
-                />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                  {contributors.map((contributor, index) => (
-                    <Card
-                      key={contributor.name}
-                      className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
-                      style={{ animationDelay: `${index * 0.2}s` }}
-                    >
-                      <CardContent className="p-6 space-y-4 text-center">
-                        <img
-                          src={contributor.avatar}
-                          alt={contributor.name}
-                          className="w-20 h-20 rounded-full mx-auto ring-4 ring-aethex-400/20"
-                        />
-                        <div className="space-y-1">
-                          <h3 className="font-semibold text-lg text-gradient">
-                            {contributor.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            {contributor.title}
-                          </p>
-                        </div>
-                        <Badge variant="outline" className="mx-auto">
-                          {contributor.speciality}
-                        </Badge>
-                        <p className="text-sm text-muted-foreground text-left">
-                          {contributor.bio}
-                        </p>
-                        <div className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-2 text-left">
-                          <p className="text-sm font-medium text-foreground">
-                            {contributor.recentContribution}
-                          </p>
-                          <div className="flex items-center justify-between text-xs text-muted-foreground">
-                            <span>{contributor.reputation}</span>
-                            <span>
-                              {contributor.contributions} contributions
-                            </span>
-                          </div>
-                        </div>
-                        <Badge className="bg-aethex-500/10 text-aethex-200 border border-aethex-400/40">
-                          {contributor.badge}
-                        </Badge>
-                        <Button
-                          asChild
-                          variant="outline"
-                          className="w-full border-aethex-400/40"
-                        >
-                          <Link to={contributor.profileUrl}>View passport</Link>
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Workshop & Mod Support */}
-            <section className="py-20">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Workshop & Mods"
-                  title="Build, share, and iterate with the community workshop"
-                  description="Mods, templates, and toolkits come with analytics so teams can iterate quickly."
-                  align="left"
-                />
-                <div className="grid gap-6 md:grid-cols-3">
-                  {workshopItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Card
-                        key={item.id}
-                        className="border-border/50 bg-background/80 backdrop-blur"
-                      >
-                        <CardHeader className="space-y-3">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                            <Icon className="h-6 w-6" />
-                          </div>
-                          <CardTitle className="text-lg">
-                            {item.title}
-                          </CardTitle>
-                          <CardDescription>{item.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                          <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span>Downloads</span>
-                            <span className="font-semibold text-aethex-200">
-                              {item.downloads.toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span>Rating</span>
-                            <span className="font-semibold text-aethex-200">
-                              {item.rating.toFixed(1)}
-                            </span>
-                          </div>
-                          <p className="text-xs text-muted-foreground">
-                            Created by {item.author}
-                          </p>
-                          <Button
-                            asChild
-                            variant="ghost"
-                            className="w-full justify-between text-sm"
-                          >
-                            <Link to={`/workshop/${item.id}`}>
-                              View asset
-                              <ArrowRight className="h-4 w-4" />
-                            </Link>
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-
-            {/* Media Galleries */}
-            <section className="py-20 bg-background/30">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Media Galleries"
-                  title="Show off your best captures and recaps"
-                  description="Screenshots, artwork, and videos are curated into themed galleries to inspire the community."
-                  align="left"
-                />
-                <div className="grid gap-6 md:grid-cols-3">
-                  {mediaGallery.map((item) => (
-                    <Card
-                      key={item.id}
-                      className="border-border/40 bg-background/80 backdrop-blur overflow-hidden"
-                    >
-                      <div className="relative">
-                        <img
-                          src={item.thumbnail}
-                          alt={item.title}
-                          className="h-48 w-full object-cover"
-                          loading="lazy"
-                        />
-                        <Badge className="absolute left-4 top-4 bg-background/80 backdrop-blur border-border/60">
-                          {item.type}
-                        </Badge>
-                      </div>
-                      <CardContent className="space-y-3 p-5">
-                        <div className="space-y-1">
-                          <h3 className="font-semibold text-foreground">
-                            {item.title}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            by {item.author}
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                          <span className="flex items-center gap-2">
-                            <Heart className="h-4 w-4 text-aethex-400" />
-                            {item.likes}
-                          </span>
-                          <Button
-                            asChild
-                            variant="ghost"
-                            className="px-0 text-sm"
-                          >
-                            <Link to={`/gallery/${item.id}`}>Open gallery</Link>
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Creator Spotlight */}
-            <section className="py-20">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Creator Spotlight"
-                  title="Recognising standout community creators"
-                  description="Spotlight creators whose mods, art, and systems elevate the AeThex ecosystem."
-                  align="center"
-                />
-                <div className="grid gap-6 lg:grid-cols-2 max-w-6xl mx-auto">
-                  {spotlightCreators.map((creator) => (
-                    <Card
-                      key={creator.id}
-                      className="border-border/50 bg-background/80 backdrop-blur"
-                    >
-                      <CardContent className="p-6 space-y-5">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={creator.avatar}
-                              alt={creator.name}
-                              className="h-14 w-14 rounded-full ring-4 ring-aethex-400/20"
-                            />
-                            <div>
-                              <p className="text-lg font-semibold text-gradient">
-                                {creator.name}
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                {creator.role}
-                              </p>
-                            </div>
-                          </div>
-                          <Badge className="bg-aethex-500/10 border-aethex-400/40 text-aethex-200">
-                            Featured creator
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {creator.highlight}
-                        </p>
-                        <div className="grid grid-cols-3 gap-3">
-                          {creator.metrics.map((metric) => (
-                            <div
-                              key={`${creator.id}-${metric.label}`}
-                              className="rounded-lg border border-border/40 bg-background/80 p-3 text-center"
-                            >
-                              <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                                {metric.label}
-                              </p>
-                              <p className="text-lg font-semibold text-foreground">
-                                {metric.value}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                        <Button asChild className="w-full">
-                          <Link to={creator.link}>View creator profile</Link>
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Community Governance */}
-            <section className="py-20 bg-background/30">
-              <div className="container mx-auto px-4">
-                <SectionHeader
-                  badge="Community Governance"
-                  title="Clear guidelines, empowered moderators"
-                  description="We invest in tools and processes so every player feels safe, heard, and respected."
-                  align="left"
-                />
-                <div className="grid gap-8 lg:grid-cols-[2fr_3fr]">
-                  <Card className="border-border/50 bg-background/80 backdrop-blur">
-                    <CardHeader className="flex items-start justify-between gap-4">
-                      <div>
-                        <CardTitle>Community guidelines</CardTitle>
-                        <CardDescription>
-                          Expectations for every player and contributor.
-                        </CardDescription>
-                      </div>
-                      <Badge
-                        variant="outline"
-                        className="border-aethex-400/40 text-aethex-200"
-                      >
-                        Updated weekly
-                      </Badge>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-3">
-                        {moderationGuidelines.map((guideline) => (
-                          <li
-                            key={guideline.title}
-                            className="flex items-start gap-3"
-                          >
-                            <Shield className="mt-0.5 h-4 w-4 text-aethex-400" />
-                            <div>
-                              <p className="text-sm font-medium text-foreground">
-                                {guideline.title}
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                {guideline.description}
-                              </p>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                  <div className="grid gap-8">
-                    <Card className="border-border/50 bg-background/80 backdrop-blur">
-                      <CardHeader>
-                        <CardTitle>Moderation toolkit</CardTitle>
-                        <CardDescription>
-                          Equip community managers with actionable, auditable
-                          controls.
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="grid gap-4 sm:grid-cols-3">
-                        {moderationTools.map((tool) => {
-                          const Icon = tool.icon;
-                          return (
-                            <div
-                              key={tool.id}
-                              className="rounded-lg border border-border/40 bg-background/80 p-4 space-y-3"
-                            >
-                              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-aethex-500/10 text-aethex-300">
-                                <Icon className="h-5 w-5" />
-                              </div>
-                              <p className="text-sm font-medium text-foreground">
-                                {tool.title}
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                {tool.description}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </CardContent>
-                    </Card>
-                    <Card className="border-border/50 bg-background/80 backdrop-blur">
-                      <CardHeader>
-                        <CardTitle>Submit a report</CardTitle>
-                        <CardDescription>
-                          Reports are routed to the right channel owners for
-                          fast follow-up.
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <form
-                          onSubmit={handleReportSubmit}
-                          className="space-y-4"
-                        >
-                          <div className="space-y-2">
-                            <Label htmlFor="report-reason">Reason</Label>
-                            <select
-                              id="report-reason"
-                              value={reportForm.reason}
-                              onChange={(event) =>
-                                setReportForm((prev) => ({
-                                  ...prev,
-                                  reason: event.target.value,
-                                }))
-                              }
-                              className="w-full rounded-lg border border-border/50 bg-background/80 px-3 py-2 text-sm focus:border-aethex-400 focus:outline-none focus:ring-2 focus:ring-aethex-400/40"
-                            >
-                              <option value="">Select a reason</option>
-                              {reportReasons.map((reason) => (
-                                <option key={reason.id} value={reason.id}>
-                                  {reason.label}
-                                </option>
-                              ))}
-                            </select>
-                            {selectedReportReason && (
-                              <p className="text-xs text-muted-foreground">
-                                {selectedReportReason.description}
-                              </p>
-                            )}
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="report-details">Details</Label>
-                            <Textarea
-                              id="report-details"
-                              value={reportForm.details}
-                              onChange={(event) =>
-                                setReportForm((prev) => ({
-                                  ...prev,
-                                  details: event.target.value,
-                                }))
-                              }
-                              placeholder="Share links, timestamps, or context so moderators can follow up quickly."
-                              rows={4}
-                            />
-                          </div>
-                          <Button type="submit" className="w-full">
-                            Submit report
-                          </Button>
-                        </form>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-20">
-              <div className="container mx-auto px-4 text-center">
-                <div className="max-w-3xl mx-auto space-y-8 animate-scale-in">
-                  <h2 className="text-3xl lg:text-4xl font-bold text-gradient-purple">
-                    Ready to Join Our Community?
-                  </h2>
-                  <p className="text-xl text-muted-foreground">
-                    Connect with thousands of developers, share your projects,
-                    and grow your skills in our supportive and innovative
-                    community.
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Button
-                      asChild
-                      size="lg"
-                      className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 glow-blue hover-lift text-lg px-8 py-6"
-                    >
-                      <Link
-                        to="/discord"
-                        className="flex items-center space-x-2"
-                      >
-                        <Heart className="h-5 w-5" />
-                        <span>Join Community</span>
-                        <ArrowRight className="h-5 w-5" />
-                      </Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="lg"
-                      className="border-aethex-400/50 hover:border-aethex-400 hover-lift text-lg px-8 py-6"
-                    >
-                      <Link to="/events">View All Events</Link>
-                    </Button>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-8 mt-12">
-                    <div className="text-center">
-                      <Coffee className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
-                      <h3 className="font-semibold">Weekly Meetups</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Virtual coffee chats
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <Star className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
-                      <h3 className="font-semibold">Recognition</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Contributor rewards
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <TrendingUp className="h-8 w-8 text-aethex-400 mx-auto mb-2" />
-                      <h3 className="font-semibold">Growth</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Learn & advance
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </>
-        )}
-      </div>
-    </Layout>
-  </>
+        </div>
+      </Layout>
+    </>
   );
 }

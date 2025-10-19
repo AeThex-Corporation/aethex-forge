@@ -72,59 +72,68 @@ export default function BlogPost() {
 
   return (
     <>
-      <SEO pageTitle={post?.title || "Blog Post"} description={post?.excerpt || undefined} image={post?.image || null} canonical={typeof window!== 'undefined' ? window.location.href : undefined as any} />
-    <Layout>
-      <div className="min-h-screen bg-aethex-gradient py-12">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <Card className="overflow-hidden border-border/50 animate-scale-in">
-            {post.image && (
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-64 object-cover"
-              />
-            )}
-            <CardHeader>
-              {post.category && (
-                <Badge className="mb-4 bg-gradient-to-r from-aethex-500 to-neon-blue">
-                  {post.category}
-                </Badge>
+      <SEO
+        pageTitle={post?.title || "Blog Post"}
+        description={post?.excerpt || undefined}
+        image={post?.image || null}
+        canonical={
+          typeof window !== "undefined"
+            ? window.location.href
+            : (undefined as any)
+        }
+      />
+      <Layout>
+        <div className="min-h-screen bg-aethex-gradient py-12">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <Card className="overflow-hidden border-border/50 animate-scale-in">
+              {post.image && (
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-64 object-cover"
+                />
               )}
-              <CardTitle className="text-3xl mt-2">{post.title}</CardTitle>
-              {post.excerpt && (
-                <CardDescription className="text-muted-foreground mt-2">
-                  {post.excerpt}
-                </CardDescription>
-              )}
-              <div className="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
-                {post.author && (
-                  <div className="flex items-center gap-2">
-                    <User className="h-4 w-4" /> <span>{post.author}</span>
-                  </div>
+              <CardHeader>
+                {post.category && (
+                  <Badge className="mb-4 bg-gradient-to-r from-aethex-500 to-neon-blue">
+                    {post.category}
+                  </Badge>
                 )}
-                {post.date && (
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" /> <span>{post.date}</span>
-                  </div>
+                <CardTitle className="text-3xl mt-2">{post.title}</CardTitle>
+                {post.excerpt && (
+                  <CardDescription className="text-muted-foreground mt-2">
+                    {post.excerpt}
+                  </CardDescription>
                 )}
-              </div>
-            </CardHeader>
-            <CardContent className="prose max-w-none mt-6">
-              {post.body ? (
-                <div dangerouslySetInnerHTML={{ __html: post.body }} />
-              ) : (
-                <p>{post.excerpt}</p>
-              )}
-              <div className="pt-6">
-                <Link to="/blog" className="text-aethex-400 underline">
-                  Back to Blog
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
+                  {post.author && (
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4" /> <span>{post.author}</span>
+                    </div>
+                  )}
+                  {post.date && (
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" /> <span>{post.date}</span>
+                    </div>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent className="prose max-w-none mt-6">
+                {post.body ? (
+                  <div dangerouslySetInnerHTML={{ __html: post.body }} />
+                ) : (
+                  <p>{post.excerpt}</p>
+                )}
+                <div className="pt-6">
+                  <Link to="/blog" className="text-aethex-400 underline">
+                    Back to Blog
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </div>
-    </Layout>
-  </>
+      </Layout>
+    </>
   );
 }
