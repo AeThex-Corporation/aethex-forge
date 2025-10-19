@@ -24,9 +24,15 @@ export function createServer() {
     try {
       const base = process.env.DEVCONNECT_URL;
       const key = process.env.DEVCONNECT_ANON_KEY;
-      if (!base || !key) return res.status(500).json({ error: "DevConnect env not set" });
-      const table = String(req.params.table || "").replace(/[^a-zA-Z0-9_]/g, "");
-      const qs = req.url.includes("?") ? req.url.substring(req.url.indexOf("?")) : "";
+      if (!base || !key)
+        return res.status(500).json({ error: "DevConnect env not set" });
+      const table = String(req.params.table || "").replace(
+        /[^a-zA-Z0-9_]/g,
+        "",
+      );
+      const qs = req.url.includes("?")
+        ? req.url.substring(req.url.indexOf("?"))
+        : "";
       const url = `${base}/rest/v1/${table}${qs}`;
       const r = await fetch(url, {
         headers: {
@@ -37,7 +43,10 @@ export function createServer() {
       });
       const text = await r.text();
       if (!r.ok) return res.status(r.status).send(text);
-      res.setHeader("content-type", r.headers.get("content-type") || "application/json");
+      res.setHeader(
+        "content-type",
+        r.headers.get("content-type") || "application/json",
+      );
       return res.status(200).send(text);
     } catch (e: any) {
       return res.status(500).json({ error: e?.message || String(e) });
