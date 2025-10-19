@@ -272,9 +272,22 @@ export default function MentorshipRequest() {
                   {typeof m.hourly_rate === "number" && (
                     <p className="text-sm">Rate: ${m.hourly_rate}/hr</p>
                   )}
-                  <div className="pt-2">
+                  <div className="pt-2 grid grid-cols-2 gap-2">
                     <Button onClick={() => onOpenRequest(m)} className="w-full">
-                      Request mentorship
+                      Request
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const uname = m.user_profiles?.username;
+                        if (uname) {
+                          navigate(`/community/mentor/${encodeURIComponent(uname)}`);
+                        }
+                      }}
+                      className="w-full"
+                      disabled={!m.user_profiles?.username}
+                    >
+                      View profile
                     </Button>
                   </div>
                 </CardContent>
