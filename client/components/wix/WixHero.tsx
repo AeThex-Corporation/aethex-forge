@@ -31,6 +31,9 @@ export default function WixHero() {
               <Button asChild variant="ghost">
                 <Link to="/wix/faq">FAQ</Link>
               </Button>
+              <Button asChild variant="outline">
+                <a href="https://www.wix.com/studio/community/partners/aethex" target="_blank" rel="noreferrer">Wix Partner Profile</a>
+              </Button>
             </div>
           </div>
         </CardContent>
