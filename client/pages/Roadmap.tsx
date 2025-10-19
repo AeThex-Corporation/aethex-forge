@@ -216,7 +216,8 @@ export default function Roadmap() {
       try {
         aethexToast.info({
           title: "Sign in required",
-          description: "Create an account to unlock Dev Drops and save progress.",
+          description:
+            "Create an account to unlock Dev Drops and save progress.",
         });
       } catch {}
       return;
@@ -469,7 +470,9 @@ export default function Roadmap() {
                       variant="outline"
                       onClick={() => toggleUnlock(p.id)}
                       disabled={!user}
-                      className={!user ? "cursor-not-allowed opacity-60" : undefined}
+                      className={
+                        !user ? "cursor-not-allowed opacity-60" : undefined
+                      }
                       title={!user ? "Sign in to unlock" : undefined}
                     >
                       {unlocked[p.id] ? (

@@ -1,6 +1,12 @@
 import Layout from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ShowcaseCard from "@/components/showcase/ShowcaseCard";
 import { SHOWCASE, type ShowcaseProject } from "@/data/showcase";
@@ -22,7 +28,7 @@ export default function Projects() {
     supabase
       .from<any>("showcase_projects" as any)
       .select(
-        "id,title,org_unit,role,timeframe,description,tags,image, links:showcase_project_links(label,href), contributors:showcase_contributors(name,title,avatar)"
+        "id,title,org_unit,role,timeframe,description,tags,image, links:showcase_project_links(label,href), contributors:showcase_contributors(name,title,avatar)",
       )
       .order("created_at", { ascending: false })
       .then(({ data, error }) => {
@@ -70,7 +76,15 @@ export default function Projects() {
       .finally(() => setLoading(false));
   }, [dbItems]);
 
-  const items = useMemo(() => (dbItems && dbItems.length ? dbItems : cmsItems && cmsItems.length ? cmsItems : SHOWCASE), [dbItems, cmsItems]);
+  const items = useMemo(
+    () =>
+      dbItems && dbItems.length
+        ? dbItems
+        : cmsItems && cmsItems.length
+          ? cmsItems
+          : SHOWCASE,
+    [dbItems, cmsItems],
+  );
   const hasProjects = Array.isArray(items) && items.length > 0;
 
   return (
@@ -79,13 +93,33 @@ export default function Projects() {
         <section className="container mx-auto max-w-6xl px-4">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div>
-              <Badge variant="outline" className="border-aethex-400/50 text-aethex-300">Showcase</Badge>
-              <h1 className="mt-2 text-4xl font-extrabold text-gradient">Projects & Testimonials</h1>
-              <p className="text-muted-foreground max-w-2xl mt-1">Studio initiatives across AeThex Platform, Labs, and Studio.</p>
+              <Badge
+                variant="outline"
+                className="border-aethex-400/50 text-aethex-300"
+              >
+                Showcase
+              </Badge>
+              <h1 className="mt-2 text-4xl font-extrabold text-gradient">
+                Projects & Testimonials
+              </h1>
+              <p className="text-muted-foreground max-w-2xl mt-1">
+                Studio initiatives across AeThex Platform, Labs, and Studio.
+              </p>
             </div>
             {isOwner && (
-              <Button asChild variant="outline" size="sm" title="Edit in Builder CMS">
-                <a href="https://builder.io/content" target="_blank" rel="noreferrer noopener">Open CMS</a>
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                title="Edit in Builder CMS"
+              >
+                <a
+                  href="https://builder.io/content"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Open CMS
+                </a>
               </Button>
             )}
           </div>
@@ -103,7 +137,8 @@ export default function Projects() {
               <CardHeader>
                 <CardTitle>No projects yet</CardTitle>
                 <CardDescription>
-                  Add entries in <code>code/client/data/showcase.ts</code> or manage them via CMS.
+                  Add entries in <code>code/client/data/showcase.ts</code> or
+                  manage them via CMS.
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center gap-2 pt-0 pb-6">

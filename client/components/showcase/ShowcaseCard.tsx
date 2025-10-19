@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -15,17 +21,26 @@ export default function ShowcaseCard({ p }: { p: ShowcaseProject }) {
     <Card className="bg-card/60 border-border/40 backdrop-blur overflow-hidden group">
       {p.image && (
         <div className="relative h-44 w-full">
-          <img src={p.image} alt={p.title} className="h-full w-full object-cover" loading="lazy" />
+          <img
+            src={p.image}
+            alt={p.title}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
         </div>
       )}
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             {p.orgUnit && (
-              <Badge className="bg-gradient-to-r from-aethex-500 to-neon-blue">{p.orgUnit}</Badge>
+              <Badge className="bg-gradient-to-r from-aethex-500 to-neon-blue">
+                {p.orgUnit}
+              </Badge>
             )}
             {p.timeframe && (
-              <span className="text-xs text-muted-foreground">{p.timeframe}</span>
+              <span className="text-xs text-muted-foreground">
+                {p.timeframe}
+              </span>
             )}
           </div>
         </div>
@@ -36,7 +51,9 @@ export default function ShowcaseCard({ p }: { p: ShowcaseProject }) {
         {p.tags && p.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {p.tags.map((t) => (
-              <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
+              <Badge key={t} variant="outline" className="text-xs">
+                {t}
+              </Badge>
             ))}
           </div>
         )}
@@ -61,7 +78,9 @@ export default function ShowcaseCard({ p }: { p: ShowcaseProject }) {
           <div className="flex flex-wrap gap-2">
             {p.links.map((l) => (
               <Button key={l.href} asChild size="sm" variant="outline">
-                <a href={l.href} target="_blank" rel="noreferrer noopener">{l.label}</a>
+                <a href={l.href} target="_blank" rel="noreferrer noopener">
+                  {l.label}
+                </a>
               </Button>
             ))}
           </div>

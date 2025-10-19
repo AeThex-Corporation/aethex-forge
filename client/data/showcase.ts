@@ -45,9 +45,7 @@ export const SHOWCASE: ShowcaseProject[] = [
     description:
       "Marketplace for buying, selling, and trading digital goods and services across the AeThex ecosystem.",
     tags: ["Platform", "Marketplace", "Commerce"],
-    contributors: [
-      { name: "AeThex Commerce", avatar: "/placeholder.svg" },
-    ],
+    contributors: [{ name: "AeThex Commerce", avatar: "/placeholder.svg" }],
   },
   {
     id: "rodeo-roundup",
@@ -58,9 +56,7 @@ export const SHOWCASE: ShowcaseProject[] = [
     description:
       "App for discovering and tracking rodeos nearby with structured event data, maps, and alerts.",
     tags: ["Studio", "Mobile", "Events", "Maps"],
-    contributors: [
-      { name: "Studio Build Team", avatar: "/placeholder.svg" },
-    ],
+    contributors: [{ name: "Studio Build Team", avatar: "/placeholder.svg" }],
   },
   {
     id: "hells-highway",
@@ -85,9 +81,7 @@ export const SHOWCASE: ShowcaseProject[] = [
     description:
       "Internal game development toolkit and build pipeline utilities for rapid prototyping and shipping.",
     tags: ["Labs", "Toolkit", "DevTools"],
-    contributors: [
-      { name: "Labs Automation", avatar: "/placeholder.svg" },
-    ],
+    contributors: [{ name: "Labs Automation", avatar: "/placeholder.svg" }],
   },
   {
     id: "lone-star-bar",
@@ -98,9 +92,7 @@ export const SHOWCASE: ShowcaseProject[] = [
     description:
       "17+ social game on Roblox focusing on immersive spaces and social mechanics.",
     tags: ["Studio", "Roblox", "Social", "Game"],
-    contributors: [
-      { name: "Social Experiences", avatar: "/placeholder.svg" },
-    ],
+    contributors: [{ name: "Social Experiences", avatar: "/placeholder.svg" }],
     links: [
       {
         label: "Roblox",
@@ -116,9 +108,7 @@ export const SHOWCASE: ShowcaseProject[] = [
     timeframe: "Nov 2022 – Present",
     description: "Narrative‑driven initiative produced by AeThex Studio.",
     tags: ["Studio", "Narrative", "Production"],
-    contributors: [
-      { name: "Story Group", avatar: "/placeholder.svg" },
-    ],
+    contributors: [{ name: "Story Group", avatar: "/placeholder.svg" }],
     links: [
       { label: "Show project", href: "https://aethex.co/crooked-are-we" },
     ],
@@ -132,9 +122,7 @@ export const SHOWCASE: ShowcaseProject[] = [
     description:
       "Studio directed and shipped a polished prototype game in 86 hours for INSPIRE 2025.",
     tags: ["Studio", "Game Jam", "Leadership", "Prototype"],
-    contributors: [
-      { name: "Strike Team", avatar: "/placeholder.svg" },
-    ],
+    contributors: [{ name: "Strike Team", avatar: "/placeholder.svg" }],
   },
   {
     id: "the-prototypes-control",
@@ -145,9 +133,7 @@ export const SHOWCASE: ShowcaseProject[] = [
     description:
       "Roblox DevRel Challenge 2025 entry focused on rapid prototyping and control schemes.",
     tags: ["Studio", "Roblox", "Prototype", "Challenge"],
-    contributors: [
-      { name: "Prototype Unit", avatar: "/placeholder.svg" },
-    ],
+    contributors: [{ name: "Prototype Unit", avatar: "/placeholder.svg" }],
     links: [
       {
         label: "Roblox",
