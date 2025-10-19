@@ -33,7 +33,8 @@ function initials(name?: string | null) {
 export default function Directory() {
   const [query, setQuery] = useState("");
   const [hideAeThex, setHideAeThex] = useState(true);
-  const source = devconnect ? "DevConnect" : "AeThex";
+  const [source, setSource] = useState<"DevConnect" | "AeThex">("AeThex");
+
   type BasicDev = {
     id: string;
     name: string;
@@ -47,6 +48,7 @@ export default function Directory() {
     total_xp?: number | null;
   };
   const [devs, setDevs] = useState<BasicDev[]>([]);
+
   type StudioMember = { id: string; name: string; avatar_url?: string | null };
   type Studio = {
     id: string;
@@ -62,14 +64,15 @@ export default function Directory() {
     members?: StudioMember[];
   };
   const [studios, setStudios] = useState<Studio[]>([]);
+
   const [skillFilter, setSkillFilter] = useState<string>("all");
   const [regionFilter, setRegionFilter] = useState<string>("all");
   const [sortMode, setSortMode] = useState<string>("relevance");
 
   useEffect(() => {
-    const client = devconnect || supabase;
-    const userTable = client === devconnect ? "profiles" : "user_profiles";
-    const normalize = (u: any): BasicDev => ({
+    let cancelled = false;
+
+    const normalizeDev = (u: any): BasicDev => ({
       id: String(u.id),
       name: u.full_name || u.display_name || u.username || "Developer",
       avatar_url: u.avatar_url || u.image_url || u.photo_url || null,
@@ -87,36 +90,6 @@ export default function Directory() {
       total_xp: u.total_xp || u.xp || null,
     });
 
-    if (client === devconnect) {
-      fetch(`/api/devconnect/rest/${userTable}?select=*&limit=200`)
-        .then(async (r) =>
-          r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
-        )
-        .then((data) => {
-          if (Array.isArray(data) && data.length)
-            return setDevs(data.map(normalize));
-          return devconnect
-            ?.from<any>(userTable as any)
-            .select("*")
-            .limit(200)
-            .then(({ data }) => setDevs((data || []).map(normalize)));
-        })
-        .catch(() => {
-          devconnect
-            ?.from<any>(userTable as any)
-            .select("*")
-            .limit(200)
-            .then(({ data }) => setDevs((data || []).map(normalize)));
-        });
-    } else {
-      client
-        .from<any>(userTable as any)
-        .select("*")
-        .limit(200)
-        .then(({ data }) => setDevs((data || []).map(normalize)));
-    }
-
-    const studiosTable = client === devconnect ? "collectives" : "teams";
     const mapStudio = (r: any): Studio => ({
       id: String(r.id),
       name: r.name,
@@ -131,107 +104,182 @@ export default function Directory() {
         Array.isArray(r.collective_members) && r.collective_members.length
           ? Number(r.collective_members[0]?.count ?? 0)
           : Array.isArray(r.team_memberships) && r.team_memberships.length
-            ? Number(r.team_memberships[0]?.count ?? 0)
-            : undefined,
+          ? Number(r.team_memberships[0]?.count ?? 0)
+          : undefined,
     });
 
-    if (client === devconnect) {
-      const sel = encodeURIComponent(
-        "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
-      );
-      fetch(`/api/devconnect/rest/${studiosTable}?select=${sel}&limit=200`)
-        .then(async (r) =>
-          r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
-        )
-        .then((data) => {
-          if (Array.isArray(data) && data.length)
-            return setStudios(data.map(mapStudio));
-          return devconnect
-            ?.from<any>(studiosTable as any)
-            .select(
-              "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
-            )
-            .limit(200)
-            .then(({ data }) => setStudios((data || []).map(mapStudio)));
-        })
-        .catch(() => {
-          devconnect
-            ?.from<any>(studiosTable as any)
-            .select(
-              "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
-            )
-            .limit(200)
-            .then(({ data }) => setStudios((data || []).map(mapStudio)));
-        });
-    } else {
-      client
-        .from<any>(studiosTable as any)
-        .select(
-          "id,name,description,visibility,created_at, team_memberships:team_memberships(count)",
-        )
-        .limit(200)
-        .then(({ data }) => setStudios((data || []).map(mapStudio)));
+    async function tryFetch(url: string) {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
     }
-    // Fetch member avatars for studios (DevConnect only)
-    if (client === devconnect) {
-      const ids = studios.map((s) => s.id).slice(0, 30);
-      if (ids.length) {
-        const list = encodeURIComponent(ids.join(","));
-        fetch(
-          `/api/devconnect/rest/collective_members?select=collective_id,profile_id&collective_id=in.(${list})&limit=200`,
-        )
-          .then(async (r) =>
-            r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
+
+    async function load() {
+      // Probe server proxy first (runtime, works in prod even if VITE_* missing)
+      let devconnectAvailable = false;
+      try {
+        const probe = await fetch(
+          "/api/devconnect/rest/profiles?select=id&limit=1",
+          { headers: { Accept: "application/json" } },
+        );
+        devconnectAvailable = probe.ok;
+      } catch {
+        devconnectAvailable = false;
+      }
+
+      let usedDevConnect = false;
+
+      // Load developers
+      try {
+        if (devconnectAvailable) {
+          const data = await tryFetch(
+            "/api/devconnect/rest/profiles?select=*&limit=200",
+          );
+          if (!cancelled) setDevs((data || []).map(normalizeDev));
+          usedDevConnect = true;
+        } else if (devconnect) {
+          const { data } = await devconnect
+            .from<any>("profiles" as any)
+            .select("*")
+            .limit(200);
+          if (!cancelled) setDevs((data || []).map(normalizeDev));
+          usedDevConnect = true;
+        } else {
+          const { data } = await supabase
+            .from<any>("user_profiles" as any)
+            .select("*")
+            .limit(200);
+          if (!cancelled) setDevs((data || []).map(normalizeDev));
+          usedDevConnect = false;
+        }
+      } catch {
+        // Hard fallback to AeThex if anything failed
+        const { data } = await supabase
+          .from<any>("user_profiles" as any)
+          .select("*")
+          .limit(200);
+        if (!cancelled) setDevs((data || []).map(normalizeDev));
+        usedDevConnect = false;
+      }
+
+      // Load studios
+      try {
+        if (devconnectAvailable) {
+          const sel = encodeURIComponent(
+            "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
+          );
+          const data = await tryFetch(
+            `/api/devconnect/rest/collectives?select=${sel}&limit=200`,
+          );
+          if (!cancelled) setStudios((data || []).map(mapStudio));
+          usedDevConnect = usedDevConnect || true;
+        } else if (devconnect) {
+          const { data } = await devconnect
+            .from<any>("collectives" as any)
+            .select(
+              "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at, collective_members:collective_members(count)",
+            )
+            .limit(200);
+          if (!cancelled) setStudios((data || []).map(mapStudio));
+          usedDevConnect = usedDevConnect || true;
+        } else {
+          const { data } = await supabase
+            .from<any>("teams" as any)
+            .select(
+              "id,name,description,visibility,created_at, team_memberships:team_memberships(count)",
+            )
+            .limit(200);
+          if (!cancelled) setStudios((data || []).map(mapStudio));
+        }
+      } catch {
+        const { data } = await supabase
+          .from<any>("teams" as any)
+          .select(
+            "id,name,description,visibility,created_at, team_memberships:team_memberships(count)",
           )
-          .then(async (rows) => {
-            const byCollective: Record<string, string[]> = {};
-            (rows || []).forEach((row: any) => {
-              const cid = String(row.collective_id);
-              if (!byCollective[cid]) byCollective[cid] = [];
-              if (byCollective[cid].length < 5)
-                byCollective[cid].push(String(row.profile_id));
-            });
-            const profileIds = Array.from(
-              new Set(Object.values(byCollective).flat()),
-            );
-            if (profileIds.length) {
-              const pids = encodeURIComponent(profileIds.join(","));
-              let profs: any[] = [];
-              try {
-                profs = await fetch(
-                  `/api/devconnect/rest/profiles?select=id,display_name,avatar_url&id=in.(${pids})`,
-                ).then((r) =>
-                  r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
-                );
-              } catch {
-                const { data } = await devconnect
-                  ?.from<any>("profiles" as any)
-                  .select("id,display_name,avatar_url")
-                  .in("id", profileIds);
-                profs = data || [];
-              }
-              const map: Record<string, StudioMember> = {};
-              (profs || []).forEach((p: any) => {
-                map[String(p.id)] = {
-                  id: String(p.id),
-                  name: p.display_name || "Member",
-                  avatar_url: p.avatar_url || null,
-                };
-              });
-              setStudios((prev) =>
-                prev.map((s) => ({
-                  ...s,
-                  members: (byCollective[s.id] || [])
-                    .map((pid) => map[pid])
-                    .filter(Boolean),
-                })),
-              );
-            }
-          })
-          .catch(() => {});
+          .limit(200);
+        if (!cancelled) setStudios((data || []).map(mapStudio));
+      }
+
+      if (!cancelled) setSource(usedDevConnect ? "DevConnect" : "AeThex");
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Enrich studios with member avatars when using DevConnect
+  useEffect(() => {
+    let cancelled = false;
+    async function enrichMembers() {
+      if (source !== "DevConnect") return;
+      if (!studios.length) return;
+      const ids = studios.map((s) => s.id).slice(0, 30);
+      if (!ids.length) return;
+      try {
+        const list = encodeURIComponent(ids.join(","));
+        const rows = await fetch(
+          `/api/devconnect/rest/collective_members?select=collective_id,profile_id&collective_id=in.(${list})&limit=200`,
+        ).then((r) => (r.ok ? r.json() : Promise.reject(new Error("err"))));
+
+        const byCollective: Record<string, string[]> = {};
+        (rows || []).forEach((row: any) => {
+          const cid = String(row.collective_id);
+          if (!byCollective[cid]) byCollective[cid] = [];
+          if (byCollective[cid].length < 5)
+            byCollective[cid].push(String(row.profile_id));
+        });
+
+        const profileIds = Array.from(new Set(Object.values(byCollective).flat()));
+        if (!profileIds.length) return;
+
+        const pids = encodeURIComponent(profileIds.join(","));
+        let profs: any[] = [];
+        try {
+          profs = await fetch(
+            `/api/devconnect/rest/profiles?select=id,display_name,avatar_url&id=in.(${pids})`,
+          ).then((r) => (r.ok ? r.json() : Promise.reject(new Error("err"))));
+        } catch {
+          if (devconnect) {
+            const { data } = await devconnect
+              .from<any>("profiles" as any)
+              .select("id,display_name,avatar_url")
+              .in("id", profileIds);
+            profs = data || [];
+          }
+        }
+
+        const map: Record<string, StudioMember> = {};
+        (profs || []).forEach((p: any) => {
+          map[String(p.id)] = {
+            id: String(p.id),
+            name: p.display_name || "Member",
+            avatar_url: p.avatar_url || null,
+          };
+        });
+
+        if (cancelled) return;
+        setStudios((prev) =>
+          prev.map((s) => ({
+            ...s,
+            members: (Object.prototype.hasOwnProperty.call(byCollective, s.id)
+              ? byCollective[s.id]
+              : [])
+              .map((pid) => map[pid])
+              .filter(Boolean),
+          })),
+        );
+      } catch {
+        // ignore member enrichment errors
       }
     }
-  }, []);
+    enrichMembers();
+    return () => {
+      cancelled = true;
+    };
+  }, [source, studios.length]);
 
   const filteredDevs = useMemo(() => {
     const q = query.trim().toLowerCase();
