@@ -19,7 +19,8 @@ export default function Directory() {
   const [hideAeThex, setHideAeThex] = useState(true);
   type BasicDev = { id: string; name: string; avatar_url?: string | null; location?: string | null; user_type?: string | null; experience_level?: string | null };
   const [devs, setDevs] = useState<BasicDev[]>([]);
-  const [studios, setStudios] = useState<any[]>([]);
+  type Studio = { id: string; name: string; description?: string | null; type?: string | null; is_recruiting?: boolean | null; recruiting_roles?: string[] | null; tags?: string[] | null; slug?: string | null; visibility?: string | null };
+  const [studios, setStudios] = useState<Studio[]>([]);
 
   useEffect(() => {
     const client = devconnect || supabase;
@@ -48,18 +49,31 @@ export default function Directory() {
         }
       });
 
+    const studiosTable = client === devconnect ? "collectives" : "teams";
+    const mapStudio = (r: any): Studio => ({
+      id: String(r.id),
+      name: r.name,
+      description: r.description || null,
+      type: r.type || (r.visibility || null),
+      is_recruiting: r.is_recruiting ?? null,
+      recruiting_roles: r.recruiting_roles ?? null,
+      tags: r.tags ?? null,
+      slug: r.slug || null,
+      visibility: r.visibility || null,
+    });
+
     client
-      .from<any>("teams" as any)
-      .select("id,name,description,visibility,created_at")
+      .from<any>(studiosTable as any)
+      .select(client === devconnect ? "id,name,description,type,is_recruiting,recruiting_roles,tags,slug,created_at" : "id,name,description,visibility,created_at")
       .limit(200)
       .then(({ data, error }) => {
-        if (!error && data) setStudios(data);
+        if (!error && Array.isArray(data)) setStudios(data.map(mapStudio));
         else if (client !== supabase) {
           supabase
             .from<any>("teams" as any)
             .select("id,name,description,visibility,created_at")
             .limit(200)
-            .then(({ data: d2 }) => setStudios(d2 || []));
+            .then(({ data: d2 }) => setStudios((d2 || []).map(mapStudio)));
         }
       });
   }, []);
@@ -82,7 +96,8 @@ export default function Directory() {
       if (!q) return true;
       return (
         (t.name || "").toLowerCase().includes(q) ||
-        (t.description || "").toLowerCase().includes(q)
+        (t.description || "").toLowerCase().includes(q) ||
+        (t.tags || []).join(" ").toLowerCase().includes(q)
       );
     });
   }, [studios, query]);
@@ -144,11 +159,28 @@ export default function Directory() {
                 {filteredStudios.map((t) => (
                   <Card key={t.id} className="border-border/40 bg-card/60 backdrop-blur">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-lg">{t.name}</CardTitle>
-                      {t.visibility && <CardDescription className="capitalize">{t.visibility}</CardDescription>}
+                      <div className="flex items-center justify-between gap-2">
+                        <CardTitle className="text-lg">{t.name}</CardTitle>
+                        {t.is_recruiting && (
+                          <Badge className="bg-emerald-500/10 text-emerald-200 border-emerald-400/40">Recruiting</Badge>
+                        )}
+                      </div>
+                      {(t.type || t.visibility) && (
+                        <CardDescription className="capitalize">{t.type || t.visibility}</CardDescription>
+                      )}
                     </CardHeader>
-                    <CardContent className="pt-0">
+                    <CardContent className="pt-0 space-y-3">
                       <p className="text-sm text-muted-foreground line-clamp-3">{t.description || ""}</p>
+                      {(t.tags && t.tags.length > 0) && (
+                        <div className="flex flex-wrap gap-2">
+                          {t.tags!.map((tag) => (
+                            <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
+                          ))}
+                        </div>
+                      )}
+                      {(t.recruiting_roles && t.recruiting_roles.length > 0) && (
+                        <div className="text-xs text-muted-foreground">Roles: {t.recruiting_roles!.join(", ")}</div>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
