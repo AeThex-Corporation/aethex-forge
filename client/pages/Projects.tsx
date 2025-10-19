@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import ShowcaseCard from "@/components/showcase/ShowcaseCard";
 import { SHOWCASE, type ShowcaseProject } from "@/data/showcase";
 import { useEffect, useMemo, useState } from "react";
-import { fetchBuilderList, getBuilderApiKey } from "@/lib/builder";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 
@@ -19,7 +18,6 @@ export default function Projects() {
   const { roles } = useAuth();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
   const [dbItems, setDbItems] = useState<ShowcaseProject[] | null>(null);
-  const [cmsItems, setCmsItems] = useState<ShowcaseProject[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -51,39 +49,10 @@ export default function Projects() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    if (dbItems && dbItems.length) return; // Skip CMS if DB has content
-    const apiKey = getBuilderApiKey();
-    if (!apiKey) return;
-    setLoading(true);
-    fetchBuilderList<any>("showcase-project", { limit: 50 })
-      .then((res) => {
-        const items: ShowcaseProject[] = (res.results || []).map((r) => ({
-          id: r.id,
-          title: r.data?.title || r.name || "Untitled",
-          orgUnit: r.data?.orgUnit,
-          role: r.data?.role,
-          timeframe: r.data?.timeframe,
-          description: r.data?.description,
-          tags: r.data?.tags || [],
-          links: r.data?.links || [],
-          contributors: r.data?.contributors || [],
-          image: r.data?.image,
-        }));
-        setCmsItems(items);
-      })
-      .catch(() => setCmsItems(null))
-      .finally(() => setLoading(false));
-  }, [dbItems]);
 
   const items = useMemo(
-    () =>
-      dbItems && dbItems.length
-        ? dbItems
-        : cmsItems && cmsItems.length
-          ? cmsItems
-          : SHOWCASE,
-    [dbItems, cmsItems],
+    () => (dbItems && dbItems.length ? dbItems : SHOWCASE),
+    [dbItems],
   );
   const hasProjects = Array.isArray(items) && items.length > 0;
 
@@ -107,19 +76,8 @@ export default function Projects() {
               </p>
             </div>
             {isOwner && (
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                title="Edit in Builder CMS"
-              >
-                <a
-                  href="https://builder.io/content"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  Open CMS
-                </a>
+              <Button asChild variant="outline" size="sm" title="Open Projects Admin">
+                <a href="/projects/admin">Open Admin</a>
               </Button>
             )}
           </div>
@@ -137,8 +95,7 @@ export default function Projects() {
               <CardHeader>
                 <CardTitle>No projects yet</CardTitle>
                 <CardDescription>
-                  Add entries in <code>code/client/data/showcase.ts</code> or
-                  manage them via CMS.
+                  Add entries in <code>code/client/data/showcase.ts</code> or use /projects/admin.
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center gap-2 pt-0 pb-6">
