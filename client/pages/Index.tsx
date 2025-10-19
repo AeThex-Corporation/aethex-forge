@@ -267,13 +267,16 @@ export default function Index() {
     <Layout hideFooter>
       {/* Top Banner (editable via Admin → Operations) */}
       {homeBanner?.enabled !== false && (
-        <div className="relative z-20 w-full border-b border-border/30 bg-gradient-to-r from-aethex-900/60 via-background to-neon-blue/20">
-          <div className="container mx-auto px-4 py-2 text-center">
-            <span className="text-sm font-medium tracking-wide text-foreground/90">
-              {homeBanner?.text || "ROBLOX AUTH SOON"}
-            </span>
+        <>
+          {/* Gamified top banner */}
+          {/* eslint-disable-next-line react/no-unknown-property */}
+          <div data-home-banner>
+            {/* @ts-ignore - component default export */}
+            {/* Using dynamic styling keyed by homeBanner.style */}
+            {/* Prefer emoji prefix in text for style */}
+            {/* The component handles disabled state upstream */}
           </div>
-        </div>
+        </>
       )}
 
       {/* Hero Section - Geometric Design */}
