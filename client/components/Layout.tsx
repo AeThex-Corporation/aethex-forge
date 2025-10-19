@@ -590,6 +590,15 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       Transparency
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      to="/press"
+                      onClick={scrollToTop}
+                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      Press Kit
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
