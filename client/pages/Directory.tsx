@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/lib/supabase";
+import { devconnect, hasDevConnect } from "@/lib/supabase-devconnect";
 import { useEffect, useMemo, useState } from "react";
 
 function initials(name?: string | null) {
