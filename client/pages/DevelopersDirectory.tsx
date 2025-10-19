@@ -29,6 +29,37 @@ import {
 import { cn } from "@/lib/utils";
 import { Search, RefreshCw, UserRound, Users, Sparkles } from "lucide-react";
 
+const PLATFORM_OPTIONS = [
+  { value: "all", label: "All Platforms" },
+  { value: "roblox", label: "Roblox" },
+  { value: "unity", label: "Unity" },
+  { value: "unreal", label: "Unreal" },
+  { value: "godot", label: "Godot" },
+  { value: "cryengine", label: "CryEngine" },
+  { value: "other", label: "Other" },
+] as const;
+
+const inferPlatforms = (profile: any): string[] => {
+  const out = new Set<string>();
+  const pushIf = (cond: boolean, v: string) => {
+    if (cond) out.add(v);
+  };
+  const skills = Array.isArray(profile?.skills)
+    ? (profile.skills as string[]).map((s) => String(s).toLowerCase())
+    : [];
+  const bio = String(profile?.bio || "").toLowerCase();
+  const tags = Array.isArray(profile?.tags)
+    ? (profile.tags as string[]).map((t) => String(t).toLowerCase())
+    : [];
+  const text = [skills.join(" "), tags.join(" "), bio].join(" ");
+  pushIf(/roblox|rbx|luau|roact/.test(text), "roblox");
+  pushIf(/unity|c#|csharp/.test(text), "unity");
+  pushIf(/unreal|ue5|ue4|blueprint/.test(text), "unreal");
+  pushIf(/godot|gdscript/.test(text), "godot");
+  pushIf(/cryengine/.test(text), "cryengine");
+  return Array.from(out);
+};
+
 const realmFilters: Array<{ value: string; label: string }> = [
   { value: "all", label: "All Realms" },
   { value: "game_developer", label: "Development Forge" },
@@ -215,6 +246,19 @@ const DeveloperCard = ({ profile }: DeveloperCardProps) => {
                   {availabilityLabel}
                 </Badge>
               </div>
+              <div className="mt-1 flex flex-wrap items-center gap-2">
+                {((profile as any)?.platforms as string[] | undefined)?.length
+                  ? ((profile as any).platforms as string[]).slice(0, 4).map((p) => (
+                      <Badge key={p} variant="outline" className="border-slate-700/70 text-[10px] uppercase tracking-wide">
+                        {p}
+                      </Badge>
+                    ))
+                  : inferPlatforms(profile).slice(0, 4).map((p) => (
+                      <Badge key={p} variant="outline" className="border-slate-700/70 text-[10px] uppercase tracking-wide">
+                        {p}
+                      </Badge>
+                    ))}
+              </div>
             </div>
           </div>
           <Badge
@@ -297,6 +341,7 @@ const DevelopersDirectory = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [realmFilter, setRealmFilter] = useState("all");
+  const [platformFilter, setPlatformFilter] = useState("all");
   const { profile: authProfile } = useAuth();
   const myPassportHref = authProfile?.username
     ? `/passport/${authProfile.username}`
@@ -312,9 +357,12 @@ const DevelopersDirectory = () => {
             .filter(Boolean)
             .some((value) => String(value).toLowerCase().includes(lowerSearch))
         : true;
-      return matchesRealm && matchesSearch;
+      const platforms: string[] = ((profile as any)?.platforms as any[]) || inferPlatforms(profile);
+      const matchesPlatform =
+        platformFilter === "all" || platforms.map((p) => String(p).toLowerCase()).includes(platformFilter);
+      return matchesRealm && matchesSearch && matchesPlatform;
     });
-  }, [profiles, search, realmFilter]);
+  }, [profiles, search, realmFilter, platformFilter]);
 
   const { toast } = useToast();
 
@@ -386,7 +434,7 @@ const DevelopersDirectory = () => {
             </div>
           </header>
 
-          <div className="grid gap-4 md:grid-cols-[2fr,1fr]">
+          <div className="grid gap-4 md:grid-cols-[2fr,1fr,1fr]">
             <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/70 p-4">
               <Search className="h-5 w-5 text-slate-400" />
               <Input
@@ -404,6 +452,18 @@ const DevelopersDirectory = () => {
                 {realmFilters.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={platformFilter} onValueChange={setPlatformFilter}>
+              <SelectTrigger className="rounded-xl border-slate-800 bg-slate-900/70 text-slate-100">
+                <SelectValue placeholder="Platform" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-900 text-slate-100">
+                {PLATFORM_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
                   </SelectItem>
                 ))}
               </SelectContent>
