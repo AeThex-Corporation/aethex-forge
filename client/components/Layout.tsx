@@ -59,6 +59,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     { name: "Feed", href: "/feed" },
     { name: "Engage", href: "/engage" },
     { name: "Roadmap", href: "/roadmap" },
+    { name: "Projects", href: "/projects" },
     { name: "Developers", href: "/developers" },
     { name: "Opportunities", href: "/opportunities" },
     { name: "Home", href: "/" },
