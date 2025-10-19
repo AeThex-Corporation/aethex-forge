@@ -63,7 +63,6 @@ export default function About() {
     { kpi: "<30d", label: "MVP timelines" },
   ];
 
-
   return (
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-12">
@@ -150,19 +149,21 @@ export default function About() {
                 <Rocket className="h-5 w-5" /> Vision
               </CardTitle>
               <CardDescription>
-                A builder-first network that turns ideas into shipping products faster.
+                A builder-first network that turns ideas into shipping products
+                faster.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2 text-sm text-muted-foreground">
                 <p>
-                  We’re unifying services, platform, and community into a single operating layer
-                  for creators and teams. Profiles, collaboration, mentorship, and delivery run as
-                  one system—so momentum compounds.
+                  We’re unifying services, platform, and community into a single
+                  operating layer for creators and teams. Profiles,
+                  collaboration, mentorship, and delivery run as one system—so
+                  momentum compounds.
                 </p>
                 <p>
-                  The long game: a trusted ecosystem where reputation, assets, and learning follow
-                  you across projects.
+                  The long game: a trusted ecosystem where reputation, assets,
+                  and learning follow you across projects.
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -172,7 +173,10 @@ export default function About() {
                   "Measure outcomes",
                   "Own your data",
                 ].map((t) => (
-                  <div key={t} className="rounded-lg border border-border/50 p-3 text-sm">
+                  <div
+                    key={t}
+                    className="rounded-lg border border-border/50 p-3 text-sm"
+                  >
                     {t}
                   </div>
                 ))}
@@ -330,14 +334,17 @@ export default function About() {
                 <div key={item.year} className="flex items-start gap-3">
                   <div className="h-2 w-2 rounded-full bg-aethex-400 mt-2" />
                   <div>
-                    <div className="font-medium">{item.year} • {item.title}</div>
-                    <div className="text-sm text-muted-foreground">{item.desc}</div>
+                    <div className="font-medium">
+                      {item.year} • {item.title}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {item.desc}
+                    </div>
                   </div>
                 </div>
               ))}
             </CardContent>
           </Card>
-
         </div>
       </div>
     </Layout>
