@@ -17,14 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { aethexCollabService } from "@/lib/aethex-collab-service";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
-import {
-  Users,
-  Plus,
-  Zap,
-  Target,
-  Trophy,
-  MessageSquare,
-} from "lucide-react";
+import { Users, Plus, Zap, Target, Trophy, MessageSquare } from "lucide-react";
 
 export default function Squads() {
   const { user, profile, loading } = useAuth();
@@ -133,7 +126,10 @@ export default function Squads() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {squads.reduce((acc, squad) => acc + (squad.members?.length || 1), 0)}
+                  {squads.reduce(
+                    (acc, squad) => acc + (squad.members?.length || 1),
+                    0,
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -207,7 +203,9 @@ export default function Squads() {
           {/* Your Squads */}
           <div className="space-y-4">
             <div>
-              <h2 className="text-2xl font-bold text-foreground">Your Squads</h2>
+              <h2 className="text-2xl font-bold text-foreground">
+                Your Squads
+              </h2>
               <p className="text-sm text-muted-foreground mt-1">
                 {squads.length === 0
                   ? "Create your first squad to get started"
@@ -243,8 +241,7 @@ export default function Squads() {
                             {squad.name}
                           </CardTitle>
                           <CardDescription className="line-clamp-2">
-                            {squad.description ||
-                              "No description provided yet"}
+                            {squad.description || "No description provided yet"}
                           </CardDescription>
                         </div>
                         <div className="p-2 rounded-lg bg-aethex-500/10 group-hover:bg-aethex-500/20 transition-colors">
