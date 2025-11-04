@@ -142,7 +142,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     </SheetDescription>
                   </SheetHeader>
                   <nav className="mt-6 flex flex-col gap-1">
-                    {(user ? userNavigation : navigation).map((item) => (
+                    {(user ? userNavigation : publicNavigation).map((item) => (
                       <SheetClose key={item.href} asChild>
                         <Link
                           to={item.href}
