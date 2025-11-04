@@ -52,6 +52,8 @@ import Opportunities from "./pages/Opportunities";
 import Explore from "./pages/Explore";
 import ResetPassword from "./pages/ResetPassword";
 import Teams from "./pages/Teams";
+import Squads from "./pages/Squads";
+import MenteeHub from "./pages/MenteeHub";
 import ProjectBoard from "./pages/ProjectBoard";
 import { Navigate } from "react-router-dom";
 import FourOhFourPage from "./pages/404";
@@ -99,6 +101,8 @@ const App = () => (
               <Route path="/admin" element={<Admin />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/teams" element={<Teams />} />
+              <Route path="/squads" element={<Squads />} />
+              <Route path="/mentee-hub" element={<MenteeHub />} />
               <Route path="/projects/new" element={<ProjectsNew />} />
               <Route
                 path="/projects/:projectId/board"
