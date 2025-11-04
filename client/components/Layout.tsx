@@ -132,7 +132,19 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       Access any section without leaving your flow.
                     </SheetDescription>
                   </SheetHeader>
-                  <nav className="mt-6 flex flex-col gap-2" />
+                  <nav className="mt-6 flex flex-col gap-1">
+                    {(user ? userNavigation : navigation).map((item) => (
+                      <SheetClose key={item.href} asChild>
+                        <Link
+                          to={item.href}
+                          onClick={scrollToTop}
+                          className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/50 hover:text-aethex-200"
+                        >
+                          {item.name}
+                        </Link>
+                      </SheetClose>
+                    ))}
+                  </nav>
                   <div className="mt-8 space-y-3 border-t border-border/40 pt-4">
                     {loading ? (
                       <div className="space-y-2">
