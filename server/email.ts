@@ -1,16 +1,40 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resendApiKey = process.env.RESEND_API_KEY;
-const defaultFromAddress =
-  process.env.RESEND_FROM_EMAIL ?? "AeThex OS <no-reply@aethex.dev>";
+const smtpHost = process.env.SMTP_HOST;
+const smtpPort = parseInt(process.env.SMTP_PORT || "465", 10);
+const smtpUser = process.env.SMTP_USER;
+const smtpPassword = process.env.SMTP_PASSWORD;
+const fromEmail = process.env.SMTP_FROM_EMAIL || "no-reply@aethex.dev";
 const verifySupportEmail =
   process.env.VERIFY_SUPPORT_EMAIL ?? "support@aethex.biz";
 
-const resendClient = resendApiKey ? new Resend(resendApiKey) : null;
+let transporter: nodemailer.Transporter | null = null;
+
+function getTransporter() {
+  if (transporter) return transporter;
+
+  if (!smtpHost || !smtpUser || !smtpPassword) {
+    throw new Error(
+      "SMTP configuration is missing. Set SMTP_HOST, SMTP_USER, and SMTP_PASSWORD.",
+    );
+  }
+
+  transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
+    auth: {
+      user: smtpUser,
+      pass: smtpPassword,
+    },
+  });
+
+  return transporter;
+}
 
 export const emailService = {
   get isConfigured() {
-    return Boolean(resendClient);
+    return Boolean(smtpHost && smtpUser && smtpPassword);
   },
 
   async sendVerificationEmail(params: {
@@ -18,10 +42,7 @@ export const emailService = {
     verificationUrl: string;
     fullName?: string | null;
   }) {
-    if (!resendClient) {
-      throw new Error("Email service is not configured. Set RESEND_API_KEY.");
-    }
-
+    const transporter = getTransporter();
     const { to, verificationUrl, fullName } = params;
     const safeName = fullName?.trim() || "there";
 
@@ -39,7 +60,7 @@ export const emailService = {
         <p style="word-break: break-all; font-size: 14px; color: #334155;">${verificationUrl}</p>
         <hr style="margin: 32px 0; border: none; border-top: 1px solid #e2e8f0;" />
         <p style="font-size: 12px; color: #64748b;">
-          Didnt create an account? Please ignore this email or contact <a href="mailto:${verifySupportEmail}">${verifySupportEmail}</a>.
+          Didn't create an account? Please ignore this email or contact <a href="mailto:${verifySupportEmail}">${verifySupportEmail}</a>.
         </p>
       </div>
     `;
@@ -53,8 +74,8 @@ export const emailService = {
       `If you didn't request this, contact us at ${verifySupportEmail}.`,
     ].join("\n");
 
-    await resendClient.emails.send({
-      from: defaultFromAddress,
+    await transporter.sendMail({
+      from: fromEmail,
       to,
       subject,
       html,
@@ -63,8 +84,6 @@ export const emailService = {
         "X-AeThex-Email": "verification",
         "X-Entity-Ref-ID": verificationUrl.slice(-24),
       },
-      tags: [{ name: "template", value: "auth-verification" }],
-      reply_to: verifySupportEmail,
     });
   },
 
@@ -74,10 +93,7 @@ export const emailService = {
     inviterName?: string | null;
     message?: string | null;
   }) {
-    if (!resendClient) {
-      throw new Error("Email service is not configured. Set RESEND_API_KEY.");
-    }
-
+    const transporter = getTransporter();
     const { to, inviteUrl, inviterName, message } = params;
     const safeInviter = inviterName?.trim() || "An AeThex member";
 
@@ -103,15 +119,13 @@ export const emailService = {
       inviteUrl,
     ].join("\n");
 
-    await resendClient.emails.send({
-      from: defaultFromAddress,
+    await transporter.sendMail({
+      from: fromEmail,
       to,
       subject,
       html,
       text,
       headers: { "X-AeThex-Email": "invite" },
-      tags: [{ name: "template", value: "invite" }],
-      reply_to: verifySupportEmail,
     });
   },
 };
