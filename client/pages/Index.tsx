@@ -282,7 +282,7 @@ export default function Index() {
       />
       <Layout hideFooter>
         {/* Top Banner (editable via Admin → Operations) */}
-        {homeBanner?.enabled !== false && (
+        {false && (
           <GamifiedBanner
             text={homeBanner?.text || "ROBLOX AUTH SOON"}
             enabled={homeBanner?.enabled !== false}
