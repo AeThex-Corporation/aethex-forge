@@ -8,6 +8,13 @@ import { randomUUID, createHash, createVerify } from "crypto";
 export function createServer() {
   const app = express();
 
+  // Middleware - capture raw body for Discord signature verification
+  app.use((req, res, buf, encoding) => {
+    if (buf && buf.length) {
+      req.rawBody = buf.toString(encoding || 'utf8');
+    }
+  });
+
   // Middleware
   app.use(cors());
   app.use(express.json());
