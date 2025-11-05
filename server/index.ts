@@ -19,6 +19,55 @@ export function createServer() {
     res.json({ message: ping });
   });
 
+  // Discord Interactions Endpoint (for Activity verification)
+  app.post("/api/discord/interactions", (req, res) => {
+    const signature = req.get("x-signature-ed25519");
+    const timestamp = req.get("x-signature-timestamp");
+    const body = req.rawBody || JSON.stringify(req.body);
+
+    const publicKey = process.env.DISCORD_PUBLIC_KEY;
+    if (!publicKey) {
+      console.warn("[Discord] DISCORD_PUBLIC_KEY not configured");
+      return res.status(401).json({ error: "Public key not configured" });
+    }
+
+    if (!signature || !timestamp) {
+      return res.status(401).json({ error: "Missing signature or timestamp" });
+    }
+
+    // Verify request signature
+    try {
+      const isValid = verify(
+        "ed25519",
+        Buffer.from(`${timestamp}${body}`),
+        publicKey,
+        Buffer.from(signature, "hex"),
+      );
+
+      if (!isValid) {
+        return res.status(401).json({ error: "Invalid signature" });
+      }
+    } catch (e: any) {
+      console.error("[Discord] Signature verification failed:", e?.message);
+      return res.status(401).json({ error: "Signature verification failed" });
+    }
+
+    const interaction = req.body;
+
+    // Handle PING interaction (Discord Activity verification)
+    if (interaction.type === 1) {
+      return res.json({ type: 1 });
+    }
+
+    // Handle other interaction types
+    if (interaction.type === 2 || interaction.type === 3 || interaction.type === 4 || interaction.type === 5) {
+      // For now, acknowledge other interactions
+      return res.json({ type: 4, data: { content: "Activity received your interaction" } });
+    }
+
+    return res.status(400).json({ error: "Unknown interaction type" });
+  });
+
   // DevConnect REST proxy (GET only)
   app.get("/api/devconnect/rest/:table", async (req, res) => {
     try {
