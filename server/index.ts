@@ -37,12 +37,9 @@ export function createServer() {
 
     // Verify request signature
     try {
-      const isValid = verify(
-        "ed25519",
-        Buffer.from(`${timestamp}${body}`),
-        publicKey,
-        Buffer.from(signature, "hex"),
-      );
+      const verifier = createVerify("ed25519");
+      verifier.update(`${timestamp}${body}`);
+      const isValid = verifier.verify(publicKey, Buffer.from(signature, "hex"));
 
       if (!isValid) {
         return res.status(401).json({ error: "Invalid signature" });
