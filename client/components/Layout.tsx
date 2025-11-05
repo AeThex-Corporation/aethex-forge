@@ -375,7 +375,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
               <div className="space-y-4 animate-fade-in">
                 <div className="flex items-center space-x-3 group">
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3979ec9a8a28471d900a80e94e2c45fe?format=webp&width=800"
+                    src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=128&dpr=1&quality=100&sign=6c7576ce&sv=2"
                     alt="AeThex Logo"
                     className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
                   />
