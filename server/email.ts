@@ -52,7 +52,16 @@ function getTransporter() {
 
 export const emailService = {
   get isConfigured() {
-    return Boolean(smtpHost && smtpUser && smtpPassword);
+    const configured = Boolean(smtpHost && smtpUser && smtpPassword);
+    if (!configured) {
+      console.warn("[EmailService] Not configured. Env check:", {
+        SMTP_HOST: smtpHost ? "set" : "MISSING",
+        SMTP_USER: smtpUser ? "set" : "MISSING",
+        SMTP_PASSWORD: smtpPassword ? "set" : "MISSING",
+        SMTP_PORT: smtpPort,
+      });
+    }
+    return configured;
   },
 
   async sendVerificationEmail(params: {
@@ -60,6 +69,7 @@ export const emailService = {
     verificationUrl: string;
     fullName?: string | null;
   }) {
+    console.log("[EmailService] sendVerificationEmail called for:", params.to);
     const transporter = getTransporter();
     const { to, verificationUrl, fullName } = params;
     const safeName = fullName?.trim() || "there";
