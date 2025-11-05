@@ -298,18 +298,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     userId: string,
   ): Promise<AethexUserProfile | null> => {
     try {
-      const userProfile = await aethexUserService.getCurrentUser();
+      // Add 5-second timeout to prevent hanging
+      const profilePromise = aethexUserService.getCurrentUser();
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("Profile fetch timeout")), 5000)
+      );
+
+      const userProfile = await Promise.race([profilePromise, timeoutPromise]);
       setProfile(userProfile);
+
       try {
-        let r = await aethexRoleService.getUserRoles(userId);
+        const rolesPromise = aethexRoleService.getUserRoles(userId);
+        const rolesTimeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Roles fetch timeout")), 5000)
+        );
+
+        let r = await Promise.race([rolesPromise, rolesTimeoutPromise]);
+
         // Auto-seed owner roles if logging in as site owner
         const normalizedEmail = userProfile?.email?.toLowerCase();
         if (normalizedEmail === "mrpiglr@gmail.com" && !r.includes("owner")) {
           const seeded = Array.from(
             new Set(["owner", "admin", "founder", ...r]),
           );
-          await aethexRoleService.setUserRoles(userId, seeded);
-          r = seeded;
+          try {
+            await aethexRoleService.setUserRoles(userId, seeded);
+            r = seeded;
+          } catch {
+            // Failed to set roles, continue with current roles
+          }
         }
         if (
           normalizedEmail &&
@@ -317,11 +334,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           !r.includes("staff")
         ) {
           const seeded = Array.from(new Set(["staff", ...r]));
-          await aethexRoleService.setUserRoles(userId, seeded);
-          r = seeded;
+          try {
+            await aethexRoleService.setUserRoles(userId, seeded);
+            r = seeded;
+          } catch {
+            // Failed to set roles, continue with current roles
+          }
         }
         setRoles(r);
-      } catch {
+      } catch (error) {
+        console.warn("Error fetching roles:", error);
         setRoles([]);
       }
       setLoading(false);
