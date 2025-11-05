@@ -208,11 +208,10 @@ export default function Onboarding() {
   }, [user, steps.length, mapProfileToOnboardingData]);
 
   useEffect(() => {
-    // Disable local persistence for onboarding
-    if (typeof window === "undefined") return;
+    // Disable local persistence for onboarding (but not while finishing)
+    if (typeof window === "undefined" || isFinishing) return;
     try {
       window.localStorage.removeItem(ONBOARDING_STORAGE_KEY);
-      window.localStorage.removeItem("onboarding_complete");
     } catch {}
   }, [hydrated, isFinishing]);
 
