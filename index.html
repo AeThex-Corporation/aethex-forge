@@ -183,6 +183,34 @@
         ogUrl.setAttribute("content", location.href);
       })();
     </script>
+
+    <!-- Discord SDK for Activities -->
+    <script src="https://cdn.discordapp.com/assets/embedded/lazyload.min.js"></script>
+    <script>
+      // Initialize Discord SDK for Activity context
+      window.discordSdkReady = false;
+
+      async function loadDiscordSDK() {
+        try {
+          const { DiscordSDK } = await import('https://cdn.discordapp.com/assets/embedded/lazyload.min.js');
+          if (DiscordSDK) {
+            window.DiscordSDK = new DiscordSDK({
+              clientId: '578971245454950421',
+            });
+            window.discordSdkReady = true;
+          }
+        } catch (e) {
+          console.warn('Discord SDK loading skipped (not in Activity context):', e.message);
+        }
+      }
+
+      // Attempt to load Discord SDK
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadDiscordSDK);
+      } else {
+        loadDiscordSDK();
+      }
+    </script>
   </head>
 
   <body>
