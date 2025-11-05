@@ -365,113 +365,93 @@ export default function Dashboard() {
     try {
       setIsLoading(true);
 
-      // Load user's projects with error handling
-      let userProjects = [];
-      try {
-        userProjects = await aethexProjectService.getUserProjects(user!.id);
-        setProjects(userProjects);
-      } catch (projectError) {
-        console.warn("Could not load projects:", projectError);
-        setProjects([]);
-      }
+      const userId = user!.id;
 
-      // Load teams
-      try {
-        const myTeams = await aethexCollabService.listMyTeams(user!.id);
-        setTeams(myTeams);
-      } catch (e) {
-        setTeams([]);
-      }
+      // Parallelize all independent data fetches
+      const [
+        projectsResult,
+        teamsResult,
+        postsResult,
+        invitesResult,
+        networkResult,
+        applicationsResult,
+        achievementsResult,
+        followerCountResult,
+      ] = await Promise.allSettled([
+        // Projects
+        aethexProjectService.getUserProjects(userId).catch(() => []),
+        // Teams
+        aethexCollabService.listMyTeams(userId).catch(() => []),
+        // Posts
+        communityService.getUserPosts(userId).then(p => p?.slice(0, 5) || []).catch(() => []),
+        // Invites
+        aethexSocialService.listInvites(userId).then(i => Array.isArray(i) ? i : []).catch(() => []),
+        // Network (following, followers, connections)
+        Promise.all([
+          aethexSocialService.getFollowing(userId).catch(() => []),
+          aethexSocialService.getFollowers(userId).catch(() => []),
+          aethexSocialService.getConnections(userId).catch(() => []),
+        ]),
+        // Applications
+        supabase.from("project_applications")
+          .select(`*, projects!inner(id, title, user_id)`)
+          .eq("projects.user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(10)
+          .then(({ data }) => Array.isArray(data) ? data : [])
+          .catch(() => []),
+        // Achievements (don't block on checkAndAwardProjectAchievements - do it in background)
+        Promise.all([
+          aethexAchievementService.getUserAchievements(userId).catch(() => []),
+          aethexAchievementService.getAllAchievements().catch(() => []),
+        ]).then(([earned, all]) => ({ earned: earned || [], all: all || [] })),
+        // Follower count
+        supabase.from("user_follows")
+          .select("id", { count: "exact", head: true })
+          .eq("following_id", userId)
+          .then(({ count }) => typeof count === "number" ? count : 0)
+          .catch(() => 0),
+      ]);
 
-      // Load user's recent posts
-      try {
-        const posts = await communityService.getUserPosts(user!.id);
-        setUserPosts(posts.slice(0, 5));
-      } catch (e) {
-        console.warn("Could not load user posts:", e);
-        setUserPosts([]);
-      }
+      // Extract results from settled promises
+      const userProjects = projectsResult.status === "fulfilled" ? projectsResult.value : [];
+      setProjects(userProjects);
 
-      // Load invites
-      try {
-        const mine = await aethexSocialService.listInvites(user!.id);
-        setInvites(Array.isArray(mine) ? mine : []);
-      } catch {
-        setInvites([]);
-      }
+      const myTeams = teamsResult.status === "fulfilled" ? teamsResult.value : [];
+      setTeams(myTeams);
 
-      // Load network: following, followers, connections
-      try {
-        const [flw, fol, conns] = await Promise.all([
-          aethexSocialService.getFollowing(user!.id),
-          aethexSocialService.getFollowers(user!.id),
-          aethexSocialService.getConnections(user!.id),
-        ]);
+      const userPosts = postsResult.status === "fulfilled" ? postsResult.value : [];
+      setUserPosts(userPosts);
+
+      const myInvites = invitesResult.status === "fulfilled" ? invitesResult.value : [];
+      setInvites(myInvites);
+
+      if (networkResult.status === "fulfilled") {
+        const [flw, fol, conns] = networkResult.value;
         setFollowingIds(Array.isArray(flw) ? flw : []);
         setFollowerIds(Array.isArray(fol) ? fol : []);
         setConnectionsList(Array.isArray(conns) ? conns : []);
-      } catch (e) {
+      } else {
         setFollowingIds([]);
         setFollowerIds([]);
         setConnectionsList([]);
       }
 
-      // Load project applications (if table exists)
-      try {
-        const { data, error } = await supabase
-          .from("project_applications")
-          .select(`*, projects!inner(id, title, user_id)`)
-          .eq("projects.user_id", user!.id)
-          .order("created_at", { ascending: false })
-          .limit(10);
-        if (!error && Array.isArray(data)) setApplications(data);
-        else setApplications([]);
-      } catch (e) {
-        console.warn("Applications fetch skipped or failed:", e);
-        setApplications([]);
-      }
+      const appData = applicationsResult.status === "fulfilled" ? applicationsResult.value : [];
+      setApplications(appData);
 
-      // Check and award project-related achievements, then load achievements
-      try {
-        await aethexAchievementService.checkAndAwardProjectAchievements(
-          user!.id,
-        );
-      } catch (e) {
-        console.warn("checkAndAwardProjectAchievements failed:", e);
-      }
-
-      // Load achievements (all and earned)
       let userAchievements: any[] = [];
       let catalog: any[] = [];
-      try {
-        const [earnedList, allList] = await Promise.all([
-          aethexAchievementService.getUserAchievements(user!.id),
-          aethexAchievementService.getAllAchievements(),
-        ]);
-        userAchievements = earnedList || [];
-        catalog = allList || [];
-      } catch (achievementError) {
-        console.warn("Could not load achievements:", achievementError);
-      } finally {
-        setAchievements(userAchievements);
-        setAllAchievements(catalog);
+      if (achievementsResult.status === "fulfilled") {
+        userAchievements = achievementsResult.value.earned;
+        catalog = achievementsResult.value.all;
       }
+      setAchievements(userAchievements);
+      setAllAchievements(catalog);
 
-      // Load follower count for real collaboration insight
-      let followerCount = 0;
-      try {
-        const { count, error } = await supabase
-          .from("user_follows")
-          .select("id", { count: "exact", head: true })
-          .eq("following_id", user!.id);
-        if (!error && typeof count === "number") {
-          followerCount = count;
-        }
-      } catch (e) {
-        console.warn("Could not load follower count:", e);
-      }
+      const followerCount = followerCountResult.status === "fulfilled" ? followerCountResult.value : 0;
 
-      // Calculate stats (treat planning and in_progress as active)
+      // Calculate stats
       const activeCount = userProjects.filter(
         (p) => p.status === "in_progress" || p.status === "planning",
       ).length;
@@ -495,6 +475,11 @@ export default function Dashboard() {
         completedTasks: completedCount,
         teamMembers: followerCount,
         performanceScore: `${performanceScore}%`,
+      });
+
+      // Background task: Check and award achievements (don't block)
+      aethexAchievementService.checkAndAwardProjectAchievements(userId).catch((e) => {
+        console.warn("checkAndAwardProjectAchievements failed:", e);
       });
     } catch (error) {
       console.error("Error loading dashboard data:", error);
