@@ -553,15 +553,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (error) throw error;
 
-      // Supabase sends the confirmation email automatically (SMTP or default provider)
-      let emailSent = true;
+      // Send verification email via custom SMTP (fallback: Supabase auth email)
+      let emailSent = false;
       let verificationUrl: string | undefined;
 
       if (data.user) {
-        aethexToast.success({
-          title: "Verify your email",
-          description: `We sent a confirmation to ${email}.`,
-        });
+        try {
+          // Try to send via custom SMTP server
+          const verifyResponse = await fetch("/api/auth/send-verification-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email,
+              redirectTo,
+              fullName: metadata.full_name || null,
+            }),
+          });
+
+          const verifyPayload = await verifyResponse.json().catch(() => ({}));
+
+          if (verifyResponse.ok && verifyPayload?.sent) {
+            emailSent = true;
+            aethexToast.success({
+              title: "Verify your email",
+              description: `We sent a confirmation to ${email}.`,
+            });
+          } else {
+            // Custom SMTP failed, but provide manual link if available
+            verificationUrl = verifyPayload?.verificationUrl || undefined;
+            if (verificationUrl) {
+              aethexToast.warning({
+                title: "Verify your email",
+                description: `We couldn't send the email automatically. Use the manual verification link in your account settings.`,
+              });
+            } else {
+              aethexToast.info({
+                title: "Account created",
+                description: `Please check your email to verify your account.`,
+              });
+            }
+          }
+        } catch (emailErr) {
+          console.warn("[Auth] Failed to send verification email:", emailErr);
+          aethexToast.info({
+            title: "Account created",
+            description: `Please check your email to verify your account.`,
+          });
+        }
       }
 
       return { emailSent, verificationUrl } as const;

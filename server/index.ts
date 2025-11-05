@@ -536,23 +536,62 @@ export function createServer() {
 
     app.post("/api/posts", async (req, res) => {
       const payload = req.body || {};
+
+      // Validation
+      if (!payload.author_id) {
+        return res.status(400).json({ error: "author_id is required" });
+      }
+      if (!payload.title || typeof payload.title !== "string" || !payload.title.trim()) {
+        return res.status(400).json({ error: "title is required and must be a non-empty string" });
+      }
+      if (!payload.content || typeof payload.content !== "string" || !payload.content.trim()) {
+        return res.status(400).json({ error: "content is required and must be a non-empty string" });
+      }
+
+      // Validate author_id is a valid UUID format
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(String(payload.author_id))) {
+        return res.status(400).json({ error: "author_id must be a valid UUID" });
+      }
+
       try {
+        // Verify author exists
+        const { data: author, error: authorError } = await adminSupabase
+          .from("user_profiles")
+          .select("id")
+          .eq("id", payload.author_id)
+          .single();
+
+        if (authorError || !author) {
+          return res.status(404).json({ error: "Author not found" });
+        }
+
         const { data, error } = await adminSupabase
           .from("community_posts")
           .insert({
             author_id: payload.author_id,
-            title: payload.title,
-            content: payload.content,
-            category: payload.category,
-            tags: payload.tags,
+            title: String(payload.title).trim(),
+            content: String(payload.content).trim(),
+            category: payload.category ? String(payload.category).trim() : null,
+            tags: Array.isArray(payload.tags) ? payload.tags.map((t: any) => String(t).trim()) : [],
             is_published: payload.is_published ?? true,
           })
           .select()
           .single();
-        if (error) return res.status(500).json({ error: error.message });
+
+        if (error) {
+          console.error("[API] /api/posts insert error:", {
+            code: error.code,
+            message: error.message,
+            details: (error as any).details,
+          });
+          return res.status(500).json({ error: error.message || "Failed to create post" });
+        }
+
         res.json(data);
       } catch (e: any) {
-        res.status(500).json({ error: e?.message || String(e) });
+        console.error("[API] /api/posts exception:", e?.message || String(e));
+        res.status(500).json({ error: e?.message || "Failed to create post" });
       }
     });
 
