@@ -11,17 +11,12 @@ export function createServer() {
   // Middleware
   app.use(cors());
 
-  // Capture raw body for Discord signature verification
-  app.use((req, res, next) => {
-    let rawBody = '';
-    req.on('data', (chunk) => {
-      rawBody += chunk.toString('utf8');
-    });
-    req.on('end', () => {
-      (req as any).rawBody = rawBody;
-      next();
-    });
-  });
+  // Discord endpoint needs raw body for signature verification
+  app.post(
+    "/api/discord/interactions",
+    express.raw({ type: "application/json" }),
+    handleDiscordInteractions
+  );
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
