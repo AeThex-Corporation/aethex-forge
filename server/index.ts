@@ -10,80 +10,55 @@ const handleDiscordInteractions = (
   req: express.Request,
   res: express.Response,
 ) => {
-  const signature = req.get("x-signature-ed25519");
-  const timestamp = req.get("x-signature-timestamp");
-  const rawBody = req.body instanceof Buffer ? req.body : Buffer.from(JSON.stringify(req.body), "utf8");
-  const bodyString = rawBody.toString("utf8");
-
-  const publicKey = process.env.DISCORD_PUBLIC_KEY;
-
-  console.log("[Discord] ===== Interaction Request =====");
-  console.log("[Discord] Signature present:", !!signature);
-  console.log("[Discord] Timestamp present:", !!timestamp);
-  console.log("[Discord] Public key configured:", !!publicKey);
-  console.log("[Discord] Body length:", bodyString.length);
-
-  if (!publicKey) {
-    console.error("[Discord] DISCORD_PUBLIC_KEY not configured");
-    return res.status(401).json({ error: "Public key not configured" });
-  }
-
-  if (!signature || !timestamp) {
-    console.error("[Discord] Missing signature or timestamp headers");
-    return res.status(401).json({ error: "Missing signature or timestamp" });
-  }
-
-  // Verify request signature using Ed25519
   try {
+    const signature = req.get("x-signature-ed25519");
+    const timestamp = req.get("x-signature-timestamp");
+    const rawBody = req.body instanceof Buffer ? req.body : Buffer.from(JSON.stringify(req.body), "utf8");
+    const bodyString = rawBody.toString("utf8");
+
+    const publicKey = process.env.DISCORD_PUBLIC_KEY;
+
+    console.log("[Discord] Interaction received at", new Date().toISOString());
+
+    if (!publicKey) {
+      console.error("[Discord] DISCORD_PUBLIC_KEY not set");
+      return res.status(401).json({ error: "Server not configured" });
+    }
+
+    if (!signature || !timestamp) {
+      console.error("[Discord] Missing headers - signature:", !!signature, "timestamp:", !!timestamp);
+      return res.status(401).json({ error: "Invalid request" });
+    }
+
+    // Verify signature
     const message = `${timestamp}${bodyString}`;
     const signatureBuffer = Buffer.from(signature, "hex");
-
-    console.log("[Discord] Creating verifier for ed25519...");
     const verifier = createVerify("ed25519");
     verifier.update(message);
     const isValid = verifier.verify(publicKey, signatureBuffer);
 
-    console.log("[Discord] Signature valid:", isValid);
-
     if (!isValid) {
-      console.warn("[Discord] Invalid signature for interaction");
+      console.error("[Discord] Signature verification failed");
       return res.status(401).json({ error: "Invalid signature" });
     }
-  } catch (e: any) {
-    console.error("[Discord] Signature verification error:", e?.message);
-    console.error("[Discord] Stack:", e?.stack);
-    return res.status(401).json({ error: "Signature verification failed: " + e?.message });
-  }
 
-  // Parse the interaction
-  try {
     const interaction = JSON.parse(bodyString);
+    console.log("[Discord] Valid interaction type:", interaction.type);
 
-    // Handle PING interaction (Discord Activity verification)
+    // Discord sends a PING to verify the endpoint
     if (interaction.type === 1) {
-      console.log("[Discord] ✓ PING received, responding with PONG");
+      console.log("[Discord] ✓ PING verified");
       return res.json({ type: 1 });
     }
 
-    // Handle other interaction types
-    if (
-      interaction.type === 2 ||
-      interaction.type === 3 ||
-      interaction.type === 4 ||
-      interaction.type === 5
-    ) {
-      console.log("[Discord] Interaction received:", interaction.type);
-      return res.json({
-        type: 4,
-        data: { content: "Activity received your interaction" },
-      });
-    }
-
-    console.warn("[Discord] Unknown interaction type:", interaction.type);
-    return res.status(400).json({ error: "Unknown interaction type" });
-  } catch (e: any) {
-    console.error("[Discord] Failed to parse interaction:", e?.message);
-    return res.status(400).json({ error: "Invalid JSON" });
+    // For all other interactions, acknowledge them
+    return res.json({
+      type: 4,
+      data: { content: "Interaction received" },
+    });
+  } catch (err: any) {
+    console.error("[Discord] Error:", err?.message);
+    return res.status(500).json({ error: "Server error" });
   }
 };
 
