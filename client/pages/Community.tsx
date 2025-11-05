@@ -1981,18 +1981,47 @@ export default function Community() {
                               {newMemberSteps.map((step) => {
                                 const Icon = step.icon;
                                 return (
-                                  <li key={step.id} className="flex gap-4">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-aethex-500/10 text-aethex-300">
-                                      <Icon className="h-5 w-5" />
+                                  <li key={step.id} className="flex gap-4 group">
+                                    <div className={cn(
+                                      "flex h-10 w-10 items-center justify-center rounded-lg transition-all",
+                                      step.completed
+                                        ? "bg-emerald-500/20 text-emerald-400"
+                                        : "bg-aethex-500/10 text-aethex-300"
+                                    )}>
+                                      {step.completed ? (
+                                        <CheckCircle className="h-5 w-5" />
+                                      ) : (
+                                        <Icon className="h-5 w-5" />
+                                      )}
                                     </div>
-                                    <div className="space-y-1">
-                                      <p className="font-semibold text-foreground">
+                                    <div className="space-y-1 flex-1">
+                                      <p className={cn(
+                                        "font-semibold",
+                                        step.completed ? "text-emerald-400 line-through" : "text-foreground"
+                                      )}>
                                         {step.title}
                                       </p>
                                       <p className="text-sm text-muted-foreground">
                                         {step.description}
                                       </p>
                                     </div>
+                                    {!step.completed && (
+                                      <Button
+                                        asChild
+                                        variant="ghost"
+                                        size="sm"
+                                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                                      >
+                                        <Link to="/onboarding">
+                                          Complete
+                                        </Link>
+                                      </Button>
+                                    )}
+                                    {step.completed && (
+                                      <Badge variant="outline" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                                        Done
+                                      </Badge>
+                                    )}
                                   </li>
                                 );
                               })}
