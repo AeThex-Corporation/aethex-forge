@@ -44,7 +44,10 @@ function expressPlugin(): Plugin {
 
         console.log("[Vite] Express server mounted successfully");
       } catch (e) {
-        console.error("[Vite] Failed to load Express server:", e instanceof Error ? e.message : String(e));
+        console.error(
+          "[Vite] Failed to load Express server:",
+          e instanceof Error ? e.message : String(e),
+        );
         if (e instanceof Error && e.stack) {
           console.error(e.stack);
         }

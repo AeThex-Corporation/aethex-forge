@@ -63,7 +63,6 @@ export default function Welcome({
     setIsVerified(confirmed);
   }, [user]);
 
-
   const handleCheckVerification = async () => {
     setIsCheckingVerification(true);
     try {
@@ -182,7 +181,6 @@ export default function Welcome({
       setIsCheckingVerification(false);
     }
   };
-
 
   const VerificationIcon = isVerified ? MailCheck : MailWarning;
   const verificationBorderClass = isVerified
@@ -393,7 +391,9 @@ export default function Welcome({
           ) : (
             <>
               <p className="text-foreground/80">
-                Check your inbox for the AeThex confirmation email we sent during sign-up. Click the verification link in that email to confirm your account.
+                Check your inbox for the AeThex confirmation email we sent
+                during sign-up. Click the verification link in that email to
+                confirm your account.
               </p>
               <ul className="list-disc space-y-1 pl-5 text-foreground/70">
                 <li>Check your email inbox and spam folder.</li>

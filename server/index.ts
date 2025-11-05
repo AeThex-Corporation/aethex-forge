@@ -121,11 +121,14 @@ export function createServer() {
         (data as any)?.user?.user_metadata?.full_name ?? fullName ?? null;
 
       if (!emailService.isConfigured) {
-        console.warn("[API] Email service not configured. SMTP env vars missing:", {
-          hasHost: Boolean(process.env.SMTP_HOST),
-          hasUser: Boolean(process.env.SMTP_USER),
-          hasPassword: Boolean(process.env.SMTP_PASSWORD),
-        });
+        console.warn(
+          "[API] Email service not configured. SMTP env vars missing:",
+          {
+            hasHost: Boolean(process.env.SMTP_HOST),
+            hasUser: Boolean(process.env.SMTP_USER),
+            hasPassword: Boolean(process.env.SMTP_PASSWORD),
+          },
+        );
         return res.json({
           sent: false,
           verificationUrl: actionLink,
@@ -574,11 +577,9 @@ export function createServer() {
         typeof payload.content !== "string" ||
         !payload.content.trim()
       ) {
-        return res
-          .status(400)
-          .json({
-            error: "content is required and must be a non-empty string",
-          });
+        return res.status(400).json({
+          error: "content is required and must be a non-empty string",
+        });
       }
 
       // Validate author_id is a valid UUID format
