@@ -116,38 +116,41 @@ export default function DocsLayout() {
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-4xl font-bold text-white mb-2">
                   AeThex Documentation
                 </h1>
-                <p className="text-gray-300">
+                <p className="text-gray-300 text-lg">
                   Comprehensive guides, tutorials, and API references
                 </p>
               </div>
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-2 text-white bg-slate-800 rounded-md"
+                className="lg:hidden p-2 text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
               >
                 {sidebarOpen ? (
-                  <X className="h-5 w-5" />
+                  <X className="h-6 w-6" />
                 ) : (
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-6 w-6" />
                 )}
               </button>
             </div>
 
             {/* Breadcrumb */}
             {breadcrumbs.length > 0 && (
-              <nav className="flex items-center space-x-2 text-sm text-gray-400 mb-4">
-                <Link to="/docs" className="hover:text-white transition-colors">
+              <nav className="flex items-center space-x-2 text-sm text-gray-400 mb-6">
+                <Link
+                  to="/docs"
+                  className="hover:text-white transition-colors font-medium"
+                >
                   Docs
                 </Link>
                 {breadcrumbs.map((crumb, index) => (
                   <div key={index} className="flex items-center space-x-2">
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-4 w-4 text-gray-600" />
                     {crumb.isLast ? (
-                      <span className="text-white">{crumb.name}</span>
+                      <span className="text-white font-medium">{crumb.name}</span>
                     ) : (
                       <Link
                         to={crumb.href}
@@ -162,24 +165,24 @@ export default function DocsLayout() {
             )}
 
             {/* Search */}
-            <div className="relative max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <div className="relative max-w-sm">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
                 placeholder="Search documentation..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-slate-800/50 border-slate-600 text-white"
+                className="pl-10 bg-slate-800/50 border-slate-600 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50"
               />
             </div>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar */}
-            <div
+            <aside
               className={`w-full lg:w-64 ${sidebarOpen ? "block" : "hidden lg:block"}`}
             >
-              <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sticky top-4">
-                <nav className="space-y-2">
+              <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-4 sticky top-24 backdrop-blur-sm">
+                <nav className="space-y-1">
                   {navigation.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(item.href, item.exact);
@@ -188,19 +191,19 @@ export default function DocsLayout() {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`flex items-center justify-between px-3 py-2 rounded-md text-sm transition-all ${
+                        className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                           active
-                            ? "bg-purple-600 text-white"
+                            ? "bg-purple-600/80 text-white shadow-lg shadow-purple-500/20"
                             : "text-gray-300 hover:bg-slate-700/50 hover:text-white"
                         }`}
                         onClick={() => setSidebarOpen(false)}
                       >
                         <div className="flex items-center space-x-3">
-                          <Icon className="h-4 w-4" />
+                          <Icon className="h-5 w-5" />
                           <span>{item.name}</span>
                         </div>
                         {item.badge && (
-                          <Badge className="bg-green-600 text-white text-xs">
+                          <Badge className="bg-green-600 text-white text-xs px-2 py-1">
                             {item.badge}
                           </Badge>
                         )}
@@ -209,12 +212,12 @@ export default function DocsLayout() {
                   })}
                 </nav>
               </div>
-            </div>
+            </aside>
 
             {/* Content */}
-            <div className="flex-1">
+            <main className="flex-1 min-w-0">
               <Outlet />
-            </div>
+            </main>
           </div>
         </div>
       </div>
