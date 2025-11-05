@@ -11,7 +11,7 @@ create table if not exists public.projects (
   status project_status_enum default 'planning',
   technologies text[],
   github_url text,
-  demo_url text,
+  live_url text,
   image_url text,
   start_date date,
   end_date date,
