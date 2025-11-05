@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, AlertCircle, Loader2, GitBook } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Loader2, BookOpen } from 'lucide-react';
 
 interface SyncResult {
   page: string;
@@ -55,7 +55,7 @@ export default function DocsSync() {
           {/* Header */}
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-4">
-              <GitBook className="h-8 w-8 text-purple-400" />
+              <BookOpen className="h-8 w-8 text-purple-400" />
               <h1 className="text-4xl font-bold text-white">Documentation Sync</h1>
             </div>
             <p className="text-gray-300 text-lg max-w-2xl">
@@ -102,7 +102,7 @@ export default function DocsSync() {
                   </>
                 ) : (
                   <>
-                    <GitBook className="h-5 w-5 mr-2" />
+                    <BookOpen className="h-5 w-5 mr-2" />
                     Sync to Gitbook
                   </>
                 )}
