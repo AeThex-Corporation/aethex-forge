@@ -14,7 +14,8 @@ AeThex can now be embedded as a Discord Activity, allowing users to access the f
 
 - **Discord Application ID**: `578971245454950421`
 - **Discord Client Secret** (from Discord Developer Portal)
-- **Deployed Application URL** (for OAuth redirect URI)
+- **Discord Public Key** (from Discord Developer Portal)
+- **Deployed Application URL**: `https://aethex.dev`
 
 ## Configuration Steps
 
@@ -22,11 +23,10 @@ AeThex can now be embedded as a Discord Activity, allowing users to access the f
 
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Open your application (ID: `578971245454950421`)
-3. Navigate to **OAuth2 > General**
-4. Copy your **Client Secret** and save it securely
-5. Add Redirect URIs:
-   - `https://your-domain.com/discord/callback` (for standard OAuth)
-   - `https://your-domain.com` (for Activity context)
+3. Navigate to **General Information**
+4. Copy your **Public Key** and **Client Secret** and save them securely
+5. Go to **OAuth2 > General** and add Redirect URI:
+   - `https://aethex.dev/discord/callback`
 
 ### 2. Environment Variables
 
