@@ -12,26 +12,38 @@ const handleDiscordInteractions = (
 ) => {
   const signature = req.get("x-signature-ed25519");
   const timestamp = req.get("x-signature-timestamp");
-  const body =
-    req.body instanceof Buffer
-      ? req.body.toString("utf8")
-      : JSON.stringify(req.body);
+  const rawBody = req.body instanceof Buffer ? req.body : Buffer.from(JSON.stringify(req.body), "utf8");
+  const bodyString = rawBody.toString("utf8");
 
   const publicKey = process.env.DISCORD_PUBLIC_KEY;
+
+  console.log("[Discord] ===== Interaction Request =====");
+  console.log("[Discord] Signature present:", !!signature);
+  console.log("[Discord] Timestamp present:", !!timestamp);
+  console.log("[Discord] Public key configured:", !!publicKey);
+  console.log("[Discord] Body length:", bodyString.length);
+
   if (!publicKey) {
-    console.warn("[Discord] DISCORD_PUBLIC_KEY not configured");
+    console.error("[Discord] DISCORD_PUBLIC_KEY not configured");
     return res.status(401).json({ error: "Public key not configured" });
   }
 
   if (!signature || !timestamp) {
+    console.error("[Discord] Missing signature or timestamp headers");
     return res.status(401).json({ error: "Missing signature or timestamp" });
   }
 
   // Verify request signature using Ed25519
   try {
+    const message = `${timestamp}${bodyString}`;
+    const signatureBuffer = Buffer.from(signature, "hex");
+
+    console.log("[Discord] Creating verifier for ed25519...");
     const verifier = createVerify("ed25519");
-    verifier.update(`${timestamp}${body}`);
-    const isValid = verifier.verify(publicKey, Buffer.from(signature, "hex"));
+    verifier.update(message);
+    const isValid = verifier.verify(publicKey, signatureBuffer);
+
+    console.log("[Discord] Signature valid:", isValid);
 
     if (!isValid) {
       console.warn("[Discord] Invalid signature for interaction");
@@ -39,34 +51,40 @@ const handleDiscordInteractions = (
     }
   } catch (e: any) {
     console.error("[Discord] Signature verification error:", e?.message);
-    return res.status(401).json({ error: "Signature verification failed" });
+    console.error("[Discord] Stack:", e?.stack);
+    return res.status(401).json({ error: "Signature verification failed: " + e?.message });
   }
 
   // Parse the interaction
-  const interaction = typeof body === "string" ? JSON.parse(body) : req.body;
+  try {
+    const interaction = JSON.parse(bodyString);
 
-  // Handle PING interaction (Discord Activity verification)
-  if (interaction.type === 1) {
-    console.log("[Discord] PING received, responding with PONG");
-    return res.json({ type: 1 });
+    // Handle PING interaction (Discord Activity verification)
+    if (interaction.type === 1) {
+      console.log("[Discord] ✓ PING received, responding with PONG");
+      return res.json({ type: 1 });
+    }
+
+    // Handle other interaction types
+    if (
+      interaction.type === 2 ||
+      interaction.type === 3 ||
+      interaction.type === 4 ||
+      interaction.type === 5
+    ) {
+      console.log("[Discord] Interaction received:", interaction.type);
+      return res.json({
+        type: 4,
+        data: { content: "Activity received your interaction" },
+      });
+    }
+
+    console.warn("[Discord] Unknown interaction type:", interaction.type);
+    return res.status(400).json({ error: "Unknown interaction type" });
+  } catch (e: any) {
+    console.error("[Discord] Failed to parse interaction:", e?.message);
+    return res.status(400).json({ error: "Invalid JSON" });
   }
-
-  // Handle other interaction types
-  if (
-    interaction.type === 2 ||
-    interaction.type === 3 ||
-    interaction.type === 4 ||
-    interaction.type === 5
-  ) {
-    console.log("[Discord] Interaction received:", interaction.type);
-    return res.json({
-      type: 4,
-      data: { content: "Activity received your interaction" },
-    });
-  }
-
-  console.warn("[Discord] Unknown interaction type:", interaction.type);
-  return res.status(400).json({ error: "Unknown interaction type" });
 };
 
 export function createServer() {
