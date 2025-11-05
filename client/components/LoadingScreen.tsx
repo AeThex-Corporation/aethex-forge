@@ -46,7 +46,7 @@ export default function LoadingScreen({
       const interval = setInterval(() => {
         setCurrentMessage(messages[index % messages.length]);
         index++;
-      }, 800);
+      }, 1200);
 
       return () => clearInterval(interval);
     }
