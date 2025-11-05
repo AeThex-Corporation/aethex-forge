@@ -377,8 +377,7 @@ export default function Dashboard() {
         applicationsResult,
         achievementsResult,
         followerCountResult,
-      ] = await Promise.race([
-        Promise.allSettled([
+      ] = await Promise.allSettled([
         // Projects
         aethexProjectService.getUserProjects(userId).catch(() => []),
         // Teams
@@ -412,9 +411,7 @@ export default function Dashboard() {
           .eq("following_id", userId)
           .then(({ count }) => typeof count === "number" ? count : 0)
           .catch(() => 0),
-        ]),
-        timeoutPromise,
-      ]) as any[];
+      ]);
 
       // Extract results from settled promises
       const userProjects = projectsResult.status === "fulfilled" ? projectsResult.value : [];
