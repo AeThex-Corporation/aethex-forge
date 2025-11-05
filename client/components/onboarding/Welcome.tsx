@@ -73,7 +73,6 @@ export default function Welcome({
       const confirmed = deriveConfirmed(authData?.user);
       if (confirmed) {
         setIsVerified(true);
-        setFallbackVerificationLink(null);
         toastSuccess({
           title: "Email verified",
           description: "You're all set. You can sign in with this email.",
@@ -130,7 +129,6 @@ export default function Welcome({
             const confirmed = Boolean(payload?.verified);
             if (confirmed) {
               setIsVerified(true);
-              setFallbackVerificationLink(null);
               toastSuccess({
                 title: "Email verified",
                 description: "You're all set. You can sign in with this email.",
