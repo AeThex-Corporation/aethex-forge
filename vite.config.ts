@@ -25,8 +25,6 @@ export default defineConfig(({ mode }) => ({
 }));
 
 function expressPlugin(): Plugin {
-  let expressApp: any = null;
-
   return {
     name: "express-plugin",
     apply: "serve",
@@ -34,24 +32,22 @@ function expressPlugin(): Plugin {
       try {
         console.log("[Vite] Loading Express server...");
         const { createServer } = await import("./server");
-        expressApp = createServer();
-        console.log("[Vite] Express server created");
+        const app = createServer();
+        console.log("[Vite] Express server created, mounting...");
 
-        // Return middleware hook that runs BEFORE Vite's default handlers
-        return {
-          pre: [
-            {
-              handler: expressApp,
-              ident: "express-api",
-            } as any,
-          ],
-        };
+        // Mount Express as middleware - this handles /api/* routes
+        // Using unshift to add it to the beginning of the middleware chain
+        server.middlewares.stack.unshift({
+          route: "",
+          handle: app,
+        });
+
+        console.log("[Vite] Express server mounted successfully");
       } catch (e) {
         console.error("[Vite] Failed to load Express server:", e instanceof Error ? e.message : String(e));
         if (e instanceof Error && e.stack) {
           console.error(e.stack);
         }
-        return {};
       }
     },
   };
