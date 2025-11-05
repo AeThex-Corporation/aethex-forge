@@ -29,6 +29,24 @@ function getTransporter() {
     },
   });
 
+  // Verify connection immediately
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error("[Email] SMTP connection verification failed:", {
+        host: smtpHost,
+        port: smtpPort,
+        user: smtpUser,
+        error: error?.message || String(error),
+      });
+    } else if (success) {
+      console.log("[Email] SMTP connection verified successfully", {
+        host: smtpHost,
+        port: smtpPort,
+        user: smtpUser,
+      });
+    }
+  });
+
   return transporter;
 }
 
