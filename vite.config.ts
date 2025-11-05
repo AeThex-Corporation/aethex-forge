@@ -29,23 +29,29 @@ function expressPlugin(): Plugin {
     name: "express-plugin",
     apply: "serve", // Only apply during development (serve mode)
     configureServer(server) {
-      return () => {
-        (async () => {
-          try {
-            console.log("[Vite] Loading Express server...");
-            const { createServer } = await import("./server");
-            const app = createServer();
-            console.log("[Vite] Express server created, mounting to middleware...");
-            server.middlewares.use(app);
-            console.log("[Vite] Express server mounted successfully");
-          } catch (e) {
-            console.error("[Vite] Failed to start express middleware:", e instanceof Error ? e.message : String(e));
-            if (e instanceof Error && e.stack) {
-              console.error("[Vite] Stack:", e.stack);
-            }
-          }
-        })();
+      // Load and mount Express BEFORE other middleware
+      return {
+        pre: [],
+        post: [],
       };
+    },
+    configureServer(server) {
+      (async () => {
+        try {
+          console.log("[Vite] Loading Express server...");
+          const { createServer } = await import("./server");
+          const app = createServer();
+          console.log("[Vite] Express server created, mounting to PRE middleware...");
+          // Mount at the beginning so it handles /api/* routes before Vite
+          server.middlewares.use(app);
+          console.log("[Vite] Express server mounted successfully");
+        } catch (e) {
+          console.error("[Vite] Failed to start express middleware:", e instanceof Error ? e.message : String(e));
+          if (e instanceof Error && e.stack) {
+            console.error("[Vite] Stack:", e.stack);
+          }
+        }
+      })();
     },
   };
 }
