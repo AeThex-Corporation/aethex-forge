@@ -31,6 +31,7 @@ import FeaturedStudiosGrid from "@/components/community/FeaturedStudiosGrid";
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type FormEvent,
