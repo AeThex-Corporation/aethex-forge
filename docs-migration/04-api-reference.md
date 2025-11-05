@@ -7,6 +7,7 @@ The REST API exposes every core capability of the AeThex platform. Authenticate 
 ## Authentication
 
 ### OAuth Client Credentials Grant
+
 Use the OAuth client credentials grant for service-to-service integrations:
 
 ```bash
@@ -19,6 +20,7 @@ curl -X POST https://api.aethex.dev/v1/auth/token \
 Prefer user-scoped access? Direct builders through the hosted OAuth consent screen and exchange their authorization code using the same endpoint.
 
 ### Request Example
+
 Call the Projects endpoint with your Bearer token and inspect pagination headers for large result sets.
 
 ```javascript
@@ -37,13 +39,13 @@ Responses include `X-RateLimit-Remaining` and `X-Request-ID` headers. Share the 
 
 ## Core Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | /v1/auth/token | Exchange client credentials for an access token |
-| GET | /v1/projects | List projects the current identity can access |
-| POST | /v1/projects | Create a project with environment defaults |
-| GET | /v1/projects/{projectId}/metrics | Retrieve runtime metrics and usage breakdowns |
-| POST | /v1/webhooks/verify | Validate webhook signatures from AeThex |
+| Method | Path                             | Description                                     |
+| ------ | -------------------------------- | ----------------------------------------------- |
+| POST   | /v1/auth/token                   | Exchange client credentials for an access token |
+| GET    | /v1/projects                     | List projects the current identity can access   |
+| POST   | /v1/projects                     | Create a project with environment defaults      |
+| GET    | /v1/projects/{projectId}/metrics | Retrieve runtime metrics and usage breakdowns   |
+| POST   | /v1/webhooks/verify              | Validate webhook signatures from AeThex         |
 
 ## Webhooks
 
@@ -58,16 +60,17 @@ Subscribe to webhooks to react to changes in real time.
 
 ## Error Handling
 
-| Code | Label | Hint |
-|------|-------|------|
-| 401 | Unauthorized | Verify the Bearer token and ensure it has not expired. |
-| 403 | Forbidden | The identity lacks the required scope. Request the project-admin role. |
-| 429 | Too Many Requests | Respect the rate limit headers or enable adaptive backoff via the SDK. |
-| 503 | Service Unavailable | Retry with exponential backoff. AeThex dashboards surface ongoing maintenance windows. |
+| Code | Label               | Hint                                                                                   |
+| ---- | ------------------- | -------------------------------------------------------------------------------------- |
+| 401  | Unauthorized        | Verify the Bearer token and ensure it has not expired.                                 |
+| 403  | Forbidden           | The identity lacks the required scope. Request the project-admin role.                 |
+| 429  | Too Many Requests   | Respect the rate limit headers or enable adaptive backoff via the SDK.                 |
+| 503  | Service Unavailable | Retry with exponential backoff. AeThex dashboards surface ongoing maintenance windows. |
 
 ## SDK Documentation
 
 Available SDKs:
+
 - JavaScript/TypeScript
 - Python
 - Go

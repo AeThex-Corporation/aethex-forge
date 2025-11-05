@@ -1,13 +1,19 @@
-import { useState } from 'react';
-import Layout from '@/components/Layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, AlertCircle, Loader2, BookOpen } from 'lucide-react';
+import { useState } from "react";
+import Layout from "@/components/Layout";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2, AlertCircle, Loader2, BookOpen } from "lucide-react";
 
 interface SyncResult {
   page: string;
-  status: 'success' | 'failed';
+  status: "success" | "failed";
   error?: string;
 }
 
@@ -28,10 +34,10 @@ export default function DocsSync() {
     setError(null);
 
     try {
-      const response = await fetch('/api/sync-docs-gitbook', {
-        method: 'POST',
+      const response = await fetch("/api/sync-docs-gitbook", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -42,7 +48,7 @@ export default function DocsSync() {
       const data: SyncResponse = await response.json();
       setResult(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setLoading(false);
     }
@@ -56,19 +62,25 @@ export default function DocsSync() {
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-4">
               <BookOpen className="h-8 w-8 text-purple-400" />
-              <h1 className="text-4xl font-bold text-white">Documentation Sync</h1>
+              <h1 className="text-4xl font-bold text-white">
+                Documentation Sync
+              </h1>
             </div>
             <p className="text-gray-300 text-lg max-w-2xl">
-              Sync your AeThex documentation to Gitbook. Click the button below to push all 9 documentation pages to your Gitbook workspace.
+              Sync your AeThex documentation to Gitbook. Click the button below
+              to push all 9 documentation pages to your Gitbook workspace.
             </p>
           </div>
 
           {/* Sync Card */}
           <Card className="bg-slate-800/50 border-slate-700 mb-8">
             <CardHeader>
-              <CardTitle className="text-white">Sync Documentation to Gitbook</CardTitle>
+              <CardTitle className="text-white">
+                Sync Documentation to Gitbook
+              </CardTitle>
               <CardDescription className="text-gray-400">
-                This will push all 9 documentation pages to your Gitbook workspace
+                This will push all 9 documentation pages to your Gitbook
+                workspace
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -127,19 +139,25 @@ export default function DocsSync() {
 
           {/* Results */}
           {result && (
-            <Card className={`${result.failed === 0 ? 'bg-emerald-900/20 border-emerald-500/40' : 'bg-slate-800/50 border-slate-700'} mb-8`}>
+            <Card
+              className={`${result.failed === 0 ? "bg-emerald-900/20 border-emerald-500/40" : "bg-slate-800/50 border-slate-700"} mb-8`}
+            >
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-white">Sync Results</CardTitle>
                   <div className="flex gap-4">
                     <div className="text-right">
                       <p className="text-sm text-gray-400">Successful</p>
-                      <p className="text-2xl font-bold text-emerald-400">{result.successful}</p>
+                      <p className="text-2xl font-bold text-emerald-400">
+                        {result.successful}
+                      </p>
                     </div>
                     {result.failed > 0 && (
                       <div className="text-right">
                         <p className="text-sm text-gray-400">Failed</p>
-                        <p className="text-2xl font-bold text-red-400">{result.failed}</p>
+                        <p className="text-2xl font-bold text-red-400">
+                          {result.failed}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -148,9 +166,12 @@ export default function DocsSync() {
               <CardContent>
                 <div className="space-y-2">
                   {result.results.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg"
+                    >
                       <div className="flex items-center gap-3">
-                        {item.status === 'success' ? (
+                        {item.status === "success" ? (
                           <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                         ) : (
                           <AlertCircle className="h-5 w-5 text-red-400" />
@@ -159,9 +180,9 @@ export default function DocsSync() {
                       </div>
                       <Badge
                         className={
-                          item.status === 'success'
-                            ? 'bg-emerald-500/20 text-emerald-200'
-                            : 'bg-red-500/20 text-red-200'
+                          item.status === "success"
+                            ? "bg-emerald-500/20 text-emerald-200"
+                            : "bg-red-500/20 text-red-200"
                         }
                       >
                         {item.status}
@@ -173,7 +194,8 @@ export default function DocsSync() {
                 {result.failed === 0 && (
                   <div className="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/40 rounded-lg">
                     <p className="text-emerald-200 text-sm">
-                      ✅ All documentation successfully synced to Gitbook! Your docs are now available at https://docs.aethex.tech
+                      ✅ All documentation successfully synced to Gitbook! Your
+                      docs are now available at https://docs.aethex.tech
                     </p>
                   </div>
                 )}
@@ -190,13 +212,21 @@ export default function DocsSync() {
               <div>
                 <p className="font-semibold text-white mb-2">Before syncing:</p>
                 <ol className="list-decimal list-inside space-y-1 text-sm">
-                  <li>Verify Vercel environment variables are set:
-                    <code className="bg-black/40 px-2 py-1 rounded text-purple-200 ml-2">GITBOOK_API_TOKEN</code>
+                  <li>
+                    Verify Vercel environment variables are set:
+                    <code className="bg-black/40 px-2 py-1 rounded text-purple-200 ml-2">
+                      GITBOOK_API_TOKEN
+                    </code>
                     and
-                    <code className="bg-black/40 px-2 py-1 rounded text-purple-200 ml-2">GITBOOK_SPACE_ID</code>
+                    <code className="bg-black/40 px-2 py-1 rounded text-purple-200 ml-2">
+                      GITBOOK_SPACE_ID
+                    </code>
                   </li>
                   <li>Ensure your Gitbook workspace "AeThex Docs" is ready</li>
-                  <li>Have pages created in Gitbook (Overview, Getting Started, etc.)</li>
+                  <li>
+                    Have pages created in Gitbook (Overview, Getting Started,
+                    etc.)
+                  </li>
                 </ol>
               </div>
 

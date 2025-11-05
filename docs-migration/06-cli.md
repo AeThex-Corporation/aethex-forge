@@ -6,13 +6,13 @@ The AeThex CLI automates local development, environment management, and producti
 
 ## Command Catalog
 
-| Command | Description | Usage Notes |
-|---------|-------------|------------|
-| `aethex init [name]` | Scaffold a new project with opinionated defaults | Creates configuration, environments, and starter services |
-| `aethex login` | Authenticate the CLI with your AeThex identity | Support for browser-based login and personal access tokens |
-| `aethex deploy` | Build and deploy the current project | Runs tests, packages artifacts, and promotes to the target environment |
-| `aethex env pull` | Sync environment variables and secrets | Keeps local .env files mirrored with the dashboard |
-| `aethex pipeline logs` | Stream deployment logs in real time | Supports filters by environment, branch, or commit SHA |
+| Command                | Description                                      | Usage Notes                                                            |
+| ---------------------- | ------------------------------------------------ | ---------------------------------------------------------------------- |
+| `aethex init [name]`   | Scaffold a new project with opinionated defaults | Creates configuration, environments, and starter services              |
+| `aethex login`         | Authenticate the CLI with your AeThex identity   | Support for browser-based login and personal access tokens             |
+| `aethex deploy`        | Build and deploy the current project             | Runs tests, packages artifacts, and promotes to the target environment |
+| `aethex env pull`      | Sync environment variables and secrets           | Keeps local .env files mirrored with the dashboard                     |
+| `aethex pipeline logs` | Stream deployment logs in real time              | Supports filters by environment, branch, or commit SHA                 |
 
 Run `aethex --help` for the full command tree.
 
@@ -25,6 +25,7 @@ aethex dev
 ```
 
 Features:
+
 - Live reload on file changes
 - Mock API responses for testing
 - Local database snapshots
@@ -47,6 +48,7 @@ aethex deploy
 ```
 
 Features:
+
 - Automated testing
 - Build artifact caching
 - Transactional deployments
@@ -55,12 +57,15 @@ Features:
 ## Automation Tips
 
 ### GitHub Actions
+
 Use the official AeThex GitHub Action to authenticate, run smoke tests, and deploy on every pull request merge.
 
 ### Audit Trails
+
 Every CLI deployment emits audit events. Stream them into your SIEM through the webhooks integration.
 
 ### Rollbacks
+
 Instantly revert to the previous stable release and notify collaborators:
 
 ```bash
@@ -68,6 +73,7 @@ aethex deploy --rollback latest
 ```
 
 ### Preview Environments
+
 Spin up disposable stacks tied to feature branches for stakeholder reviews:
 
 ```bash
@@ -85,13 +91,13 @@ export default {
   runtime: "node18",
   environments: {
     staging: {
-      domain: "staging.example.com"
+      domain: "staging.example.com",
     },
     production: {
-      domain: "app.example.com"
-    }
-  }
-}
+      domain: "app.example.com",
+    },
+  },
+};
 ```
 
 ## Troubleshooting

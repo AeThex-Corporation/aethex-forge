@@ -50,12 +50,14 @@ code/docs-migration/
 ## Step 2: Import Markdown Content
 
 ### Option A: Manual Import
+
 1. Open each Markdown file
 2. Copy the content
 3. Paste into corresponding Gitbook page
 4. Format as needed (Gitbook handles most Markdown automatically)
 
 ### Option B: Gitbook Import API
+
 Use the Gitbook API to programmatically import content:
 
 ```bash
@@ -78,7 +80,7 @@ Add a banner and fallback behavior:
 ```typescript
 <div className="mb-4 rounded-lg border border-yellow-500/40 bg-yellow-900/20 p-4">
   <p className="text-sm text-yellow-200">
-    📚 These docs are being migrated to Gitbook. 
+    📚 These docs are being migrated to Gitbook.
     <a href="https://docs.aethex.tech" className="underline">
       View the latest version →
     </a>
@@ -145,11 +147,13 @@ For automated updates, set up periodic syncs using the Gitbook API and GitHub Ac
 ## Step 8: Monitor and Adjust
 
 1. **Week 1-2:** Keep both systems active
+
    - Local React docs as primary
    - Gitbook as secondary
    - Gather user feedback
 
 2. **Week 3-4:** Switch primary to Gitbook
+
    - Update all links to point to Gitbook
    - Keep local docs as fallback redirect
 
@@ -169,6 +173,7 @@ If issues arise, you can quickly rollback:
 ## API Credentials
 
 Your Gitbook API token has been provided:
+
 - **API Token:** gb_api_jORqpp2qlvg7pwlPiIKHAbgcFIDJBIJ1pz09WpIg
 - **Space Name:** AeThex Docs
 

@@ -197,18 +197,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const hasAuthTokens = () => {
       if (typeof window === "undefined") return false;
       const keys = Object.keys(window.localStorage);
-      return keys.some((key) => key.includes("auth-token") || key.includes("sb-") && key.includes("-auth"));
+      return keys.some(
+        (key) =>
+          key.includes("auth-token") ||
+          (key.includes("sb-") && key.includes("-auth")),
+      );
     };
 
     // Get initial session with persistence recovery
     const initializeAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
         // If no session but tokens exist, the session might not have restored yet
         // Wait a bit for onAuthStateChange to trigger
         if (!session && hasAuthTokens()) {
-          console.log("Tokens exist in storage but session not yet restored, waiting...");
+          console.log(
+            "Tokens exist in storage but session not yet restored, waiting...",
+          );
           // Don't set loading to false yet - wait for onAuthStateChange
           return;
         }

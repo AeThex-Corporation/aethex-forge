@@ -7,6 +7,7 @@ Explore curated examples covering backend services, realtime overlays, automatio
 ## Featured Examples
 
 ### Server-side Matchmaking
+
 Quickly assemble a matchmaking service that uses AeThex queues, weighting rules, and player telemetry streams.
 
 **Language:** TypeScript  
@@ -41,6 +42,7 @@ export async function enqueuePlayer(player) {
 ```
 
 ### Realtime Activity Overlays
+
 Broadcast live deployment and incident updates to your in-game HUD or operations dashboard using AeThex events.
 
 **Language:** React  
@@ -66,7 +68,10 @@ export function ActivityOverlay() {
       <h3 className="text-sm font-semibold text-purple-200">Live activity</h3>
       <ul className="mt-3 space-y-2 text-xs text-gray-200">
         {events.map((evt) => (
-          <li key={evt.id} className="rounded border border-purple-500/20 bg-purple-900/20 p-2">
+          <li
+            key={evt.id}
+            className="rounded border border-purple-500/20 bg-purple-900/20 p-2"
+          >
             <span className="font-mono text-purple-300">{evt.type}</span>
             <span className="ml-2 text-gray-400">{evt.payload.summary}</span>
           </li>
@@ -78,6 +83,7 @@ export function ActivityOverlay() {
 ```
 
 ### Workshop Automation
+
 Automate the packaging and publishing of custom workshop content across AeThex environments using the CLI.
 
 **Language:** Shell  
@@ -101,19 +107,27 @@ echo "Workshop build published"
 ## Integration Ideas
 
 ### Commerce Hooks
+
 Sync AeThex purchase events into your billing or CRM system using the webhook relay template.
+
 - [View guide](/docs/api)
 
 ### Live Operations Dashboard
+
 Combine project metrics, incident response playbooks, and player sentiment into a single React dashboard.
+
 - [View guide](/docs/tutorials)
 
 ### Cross-platform Presence
+
 Mirror AeThex voice and party status with your Discord or Slack community using the presence bridge sample.
+
 - [View community](/community)
 
 ### Analytics Pipeline
+
 Export gameplay events to your data warehouse with the managed streaming connectors.
+
 - [View guide](/docs/getting-started)
 
 ## Getting Started
