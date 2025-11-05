@@ -192,11 +192,24 @@ Exchanges Discord authorization code for access token.
 }
 ```
 
+## Final Setup in Discord Developer Portal
+
+1. In Discord Developer Portal, go to your application's **General Information** page
+2. Find the **Interactions Endpoint URL** field
+3. Enter: `https://aethex.dev/api/discord/interactions`
+4. Discord will automatically verify this endpoint by sending a PING request
+5. Once verified, save the changes
+6. Navigate to the **Activities** section (or embedded app settings)
+7. Set the **Activity URL** to: `https://aethex.dev/discord`
+8. Enable "Requires OAuth2 Code Grant" if available
+
 ## Next Steps
 
-1. Obtain Discord Client Secret from Developer Portal
-2. Set environment variables in your deployment platform
-3. Deploy the application
+1. Set environment variables in your deployment:
+   - `DISCORD_CLIENT_SECRET`
+   - `DISCORD_PUBLIC_KEY`
+2. Deploy the application
+3. Configure the Interactions Endpoint URL in Discord Developer Portal
 4. Test the Activity in a Discord server
 5. Monitor logs for any issues
 
