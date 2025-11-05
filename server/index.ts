@@ -5,6 +5,56 @@ import { adminSupabase } from "./supabase";
 import { emailService } from "./email";
 import { randomUUID, createHash, createVerify } from "crypto";
 
+// Discord Interactions Handler
+const handleDiscordInteractions = (req: express.Request, res: express.Response) => {
+  const signature = req.get("x-signature-ed25519");
+  const timestamp = req.get("x-signature-timestamp");
+  const body = (req.body instanceof Buffer) ? req.body.toString("utf8") : JSON.stringify(req.body);
+
+  const publicKey = process.env.DISCORD_PUBLIC_KEY;
+  if (!publicKey) {
+    console.warn("[Discord] DISCORD_PUBLIC_KEY not configured");
+    return res.status(401).json({ error: "Public key not configured" });
+  }
+
+  if (!signature || !timestamp) {
+    return res.status(401).json({ error: "Missing signature or timestamp" });
+  }
+
+  // Verify request signature using Ed25519
+  try {
+    const verifier = createVerify("ed25519");
+    verifier.update(`${timestamp}${body}`);
+    const isValid = verifier.verify(publicKey, Buffer.from(signature, "hex"));
+
+    if (!isValid) {
+      console.warn("[Discord] Invalid signature for interaction");
+      return res.status(401).json({ error: "Invalid signature" });
+    }
+  } catch (e: any) {
+    console.error("[Discord] Signature verification error:", e?.message);
+    return res.status(401).json({ error: "Signature verification failed" });
+  }
+
+  // Parse the interaction
+  const interaction = typeof body === "string" ? JSON.parse(body) : req.body;
+
+  // Handle PING interaction (Discord Activity verification)
+  if (interaction.type === 1) {
+    console.log("[Discord] PING received, responding with PONG");
+    return res.json({ type: 1 });
+  }
+
+  // Handle other interaction types
+  if (interaction.type === 2 || interaction.type === 3 || interaction.type === 4 || interaction.type === 5) {
+    console.log("[Discord] Interaction received:", interaction.type);
+    return res.json({ type: 4, data: { content: "Activity received your interaction" } });
+  }
+
+  console.warn("[Discord] Unknown interaction type:", interaction.type);
+  return res.status(400).json({ error: "Unknown interaction type" });
+};
+
 export function createServer() {
   const app = express();
 
