@@ -448,6 +448,127 @@ export function createServer() {
       }
     });
 
+    // Discord OAuth: callback handler
+    app.post("/api/discord/oauth/callback", async (req, res) => {
+      const { code, state } = (req.body || {}) as {
+        code?: string;
+        state?: string;
+      };
+
+      if (!code) {
+        return res.status(400).json({ error: "Authorization code is required" });
+      }
+
+      try {
+        const clientId = process.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
+        const clientSecret = process.env.DISCORD_CLIENT_SECRET;
+        const redirectUri =
+          process.env.DISCORD_REDIRECT_URI ||
+          `${process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "http://localhost:5173"}/discord/callback`;
+
+        if (!clientSecret) {
+          console.warn(
+            "[Discord OAuth] DISCORD_CLIENT_SECRET not configured, skipping token exchange",
+          );
+          return res.json({
+            ok: true,
+            access_token: null,
+            message: "Discord auth configured for Activity context only",
+          });
+        }
+
+        // Exchange authorization code for access token
+        const tokenResponse = await fetch("https://discord.com/api/oauth2/token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            client_id: clientId,
+            client_secret: clientSecret,
+            code,
+            grant_type: "authorization_code",
+            redirect_uri: redirectUri,
+          }),
+        });
+
+        if (!tokenResponse.ok) {
+          const errorData = await tokenResponse.text();
+          console.error("[Discord OAuth] Token exchange failed:", {
+            status: tokenResponse.status,
+            error: errorData,
+          });
+          return res.status(400).json({
+            error: "Failed to exchange authorization code",
+          });
+        }
+
+        const tokenData = await tokenResponse.json();
+
+        // Get Discord user information
+        const userResponse = await fetch("https://discord.com/api/users/@me", {
+          headers: {
+            Authorization: `Bearer ${tokenData.access_token}`,
+          },
+        });
+
+        if (!userResponse.ok) {
+          return res.status(400).json({
+            error: "Failed to retrieve Discord user information",
+          });
+        }
+
+        const discordUser = await userResponse.json();
+
+        // Optionally: create or update Supabase user linked to Discord account
+        if (adminSupabase && discordUser.id) {
+          try {
+            // Check if user with Discord ID exists
+            const { data: existingUser } = await adminSupabase
+              .from("user_profiles")
+              .select("id")
+              .eq("discord_id", discordUser.id)
+              .maybeSingle();
+
+            if (!existingUser && discordUser.email) {
+              // Attempt to find by email
+              const { data: userByEmail } = await adminSupabase
+                .from("user_profiles")
+                .select("id")
+                .eq("email", discordUser.email)
+                .maybeSingle();
+
+              if (userByEmail) {
+                // Update existing user with Discord ID
+                await adminSupabase
+                  .from("user_profiles")
+                  .update({ discord_id: discordUser.id })
+                  .eq("id", userByEmail.id);
+              }
+            }
+          } catch (err) {
+            console.warn("[Discord OAuth] Failed to link Discord ID:", err);
+          }
+        }
+
+        return res.json({
+          ok: true,
+          access_token: tokenData.access_token,
+          discord_user: {
+            id: discordUser.id,
+            username: discordUser.username,
+            avatar: discordUser.avatar,
+            email: discordUser.email,
+          },
+        });
+      } catch (e: any) {
+        console.error("[Discord OAuth] Error:", e);
+        return res.status(500).json({
+          error: e?.message || "Internal server error during Discord OAuth",
+        });
+      }
+    });
+
     // Site settings (admin-managed)
     app.get("/api/site-settings", async (req, res) => {
       try {
