@@ -61,9 +61,6 @@ export default function Welcome({
   useEffect(() => {
     const confirmed = deriveConfirmed(user);
     setIsVerified(confirmed);
-    if (confirmed) {
-      setFallbackVerificationLink(null);
-    }
   }, [user]);
 
 
