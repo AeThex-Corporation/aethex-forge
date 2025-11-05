@@ -240,7 +240,7 @@ export default function Onboarding() {
       setTimeout(() => {
         setCurrentStep((prev) => prev + 1);
         setIsTransitioning(false);
-      }, 300);
+      }, 150);
     }
   };
 
