@@ -93,6 +93,17 @@ export function createServer() {
   // Middleware
   app.use(cors());
 
+  // Allow Discord to embed the activity in iframes
+  app.use((req, res, next) => {
+    // Allow embedding in iframes (Discord Activities need this)
+    res.setHeader("X-Frame-Options", "ALLOWALL");
+    // Allow Discord to access the iframe
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, x-signature-ed25519, x-signature-timestamp");
+    next();
+  });
+
   // Discord endpoint needs raw body for signature verification
   app.post(
     "/api/discord/interactions",
