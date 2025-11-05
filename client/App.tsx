@@ -233,7 +233,7 @@ const App = () => (
               <Route path="*" element={<FourOhFourPage />} />
             </Routes>
           </PageTransition>
-        </BrowserRouter>
+          </BrowserRouter>
         </TooltipProvider>
       </DiscordProvider>
     </AuthProvider>
