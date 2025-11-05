@@ -197,55 +197,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const hasAuthTokens = () => {
       if (typeof window === "undefined") return false;
       const keys = Object.keys(window.localStorage);
-      const authKeys = keys.filter(
+      return keys.some(
         (key) =>
           key.includes("auth-token") ||
           (key.includes("sb-") && key.includes("-auth")),
       );
-      console.log("[AUTH] Auth keys in localStorage:", authKeys);
-      return authKeys.length > 0;
     };
 
     // Get initial session with persistence recovery
     const initializeAuth = async () => {
       try {
-        console.log("[AUTH] Initializing auth context...");
         const {
           data: { session },
         } = await supabase.auth.getSession();
 
-        console.log(
-          "[AUTH] getSession() returned:",
-          session?.user ? `User: ${session.user.email}` : "No session",
-        );
-
-        // Check localStorage directly
-        const hasTokens = hasAuthTokens();
-        console.log("[AUTH] Tokens exist in storage:", hasTokens);
-
         // If no session but tokens exist, the session might not have restored yet
-        // Wait a bit for onAuthStateChange to trigger
-        if (!session && hasTokens) {
-          console.log(
-            "[AUTH] Tokens exist in storage but session not yet restored, waiting for onAuthStateChange...",
-          );
+        // Wait for onAuthStateChange to trigger
+        if (!session && hasAuthTokens()) {
           // Don't set loading to false yet - wait for onAuthStateChange
           return;
         }
 
         if (session?.user) {
           sessionRestored = true;
-          console.log("[AUTH] Session restored from getSession()");
           setSession(session);
           setUser(session.user);
           await fetchUserProfile(session.user.id);
         } else {
-          console.log("[AUTH] No session found, marking as initialized");
           sessionRestored = true;
           setLoading(false);
         }
       } catch (error) {
-        console.error("[AUTH] Error getting session:", error);
+        console.error("Error getting session:", error);
         sessionRestored = true;
         setLoading(false);
       }
@@ -257,17 +240,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("[AUTH] onAuthStateChange event:", event, "User:", session?.user?.email ?? "null");
+      console.log("Auth state change:", event, !!session?.user);
 
       sessionRestored = true;
       setSession(session);
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        console.log("[AUTH] User authenticated, fetching profile...");
         await fetchUserProfile(session.user.id);
       } else {
-        console.log("[AUTH] No user, clearing auth state");
         setProfile(null);
         setRoles([]);
         setLoading(false);
