@@ -112,17 +112,35 @@ export default function Feed() {
   const fetchFeed = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Parallelize posts and following fetch
-      const [posts, flw] = await Promise.all([
-        communityService.getPosts(30),
-        user?.id
-          ? aethexSocialService.getFollowing(user.id)
-          : Promise.resolve([]),
-      ]);
+      // Add timeout to prevent indefinite hanging (30 seconds)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      setFollowing(Array.isArray(flw) ? flw : []);
-      let mapped = mapPostsToFeedItems(posts);
-      setItems(mapped);
+      try {
+        // Parallelize posts and following fetch with timeout
+        const [posts, flw] = await Promise.race([
+          Promise.all([
+            communityService.getPosts(30),
+            user?.id
+              ? aethexSocialService.getFollowing(user.id)
+              : Promise.resolve([]),
+          ]),
+          new Promise<any>((_, reject) =>
+            setTimeout(
+              () => reject(new Error("Feed loading timeout - try refreshing")),
+              28000,
+            ),
+          ),
+        ]);
+
+        clearTimeout(timeoutId);
+        setFollowing(Array.isArray(flw) ? flw : []);
+        let mapped = mapPostsToFeedItems(posts);
+        setItems(mapped);
+      } catch (timeoutError) {
+        clearTimeout(timeoutId);
+        throw timeoutError;
+      }
     } catch (error) {
       console.error("Failed to load feed", error);
       toast({
@@ -134,13 +152,7 @@ export default function Feed() {
     } finally {
       setIsLoading(false);
     }
-  }, [
-    aethexSocialService,
-    communityService,
-    mapPostsToFeedItems,
-    toast,
-    user?.id,
-  ]);
+  }, [mapPostsToFeedItems, toast, user?.id]);
 
   useEffect(() => {
     fetchFeed();
