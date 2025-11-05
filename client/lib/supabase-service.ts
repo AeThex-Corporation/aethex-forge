@@ -231,15 +231,32 @@ export const achievementService = {
   },
 };
 
+// Helper function for timeouts
+function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  label: string,
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`${label} timeout after ${ms}ms`)), ms),
+    ),
+  ]);
+}
+
 // Community Services
 export const communityService = {
   async getPosts(limit = 10): Promise<CommunityPost[]> {
-    // 1) Try relational select with embedded author profile
+    const DEFAULT_TIMEOUT = 8000; // 8 seconds per attempt
+
+    // 1) Try relational select with embedded author profile (with timeout)
     try {
-      const { data, error } = await supabase
-        .from("community_posts")
-        .select(
-          `
+      const { data, error } = await withTimeout(
+        supabase
+          .from("community_posts")
+          .select(
+            `
         *,
         user_profiles (
           username,
@@ -247,10 +264,13 @@ export const communityService = {
           avatar_url
         )
       `,
-        )
-        .eq("is_published", true)
-        .order("created_at", { ascending: false })
-        .limit(limit);
+          )
+          .eq("is_published", true)
+          .order("created_at", { ascending: false })
+          .limit(limit),
+        DEFAULT_TIMEOUT,
+        "Relational select",
+      );
 
       if (!error) {
         return (Array.isArray(data) ? data : []) as CommunityPost[];
@@ -266,34 +286,49 @@ export const communityService = {
       );
     }
 
-    // 2) Fallback to simple posts select, then hydrate author profiles manually
+    // 2) Fallback to simple posts select, then hydrate author profiles manually (with timeout)
     try {
-      const { data: posts, error: postsErr } = await supabase
-        .from("community_posts")
-        .select("*")
-        .eq("is_published", true)
-        .order("created_at", { ascending: false })
-        .limit(limit);
+      const { data: posts, error: postsErr } = await withTimeout(
+        supabase
+          .from("community_posts")
+          .select("*")
+          .eq("is_published", true)
+          .order("created_at", { ascending: false })
+          .limit(limit),
+        DEFAULT_TIMEOUT,
+        "Simple posts select",
+      );
       if (!postsErr && Array.isArray(posts) && posts.length) {
         const authorIds = Array.from(
           new Set(posts.map((p: any) => p.author_id).filter(Boolean)),
         );
         let profilesById: Record<string, any> = {};
         if (authorIds.length) {
-          const { data: profiles, error: profErr } = await supabase
-            .from("user_profiles")
-            .select("id, username, full_name, avatar_url")
-            .in("id", authorIds);
-          if (!profErr && Array.isArray(profiles)) {
-            profilesById = Object.fromEntries(
-              profiles.map((u: any) => [
-                u.id,
-                {
-                  username: u.username,
-                  full_name: u.full_name,
-                  avatar_url: u.avatar_url,
-                },
-              ]),
+          try {
+            const { data: profiles, error: profErr } = await withTimeout(
+              supabase
+                .from("user_profiles")
+                .select("id, username, full_name, avatar_url")
+                .in("id", authorIds),
+              DEFAULT_TIMEOUT,
+              "Profile hydration",
+            );
+            if (!profErr && Array.isArray(profiles)) {
+              profilesById = Object.fromEntries(
+                profiles.map((u: any) => [
+                  u.id,
+                  {
+                    username: u.username,
+                    full_name: u.full_name,
+                    avatar_url: u.avatar_url,
+                  },
+                ]),
+              );
+            }
+          } catch (profError) {
+            console.warn(
+              "Profile hydration timeout/error:",
+              (profError as any)?.message || profError,
             );
           }
         }
@@ -314,11 +349,17 @@ export const communityService = {
       );
     }
 
-    // 3) Final fallback to API if available
+    // 3) Final fallback to API if available (with timeout)
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
+
       const resp = await fetch(
         `/api/posts?limit=${encodeURIComponent(String(limit))}`,
+        { signal: controller.signal },
       );
+      clearTimeout(timeoutId);
+
       if (resp.ok) {
         const ct = resp.headers.get("content-type") || "";
         if (ct.includes("application/json") || ct.includes("json")) {
