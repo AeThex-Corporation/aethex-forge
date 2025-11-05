@@ -1,0 +1,88 @@
+{
+  "workspace": {
+    "name": "AeThex Docs",
+    "description": "Comprehensive guides, tutorials, and API references for AeThex platform"
+  },
+  "pages": [
+    {
+      "id": "overview",
+      "title": "Welcome to AeThex Documentation",
+      "slug": "overview",
+      "order": 0,
+      "description": "Getting started with AeThex documentation",
+      "file": "01-overview.md"
+    },
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "slug": "getting-started",
+      "order": 1,
+      "description": "Launch your first AeThex project in under 30 minutes",
+      "file": "02-getting-started.md"
+    },
+    {
+      "id": "platform",
+      "title": "Platform Guide",
+      "slug": "platform",
+      "order": 2,
+      "description": "Understand AeThex platform features and experiences",
+      "file": "03-platform.md"
+    },
+    {
+      "id": "api-reference",
+      "title": "API Reference",
+      "slug": "api-reference",
+      "order": 3,
+      "description": "Complete API documentation with examples",
+      "file": "04-api-reference.md"
+    },
+    {
+      "id": "tutorials",
+      "title": "Tutorials",
+      "slug": "tutorials",
+      "order": 4,
+      "description": "Step-by-step guides for common use cases",
+      "file": "05-tutorials.md"
+    },
+    {
+      "id": "cli",
+      "title": "CLI Tools",
+      "slug": "cli",
+      "order": 5,
+      "description": "Operate AeThex from the command line",
+      "file": "06-cli.md"
+    },
+    {
+      "id": "examples",
+      "title": "Code Examples",
+      "slug": "examples",
+      "order": 6,
+      "description": "Production-ready patterns you can copy",
+      "file": "07-examples.md"
+    },
+    {
+      "id": "integrations",
+      "title": "Integrations",
+      "slug": "integrations",
+      "order": 7,
+      "description": "Connecting partner services to AeThex",
+      "file": "08-integrations.md"
+    },
+    {
+      "id": "curriculum",
+      "title": "Curriculum",
+      "slug": "curriculum",
+      "order": 8,
+      "description": "Structured learning paths for AeThex platform",
+      "file": "09-curriculum.md"
+    }
+  ],
+  "settings": {
+    "siteUrl": "https://docs.aethex.tech",
+    "defaultLanguage": "en",
+    "branding": {
+      "title": "AeThex Docs",
+      "favicon": "https://docs.aethex.tech/favicon.ico"
+    }
+  }
+}
