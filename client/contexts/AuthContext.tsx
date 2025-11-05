@@ -165,11 +165,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const storageClearedRef = useRef(false);
 
   useEffect(() => {
+    let sessionRestored = false;
+
     // Add timeout to ensure loading doesn't get stuck
     const loadingTimeout = setTimeout(() => {
       console.log("Auth loading timeout - forcing loading to false");
-      setLoading(false);
-    }, 5000);
+      if (!sessionRestored) {
+        setLoading(false);
+      }
+    }, 8000);
 
     if (!storageClearedRef.current && typeof window !== "undefined") {
       try {
@@ -189,29 +193,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
 
-    // Get initial session
-    supabase.auth
-      .getSession()
-      .then(({ data: { session } }) => {
-        clearTimeout(loadingTimeout);
-        setSession(session);
-        setUser(session?.user ?? null);
+    // Helper to check if auth tokens exist in localStorage
+    const hasAuthTokens = () => {
+      if (typeof window === "undefined") return false;
+      const keys = Object.keys(window.localStorage);
+      return keys.some((key) => key.includes("auth-token") || key.includes("sb-") && key.includes("-auth"));
+    };
+
+    // Get initial session with persistence recovery
+    const initializeAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+
+        // If no session but tokens exist, the session might not have restored yet
+        // Wait a bit for onAuthStateChange to trigger
+        if (!session && hasAuthTokens()) {
+          console.log("Tokens exist in storage but session not yet restored, waiting...");
+          // Don't set loading to false yet - wait for onAuthStateChange
+          return;
+        }
+
         if (session?.user) {
-          fetchUserProfile(session.user.id);
+          sessionRestored = true;
+          setSession(session);
+          setUser(session.user);
+          await fetchUserProfile(session.user.id);
         } else {
+          sessionRestored = true;
           setLoading(false);
         }
-      })
-      .catch((error) => {
-        clearTimeout(loadingTimeout);
+      } catch (error) {
         console.error("Error getting session:", error);
+        sessionRestored = true;
         setLoading(false);
-      });
+      }
+    };
 
-    // Listen for auth changes
+    initializeAuth();
+
+    // Listen for auth changes - this is the source of truth
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state change:", event, !!session?.user);
+
+      sessionRestored = true;
       setSession(session);
       setUser(session?.user ?? null);
 
@@ -220,8 +246,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       } else {
         setProfile(null);
         setRoles([]);
+        setLoading(false);
       }
-      setLoading(false);
 
       // Handle token refresh failures specifically
       if (event === "TOKEN_REFRESH_FAILED") {
@@ -257,7 +283,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(loadingTimeout);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const fetchUserProfile = async (
