@@ -367,12 +367,7 @@ export default function Dashboard() {
 
       const userId = user!.id;
 
-      // Wrap entire operation in 15s timeout to prevent hanging
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Dashboard loading timeout")), 15000)
-      );
-
-      // Parallelize all independent data fetches (with timeout protection)
+      // Parallelize all independent data fetches
       const [
         projectsResult,
         teamsResult,
@@ -1614,7 +1609,7 @@ export default function Dashboard() {
                             <h4 className="font-semibold">{project.title}</h4>
                             <p className="text-sm text-muted-foreground">
                               {project.status?.replace("_", " ").toUpperCase()}{" "}
-                              ��{" "}
+                              •{" "}
                               {project.technologies?.slice(0, 2).join(", ") ||
                                 "No tech specified"}
                             </p>
