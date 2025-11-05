@@ -88,7 +88,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Analytics />
-        <BrowserRouter>
+          <BrowserRouter>
           <SkipAgentController />
           <PageTransition>
             <Routes>
