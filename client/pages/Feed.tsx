@@ -112,14 +112,15 @@ export default function Feed() {
   const fetchFeed = useCallback(async () => {
     setIsLoading(true);
     try {
-      let posts = await communityService.getPosts(30);
-      if (user?.id) {
-        const flw = await aethexSocialService.getFollowing(user.id);
-        setFollowing(flw);
-      } else {
-        setFollowing([]);
-      }
+      // Parallelize posts and following fetch
+      const [posts, flw] = await Promise.all([
+        communityService.getPosts(30),
+        user?.id
+          ? aethexSocialService.getFollowing(user.id)
+          : Promise.resolve([]),
+      ]);
 
+      setFollowing(Array.isArray(flw) ? flw : []);
       let mapped = mapPostsToFeedItems(posts);
       setItems(mapped);
     } catch (error) {
