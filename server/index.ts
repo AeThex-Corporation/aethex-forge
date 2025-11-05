@@ -541,17 +541,34 @@ export function createServer() {
       if (!payload.author_id) {
         return res.status(400).json({ error: "author_id is required" });
       }
-      if (!payload.title || typeof payload.title !== "string" || !payload.title.trim()) {
-        return res.status(400).json({ error: "title is required and must be a non-empty string" });
+      if (
+        !payload.title ||
+        typeof payload.title !== "string" ||
+        !payload.title.trim()
+      ) {
+        return res
+          .status(400)
+          .json({ error: "title is required and must be a non-empty string" });
       }
-      if (!payload.content || typeof payload.content !== "string" || !payload.content.trim()) {
-        return res.status(400).json({ error: "content is required and must be a non-empty string" });
+      if (
+        !payload.content ||
+        typeof payload.content !== "string" ||
+        !payload.content.trim()
+      ) {
+        return res
+          .status(400)
+          .json({
+            error: "content is required and must be a non-empty string",
+          });
       }
 
       // Validate author_id is a valid UUID format
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      const uuidRegex =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
       if (!uuidRegex.test(String(payload.author_id))) {
-        return res.status(400).json({ error: "author_id must be a valid UUID" });
+        return res
+          .status(400)
+          .json({ error: "author_id must be a valid UUID" });
       }
 
       try {
@@ -573,7 +590,9 @@ export function createServer() {
             title: String(payload.title).trim(),
             content: String(payload.content).trim(),
             category: payload.category ? String(payload.category).trim() : null,
-            tags: Array.isArray(payload.tags) ? payload.tags.map((t: any) => String(t).trim()) : [],
+            tags: Array.isArray(payload.tags)
+              ? payload.tags.map((t: any) => String(t).trim())
+              : [],
             is_published: payload.is_published ?? true,
           })
           .select()
@@ -585,7 +604,9 @@ export function createServer() {
             message: error.message,
             details: (error as any).details,
           });
-          return res.status(500).json({ error: error.message || "Failed to create post" });
+          return res
+            .status(500)
+            .json({ error: error.message || "Failed to create post" });
         }
 
         res.json(data);

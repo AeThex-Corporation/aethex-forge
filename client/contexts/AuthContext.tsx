@@ -560,15 +560,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (data.user) {
         try {
           // Try to send via custom SMTP server
-          const verifyResponse = await fetch("/api/auth/send-verification-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email,
-              redirectTo,
-              fullName: metadata.full_name || null,
-            }),
-          });
+          const verifyResponse = await fetch(
+            "/api/auth/send-verification-email",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email,
+                redirectTo,
+                fullName: metadata.full_name || null,
+              }),
+            },
+          );
 
           const verifyPayload = await verifyResponse.json().catch(() => ({}));
 
