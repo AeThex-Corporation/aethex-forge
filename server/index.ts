@@ -121,21 +121,40 @@ export function createServer() {
         (data as any)?.user?.user_metadata?.full_name ?? fullName ?? null;
 
       if (!emailService.isConfigured) {
+        console.warn("[API] Email service not configured. SMTP env vars missing:", {
+          hasHost: Boolean(process.env.SMTP_HOST),
+          hasUser: Boolean(process.env.SMTP_USER),
+          hasPassword: Boolean(process.env.SMTP_PASSWORD),
+        });
         return res.json({
           sent: false,
           verificationUrl: actionLink,
           message:
-            "Email service not configured. Provide RESEND_API_KEY to enable outbound email.",
+            "Email service not configured. Please set SMTP_HOST, SMTP_USER, and SMTP_PASSWORD to enable email sending.",
         });
       }
 
-      await emailService.sendVerificationEmail({
-        to: email,
-        verificationUrl: actionLink,
-        fullName: displayName,
-      });
-
-      return res.json({ sent: true, verificationUrl: actionLink });
+      try {
+        await emailService.sendVerificationEmail({
+          to: email,
+          verificationUrl: actionLink,
+          fullName: displayName,
+        });
+        console.log("[API] Verification email sent successfully to:", email);
+        return res.json({ sent: true, verificationUrl: actionLink });
+      } catch (emailError: any) {
+        console.error("[API] sendVerificationEmail threw error:", {
+          message: emailError?.message || String(emailError),
+          code: emailError?.code || null,
+          response: emailError?.response || null,
+        });
+        // Return with manual link as fallback even if email fails
+        return res.status(200).json({
+          sent: false,
+          verificationUrl: actionLink,
+          message: `Email delivery failed: ${emailError?.message || "SMTP error"}. Use manual link to verify.`,
+        });
+      }
     } catch (error: any) {
       console.error("[API] send verification email failed", error);
       return res
