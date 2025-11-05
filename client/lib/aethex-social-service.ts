@@ -29,10 +29,21 @@ export const aethexSocialService = {
 
   async getFollowing(userId: string): Promise<string[]> {
     try {
-      const { data, error } = await supabase
-        .from("user_follows")
-        .select("following_id")
-        .eq("follower_id", userId);
+      // Add timeout to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const { data, error } = await Promise.race([
+        supabase
+          .from("user_follows")
+          .select("following_id")
+          .eq("follower_id", userId),
+        new Promise<any>((_, reject) =>
+          setTimeout(() => reject(new Error("getFollowing timeout")), 7900),
+        ),
+      ]);
+
+      clearTimeout(timeoutId);
 
       if (error) {
         console.error(
