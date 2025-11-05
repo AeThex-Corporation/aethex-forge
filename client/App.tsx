@@ -73,6 +73,7 @@ import Directory from "./pages/Directory";
 import Wix from "./pages/Wix";
 import WixCaseStudies from "./pages/WixCaseStudies";
 import WixFaq from "./pages/WixFaq";
+import DocsSync from "./pages/DocsSync";
 import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
@@ -99,6 +100,7 @@ const App = () => (
               <Route path="/projects/admin" element={<ProjectsAdmin />} />
               <Route path="/directory" element={<Directory />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/docs-sync" element={<DocsSync />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/teams" element={<Teams />} />
               <Route path="/squads" element={<Squads />} />
