@@ -372,7 +372,7 @@ export default function Dashboard() {
         setTimeout(() => reject(new Error("Dashboard loading timeout")), 15000)
       );
 
-      // Parallelize all independent data fetches
+      // Parallelize all independent data fetches (with timeout protection)
       const [
         projectsResult,
         teamsResult,
@@ -382,7 +382,8 @@ export default function Dashboard() {
         applicationsResult,
         achievementsResult,
         followerCountResult,
-      ] = await Promise.allSettled([
+      ] = await Promise.race([
+        Promise.allSettled([
         // Projects
         aethexProjectService.getUserProjects(userId).catch(() => []),
         // Teams
@@ -416,7 +417,9 @@ export default function Dashboard() {
           .eq("following_id", userId)
           .then(({ count }) => typeof count === "number" ? count : 0)
           .catch(() => 0),
-      ]);
+        ]),
+        timeoutPromise,
+      ]) as any[];
 
       // Extract results from settled promises
       const userProjects = projectsResult.status === "fulfilled" ? projectsResult.value : [];
@@ -1611,7 +1614,7 @@ export default function Dashboard() {
                             <h4 className="font-semibold">{project.title}</h4>
                             <p className="text-sm text-muted-foreground">
                               {project.status?.replace("_", " ").toUpperCase()}{" "}
-                              •{" "}
+                              ��{" "}
                               {project.technologies?.slice(0, 2).join(", ") ||
                                 "No tech specified"}
                             </p>
