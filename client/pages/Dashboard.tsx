@@ -641,16 +641,6 @@ export default function Dashboard() {
     },
   ];
 
-  if (isLoading) {
-    return (
-      <LoadingScreen
-        message="Loading your dashboard..."
-        showProgress={true}
-        duration={1000}
-      />
-    );
-  }
-
   // Determine active realm for dashboard personalization
   const activeRealm: RealmKey = (userRealm ||
     ((profile as any)?.user_type as RealmKey) ||
