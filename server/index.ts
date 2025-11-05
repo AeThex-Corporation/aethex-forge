@@ -6,10 +6,16 @@ import { emailService } from "./email";
 import { randomUUID, createHash, createVerify } from "crypto";
 
 // Discord Interactions Handler
-const handleDiscordInteractions = (req: express.Request, res: express.Response) => {
+const handleDiscordInteractions = (
+  req: express.Request,
+  res: express.Response,
+) => {
   const signature = req.get("x-signature-ed25519");
   const timestamp = req.get("x-signature-timestamp");
-  const body = (req.body instanceof Buffer) ? req.body.toString("utf8") : JSON.stringify(req.body);
+  const body =
+    req.body instanceof Buffer
+      ? req.body.toString("utf8")
+      : JSON.stringify(req.body);
 
   const publicKey = process.env.DISCORD_PUBLIC_KEY;
   if (!publicKey) {
@@ -46,9 +52,17 @@ const handleDiscordInteractions = (req: express.Request, res: express.Response) 
   }
 
   // Handle other interaction types
-  if (interaction.type === 2 || interaction.type === 3 || interaction.type === 4 || interaction.type === 5) {
+  if (
+    interaction.type === 2 ||
+    interaction.type === 3 ||
+    interaction.type === 4 ||
+    interaction.type === 5
+  ) {
     console.log("[Discord] Interaction received:", interaction.type);
-    return res.json({ type: 4, data: { content: "Activity received your interaction" } });
+    return res.json({
+      type: 4,
+      data: { content: "Activity received your interaction" },
+    });
   }
 
   console.warn("[Discord] Unknown interaction type:", interaction.type);
@@ -65,7 +79,7 @@ export function createServer() {
   app.post(
     "/api/discord/interactions",
     express.raw({ type: "application/json" }),
-    handleDiscordInteractions
+    handleDiscordInteractions,
   );
 
   app.use(express.json());
@@ -514,11 +528,14 @@ export function createServer() {
       };
 
       if (!code) {
-        return res.status(400).json({ error: "Authorization code is required" });
+        return res
+          .status(400)
+          .json({ error: "Authorization code is required" });
       }
 
       try {
-        const clientId = process.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
+        const clientId =
+          process.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
         const clientSecret = process.env.DISCORD_CLIENT_SECRET;
         const redirectUri =
           process.env.DISCORD_REDIRECT_URI ||
@@ -536,19 +553,22 @@ export function createServer() {
         }
 
         // Exchange authorization code for access token
-        const tokenResponse = await fetch("https://discord.com/api/oauth2/token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+        const tokenResponse = await fetch(
+          "https://discord.com/api/oauth2/token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+              client_id: clientId,
+              client_secret: clientSecret,
+              code,
+              grant_type: "authorization_code",
+              redirect_uri: redirectUri,
+            }),
           },
-          body: new URLSearchParams({
-            client_id: clientId,
-            client_secret: clientSecret,
-            code,
-            grant_type: "authorization_code",
-            redirect_uri: redirectUri,
-          }),
-        });
+        );
 
         if (!tokenResponse.ok) {
           const errorData = await tokenResponse.text();
