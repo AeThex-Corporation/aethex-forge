@@ -74,6 +74,9 @@ import Wix from "./pages/Wix";
 import WixCaseStudies from "./pages/WixCaseStudies";
 import WixFaq from "./pages/WixFaq";
 import DocsSync from "./pages/DocsSync";
+import { DiscordProvider } from "./contexts/DiscordContext";
+import DiscordActivity from "./pages/DiscordActivity";
+import DiscordOAuthCallback from "./pages/DiscordOAuthCallback";
 import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
@@ -81,9 +84,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Analytics />
+      <DiscordProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Analytics />
         <BrowserRouter>
           <SkipAgentController />
           <PageTransition>
@@ -219,6 +223,10 @@ const App = () => (
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
 
+              {/* Discord routes */}
+              <Route path="/discord" element={<DiscordActivity />} />
+              <Route path="/discord/callback" element={<DiscordOAuthCallback />} />
+
               {/* Explicit 404 route for static hosting fallbacks */}
               <Route path="/404" element={<FourOhFourPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
@@ -226,7 +234,8 @@ const App = () => (
             </Routes>
           </PageTransition>
         </BrowserRouter>
-      </TooltipProvider>
+        </TooltipProvider>
+      </DiscordProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
