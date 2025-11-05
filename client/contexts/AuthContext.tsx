@@ -243,15 +243,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state change:", event, !!session?.user);
+      console.log("[AUTH] onAuthStateChange event:", event, "User:", session?.user?.email ?? "null");
 
       sessionRestored = true;
       setSession(session);
       setUser(session?.user ?? null);
 
       if (session?.user) {
+        console.log("[AUTH] User authenticated, fetching profile...");
         await fetchUserProfile(session.user.id);
       } else {
+        console.log("[AUTH] No user, clearing auth state");
         setProfile(null);
         setRoles([]);
         setLoading(false);
