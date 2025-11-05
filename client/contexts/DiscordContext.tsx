@@ -1,12 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-
-interface DiscordUser {
-  id: string;
-  username: string;
-  avatar?: string;
-  email?: string;
-  discriminator?: string;
-}
+import type { DiscordUser } from '@/lib/discord-types';
 
 interface DiscordContextType {
   isDiscordActivity: boolean;
