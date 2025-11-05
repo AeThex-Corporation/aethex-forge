@@ -854,8 +854,48 @@ export default function Community() {
   ];
 
   // Compute onboarding progress from profile
-  const getOnboardingProgress = () => {
-    const steps = [
+  const newMemberSteps = useMemo(() => {
+    if (!user || !profile) {
+      return [
+        {
+          id: "user-type",
+          title: "Choose Your Path",
+          description: "Selected your role: Game Developer, Client, or Member.",
+          icon: Flag,
+          completed: false,
+        },
+        {
+          id: "personal-info",
+          title: "Personal Information",
+          description: "Set your name, email, and account details.",
+          icon: UserCircle,
+          completed: false,
+        },
+        {
+          id: "experience",
+          title: "Experience Level",
+          description: "Told us about your background and skills.",
+          icon: Trophy,
+          completed: false,
+        },
+        {
+          id: "interests",
+          title: "Interests & Goals",
+          description: "Defined your goals and preferred services.",
+          icon: Sparkles,
+          completed: false,
+        },
+        {
+          id: "email-verified",
+          title: "Email Verified",
+          description: "Confirmed your email address.",
+          icon: CheckCircle,
+          completed: false,
+        },
+      ];
+    }
+
+    return [
       {
         id: "user-type",
         title: "Choose Your Path",
@@ -892,10 +932,7 @@ export default function Community() {
         completed: Boolean(user?.email_confirmed_at || (user?.user_metadata as any)?.email_verified),
       },
     ];
-    return steps;
-  };
-
-  const newMemberSteps = getOnboardingProgress();
+  }, [user, profile]);
 
   const newMemberResources = [
     {
