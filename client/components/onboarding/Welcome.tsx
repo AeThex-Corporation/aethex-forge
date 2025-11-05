@@ -52,11 +52,7 @@ export default function Welcome({
   const [isVerified, setIsVerified] = useState<boolean>(() =>
     deriveConfirmed(user),
   );
-  const [isSendingVerification, setIsSendingVerification] = useState(false);
   const [isCheckingVerification, setIsCheckingVerification] = useState(false);
-  const [fallbackVerificationLink, setFallbackVerificationLink] = useState<
-    string | null
-  >(null);
 
   const fullNameValue =
     `${(data.personalInfo.firstName || "").trim()} ${(data.personalInfo.lastName || "").trim()}`.trim() ||
