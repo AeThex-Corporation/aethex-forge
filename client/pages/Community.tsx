@@ -853,29 +853,49 @@ export default function Community() {
     { label: "Games Created", value: "1K+", icon: Gamepad2 },
   ];
 
-  const newMemberSteps = [
-    {
-      id: "join-discord",
-      title: "Join the live chat",
-      description:
-        "Hop into Discord intros and grab the starter role in under five minutes.",
-      icon: MessageCircle,
-    },
-    {
-      id: "complete-profile",
-      title: "Complete your profile",
-      description:
-        "Upload an avatar, link your GitHub, and let the network know your focus.",
-      icon: UserCircle,
-    },
-    {
-      id: "make-intro",
-      title: "Share your first post",
-      description:
-        "Publish a quick intro or project teaser in the feed to unlock your first badge.",
-      icon: Sparkles,
-    },
-  ];
+  // Compute onboarding progress from profile
+  const getOnboardingProgress = () => {
+    const steps = [
+      {
+        id: "user-type",
+        title: "Choose Your Path",
+        description: "Selected your role: Game Developer, Client, or Member.",
+        icon: Flag,
+        completed: Boolean((profile as any)?.user_type),
+      },
+      {
+        id: "personal-info",
+        title: "Personal Information",
+        description: "Set your name, email, and account details.",
+        icon: UserCircle,
+        completed: Boolean(profile?.full_name),
+      },
+      {
+        id: "experience",
+        title: "Experience Level",
+        description: "Told us about your background and skills.",
+        icon: Trophy,
+        completed: Boolean((profile as any)?.experience_level),
+      },
+      {
+        id: "interests",
+        title: "Interests & Goals",
+        description: "Defined your goals and preferred services.",
+        icon: Sparkles,
+        completed: Boolean((profile as any)?.interests?.length > 0),
+      },
+      {
+        id: "email-verified",
+        title: "Email Verified",
+        description: "Confirmed your email address.",
+        icon: CheckCircle,
+        completed: Boolean(user?.email_confirmed_at || (user?.user_metadata as any)?.email_verified),
+      },
+    ];
+    return steps;
+  };
+
+  const newMemberSteps = getOnboardingProgress();
 
   const newMemberResources = [
     {
