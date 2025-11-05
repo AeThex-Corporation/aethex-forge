@@ -112,11 +112,20 @@ export default function Feed() {
   const fetchFeed = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Parallelize posts and following fetch
+      // Add timeout to prevent hanging indefinitely
+      const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> =>
+        Promise.race([
+          promise,
+          new Promise<T>((_, reject) =>
+            setTimeout(() => reject(new Error("Request timeout")), ms)
+          ),
+        ]);
+
+      // Parallelize posts and following fetch with 10s timeout
       const [posts, flw] = await Promise.all([
-        communityService.getPosts(30),
+        withTimeout(communityService.getPosts(30), 10000),
         user?.id
-          ? aethexSocialService.getFollowing(user.id)
+          ? withTimeout(aethexSocialService.getFollowing(user.id), 10000)
           : Promise.resolve([]),
       ]);
 
