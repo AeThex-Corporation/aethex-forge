@@ -137,23 +137,6 @@ export default function LoadingScreen({
             </div>
           </div>
 
-          {/* Matrix-style Effect */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute text-aethex-400 text-xs font-mono animate-bounce"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 2}s`,
-                  animationDuration: `${2 + Math.random() * 3}s`,
-                }}
-              >
-                {Math.random().toString(2).substr(2, 1)}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
