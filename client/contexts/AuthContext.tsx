@@ -301,7 +301,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // Add 5-second timeout to prevent hanging
       const profilePromise = aethexUserService.getCurrentUser();
       const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error("Profile fetch timeout")), 5000)
+        setTimeout(() => reject(new Error("Profile fetch timeout")), 5000),
       );
 
       const userProfile = await Promise.race([profilePromise, timeoutPromise]);
@@ -310,7 +310,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const rolesPromise = aethexRoleService.getUserRoles(userId);
         const rolesTimeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error("Roles fetch timeout")), 5000)
+          setTimeout(() => reject(new Error("Roles fetch timeout")), 5000),
         );
 
         let r = await Promise.race([rolesPromise, rolesTimeoutPromise]);
