@@ -4,9 +4,9 @@ const smtpHost = process.env.SMTP_HOST;
 const smtpPort = parseInt(process.env.SMTP_PORT || "465", 10);
 const smtpUser = process.env.SMTP_USER;
 const smtpPassword = process.env.SMTP_PASSWORD;
-const fromEmail = process.env.SMTP_FROM_EMAIL || "no-reply@aethex.dev";
+const fromEmail = process.env.SMTP_FROM_EMAIL || smtpUser || "support@aethex.tech";
 const verifySupportEmail =
-  process.env.VERIFY_SUPPORT_EMAIL ?? "support@aethex.biz";
+  process.env.VERIFY_SUPPORT_EMAIL ?? smtpUser ?? "support@aethex.tech";
 
 let transporter: nodemailer.Transporter | null = null;
 
