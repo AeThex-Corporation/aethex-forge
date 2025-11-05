@@ -36,7 +36,8 @@ Set these environment variables in your deployment:
 ```bash
 VITE_DISCORD_CLIENT_ID=578971245454950421
 DISCORD_CLIENT_SECRET=your-client-secret-here
-DISCORD_REDIRECT_URI=https://your-domain.com/discord/callback
+DISCORD_PUBLIC_KEY=your-public-key-here
+DISCORD_REDIRECT_URI=https://aethex.dev/discord/callback
 ```
 
 **For Local Development:**
@@ -44,6 +45,7 @@ DISCORD_REDIRECT_URI=https://your-domain.com/discord/callback
 # .env or via DevServerControl
 VITE_DISCORD_CLIENT_ID=578971245454950421
 DISCORD_CLIENT_SECRET=your-client-secret-here
+DISCORD_PUBLIC_KEY=your-public-key-here
 PUBLIC_BASE_URL=http://localhost:5173
 ```
 
