@@ -102,7 +102,7 @@ export const emailService = {
       `If you didn't request this, contact us at ${verifySupportEmail}.`,
     ].join("\n");
 
-    await transporter.sendMail({
+    const result = await transporter.sendMail({
       from: fromEmail,
       to,
       subject,
@@ -112,6 +112,11 @@ export const emailService = {
         "X-AeThex-Email": "verification",
         "X-Entity-Ref-ID": verificationUrl.slice(-24),
       },
+    });
+    console.log("[EmailService] Verification email sent successfully:", {
+      to,
+      messageId: result.messageId,
+      response: result.response,
     });
   },
 
