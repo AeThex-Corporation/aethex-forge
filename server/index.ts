@@ -13,7 +13,10 @@ const handleDiscordInteractions = (
   try {
     const signature = req.get("x-signature-ed25519");
     const timestamp = req.get("x-signature-timestamp");
-    const rawBody = req.body instanceof Buffer ? req.body : Buffer.from(JSON.stringify(req.body), "utf8");
+    const rawBody =
+      req.body instanceof Buffer
+        ? req.body
+        : Buffer.from(JSON.stringify(req.body), "utf8");
     const bodyString = rawBody.toString("utf8");
 
     const publicKey = process.env.DISCORD_PUBLIC_KEY;
@@ -26,7 +29,12 @@ const handleDiscordInteractions = (
     }
 
     if (!signature || !timestamp) {
-      console.error("[Discord] Missing headers - signature:", !!signature, "timestamp:", !!timestamp);
+      console.error(
+        "[Discord] Missing headers - signature:",
+        !!signature,
+        "timestamp:",
+        !!timestamp,
+      );
       return res.status(401).json({ error: "Invalid request" });
     }
 
@@ -74,8 +82,14 @@ export function createServer() {
     res.setHeader("X-Frame-Options", "ALLOWALL");
     // Allow Discord to access the iframe
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, x-signature-ed25519, x-signature-timestamp");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS",
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, x-signature-ed25519, x-signature-timestamp",
+    );
     next();
   });
 

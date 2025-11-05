@@ -930,7 +930,10 @@ export default function Community() {
         title: "Email Verified",
         description: "Confirmed your email address.",
         icon: CheckCircle,
-        completed: Boolean(user?.email_confirmed_at || (user?.user_metadata as any)?.email_verified),
+        completed: Boolean(
+          user?.email_confirmed_at ||
+            (user?.user_metadata as any)?.email_verified,
+        ),
       },
     ];
   }, [user, profile]);
@@ -2019,13 +2022,18 @@ export default function Community() {
                               {newMemberSteps.map((step) => {
                                 const Icon = step.icon;
                                 return (
-                                  <li key={step.id} className="flex gap-4 group">
-                                    <div className={cn(
-                                      "flex h-10 w-10 items-center justify-center rounded-lg transition-all",
-                                      step.completed
-                                        ? "bg-emerald-500/20 text-emerald-400"
-                                        : "bg-aethex-500/10 text-aethex-300"
-                                    )}>
+                                  <li
+                                    key={step.id}
+                                    className="flex gap-4 group"
+                                  >
+                                    <div
+                                      className={cn(
+                                        "flex h-10 w-10 items-center justify-center rounded-lg transition-all",
+                                        step.completed
+                                          ? "bg-emerald-500/20 text-emerald-400"
+                                          : "bg-aethex-500/10 text-aethex-300",
+                                      )}
+                                    >
                                       {step.completed ? (
                                         <CheckCircle className="h-5 w-5" />
                                       ) : (
@@ -2033,10 +2041,14 @@ export default function Community() {
                                       )}
                                     </div>
                                     <div className="space-y-1 flex-1">
-                                      <p className={cn(
-                                        "font-semibold",
-                                        step.completed ? "text-emerald-400 line-through" : "text-foreground"
-                                      )}>
+                                      <p
+                                        className={cn(
+                                          "font-semibold",
+                                          step.completed
+                                            ? "text-emerald-400 line-through"
+                                            : "text-foreground",
+                                        )}
+                                      >
                                         {step.title}
                                       </p>
                                       <p className="text-sm text-muted-foreground">
@@ -2050,13 +2062,14 @@ export default function Community() {
                                         size="sm"
                                         className="opacity-0 group-hover:opacity-100 transition-opacity"
                                       >
-                                        <Link to="/onboarding">
-                                          Complete
-                                        </Link>
+                                        <Link to="/onboarding">Complete</Link>
                                       </Button>
                                     )}
                                     {step.completed && (
-                                      <Badge variant="outline" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                                      <Badge
+                                        variant="outline"
+                                        className="border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                                      >
                                         Done
                                       </Badge>
                                     )}
