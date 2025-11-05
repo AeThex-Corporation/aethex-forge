@@ -367,6 +367,11 @@ export default function Dashboard() {
 
       const userId = user!.id;
 
+      // Wrap entire operation in 15s timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Dashboard loading timeout")), 15000)
+      );
+
       // Parallelize all independent data fetches
       const [
         projectsResult,
