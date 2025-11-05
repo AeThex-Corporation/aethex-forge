@@ -298,54 +298,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     userId: string,
   ): Promise<AethexUserProfile | null> => {
     try {
-      // Add 5-second timeout to prevent hanging
+      // Add 3-second timeout for profile fetch
       const profilePromise = aethexUserService.getCurrentUser();
-      const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error("Profile fetch timeout")), 5000),
+      const profileTimeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("Profile fetch timeout")), 3000),
       );
 
-      const userProfile = await Promise.race([profilePromise, timeoutPromise]);
+      const userProfile = await Promise.race([profilePromise, profileTimeoutPromise]);
       setProfile(userProfile);
 
-      try {
-        const rolesPromise = aethexRoleService.getUserRoles(userId);
-        const rolesTimeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error("Roles fetch timeout")), 5000),
-        );
-
-        let r = await Promise.race([rolesPromise, rolesTimeoutPromise]);
-
-        // Auto-seed owner roles if logging in as site owner
-        const normalizedEmail = userProfile?.email?.toLowerCase();
-        if (normalizedEmail === "mrpiglr@gmail.com" && !r.includes("owner")) {
-          const seeded = Array.from(
-            new Set(["owner", "admin", "founder", ...r]),
-          );
-          try {
-            await aethexRoleService.setUserRoles(userId, seeded);
-            r = seeded;
-          } catch {
-            // Failed to set roles, continue with current roles
+      // Fetch roles in parallel (non-blocking) - don't await here
+      const rolesPromise = aethexRoleService
+        .getUserRoles(userId)
+        .then((r) => {
+          // Auto-seed owner roles if logging in as site owner
+          const normalizedEmail = userProfile?.email?.toLowerCase();
+          if (normalizedEmail === "mrpiglr@gmail.com" && !r.includes("owner")) {
+            const seeded = Array.from(
+              new Set(["owner", "admin", "founder", ...r]),
+            );
+            return aethexRoleService
+              .setUserRoles(userId, seeded)
+              .then(() => seeded)
+              .catch(() => r);
           }
-        }
-        if (
-          normalizedEmail &&
-          /@aethex\.dev$/i.test(normalizedEmail) &&
-          !r.includes("staff")
-        ) {
-          const seeded = Array.from(new Set(["staff", ...r]));
-          try {
-            await aethexRoleService.setUserRoles(userId, seeded);
-            r = seeded;
-          } catch {
-            // Failed to set roles, continue with current roles
+          if (
+            normalizedEmail &&
+            /@aethex\.dev$/i.test(normalizedEmail) &&
+            !r.includes("staff")
+          ) {
+            const seeded = Array.from(new Set(["staff", ...r]));
+            return aethexRoleService
+              .setUserRoles(userId, seeded)
+              .then(() => seeded)
+              .catch(() => r);
           }
-        }
-        setRoles(r);
-      } catch (error) {
-        console.warn("Error fetching roles:", error);
-        setRoles([]);
-      }
+          return r;
+        })
+        .then((r) => {
+          setRoles(r);
+        })
+        .catch((error) => {
+          console.warn("Error fetching roles:", error);
+          setRoles([]);
+        });
+
+      // Don't wait for rolesPromise - continue immediately
       setLoading(false);
       return userProfile;
     } catch (error) {
