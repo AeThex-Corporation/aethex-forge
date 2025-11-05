@@ -8,8 +8,8 @@ export const hasDevConnect = Boolean(devUrl && devAnon);
 export const devconnect: SupabaseClient | null = hasDevConnect
   ? createClient(devUrl!, devAnon!, {
       auth: {
-        autoRefreshToken: false,
-        persistSession: false,
+        autoRefreshToken: true,
+        persistSession: true,
         detectSessionInUrl: false,
       },
     })
