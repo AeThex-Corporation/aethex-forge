@@ -25,33 +25,34 @@ export default defineConfig(({ mode }) => ({
 }));
 
 function expressPlugin(): Plugin {
+  let expressApp: any = null;
+
   return {
     name: "express-plugin",
-    apply: "serve", // Only apply during development (serve mode)
-    configureServer(server) {
-      // Load and mount Express BEFORE other middleware
-      return {
-        pre: [],
-        post: [],
-      };
-    },
-    configureServer(server) {
-      (async () => {
-        try {
-          console.log("[Vite] Loading Express server...");
-          const { createServer } = await import("./server");
-          const app = createServer();
-          console.log("[Vite] Express server created, mounting to PRE middleware...");
-          // Mount at the beginning so it handles /api/* routes before Vite
-          server.middlewares.use(app);
-          console.log("[Vite] Express server mounted successfully");
-        } catch (e) {
-          console.error("[Vite] Failed to start express middleware:", e instanceof Error ? e.message : String(e));
-          if (e instanceof Error && e.stack) {
-            console.error("[Vite] Stack:", e.stack);
-          }
+    apply: "serve",
+    async configureServer(server) {
+      try {
+        console.log("[Vite] Loading Express server...");
+        const { createServer } = await import("./server");
+        expressApp = createServer();
+        console.log("[Vite] Express server created");
+
+        // Return middleware hook that runs BEFORE Vite's default handlers
+        return {
+          pre: [
+            {
+              handler: expressApp,
+              ident: "express-api",
+            } as any,
+          ],
+        };
+      } catch (e) {
+        console.error("[Vite] Failed to load Express server:", e instanceof Error ? e.message : String(e));
+        if (e instanceof Error && e.stack) {
+          console.error(e.stack);
         }
-      })();
+        return {};
+      }
     },
   };
 }
