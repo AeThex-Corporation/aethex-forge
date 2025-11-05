@@ -47,15 +47,26 @@ DISCORD_CLIENT_SECRET=your-client-secret-here
 PUBLIC_BASE_URL=http://localhost:5173
 ```
 
-### 3. Activity Configuration in Discord
+### 3. Get Your Public Key
+
+1. In Discord Developer Portal, go to **General Information**
+2. Copy your **Public Key** (located in the Application ID section)
+3. Add it to your environment variables:
+   ```bash
+   DISCORD_PUBLIC_KEY=your-public-key-here
+   ```
+
+### 4. Activity Configuration in Discord
 
 In the Discord Developer Portal for your application:
 
-1. Go to **App Details**
-2. Look for "Activities" or "Embedded App Sub-Command"
-3. Set the **Activity URL** to your deployment URL:
-   - `https://your-domain.com/discord`
-4. Enable "Requires OAuth2 Code Grant"
+1. Go to **App Details** or **General Information**
+2. Find the **Interactions Endpoint URL** field
+3. Set it to: `https://aethex.dev/api/discord/interactions`
+4. Discord will verify this endpoint automatically
+5. Once verified, find "Activities" section and set the **Activity URL** to:
+   - `https://aethex.dev/discord`
+6. Enable "Requires OAuth2 Code Grant"
 
 ### 4. Deploy the Application
 
