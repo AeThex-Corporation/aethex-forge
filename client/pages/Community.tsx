@@ -647,7 +647,7 @@ function PollCard({ poll, selectedOption, onSelect }: PollCardProps) {
 }
 
 export default function Community() {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
   const [knowledgeQuery, setKnowledgeQuery] = useState("");
