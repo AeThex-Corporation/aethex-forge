@@ -96,12 +96,20 @@ export default function ArmSwitcher() {
         />
 
         {/* Temporary Logo - Simple geometric shape */}
-        <div
-          className="relative h-8 w-8 rounded flex items-center justify-center font-bold text-white transition-all duration-500"
-          style={{ backgroundColor: currentArm.color }}
-        >
-          {currentArm.label[0].toUpperCase()}
-        </div>
+        {currentArm.id === "devlink" ? (
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800"
+            alt={currentArm.label}
+            className="relative h-8 w-8 rounded transition-all duration-500"
+          />
+        ) : (
+          <div
+            className="relative h-8 w-8 rounded flex items-center justify-center font-bold text-white transition-all duration-500"
+            style={{ backgroundColor: currentArm.color }}
+          >
+            {currentArm.label[0].toUpperCase()}
+          </div>
+        )}
 
         {/* Animated border indicator */}
         <div
