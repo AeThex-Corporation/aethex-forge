@@ -79,12 +79,12 @@ export default function ArmSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4 sm:gap-6">
       {ARMS.map((arm) => (
         <button
           key={arm.id}
           onClick={() => handleArmClick(arm.href)}
-          className="group relative h-10 w-10 flex items-center justify-center rounded-lg hover:scale-110 transition-transform duration-200"
+          className="group relative h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
           title={arm.name}
         >
           <div className={`absolute inset-0 rounded-lg ${arm.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-200`} />
@@ -92,11 +92,11 @@ export default function ArmSwitcher() {
           <img
             src={LOGO_URLS[arm.id]}
             alt={arm.label}
-            className="relative h-8 w-8 object-contain transition-all duration-200"
+            className="relative h-10 w-10 sm:h-12 sm:w-12 object-contain transition-all duration-200"
           />
 
           {/* Tooltip */}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-gray-900 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-2 py-1 bg-gray-900 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-50">
             {arm.name}
           </div>
         </button>
