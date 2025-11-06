@@ -7,6 +7,7 @@ interface LoadingScreenProps {
   size?: "sm" | "md" | "lg";
   showProgress?: boolean;
   duration?: number;
+  accentColor?: string;
 }
 
 export default function LoadingScreen({
@@ -15,6 +16,7 @@ export default function LoadingScreen({
   size = "md",
   showProgress = false,
   duration = 3000,
+  accentColor = "from-aethex-500 to-neon-blue",
 }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [currentMessage, setCurrentMessage] = useState(message);
@@ -117,7 +119,7 @@ export default function LoadingScreen({
             <div className="space-y-2">
               <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-aethex-500 to-neon-blue transition-all duration-300 ease-out"
+                  className={`h-full bg-gradient-to-r ${accentColor} transition-all duration-300 ease-out`}
                   style={{ width: `${progress}%` }}
                 />
               </div>
