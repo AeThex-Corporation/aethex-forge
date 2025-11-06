@@ -28,12 +28,18 @@ export default function DevLinkProfiles() {
                 ← Back to Dev-Link
               </Button>
 
-              <h1 className="text-4xl font-black tracking-tight text-cyan-300 sm:text-5xl mb-4">
-                Dev-Link Waitlist
-              </h1>
-              <p className="text-lg text-cyan-100/80 max-w-2xl">
-                Join the professional network for Roblox developers. Sign up for early access!
-              </p>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h1 className="text-4xl font-black tracking-tight text-cyan-300 sm:text-5xl mb-2">
+                    {typeof window !== 'undefined' && window.location.pathname.includes('/waitlist') ? 'Dev-Link Waitlist' : 'Browse Profiles'}
+                  </h1>
+                  <p className="text-lg text-cyan-100/80 max-w-2xl">
+                    {typeof window !== 'undefined' && window.location.pathname.includes('/waitlist')
+                      ? 'Join the professional network for Roblox developers. Sign up for early access!'
+                      : 'Explore talented Roblox developers in our community.'}
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
 
