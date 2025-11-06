@@ -646,6 +646,11 @@ export default function Dashboard() {
     ((profile as any)?.user_type as RealmKey) ||
     "community_member") as RealmKey;
 
+  // Show loading screen while auth is resolving or if user is not authenticated
+  if (authLoading || !user) {
+    return <LoadingScreen />;
+  }
+
   return (
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-8">
