@@ -73,8 +73,18 @@ const handleDiscordInteractions = (
 export function createServer() {
   const app = express();
 
+  // Discord endpoint MUST be defined BEFORE any body parsing middleware
+  // and needs raw body for signature verification
+  app.post(
+    "/api/discord/interactions",
+    express.raw({ type: "application/json" }),
+    handleDiscordInteractions,
+  );
+
   // Middleware
   app.use(cors());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   // Allow Discord to embed the activity in iframes
   app.use((req, res, next) => {
@@ -92,16 +102,6 @@ export function createServer() {
     );
     next();
   });
-
-  // Discord endpoint needs raw body for signature verification
-  app.post(
-    "/api/discord/interactions",
-    express.raw({ type: "application/json" }),
-    handleDiscordInteractions,
-  );
-
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
 
   // Example API routes
   app.get("/api/ping", (_req, res) => {
