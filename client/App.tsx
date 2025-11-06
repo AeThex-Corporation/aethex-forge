@@ -160,17 +160,16 @@ const App = () => (
                 <Route path="/signup" element={<SignupRedirect />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
 
-                {/* Original Service routes - kept for backwards compatibility */}
-                <Route path="/research" element={<ResearchLabs />} />
-                <Route path="/research-labs" element={<ResearchLabs />} />
-                <Route path="/game-dev" element={<GameDevelopment />} />
-                <Route path="/dev-consulting" element={<DevelopmentConsulting />} />
+                {/* Service routes */}
+                <Route path="/game-development" element={<GameDevelopment />} />
+                <Route path="/consulting" element={<DevelopmentConsulting />} />
                 <Route path="/mentorship" element={<MentorshipPrograms />} />
                 <Route path="/engage" element={<Engage />} />
                 <Route
                   path="/pricing"
                   element={<Navigate to="/engage" replace />}
                 />
+                <Route path="/research" element={<ResearchLabs />} />
 
                 {/* New Arm Landing Pages */}
                 <Route path="/labs" element={<Labs />} />
