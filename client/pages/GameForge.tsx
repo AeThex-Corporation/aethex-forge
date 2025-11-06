@@ -23,7 +23,11 @@ export default function GameForge() {
                   variant="outline"
                   className="border-green-400/40 bg-green-500/10 text-green-300 shadow-[0_0_20px_rgba(34,197,94,0.2)]"
                 >
-                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-green-300" />
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800"
+                    alt="GameForge"
+                    className="h-5 w-5 mr-2"
+                  />
                   GameForge
                 </Badge>
 

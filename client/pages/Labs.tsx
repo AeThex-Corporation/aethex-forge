@@ -28,7 +28,11 @@ export default function Labs() {
                   variant="outline"
                   className="border-yellow-400/40 bg-yellow-500/10 text-yellow-300 shadow-[0_0_20px_rgba(251,191,36,0.2)]"
                 >
-                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-yellow-300" />
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800"
+                    alt="Labs"
+                    className="h-5 w-5 mr-2"
+                  />
                   Aethex Labs
                 </Badge>
 

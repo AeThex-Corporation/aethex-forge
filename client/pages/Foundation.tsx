@@ -23,7 +23,11 @@ export default function Foundation() {
                   variant="outline"
                   className="border-red-400/40 bg-red-500/10 text-red-300 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
                 >
-                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-red-300" />
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800"
+                    alt="Foundation"
+                    className="h-5 w-5 mr-2"
+                  />
                   Aethex Foundation
                 </Badge>
 

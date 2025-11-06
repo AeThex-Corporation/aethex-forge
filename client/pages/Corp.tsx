@@ -23,7 +23,11 @@ export default function Corp() {
                   variant="outline"
                   className="border-blue-400/40 bg-blue-500/10 text-blue-300 shadow-[0_0_20px_rgba(59,130,246,0.2)]"
                 >
-                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-blue-300" />
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800"
+                    alt="Corp"
+                    className="h-5 w-5 mr-2"
+                  />
                   Aethex Corp
                 </Badge>
 
