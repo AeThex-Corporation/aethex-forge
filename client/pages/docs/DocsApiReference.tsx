@@ -160,15 +160,7 @@ export default function DocsApiReference() {
               pagination headers for large result sets.
             </p>
             <pre className="rounded-lg border border-slate-700 bg-slate-950/60 p-4 text-sm text-teal-200">
-              {`fetch("https://api.aethex.dev/v1/projects?page=1&limit=25", {
-  headers: {
-    Authorization: "Bearer ${TOKEN}",
-    "AeThex-Environment": "production",
-  },
-}).then(async (res) => {
-  if (!res.ok) throw new Error(await res.text());
-  console.log("Projects", await res.json());
-});`}
+              {'fetch("https://api.aethex.dev/v1/projects?page=1&limit=25", {\n  headers: {\n    Authorization: "Bearer ${TOKEN}",\n    "AeThex-Environment": "production",\n  },\n}).then(async (res) => {\n  if (!res.ok) throw new Error(await res.text());\n  console.log("Projects", await res.json());\n});'}
             </pre>
             <p>
               Responses include{" "}
