@@ -14,6 +14,7 @@ import {
   Share2,
   MapPin,
   Trophy,
+  Briefcase,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 

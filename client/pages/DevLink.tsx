@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Briefcase, Star, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function DevLink() {
+  const navigate = useNavigate();
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
@@ -51,6 +53,7 @@ export default function DevLink() {
                     size="lg"
                     variant="outline"
                     className="border-cyan-400/60 text-cyan-300 hover:bg-cyan-500/10"
+                    onClick={() => navigate("/dev-link/profiles")}
                   >
                     Explore Profiles
                   </Button>
