@@ -7,9 +7,17 @@ import { Beaker, Lightbulb, Zap, Users } from "lucide-react";
 export default function Labs() {
   return (
     <Layout>
-      <div className="relative min-h-screen bg-black text-white">
+      <div className="relative min-h-screen bg-black text-white overflow-hidden">
+        {/* Animated grid background */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#fbbf24_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(251,191,36,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
+
+        {/* Animated grid */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(251,191,36,0.1)_1px,transparent_1px),linear-gradient(0deg,rgba(251,191,36,0.1)_1px,transparent_1px)] [background-size:50px_50px] animate-pulse" />
+
+        {/* Floating orbs */}
+        <div className="pointer-events-none absolute top-20 left-10 w-72 h-72 bg-yellow-500/20 rounded-full blur-3xl animate-blob" />
+        <div className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 bg-yellow-600/10 rounded-full blur-3xl animate-blob animation-delay-2000" />
 
         <main className="relative z-10">
           {/* Hero Section */}
