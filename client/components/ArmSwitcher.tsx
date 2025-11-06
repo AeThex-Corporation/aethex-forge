@@ -15,7 +15,7 @@ interface Arm {
 const ARMS: Arm[] = [
   {
     id: "labs",
-    name: "Aethex Labs",
+    name: "AeThex | Labs",
     label: "Labs",
     color: "#FBBF24",
     bgColor: "bg-yellow-500/20",
@@ -24,7 +24,7 @@ const ARMS: Arm[] = [
   },
   {
     id: "gameforge",
-    name: "GameForge",
+    name: "AeThex | GameForge",
     label: "GameForge",
     color: "#22C55E",
     bgColor: "bg-green-500/20",
@@ -33,7 +33,7 @@ const ARMS: Arm[] = [
   },
   {
     id: "corp",
-    name: "Aethex Corp",
+    name: "AeThex | Corp",
     label: "Corp",
     color: "#3B82F6",
     bgColor: "bg-blue-500/20",
@@ -42,7 +42,7 @@ const ARMS: Arm[] = [
   },
   {
     id: "foundation",
-    name: "Aethex Foundation",
+    name: "AeThex | Foundation",
     label: "Foundation",
     color: "#EF4444",
     bgColor: "bg-red-500/20",
@@ -51,7 +51,7 @@ const ARMS: Arm[] = [
   },
   {
     id: "devlink",
-    name: "Dev-Link",
+    name: "AeThex | Dev-Link",
     label: "Dev-Link",
     color: "#06B6D4",
     bgColor: "bg-cyan-500/20",
@@ -79,7 +79,7 @@ export default function ArmSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-4 sm:gap-6">
+    <div className="flex items-center gap-6 sm:gap-10 lg:gap-12">
       {ARMS.map((arm) => (
         <button
           key={arm.id}
