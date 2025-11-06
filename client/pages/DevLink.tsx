@@ -26,7 +26,11 @@ export default function DevLink() {
                   variant="outline"
                   className="border-cyan-400/40 bg-cyan-500/10 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
                 >
-                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800"
+                    alt="Dev-Link"
+                    className="h-5 w-5 mr-2"
+                  />
                   Dev-Link
                 </Badge>
 
