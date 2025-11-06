@@ -186,30 +186,36 @@ const App = () => (
                   path="/dev-link/waitlist"
                   element={<DevLinkProfiles />}
                 />
+                <Route
+                  path="/dev-link/browseprofiles"
+                  element={<DevLinkProfiles />}
+                />
+                <Route
+                  path="/dev-link/browseprofiles/:profileId"
+                  element={<DevLinkProfile />}
+                />
                 <Route path="/dev-link/teams" element={<DevLinkTeams />} />
-
-                {/* Labs Sub-routes */}
-                <Route path="/labs/teams" element={<LabsTeams />} />
-                <Route path="/labs/about" element={<LabsAbout />} />
-                <Route path="/labs/pricing" element={<LabsPricing />} />
-                <Route path="/labs/case-studies" element={<LabsCaseStudies />} />
-
-                {/* GameForge Sub-routes */}
-                <Route path="/game-development/teams" element={<GameForgeTeams />} />
-                <Route path="/game-development/about" element={<GameForgeAbout />} />
-                <Route path="/game-development/pricing" element={<GameForgePricing />} />
-
-                {/* Corp Sub-routes */}
-                <Route path="/consulting/teams" element={<CorpTeams />} />
-                <Route path="/consulting/about" element={<CorpAbout />} />
-                <Route path="/consulting/pricing" element={<CorpPricing />} />
-
-                {/* Foundation Sub-routes */}
-                <Route path="/community/teams" element={<FoundationTeams />} />
-                <Route path="/community/about" element={<FoundationAbout />} />
-
-                {/* Dev-Link Sub-routes */}
                 <Route path="/dev-link/about" element={<DevLinkAbout />} />
+
+                {/* Labs Sub-routes (prefixed to avoid conflicts) */}
+                <Route path="/labs-teams" element={<LabsTeams />} />
+                <Route path="/labs-about" element={<LabsAbout />} />
+                <Route path="/labs-pricing" element={<LabsPricing />} />
+                <Route path="/labs-case-studies" element={<LabsCaseStudies />} />
+
+                {/* GameForge Sub-routes (prefixed) */}
+                <Route path="/gameforge-teams" element={<GameForgeTeams />} />
+                <Route path="/gameforge-about" element={<GameForgeAbout />} />
+                <Route path="/gameforge-pricing" element={<GameForgePricing />} />
+
+                {/* Corp Sub-routes (prefixed) */}
+                <Route path="/corp-teams" element={<CorpTeams />} />
+                <Route path="/corp-about" element={<CorpAbout />} />
+                <Route path="/corp-pricing" element={<CorpPricing />} />
+
+                {/* Foundation Sub-routes (prefixed) */}
+                <Route path="/foundation-teams" element={<FoundationTeams />} />
+                <Route path="/foundation-about" element={<FoundationAbout />} />
 
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
