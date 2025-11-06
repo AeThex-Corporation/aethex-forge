@@ -173,7 +173,7 @@ const App = () => (
                 <Route path="/labs" element={<ResearchLabs />} />
 
                 {/* New Arm Landing Pages */}
-                <Route path="/labs-arm" element={<Labs />} />
+                <Route path="/labs" element={<Labs />} />
                 <Route path="/gameforge" element={<GameForge />} />
                 <Route path="/corp" element={<Corp />} />
                 <Route path="/foundation" element={<Foundation />} />
