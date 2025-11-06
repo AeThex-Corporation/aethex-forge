@@ -141,6 +141,15 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       Access any section without leaving your flow.
                     </SheetDescription>
                   </SheetHeader>
+
+                  {/* Mobile Arm Switcher */}
+                  <div className="mt-6 mb-6 pb-6 border-b border-border/40">
+                    <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">Arms</p>
+                    <div className="flex gap-4 flex-wrap">
+                      <ArmSwitcher />
+                    </div>
+                  </div>
+
                   <nav className="mt-6 flex flex-col gap-1">
                     {(user ? userNavigation : publicNavigation).map((item) => (
                       <SheetClose key={item.href} asChild>
