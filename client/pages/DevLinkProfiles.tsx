@@ -1,10 +1,12 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 
 export default function DevLinkProfiles() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isWaitlist = location.pathname.includes("/waitlist");
 
   return (
     <Layout>
