@@ -149,7 +149,6 @@ export default function LoadingScreen({
               Please wait while we prepare your experience
             </div>
           </div>
-
         </div>
       </div>
     </div>

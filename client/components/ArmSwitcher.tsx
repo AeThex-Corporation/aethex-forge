@@ -87,7 +87,9 @@ export default function ArmSwitcher() {
           className="group relative h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
           title={arm.name}
         >
-          <div className={`absolute inset-0 rounded-lg ${arm.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-200`} />
+          <div
+            className={`absolute inset-0 rounded-lg ${arm.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-200`}
+          />
 
           <img
             src={LOGO_URLS[arm.id]}

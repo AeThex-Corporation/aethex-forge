@@ -180,7 +180,7 @@ export default function DevLinkProfile() {
                           <Badge
                             variant="outline"
                             className={`capitalize ${getExperienceColor(
-                              profile.experience_level
+                              profile.experience_level,
                             )}`}
                           >
                             {profile.experience_level} Developer

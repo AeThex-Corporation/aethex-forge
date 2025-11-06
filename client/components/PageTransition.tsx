@@ -7,7 +7,7 @@ interface PageTransitionProps {
 }
 
 const getArmConfig = (
-  pathname: string
+  pathname: string,
 ): { message: string; accentColor: string } => {
   if (pathname.includes("/labs") || pathname.includes("/research")) {
     return {
