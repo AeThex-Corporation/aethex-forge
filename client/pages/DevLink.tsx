@@ -59,7 +59,7 @@ export default function DevLink() {
                     className="border-cyan-400/60 text-cyan-300 hover:bg-cyan-500/10"
                     onClick={() => navigate("/dev-link/profiles")}
                   >
-                    Explore Profiles
+                    Waitlist
                   </Button>
                 </div>
               </div>

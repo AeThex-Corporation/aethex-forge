@@ -16,9 +16,9 @@ export default function DevLinkProfiles() {
 
         {/* Fullscreen iframe */}
         <iframe
-          src="https://dev-link.me"
+          src="https://dev-link.me/waitlist"
           className="w-full h-full border-0"
-          title="Dev-Link Platform"
+          title="Dev-Link Waitlist"
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation allow-top-navigation-by-user-activation"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
         />
