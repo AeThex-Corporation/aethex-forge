@@ -3,6 +3,12 @@ import { createVerify } from "crypto";
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-signature-ed25519, x-signature-timestamp");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -11,57 +17,68 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const signature = req.headers["x-signature-ed25519"] as string;
     const timestamp = req.headers["x-signature-timestamp"] as string;
-    const publicKey = process.env.DISCORD_PUBLIC_KEY;
+    const rawPublicKey = process.env.DISCORD_PUBLIC_KEY;
 
-    if (!signature || !timestamp || !publicKey) {
-      console.error("[Discord] Missing signature, timestamp, or public key");
-      return res.status(401).json({ error: "Unauthorized" });
+    if (!signature || !timestamp || !rawPublicKey) {
+      return res.status(401).json({ error: "Missing required headers or public key" });
     }
 
-    // Reconstruct raw body exactly as Discord sent it
+    // Reconstruct the raw body
     let rawBody: string;
     if (typeof req.body === "string") {
       rawBody = req.body;
+    } else if (req.body instanceof Buffer) {
+      rawBody = req.body.toString("utf8");
     } else {
       rawBody = JSON.stringify(req.body);
     }
 
-    // Create message for signature verification
+    // Create the message that was signed
     const message = `${timestamp}${rawBody}`;
 
-    // Verify Discord's signature
+    // Convert Discord's public key (hex string) to PEM format for Ed25519
+    const publicKeyBuffer = Buffer.from(rawPublicKey, "hex");
+    const publicKeyPEM = `-----BEGIN PUBLIC KEY-----\n${publicKeyBuffer.toString("base64")}\n-----END PUBLIC KEY-----`;
+
     try {
+      // Verify the signature
       const signatureBuffer = Buffer.from(signature, "hex");
-      const verifier = createVerify("ed25519");
+      const verifier = createVerify("Ed25519");
       verifier.update(message);
-      const isValid = verifier.verify(publicKey, signatureBuffer);
+      const isValid = verifier.verify(publicKeyPEM, signatureBuffer);
 
       if (!isValid) {
-        console.error("[Discord] Signature verification failed");
         return res.status(401).json({ error: "Invalid signature" });
       }
-    } catch (err: any) {
-      console.error("[Discord] Signature verification error:", err.message);
-      return res.status(401).json({ error: "Signature error" });
+    } catch (err) {
+      // If Ed25519 fails, try with the raw key (some versions support this)
+      try {
+        const signatureBuffer = Buffer.from(signature, "hex");
+        const verifier = createVerify("Ed25519");
+        verifier.update(message);
+        const isValid = verifier.verify(publicKeyBuffer, signatureBuffer);
+        if (!isValid) {
+          return res.status(401).json({ error: "Invalid signature" });
+        }
+      } catch {
+        return res.status(401).json({ error: "Signature verification failed" });
+      }
     }
 
-    // Parse interaction
+    // Parse and handle the interaction
     const interaction = JSON.parse(rawBody);
 
-    // Respond to PING with type 1
+    // Response to PING with type 1
     if (interaction.type === 1) {
-      console.log("[Discord] ✓ PING verified");
       return res.status(200).json({ type: 1 });
     }
 
-    // Handle other interaction types
-    console.log("[Discord] Interaction type:", interaction.type);
+    // Handle other interactions
     return res.status(200).json({
       type: 4,
-      data: { content: "Pong!" },
+      data: { content: "Interaction received" },
     });
   } catch (err: any) {
-    console.error("[Discord] Error:", err?.message);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Server error" });
   }
 }
