@@ -186,12 +186,24 @@ const App = () => (
                 <Route path="/labs/teams" element={<LabsTeams />} />
                 <Route path="/labs/about" element={<LabsAbout />} />
                 <Route path="/labs/pricing" element={<LabsPricing />} />
-                <Route path="/labs/case-studies" element={<LabsCaseStudies />} />
+                <Route
+                  path="/labs/case-studies"
+                  element={<LabsCaseStudies />}
+                />
 
                 {/* GameForge Sub-routes */}
-                <Route path="/game-development/teams" element={<GameForgeTeams />} />
-                <Route path="/game-development/about" element={<GameForgeAbout />} />
-                <Route path="/game-development/pricing" element={<GameForgePricing />} />
+                <Route
+                  path="/game-development/teams"
+                  element={<GameForgeTeams />}
+                />
+                <Route
+                  path="/game-development/about"
+                  element={<GameForgeAbout />}
+                />
+                <Route
+                  path="/game-development/pricing"
+                  element={<GameForgePricing />}
+                />
 
                 {/* Corp Sub-routes */}
                 <Route path="/consulting/teams" element={<CorpTeams />} />
@@ -200,7 +212,10 @@ const App = () => (
 
                 {/* Dev-Link routes */}
                 <Route path="/dev-link" element={<DevLink />} />
-                <Route path="/dev-link/waitlist" element={<DevLinkProfiles />} />
+                <Route
+                  path="/dev-link/waitlist"
+                  element={<DevLinkProfiles />}
+                />
                 <Route path="/dev-link/teams" element={<DevLinkTeams />} />
                 <Route path="/dev-link/about" element={<DevLinkAbout />} />
 

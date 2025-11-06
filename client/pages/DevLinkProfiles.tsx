@@ -50,7 +50,11 @@ export default function DevLinkProfiles() {
             <div className="container mx-auto max-w-5xl px-4">
               <div className="rounded-lg overflow-hidden border border-cyan-400/30 bg-cyan-950/20 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
                 <iframe
-                  src={isWaitlist ? "https://dev-link.me/waitlist" : "https://dev-link.me"}
+                  src={
+                    isWaitlist
+                      ? "https://dev-link.me/waitlist"
+                      : "https://dev-link.me"
+                  }
                   className="w-full border-0"
                   title={isWaitlist ? "Dev-Link Waitlist" : "Dev-Link Profiles"}
                   style={{
@@ -71,7 +75,11 @@ export default function DevLinkProfiles() {
                     : "Having trouble loading the profiles?"}
                 </p>
                 <a
-                  href={isWaitlist ? "https://dev-link.me/waitlist" : "https://dev-link.me"}
+                  href={
+                    isWaitlist
+                      ? "https://dev-link.me/waitlist"
+                      : "https://dev-link.me"
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 hover:bg-cyan-500/30 transition"
