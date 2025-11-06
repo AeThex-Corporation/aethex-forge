@@ -1,41 +1,4 @@
-import Layout from "@/components/Layout";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Users,
-  Search,
-  Github,
-  Briefcase,
-  MapPin,
-  Trophy,
-  MessageSquare,
-} from "lucide-react";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/lib/supabase";
-
-interface DevProfile {
-  id: string;
-  user_id: string;
-  full_name: string;
-  avatar_url?: string;
-  bio?: string;
-  skills: string[];
-  experience_level: "beginner" | "intermediate" | "advanced" | "expert";
-  looking_for?: string;
-  portfolio_url?: string;
-  github_url?: string;
-  created_at: string;
-}
 
 export default function DevLinkProfiles() {
   const navigate = useNavigate();
