@@ -45,14 +45,25 @@ export default function DevLink() {
                   creators.
                 </p>
 
-                <Button
-                  size="lg"
-                  className="bg-cyan-400 text-black shadow-[0_0_30px_rgba(6,182,212,0.35)] transition hover:bg-cyan-300"
-                  onClick={() => navigate("/dev-link/waitlist")}
-                >
-                  <Users className="mr-2 h-5 w-5" />
-                  Join Waitlist
-                </Button>
+                <div className="flex gap-4 justify-center">
+                  <Button
+                    size="lg"
+                    className="bg-cyan-400 text-black shadow-[0_0_30px_rgba(6,182,212,0.35)] transition hover:bg-cyan-300"
+                    onClick={() => navigate("/dev-link/waitlist")}
+                  >
+                    <Users className="mr-2 h-5 w-5" />
+                    Join Waitlist
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-cyan-400/40 text-cyan-300 hover:bg-cyan-500/10"
+                    onClick={() => navigate("/dev-link/profiles")}
+                  >
+                    <Briefcase className="mr-2 h-5 w-5" />
+                    Browse Profiles
+                  </Button>
+                </div>
               </div>
             </div>
           </section>
