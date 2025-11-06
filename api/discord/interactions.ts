@@ -17,7 +17,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Content-Type, x-signature-ed25519, x-signature-timestamp"
+    "Content-Type, x-signature-ed25519, x-signature-timestamp",
   );
 
   if (req.method === "OPTIONS") {
@@ -59,7 +59,10 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
     // Verify signature
     const message = `${timestamp}${rawBody}`;
-    console.log("[Discord] Verifying signature for message length:", message.length);
+    console.log(
+      "[Discord] Verifying signature for message length:",
+      message.length,
+    );
 
     const signatureBuffer = Buffer.from(signature, "hex");
     const verifier = createVerify("ed25519");
