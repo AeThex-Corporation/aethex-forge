@@ -99,17 +99,19 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
         <div className="container mx-auto max-w-7xl flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-2 min-w-0">
           {/* Logo + Animated Arm Switcher */}
-          <Link
-            to="/"
-            className="flex items-center space-x-3 hover-glow group shrink-0"
-          >
-            <img
-              src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
-              alt="AeThex Logo"
-              className="h-10 w-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
-            />
+          <div className="flex items-center space-x-3 shrink-0">
+            <Link
+              to="/"
+              className="hover-glow group inline-block"
+            >
+              <img
+                src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
+                alt="AeThex Logo"
+                className="h-10 w-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
+              />
+            </Link>
             <ArmSwitcher />
-          </Link>
+          </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center flex-1 mx-3" />
