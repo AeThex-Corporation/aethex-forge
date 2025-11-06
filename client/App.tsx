@@ -198,11 +198,6 @@ const App = () => (
                 <Route path="/consulting/about" element={<CorpAbout />} />
                 <Route path="/consulting/pricing" element={<CorpPricing />} />
 
-                {/* Foundation routes */}
-                <Route path="/foundation" element={<Foundation />} />
-                <Route path="/foundation/teams" element={<FoundationTeams />} />
-                <Route path="/foundation/about" element={<FoundationAbout />} />
-
                 {/* Dev-Link routes */}
                 <Route path="/dev-link" element={<DevLink />} />
                 <Route path="/dev-link/waitlist" element={<DevLinkProfiles />} />
