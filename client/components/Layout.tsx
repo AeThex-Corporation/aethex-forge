@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import SupabaseStatus from "./SupabaseStatus";
 import { useAuth } from "@/contexts/AuthContext";
+import ArmSwitcher from "./ArmSwitcher";
 import NotificationBell from "@/components/notifications/NotificationBell";
 import {
   DropdownMenu,
