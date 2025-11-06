@@ -1,0 +1,135 @@
+import Layout from "@/components/Layout";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, Briefcase, Star, Zap } from "lucide-react";
+
+export default function DevLink() {
+  return (
+    <Layout>
+      <div className="relative min-h-screen bg-black text-white overflow-hidden">
+        {/* Animated backgrounds */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#06b6d4_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(6,182,212,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(6,182,212,0.1)_1px,transparent_1px),linear-gradient(0deg,rgba(6,182,212,0.1)_1px,transparent_1px)] [background-size:50px_50px] animate-pulse" />
+        <div className="pointer-events-none absolute top-20 left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-blob" />
+        <div className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 bg-cyan-600/10 rounded-full blur-3xl animate-blob" />
+
+        <main className="relative z-10">
+          {/* Hero Section */}
+          <section className="relative overflow-hidden py-20 lg:py-28">
+            <div className="container mx-auto max-w-6xl px-4 text-center">
+              <div className="mx-auto flex max-w-3xl flex-col items-center gap-8">
+                <Badge
+                  variant="outline"
+                  className="border-cyan-400/40 bg-cyan-500/10 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+                >
+                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
+                  Dev-Link
+                </Badge>
+
+                <h1 className="text-4xl font-black tracking-tight text-cyan-300 sm:text-5xl lg:text-6xl">
+                  LinkedIn for Roblox
+                </h1>
+
+                <p className="text-lg text-cyan-100/90 sm:text-xl">
+                  Connect with Roblox developers, showcase your portfolio, find collaborators, and land your next opportunity. The professional network built by Roblox creators, for Roblox creators.
+                </p>
+
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <Button
+                    size="lg"
+                    className="bg-cyan-400 text-black shadow-[0_0_30px_rgba(6,182,212,0.35)] transition hover:bg-cyan-300"
+                  >
+                    <Users className="mr-2 h-5 w-5" />
+                    Join Dev-Link
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-cyan-400/60 text-cyan-300 hover:bg-cyan-500/10"
+                  >
+                    Explore Profiles
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Features Grid */}
+          <section className="border-y border-cyan-400/10 bg-black/80 py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <Card className="bg-cyan-950/20 border-cyan-400/30 hover:border-cyan-400/60 transition-colors">
+                  <CardHeader>
+                    <Users className="h-8 w-8 text-cyan-400 mb-2" />
+                    <CardTitle className="text-cyan-300">Network</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-cyan-200/70">
+                      Connect with thousands of Roblox developers worldwide and expand your opportunities.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-cyan-950/20 border-cyan-400/30 hover:border-cyan-400/60 transition-colors">
+                  <CardHeader>
+                    <Briefcase className="h-8 w-8 text-cyan-400 mb-2" />
+                    <CardTitle className="text-cyan-300">Opportunities</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-cyan-200/70">
+                      Discover jobs, collaborations, and projects tailored to your skills and interests.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-cyan-950/20 border-cyan-400/30 hover:border-cyan-400/60 transition-colors">
+                  <CardHeader>
+                    <Star className="h-8 w-8 text-cyan-400 mb-2" />
+                    <CardTitle className="text-cyan-300">Portfolio</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-cyan-200/70">
+                      Showcase your best work and build your professional reputation in the community.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-cyan-950/20 border-cyan-400/30 hover:border-cyan-400/60 transition-colors">
+                  <CardHeader>
+                    <Zap className="h-8 w-8 text-cyan-400 mb-2" />
+                    <CardTitle className="text-cyan-300">Collaborate</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-cyan-200/70">
+                      Team up with other creators to build amazing games and experiences together.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA Section */}
+          <section className="py-20 lg:py-28">
+            <div className="container mx-auto max-w-4xl px-4 text-center">
+              <h2 className="text-4xl font-bold text-cyan-300 mb-4">
+                Your Roblox Career Starts Here
+              </h2>
+              <p className="text-lg text-cyan-100/80 mb-8">
+                Join the professional community for Roblox developers. Connect, showcase, and grow.
+              </p>
+              <Button
+                size="lg"
+                className="bg-cyan-400 text-black shadow-[0_0_30px_rgba(6,182,212,0.35)] hover:bg-cyan-300"
+              >
+                Start Your Profile
+              </Button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </Layout>
+  );
+}
