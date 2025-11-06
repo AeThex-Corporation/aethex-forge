@@ -19,6 +19,8 @@ export default function DevLinkProfiles() {
           src="https://dev-link.me"
           className="w-full h-full border-0"
           title="Dev-Link Platform"
+          sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation allow-top-navigation-by-user-activation"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
         />
       </div>
     </div>
