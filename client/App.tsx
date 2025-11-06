@@ -18,6 +18,7 @@ import Corp from "./pages/Corp";
 import MentorshipPrograms from "./pages/MentorshipPrograms";
 import Labs from "./pages/Labs";
 import Foundation from "./pages/Foundation";
+import DevLink from "./pages/DevLink";
 import RequireAccess from "@/components/RequireAccess";
 import Engage from "./pages/Pricing";
 import DocsLayout from "./pages/DocsLayout";
@@ -158,6 +159,7 @@ const App = () => (
               />
               <Route path="/research" element={<Labs />} />
               <Route path="/labs" element={<Labs />} />
+              <Route path="/dev-link" element={<DevLink />} />
 
               {/* Resource routes */}
               <Route path="/docs" element={<DocsLayout />}>
