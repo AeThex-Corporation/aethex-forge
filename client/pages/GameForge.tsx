@@ -1,108 +1,130 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Gamepad2, Zap, Target, Trophy } from "lucide-react";
 
 export default function GameForge() {
   return (
     <Layout>
-      <div className="min-h-screen bg-aethex-gradient py-8">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 to-transparent" />
-          <div className="container mx-auto max-w-7xl relative px-4 py-20 md:py-32">
-            <div className="text-center space-y-6 animate-slide-down">
-              <div className="inline-block">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/20 border border-green-500/30 text-green-400">
-                  <Gamepad2 className="h-4 w-4" />
-                  <span className="text-sm font-medium">GameForge</span>
+      <div className="relative min-h-screen bg-black text-white">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#22c55e_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(34,197,94,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
+
+        <main className="relative z-10">
+          {/* Hero Section */}
+          <section className="relative overflow-hidden py-20 lg:py-28">
+            <div className="container mx-auto max-w-6xl px-4 text-center">
+              <div className="mx-auto flex max-w-3xl flex-col items-center gap-8">
+                <Badge
+                  variant="outline"
+                  className="border-green-400/40 bg-green-500/10 text-green-300 shadow-[0_0_20px_rgba(34,197,94,0.2)]"
+                >
+                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-green-300" />
+                  GameForge
+                </Badge>
+
+                <h1 className="text-4xl font-black tracking-tight text-green-300 sm:text-5xl lg:text-6xl">
+                  The Heart of AeThex
+                </h1>
+
+                <p className="text-lg text-green-100/90 sm:text-xl">
+                  Month-to-month shipping cycles. Rapid iteration. Continuous delivery. We don't just build games—we build experiences with unstoppable momentum.
+                </p>
+
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <Button
+                    size="lg"
+                    className="bg-green-400 text-black shadow-[0_0_30px_rgba(34,197,94,0.35)] transition hover:bg-green-300"
+                  >
+                    <Gamepad2 className="mr-2 h-5 w-5" />
+                    Start Building
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-green-400/60 text-green-300 hover:bg-green-500/10"
+                  >
+                    View Portfolio
+                  </Button>
                 </div>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
-                The Heart of AeThex
-              </h1>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                Month-to-month shipping cycles. Rapid iteration. Continuous delivery. We don't just build games—we build experiences with unstoppable momentum.
-              </p>
-              <div className="flex gap-4 justify-center pt-4">
-                <Button size="lg" className="bg-green-500 hover:bg-green-600 text-black">
-                  Start Building
-                </Button>
-                <Button size="lg" variant="outline">
-                  View Portfolio
-                </Button>
+            </div>
+          </section>
+
+          {/* Features Grid */}
+          <section className="border-y border-green-400/10 bg-black/80 py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
+                  <CardHeader>
+                    <Zap className="h-8 w-8 text-green-400 mb-2" />
+                    <CardTitle className="text-green-300">Monthly Releases</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-green-200/70">
+                      Predictable shipping cycles. Every month, new features and improvements live.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
+                  <CardHeader>
+                    <Target className="h-8 w-8 text-green-400 mb-2" />
+                    <CardTitle className="text-green-300">Rapid Iteration</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-green-200/70">
+                      Fast feedback loops. We listen, iterate, and ship what matters.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
+                  <CardHeader>
+                    <Trophy className="h-8 w-8 text-green-400 mb-2" />
+                    <CardTitle className="text-green-300">Quality Driven</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-green-200/70">
+                      High standards. Polished experiences. Every release is battle-tested.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
+                  <CardHeader>
+                    <Gamepad2 className="h-8 w-8 text-green-400 mb-2" />
+                    <CardTitle className="text-green-300">Player First</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-green-200/70">
+                      Always focused on player experience. We build what gets played.
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Features Grid */}
-        <section className="container mx-auto max-w-7xl px-4 py-16">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-card/50 border-border/50 hover:border-green-500/50 transition-colors">
-              <CardHeader>
-                <Zap className="h-8 w-8 text-green-400 mb-2" />
-                <CardTitle>Monthly Releases</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  Predictable shipping cycles. Every month, new features and improvements live.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 hover:border-green-500/50 transition-colors">
-              <CardHeader>
-                <Target className="h-8 w-8 text-green-400 mb-2" />
-                <CardTitle>Rapid Iteration</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  Fast feedback loops. We listen, iterate, and ship what matters.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 hover:border-green-500/50 transition-colors">
-              <CardHeader>
-                <Trophy className="h-8 w-8 text-green-400 mb-2" />
-                <CardTitle>Quality Driven</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  High standards. Polished experiences. Every release is battle-tested.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 hover:border-green-500/50 transition-colors">
-              <CardHeader>
-                <Gamepad2 className="h-8 w-8 text-green-400 mb-2" />
-                <CardTitle>Player First</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  Always focused on player experience. We build what gets played.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="container mx-auto max-w-7xl px-4 py-16">
-          <div className="rounded-xl bg-gradient-to-r from-green-500/20 to-green-600/20 border border-green-500/30 p-8 md:p-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ship With Momentum
-            </h2>
-            <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join the fastest shipping team in the industry. We're looking for creators, developers, and visionaries.
-            </p>
-            <Button size="lg" className="bg-green-500 hover:bg-green-600 text-black">
-              Join GameForge
-            </Button>
-          </div>
-        </section>
+          {/* CTA Section */}
+          <section className="py-20 lg:py-28">
+            <div className="container mx-auto max-w-4xl px-4 text-center">
+              <h2 className="text-4xl font-bold text-green-300 mb-4">
+                Ship With Momentum
+              </h2>
+              <p className="text-lg text-green-100/80 mb-8">
+                Join the fastest shipping team in the industry. We're looking for creators, developers, and visionaries.
+              </p>
+              <Button
+                size="lg"
+                className="bg-green-400 text-black shadow-[0_0_30px_rgba(34,197,94,0.35)] hover:bg-green-300"
+              >
+                Join GameForge
+              </Button>
+            </div>
+          </section>
+        </main>
       </div>
     </Layout>
   );

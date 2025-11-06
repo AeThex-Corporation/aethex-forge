@@ -1,108 +1,130 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, BookOpen, Code, Globe } from "lucide-react";
 
 export default function Foundation() {
   return (
     <Layout>
-      <div className="min-h-screen bg-aethex-gradient py-8">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-red-500/10 to-transparent" />
-          <div className="container mx-auto max-w-7xl relative px-4 py-20 md:py-32">
-            <div className="text-center space-y-6 animate-slide-down">
-              <div className="inline-block">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400">
-                  <Heart className="h-4 w-4" />
-                  <span className="text-sm font-medium">Aethex Foundation</span>
+      <div className="relative min-h-screen bg-black text-white">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#ef4444_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(239,68,68,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
+
+        <main className="relative z-10">
+          {/* Hero Section */}
+          <section className="relative overflow-hidden py-20 lg:py-28">
+            <div className="container mx-auto max-w-6xl px-4 text-center">
+              <div className="mx-auto flex max-w-3xl flex-col items-center gap-8">
+                <Badge
+                  variant="outline"
+                  className="border-red-400/40 bg-red-500/10 text-red-300 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+                >
+                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-red-300" />
+                  Aethex Foundation
+                </Badge>
+
+                <h1 className="text-4xl font-black tracking-tight text-red-300 sm:text-5xl lg:text-6xl">
+                  Open Source &amp; Education
+                </h1>
+
+                <p className="text-lg text-red-100/90 sm:text-xl">
+                  Democratizing technology through open source and education. We believe knowledge should be free, and great tools should be accessible to everyone.
+                </p>
+
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <Button
+                    size="lg"
+                    className="bg-red-400 text-black shadow-[0_0_30px_rgba(239,68,68,0.35)] transition hover:bg-red-300"
+                  >
+                    <Heart className="mr-2 h-5 w-5" />
+                    Contribute
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-red-400/60 text-red-300 hover:bg-red-500/10"
+                  >
+                    Learn More
+                  </Button>
                 </div>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
-                Open Source &amp; Education
-              </h1>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                Democratizing technology through open source and education. We believe knowledge should be free, and great tools should be accessible to everyone.
-              </p>
-              <div className="flex gap-4 justify-center pt-4">
-                <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white">
-                  Contribute
-                </Button>
-                <Button size="lg" variant="outline">
-                  Learn More
-                </Button>
+            </div>
+          </section>
+
+          {/* Mission Grid */}
+          <section className="border-y border-red-400/10 bg-black/80 py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
+                  <CardHeader>
+                    <Code className="h-8 w-8 text-red-400 mb-2" />
+                    <CardTitle className="text-red-300">Open Source</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-red-200/70">
+                      Publishing and maintaining tools that benefit the entire community.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
+                  <CardHeader>
+                    <BookOpen className="h-8 w-8 text-red-400 mb-2" />
+                    <CardTitle className="text-red-300">Education</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-red-200/70">
+                      Accessible learning resources for developers at all skill levels.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
+                  <CardHeader>
+                    <Globe className="h-8 w-8 text-red-400 mb-2" />
+                    <CardTitle className="text-red-300">Community</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-red-200/70">
+                      Building a welcoming ecosystem where everyone can grow and contribute.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
+                  <CardHeader>
+                    <Heart className="h-8 w-8 text-red-400 mb-2" />
+                    <CardTitle className="text-red-300">Impact</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-red-200/70">
+                      Creating positive change through technology and knowledge sharing.
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Mission Grid */}
-        <section className="container mx-auto max-w-7xl px-4 py-16">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-card/50 border-border/50 hover:border-red-500/50 transition-colors">
-              <CardHeader>
-                <Code className="h-8 w-8 text-red-400 mb-2" />
-                <CardTitle>Open Source</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  Publishing and maintaining tools that benefit the entire community.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 hover:border-red-500/50 transition-colors">
-              <CardHeader>
-                <BookOpen className="h-8 w-8 text-red-400 mb-2" />
-                <CardTitle>Education</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  Accessible learning resources for developers at all skill levels.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 hover:border-red-500/50 transition-colors">
-              <CardHeader>
-                <Globe className="h-8 w-8 text-red-400 mb-2" />
-                <CardTitle>Community</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  Building a welcoming ecosystem where everyone can grow and contribute.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border/50 hover:border-red-500/50 transition-colors">
-              <CardHeader>
-                <Heart className="h-8 w-8 text-red-400 mb-2" />
-                <CardTitle>Impact</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-400">
-                  Creating positive change through technology and knowledge sharing.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="container mx-auto max-w-7xl px-4 py-16">
-          <div className="rounded-xl bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-500/30 p-8 md:p-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Make an Impact
-            </h2>
-            <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join us in our mission to make technology education and open source accessible to everyone around the world.
-            </p>
-            <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white">
-              Get Involved
-            </Button>
-          </div>
-        </section>
+          {/* CTA Section */}
+          <section className="py-20 lg:py-28">
+            <div className="container mx-auto max-w-4xl px-4 text-center">
+              <h2 className="text-4xl font-bold text-red-300 mb-4">
+                Make an Impact
+              </h2>
+              <p className="text-lg text-red-100/80 mb-8">
+                Join us in our mission to make technology education and open source accessible to everyone around the world.
+              </p>
+              <Button
+                size="lg"
+                className="bg-red-400 text-black shadow-[0_0_30px_rgba(239,68,68,0.35)] hover:bg-red-300"
+              >
+                Get Involved
+              </Button>
+            </div>
+          </section>
+        </main>
       </div>
     </Layout>
   );
