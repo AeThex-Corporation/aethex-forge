@@ -19,6 +19,8 @@ import MentorshipPrograms from "./pages/MentorshipPrograms";
 import Labs from "./pages/Labs";
 import Foundation from "./pages/Foundation";
 import DevLink from "./pages/DevLink";
+import DevLinkProfiles from "./pages/DevLinkProfiles";
+import DevLinkProfile from "./pages/DevLinkProfile";
 import RequireAccess from "@/components/RequireAccess";
 import Engage from "./pages/Pricing";
 import DocsLayout from "./pages/DocsLayout";
@@ -166,6 +168,8 @@ const App = () => (
                 <Route path="/research" element={<Labs />} />
                 <Route path="/labs" element={<Labs />} />
                 <Route path="/dev-link" element={<DevLink />} />
+                <Route path="/dev-link/profiles" element={<DevLinkProfiles />} />
+                <Route path="/dev-link/profiles/:profileId" element={<DevLinkProfile />} />
 
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
