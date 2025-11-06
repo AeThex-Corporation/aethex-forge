@@ -4,7 +4,10 @@ import { createVerify } from "crypto";
 export default function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-signature-ed25519, x-signature-timestamp");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, x-signature-ed25519, x-signature-timestamp",
+  );
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -20,7 +23,9 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     const rawPublicKey = process.env.DISCORD_PUBLIC_KEY;
 
     if (!signature || !timestamp || !rawPublicKey) {
-      return res.status(401).json({ error: "Missing required headers or public key" });
+      return res
+        .status(401)
+        .json({ error: "Missing required headers or public key" });
     }
 
     // Reconstruct the raw body

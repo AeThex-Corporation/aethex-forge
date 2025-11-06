@@ -13,7 +13,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const shared =
-      process.env.ROBLOX_SHARED_SECRET || process.env.ROBLOX_WEBHOOK_SECRET || "";
+      process.env.ROBLOX_SHARED_SECRET ||
+      process.env.ROBLOX_WEBHOOK_SECRET ||
+      "";
     const sig =
       (req.headers["x-shared-secret"] as string) ||
       (req.headers["x-roblox-signature"] as string) ||
@@ -25,7 +27,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const payload: Record<string, any> = {
       ...(typeof req.body === "object" && req.body ? req.body : {}),
-      ip: ((req.headers["x-forwarded-for"] as string) || "").split(",")[0] || null,
+      ip:
+        ((req.headers["x-forwarded-for"] as string) || "").split(",")[0] ||
+        null,
       ua: (req.headers["user-agent"] as string) || null,
       received_at: new Date().toISOString(),
     };
