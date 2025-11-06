@@ -100,17 +100,28 @@ export default function LoadingScreen({
           {/* Animated Loading Bars */}
           <div className="space-y-2">
             <div className="flex justify-center space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1 bg-aethex-400 rounded-full animate-pulse"
-                  style={{
-                    height: `${20 + i * 10}px`,
-                    animationDelay: `${i * 0.2}s`,
-                    animationDuration: "1s",
-                  }}
-                />
-              ))}
+              {[...Array(5)].map((_, i) => {
+                const colorMap: Record<string, string> = {
+                  "from-yellow-500 to-yellow-400": "bg-yellow-400",
+                  "from-green-500 to-green-400": "bg-green-400",
+                  "from-blue-500 to-blue-400": "bg-blue-400",
+                  "from-red-500 to-red-400": "bg-red-400",
+                  "from-cyan-500 to-cyan-400": "bg-cyan-400",
+                  "from-aethex-500 to-neon-blue": "bg-aethex-400",
+                };
+                const barColor = colorMap[accentColor] || "bg-aethex-400";
+                return (
+                  <div
+                    key={i}
+                    className={`w-1 ${barColor} rounded-full animate-pulse`}
+                    style={{
+                      height: `${20 + i * 10}px`,
+                      animationDelay: `${i * 0.2}s`,
+                      animationDuration: "1s",
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
 
