@@ -146,11 +146,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const seededUsers: any[] = [];
 
     for (const demoUser of DEMO_USERS) {
-      const { data: searchResult, error: searchError } =
-        await admin.auth.admin.listUsers({ email: demoUser.email });
-      if (searchError) throw searchError;
+      let authUser: any;
 
-      let authUser = searchResult.users?.[0];
+      try {
+        const { data: allUsers, error: searchError } =
+          await admin.auth.admin.listUsers();
+        if (searchError) throw searchError;
+
+        authUser = allUsers.users?.find((u: any) => u.email === demoUser.email);
+      } catch {
+        authUser = null;
+      }
       if (!authUser) {
         const tempPassword = `Demo${Math.random().toString(36).slice(2, 10)}!9`;
         const { data: createdUser, error: createError } =
