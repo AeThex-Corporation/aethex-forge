@@ -20,7 +20,7 @@ const ARMS: Arm[] = [
     color: "#FBBF24",
     bgColor: "bg-yellow-500/20",
     textColor: "text-yellow-400",
-    href: "/labs",
+    href: "/research",
   },
   {
     id: "gameforge",
