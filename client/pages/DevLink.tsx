@@ -45,24 +45,14 @@ export default function DevLink() {
                   creators.
                 </p>
 
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <Button
-                    size="lg"
-                    className="bg-cyan-400 text-black shadow-[0_0_30px_rgba(6,182,212,0.35)] transition hover:bg-cyan-300"
-                    onClick={() => navigate("/dev-link/waitlist")}
-                  >
-                    <Users className="mr-2 h-5 w-5" />
-                    Join Waitlist
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-cyan-400/60 text-cyan-300 hover:bg-cyan-500/10"
-                    onClick={() => navigate("/dev-link/browseprofiles")}
-                  >
-                    Browse Profiles
-                  </Button>
-                </div>
+                <Button
+                  size="lg"
+                  className="bg-cyan-400 text-black shadow-[0_0_30px_rgba(6,182,212,0.35)] transition hover:bg-cyan-300"
+                  onClick={() => navigate("/dev-link/waitlist")}
+                >
+                  <Users className="mr-2 h-5 w-5" />
+                  Join Waitlist
+                </Button>
               </div>
             </div>
           </section>
@@ -145,18 +135,6 @@ export default function DevLink() {
                 Start Your Profile
               </Button>
             </div>
-          </section>
-
-          {/* Dev-Link Platform Embed */}
-          <section className="relative h-96 lg:h-[600px] border-t border-cyan-400/20 overflow-hidden">
-            <iframe
-              src="https://dev-link.me"
-              className="w-full h-full border-0"
-              title="Dev-Link Platform Preview"
-              style={{
-                minHeight: "600px",
-              }}
-            />
           </section>
         </main>
       </div>
