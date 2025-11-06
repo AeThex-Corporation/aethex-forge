@@ -144,14 +144,21 @@ export default function DevLinkProfile() {
           {/* Header */}
           <section className="relative overflow-hidden py-8 lg:py-12">
             <div className="container mx-auto max-w-4xl px-4">
-              <Button
-                onClick={() => navigate("/dev-link/profiles")}
-                variant="ghost"
-                className="text-cyan-300 hover:bg-cyan-500/10 mb-8"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Profiles
-              </Button>
+              <div className="flex items-center gap-3 mb-8">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800"
+                  alt="Dev-Link"
+                  className="h-8 w-8"
+                />
+                <Button
+                  onClick={() => navigate("/dev-link/profiles")}
+                  variant="ghost"
+                  className="text-cyan-300 hover:bg-cyan-500/10"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Profiles
+                </Button>
+              </div>
 
               {/* Profile Card */}
               <Card className="bg-cyan-950/30 border-cyan-400/30">
