@@ -50,9 +50,9 @@ export default function DevLinkProfiles() {
             <div className="container mx-auto max-w-5xl px-4">
               <div className="rounded-lg overflow-hidden border border-cyan-400/30 bg-cyan-950/20 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
                 <iframe
-                  src="https://dev-link.me/waitlist"
+                  src={isWaitlist ? "https://dev-link.me/waitlist" : "https://dev-link.me"}
                   className="w-full border-0"
-                  title="Dev-Link Waitlist"
+                  title={isWaitlist ? "Dev-Link Waitlist" : "Dev-Link Profiles"}
                   style={{
                     minHeight: "800px",
                     height: "80vh",
@@ -66,15 +66,17 @@ export default function DevLinkProfiles() {
               {/* Fallback Message */}
               <div className="mt-12 text-center">
                 <p className="text-cyan-200/70 mb-4">
-                  Having trouble loading the waitlist form?
+                  {isWaitlist
+                    ? "Having trouble loading the waitlist form?"
+                    : "Having trouble loading the profiles?"}
                 </p>
                 <a
-                  href="https://dev-link.me/waitlist"
+                  href={isWaitlist ? "https://dev-link.me/waitlist" : "https://dev-link.me"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 hover:bg-cyan-500/30 transition"
                 >
-                  Visit Waitlist Directly
+                  {isWaitlist ? "Visit Waitlist" : "Visit Profiles"} Directly
                   <ExternalLink className="h-4 w-4" />
                 </a>
               </div>
