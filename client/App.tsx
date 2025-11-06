@@ -13,10 +13,11 @@ import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
-import GameDevelopment from "./pages/GameDevelopment";
-import DevelopmentConsulting from "./pages/DevelopmentConsulting";
+import GameForge from "./pages/GameForge";
+import Corp from "./pages/Corp";
 import MentorshipPrograms from "./pages/MentorshipPrograms";
-import ResearchLabs from "./pages/ResearchLabs";
+import Labs from "./pages/Labs";
+import Foundation from "./pages/Foundation";
 import RequireAccess from "@/components/RequireAccess";
 import Engage from "./pages/Pricing";
 import DocsLayout from "./pages/DocsLayout";
@@ -147,30 +148,16 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* Service routes */}
-              <Route
-                path="/game-development"
-                element={
-                  <RequireAccess allowedRealms={["game_developer", "staff"]}>
-                    <GameDevelopment />
-                  </RequireAccess>
-                }
-              />
-              <Route
-                path="/consulting"
-                element={
-                  <RequireAccess allowedRealms={["client", "staff"]}>
-                    <DevelopmentConsulting />
-                  </RequireAccess>
-                }
-              />
+              <Route path="/game-development" element={<GameForge />} />
+              <Route path="/consulting" element={<Corp />} />
               <Route path="/mentorship" element={<MentorshipPrograms />} />
               <Route path="/engage" element={<Engage />} />
               <Route
                 path="/pricing"
                 element={<Navigate to="/engage" replace />}
               />
-              <Route path="/research" element={<ResearchLabs />} />
-              <Route path="/labs" element={<ResearchLabs />} />
+              <Route path="/research" element={<Labs />} />
+              <Route path="/labs" element={<Labs />} />
 
               {/* Resource routes */}
               <Route path="/docs" element={<DocsLayout />}>
@@ -190,7 +177,7 @@ const App = () => (
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/community" element={<Community />} />
+              <Route path="/community" element={<Foundation />} />
               <Route
                 path="/community/mentorship"
                 element={<MentorshipRequest />}
