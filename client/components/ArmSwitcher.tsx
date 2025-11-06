@@ -20,7 +20,7 @@ const ARMS: Arm[] = [
     color: "#FBBF24",
     bgColor: "bg-yellow-500/20",
     textColor: "text-yellow-400",
-    href: "/research",
+    href: "/labs",
   },
   {
     id: "gameforge",
@@ -29,7 +29,7 @@ const ARMS: Arm[] = [
     color: "#22C55E",
     bgColor: "bg-green-500/20",
     textColor: "text-green-400",
-    href: "/game-development",
+    href: "/gameforge",
   },
   {
     id: "corp",
@@ -38,7 +38,7 @@ const ARMS: Arm[] = [
     color: "#3B82F6",
     bgColor: "bg-blue-500/20",
     textColor: "text-blue-400",
-    href: "/consulting",
+    href: "/corp",
   },
   {
     id: "foundation",
@@ -47,7 +47,7 @@ const ARMS: Arm[] = [
     color: "#EF4444",
     bgColor: "bg-red-500/20",
     textColor: "text-red-400",
-    href: "/community",
+    href: "/foundation",
   },
   {
     id: "devlink",
