@@ -91,7 +91,9 @@ export default function ArmSwitcher() {
     >
       {/* Animated Icon Container */}
       <div className="relative h-10 w-10 flex items-center justify-center">
-        <div className={`absolute inset-0 rounded-lg ${currentArm.bgColor} transition-all duration-500`} />
+        <div
+          className={`absolute inset-0 rounded-lg ${currentArm.bgColor} transition-all duration-500`}
+        />
 
         {/* Temporary Logo - Simple geometric shape */}
         <div
@@ -113,7 +115,9 @@ export default function ArmSwitcher() {
         <div className="text-xs font-semibold text-gray-400 transition-colors duration-500">
           {currentArm.label}
         </div>
-        <div className={`text-xs font-medium transition-colors duration-500 ${currentArm.textColor}`}>
+        <div
+          className={`text-xs font-medium transition-colors duration-500 ${currentArm.textColor}`}
+        >
           {currentArm.name}
         </div>
       </div>

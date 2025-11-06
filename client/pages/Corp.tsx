@@ -32,7 +32,9 @@ export default function Corp() {
                 </h1>
 
                 <p className="text-lg text-blue-100/90 sm:text-xl">
-                  Strategic consulting, technology integration, and digital transformation for enterprises. We help companies navigate the future.
+                  Strategic consulting, technology integration, and digital
+                  transformation for enterprises. We help companies navigate the
+                  future.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -66,7 +68,8 @@ export default function Corp() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-blue-200/70">
-                      Strategic guidance for digital transformation and technology adoption.
+                      Strategic guidance for digital transformation and
+                      technology adoption.
                     </p>
                   </CardContent>
                 </Card>
@@ -74,11 +77,14 @@ export default function Corp() {
                 <Card className="bg-blue-950/20 border-blue-400/30 hover:border-blue-400/60 transition-colors">
                   <CardHeader>
                     <TrendingUp className="h-8 w-8 text-blue-400 mb-2" />
-                    <CardTitle className="text-blue-300">Scale & Growth</CardTitle>
+                    <CardTitle className="text-blue-300">
+                      Scale & Growth
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-blue-200/70">
-                      Build robust systems designed for enterprise scale and reliability.
+                      Build robust systems designed for enterprise scale and
+                      reliability.
                     </p>
                   </CardContent>
                 </Card>
@@ -86,11 +92,14 @@ export default function Corp() {
                 <Card className="bg-blue-950/20 border-blue-400/30 hover:border-blue-400/60 transition-colors">
                   <CardHeader>
                     <Users className="h-8 w-8 text-blue-400 mb-2" />
-                    <CardTitle className="text-blue-300">Team Partnership</CardTitle>
+                    <CardTitle className="text-blue-300">
+                      Team Partnership
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-blue-200/70">
-                      Work with dedicated teams augmenting your existing development capacity.
+                      Work with dedicated teams augmenting your existing
+                      development capacity.
                     </p>
                   </CardContent>
                 </Card>
@@ -102,7 +111,8 @@ export default function Corp() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-blue-200/70">
-                      Custom solutions tailored to your business needs and technical requirements.
+                      Custom solutions tailored to your business needs and
+                      technical requirements.
                     </p>
                   </CardContent>
                 </Card>
@@ -117,7 +127,8 @@ export default function Corp() {
                 Transform Your Business
               </h2>
               <p className="text-lg text-blue-100/80 mb-8">
-                Let's discuss how AeThex Corp can help accelerate your digital initiatives and drive growth.
+                Let's discuss how AeThex Corp can help accelerate your digital
+                initiatives and drive growth.
               </p>
               <Button
                 size="lg"

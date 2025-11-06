@@ -37,7 +37,9 @@ export default function Labs() {
                 </h1>
 
                 <p className="text-lg text-yellow-100/90 sm:text-xl">
-                  Where innovation meets experimentation. We push the boundaries of what's possible, exploring cutting-edge technologies and building the future.
+                  Where innovation meets experimentation. We push the boundaries
+                  of what's possible, exploring cutting-edge technologies and
+                  building the future.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -67,11 +69,14 @@ export default function Labs() {
                 <Card className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-colors">
                   <CardHeader>
                     <Lightbulb className="h-8 w-8 text-yellow-400 mb-2" />
-                    <CardTitle className="text-yellow-300">Innovation</CardTitle>
+                    <CardTitle className="text-yellow-300">
+                      Innovation
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-yellow-200/70">
-                      Exploring new technologies and methodologies to stay ahead of the curve.
+                      Exploring new technologies and methodologies to stay ahead
+                      of the curve.
                     </p>
                   </CardContent>
                 </Card>
@@ -79,11 +84,14 @@ export default function Labs() {
                 <Card className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-colors">
                   <CardHeader>
                     <Zap className="h-8 w-8 text-yellow-400 mb-2" />
-                    <CardTitle className="text-yellow-300">Experimentation</CardTitle>
+                    <CardTitle className="text-yellow-300">
+                      Experimentation
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-yellow-200/70">
-                      Testing ideas in controlled environments to validate concepts before production.
+                      Testing ideas in controlled environments to validate
+                      concepts before production.
                     </p>
                   </CardContent>
                 </Card>
@@ -91,11 +99,14 @@ export default function Labs() {
                 <Card className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-colors">
                   <CardHeader>
                     <Users className="h-8 w-8 text-yellow-400 mb-2" />
-                    <CardTitle className="text-yellow-300">Collaboration</CardTitle>
+                    <CardTitle className="text-yellow-300">
+                      Collaboration
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-yellow-200/70">
-                      Working with researchers and developers to push technical boundaries.
+                      Working with researchers and developers to push technical
+                      boundaries.
                     </p>
                   </CardContent>
                 </Card>
@@ -103,11 +114,14 @@ export default function Labs() {
                 <Card className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-colors">
                   <CardHeader>
                     <Beaker className="h-8 w-8 text-yellow-400 mb-2" />
-                    <CardTitle className="text-yellow-300">Documentation</CardTitle>
+                    <CardTitle className="text-yellow-300">
+                      Documentation
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-yellow-200/70">
-                      Sharing findings and insights with the community for collective growth.
+                      Sharing findings and insights with the community for
+                      collective growth.
                     </p>
                   </CardContent>
                 </Card>
@@ -122,7 +136,8 @@ export default function Labs() {
                 Be Part of the Future
               </h2>
               <p className="text-lg text-yellow-100/80 mb-8">
-                Join our research initiatives and help shape the next generation of technology.
+                Join our research initiatives and help shape the next generation
+                of technology.
               </p>
               <Button
                 size="lg"

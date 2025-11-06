@@ -32,7 +32,9 @@ export default function Foundation() {
                 </h1>
 
                 <p className="text-lg text-red-100/90 sm:text-xl">
-                  Democratizing technology through open source and education. We believe knowledge should be free, and great tools should be accessible to everyone.
+                  Democratizing technology through open source and education. We
+                  believe knowledge should be free, and great tools should be
+                  accessible to everyone.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -66,7 +68,8 @@ export default function Foundation() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
-                      Publishing and maintaining tools that benefit the entire community.
+                      Publishing and maintaining tools that benefit the entire
+                      community.
                     </p>
                   </CardContent>
                 </Card>
@@ -78,7 +81,8 @@ export default function Foundation() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
-                      Accessible learning resources for developers at all skill levels.
+                      Accessible learning resources for developers at all skill
+                      levels.
                     </p>
                   </CardContent>
                 </Card>
@@ -90,7 +94,8 @@ export default function Foundation() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
-                      Building a welcoming ecosystem where everyone can grow and contribute.
+                      Building a welcoming ecosystem where everyone can grow and
+                      contribute.
                     </p>
                   </CardContent>
                 </Card>
@@ -102,7 +107,8 @@ export default function Foundation() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
-                      Creating positive change through technology and knowledge sharing.
+                      Creating positive change through technology and knowledge
+                      sharing.
                     </p>
                   </CardContent>
                 </Card>
@@ -117,7 +123,8 @@ export default function Foundation() {
                 Make an Impact
               </h2>
               <p className="text-lg text-red-100/80 mb-8">
-                Join us in our mission to make technology education and open source accessible to everyone around the world.
+                Join us in our mission to make technology education and open
+                source accessible to everyone around the world.
               </p>
               <Button
                 size="lg"

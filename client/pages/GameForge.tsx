@@ -32,7 +32,9 @@ export default function GameForge() {
                 </h1>
 
                 <p className="text-lg text-green-100/90 sm:text-xl">
-                  Month-to-month shipping cycles. Rapid iteration. Continuous delivery. We don't just build games—we build experiences with unstoppable momentum.
+                  Month-to-month shipping cycles. Rapid iteration. Continuous
+                  delivery. We don't just build games—we build experiences with
+                  unstoppable momentum.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -62,11 +64,14 @@ export default function GameForge() {
                 <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
                   <CardHeader>
                     <Zap className="h-8 w-8 text-green-400 mb-2" />
-                    <CardTitle className="text-green-300">Monthly Releases</CardTitle>
+                    <CardTitle className="text-green-300">
+                      Monthly Releases
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-green-200/70">
-                      Predictable shipping cycles. Every month, new features and improvements live.
+                      Predictable shipping cycles. Every month, new features and
+                      improvements live.
                     </p>
                   </CardContent>
                 </Card>
@@ -74,11 +79,14 @@ export default function GameForge() {
                 <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
                   <CardHeader>
                     <Target className="h-8 w-8 text-green-400 mb-2" />
-                    <CardTitle className="text-green-300">Rapid Iteration</CardTitle>
+                    <CardTitle className="text-green-300">
+                      Rapid Iteration
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-green-200/70">
-                      Fast feedback loops. We listen, iterate, and ship what matters.
+                      Fast feedback loops. We listen, iterate, and ship what
+                      matters.
                     </p>
                   </CardContent>
                 </Card>
@@ -86,11 +94,14 @@ export default function GameForge() {
                 <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
                   <CardHeader>
                     <Trophy className="h-8 w-8 text-green-400 mb-2" />
-                    <CardTitle className="text-green-300">Quality Driven</CardTitle>
+                    <CardTitle className="text-green-300">
+                      Quality Driven
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-green-200/70">
-                      High standards. Polished experiences. Every release is battle-tested.
+                      High standards. Polished experiences. Every release is
+                      battle-tested.
                     </p>
                   </CardContent>
                 </Card>
@@ -98,11 +109,14 @@ export default function GameForge() {
                 <Card className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-colors">
                   <CardHeader>
                     <Gamepad2 className="h-8 w-8 text-green-400 mb-2" />
-                    <CardTitle className="text-green-300">Player First</CardTitle>
+                    <CardTitle className="text-green-300">
+                      Player First
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-green-200/70">
-                      Always focused on player experience. We build what gets played.
+                      Always focused on player experience. We build what gets
+                      played.
                     </p>
                   </CardContent>
                 </Card>
@@ -117,7 +131,8 @@ export default function GameForge() {
                 Ship With Momentum
               </h2>
               <p className="text-lg text-green-100/80 mb-8">
-                Join the fastest shipping team in the industry. We're looking for creators, developers, and visionaries.
+                Join the fastest shipping team in the industry. We're looking
+                for creators, developers, and visionaries.
               </p>
               <Button
                 size="lg"

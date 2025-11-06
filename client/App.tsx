@@ -91,137 +91,146 @@ const App = () => (
           <Toaster />
           <Analytics />
           <BrowserRouter>
-          <SkipAgentController />
-          <PageTransition>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/realms" element={<Realms />} />
-              <Route path="/investors" element={<Investors />} />
-              <Route path="/roadmap" element={<Roadmap />} />
-              <Route path="/trust" element={<Trust />} />
-              <Route path="/press" element={<PressKit />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/admin" element={<ProjectsAdmin />} />
-              <Route path="/directory" element={<Directory />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/docs-sync" element={<DocsSync />} />
-              <Route path="/feed" element={<Feed />} />
-              <Route path="/teams" element={<Teams />} />
-              <Route path="/squads" element={<Squads />} />
-              <Route path="/mentee-hub" element={<MenteeHub />} />
-              <Route path="/projects/new" element={<ProjectsNew />} />
-              <Route
-                path="/projects/:projectId/board"
-                element={<ProjectBoard />}
-              />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/profile/me" element={<Profile />} />
-
-              <Route path="/developers" element={<DevelopersDirectory />} />
-              <Route
-                path="/developers/me"
-                element={<LegacyPassportRedirect />}
-              />
-              <Route
-                path="/developers/:id"
-                element={<LegacyPassportRedirect />}
-              />
-              <Route
-                path="/profiles"
-                element={<Navigate to="/developers" replace />}
-              />
-              <Route path="/profiles/me" element={<LegacyPassportRedirect />} />
-              <Route
-                path="/profiles/:id"
-                element={<LegacyPassportRedirect />}
-              />
-
-              <Route
-                path="/passport"
-                element={<Navigate to="/passport/me" replace />}
-              />
-              <Route path="/passport/me" element={<ProfilePassport />} />
-              <Route path="/passport/:username" element={<ProfilePassport />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignupRedirect />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-
-              {/* Service routes */}
-              <Route path="/game-development" element={<GameForge />} />
-              <Route path="/consulting" element={<Corp />} />
-              <Route path="/mentorship" element={<MentorshipPrograms />} />
-              <Route path="/engage" element={<Engage />} />
-              <Route
-                path="/pricing"
-                element={<Navigate to="/engage" replace />}
-              />
-              <Route path="/research" element={<Labs />} />
-              <Route path="/labs" element={<Labs />} />
-              <Route path="/dev-link" element={<DevLink />} />
-
-              {/* Resource routes */}
-              <Route path="/docs" element={<DocsLayout />}>
-                <Route index element={<DocsOverview />} />
-                <Route path="tutorials" element={<DocsTutorials />} />
-                <Route path="curriculum" element={<DocsCurriculum />} />
+            <SkipAgentController />
+            <PageTransition>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/realms" element={<Realms />} />
+                <Route path="/investors" element={<Investors />} />
+                <Route path="/roadmap" element={<Roadmap />} />
+                <Route path="/trust" element={<Trust />} />
+                <Route path="/press" element={<PressKit />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/projects/admin" element={<ProjectsAdmin />} />
+                <Route path="/directory" element={<Directory />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/docs-sync" element={<DocsSync />} />
+                <Route path="/feed" element={<Feed />} />
+                <Route path="/teams" element={<Teams />} />
+                <Route path="/squads" element={<Squads />} />
+                <Route path="/mentee-hub" element={<MenteeHub />} />
+                <Route path="/projects/new" element={<ProjectsNew />} />
                 <Route
-                  path="getting-started"
-                  element={<DocsGettingStarted />}
+                  path="/projects/:projectId/board"
+                  element={<ProjectBoard />}
                 />
-                <Route path="platform" element={<DocsPlatform />} />
-                <Route path="api" element={<DocsApiReference />} />
-                <Route path="cli" element={<DocsCli />} />
-                <Route path="examples" element={<DocsExamples />} />
-                <Route path="integrations" element={<DocsIntegrations />} />
-              </Route>
-              <Route path="/tutorials" element={<Tutorials />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/community" element={<Foundation />} />
-              <Route
-                path="/community/mentorship"
-                element={<MentorshipRequest />}
-              />
-              <Route
-                path="/community/mentorship/apply"
-                element={<MentorApply />}
-              />
-              <Route
-                path="/community/mentor/:username"
-                element={<MentorProfile />}
-              />
-              <Route path="/community/:tabId" element={<Community />} />
-              <Route path="/staff" element={<Staff />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/status" element={<Status />} />
-              <Route path="/changelog" element={<Changelog />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/me" element={<Profile />} />
 
-              {/* Informational routes */}
-              <Route path="/wix" element={<Wix />} />
-              <Route path="/wix/case-studies" element={<WixCaseStudies />} />
-              <Route path="/wix/faq" element={<WixFaq />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/get-started" element={<GetStarted />} />
-              <Route path="/opportunities" element={<Opportunities />} />
-              <Route path="/explore" element={<Explore />} />
+                <Route path="/developers" element={<DevelopersDirectory />} />
+                <Route
+                  path="/developers/me"
+                  element={<LegacyPassportRedirect />}
+                />
+                <Route
+                  path="/developers/:id"
+                  element={<LegacyPassportRedirect />}
+                />
+                <Route
+                  path="/profiles"
+                  element={<Navigate to="/developers" replace />}
+                />
+                <Route
+                  path="/profiles/me"
+                  element={<LegacyPassportRedirect />}
+                />
+                <Route
+                  path="/profiles/:id"
+                  element={<LegacyPassportRedirect />}
+                />
 
-              {/* Legal routes */}
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
+                <Route
+                  path="/passport"
+                  element={<Navigate to="/passport/me" replace />}
+                />
+                <Route path="/passport/me" element={<ProfilePassport />} />
+                <Route
+                  path="/passport/:username"
+                  element={<ProfilePassport />}
+                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignupRedirect />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
-              {/* Discord routes */}
-              <Route path="/discord" element={<DiscordActivity />} />
-              <Route path="/discord/callback" element={<DiscordOAuthCallback />} />
+                {/* Service routes */}
+                <Route path="/game-development" element={<GameForge />} />
+                <Route path="/consulting" element={<Corp />} />
+                <Route path="/mentorship" element={<MentorshipPrograms />} />
+                <Route path="/engage" element={<Engage />} />
+                <Route
+                  path="/pricing"
+                  element={<Navigate to="/engage" replace />}
+                />
+                <Route path="/research" element={<Labs />} />
+                <Route path="/labs" element={<Labs />} />
+                <Route path="/dev-link" element={<DevLink />} />
 
-              {/* Explicit 404 route for static hosting fallbacks */}
-              <Route path="/404" element={<FourOhFourPage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<FourOhFourPage />} />
-            </Routes>
-          </PageTransition>
+                {/* Resource routes */}
+                <Route path="/docs" element={<DocsLayout />}>
+                  <Route index element={<DocsOverview />} />
+                  <Route path="tutorials" element={<DocsTutorials />} />
+                  <Route path="curriculum" element={<DocsCurriculum />} />
+                  <Route
+                    path="getting-started"
+                    element={<DocsGettingStarted />}
+                  />
+                  <Route path="platform" element={<DocsPlatform />} />
+                  <Route path="api" element={<DocsApiReference />} />
+                  <Route path="cli" element={<DocsCli />} />
+                  <Route path="examples" element={<DocsExamples />} />
+                  <Route path="integrations" element={<DocsIntegrations />} />
+                </Route>
+                <Route path="/tutorials" element={<Tutorials />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/community" element={<Foundation />} />
+                <Route
+                  path="/community/mentorship"
+                  element={<MentorshipRequest />}
+                />
+                <Route
+                  path="/community/mentorship/apply"
+                  element={<MentorApply />}
+                />
+                <Route
+                  path="/community/mentor/:username"
+                  element={<MentorProfile />}
+                />
+                <Route path="/community/:tabId" element={<Community />} />
+                <Route path="/staff" element={<Staff />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/status" element={<Status />} />
+                <Route path="/changelog" element={<Changelog />} />
+
+                {/* Informational routes */}
+                <Route path="/wix" element={<Wix />} />
+                <Route path="/wix/case-studies" element={<WixCaseStudies />} />
+                <Route path="/wix/faq" element={<WixFaq />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/get-started" element={<GetStarted />} />
+                <Route path="/opportunities" element={<Opportunities />} />
+                <Route path="/explore" element={<Explore />} />
+
+                {/* Legal routes */}
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+
+                {/* Discord routes */}
+                <Route path="/discord" element={<DiscordActivity />} />
+                <Route
+                  path="/discord/callback"
+                  element={<DiscordOAuthCallback />}
+                />
+
+                {/* Explicit 404 route for static hosting fallbacks */}
+                <Route path="/404" element={<FourOhFourPage />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<FourOhFourPage />} />
+              </Routes>
+            </PageTransition>
           </BrowserRouter>
         </TooltipProvider>
       </DiscordProvider>

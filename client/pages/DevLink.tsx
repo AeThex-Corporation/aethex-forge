@@ -33,7 +33,10 @@ export default function DevLink() {
                 </h1>
 
                 <p className="text-lg text-cyan-100/90 sm:text-xl">
-                  Connect with Roblox developers, showcase your portfolio, find collaborators, and land your next opportunity. The professional network built by Roblox creators, for Roblox creators.
+                  Connect with Roblox developers, showcase your portfolio, find
+                  collaborators, and land your next opportunity. The
+                  professional network built by Roblox creators, for Roblox
+                  creators.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -67,7 +70,8 @@ export default function DevLink() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-cyan-200/70">
-                      Connect with thousands of Roblox developers worldwide and expand your opportunities.
+                      Connect with thousands of Roblox developers worldwide and
+                      expand your opportunities.
                     </p>
                   </CardContent>
                 </Card>
@@ -75,11 +79,14 @@ export default function DevLink() {
                 <Card className="bg-cyan-950/20 border-cyan-400/30 hover:border-cyan-400/60 transition-colors">
                   <CardHeader>
                     <Briefcase className="h-8 w-8 text-cyan-400 mb-2" />
-                    <CardTitle className="text-cyan-300">Opportunities</CardTitle>
+                    <CardTitle className="text-cyan-300">
+                      Opportunities
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-cyan-200/70">
-                      Discover jobs, collaborations, and projects tailored to your skills and interests.
+                      Discover jobs, collaborations, and projects tailored to
+                      your skills and interests.
                     </p>
                   </CardContent>
                 </Card>
@@ -91,7 +98,8 @@ export default function DevLink() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-cyan-200/70">
-                      Showcase your best work and build your professional reputation in the community.
+                      Showcase your best work and build your professional
+                      reputation in the community.
                     </p>
                   </CardContent>
                 </Card>
@@ -103,7 +111,8 @@ export default function DevLink() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-cyan-200/70">
-                      Team up with other creators to build amazing games and experiences together.
+                      Team up with other creators to build amazing games and
+                      experiences together.
                     </p>
                   </CardContent>
                 </Card>
@@ -118,7 +127,8 @@ export default function DevLink() {
                 Your Roblox Career Starts Here
               </h2>
               <p className="text-lg text-cyan-100/80 mb-8">
-                Join the professional community for Roblox developers. Connect, showcase, and grow.
+                Join the professional community for Roblox developers. Connect,
+                showcase, and grow.
               </p>
               <Button
                 size="lg"
