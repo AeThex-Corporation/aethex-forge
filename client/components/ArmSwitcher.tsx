@@ -49,6 +49,15 @@ const ARMS: Arm[] = [
     textColor: "text-red-400",
     href: "/community",
   },
+  {
+    id: "devlink",
+    name: "Dev-Link",
+    label: "Dev-Link",
+    color: "#06B6D4",
+    bgColor: "bg-cyan-500/20",
+    textColor: "text-cyan-400",
+    href: "/dev-link",
+  },
 ];
 
 export default function ArmSwitcher() {
