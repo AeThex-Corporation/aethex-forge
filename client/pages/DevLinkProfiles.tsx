@@ -121,13 +121,20 @@ export default function DevLinkProfiles() {
           <section className="relative overflow-hidden py-12 lg:py-16">
             <div className="container mx-auto max-w-6xl px-4">
               <div className="flex items-center justify-between gap-4 mb-8">
-                <div>
-                  <h1 className="text-4xl font-black tracking-tight text-cyan-300 sm:text-5xl">
-                    Developer Profiles
-                  </h1>
-                  <p className="text-lg text-cyan-100/80 mt-2">
-                    Connect with {profiles.length} talented Roblox developers
-                  </p>
+                <div className="flex items-center gap-4">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800"
+                    alt="Dev-Link"
+                    className="h-16 w-16"
+                  />
+                  <div>
+                    <h1 className="text-4xl font-black tracking-tight text-cyan-300 sm:text-5xl">
+                      Developer Profiles
+                    </h1>
+                    <p className="text-lg text-cyan-100/80 mt-2">
+                      Connect with {profiles.length} talented Roblox developers
+                    </p>
+                  </div>
                 </div>
                 <Button
                   onClick={() => navigate("/dev-link")}
