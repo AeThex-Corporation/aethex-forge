@@ -145,6 +145,18 @@ export default function DevLink() {
               </Button>
             </div>
           </section>
+
+          {/* Dev-Link Platform Embed */}
+          <section className="relative h-96 lg:h-[600px] border-t border-cyan-400/20 overflow-hidden">
+            <iframe
+              src="https://dev-link.me"
+              className="w-full h-full border-0"
+              title="Dev-Link Platform Preview"
+              style={{
+                minHeight: "600px",
+              }}
+            />
+          </section>
         </main>
       </div>
     </Layout>
