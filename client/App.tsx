@@ -171,28 +171,20 @@ const App = () => (
                 <Route path="/reset-password" element={<ResetPassword />} />
 
                 {/* Service routes */}
-                <Route path="/game-development" element={<GameForge />} />
-                <Route path="/consulting" element={<Corp />} />
+                <Route path="/game-development" element={<GameDevelopment />} />
+                <Route path="/consulting" element={<DevelopmentConsulting />} />
                 <Route path="/mentorship" element={<MentorshipPrograms />} />
                 <Route path="/engage" element={<Engage />} />
                 <Route
                   path="/pricing"
                   element={<Navigate to="/engage" replace />}
                 />
-                <Route path="/research" element={<Labs />} />
-                <Route path="/labs" element={<Labs />} />
+                <Route path="/research" element={<ResearchLabs />} />
+                <Route path="/labs" element={<ResearchLabs />} />
                 <Route path="/dev-link" element={<DevLink />} />
                 <Route
                   path="/dev-link/waitlist"
                   element={<DevLinkProfiles />}
-                />
-                <Route
-                  path="/dev-link/browseprofiles"
-                  element={<DevLinkProfiles />}
-                />
-                <Route
-                  path="/dev-link/browseprofiles/:profileId"
-                  element={<DevLinkProfile />}
                 />
                 <Route path="/dev-link/teams" element={<DevLinkTeams />} />
                 <Route path="/dev-link/about" element={<DevLinkAbout />} />
