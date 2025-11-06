@@ -32,9 +32,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
     // Get raw body
     const rawBody =
-      typeof req.body === "string"
-        ? req.body
-        : JSON.stringify(req.body);
+      typeof req.body === "string" ? req.body : JSON.stringify(req.body);
 
     // Verify signature
     const message = `${timestamp}${rawBody}`;
@@ -48,7 +46,8 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(401).json({ error: "Invalid signature" });
     }
 
-    const interaction = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+    const interaction =
+      typeof req.body === "string" ? JSON.parse(req.body) : req.body;
     console.log("[Discord] Valid interaction type:", interaction.type);
 
     // Discord sends a PING to verify the endpoint

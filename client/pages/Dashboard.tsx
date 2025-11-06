@@ -383,9 +383,15 @@ export default function Dashboard() {
         // Teams
         aethexCollabService.listMyTeams(userId).catch(() => []),
         // Posts
-        communityService.getUserPosts(userId).then(p => p?.slice(0, 5) || []).catch(() => []),
+        communityService
+          .getUserPosts(userId)
+          .then((p) => p?.slice(0, 5) || [])
+          .catch(() => []),
         // Invites
-        aethexSocialService.listInvites(userId).then(i => Array.isArray(i) ? i : []).catch(() => []),
+        aethexSocialService
+          .listInvites(userId)
+          .then((i) => (Array.isArray(i) ? i : []))
+          .catch(() => []),
         // Network (following, followers, connections)
         Promise.all([
           aethexSocialService.getFollowing(userId).catch(() => []),
@@ -393,12 +399,13 @@ export default function Dashboard() {
           aethexSocialService.getConnections(userId).catch(() => []),
         ]),
         // Applications
-        supabase.from("project_applications")
+        supabase
+          .from("project_applications")
           .select(`*, projects!inner(id, title, user_id)`)
           .eq("projects.user_id", userId)
           .order("created_at", { ascending: false })
           .limit(10)
-          .then(({ data }) => Array.isArray(data) ? data : [])
+          .then(({ data }) => (Array.isArray(data) ? data : []))
           .catch(() => []),
         // Achievements (don't block on checkAndAwardProjectAchievements - do it in background)
         Promise.all([
@@ -406,24 +413,29 @@ export default function Dashboard() {
           aethexAchievementService.getAllAchievements().catch(() => []),
         ]).then(([earned, all]) => ({ earned: earned || [], all: all || [] })),
         // Follower count
-        supabase.from("user_follows")
+        supabase
+          .from("user_follows")
           .select("id", { count: "exact", head: true })
           .eq("following_id", userId)
-          .then(({ count }) => typeof count === "number" ? count : 0)
+          .then(({ count }) => (typeof count === "number" ? count : 0))
           .catch(() => 0),
       ]);
 
       // Extract results from settled promises
-      const userProjects = projectsResult.status === "fulfilled" ? projectsResult.value : [];
+      const userProjects =
+        projectsResult.status === "fulfilled" ? projectsResult.value : [];
       setProjects(userProjects);
 
-      const myTeams = teamsResult.status === "fulfilled" ? teamsResult.value : [];
+      const myTeams =
+        teamsResult.status === "fulfilled" ? teamsResult.value : [];
       setTeams(myTeams);
 
-      const userPosts = postsResult.status === "fulfilled" ? postsResult.value : [];
+      const userPosts =
+        postsResult.status === "fulfilled" ? postsResult.value : [];
       setUserPosts(userPosts);
 
-      const myInvites = invitesResult.status === "fulfilled" ? invitesResult.value : [];
+      const myInvites =
+        invitesResult.status === "fulfilled" ? invitesResult.value : [];
       setInvites(myInvites);
 
       if (networkResult.status === "fulfilled") {
@@ -437,7 +449,10 @@ export default function Dashboard() {
         setConnectionsList([]);
       }
 
-      const appData = applicationsResult.status === "fulfilled" ? applicationsResult.value : [];
+      const appData =
+        applicationsResult.status === "fulfilled"
+          ? applicationsResult.value
+          : [];
       setApplications(appData);
 
       let userAchievements: any[] = [];
@@ -449,7 +464,10 @@ export default function Dashboard() {
       setAchievements(userAchievements);
       setAllAchievements(catalog);
 
-      const followerCount = followerCountResult.status === "fulfilled" ? followerCountResult.value : 0;
+      const followerCount =
+        followerCountResult.status === "fulfilled"
+          ? followerCountResult.value
+          : 0;
 
       // Calculate stats
       const activeCount = userProjects.filter(
@@ -478,9 +496,11 @@ export default function Dashboard() {
       });
 
       // Background task: Check and award achievements (don't block)
-      aethexAchievementService.checkAndAwardProjectAchievements(userId).catch((e) => {
-        console.warn("checkAndAwardProjectAchievements failed:", e);
-      });
+      aethexAchievementService
+        .checkAndAwardProjectAchievements(userId)
+        .catch((e) => {
+          console.warn("checkAndAwardProjectAchievements failed:", e);
+        });
     } catch (error) {
       console.error("Error loading dashboard data:", error);
       aethexToast.error({

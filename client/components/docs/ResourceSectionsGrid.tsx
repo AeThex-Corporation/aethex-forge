@@ -7,7 +7,15 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { ArrowRight, LucideIcon, Video, Code, FileText, Puzzle, LayoutDashboard } from "lucide-react";
+import {
+  ArrowRight,
+  LucideIcon,
+  Video,
+  Code,
+  FileText,
+  Puzzle,
+  LayoutDashboard,
+} from "lucide-react";
 
 export interface ResourceSection {
   title: string;

@@ -150,7 +150,9 @@ export default function DocsLayout() {
                   <div key={index} className="flex items-center space-x-2">
                     <ChevronRight className="h-4 w-4 text-gray-600" />
                     {crumb.isLast ? (
-                      <span className="text-white font-medium">{crumb.name}</span>
+                      <span className="text-white font-medium">
+                        {crumb.name}
+                      </span>
                     ) : (
                       <Link
                         to={crumb.href}
