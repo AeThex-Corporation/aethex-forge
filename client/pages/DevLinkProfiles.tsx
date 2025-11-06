@@ -8,10 +8,10 @@ export default function DevLinkProfiles() {
       <div className="relative w-full h-full">
         {/* Back Button */}
         <button
-          onClick={() => navigate("/dev-link")}
+          onClick={() => navigate("/")}
           className="absolute top-4 left-4 z-10 px-4 py-2 rounded-lg bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 hover:bg-cyan-500/30 transition flex items-center gap-2"
         >
-          ← Back to Dev-Link
+          ← Back to AeThex.Dev
         </button>
 
         {/* Fullscreen iframe */}
