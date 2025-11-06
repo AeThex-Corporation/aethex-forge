@@ -19,6 +19,8 @@ import MentorshipPrograms from "./pages/MentorshipPrograms";
 import ResearchLabs from "./pages/ResearchLabs";
 import DevLink from "./pages/DevLink";
 import DevLinkProfiles from "./pages/DevLinkProfiles";
+import FoundationTeams from "./pages/foundation/FoundationTeams";
+import FoundationAbout from "./pages/foundation/FoundationAbout";
 import RequireAccess from "@/components/RequireAccess";
 import Engage from "./pages/Pricing";
 import DocsLayout from "./pages/DocsLayout";
