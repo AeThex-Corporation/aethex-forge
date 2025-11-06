@@ -229,7 +229,9 @@ const App = () => (
                 <Route path="/tutorials" element={<Tutorials />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/community" element={<Foundation />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/community/teams" element={<FoundationTeams />} />
+                <Route path="/community/about" element={<FoundationAbout />} />
                 <Route
                   path="/community/mentorship"
                   element={<MentorshipRequest />}
