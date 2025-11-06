@@ -31,12 +31,16 @@ export default function DevLinkProfiles() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h1 className="text-4xl font-black tracking-tight text-cyan-300 sm:text-5xl mb-2">
-                    {typeof window !== 'undefined' && window.location.pathname.includes('/waitlist') ? 'Dev-Link Waitlist' : 'Browse Profiles'}
+                    {typeof window !== "undefined" &&
+                    window.location.pathname.includes("/waitlist")
+                      ? "Dev-Link Waitlist"
+                      : "Browse Profiles"}
                   </h1>
                   <p className="text-lg text-cyan-100/80 max-w-2xl">
-                    {typeof window !== 'undefined' && window.location.pathname.includes('/waitlist')
-                      ? 'Join the professional network for Roblox developers. Sign up for early access!'
-                      : 'Explore talented Roblox developers in our community.'}
+                    {typeof window !== "undefined" &&
+                    window.location.pathname.includes("/waitlist")
+                      ? "Join the professional network for Roblox developers. Sign up for early access!"
+                      : "Explore talented Roblox developers in our community."}
                   </p>
                 </div>
               </div>
@@ -51,7 +55,11 @@ export default function DevLinkProfiles() {
                   src="https://dev-link.me/waitlist"
                   className="w-full border-0"
                   title="Dev-Link Waitlist"
-                  style={{ minHeight: "800px", height: "80vh", maxHeight: "800px" }}
+                  style={{
+                    minHeight: "800px",
+                    height: "80vh",
+                    maxHeight: "800px",
+                  }}
                   sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation allow-top-navigation-by-user-activation"
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                 />

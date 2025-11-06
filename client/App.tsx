@@ -168,7 +168,10 @@ const App = () => (
                 <Route path="/research" element={<Labs />} />
                 <Route path="/labs" element={<Labs />} />
                 <Route path="/dev-link" element={<DevLink />} />
-                <Route path="/dev-link/waitlist" element={<DevLinkProfiles />} />
+                <Route
+                  path="/dev-link/waitlist"
+                  element={<DevLinkProfiles />}
+                />
 
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
