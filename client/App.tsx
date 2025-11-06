@@ -166,6 +166,10 @@ const App = () => (
                 <Route path="/research" element={<ResearchLabs />} />
                 <Route path="/labs" element={<ResearchLabs />} />
 
+                {/* Dev-Link routes */}
+                <Route path="/dev-link" element={<DevLink />} />
+                <Route path="/dev-link/waitlist" element={<DevLinkProfiles />} />
+
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
                   <Route index element={<DocsOverview />} />
