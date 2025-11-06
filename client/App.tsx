@@ -179,7 +179,10 @@ const App = () => (
 
                 {/* Dev-Link routes */}
                 <Route path="/dev-link" element={<DevLink />} />
-                <Route path="/dev-link/waitlist" element={<DevLinkProfiles />} />
+                <Route
+                  path="/dev-link/waitlist"
+                  element={<DevLinkProfiles />}
+                />
 
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
