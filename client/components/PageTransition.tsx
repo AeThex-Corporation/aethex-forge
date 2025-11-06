@@ -46,14 +46,14 @@ const getArmConfig = (
 };
 
 export default function PageTransition({ children }: PageTransitionProps) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const location = useLocation();
   const config = getArmConfig(location.pathname);
 
   useEffect(() => {
     setVisible(false);
-    const id = requestAnimationFrame(() => setVisible(true));
-    return () => cancelAnimationFrame(id);
+    const timer = setTimeout(() => setVisible(true), 800);
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   return (
