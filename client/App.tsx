@@ -26,11 +26,15 @@ import LabsAbout from "./pages/labs/LabsAbout";
 import LabsPricing from "./pages/labs/LabsPricing";
 import LabsCaseStudies from "./pages/labs/LabsCaseStudies";
 import GameForgeTeams from "./pages/gameforge/GameForgeTeams";
+import GameForgeAbout from "./pages/gameforge/GameForgeAbout";
 import GameForgePricing from "./pages/gameforge/GameForgePricing";
 import CorpTeams from "./pages/corp/CorpTeams";
+import CorpAbout from "./pages/corp/CorpAbout";
 import CorpPricing from "./pages/corp/CorpPricing";
 import FoundationTeams from "./pages/foundation/FoundationTeams";
+import FoundationAbout from "./pages/foundation/FoundationAbout";
 import DevLinkTeams from "./pages/devlink/DevLinkTeams";
+import DevLinkAbout from "./pages/devlink/DevLinkAbout";
 import RequireAccess from "@/components/RequireAccess";
 import Engage from "./pages/Pricing";
 import DocsLayout from "./pages/DocsLayout";
@@ -192,14 +196,20 @@ const App = () => (
 
                 {/* GameForge Sub-routes */}
                 <Route path="/game-development/teams" element={<GameForgeTeams />} />
+                <Route path="/game-development/about" element={<GameForgeAbout />} />
                 <Route path="/game-development/pricing" element={<GameForgePricing />} />
 
                 {/* Corp Sub-routes */}
                 <Route path="/consulting/teams" element={<CorpTeams />} />
+                <Route path="/consulting/about" element={<CorpAbout />} />
                 <Route path="/consulting/pricing" element={<CorpPricing />} />
 
                 {/* Foundation Sub-routes */}
                 <Route path="/community/teams" element={<FoundationTeams />} />
+                <Route path="/community/about" element={<FoundationAbout />} />
+
+                {/* Dev-Link Sub-routes */}
+                <Route path="/dev-link/about" element={<DevLinkAbout />} />
 
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
