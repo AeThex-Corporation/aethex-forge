@@ -169,53 +169,16 @@ const App = () => (
                 <Route path="/reset-password" element={<ResetPassword />} />
 
                 {/* Service routes */}
-                <Route path="/game-development" element={<GameForge />} />
-                <Route path="/consulting" element={<Corp />} />
+                <Route path="/game-development" element={<GameDevelopment />} />
+                <Route path="/consulting" element={<DevelopmentConsulting />} />
                 <Route path="/mentorship" element={<MentorshipPrograms />} />
                 <Route path="/engage" element={<Engage />} />
                 <Route
                   path="/pricing"
                   element={<Navigate to="/engage" replace />}
                 />
-                <Route path="/research" element={<Labs />} />
-                <Route path="/labs" element={<Labs />} />
-
-                {/* Labs Sub-routes */}
-                <Route path="/labs/teams" element={<LabsTeams />} />
-                <Route path="/labs/about" element={<LabsAbout />} />
-                <Route path="/labs/pricing" element={<LabsPricing />} />
-                <Route
-                  path="/labs/case-studies"
-                  element={<LabsCaseStudies />}
-                />
-
-                {/* GameForge Sub-routes */}
-                <Route
-                  path="/game-development/teams"
-                  element={<GameForgeTeams />}
-                />
-                <Route
-                  path="/game-development/about"
-                  element={<GameForgeAbout />}
-                />
-                <Route
-                  path="/game-development/pricing"
-                  element={<GameForgePricing />}
-                />
-
-                {/* Corp Sub-routes */}
-                <Route path="/consulting/teams" element={<CorpTeams />} />
-                <Route path="/consulting/about" element={<CorpAbout />} />
-                <Route path="/consulting/pricing" element={<CorpPricing />} />
-
-                {/* Dev-Link routes */}
-                <Route path="/dev-link" element={<DevLink />} />
-                <Route
-                  path="/dev-link/waitlist"
-                  element={<DevLinkProfiles />}
-                />
-                <Route path="/dev-link/teams" element={<DevLinkTeams />} />
-                <Route path="/dev-link/about" element={<DevLinkAbout />} />
+                <Route path="/research" element={<ResearchLabs />} />
+                <Route path="/labs" element={<ResearchLabs />} />
 
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
