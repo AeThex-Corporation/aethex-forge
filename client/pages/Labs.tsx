@@ -151,6 +151,7 @@ export default function Labs() {
               <Button
                 size="lg"
                 className="bg-yellow-400 text-black shadow-[0_0_30px_rgba(251,191,36,0.35)] hover:bg-yellow-300"
+                onClick={() => navigate("/labs/get-involved")}
               >
                 Get Involved
               </Button>
