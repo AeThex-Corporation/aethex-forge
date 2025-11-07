@@ -48,6 +48,7 @@ export default function Foundation() {
                   <Button
                     size="lg"
                     className="bg-red-400 text-black shadow-[0_0_30px_rgba(239,68,68,0.35)] transition hover:bg-red-300"
+                    onClick={() => navigate("/foundation/contribute")}
                   >
                     <Heart className="mr-2 h-5 w-5" />
                     Contribute
@@ -56,6 +57,7 @@ export default function Foundation() {
                     size="lg"
                     variant="outline"
                     className="border-red-400/60 text-red-300 hover:bg-red-500/10"
+                    onClick={() => navigate("/foundation/learn-more")}
                   >
                     Learn More
                   </Button>
