@@ -1,17 +1,78 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Lightbulb, Users, Award } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { BookOpen, Video, Code, Users, ArrowRight, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function FoundationLearnMore() {
   const navigate = useNavigate();
 
+  const learningPaths = [
+    {
+      title: "Game Development Fundamentals",
+      description: "Master the core concepts and best practices",
+      duration: "6 weeks",
+      level: "Beginner",
+      format: "Video Course",
+      modules: 12,
+    },
+    {
+      title: "Roblox Development Mastery",
+      description: "Build professional Roblox experiences",
+      duration: "8 weeks",
+      level: "Intermediate",
+      format: "Interactive Tutorial",
+      modules: 16,
+    },
+    {
+      title: "Advanced Game Architecture",
+      description: "Scalable systems and optimization",
+      duration: "10 weeks",
+      level: "Advanced",
+      format: "Project-Based",
+      modules: 20,
+    },
+    {
+      title: "Game Art & Animation",
+      description: "Create stunning visuals and smooth animations",
+      duration: "7 weeks",
+      level: "Intermediate",
+      format: "Video Tutorials",
+      modules: 14,
+    },
+  ];
+
+  const resources = [
+    {
+      type: "Documentation",
+      icon: <BookOpen className="h-6 w-6" />,
+      count: "50+",
+      description: "Guides and API reference",
+    },
+    {
+      type: "Video Tutorials",
+      icon: <Video className="h-6 w-6" />,
+      count: "200+",
+      description: "Hours of content",
+    },
+    {
+      type: "Code Examples",
+      icon: <Code className="h-6 w-6" />,
+      count: "100+",
+      description: "Ready-to-use code",
+    },
+    {
+      type: "Community",
+      icon: <Users className="h-6 w-6" />,
+      count: "50K+",
+      description: "Active developers",
+    },
+  ];
+
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
-        {/* Animated grid background */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#ef4444_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(239,68,68,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(239,68,68,0.1)_1px,transparent_1px),linear-gradient(0deg,rgba(239,68,68,0.1)_1px,transparent_1px)] [background-size:50px_50px] animate-pulse" />
@@ -19,122 +80,118 @@ export default function FoundationLearnMore() {
         <div className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 bg-red-600/10 rounded-full blur-3xl animate-blob animation-delay-2000" />
 
         <main className="relative z-10">
-          {/* Hero Section */}
-          <section className="relative overflow-hidden py-20 lg:py-28">
-            <div className="container mx-auto max-w-6xl px-4 text-center">
-              <div className="mx-auto flex max-w-3xl flex-col items-center gap-8">
-                <Button
-                  variant="ghost"
-                  className="text-red-300 hover:bg-red-500/10"
-                  onClick={() => navigate("/foundation")}
-                >
-                  ← Back to Foundation
-                </Button>
+          <section className="py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Button
+                variant="ghost"
+                className="text-red-300 hover:bg-red-500/10 mb-8"
+                onClick={() => navigate("/foundation")}
+              >
+                ← Back to Foundation
+              </Button>
 
-                <Badge
-                  variant="outline"
-                  className="border-red-400/40 bg-red-500/10 text-red-300 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
-                >
-                  <BookOpen className="h-5 w-5 mr-2" />
-                  Learn More
-                </Badge>
-
-                <h1 className="text-4xl font-black tracking-tight text-red-300 sm:text-5xl lg:text-6xl">
-                  Educational Resources
-                </h1>
-
-                <p className="text-lg text-red-100/90 sm:text-xl">
-                  Free, accessible learning resources to help developers of all
-                  skill levels grow and succeed.
-                </p>
-
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <Button
-                    size="lg"
-                    className="bg-red-400 text-black shadow-[0_0_30px_rgba(239,68,68,0.35)] transition hover:bg-red-300"
-                  >
-                    <BookOpen className="mr-2 h-5 w-5" />
-                    Browse Courses
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-red-400/60 text-red-300 hover:bg-red-500/10"
-                  >
-                    View Curriculum
-                  </Button>
-                </div>
-              </div>
+              <h1 className="text-4xl lg:text-5xl font-black text-red-300 mb-4">
+                Learning Resources
+              </h1>
+              <p className="text-lg text-red-100/80 max-w-3xl">
+                Free educational content to help you master game development and Roblox.
+              </p>
             </div>
           </section>
 
-          {/* Learning Resources */}
-          <section className="border-y border-red-400/10 bg-black/80 py-16">
+          <section className="py-16">
             <div className="container mx-auto max-w-6xl px-4">
               <h2 className="text-3xl font-bold text-red-300 mb-8">
                 Learning Paths
               </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
-                  <CardHeader>
-                    <Lightbulb className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Beginner Courses
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-red-200/70">
-                      Start your development journey with foundational concepts
-                      and best practices.
-                    </p>
-                  </CardContent>
-                </Card>
+              <div className="grid md:grid-cols-2 gap-6">
+                {learningPaths.map((path, idx) => (
+                  <Card
+                    key={idx}
+                    className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-all"
+                  >
+                    <CardContent className="pt-6 space-y-4">
+                      <div>
+                        <h3 className="text-lg font-bold text-red-300 mb-1">
+                          {path.title}
+                        </h3>
+                        <p className="text-sm text-red-200/70">
+                          {path.description}
+                        </p>
+                      </div>
 
-                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
-                  <CardHeader>
-                    <Award className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Advanced Topics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-red-200/70">
-                      Deep dive into advanced topics and specialized areas of
-                      technology.
-                    </p>
-                  </CardContent>
-                </Card>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge className="bg-red-500/20 text-red-300 border border-red-400/40 text-xs">
+                          {path.level}
+                        </Badge>
+                        <Badge className="bg-red-500/20 text-red-300 border border-red-400/40 text-xs">
+                          {path.format}
+                        </Badge>
+                      </div>
 
-                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
-                  <CardHeader>
-                    <Users className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Community Mentorship
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-red-200/70">
-                      Learn directly from experienced developers through our
-                      mentorship program.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
-                  <CardHeader>
-                    <BookOpen className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Documentation Hub
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-red-200/70">
-                      Comprehensive documentation and guides for all our
-                      open-source projects.
-                    </p>
-                  </CardContent>
-                </Card>
+                      <div className="pt-4 border-t border-red-400/10 space-y-2">
+                        <div className="text-xs text-red-400 font-semibold">
+                          {path.duration} • {path.modules} modules
+                        </div>
+                        <Button
+                          className="w-full bg-red-400 text-black hover:bg-red-300"
+                          size="sm"
+                        >
+                          Start Learning
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
+            </div>
+          </section>
+
+          <section className="py-16 border-t border-red-400/10 bg-black/40">
+            <div className="container mx-auto max-w-6xl px-4">
+              <h2 className="text-3xl font-bold text-red-300 mb-8">
+                What's Included
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {resources.map((resource, idx) => (
+                  <Card
+                    key={idx}
+                    className="bg-red-950/20 border-red-400/30 text-center"
+                  >
+                    <CardContent className="pt-6">
+                      <div className="text-red-400 mb-3 flex justify-center">
+                        {resource.icon}
+                      </div>
+                      <p className="text-2xl font-black text-red-300 mb-1">
+                        {resource.count}
+                      </p>
+                      <p className="text-xs font-semibold text-red-400 mb-1">
+                        {resource.type}
+                      </p>
+                      <p className="text-xs text-red-200/70">
+                        {resource.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="py-16 border-t border-red-400/10">
+            <div className="container mx-auto max-w-4xl px-4 text-center">
+              <h2 className="text-3xl font-bold text-red-300 mb-4">
+                Start Your Journey
+              </h2>
+              <p className="text-lg text-red-100/80 mb-8">
+                Choose a learning path and begin mastering game development.
+              </p>
+              <Button
+                className="bg-red-400 text-black hover:bg-red-300"
+              >
+                Browse All Courses
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
             </div>
           </section>
         </main>
