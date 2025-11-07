@@ -141,8 +141,9 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
             {/* Mobile Logo - Expandable Arms */}
             <button
+              type="button"
               onClick={() => setMobileArmsOpen(!mobileArmsOpen)}
-              className={`sm:hidden relative h-12 w-12 flex items-center justify-center rounded-xl transition-all duration-300 ${
+              className={`sm:hidden relative h-12 w-12 flex items-center justify-center rounded-xl transition-all duration-300 cursor-pointer ${
                 mobileArmsOpen
                   ? "bg-gradient-to-r from-yellow-500/30 via-green-500/30 to-blue-500/30 scale-110 shadow-lg shadow-purple-500/30"
                   : "bg-gray-700/40 hover:bg-gray-600/60 shadow-lg"
