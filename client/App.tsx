@@ -63,6 +63,8 @@ import LegacyPassportRedirect from "./pages/LegacyPassportRedirect";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import GetStarted from "./pages/GetStarted";
+import Services from "./pages/Services";
+import Careers from "./pages/Careers";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Admin from "./pages/Admin";
