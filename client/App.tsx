@@ -195,7 +195,7 @@ const App = () => (
                   element={<LabsGetInvolved />}
                 />
 
-                <Route path="/gameforge" element={<GameForge />} />
+                <Route path="/game-development" element={<GameForge />} />
                 <Route
                   path="/gameforge/start-building"
                   element={<GameForgeStartBuilding />}
