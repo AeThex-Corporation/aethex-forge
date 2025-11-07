@@ -26,7 +26,7 @@ export default function GameForgeJoinGameForge() {
                 <Button
                   variant="ghost"
                   className="text-green-300 hover:bg-green-500/10"
-                  onClick={() => navigate("/game-development")}
+                  onClick={() => navigate("/gameforge")}
                 >
                   ← Back to GameForge
                 </Button>
