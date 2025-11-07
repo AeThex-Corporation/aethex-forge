@@ -84,8 +84,8 @@ export default function CorpViewCaseStudies() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-blue-200/70">
-                      Enterprise client achieved significant revenue growth through
-                      digital transformation.
+                      Enterprise client achieved significant revenue growth
+                      through digital transformation.
                     </p>
                   </CardContent>
                 </Card>
@@ -99,8 +99,8 @@ export default function CorpViewCaseStudies() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-blue-200/70">
-                      Optimized operations and reduced overhead through strategic
-                      consulting.
+                      Optimized operations and reduced overhead through
+                      strategic consulting.
                     </p>
                   </CardContent>
                 </Card>

@@ -42,16 +42,24 @@ const ARMS = [
   { id: "labs", label: "Labs", color: "#FBBF24", href: "/labs" },
   { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/gameforge" },
   { id: "corp", label: "Corp", color: "#3B82F6", href: "/corp" },
-  { id: "foundation", label: "Foundation", color: "#EF4444", href: "/foundation" },
+  {
+    id: "foundation",
+    label: "Foundation",
+    color: "#EF4444",
+    href: "/foundation",
+  },
   { id: "devlink", label: "Dev-Link", color: "#06B6D4", href: "/dev-link" },
 ];
 
 const ARM_LOGOS: Record<string, string> = {
   labs: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800",
-  gameforge: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
+  gameforge:
+    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
   corp: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800",
-  foundation: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
-  devlink: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
+  foundation:
+    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
+  devlink:
+    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
 };
 
 export default function CodeLayout({ children, hideFooter }: LayoutProps) {
@@ -121,7 +129,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
           {/* Logo - Desktop: Link, Mobile: Expandable Arms */}
           <div className="flex items-center shrink-0 relative">
             {/* Desktop Logo */}
-            <Link to="/" className="hover-glow group inline-block hidden sm:block">
+            <Link
+              to="/"
+              className="hover-glow group inline-block hidden sm:block"
+            >
               <img
                 src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
                 alt="AeThex Logo"
@@ -144,7 +155,9 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                   mobileArmsOpen ? "border-purple-400/50 animate-spin" : ""
                 }`}
                 style={{
-                  animation: mobileArmsOpen ? "spin 3s linear infinite" : "none",
+                  animation: mobileArmsOpen
+                    ? "spin 3s linear infinite"
+                    : "none",
                 }}
               />
               <img

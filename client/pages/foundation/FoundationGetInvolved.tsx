@@ -78,9 +78,7 @@ export default function FoundationGetInvolved() {
                 <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
                   <CardHeader>
                     <Users className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Volunteer
-                    </CardTitle>
+                    <CardTitle className="text-red-300">Volunteer</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
@@ -123,9 +121,7 @@ export default function FoundationGetInvolved() {
                 <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
                   <CardHeader>
                     <Heart className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Support Us
-                    </CardTitle>
+                    <CardTitle className="text-red-300">Support Us</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">

@@ -45,7 +45,8 @@ export default function FoundationContribute() {
 
                 <p className="text-lg text-red-100/90 sm:text-xl">
                   Help us democratize technology through open source. Your
-                  contributions directly impact millions of developers worldwide.
+                  contributions directly impact millions of developers
+                  worldwide.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -78,9 +79,7 @@ export default function FoundationContribute() {
                 <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
                   <CardHeader>
                     <Code className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Write Code
-                    </CardTitle>
+                    <CardTitle className="text-red-300">Write Code</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
@@ -108,9 +107,7 @@ export default function FoundationContribute() {
                 <Card className="bg-red-950/20 border-red-400/30 hover:border-red-400/60 transition-colors">
                   <CardHeader>
                     <Globe className="h-8 w-8 text-red-400 mb-2" />
-                    <CardTitle className="text-red-300">
-                      Translations
-                    </CardTitle>
+                    <CardTitle className="text-red-300">Translations</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
@@ -129,8 +126,8 @@ export default function FoundationContribute() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-red-200/70">
-                      Help community members by answering questions and reviewing
-                      contributions.
+                      Help community members by answering questions and
+                      reviewing contributions.
                     </p>
                   </CardContent>
                 </Card>

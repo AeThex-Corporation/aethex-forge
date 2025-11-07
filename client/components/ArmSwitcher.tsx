@@ -165,9 +165,7 @@ export default function ArmSwitcher() {
                       <span className="text-sm font-semibold text-white">
                         {arm.label}
                       </span>
-                      <span className="text-xs text-gray-400">
-                        {arm.name}
-                      </span>
+                      <span className="text-xs text-gray-400">{arm.name}</span>
                     </div>
                   </button>
                 ))}

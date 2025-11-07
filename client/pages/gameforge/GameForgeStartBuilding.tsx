@@ -129,8 +129,8 @@ export default function GameForgeStartBuilding() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-green-200/70">
-                      Starting templates and boilerplates for various game genres
-                      and styles.
+                      Starting templates and boilerplates for various game
+                      genres and styles.
                     </p>
                   </CardContent>
                 </Card>

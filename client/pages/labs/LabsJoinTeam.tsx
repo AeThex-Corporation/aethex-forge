@@ -44,8 +44,8 @@ export default function LabsJoinTeam() {
                 </h1>
 
                 <p className="text-lg text-yellow-100/90 sm:text-xl">
-                  Join a team of passionate researchers and developers pushing the
-                  boundaries of technology. Help us shape the future.
+                  Join a team of passionate researchers and developers pushing
+                  the boundaries of technology. Help us shape the future.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -104,7 +104,8 @@ export default function LabsJoinTeam() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm text-yellow-200/70">
-                      Build tools and platforms that empower our research efforts.
+                      Build tools and platforms that empower our research
+                      efforts.
                     </p>
                     <Button
                       variant="outline"
@@ -124,7 +125,8 @@ export default function LabsJoinTeam() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm text-yellow-200/70">
-                      Start your career in cutting-edge research and development.
+                      Start your career in cutting-edge research and
+                      development.
                     </p>
                     <Button
                       variant="outline"
@@ -155,8 +157,8 @@ export default function LabsJoinTeam() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-yellow-200/70">
-                      Contribute to research that shapes the future of technology
-                      and impacts millions.
+                      Contribute to research that shapes the future of
+                      technology and impacts millions.
                     </p>
                   </CardContent>
                 </Card>

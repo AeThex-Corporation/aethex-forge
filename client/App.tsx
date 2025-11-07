@@ -185,24 +185,54 @@ const App = () => (
 
                 {/* New Arm Landing Pages */}
                 <Route path="/labs" element={<Labs />} />
-                <Route path="/labs/explore-research" element={<LabsExploreResearch />} />
+                <Route
+                  path="/labs/explore-research"
+                  element={<LabsExploreResearch />}
+                />
                 <Route path="/labs/join-team" element={<LabsJoinTeam />} />
-                <Route path="/labs/get-involved" element={<LabsGetInvolved />} />
+                <Route
+                  path="/labs/get-involved"
+                  element={<LabsGetInvolved />}
+                />
 
                 <Route path="/gameforge" element={<GameForge />} />
-                <Route path="/gameforge/start-building" element={<GameForgeStartBuilding />} />
-                <Route path="/gameforge/view-portfolio" element={<GameForgeViewPortfolio />} />
-                <Route path="/gameforge/join-gameforge" element={<GameForgeJoinGameForge />} />
+                <Route
+                  path="/gameforge/start-building"
+                  element={<GameForgeStartBuilding />}
+                />
+                <Route
+                  path="/gameforge/view-portfolio"
+                  element={<GameForgeViewPortfolio />}
+                />
+                <Route
+                  path="/gameforge/join-gameforge"
+                  element={<GameForgeJoinGameForge />}
+                />
 
                 <Route path="/corp" element={<Corp />} />
-                <Route path="/corp/schedule-consultation" element={<CorpScheduleConsultation />} />
-                <Route path="/corp/view-case-studies" element={<CorpViewCaseStudies />} />
+                <Route
+                  path="/corp/schedule-consultation"
+                  element={<CorpScheduleConsultation />}
+                />
+                <Route
+                  path="/corp/view-case-studies"
+                  element={<CorpViewCaseStudies />}
+                />
                 <Route path="/corp/contact-us" element={<CorpContactUs />} />
 
                 <Route path="/foundation" element={<Foundation />} />
-                <Route path="/foundation/contribute" element={<FoundationContribute />} />
-                <Route path="/foundation/learn-more" element={<FoundationLearnMore />} />
-                <Route path="/foundation/get-involved" element={<FoundationGetInvolved />} />
+                <Route
+                  path="/foundation/contribute"
+                  element={<FoundationContribute />}
+                />
+                <Route
+                  path="/foundation/learn-more"
+                  element={<FoundationLearnMore />}
+                />
+                <Route
+                  path="/foundation/get-involved"
+                  element={<FoundationGetInvolved />}
+                />
 
                 {/* Dev-Link routes */}
                 <Route path="/dev-link" element={<DevLink />} />

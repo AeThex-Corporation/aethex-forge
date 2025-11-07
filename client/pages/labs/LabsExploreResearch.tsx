@@ -44,9 +44,9 @@ export default function LabsExploreResearch() {
                 </h1>
 
                 <p className="text-lg text-yellow-100/90 sm:text-xl">
-                  Discover cutting-edge projects, publications, and breakthroughs
-                  from our research initiatives. See what we're working on to shape
-                  the future.
+                  Discover cutting-edge projects, publications, and
+                  breakthroughs from our research initiatives. See what we're
+                  working on to shape the future.
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -130,8 +130,8 @@ export default function LabsExploreResearch() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-yellow-200/70">
-                      Building open-source tools and frameworks for the developer
-                      community.
+                      Building open-source tools and frameworks for the
+                      developer community.
                     </p>
                   </CardContent>
                 </Card>
