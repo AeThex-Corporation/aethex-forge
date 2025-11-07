@@ -142,6 +142,7 @@ export default function Corp() {
               <Button
                 size="lg"
                 className="bg-blue-400 text-black shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:bg-blue-300"
+                onClick={() => navigate("/corp/contact-us")}
               >
                 Contact Us
               </Button>
