@@ -82,6 +82,13 @@ export default function Labs() {
           {/* Hero Section */}
           <section className="py-16 lg:py-24">
             <div className="container mx-auto max-w-6xl px-4">
+              <div className="mb-8 flex justify-center">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800"
+                  alt="Labs Logo"
+                  className="h-24 w-24 object-contain drop-shadow-lg"
+                />
+              </div>
               <Badge className="border-yellow-400/40 bg-yellow-500/10 text-yellow-300 shadow-[0_0_20px_rgba(251,191,36,0.2)] mb-6">
                 <Microscope className="h-4 w-4 mr-2" />
                 AeThex Labs

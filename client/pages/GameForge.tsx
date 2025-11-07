@@ -80,6 +80,13 @@ export default function GameForge() {
           {/* Hero Section */}
           <section className="py-16 lg:py-24">
             <div className="container mx-auto max-w-6xl px-4">
+              <div className="mb-8 flex justify-center">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800"
+                  alt="GameForge Logo"
+                  className="h-24 w-24 object-contain drop-shadow-lg"
+                />
+              </div>
               <Badge className="border-green-400/40 bg-green-500/10 text-green-300 shadow-[0_0_20px_rgba(34,197,94,0.2)] mb-6">
                 <Gamepad2 className="h-4 w-4 mr-2" />
                 GameForge Production

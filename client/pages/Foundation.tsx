@@ -130,6 +130,13 @@ export default function Foundation() {
           {/* Hero Section */}
           <section className="py-16 lg:py-24">
             <div className="container mx-auto max-w-6xl px-4">
+              <div className="mb-8 flex justify-center">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800"
+                  alt="Foundation Logo"
+                  className="h-24 w-24 object-contain drop-shadow-lg"
+                />
+              </div>
               <Badge className="border-red-400/40 bg-red-500/10 text-red-300 shadow-[0_0_20px_rgba(239,68,68,0.2)] mb-6">
                 <Heart className="h-4 w-4 mr-2" />
                 AeThex Foundation
