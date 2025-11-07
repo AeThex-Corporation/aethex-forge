@@ -110,24 +110,24 @@ export default function ArmSwitcher() {
         ))}
       </div>
 
-      {/* Tablet Version - Compact Horizontal Bar (md to lg) */}
-      <div className="hidden md:flex lg:hidden items-center justify-center gap-2 px-2">
+      {/* Tablet Version - Spaced Horizontal Layout (md to lg) */}
+      <div className="hidden md:flex lg:hidden items-center gap-6 sm:gap-10">
         {ARMS.map((arm) => (
           <button
             key={arm.id}
             onClick={() => handleArmClick(arm.href)}
-            className={`group relative h-10 w-10 flex items-center justify-center rounded-lg transition-all duration-200 hover:scale-110 ${arm.bgColor}`}
+            className="group relative h-12 w-12 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
             title={arm.name}
           >
             <img
               src={LOGO_URLS[arm.id]}
               alt={arm.label}
-              className="relative h-6 w-6 object-contain"
+              className="relative h-8 w-8 object-contain transition-all duration-200"
             />
 
             {/* Tooltip */}
-            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-gray-900 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-50">
-              {arm.label}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-2 py-1 bg-gray-900 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-50">
+              {arm.name}
             </div>
           </button>
         ))}
