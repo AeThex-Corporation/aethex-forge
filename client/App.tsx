@@ -291,6 +291,8 @@ const App = () => (
                 <Route path="/get-started" element={<GetStarted />} />
                 <Route path="/opportunities" element={<Opportunities />} />
                 <Route path="/explore" element={<Explore />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/careers" element={<Careers />} />
 
                 {/* Legal routes */}
                 <Route path="/privacy" element={<Privacy />} />
