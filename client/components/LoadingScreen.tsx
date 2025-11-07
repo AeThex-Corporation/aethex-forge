@@ -8,6 +8,7 @@ interface LoadingScreenProps {
   showProgress?: boolean;
   duration?: number;
   accentColor?: string;
+  armLogo?: string;
 }
 
 export default function LoadingScreen({
