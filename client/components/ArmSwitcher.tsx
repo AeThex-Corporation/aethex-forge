@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Zap } from "lucide-react";
+import { Zap, X } from "lucide-react";
 
 interface Arm {
   id: string;
@@ -73,36 +73,120 @@ const LOGO_URLS: Record<string, string> = {
 
 export default function ArmSwitcher() {
   const navigate = useNavigate();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleArmClick = (href: string) => {
     navigate(href);
+    setIsExpanded(false);
   };
 
   return (
-    <div className="flex items-center gap-6 sm:gap-10 lg:gap-12">
-      {ARMS.map((arm) => (
+    <>
+      {/* Desktop Version - Horizontal Layout */}
+      <div className="hidden lg:flex items-center gap-6 sm:gap-10 lg:gap-12">
+        {ARMS.map((arm) => (
+          <button
+            key={arm.id}
+            onClick={() => handleArmClick(arm.href)}
+            className="group relative h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
+            title={arm.name}
+          >
+            <div
+              className={`absolute inset-0 rounded-lg ${arm.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-200`}
+            />
+
+            <img
+              src={LOGO_URLS[arm.id]}
+              alt={arm.label}
+              className="relative h-10 w-10 sm:h-12 sm:w-12 object-contain transition-all duration-200"
+            />
+
+            {/* Tooltip */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-2 py-1 bg-gray-900 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-50">
+              {arm.name}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Mobile Version - Expandable Icon */}
+      <div className="lg:hidden relative">
         <button
-          key={arm.id}
-          onClick={() => handleArmClick(arm.href)}
-          className="group relative h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
-          title={arm.name}
+          onClick={() => setIsExpanded(!isExpanded)}
+          className={`relative h-12 w-12 flex items-center justify-center rounded-lg transition-all duration-300 ${
+            isExpanded
+              ? "bg-gradient-to-r from-yellow-500/20 via-green-500/20 to-blue-500/20 scale-110"
+              : "bg-gray-700/40 hover:bg-gray-600/50"
+          }`}
+          title="Toggle Arm Switcher"
         >
           <div
-            className={`absolute inset-0 rounded-lg ${arm.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-200`}
+            className={`absolute inset-0 rounded-lg border-2 border-transparent transition-all duration-300 ${
+              isExpanded ? "border-purple-400/50 animate-spin" : ""
+            }`}
+            style={{
+              animation: isExpanded ? "spin 3s linear infinite" : "none",
+            }}
           />
 
           <img
-            src={LOGO_URLS[arm.id]}
-            alt={arm.label}
-            className="relative h-10 w-10 sm:h-12 sm:w-12 object-contain transition-all duration-200"
+            src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
+            alt="AeThex Arms"
+            className={`relative h-8 w-8 object-contain transition-all duration-300 ${
+              isExpanded ? "rotate-180 scale-90" : "rotate-0"
+            }`}
           />
-
-          {/* Tooltip */}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-2 py-1 bg-gray-900 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-50">
-            {arm.name}
-          </div>
         </button>
-      ))}
-    </div>
+
+        {/* Expanded Mobile Menu */}
+        {isExpanded && (
+          <>
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              onClick={() => setIsExpanded(false)}
+            />
+
+            {/* Expanded Arms Menu */}
+            <div className="absolute top-full right-0 mt-2 z-50 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-4 w-80 shadow-2xl animate-in fade-in zoom-in-95">
+              <div className="grid grid-cols-1 gap-3">
+                {ARMS.map((arm) => (
+                  <button
+                    key={arm.id}
+                    onClick={() => handleArmClick(arm.href)}
+                    className={`group flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${arm.bgColor} border border-transparent hover:border-white/20 hover:scale-105`}
+                  >
+                    <img
+                      src={LOGO_URLS[arm.id]}
+                      alt={arm.label}
+                      className="h-8 w-8 object-contain"
+                    />
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm font-semibold text-white">
+                        {arm.label}
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        {arm.name}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      <style>{`
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </>
   );
 }
