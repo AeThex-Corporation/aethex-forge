@@ -48,7 +48,7 @@ export default function Corp() {
                   <Button
                     size="lg"
                     className="bg-blue-400 text-black shadow-[0_0_30px_rgba(59,130,246,0.35)] transition hover:bg-blue-300"
-                    onClick={() => navigate("/corp/schedule-consultation")}
+                    onClick={() => navigate("/consulting/schedule-consultation")}
                   >
                     <Briefcase className="mr-2 h-5 w-5" />
                     Schedule Consultation
@@ -57,7 +57,7 @@ export default function Corp() {
                     size="lg"
                     variant="outline"
                     className="border-blue-400/60 text-blue-300 hover:bg-blue-500/10"
-                    onClick={() => navigate("/corp/view-case-studies")}
+                    onClick={() => navigate("/consulting/view-case-studies")}
                   >
                     View Case Studies
                   </Button>
@@ -142,7 +142,7 @@ export default function Corp() {
               <Button
                 size="lg"
                 className="bg-blue-400 text-black shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:bg-blue-300"
-                onClick={() => navigate("/corp/contact-us")}
+                onClick={() => navigate("/consulting/contact-us")}
               >
                 Contact Us
               </Button>
