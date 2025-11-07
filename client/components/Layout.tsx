@@ -39,13 +39,13 @@ interface LayoutProps {
 
 const ARMS = [
   { id: "labs", label: "Labs", color: "#FBBF24", href: "/labs" },
-  { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/gameforge" },
-  { id: "corp", label: "Corp", color: "#3B82F6", href: "/corp" },
+  { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/game-development" },
+  { id: "corp", label: "Corp", color: "#3B82F6", href: "/consulting" },
   {
     id: "foundation",
     label: "Foundation",
     color: "#EF4444",
-    href: "/foundation",
+    href: "/community",
   },
   { id: "devlink", label: "Dev-Link", color: "#06B6D4", href: "/dev-link" },
 ];
