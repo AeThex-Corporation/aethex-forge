@@ -197,15 +197,15 @@ const App = () => (
 
                 <Route path="/game-development" element={<GameForge />} />
                 <Route
-                  path="/gameforge/start-building"
+                  path="/game-development/start-building"
                   element={<GameForgeStartBuilding />}
                 />
                 <Route
-                  path="/gameforge/view-portfolio"
+                  path="/game-development/view-portfolio"
                   element={<GameForgeViewPortfolio />}
                 />
                 <Route
-                  path="/gameforge/join-gameforge"
+                  path="/game-development/join-gameforge"
                   element={<GameForgeJoinGameForge />}
                 />
 
