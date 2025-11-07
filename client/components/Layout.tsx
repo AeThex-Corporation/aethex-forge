@@ -212,7 +212,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
           <nav className="hidden md:flex items-center flex-1 mx-3" />
 
           {/* Animated Arm Switcher */}
-          <div className="hidden lg:flex items-center shrink-0">
+          <div className="hidden md:flex items-center shrink-0">
             <ArmSwitcher />
           </div>
 
