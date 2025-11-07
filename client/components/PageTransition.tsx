@@ -68,6 +68,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
           message={config.message}
           variant="overlay"
           accentColor={config.accentColor}
+          armLogo={config.armLogo}
         />
       )}
       <div
