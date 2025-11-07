@@ -215,10 +215,10 @@ const App = () => (
                   element={<CorpScheduleConsultation />}
                 />
                 <Route
-                  path="/corp/view-case-studies"
+                  path="/consulting/view-case-studies"
                   element={<CorpViewCaseStudies />}
                 />
-                <Route path="/corp/contact-us" element={<CorpContactUs />} />
+                <Route path="/consulting/contact-us" element={<CorpContactUs />} />
 
                 <Route path="/foundation" element={<Foundation />} />
                 <Route
