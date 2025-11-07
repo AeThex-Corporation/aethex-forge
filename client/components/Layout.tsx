@@ -15,11 +15,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
   User,
   Settings,
   LogOut,
   Sparkles,
   UserCircle,
+  Menu,
 } from "lucide-react";
 
 interface LayoutProps {
