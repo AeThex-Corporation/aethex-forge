@@ -222,15 +222,15 @@ const App = () => (
 
                 <Route path="/foundation" element={<Foundation />} />
                 <Route
-                  path="/community/contribute"
+                  path="/foundation/contribute"
                   element={<FoundationContribute />}
                 />
                 <Route
-                  path="/community/learn-more"
+                  path="/foundation/learn-more"
                   element={<FoundationLearnMore />}
                 />
                 <Route
-                  path="/community/get-involved"
+                  path="/foundation/get-involved"
                   element={<FoundationGetInvolved />}
                 />
 
