@@ -184,6 +184,120 @@ export default function About() {
             </CardContent>
           </Card>
 
+          {/* Ecosystem Diagram */}
+          <Card className="bg-card/50 border-border/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="h-5 w-5" /> The AeThex Ecosystem
+              </CardTitle>
+              <CardDescription>
+                Five specialized arms united by a shared mission to empower creators
+                and builders.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-5 gap-4 mb-8">
+                {[
+                  {
+                    name: "Labs",
+                    color: "from-yellow-500 to-yellow-600",
+                    bgColor: "bg-yellow-500/10",
+                    borderColor: "border-yellow-400/30",
+                    desc: "Research & Innovation",
+                    link: "/labs",
+                  },
+                  {
+                    name: "GameForge",
+                    color: "from-green-500 to-green-600",
+                    bgColor: "bg-green-500/10",
+                    borderColor: "border-green-400/30",
+                    desc: "Game Development",
+                    link: "/game-development",
+                  },
+                  {
+                    name: "Corp",
+                    color: "from-blue-500 to-blue-600",
+                    bgColor: "bg-blue-500/10",
+                    borderColor: "border-blue-400/30",
+                    desc: "Enterprise Solutions",
+                    link: "/consulting",
+                  },
+                  {
+                    name: "Foundation",
+                    color: "from-red-500 to-red-600",
+                    bgColor: "bg-red-500/10",
+                    borderColor: "border-red-400/30",
+                    desc: "Open Source & Education",
+                    link: "/community",
+                  },
+                  {
+                    name: "Dev-Link",
+                    color: "from-cyan-500 to-cyan-600",
+                    bgColor: "bg-cyan-500/10",
+                    borderColor: "border-cyan-400/30",
+                    desc: "Developer Network",
+                    link: "/dev-link",
+                  },
+                ].map((arm) => (
+                  <a
+                    key={arm.name}
+                    href={arm.link}
+                    className={`rounded-lg border ${arm.borderColor} ${arm.bgColor} p-4 hover:border-opacity-60 transition cursor-pointer`}
+                  >
+                    <div
+                      className={`h-12 w-full rounded mb-3 bg-gradient-to-r ${arm.color} opacity-20`}
+                    />
+                    <div className="font-semibold text-sm">{arm.name}</div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {arm.desc}
+                    </div>
+                  </a>
+                ))}
+              </div>
+
+              <div className="rounded-lg border border-border/50 bg-gradient-to-b from-aethex-500/5 to-transparent p-6">
+                <h3 className="font-semibold mb-3 text-sm">How They Connect</h3>
+                <div className="grid sm:grid-cols-2 gap-3 text-sm text-muted-foreground">
+                  <div className="flex items-start gap-2">
+                    <span className="text-aethex-400 font-bold">→</span>
+                    <span>
+                      <strong>Labs</strong> pioneers new tools and methods that
+                      others can adopt
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-aethex-400 font-bold">→</span>
+                    <span>
+                      <strong>GameForge</strong> ships reliable products using Lab
+                      innovations
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-aethex-400 font-bold">→</span>
+                    <span>
+                      <strong>Corp</strong> brings enterprise-grade solutions to
+                      market
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-aethex-400 font-bold">→</span>
+                    <span>
+                      <strong>Foundation</strong> open-sources knowledge and
+                      tools for the community
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2 sm:col-span-2">
+                    <span className="text-aethex-400 font-bold">→</span>
+                    <span>
+                      <strong>Dev-Link</strong> connects all creators in one
+                      professional network
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Platform Overview */}
           <Card className="bg-card/50 border-border/50">
             <CardHeader>
