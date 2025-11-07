@@ -38,10 +38,28 @@ interface LayoutProps {
   hideFooter?: boolean;
 }
 
+const ARMS = [
+  { id: "labs", label: "Labs", color: "#FBBF24", href: "/labs" },
+  { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/gameforge" },
+  { id: "corp", label: "Corp", color: "#3B82F6", href: "/corp" },
+  { id: "foundation", label: "Foundation", color: "#EF4444", href: "/foundation" },
+  { id: "devlink", label: "Dev-Link", color: "#06B6D4", href: "/dev-link" },
+];
+
+const ARM_LOGOS: Record<string, string> = {
+  labs: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800",
+  gameforge: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
+  corp: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800",
+  foundation: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
+  devlink: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
+};
+
 export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, profile, roles, signOut, loading, profileComplete } = useAuth();
   const isOwner = Array.isArray(roles) && roles.includes("owner");
+  const [mobileArmsOpen, setMobileArmsOpen] = useState(false);
 
   const navigation = [
     { name: "Home", href: "/" },
