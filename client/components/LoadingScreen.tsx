@@ -88,14 +88,29 @@ export default function LoadingScreen({
           {/* Logo Animation */}
           <div className="flex justify-center">
             <div className="relative">
-              <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-aethex-400 to-neon-blue flex items-center justify-center animate-pulse-glow p-2">
+              <div className={`h-16 w-16 rounded-lg bg-gradient-to-br ${
+                accentColor.includes("yellow")
+                  ? "from-yellow-400 to-yellow-500"
+                  : accentColor.includes("green")
+                  ? "from-green-400 to-green-500"
+                  : accentColor.includes("blue")
+                  ? "from-blue-400 to-blue-500"
+                  : accentColor.includes("red")
+                  ? "from-red-400 to-red-500"
+                  : accentColor.includes("cyan")
+                  ? "from-cyan-400 to-cyan-500"
+                  : "from-aethex-400 to-neon-blue"
+              } flex items-center justify-center animate-pulse-glow p-2`}>
                 <img
-                  src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
-                  alt="AeThex Logo"
+                  src={
+                    armLogo ||
+                    "https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
+                  }
+                  alt="Logo"
                   className="h-full w-full object-contain"
                 />
               </div>
-              <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-aethex-400 via-neon-blue to-aethex-600 opacity-30 blur animate-pulse"></div>
+              <div className={`absolute -inset-2 rounded-lg bg-gradient-to-r ${accentColor} opacity-30 blur animate-pulse`}></div>
             </div>
           </div>
 
