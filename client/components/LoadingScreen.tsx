@@ -18,6 +18,7 @@ export default function LoadingScreen({
   showProgress = false,
   duration = 3000,
   accentColor = "from-aethex-500 to-neon-blue",
+  armLogo,
 }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [currentMessage, setCurrentMessage] = useState(message);
