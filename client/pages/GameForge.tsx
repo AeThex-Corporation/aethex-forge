@@ -48,7 +48,7 @@ export default function GameForge() {
                   <Button
                     size="lg"
                     className="bg-green-400 text-black shadow-[0_0_30px_rgba(34,197,94,0.35)] transition hover:bg-green-300"
-                    onClick={() => navigate("/game-development/start-building")}
+                    onClick={() => navigate("/gameforge/start-building")}
                   >
                     <Gamepad2 className="mr-2 h-5 w-5" />
                     Start Building
@@ -57,7 +57,7 @@ export default function GameForge() {
                     size="lg"
                     variant="outline"
                     className="border-green-400/60 text-green-300 hover:bg-green-500/10"
-                    onClick={() => navigate("/game-development/view-portfolio")}
+                    onClick={() => navigate("/gameforge/view-portfolio")}
                   >
                     View Portfolio
                   </Button>
@@ -146,7 +146,7 @@ export default function GameForge() {
               <Button
                 size="lg"
                 className="bg-green-400 text-black shadow-[0_0_30px_rgba(34,197,94,0.35)] hover:bg-green-300"
-                onClick={() => navigate("/game-development/join-gameforge")}
+                onClick={() => navigate("/gameforge/join-gameforge")}
               >
                 Join GameForge
               </Button>
