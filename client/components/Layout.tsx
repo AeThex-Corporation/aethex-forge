@@ -39,13 +39,13 @@ interface LayoutProps {
 
 const ARMS = [
   { id: "labs", label: "Labs", color: "#FBBF24", href: "/labs" },
-  { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/game-development" },
-  { id: "corp", label: "Corp", color: "#3B82F6", href: "/consulting" },
+  { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/gameforge" },
+  { id: "corp", label: "Corp", color: "#3B82F6", href: "/corp" },
   {
     id: "foundation",
     label: "Foundation",
     color: "#EF4444",
-    href: "/community",
+    href: "/foundation",
   },
   { id: "devlink", label: "Dev-Link", color: "#06B6D4", href: "/dev-link" },
 ];
@@ -519,7 +519,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li>
                     <Link
-                      to="/game-development"
+                      to="/gameforge"
                       onClick={scrollToTop}
                       className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
                     >
@@ -528,7 +528,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                   </li>
                   <li>
                     <Link
-                      to="/consulting"
+                      to="/corp"
                       onClick={scrollToTop}
                       className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
                     >
