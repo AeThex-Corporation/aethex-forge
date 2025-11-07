@@ -195,32 +195,32 @@ const App = () => (
                   element={<LabsGetInvolved />}
                 />
 
-                <Route path="/game-development" element={<GameForge />} />
+                <Route path="/gameforge" element={<GameForge />} />
                 <Route
-                  path="/game-development/start-building"
+                  path="/gameforge/start-building"
                   element={<GameForgeStartBuilding />}
                 />
                 <Route
-                  path="/game-development/view-portfolio"
+                  path="/gameforge/view-portfolio"
                   element={<GameForgeViewPortfolio />}
                 />
                 <Route
-                  path="/game-development/join-gameforge"
+                  path="/gameforge/join-gameforge"
                   element={<GameForgeJoinGameForge />}
                 />
 
-                <Route path="/consulting" element={<Corp />} />
+                <Route path="/corp" element={<Corp />} />
                 <Route
-                  path="/consulting/schedule-consultation"
+                  path="/corp/schedule-consultation"
                   element={<CorpScheduleConsultation />}
                 />
                 <Route
-                  path="/consulting/view-case-studies"
+                  path="/corp/view-case-studies"
                   element={<CorpViewCaseStudies />}
                 />
-                <Route path="/consulting/contact-us" element={<CorpContactUs />} />
+                <Route path="/corp/contact-us" element={<CorpContactUs />} />
 
-                <Route path="/community" element={<Foundation />} />
+                <Route path="/foundation" element={<Foundation />} />
                 <Route
                   path="/community/contribute"
                   element={<FoundationContribute />}
