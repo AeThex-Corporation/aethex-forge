@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import SupabaseStatus from "./SupabaseStatus";
@@ -29,6 +30,7 @@ import {
   Sparkles,
   UserCircle,
   Menu,
+  X,
 } from "lucide-react";
 
 interface LayoutProps {
