@@ -94,6 +94,7 @@ import Wix from "./pages/Wix";
 import WixCaseStudies from "./pages/WixCaseStudies";
 import WixFaq from "./pages/WixFaq";
 import DocsSync from "./pages/DocsSync";
+import TabletArmMockups from "./pages/TabletArmMockups";
 import { DiscordProvider } from "./contexts/DiscordContext";
 import DiscordActivity from "./pages/DiscordActivity";
 import DiscordOAuthCallback from "./pages/DiscordOAuthCallback";
