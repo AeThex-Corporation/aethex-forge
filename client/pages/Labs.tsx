@@ -53,6 +53,7 @@ export default function Labs() {
                   <Button
                     size="lg"
                     className="bg-yellow-400 text-black shadow-[0_0_30px_rgba(251,191,36,0.35)] transition hover:bg-yellow-300"
+                    onClick={() => navigate("/labs/explore-research")}
                   >
                     <Beaker className="mr-2 h-5 w-5" />
                     Explore Research
@@ -61,6 +62,7 @@ export default function Labs() {
                     size="lg"
                     variant="outline"
                     className="border-yellow-400/60 text-yellow-300 hover:bg-yellow-500/10"
+                    onClick={() => navigate("/labs/join-team")}
                   >
                     Join Our Team
                   </Button>
