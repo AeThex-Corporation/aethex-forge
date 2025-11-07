@@ -146,6 +146,7 @@ export default function GameForge() {
               <Button
                 size="lg"
                 className="bg-green-400 text-black shadow-[0_0_30px_rgba(34,197,94,0.35)] hover:bg-green-300"
+                onClick={() => navigate("/gameforge/join-gameforge")}
               >
                 Join GameForge
               </Button>
