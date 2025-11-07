@@ -118,15 +118,79 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     <div className="min-h-screen bg-aethex-gradient">
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
         <div className="container mx-auto max-w-7xl flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-2 min-w-0">
-          {/* Logo */}
-          <div className="flex items-center shrink-0">
-            <Link to="/" className="hover-glow group inline-block">
+          {/* Logo - Desktop: Link, Mobile: Expandable Arms */}
+          <div className="flex items-center shrink-0 relative">
+            {/* Desktop Logo */}
+            <Link to="/" className="hover-glow group inline-block hidden sm:block">
               <img
                 src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
                 alt="AeThex Logo"
                 className="h-10 w-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
               />
             </Link>
+
+            {/* Mobile Logo - Expandable Arms */}
+            <button
+              onClick={() => setMobileArmsOpen(!mobileArmsOpen)}
+              className={`sm:hidden relative h-10 w-10 flex items-center justify-center rounded-lg transition-all duration-300 ${
+                mobileArmsOpen
+                  ? "bg-gradient-to-r from-yellow-500/20 via-green-500/20 to-blue-500/20 scale-110"
+                  : "hover:bg-gray-700/40"
+              }`}
+              title="Toggle Arms"
+            >
+              <div
+                className={`absolute inset-0 rounded-lg border-2 border-transparent transition-all duration-300 ${
+                  mobileArmsOpen ? "border-purple-400/50 animate-spin" : ""
+                }`}
+                style={{
+                  animation: mobileArmsOpen ? "spin 3s linear infinite" : "none",
+                }}
+              />
+              <img
+                src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
+                alt="AeThex Logo"
+                className={`relative h-8 w-8 transition-all duration-300 ${
+                  mobileArmsOpen ? "rotate-180 scale-90" : "rotate-0"
+                }`}
+              />
+            </button>
+
+            {/* Mobile Arms Dropdown */}
+            {mobileArmsOpen && (
+              <>
+                {/* Backdrop */}
+                <div
+                  className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm sm:hidden"
+                  onClick={() => setMobileArmsOpen(false)}
+                />
+
+                {/* Arms Menu */}
+                <div className="absolute top-full left-0 mt-2 z-50 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-3 w-64 shadow-2xl animate-in fade-in zoom-in-95 sm:hidden">
+                  <div className="grid grid-cols-1 gap-2">
+                    {ARMS.map((arm) => (
+                      <button
+                        key={arm.id}
+                        onClick={() => {
+                          navigate(arm.href);
+                          setMobileArmsOpen(false);
+                        }}
+                        className="flex items-center gap-2 p-2 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105"
+                      >
+                        <img
+                          src={ARM_LOGOS[arm.id]}
+                          alt={arm.label}
+                          className="h-6 w-6 object-contain"
+                        />
+                        <span className="text-sm font-semibold text-white">
+                          {arm.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Navigation */}
