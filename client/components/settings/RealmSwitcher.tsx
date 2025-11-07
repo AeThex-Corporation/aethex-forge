@@ -58,7 +58,7 @@ export const REALM_OPTIONS: RealmOption[] = [
       "Build immersive experiences, collaborate with other creators, and unlock our full suite of development tools.",
     icon: GamepadIcon,
     gradient: "from-neon-purple to-aethex-500",
-    route: "/game-development",
+    route: "/gameforge",
     routeLabel: "Game Development",
     highlights: [
       "Advanced tooling and workflows",
@@ -74,7 +74,7 @@ export const REALM_OPTIONS: RealmOption[] = [
       "Engage AeThex teams for bespoke solutions, product consulting, and strategic execution across every milestone.",
     icon: BriefcaseIcon,
     gradient: "from-neon-blue to-aethex-400",
-    route: "/consulting",
+    route: "/corp",
     routeLabel: "Consulting",
     highlights: [
       "Project leadership & delivery",
