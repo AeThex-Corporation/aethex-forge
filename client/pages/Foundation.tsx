@@ -138,6 +138,7 @@ export default function Foundation() {
               <Button
                 size="lg"
                 className="bg-red-400 text-black shadow-[0_0_30px_rgba(239,68,68,0.35)] hover:bg-red-300"
+                onClick={() => navigate("/foundation/get-involved")}
               >
                 Get Involved
               </Button>
