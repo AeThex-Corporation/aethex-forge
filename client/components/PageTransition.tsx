@@ -16,21 +16,21 @@ const getArmConfig = (
       armLogo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800",
     };
   }
-  if (pathname.includes("/game-development")) {
+  if (pathname.includes("/gameforge")) {
     return {
       message: "Booting GameForge Engine...",
       accentColor: "from-green-500 to-green-400",
       armLogo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
     };
   }
-  if (pathname.includes("/consulting")) {
+  if (pathname.includes("/corp")) {
     return {
       message: "Engaging Corp Systems...",
       accentColor: "from-blue-500 to-blue-400",
       armLogo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800",
     };
   }
-  if (pathname.includes("/community")) {
+  if (pathname.includes("/foundation")) {
     return {
       message: "Connecting Foundation Network...",
       accentColor: "from-red-500 to-red-400",
