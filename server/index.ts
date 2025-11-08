@@ -1567,15 +1567,15 @@ export function createServer() {
       }
     });
 
-    app.get("/api/applications", async (req, res) => {
+    app.get("/api/applications-old", async (req, res) => {
       const owner = String(req.query.owner || "");
       if (!owner) return res.status(400).json({ error: "owner required" });
       try {
         const { data, error } = await adminSupabase
-          .from("project_applications")
-          .select(`*, projects!inner(id, title, user_id)`)
-          .eq("projects.user_id", owner)
-          .order("created_at", { ascending: false })
+          .from("aethex_applications")
+          .select(`*`)
+          .eq("creator_id", owner)
+          .order("applied_at", { ascending: false })
           .limit(50);
         if (error) return res.status(500).json({ error: error.message });
         res.json(data || []);
