@@ -255,7 +255,11 @@ export async function updateApplicationStatus(
       .eq("user_id", userId)
       .single();
 
-    if (creator?.id !== application.aethex_opportunities.posted_by_id) {
+    const opportunityData = Array.isArray(application.aethex_opportunities)
+      ? application.aethex_opportunities[0]
+      : application.aethex_opportunities;
+
+    if (creator?.id !== opportunityData?.posted_by_id) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 403,
         headers: { "Content-Type": "application/json" },
