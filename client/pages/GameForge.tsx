@@ -96,8 +96,8 @@ export default function GameForge() {
                 <h1 className="text-5xl lg:text-7xl font-black text-green-300 leading-tight">
                   Shipping Games Monthly
                 </h1>
-                <p className="text-xl text-green-100/80 max-w-3xl">
-                  AeThex GameForge is our internal game production studio. We ship a new game every month using our proprietary development pipeline and tools.
+                <p className="text-xl text-green-100/70 max-w-3xl">
+                  AeThex GameForge is our internal production studio that demonstrates disciplined, efficient development. We ship a new game every month using proprietary development pipelines and tools from Labs, proving our technology's real-world impact while maintaining controlled burn rates.
                 </p>
               </div>
 
