@@ -16,10 +16,12 @@ try {
 interface RoleMapping {
   id: string;
   arm: string;
-  user_type?: string;
-  discord_role: string;
+  user_type: string;
+  discord_role_name: string;
+  discord_role_id?: string;
   server_id?: string;
   created_at: string;
+  updated_at: string;
 }
 
 export default async function handler(
