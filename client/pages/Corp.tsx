@@ -157,6 +157,29 @@ export default function Corp() {
                   Schedule Consultation
                 </Button>
               </div>
+
+              {/* Creator Network CTAs */}
+              <div className="mt-8 pt-8 border-t border-blue-400/20">
+                <p className="text-sm text-blue-200/70 mb-4">Explore our creator community:</p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-blue-400/30 text-blue-300 hover:bg-blue-500/10"
+                    onClick={() => navigate("/creators?arm=corp")}
+                  >
+                    Browse Corp Creators
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-blue-400/30 text-blue-300 hover:bg-blue-500/10"
+                    onClick={() => navigate("/opportunities?arm=corp")}
+                  >
+                    View Corp Opportunities
+                  </Button>
+                </div>
+              </div>
             </div>
           </section>
 
