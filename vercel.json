@@ -2,9 +2,7 @@
   "version": 2,
   "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist/spa",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
