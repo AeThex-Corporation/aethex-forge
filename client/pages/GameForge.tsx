@@ -101,7 +101,7 @@ export default function GameForge() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
                 <Button
                   className="bg-green-400 text-black hover:bg-green-300"
                   onClick={() => navigate("/gameforge/view-portfolio")}
@@ -115,6 +115,22 @@ export default function GameForge() {
                   onClick={() => navigate("/gameforge/join-gameforge")}
                 >
                   Meet the Team
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-green-400/40 text-green-300 hover:bg-green-500/10"
+                  onClick={() => navigate("/creators?arm=gameforge")}
+                >
+                  Browse GameForge Creators
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-green-400/40 text-green-300 hover:bg-green-500/10"
+                  onClick={() => navigate("/opportunities?arm=gameforge")}
+                >
+                  Find GameDev Jobs
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
             </div>
