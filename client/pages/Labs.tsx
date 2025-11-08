@@ -122,6 +122,29 @@ export default function Labs() {
                   Join Our Team
                 </Button>
               </div>
+
+              {/* Creator Network CTAs */}
+              <div className="mt-8 pt-8 border-t border-yellow-400/20">
+                <p className="text-sm text-yellow-200/70 mb-4">Explore our creator community:</p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
+                    onClick={() => navigate("/creators?arm=labs")}
+                  >
+                    Browse Labs Creators
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
+                    onClick={() => navigate("/opportunities?arm=labs")}
+                  >
+                    View Labs Opportunities
+                  </Button>
+                </div>
+              </div>
             </div>
           </section>
 
