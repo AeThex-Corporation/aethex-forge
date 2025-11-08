@@ -100,6 +100,8 @@ import DocsSync from "./pages/DocsSync";
 import { DiscordProvider } from "./contexts/DiscordContext";
 import DiscordActivity from "./pages/DiscordActivity";
 import DiscordOAuthCallback from "./pages/DiscordOAuthCallback";
+import RobloxCallback from "./pages/RobloxCallback";
+import Web3Callback from "./pages/Web3Callback";
 import { Analytics } from "@vercel/analytics/react";
 import CreatorDirectory from "./pages/creators/CreatorDirectory";
 import CreatorProfile from "./pages/creators/CreatorProfile";
@@ -183,6 +185,8 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignupRedirect />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/roblox-callback" element={<RobloxCallback />} />
+                <Route path="/web3-callback" element={<Web3Callback />} />
 
                 {/* Creator Network routes */}
                 <Route path="/creators" element={<CreatorDirectory />} />
