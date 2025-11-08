@@ -133,10 +133,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
       }
 
+      if (commandName === "help") {
+        return res.status(200).json({
+          type: 4,
+          data: {
+            content: `**🎯 AeThex Discord Bot Help**\n\n**Available Commands:**\n\n• \`/creators [arm]\` - Browse creators across AeThex arms\n  - Filter by: labs, gameforge, corp, foundation, nexus\n\n• \`/opportunities [arm]\` - Find job opportunities and collaborations\n  - Filter by: labs, gameforge, corp, foundation, nexus\n\n• \`/nexus\` - Explore the Talent Marketplace\n\n**Learn More:**\n• 🌐 [Visit AeThex](https://aethex.dev)\n• 👥 [Join Community](https://aethex.dev/community)\n• 📚 [Documentation](https://docs.aethex.tech)`,
+            flags: 0,
+          },
+        });
+      }
+
       return res.status(200).json({
         type: 4,
         data: {
-          content: `✨ AeThex - Advanced Development Platform\n\n**Available Commands:**\n• \`/creators [arm]\` - Browse creators across AeThex arms\n• \`/opportunities [arm]\` - Find job opportunities and collaborations\n• \`/nexus\` - Explore the Talent Marketplace`,
+          content: `✨ AeThex - Advanced Development Platform\n\n**Available Commands:**\n• \`/creators [arm]\` - Browse creators across AeThex arms\n• \`/opportunities [arm]\` - Find job opportunities and collaborations\n• \`/nexus\` - Explore the Talent Marketplace\n• \`/help\` - Show this help message`,
           flags: 0,
         },
       });
