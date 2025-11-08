@@ -751,7 +751,7 @@ export default function Admin() {
                 <TabsTrigger value="content">Content</TabsTrigger>
                 <TabsTrigger value="community">Community</TabsTrigger>
                 <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
-                <TabsTrigger value="foundation">Foundation Metrics</TabsTrigger>
+                <TabsTrigger value="arm-metrics">Arm Metrics</TabsTrigger>
                 <TabsTrigger value="operations">Operations</TabsTrigger>
               </TabsList>
 
