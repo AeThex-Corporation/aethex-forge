@@ -57,13 +57,15 @@ import {
 } from "lucide-react";
 
 export default function Admin() {
-  const { user, loading, roles } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const ownerEmail = "mrpiglr@gmail.com";
-  const normalizedEmail = user?.email?.toLowerCase() ?? "";
-  const isOwner =
-    (Array.isArray(roles) && roles.includes("owner")) ||
-    normalizedEmail === ownerEmail;
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login", { replace: true });
+    }
+  }, [user, loading, navigate]);
   const [managedProfiles, setManagedProfiles] = useState<AethexUserProfile[]>(
     [],
   );
