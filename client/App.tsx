@@ -115,8 +115,9 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <DiscordProvider>
-        <TooltipProvider>
+      <Web3Provider>
+        <DiscordProvider>
+          <TooltipProvider>
           <Toaster />
           <Analytics />
           <BrowserRouter>
@@ -342,7 +343,8 @@ const App = () => (
             </PageTransition>
           </BrowserRouter>
         </TooltipProvider>
-      </DiscordProvider>
+        </DiscordProvider>
+      </Web3Provider>
     </AuthProvider>
   </QueryClientProvider>
 );
