@@ -187,8 +187,10 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   } catch (error: any) {
     console.error("API error:", error);
+    // Ensure we always return JSON, never HTML
     return res.status(500).json({
       error: error?.message || "Internal server error",
+      type: "api_error",
     });
   }
 }
