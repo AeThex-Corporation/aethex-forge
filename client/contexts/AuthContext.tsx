@@ -786,6 +786,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const shouldRemove = (key: string) =>
           key.startsWith("sb-") ||
           key.includes("supabase") ||
+          key.includes("auth-token") ||
           key.startsWith("mock_") ||
           key.startsWith("demo_");
 
@@ -794,6 +795,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           .forEach((key) => {
             window.localStorage.removeItem(key);
           });
+
+        // Clear IndexedDB
+        if (window.indexedDB) {
+          const dbs = ["supabase", "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop()];
+          dbs.forEach((dbName) => {
+            try {
+              const req = window.indexedDB.deleteDatabase(dbName);
+              req.onsuccess = () => console.log(`Cleared IndexedDB: ${dbName}`);
+            } catch {}
+          });
+        }
       } catch {}
     }
   }, []);
