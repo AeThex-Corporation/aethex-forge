@@ -41,23 +41,25 @@ const SKILL_SUGGESTIONS = [
 
 export default function CreatorProfile({
   data,
-  onChange,
-  onNext,
-  onPrev,
-  isTransitioning,
+  updateData,
+  nextStep,
+  prevStep,
+  currentStep,
+  totalSteps,
 }: CreatorProfileProps) {
   const [inputValue, setInputValue] = useState("");
+  const creatorData = data.creatorProfile || { bio: "", skills: [], primaryArm: "" };
 
   const canProceed = useMemo(() => {
-    return data.primaryArm && data.skills.length > 0;
-  }, [data.primaryArm, data.skills.length]);
+    return creatorData.primaryArm && creatorData.skills.length > 0;
+  }, [creatorData.primaryArm, creatorData.skills.length]);
 
   const handleAddSkill = (skill: string) => {
-    if (!data.skills.includes(skill)) {
-      onChange({
+    if (!creatorData.skills.includes(skill)) {
+      updateData({
         creatorProfile: {
-          ...data,
-          skills: [...data.skills, skill],
+          ...creatorData,
+          skills: [...creatorData.skills, skill],
         },
       });
     }
@@ -65,27 +67,27 @@ export default function CreatorProfile({
   };
 
   const handleRemoveSkill = (skill: string) => {
-    onChange({
+    updateData({
       creatorProfile: {
-        ...data,
-        skills: data.skills.filter((s) => s !== skill),
+        ...creatorData,
+        skills: creatorData.skills.filter((s) => s !== skill),
       },
     });
   };
 
   const handleSelectArm = (armId: string) => {
-    onChange({
+    updateData({
       creatorProfile: {
-        ...data,
+        ...creatorData,
         primaryArm: armId,
       },
     });
   };
 
   const handleBioChange = (bio: string) => {
-    onChange({
+    updateData({
       creatorProfile: {
-        ...data,
+        ...creatorData,
         bio,
       },
     });
