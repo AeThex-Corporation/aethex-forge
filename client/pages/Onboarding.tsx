@@ -509,6 +509,16 @@ export default function Onboarding() {
                     isFinishing={isFinishing}
                     achievement={achievementPreview ?? undefined}
                   />
+                ) : steps[currentStep].title === "Choose Your Realm" ? (
+                  <RealmSelection
+                    selectedRealm={data.creatorProfile.primaryArm || ""}
+                    onSelect={(realm) =>
+                      updateData({
+                        creatorProfile: { ...data.creatorProfile, primaryArm: realm },
+                      })
+                    }
+                    onNext={nextStep}
+                  />
                 ) : (
                   <CurrentStepComponent
                     data={data}
