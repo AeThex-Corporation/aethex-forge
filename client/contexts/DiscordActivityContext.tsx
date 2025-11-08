@@ -52,8 +52,13 @@ export const DiscordActivityProvider: React.FC<DiscordActivityProviderProps> = (
 
   useEffect(() => {
     const initializeActivity = async () => {
-      // Check if we're running inside a Discord iframe
-      if (window.location !== window.parent.location) {
+      // Check if we're running inside a Discord Activity
+      // Discord passes frame_id as a query parameter when launching an Activity
+      const searchParams = new URLSearchParams(window.location.search);
+      const frameId = searchParams.get("frame_id");
+      const isInDiscordActivity = frameId !== null;
+
+      if (isInDiscordActivity) {
         try {
           setIsActivity(true);
           setIsLoading(true);
