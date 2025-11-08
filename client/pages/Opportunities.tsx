@@ -31,7 +31,7 @@ import {
   Briefcase,
   CheckCircle2,
   Clock,
-  Lightbulb,
+  Sparkles,
   Loader2,
   Rocket,
   ShieldCheck,
