@@ -922,6 +922,19 @@ export function createServer() {
           });
         }
 
+        // Validate token format
+        if (!botToken.includes(".") || botToken.length < 50) {
+          console.warn(
+            "[Discord] Bot token appears invalid - length:",
+            botToken.length,
+          );
+          return res.status(500).json({
+            error:
+              "Discord bot token appears invalid (check DISCORD_BOT_TOKEN in environment)",
+            tokenLength: botToken.length,
+          });
+        }
+
         // Register slash commands
         const commands = [
           {
