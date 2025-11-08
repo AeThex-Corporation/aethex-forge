@@ -58,7 +58,12 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     // Verify the signature using Ed25519
-    const isValid = verify("Ed25519", Buffer.from(message), publicKey, signatureBuffer);
+    const isValid = verify(
+      "Ed25519",
+      Buffer.from(message),
+      publicKey,
+      signatureBuffer,
+    );
 
     if (!isValid) {
       console.error("[Discord] Signature verification failed");
