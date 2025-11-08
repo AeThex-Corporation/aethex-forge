@@ -31,7 +31,7 @@ module.exports = {
     .setName("set-realm")
     .setDescription("Set your primary AeThex realm/arm"),
 
-  async execute(interaction, supabase) {
+  async execute(interaction, supabase, client) {
     await interaction.deferReply({ ephemeral: true });
 
     try {
