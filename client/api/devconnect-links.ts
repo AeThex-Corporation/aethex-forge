@@ -7,7 +7,7 @@ export interface DevConnectLink {
   linked_at: string;
 }
 
-const API_BASE = process.env.VITE_API_BASE || "";
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 export async function linkDevConnectAccount(data: {
   devconnect_username: string;
