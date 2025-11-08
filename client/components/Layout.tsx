@@ -80,6 +80,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     { name: "Mentee Hub", href: "/mentee-hub" },
     { name: "Directory", href: "/directory" },
     { name: "Developers", href: "/developers" },
+    { name: "Creators", href: "/creators" },
     { name: "Opportunities", href: "/opportunities" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
