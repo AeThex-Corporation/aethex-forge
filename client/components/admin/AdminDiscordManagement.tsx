@@ -190,7 +190,14 @@ export function AdminDiscordManagement() {
             disabled={isRegisteringCommands}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
           >
-            {isRegisteringCommands ? "Registering..." : "Register Commands"}
+            {isRegisteringCommands ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Registering...
+              </>
+            ) : (
+              "Register Commands"
+            )}
           </Button>
           <p className="text-xs text-gray-500">
             You'll be prompted to enter your admin registration token. This is a
