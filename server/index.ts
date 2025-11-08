@@ -2329,6 +2329,780 @@ export function createServer() {
         return res.status(500).json({ error: e?.message || String(e) });
       }
     });
+
+    // Creator Network API Routes
+
+    // Get all creators with filters
+    app.get("/api/creators", async (req, res) => {
+      try {
+        const arm = String(req.query.arm || "").trim();
+        const page = Math.max(1, Number(req.query.page) || 1);
+        const limit = Math.max(1, Math.min(100, Number(req.query.limit) || 20));
+        const search = String(req.query.search || "").trim();
+
+        let query = adminSupabase
+          .from("aethex_creators")
+          .select(
+            `
+            id,
+            username,
+            bio,
+            skills,
+            avatar_url,
+            experience_level,
+            arm_affiliations,
+            primary_arm,
+            created_at
+            `,
+            { count: "exact" }
+          )
+          .eq("is_discoverable", true)
+          .order("created_at", { ascending: false });
+
+        if (arm) {
+          query = query.contains("arm_affiliations", [arm]);
+        }
+
+        if (search) {
+          query = query.or(`username.ilike.%${search}%,bio.ilike.%${search}%`);
+        }
+
+        const start = (page - 1) * limit;
+        query = query.range(start, start + limit - 1);
+
+        const { data, error, count } = await query;
+
+        if (error) throw error;
+
+        return res.json({
+          data,
+          pagination: {
+            page,
+            limit,
+            total: count || 0,
+            pages: Math.ceil((count || 0) / limit),
+          },
+        });
+      } catch (e: any) {
+        console.error("[Creator API] Error fetching creators:", e?.message);
+        return res.status(500).json({ error: "Failed to fetch creators" });
+      }
+    });
+
+    // Get creator by username
+    app.get("/api/creators/:username", async (req, res) => {
+      try {
+        const username = String(req.params.username || "").trim();
+        if (!username) {
+          return res.status(400).json({ error: "username required" });
+        }
+
+        const { data: creator, error } = await adminSupabase
+          .from("aethex_creators")
+          .select(
+            `
+            id,
+            username,
+            bio,
+            skills,
+            avatar_url,
+            experience_level,
+            arm_affiliations,
+            primary_arm,
+            created_at,
+            updated_at
+            `
+          )
+          .eq("username", username)
+          .eq("is_discoverable", true)
+          .single();
+
+        if (error) {
+          if (error.code === "PGRST116") {
+            return res.status(404).json({ error: "Creator not found" });
+          }
+          throw error;
+        }
+
+        const { data: devConnectLink } = await adminSupabase
+          .from("aethex_devconnect_links")
+          .select("devconnect_username, devconnect_profile_url")
+          .eq("aethex_creator_id", creator.id)
+          .maybeSingle();
+
+        return res.json({
+          ...creator,
+          devconnect_link: devConnectLink,
+        });
+      } catch (e: any) {
+        console.error("[Creator API] Error fetching creator:", e?.message);
+        return res.status(500).json({ error: "Failed to fetch creator" });
+      }
+    });
+
+    // Create creator profile
+    app.post("/api/creators", async (req, res) => {
+      try {
+        const { user_id, username, bio, skills, avatar_url, experience_level, primary_arm, arm_affiliations } = req.body;
+
+        if (!user_id || !username) {
+          return res.status(400).json({ error: "user_id and username required" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("aethex_creators")
+          .insert({
+            user_id,
+            username,
+            bio: bio || null,
+            skills: Array.isArray(skills) ? skills : [],
+            avatar_url: avatar_url || null,
+            experience_level: experience_level || null,
+            primary_arm: primary_arm || null,
+            arm_affiliations: Array.isArray(arm_affiliations) ? arm_affiliations : [],
+          })
+          .select()
+          .single();
+
+        if (error) {
+          if (error.code === "23505") {
+            return res.status(400).json({ error: "Username already taken" });
+          }
+          throw error;
+        }
+
+        return res.status(201).json(data);
+      } catch (e: any) {
+        console.error("[Creator API] Error creating creator:", e?.message);
+        return res.status(500).json({ error: "Failed to create creator profile" });
+      }
+    });
+
+    // Update creator profile
+    app.put("/api/creators/:id", async (req, res) => {
+      try {
+        const creatorId = String(req.params.id || "").trim();
+        if (!creatorId) {
+          return res.status(400).json({ error: "creator id required" });
+        }
+
+        const { bio, skills, avatar_url, experience_level, primary_arm, arm_affiliations, is_discoverable, allow_recommendations } = req.body;
+
+        const { data, error } = await adminSupabase
+          .from("aethex_creators")
+          .update({
+            bio,
+            skills: Array.isArray(skills) ? skills : undefined,
+            avatar_url,
+            experience_level,
+            primary_arm,
+            arm_affiliations: Array.isArray(arm_affiliations) ? arm_affiliations : undefined,
+            is_discoverable,
+            allow_recommendations,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", creatorId)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        return res.json(data);
+      } catch (e: any) {
+        console.error("[Creator API] Error updating creator:", e?.message);
+        return res.status(500).json({ error: "Failed to update creator profile" });
+      }
+    });
+
+    // Get all opportunities with filters
+    app.get("/api/opportunities", async (req, res) => {
+      try {
+        const arm = String(req.query.arm || "").trim();
+        const page = Math.max(1, Number(req.query.page) || 1);
+        const limit = Math.max(1, Math.min(100, Number(req.query.limit) || 20));
+        const sort = String(req.query.sort || "recent");
+        const search = String(req.query.search || "").trim();
+        const jobType = String(req.query.jobType || "").trim();
+        const experienceLevel = String(req.query.experienceLevel || "").trim();
+
+        let query = adminSupabase
+          .from("aethex_opportunities")
+          .select(
+            `
+            id,
+            title,
+            description,
+            job_type,
+            salary_min,
+            salary_max,
+            experience_level,
+            arm_affiliation,
+            posted_by_id,
+            aethex_creators!aethex_opportunities_posted_by_id_fkey(username, avatar_url),
+            status,
+            created_at
+            `,
+            { count: "exact" }
+          )
+          .eq("status", "open");
+
+        if (arm) {
+          query = query.eq("arm_affiliation", arm);
+        }
+
+        if (search) {
+          query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+        }
+
+        if (jobType) {
+          query = query.eq("job_type", jobType);
+        }
+
+        if (experienceLevel) {
+          query = query.eq("experience_level", experienceLevel);
+        }
+
+        const ascending = sort === "oldest";
+        query = query.order("created_at", { ascending });
+
+        const start = (page - 1) * limit;
+        query = query.range(start, start + limit - 1);
+
+        const { data, error, count } = await query;
+
+        if (error) throw error;
+
+        return res.json({
+          data,
+          pagination: {
+            page,
+            limit,
+            total: count || 0,
+            pages: Math.ceil((count || 0) / limit),
+          },
+        });
+      } catch (e: any) {
+        console.error("[Opportunities API] Error fetching opportunities:", e?.message);
+        return res.status(500).json({ error: "Failed to fetch opportunities" });
+      }
+    });
+
+    // Get opportunity by ID
+    app.get("/api/opportunities/:id", async (req, res) => {
+      try {
+        const opportunityId = String(req.params.id || "").trim();
+        if (!opportunityId) {
+          return res.status(400).json({ error: "opportunity id required" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("aethex_opportunities")
+          .select(
+            `
+            id,
+            title,
+            description,
+            job_type,
+            salary_min,
+            salary_max,
+            experience_level,
+            arm_affiliation,
+            posted_by_id,
+            aethex_creators!aethex_opportunities_posted_by_id_fkey(id, username, bio, avatar_url),
+            status,
+            created_at,
+            updated_at
+            `
+          )
+          .eq("id", opportunityId)
+          .eq("status", "open")
+          .single();
+
+        if (error) {
+          if (error.code === "PGRST116") {
+            return res.status(404).json({ error: "Opportunity not found" });
+          }
+          throw error;
+        }
+
+        return res.json(data);
+      } catch (e: any) {
+        console.error("[Opportunities API] Error fetching opportunity:", e?.message);
+        return res.status(500).json({ error: "Failed to fetch opportunity" });
+      }
+    });
+
+    // Create opportunity
+    app.post("/api/opportunities", async (req, res) => {
+      try {
+        const { user_id, title, description, job_type, salary_min, salary_max, experience_level, arm_affiliation } = req.body;
+
+        if (!user_id || !title) {
+          return res.status(400).json({ error: "user_id and title required" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", user_id)
+          .single();
+
+        if (!creator) {
+          return res.status(404).json({ error: "Creator profile not found. Create profile first." });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("aethex_opportunities")
+          .insert({
+            title,
+            description: description || null,
+            job_type: job_type || null,
+            salary_min: salary_min || null,
+            salary_max: salary_max || null,
+            experience_level: experience_level || null,
+            arm_affiliation: arm_affiliation || null,
+            posted_by_id: creator.id,
+            status: "open",
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        return res.status(201).json(data);
+      } catch (e: any) {
+        console.error("[Opportunities API] Error creating opportunity:", e?.message);
+        return res.status(500).json({ error: "Failed to create opportunity" });
+      }
+    });
+
+    // Update opportunity
+    app.put("/api/opportunities/:id", async (req, res) => {
+      try {
+        const opportunityId = String(req.params.id || "").trim();
+        const { user_id, title, description, job_type, salary_min, salary_max, experience_level, status } = req.body;
+
+        if (!opportunityId || !user_id) {
+          return res.status(400).json({ error: "opportunity id and user_id required" });
+        }
+
+        const { data: opportunity } = await adminSupabase
+          .from("aethex_opportunities")
+          .select("posted_by_id")
+          .eq("id", opportunityId)
+          .single();
+
+        if (!opportunity) {
+          return res.status(404).json({ error: "Opportunity not found" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", user_id)
+          .single();
+
+        if (creator?.id !== opportunity.posted_by_id) {
+          return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("aethex_opportunities")
+          .update({
+            title,
+            description,
+            job_type,
+            salary_min,
+            salary_max,
+            experience_level,
+            status,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", opportunityId)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        return res.json(data);
+      } catch (e: any) {
+        console.error("[Opportunities API] Error updating opportunity:", e?.message);
+        return res.status(500).json({ error: "Failed to update opportunity" });
+      }
+    });
+
+    // Get my applications
+    app.get("/api/applications", async (req, res) => {
+      try {
+        const userId = String(req.query.user_id || "").trim();
+        const page = Math.max(1, Number(req.query.page) || 1);
+        const limit = Math.max(1, Math.min(100, Number(req.query.limit) || 10));
+        const status = String(req.query.status || "").trim();
+
+        if (!userId) {
+          return res.status(400).json({ error: "user_id required" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", userId)
+          .single();
+
+        if (!creator) {
+          return res.status(404).json({ error: "Creator profile not found" });
+        }
+
+        let query = adminSupabase
+          .from("aethex_applications")
+          .select(
+            `
+            id,
+            creator_id,
+            opportunity_id,
+            status,
+            cover_letter,
+            response_message,
+            applied_at,
+            updated_at,
+            aethex_opportunities(id, title, arm_affiliation, job_type, posted_by_id, aethex_creators!aethex_opportunities_posted_by_id_fkey(username, avatar_url))
+            `,
+            { count: "exact" }
+          )
+          .eq("creator_id", creator.id);
+
+        if (status) {
+          query = query.eq("status", status);
+        }
+
+        query = query.order("applied_at", { ascending: false });
+
+        const start = (page - 1) * limit;
+        query = query.range(start, start + limit - 1);
+
+        const { data, error, count } = await query;
+
+        if (error) throw error;
+
+        return res.json({
+          data,
+          pagination: {
+            page,
+            limit,
+            total: count || 0,
+            pages: Math.ceil((count || 0) / limit),
+          },
+        });
+      } catch (e: any) {
+        console.error("[Applications API] Error fetching applications:", e?.message);
+        return res.status(500).json({ error: "Failed to fetch applications" });
+      }
+    });
+
+    // Submit application
+    app.post("/api/applications", async (req, res) => {
+      try {
+        const { user_id, opportunity_id, cover_letter } = req.body;
+
+        if (!user_id || !opportunity_id) {
+          return res.status(400).json({ error: "user_id and opportunity_id required" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", user_id)
+          .single();
+
+        if (!creator) {
+          return res.status(404).json({ error: "Creator profile not found" });
+        }
+
+        const { data: opportunity } = await adminSupabase
+          .from("aethex_opportunities")
+          .select("id")
+          .eq("id", opportunity_id)
+          .eq("status", "open")
+          .single();
+
+        if (!opportunity) {
+          return res.status(404).json({ error: "Opportunity not found or closed" });
+        }
+
+        const { data: existing } = await adminSupabase
+          .from("aethex_applications")
+          .select("id")
+          .eq("creator_id", creator.id)
+          .eq("opportunity_id", opportunity_id)
+          .maybeSingle();
+
+        if (existing) {
+          return res.status(400).json({ error: "You have already applied to this opportunity" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("aethex_applications")
+          .insert({
+            creator_id: creator.id,
+            opportunity_id,
+            cover_letter: cover_letter || null,
+            status: "submitted",
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        return res.status(201).json(data);
+      } catch (e: any) {
+        console.error("[Applications API] Error submitting application:", e?.message);
+        return res.status(500).json({ error: "Failed to submit application" });
+      }
+    });
+
+    // Update application status
+    app.put("/api/applications/:id", async (req, res) => {
+      try {
+        const applicationId = String(req.params.id || "").trim();
+        const { user_id, status, response_message } = req.body;
+
+        if (!applicationId || !user_id) {
+          return res.status(400).json({ error: "application id and user_id required" });
+        }
+
+        const { data: application } = await adminSupabase
+          .from("aethex_applications")
+          .select(
+            `
+            id,
+            opportunity_id,
+            aethex_opportunities(posted_by_id)
+            `
+          )
+          .eq("id", applicationId)
+          .single();
+
+        if (!application) {
+          return res.status(404).json({ error: "Application not found" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", user_id)
+          .single();
+
+        if (creator?.id !== application.aethex_opportunities.posted_by_id) {
+          return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("aethex_applications")
+          .update({
+            status,
+            response_message: response_message || null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", applicationId)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        return res.json(data);
+      } catch (e: any) {
+        console.error("[Applications API] Error updating application:", e?.message);
+        return res.status(500).json({ error: "Failed to update application" });
+      }
+    });
+
+    // Withdraw application
+    app.delete("/api/applications/:id", async (req, res) => {
+      try {
+        const applicationId = String(req.params.id || "").trim();
+        const { user_id } = req.body;
+
+        if (!applicationId || !user_id) {
+          return res.status(400).json({ error: "application id and user_id required" });
+        }
+
+        const { data: application } = await adminSupabase
+          .from("aethex_applications")
+          .select("creator_id")
+          .eq("id", applicationId)
+          .single();
+
+        if (!application) {
+          return res.status(404).json({ error: "Application not found" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", user_id)
+          .single();
+
+        if (creator?.id !== application.creator_id) {
+          return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        const { error } = await adminSupabase
+          .from("aethex_applications")
+          .delete()
+          .eq("id", applicationId);
+
+        if (error) throw error;
+
+        return res.json({ ok: true });
+      } catch (e: any) {
+        console.error("[Applications API] Error withdrawing application:", e?.message);
+        return res.status(500).json({ error: "Failed to withdraw application" });
+      }
+    });
+
+    // Link DevConnect account
+    app.post("/api/devconnect/link", async (req, res) => {
+      try {
+        const { user_id, devconnect_username, devconnect_profile_url } = req.body;
+
+        if (!user_id || !devconnect_username) {
+          return res.status(400).json({ error: "user_id and devconnect_username required" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", user_id)
+          .single();
+
+        if (!creator) {
+          return res.status(404).json({ error: "Creator profile not found. Create profile first." });
+        }
+
+        const { data: existing } = await adminSupabase
+          .from("aethex_devconnect_links")
+          .select("id")
+          .eq("aethex_creator_id", creator.id)
+          .maybeSingle();
+
+        let result;
+        let status = 201;
+
+        if (existing) {
+          const { data, error } = await adminSupabase
+            .from("aethex_devconnect_links")
+            .update({
+              devconnect_username,
+              devconnect_profile_url: devconnect_profile_url || `https://dev-link.me/${devconnect_username}`,
+            })
+            .eq("aethex_creator_id", creator.id)
+            .select()
+            .single();
+
+          if (error) throw error;
+          result = data;
+          status = 200;
+        } else {
+          const { data, error } = await adminSupabase
+            .from("aethex_devconnect_links")
+            .insert({
+              aethex_creator_id: creator.id,
+              devconnect_username,
+              devconnect_profile_url: devconnect_profile_url || `https://dev-link.me/${devconnect_username}`,
+            })
+            .select()
+            .single();
+
+          if (error) throw error;
+          result = data;
+        }
+
+        await adminSupabase
+          .from("aethex_creators")
+          .update({ devconnect_linked: true })
+          .eq("id", creator.id);
+
+        return res.status(status).json(result);
+      } catch (e: any) {
+        console.error("[DevConnect API] Error linking account:", e?.message);
+        return res.status(500).json({ error: "Failed to link DevConnect account" });
+      }
+    });
+
+    // Get DevConnect link
+    app.get("/api/devconnect/link", async (req, res) => {
+      try {
+        const userId = String(req.query.user_id || "").trim();
+
+        if (!userId) {
+          return res.status(400).json({ error: "user_id required" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", userId)
+          .single();
+
+        if (!creator) {
+          return res.status(404).json({ error: "Creator profile not found" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("aethex_devconnect_links")
+          .select("*")
+          .eq("aethex_creator_id", creator.id)
+          .maybeSingle();
+
+        if (error && error.code !== "PGRST116") {
+          throw error;
+        }
+
+        return res.json({ data: data || null });
+      } catch (e: any) {
+        console.error("[DevConnect API] Error fetching link:", e?.message);
+        return res.status(500).json({ error: "Failed to fetch DevConnect link" });
+      }
+    });
+
+    // Unlink DevConnect account
+    app.delete("/api/devconnect/link", async (req, res) => {
+      try {
+        const { user_id } = req.body;
+
+        if (!user_id) {
+          return res.status(400).json({ error: "user_id required" });
+        }
+
+        const { data: creator } = await adminSupabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("user_id", user_id)
+          .single();
+
+        if (!creator) {
+          return res.status(404).json({ error: "Creator profile not found" });
+        }
+
+        const { error } = await adminSupabase
+          .from("aethex_devconnect_links")
+          .delete()
+          .eq("aethex_creator_id", creator.id);
+
+        if (error) throw error;
+
+        await adminSupabase
+          .from("aethex_creators")
+          .update({ devconnect_linked: false })
+          .eq("id", creator.id);
+
+        return res.json({ ok: true });
+      } catch (e: any) {
+        console.error("[DevConnect API] Error unlinking account:", e?.message);
+        return res.status(500).json({ error: "Failed to unlink DevConnect account" });
+      }
+    });
+
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
