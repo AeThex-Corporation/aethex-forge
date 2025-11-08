@@ -253,7 +253,7 @@ const curriculumHighlights = [
     title: "Built with real data",
     description:
       "Lessons reference live dashboards, Passport identities, and Supabase schemas.",
-    icon: Lightbulb,
+    icon: Sparkles,
   },
 ];
 
