@@ -68,7 +68,11 @@ export default function Nexus() {
                   variant="outline"
                   className="border-purple-400/40 bg-purple-500/10 text-purple-300 shadow-[0_0_20px_rgba(168,85,247,0.2)]"
                 >
-                  <Sparkles className="h-4 w-4 mr-2" />
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F6df123b87a144b1fb99894d94198d97b?format=webp&width=800"
+                    alt="Nexus"
+                    className="h-5 w-5 mr-2"
+                  />
                   AeThex Nexus
                 </Badge>
 
