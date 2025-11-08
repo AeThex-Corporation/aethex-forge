@@ -24,7 +24,7 @@ import {
   Clock,
   User,
   Heart,
-  Lightbulb,
+  Sparkles,
   Code,
   Rocket,
   Globe,
@@ -184,7 +184,7 @@ export default function MentorshipPrograms() {
     {
       name: "Data Science & AI",
       description: "Harness the power of data and artificial intelligence",
-      icon: Lightbulb,
+      icon: Sparkles,
       skills: [
         "Python",
         "Machine Learning",
