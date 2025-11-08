@@ -50,14 +50,60 @@ export default function DiscordActivity() {
   }, []);
 
   if (error) {
+    const isCloudflareError = error.includes('Direct IP access') || error.includes('Error 1003');
+    const isSDKError = error.includes('Discord SDK');
+
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold text-foreground">Discord Activity Error</h1>
-          <p className="text-muted-foreground">{error}</p>
-          <p className="text-sm text-muted-foreground">
-            Make sure you're running this as a Discord Activity within a Discord server.
-          </p>
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <div className="max-w-md w-full text-center space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-bold text-red-400">Connection Error</h1>
+            <p className="text-sm text-muted-foreground">
+              Unable to initialize Discord Activity
+            </p>
+          </div>
+
+          <div className="bg-red-950/40 border border-red-400/30 rounded-lg p-4 space-y-3">
+            <p className="text-sm font-mono text-red-300">{error}</p>
+
+            {isCloudflareError && (
+              <div className="space-y-2 pt-2 border-t border-red-400/30">
+                <p className="text-xs text-red-200 font-semibold">🌐 Cloudflare Blocking Access</p>
+                <p className="text-xs text-red-200/80">
+                  This error occurs when accessing AeThex via an IP address. Please access through the proper domain:
+                </p>
+                <code className="block text-xs bg-black/50 p-2 rounded text-yellow-300 break-all">
+                  https://aethex.dev/discord
+                </code>
+              </div>
+            )}
+
+            {isSDKError && (
+              <div className="space-y-2 pt-2 border-t border-red-400/30">
+                <p className="text-xs text-red-200 font-semibold">🎮 Discord SDK Issue</p>
+                <p className="text-xs text-red-200/80">
+                  Make sure you're opening this as a Discord Activity within a Discord server, not as a standalone website.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-xs text-muted-foreground">Troubleshooting steps:</p>
+            <ul className="text-xs text-muted-foreground space-y-1 text-left list-disc list-inside">
+              <li>Access via domain: <span className="text-aethex-300">aethex.dev/discord</span></li>
+              <li>Open in Discord Activity, not as regular website</li>
+              <li>Ensure Discord server has AeThex Activity installed</li>
+              <li>Try refreshing the Discord window</li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full px-4 py-2 bg-aethex-500 text-white rounded-lg text-sm font-medium hover:bg-aethex-600 transition"
+          >
+            Try Again
+          </button>
         </div>
       </div>
     );
