@@ -9,7 +9,7 @@ import {
   Star,
   ArrowRight,
   CheckCircle,
-  Lightbulb,
+  Sparkles,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +29,7 @@ export default function FoundationContribute() {
       ],
     },
     {
-      icon: Lightbulb,
+      icon: Sparkles,
       title: "Ideas & Feedback",
       description: "Share your ideas for new features and improvements",
       ways: [
