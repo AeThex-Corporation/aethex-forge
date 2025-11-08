@@ -54,6 +54,7 @@ import {
   Zap,
   Heart,
   Lightbulb,
+  Briefcase,
 } from "lucide-react";
 
 export default function Admin() {
