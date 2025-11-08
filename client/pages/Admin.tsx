@@ -53,6 +53,7 @@ import {
   Wifi,
   Zap,
   Heart,
+  Lightbulb,
 } from "lucide-react";
 
 export default function Admin() {
