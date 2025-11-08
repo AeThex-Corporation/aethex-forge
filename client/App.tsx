@@ -100,6 +100,11 @@ import { DiscordProvider } from "./contexts/DiscordContext";
 import DiscordActivity from "./pages/DiscordActivity";
 import DiscordOAuthCallback from "./pages/DiscordOAuthCallback";
 import { Analytics } from "@vercel/analytics/react";
+import CreatorDirectory from "./pages/creators/CreatorDirectory";
+import CreatorProfile from "./pages/creators/CreatorProfile";
+import OpportunitiesHub from "./pages/opportunities/OpportunitiesHub";
+import OpportunityDetail from "./pages/opportunities/OpportunityDetail";
+import MyApplications from "./pages/profile/MyApplications";
 
 const queryClient = new QueryClient();
 
