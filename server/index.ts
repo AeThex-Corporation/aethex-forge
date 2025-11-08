@@ -968,6 +968,8 @@ export function createServer() {
 
         const registerUrl = `https://discord.com/api/v10/applications/${clientId}/commands`;
         console.log("[Discord] Calling Discord API:", registerUrl);
+        console.log("[Discord] Bot token length:", botToken.length);
+        console.log("[Discord] Sending", commands.length, "commands");
 
         const response = await fetch(registerUrl, {
           method: "PUT",
@@ -982,13 +984,20 @@ export function createServer() {
 
         if (!response.ok) {
           const errorData = await response.text();
+          let errorJson = {};
+          try {
+            errorJson = JSON.parse(errorData);
+          } catch {}
+
           console.error(
             "[Discord] Command registration failed:",
             response.status,
             errorData,
           );
-          return res.status(response.status).json({
+
+          return res.status(500).json({
             error: `Discord API error (${response.status}): ${errorData}`,
+            discordError: errorJson,
           });
         }
 
