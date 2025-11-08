@@ -819,37 +819,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [clearClientAuthState]);
 
   const signOut = async () => {
-    // Clear local session immediately
-    try {
-      await supabase.auth.signOut({
-        scope: "local",
-      });
-    } catch (error) {
-      console.warn("Local sign-out error:", error);
-    }
+    console.log("=== SIGN OUT CALLED ===");
 
-    // Clear state immediately - this ensures buttons appear right away
-    clearClientAuthState();
+    // Step 1: Clear auth state in React
+    console.log("Clearing React state...");
+    setUser(null);
+    setProfile(null);
+    setRoles([]);
+    setSession(null);
     setLoading(false);
 
-    // Fire and forget global sign-out - don't wait for it, don't block UI
+    // Step 2: Clear localStorage
+    console.log("Clearing localStorage...");
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem("onboarding_complete");
+        window.localStorage.removeItem("aethex_onboarding_progress_v1");
+        Object.keys(window.localStorage)
+          .filter(key => key.startsWith("sb-") || key.includes("supabase") || key.startsWith("mock_") || key.startsWith("demo_"))
+          .forEach(key => window.localStorage.removeItem(key));
+        console.log("localStorage cleared");
+      } catch (e) {
+        console.warn("localStorage clear failed:", e);
+      }
+    }
+
+    // Step 3: Call Supabase signOut (non-blocking)
+    console.log("Calling Supabase signOut...");
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+      console.log("Local signOut complete");
+    } catch (error) {
+      console.warn("Local signOut error:", error);
+    }
+
+    // Step 4: Global sign-out in background
     supabase.auth
       .signOut({ scope: "global" })
+      .then(() => {
+        console.log("Global signOut complete");
+      })
       .catch((error) => {
-        console.warn("Global sign-out error:", error);
+        console.warn("Global signOut error:", error);
       });
 
-    // Show toast after UI is updated
-    setTimeout(() => {
-      try {
-        aethexToast.info({
-          title: "Signed out",
-          description: "Come back soon!",
-        });
-      } catch (e) {
-        /* ignore */
-      }
-    }, 100);
+    console.log("=== SIGN OUT COMPLETE ===");
   };
 
   const updateProfile = async (updates: Partial<AethexUserProfile>) => {
