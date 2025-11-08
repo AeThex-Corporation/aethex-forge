@@ -60,13 +60,27 @@ export function AdminDiscordManagement() {
     try {
       setLoading(true);
       const response = await fetch("/api/discord/role-mappings");
-      if (!response.ok) throw new Error("Failed to fetch mappings");
+
+      // Check content type
+      const contentType = response.headers.get("content-type");
+      if (!contentType?.includes("application/json")) {
+        const text = await response.text();
+        console.error("Non-JSON response:", text);
+        throw new Error("API returned non-JSON response (likely a deployment error)");
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to fetch mappings");
+      }
+
       const data = await response.json();
-      setMappings(data);
+      setMappings(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Failed to load role mappings";
       console.error("Error fetching mappings:", err);
-      setError("Failed to load role mappings");
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
