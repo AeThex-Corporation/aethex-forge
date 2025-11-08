@@ -7,6 +7,7 @@ import UserTypeSelection from "@/components/onboarding/UserTypeSelection";
 import PersonalInfo from "@/components/onboarding/PersonalInfo";
 import Experience from "@/components/onboarding/Experience";
 import Interests from "@/components/onboarding/Interests";
+import RealmSelection from "@/components/onboarding/RealmSelection";
 import CreatorProfile from "@/components/onboarding/CreatorProfile";
 import Welcome from "@/components/onboarding/Welcome";
 import { useAuth } from "@/contexts/AuthContext";
@@ -86,6 +87,7 @@ export default function Onboarding() {
     { title: "Personal Information", component: PersonalInfo },
     { title: "Experience Level", component: Experience },
     { title: "Interests & Goals", component: Interests },
+    { title: "Choose Your Realm", component: RealmSelection },
     { title: "Creator Profile Setup", component: CreatorProfile },
     { title: "Welcome to AeThex", component: Welcome },
   ];
