@@ -51,6 +51,7 @@ import {
   Database,
   Wifi,
   Zap,
+  Heart,
 } from "lucide-react";
 
 export default function Admin() {
