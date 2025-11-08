@@ -163,6 +163,46 @@ export default function Labs() {
             </div>
           </section>
 
+          {/* Innovation in Action - Video Showcase */}
+          <section className="py-16 border-t border-yellow-400/10 bg-gradient-to-b from-black/20 to-black/80">
+            <div className="container mx-auto max-w-5xl px-4">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-yellow-300 mb-2">
+                  Innovation in Action
+                </h2>
+                <p className="text-yellow-200/70">
+                  See our groundbreaking research and development in action
+                </p>
+              </div>
+              <div className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-500/30 via-transparent to-yellow-600/30 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
+                <div className="relative bg-black rounded-lg overflow-hidden border border-yellow-400/30 shadow-2xl">
+                  <video
+                    className="w-full aspect-video object-cover"
+                    controls
+                    autoPlay
+                    muted
+                    loop
+                    poster="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800"
+                  >
+                    <source
+                      src="https://cdn.builder.io/o/assets%2Ffc53d607e21d497595ac97e0637001a1%2Ff34f06fb256c44c98103fd2fc72f1af1?alt=media&token=a23b3a3c-59e4-4894-8b61-43b02e5df904&apiKey=fc53d607e21d497595ac97e0637001a1"
+                      type="video/mp4"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+              <div className="mt-6 flex items-center gap-2 text-sm text-yellow-200/60">
+                <Target className="h-4 w-4" />
+                <p>
+                  Cutting-edge research pushing the boundaries of what's
+                  possible
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* Current Research Projects */}
           <section className="py-16 border-t border-yellow-400/10 bg-black/40">
             <div className="container mx-auto max-w-6xl px-4">
