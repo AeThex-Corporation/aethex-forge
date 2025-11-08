@@ -118,14 +118,32 @@ async function registerCommands() {
 
     console.log(`📝 Registering ${commands.length} slash commands...`);
 
-    const data = await rest.put(
-      Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
-      { body: commands },
-    );
-
-    console.log(`✅ Successfully registered ${data.length} slash commands.`);
+    try {
+      const data = await rest.put(
+        Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
+        { body: commands },
+      );
+      console.log(`✅ Successfully registered ${data.length} slash commands.`);
+    } catch (error) {
+      // Handle Entry Point command conflict (Discord Activity)
+      if (error.code === 50240) {
+        console.warn(
+          "⚠️ Entry Point command detected (Discord Activity). Attempting to register without bulk update..."
+        );
+        // Post commands individually to avoid bulk update conflicts
+        for (const command of commands) {
+          await rest.post(
+            Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
+            { body: command },
+          );
+        }
+        console.log(`✅ Successfully registered ${commands.length} slash commands (individual).`);
+      } else {
+        throw error;
+      }
+    }
   } catch (error) {
-    console.error("❌ Error registering commands:", error);
+    console.error("❌ Error registering commands:", error.message || error);
   }
 }
 
