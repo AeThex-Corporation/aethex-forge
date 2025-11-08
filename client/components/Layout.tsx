@@ -424,14 +424,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                               Account Settings
                             </Link>
                           </DropdownMenuItem>
-                          {isOwner && (
-                            <DropdownMenuItem asChild>
-                              <Link to="/admin" className="cursor-pointer">
-                                <Settings className="mr-2 h-4 w-4" />
-                                Admin Panel
-                              </Link>
-                            </DropdownMenuItem>
-                          )}
+                          <DropdownMenuItem asChild>
+                            <Link to="/admin" className="cursor-pointer">
+                              <Settings className="mr-2 h-4 w-4" />
+                              Admin Panel
+                            </Link>
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             className="cursor-pointer"
