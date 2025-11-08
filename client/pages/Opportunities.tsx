@@ -35,7 +35,6 @@ import {
   Loader2,
   Rocket,
   ShieldCheck,
-  Sparkles,
   Users,
 } from "lucide-react";
 import { useEffect, useState } from "react";
