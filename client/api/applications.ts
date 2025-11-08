@@ -44,7 +44,7 @@ export interface ApplicationWithCreator {
   };
 }
 
-const API_BASE = process.env.VITE_API_BASE || "";
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 export async function getMyApplications(filters?: {
   status?: string;
