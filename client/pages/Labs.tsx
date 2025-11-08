@@ -219,7 +219,7 @@ export default function Labs() {
                       <div
                         className={`w-12 h-12 rounded-lg bg-gradient-to-r ${project.color} flex items-center justify-center text-white mb-4`}
                       >
-                        <Lightbulb className="h-6 w-6" />
+                        <Sparkles className="h-6 w-6" />
                       </div>
                       <CardTitle className="text-yellow-300">
                         {project.title}
