@@ -1,7 +1,9 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { createVerify } from "crypto";
+import { webcrypto } from "crypto";
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+const crypto = webcrypto as any;
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader(
@@ -51,19 +53,24 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     const signatureBuffer = Buffer.from(signature, "hex");
     const messageBuffer = Buffer.from(message);
 
-    // For Ed25519, we need to use the raw key directly
-    // Create a temporary PEM-formatted public key for verification
+    // Use WebCrypto API for Ed25519 verification (works in Vercel)
     try {
-      // Use Node.js 15+ native Ed25519 verification with raw key
-      const isValid = verify(
-        null,
-        messageBuffer,
+      const publicKey = await crypto.subtle.importKey(
+        "raw",
+        publicKeyBuffer,
         {
-          key: publicKeyBuffer,
-          format: "raw" as any,
-          type: "ed25519" as any,
-        } as any,
+          name: "Ed25519",
+          namedCurve: "Ed25519",
+        },
+        false,
+        ["verify"],
+      );
+
+      const isValid = await crypto.subtle.verify(
+        "Ed25519",
+        publicKey,
         signatureBuffer,
+        messageBuffer,
       );
 
       if (!isValid) {
@@ -71,13 +78,8 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(401).json({ error: "Invalid signature" });
       }
     } catch (err: any) {
-      // Fallback: Try with TweetNaCl-style verification
-      // If above fails, try creating key from raw buffer differently
       console.error("[Discord] Verification error:", err?.message);
-
-      // Alternative: manual Ed25519 verification using libsodium or tweetnacl
-      // For now, log and continue - Discord will resend if critical
-      console.log("[Discord] Note: Using fallback verification method");
+      return res.status(401).json({ error: "Signature verification failed" });
     }
 
     console.log("[Discord] Signature verified successfully");
