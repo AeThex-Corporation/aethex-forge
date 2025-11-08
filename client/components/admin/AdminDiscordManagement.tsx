@@ -219,14 +219,20 @@ export function AdminDiscordManagement() {
                     placeholder="Discord Server ID"
                     value={newMapping.server_id}
                     onChange={(e) =>
-                      setNewMapping({ ...newMapping, server_id: e.target.value })
+                      setNewMapping({
+                        ...newMapping,
+                        server_id: e.target.value,
+                      })
                     }
                     className="w-full mt-1 bg-gray-800 border border-purple-500/30 rounded px-3 py-2 text-white focus:outline-none focus:border-purple-500"
                   />
                 </div>
               </div>
 
-              <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
+              <Button
+                type="submit"
+                className="w-full bg-purple-600 hover:bg-purple-700"
+              >
                 Add Mapping
               </Button>
             </form>
@@ -295,13 +301,16 @@ export function AdminDiscordManagement() {
       </Card>
 
       {/* Delete Confirmation */}
-      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+      <AlertDialog
+        open={!!deleteId}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Role Mapping?</AlertDialogTitle>
             <AlertDialogDescription>
-              This role mapping will be permanently deleted. Users will no longer
-              receive this role when setting this arm.
+              This role mapping will be permanently deleted. Users will no
+              longer receive this role when setting this arm.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

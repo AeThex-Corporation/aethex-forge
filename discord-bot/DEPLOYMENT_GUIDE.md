@@ -50,6 +50,7 @@ NODE_ENV=production
 ```
 
 **Note:** Get these values from:
+
 - Discord Developer Portal: Applications → Your Bot → Token & General Information
 - Supabase Dashboard: Project Settings → API
 

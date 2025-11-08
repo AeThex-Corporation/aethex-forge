@@ -23,7 +23,7 @@ const missingVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
 if (missingVars.length > 0) {
   console.error(
     "❌ FATAL ERROR: Missing required environment variables:",
-    missingVars.join(", ")
+    missingVars.join(", "),
   );
   console.error("\nPlease set these in your Discloud/hosting environment:");
   missingVars.forEach((envVar) => {
@@ -128,7 +128,7 @@ async function registerCommands() {
       // Handle Entry Point command conflict (Discord Activity)
       if (error.code === 50240) {
         console.warn(
-          "⚠️ Entry Point command detected (Discord Activity). Attempting to register without bulk update..."
+          "⚠️ Entry Point command detected (Discord Activity). Attempting to register without bulk update...",
         );
         // Post commands individually to avoid bulk update conflicts
         for (const command of commands) {
@@ -137,7 +137,9 @@ async function registerCommands() {
             { body: command },
           );
         }
-        console.log(`✅ Successfully registered ${commands.length} slash commands (individual).`);
+        console.log(
+          `✅ Successfully registered ${commands.length} slash commands (individual).`,
+        );
       } else {
         throw error;
       }

@@ -96,7 +96,7 @@ export default function Admin() {
   }, [user, loading, navigate]);
 
   const [managedProfiles, setManagedProfiles] = useState<AethexUserProfile[]>(
-    []
+    [],
   );
   const [studios, setStudios] = useState<Studio[]>([
     {
@@ -161,7 +161,7 @@ export default function Admin() {
     setProjectApplicationsLoading(true);
     try {
       const response = await fetch(
-        `/api/applications?owner=${encodeURIComponent(user.id)}`
+        `/api/applications?owner=${encodeURIComponent(user.id)}`,
       );
       if (response.ok) {
         const data = await response.json();
@@ -187,7 +187,7 @@ export default function Admin() {
     setOpportunityApplicationsLoading(true);
     try {
       const response = await fetch(
-        `/api/opportunities/applications?email=${encodeURIComponent(email)}`
+        `/api/opportunities/applications?email=${encodeURIComponent(email)}`,
       );
       if (response.ok) {
         const data = await response.json();
@@ -280,7 +280,7 @@ export default function Admin() {
     () =>
       managedProfiles.find((profile) => profile.id === selectedMemberId) ??
       null,
-    [managedProfiles, selectedMemberId]
+    [managedProfiles, selectedMemberId],
   );
 
   const totalMembers = managedProfiles.length;

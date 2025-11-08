@@ -8,7 +8,7 @@ const GITBOOK_SPACE_ID = process.env.GITBOOK_SPACE_ID;
 // Validate environment variables
 if (!GITBOOK_API_TOKEN || !GITBOOK_SPACE_ID) {
   throw new Error(
-    "Missing required environment variables: GITBOOK_API_TOKEN and GITBOOK_SPACE_ID"
+    "Missing required environment variables: GITBOOK_API_TOKEN and GITBOOK_SPACE_ID",
   );
 }
 

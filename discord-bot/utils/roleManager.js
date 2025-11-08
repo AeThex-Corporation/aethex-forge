@@ -31,7 +31,9 @@ async function assignRoleByArm(guild, discordId, arm, supabase) {
     }
 
     if (!mapping) {
-      console.warn(`No role mapping found for arm: ${arm} in server: ${guild.id}`);
+      console.warn(
+        `No role mapping found for arm: ${arm} in server: ${guild.id}`,
+      );
       return false;
     }
 
