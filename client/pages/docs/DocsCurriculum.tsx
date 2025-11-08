@@ -22,7 +22,6 @@ import {
   Compass,
   GraduationCap,
   Layers,
-  Lightbulb,
   ListChecks,
   Sparkles,
   Target,
