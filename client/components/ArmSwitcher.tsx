@@ -58,6 +58,15 @@ const ARMS: Arm[] = [
     textColor: "text-cyan-400",
     href: "/dev-link",
   },
+  {
+    id: "nexus",
+    name: "AeThex | Nexus",
+    label: "Nexus",
+    color: "#A855F7",
+    bgColor: "bg-purple-500/20",
+    textColor: "text-purple-400",
+    href: "/nexus",
+  },
 ];
 
 const LOGO_URLS: Record<string, string> = {
