@@ -247,7 +247,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(session?.user ?? null);
 
       if (session?.user) {
+        // Fetch profile but also set loading to false after a timeout
+        // This ensures the UI shows even if profile fetch is slow
+        const profileTimeout = setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+
         await fetchUserProfile(session.user.id);
+        clearTimeout(profileTimeout);
       } else {
         setProfile(null);
         setRoles([]);
