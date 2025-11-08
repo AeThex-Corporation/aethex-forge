@@ -28,6 +28,7 @@ import AdminChangelogDigest from "@/components/admin/AdminChangelogDigest";
 import AdminSystemMap from "@/components/admin/AdminSystemMap";
 import AdminMentorshipManager from "@/components/admin/AdminMentorshipManager";
 import AdminRoadmap from "@/components/admin/AdminRoadmap";
+import AdminDiscordManagement from "@/components/admin/AdminDiscordManagement";
 import BannerSettings from "@/components/admin/BannerSettings";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
