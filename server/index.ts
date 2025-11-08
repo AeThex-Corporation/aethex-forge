@@ -879,6 +879,110 @@ export function createServer() {
       }
     });
 
+    // Discord Admin Register Commands
+    app.post("/api/discord/admin-register-commands", async (req, res) => {
+      try {
+        const authHeader = req.headers.authorization;
+        const token =
+          authHeader?.replace("Bearer ", "") ||
+          (req.body?.token as string);
+
+        const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
+        if (!adminToken || !token || token !== adminToken) {
+          return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        const botToken = process.env.DISCORD_BOT_TOKEN;
+        const clientId = process.env.VITE_DISCORD_CLIENT_ID;
+
+        if (!botToken || !clientId) {
+          return res.status(500).json({
+            error: "Discord bot token or client ID not configured",
+          });
+        }
+
+        // Register slash commands
+        const commands = [
+          {
+            name: "verify",
+            description: "Link your Discord account to AeThex",
+            type: 1,
+          },
+          {
+            name: "set-realm",
+            description: "Choose your primary arm/realm",
+            type: 1,
+            options: [
+              {
+                name: "realm",
+                description: "Select your primary realm",
+                type: 3,
+                required: true,
+                choices: [
+                  { name: "Labs", value: "labs" },
+                  { name: "GameForge", value: "gameforge" },
+                  { name: "Corp", value: "corp" },
+                  { name: "Foundation", value: "foundation" },
+                  { name: "Nexus", value: "nexus" },
+                ],
+              },
+            ],
+          },
+          {
+            name: "profile",
+            description: "View your AeThex profile",
+            type: 1,
+          },
+          {
+            name: "unlink",
+            description: "Disconnect your Discord account from AeThex",
+            type: 1,
+          },
+          {
+            name: "verify-role",
+            description: "Check your assigned Discord roles",
+            type: 1,
+          },
+        ];
+
+        const registerUrl = `https://discord.com/api/v10/applications/${clientId}/commands`;
+        const response = await fetch(registerUrl, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bot ${botToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(commands),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.text();
+          console.error(
+            "[Discord] Command registration failed:",
+            response.status,
+            errorData,
+          );
+          return res.status(response.status).json({
+            error: `Failed to register commands: ${errorData}`,
+          });
+        }
+
+        const result = await response.json();
+        res.setHeader("Content-Type", "application/json");
+        return res.json({
+          ok: true,
+          message: `Registered ${result.length} commands`,
+          commands: result,
+        });
+      } catch (e: any) {
+        console.error("[Discord] Exception registering commands:", e);
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          error: e?.message || "Failed to register commands",
+        });
+      }
+    });
+
     // Site settings (admin-managed)
     app.get("/api/site-settings", async (req, res) => {
       try {
