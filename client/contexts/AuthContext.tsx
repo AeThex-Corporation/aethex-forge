@@ -256,9 +256,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         await fetchUserProfile(session.user.id);
         clearTimeout(profileTimeout);
       } else {
+        // User logged out - clear everything and ensure loading is false
         setProfile(null);
         setRoles([]);
         setLoading(false);
+        // Extra safety: ensure loading is false even if this callback is called multiple times
+        setTimeout(() => {
+          setLoading(false);
+        }, 50);
       }
 
       // Handle token refresh failures specifically
