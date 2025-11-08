@@ -909,7 +909,12 @@ export function createServer() {
         const botToken = process.env.DISCORD_BOT_TOKEN;
         const clientId = process.env.VITE_DISCORD_CLIENT_ID;
 
-        console.log("[Discord] Config check - botToken set:", !!botToken, "clientId set:", !!clientId);
+        console.log(
+          "[Discord] Config check - botToken set:",
+          !!botToken,
+          "clientId set:",
+          !!clientId,
+        );
 
         if (!botToken || !clientId) {
           return res.status(500).json({
