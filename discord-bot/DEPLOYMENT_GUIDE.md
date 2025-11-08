@@ -40,14 +40,18 @@ code/discord-bot/
 In Spaceship Application Settings → Environment Variables, add:
 
 ```
-DISCORD_BOT_TOKEN=NTc4OTcxMjQ1NDU0OTUwNDIx.Gu0hI7.YNJAcMzYkQXhoEAtRiAk9f2EUsy3FkWhqSnVek
-DISCORD_CLIENT_ID=578971245454950421
-DISCORD_PUBLIC_KEY=d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1eb0
-SUPABASE_URL=https://kmdeisowhtsalsekkzqd.supabase.co
+DISCORD_BOT_TOKEN=<your_bot_token_from_discord_developer_portal>
+DISCORD_CLIENT_ID=<your_client_id>
+DISCORD_PUBLIC_KEY=<your_public_key>
+SUPABASE_URL=<your_supabase_url>
 SUPABASE_SERVICE_ROLE=<your_service_role_key>
 BOT_PORT=3000
 NODE_ENV=production
 ```
+
+**Note:** Get these values from:
+- Discord Developer Portal: Applications → Your Bot → Token & General Information
+- Supabase Dashboard: Project Settings → API
 
 ### Step 4: Configure Build & Run Settings
 
