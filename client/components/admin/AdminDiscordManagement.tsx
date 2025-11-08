@@ -172,12 +172,13 @@ export function AdminDiscordManagement() {
         },
       });
 
+      // Read body only once
+      const data = await response.json().catch(() => ({}));
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to register commands");
+        throw new Error(data?.error || "Failed to register commands");
       }
 
-      const data = await response.json();
       setRegisterSuccess(
         data.message || "Discord commands registered successfully!",
       );
