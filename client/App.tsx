@@ -143,6 +143,7 @@ const App = () => (
                 />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile/me" element={<Profile />} />
+                <Route path="/profile/applications" element={<MyApplications />} />
 
                 <Route path="/developers" element={<DevelopersDirectory />} />
                 <Route
