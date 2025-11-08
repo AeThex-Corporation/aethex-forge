@@ -189,18 +189,23 @@
       window.discordSdkReady = false;
 
       // Only attempt to load Discord SDK if we're in the Discord Activity route
-      window.loadDiscordSDK = async function() {
+      window.loadDiscordSDK = async function () {
         if (window.discordSdkReady) return;
         try {
-          const { DiscordSDK } = await import('https://cdn.discordapp.com/assets/embedded/lazyload.min.js');
+          const { DiscordSDK } = await import(
+            "https://cdn.discordapp.com/assets/embedded/lazyload.min.js"
+          );
           if (DiscordSDK) {
             window.DiscordSDK = new DiscordSDK({
-              clientId: '578971245454950421',
+              clientId: "578971245454950421",
             });
             window.discordSdkReady = true;
           }
         } catch (e) {
-          console.warn('Discord SDK loading skipped (not in Activity context):', e.message);
+          console.warn(
+            "Discord SDK loading skipped (not in Activity context):",
+            e.message,
+          );
         }
       };
     </script>
