@@ -96,8 +96,11 @@ export default function Labs() {
 
               <div className="space-y-6 mb-12">
                 <h1 className="text-5xl lg:text-7xl font-black text-yellow-300 leading-tight">
-                  Innovating the Future
+                  The Innovation Engine
                 </h1>
+                <p className="text-xl text-yellow-100/70 max-w-3xl">
+                  AeThex Labs is our dedicated R&D pillar, focused on breakthrough technologies that create lasting competitive advantage. We invest in bleeding-edge research—from advanced AI to next-generation web architectures—while cultivating thought leadership that shapes industry direction.
+                </p>
                 <p className="text-xl text-yellow-100/80 max-w-3xl">
                   Applied R&D pushing the boundaries of what's possible in software, games, and digital experiences. Our research today shapes tomorrow's products.
                 </p>
