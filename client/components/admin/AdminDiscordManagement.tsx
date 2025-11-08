@@ -164,6 +164,8 @@ export function AdminDiscordManagement() {
         return;
       }
 
+      console.log("[Discord] Registering commands with token...");
+
       const response = await fetch("/api/discord/admin-register-commands", {
         method: "POST",
         headers: {
@@ -172,11 +174,18 @@ export function AdminDiscordManagement() {
         },
       });
 
+      console.log("[Discord] Response status:", response.status);
+
       // Read body only once
       const data = await response.json().catch(() => ({}));
 
+      console.log("[Discord] Response data:", data);
+
       if (!response.ok) {
-        throw new Error(data?.error || "Failed to register commands");
+        throw new Error(
+          data?.error ||
+            `Server error (${response.status}): Failed to register commands`,
+        );
       }
 
       setRegisterSuccess(
