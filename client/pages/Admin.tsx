@@ -1499,6 +1499,85 @@ export default function Admin() {
                 </Tabs>
               </TabsContent>
 
+              <TabsContent value="discord" className="space-y-6">
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-5 w-5 text-purple-500" />
+                      <CardTitle>Discord Integration Management</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Manage Discord role mappings and bot configuration
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid gap-4">
+                      <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                        <h3 className="font-semibold mb-4">Realm to Discord Role Mappings</h3>
+                        <div className="space-y-2">
+                          <p className="text-sm text-gray-400">
+                            Configure which Discord roles are assigned for each AeThex realm and user type.
+                          </p>
+                          <div className="mt-4 space-y-3">
+                            {[
+                              { realm: "Labs", role: "Labs Creator", members: 234 },
+                              { realm: "GameForge", role: "GameForge Creator", members: 456 },
+                              { realm: "Corp", role: "Corp Member", members: 89 },
+                              { realm: "Foundation", role: "Foundation Member", members: 145 },
+                              { realm: "Dev-Link", role: "Dev-Link Member", members: 78 },
+                            ].map((mapping, idx) => (
+                              <div key={idx} className="flex items-center justify-between p-3 bg-background/30 rounded border border-border/20">
+                                <div>
+                                  <p className="font-medium">{mapping.realm}</p>
+                                  <p className="text-sm text-gray-400">{mapping.role}</p>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-lg font-bold text-purple-400">{mapping.members}</p>
+                                  <p className="text-xs text-gray-500">assigned members</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                        <h3 className="font-semibold mb-3">Bot Configuration</h3>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-400">Bot Status</span>
+                            <Badge variant="default" className="bg-green-500">Online</Badge>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-400">Servers Connected</span>
+                            <span className="font-mono text-purple-400">12 servers</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-400">Linked Accounts</span>
+                            <span className="font-mono text-purple-400">1,234 users</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                        <h3 className="font-semibold mb-3">Quick Actions</h3>
+                        <div className="space-y-2">
+                          <Button className="w-full" variant="outline">
+                            Sync All Roles
+                          </Button>
+                          <Button className="w-full" variant="outline">
+                            View Bot Logs
+                          </Button>
+                          <Button className="w-full" variant="outline">
+                            Test Verification Flow
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
               <TabsContent value="operations" className="space-y-6">
                 <div className="grid gap-6 lg:grid-cols-2">
                   <Card className="bg-card/60 border-border/40 backdrop-blur">
