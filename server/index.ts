@@ -887,12 +887,29 @@ export function createServer() {
           authHeader?.replace("Bearer ", "") || (req.body?.token as string);
 
         const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
+        console.log(
+          "[Discord] Token auth check - hasAdminToken:",
+          !!adminToken,
+          "hasProvidedToken:",
+          !!token,
+          "matches:",
+          token === adminToken,
+        );
+
         if (!adminToken || !token || token !== adminToken) {
-          return res.status(401).json({ error: "Unauthorized" });
+          console.error(
+            "[Discord] Authorization failed - adminToken set:",
+            !!adminToken,
+          );
+          return res.status(401).json({
+            error: "Unauthorized - invalid or missing admin token",
+          });
         }
 
         const botToken = process.env.DISCORD_BOT_TOKEN;
         const clientId = process.env.VITE_DISCORD_CLIENT_ID;
+
+        console.log("[Discord] Config check - botToken set:", !!botToken, "clientId set:", !!clientId);
 
         if (!botToken || !clientId) {
           return res.status(500).json({
