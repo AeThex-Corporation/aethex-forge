@@ -1,10 +1,17 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_ROLE || ""
-);
+// Initialize Supabase with service role
+let supabase: any = null;
+
+try {
+  supabase = createClient(
+    process.env.SUPABASE_URL || "",
+    process.env.SUPABASE_SERVICE_ROLE || ""
+  );
+} catch (e) {
+  console.error("Failed to initialize Supabase client:", e);
+}
 
 interface RoleMapping {
   id: string;
