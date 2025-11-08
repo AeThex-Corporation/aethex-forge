@@ -1435,7 +1435,8 @@ export function createServer() {
           {
             id: "workshop-architect",
             name: "Workshop Architect",
-            description: "Published a high-impact mod or toolkit adopted by teams.",
+            description:
+              "Published a high-impact mod or toolkit adopted by teams.",
             icon: "��️",
             badge_color: "#F97316",
             xp_reward: 1200,
@@ -1443,7 +1444,8 @@ export function createServer() {
           {
             id: "god-mode",
             name: "GOD Mode",
-            description: "Legendary status awarded by AeThex studio leadership.",
+            description:
+              "Legendary status awarded by AeThex studio leadership.",
             icon: "⚡",
             badge_color: "#FACC15",
             xp_reward: 5000,
