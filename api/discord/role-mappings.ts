@@ -3,45 +3,72 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_ROLE || "",
+  process.env.SUPABASE_SERVICE_ROLE || ""
 );
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const { method, query, body } = req;
+interface RoleMapping {
+  id: string;
+  arm: string;
+  user_type?: string;
+  discord_role: string;
+  server_id?: string;
+  created_at: string;
+}
+
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
 
   try {
-    // GET /api/discord/role-mappings - Fetch all role mappings
-    if (method === "GET") {
-      const { data: mappings, error } = await supabase
+    // GET - Fetch all role mappings
+    if (req.method === "GET") {
+      const { data, error } = await supabase
         .from("discord_role_mappings")
         .select("*")
-        .order("arm", { ascending: true });
+        .order("created_at", { ascending: false });
 
       if (error) {
-        return res.status(500).json({
-          error: "Failed to fetch role mappings",
-          details: error.message,
-        });
+        console.error("Supabase error:", error);
+        return res
+          .status(500)
+          .json({ error: "Failed to fetch role mappings" });
       }
 
-      return res.json(mappings || []);
+      return res.status(200).json(data || []);
     }
 
-    // POST /api/discord/role-mappings - Create new role mapping
-    if (method === "POST") {
-      const { arm, user_type, discord_role, server_id } = body;
+    // POST - Create new role mapping
+    if (req.method === "POST") {
+      const { arm, discord_role, server_id, user_type } = req.body;
 
       if (!arm || !discord_role) {
-        return res.status(400).json({
-          error: "Missing required fields: arm, discord_role",
-        });
+        return res
+          .status(400)
+          .json({ error: "arm and discord_role are required" });
       }
 
-      const { data: mapping, error } = await supabase
+      const { data, error } = await supabase
         .from("discord_role_mappings")
         .insert({
           arm,
-          user_type: user_type || null,
+          user_type: user_type || "community_member",
           discord_role,
           server_id: server_id || null,
         })
@@ -49,52 +76,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .single();
 
       if (error) {
-        return res.status(500).json({
-          error: "Failed to create role mapping",
-          details: error.message,
-        });
+        console.error("Supabase error:", error);
+        return res.status(500).json({ error: "Failed to create mapping" });
       }
 
-      return res.status(201).json(mapping);
+      return res.status(201).json(data);
     }
 
-    // PUT /api/discord/role-mappings/:id - Update role mapping
-    if (method === "PUT") {
-      const { id } = query;
-      const { arm, user_type, discord_role, server_id } = body;
+    // PUT - Update role mapping
+    if (req.method === "PUT") {
+      const { id, arm, discord_role, server_id, user_type } = req.body;
 
       if (!id) {
-        return res.status(400).json({ error: "Mapping ID is required" });
+        return res.status(400).json({ error: "id is required" });
       }
 
-      const { data: mapping, error } = await supabase
+      const updateData: any = {};
+      if (arm) updateData.arm = arm;
+      if (discord_role) updateData.discord_role = discord_role;
+      if (server_id !== undefined) updateData.server_id = server_id;
+      if (user_type) updateData.user_type = user_type;
+
+      const { data, error } = await supabase
         .from("discord_role_mappings")
-        .update({
-          arm,
-          user_type: user_type || null,
-          discord_role,
-          server_id: server_id || null,
-        })
+        .update(updateData)
         .eq("id", id)
         .select()
         .single();
 
       if (error) {
-        return res.status(500).json({
-          error: "Failed to update role mapping",
-          details: error.message,
-        });
+        console.error("Supabase error:", error);
+        return res.status(500).json({ error: "Failed to update mapping" });
       }
 
-      return res.json(mapping);
+      return res.status(200).json(data);
     }
 
-    // DELETE /api/discord/role-mappings/:id - Delete role mapping
-    if (method === "DELETE") {
-      const { id } = query;
+    // DELETE - Delete role mapping
+    if (req.method === "DELETE") {
+      const { id } = req.query;
 
       if (!id) {
-        return res.status(400).json({ error: "Mapping ID is required" });
+        return res.status(400).json({ error: "id query parameter is required" });
       }
 
       const { error } = await supabase
@@ -103,19 +126,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .eq("id", id);
 
       if (error) {
-        return res.status(500).json({
-          error: "Failed to delete role mapping",
-          details: error.message,
-        });
+        console.error("Supabase error:", error);
+        return res.status(500).json({ error: "Failed to delete mapping" });
       }
 
-      return res.json({ success: true, message: "Role mapping deleted" });
+      return res.status(200).json({ success: true });
     }
 
-    res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
     return res.status(405).json({ error: "Method not allowed" });
-  } catch (error) {
-    console.error("Discord role mappings API error:", error);
-    return res.status(500).json({ error: "Internal server error" });
+  } catch (error: any) {
+    console.error("API error:", error);
+    return res.status(500).json({
+      error: error?.message || "Internal server error",
+    });
   }
 }
