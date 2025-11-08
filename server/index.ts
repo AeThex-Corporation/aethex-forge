@@ -884,8 +884,7 @@ export function createServer() {
       try {
         const authHeader = req.headers.authorization;
         const token =
-          authHeader?.replace("Bearer ", "") ||
-          (req.body?.token as string);
+          authHeader?.replace("Bearer ", "") || (req.body?.token as string);
 
         const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
         if (!adminToken || !token || token !== adminToken) {
@@ -3011,11 +3010,9 @@ export function createServer() {
           .single();
 
         if (!creator) {
-          return res
-            .status(404)
-            .json({
-              error: "Creator profile not found. Create profile first.",
-            });
+          return res.status(404).json({
+            error: "Creator profile not found. Create profile first.",
+          });
         }
 
         const { data, error } = await adminSupabase
@@ -3387,11 +3384,9 @@ export function createServer() {
           .single();
 
         if (!creator) {
-          return res
-            .status(404)
-            .json({
-              error: "Creator profile not found. Create profile first.",
-            });
+          return res.status(404).json({
+            error: "Creator profile not found. Create profile first.",
+          });
         }
 
         const { data: existing } = await adminSupabase

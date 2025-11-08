@@ -190,21 +190,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         // Clear all Supabase-related keys
         Object.keys(window.localStorage)
-          .filter((key) =>
-            key.startsWith("sb-") ||
-            key.includes("supabase") ||
-            key.includes("auth-token")
+          .filter(
+            (key) =>
+              key.startsWith("sb-") ||
+              key.includes("supabase") ||
+              key.includes("auth-token"),
           )
           .forEach((key) => window.localStorage.removeItem(key));
 
         // Clear IndexedDB (where Supabase stores sessions)
         if (window.indexedDB) {
-          const dbs = ["supabase", "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop()];
+          const dbs = [
+            "supabase",
+            "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop(),
+          ];
           dbs.forEach((dbName) => {
             try {
               const req = window.indexedDB.deleteDatabase(dbName);
               req.onsuccess = () => console.log(`Cleared IndexedDB: ${dbName}`);
-              req.onerror = (e) => console.warn(`Failed to clear IndexedDB: ${dbName}`, e);
+              req.onerror = (e) =>
+                console.warn(`Failed to clear IndexedDB: ${dbName}`, e);
             } catch {}
           });
         }
@@ -798,7 +803,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         // Clear IndexedDB
         if (window.indexedDB) {
-          const dbs = ["supabase", "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop()];
+          const dbs = [
+            "supabase",
+            "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop(),
+          ];
           dbs.forEach((dbName) => {
             try {
               const req = window.indexedDB.deleteDatabase(dbName);
@@ -883,12 +891,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         // Clear IndexedDB (where Supabase stores sessions)
         if (window.indexedDB) {
-          const dbs = ["supabase", "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop()];
+          const dbs = [
+            "supabase",
+            "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop(),
+          ];
           dbs.forEach((dbName) => {
             try {
               const req = window.indexedDB.deleteDatabase(dbName);
               req.onsuccess = () => console.log(`Cleared IndexedDB: ${dbName}`);
-              req.onerror = (e) => console.warn(`Failed to clear IndexedDB: ${dbName}`, e);
+              req.onerror = (e) =>
+                console.warn(`Failed to clear IndexedDB: ${dbName}`, e);
             } catch {}
           });
         }
