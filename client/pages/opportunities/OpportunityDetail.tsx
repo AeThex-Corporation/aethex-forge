@@ -32,7 +32,7 @@ import type { Opportunity } from "@/api/opportunities";
 export default function OpportunityDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user } = useAuthContext();
+  const { user } = useAuth();
   const { toast } = useAethexToast();
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
   const [isLoading, setIsLoading] = useState(true);
