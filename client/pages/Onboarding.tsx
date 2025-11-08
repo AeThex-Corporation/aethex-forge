@@ -39,6 +39,11 @@ export interface OnboardingData {
     primaryGoals: string[];
     preferredServices: string[];
   };
+  creatorProfile: {
+    bio?: string;
+    skills: string[];
+    primaryArm?: string;
+  };
 }
 
 const initialData: OnboardingData = {
