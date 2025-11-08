@@ -819,71 +819,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [clearClientAuthState]);
 
   const signOut = async () => {
-    setLoading(true);
-    const issues: string[] = [];
-
+    // Clear local session immediately - don't show loading
     try {
-      const { error: localError } = await supabase.auth.signOut({
+      await supabase.auth.signOut({
         scope: "local",
       });
-      if (localError?.message && !/session/i.test(localError.message)) {
-        issues.push(localError.message);
-      }
-    } catch (error: any) {
-      const message = error?.message ?? "Unable to clear local session.";
-      if (!/session/i.test(message)) {
-        issues.push(message);
-      }
-    } finally {
-      clearClientAuthState();
-      setLoading(false);
+    } catch (error) {
+      console.warn("Local sign-out error:", error);
     }
 
-    try {
-      const { error: globalError } = await withTimeout(
-        supabase.auth.signOut({ scope: "global" }),
-        SIGN_OUT_TIMEOUT_MS,
-        "Supabase sign out timed out",
-      );
-      if (globalError) {
-        const status = (globalError as any)?.status;
-        if (status !== 401) {
-          issues.push(
-            globalError.message ?? "Unable to reach authentication service.",
-          );
-        }
+    clearClientAuthState();
+
+    // Fire and forget global sign-out - don't wait for it, don't block UI
+    supabase.auth.signOut({ scope: "global" }).catch((error) => {
+      console.warn("Global sign-out error:", error);
+      // Still try to show a toast even if global fails
+      try {
+        aethexToast.info({
+          title: "Signed out",
+          description: "You have been signed out successfully (local only).",
+        });
+      } catch (e) {
+        /* ignore */
       }
-    } catch (error: any) {
-      const message =
-        error?.message ?? "Unable to reach authentication service.";
-      issues.push(message);
-      console.warn("Supabase global sign-out issue:", error);
-    }
-
-    const uniqueIssues = Array.from(new Set(issues)).filter(Boolean);
-    if (uniqueIssues.length) {
-      const hasTimeout = uniqueIssues.some((msg) =>
-        msg.toLowerCase().includes("timed out"),
-      );
-      aethexToast.error({
-        title: "Sign out issue",
-        description: hasTimeout
-          ? "We couldn't reach Supabase to finish signing out, but your local session was cleared."
-          : uniqueIssues[0],
-      });
-    } else {
-      aethexToast.info({
-        title: "Signed out",
-        description: "You have been signed out successfully.",
-      });
-    }
-
-    // CRITICAL: Guarantee loading is false so buttons appear
-    // Use synchronous call first, then timeout to catch any edge cases
-    setLoading(false);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
+    }).then(() => {
+      try {
+        aethexToast.info({
+          title: "Signed out",
+          description: "You have been signed out successfully.",
+        });
+      } catch (e) {
+        /* ignore */
+      }
+    });
   };
 
   const updateProfile = async (updates: Partial<AethexUserProfile>) => {
