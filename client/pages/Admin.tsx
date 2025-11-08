@@ -752,6 +752,7 @@ export default function Admin() {
                 <TabsTrigger value="community">Community</TabsTrigger>
                 <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
                 <TabsTrigger value="arm-metrics">Arm Metrics</TabsTrigger>
+                <TabsTrigger value="discord">Discord Management</TabsTrigger>
                 <TabsTrigger value="operations">Operations</TabsTrigger>
               </TabsList>
 
