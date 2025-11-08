@@ -26,7 +26,7 @@ import { getOpportunityById } from "@/api/opportunities";
 import { submitApplication } from "@/api/applications";
 import { ArmBadge } from "@/components/creator-network/ArmBadge";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import type { Opportunity } from "@/api/opportunities";
 
 export default function OpportunityDetail() {
