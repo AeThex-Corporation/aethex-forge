@@ -53,9 +53,9 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     // Create public key object for Ed25519
     const publicKey = createPublicKey({
       key: publicKeyBuffer,
-      format: "raw",
-      type: "ed25519",
-    });
+      format: "raw" as any,
+      type: "ed25519" as any,
+    } as any);
 
     // Verify the signature using Ed25519
     const isValid = verify(
