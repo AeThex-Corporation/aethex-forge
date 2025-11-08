@@ -118,9 +118,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <Web3Provider>
-        <DiscordProvider>
-          <TooltipProvider>
+      <DiscordActivityProvider>
+        <Web3Provider>
+          <DiscordProvider>
+            <TooltipProvider>
             <Toaster />
             <Analytics />
             <BrowserRouter>
@@ -348,6 +349,7 @@ const App = () => (
                   <Route path="/terms" element={<Terms />} />
 
                   {/* Discord routes */}
+                  <Route path="/activity" element={<Activity />} />
                   <Route path="/discord" element={<DiscordActivity />} />
                   <Route
                     path="/discord/callback"
@@ -361,9 +363,10 @@ const App = () => (
                 </Routes>
               </PageTransition>
             </BrowserRouter>
-          </TooltipProvider>
-        </DiscordProvider>
-      </Web3Provider>
+            </TooltipProvider>
+          </DiscordProvider>
+        </Web3Provider>
+      </DiscordActivityProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
