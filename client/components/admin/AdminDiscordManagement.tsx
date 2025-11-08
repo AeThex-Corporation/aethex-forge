@@ -47,6 +47,9 @@ export function AdminDiscordManagement() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isRegisteringCommands, setIsRegisteringCommands] = useState(false);
+  const [registerError, setRegisterError] = useState<string | null>(null);
+  const [registerSuccess, setRegisterSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     fetchMappings();
