@@ -166,6 +166,7 @@ const AdminMemberManager = ({
   }, [selectedProfile, loadRoles]);
 
   const filteredProfiles = useMemo(() => {
+    if (!profiles || !Array.isArray(profiles)) return [];
     const value = query.trim().toLowerCase();
     if (!value) return profiles;
     return profiles.filter((profile) => {
