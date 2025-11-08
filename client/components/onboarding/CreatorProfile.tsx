@@ -94,11 +94,7 @@ export default function CreatorProfile({
   };
 
   return (
-    <div
-      className={`space-y-8 transition-all duration-300 ${
-        isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
-      }`}
-    >
+    <div className="space-y-8">
       {/* Bio Section */}
       <div className="space-y-4">
         <div>
@@ -106,13 +102,13 @@ export default function CreatorProfile({
             Creator Bio (Optional)
           </label>
           <textarea
-            value={data.bio || ""}
+            value={creatorData.bio || ""}
             onChange={(e) => handleBioChange(e.target.value)}
             placeholder="Tell the community about yourself, your experience, and what you're passionate about..."
             className="w-full h-24 px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none"
           />
           <p className="text-xs text-gray-400 mt-2">
-            {(data.bio || "").length}/500 characters
+            {(creatorData.bio || "").length}/500 characters
           </p>
         </div>
       </div>
@@ -125,7 +121,7 @@ export default function CreatorProfile({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {AVAILABLE_ARMS.map((arm) => {
             const Icon = arm.icon;
-            const isSelected = data.primaryArm === arm.id;
+            const isSelected = creatorData.primaryArm === arm.id;
             return (
               <button
                 key={arm.id}
@@ -156,7 +152,7 @@ export default function CreatorProfile({
         <label className="text-sm font-semibold text-gray-200 block">
           What are your skills? * <span className="text-xs text-gray-400 font-normal">(Add at least 1)</span>
         </label>
-        
+
         {/* Skills Input */}
         <div className="flex gap-2">
           <Input
@@ -185,9 +181,9 @@ export default function CreatorProfile({
         </div>
 
         {/* Selected Skills */}
-        {data.skills.length > 0 && (
+        {creatorData.skills.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {data.skills.map((skill) => (
+            {creatorData.skills.map((skill: string) => (
               <Badge
                 key={skill}
                 variant="secondary"
@@ -209,9 +205,9 @@ export default function CreatorProfile({
               <button
                 key={skill}
                 onClick={() => handleAddSkill(skill)}
-                disabled={data.skills.includes(skill)}
+                disabled={creatorData.skills.includes(skill)}
                 className={`px-2 py-1 text-xs rounded-md transition-all ${
-                  data.skills.includes(skill)
+                  creatorData.skills.includes(skill)
                     ? "bg-gray-700 text-gray-400 cursor-not-allowed"
                     : "bg-gray-800 text-gray-300 hover:bg-gray-700 cursor-pointer"
                 }`}
@@ -226,16 +222,15 @@ export default function CreatorProfile({
       {/* Navigation */}
       <div className="flex gap-3 pt-8 border-t border-gray-800">
         <Button
-          onClick={onPrev}
+          onClick={prevStep}
           variant="outline"
           className="flex-1"
-          disabled={isTransitioning}
         >
           Back
         </Button>
         <Button
-          onClick={onNext}
-          disabled={!canProceed || isTransitioning}
+          onClick={nextStep}
+          disabled={!canProceed}
           className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
         >
           Continue
