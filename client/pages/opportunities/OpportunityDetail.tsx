@@ -22,7 +22,8 @@ import {
   Clock,
   Send,
 } from "lucide-react";
-import { getOpportunityById, submitApplication } from "@/api/opportunities";
+import { getOpportunityById } from "@/api/opportunities";
+import { submitApplication } from "@/api/applications";
 import { ArmBadge } from "@/components/creator-network/ArmBadge";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { useAuthContext } from "@/contexts/AuthContext";
