@@ -188,7 +188,12 @@ export default function Experience({
               onChange={(e) => setNewSkill(e.target.value)}
               placeholder="Add a skill..."
               className="flex-1 px-3 py-2 text-sm rounded-md border border-border/50 bg-background/50 focus:border-aethex-400 focus:outline-none"
-              onKeyPress={(e) => e.key === "Enter" && handleSkillAdd(newSkill)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSkillAdd(newSkill);
+                }
+              }}
             />
             <Button
               size="sm"
