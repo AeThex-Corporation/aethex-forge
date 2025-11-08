@@ -59,6 +59,7 @@ import {
 export default function Admin() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const normalizedEmail = user?.email?.toLowerCase() ?? "";
 
   // Redirect to login if not authenticated
   useEffect(() => {
