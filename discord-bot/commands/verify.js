@@ -5,13 +5,14 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require("discord.js");
+const { syncRolesAcrossGuilds } = require("../utils/roleManager");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("verify")
     .setDescription("Link your Discord account to your AeThex account"),
 
-  async execute(interaction, supabase) {
+  async execute(interaction, supabase, client) {
     await interaction.deferReply({ ephemeral: true });
 
     try {
