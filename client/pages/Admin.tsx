@@ -16,7 +16,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminStatCard from "@/components/admin/AdminStatCard";
@@ -39,26 +38,13 @@ import {
   PenTool,
   Command,
   Activity,
-  UserCog,
   Settings,
-  ExternalLink,
   ClipboardList,
   Loader2,
-  RefreshCw,
-  CheckCircle,
-  AlertTriangle,
-  XCircle,
-  Server,
-  Database,
-  Wifi,
-  Zap,
-  Heart,
   BarChart3,
   Grid3x3,
-  Gauge,
   MessageSquare,
-  Lock,
-  Globe,
+  Gauge,
 } from "lucide-react";
 
 type Studio = {
@@ -97,12 +83,11 @@ type OpportunityApplication = {
 };
 
 export default function Admin() {
-  const { user, loading } = useAuth();
+  const { user, roles, loading } = useAuth();
   const navigate = useNavigate();
 
-  const normalizedEmail = user?.email?.toLowerCase() ?? "";
-  const ownerEmail = "admin@aethex.tech";
-  const isOwner = normalizedEmail === ownerEmail.toLowerCase();
+  // Role-based access: allow "admin" and "staff" roles
+  const hasAdminAccess = roles.includes("admin") || roles.includes("staff");
 
   useEffect(() => {
     if (!loading && !user) {
@@ -213,7 +198,7 @@ export default function Admin() {
           aethexToast.error({
             title: "Access denied",
             description:
-              "You must be signed in as the owner to view opportunity applications.",
+              "You must be signed in as an admin or staff member to view opportunity applications.",
           });
         } else {
           console.warn("Opportunity applications request failed:", message);
@@ -241,19 +226,19 @@ export default function Admin() {
   if (loading) {
     return (
       <LoadingScreen
-        message="Verifying admin access..."
+        message="Verifying access..."
         showProgress
         duration={1000}
       />
     );
   }
 
-  if (!user || !isOwner) {
+  if (!user || !hasAdminAccess) {
     return (
       <>
         <SEO
-          pageTitle="Admin"
-          description="Administrative controls for AeThex."
+          pageTitle="Admin Control"
+          description="Administrative controls for AeThex platform management."
           canonical={
             typeof window !== "undefined"
               ? window.location.href
@@ -267,8 +252,8 @@ export default function Admin() {
                 <CardHeader>
                   <CardTitle className="text-red-400">Access denied</CardTitle>
                   <CardDescription>
-                    This panel is restricted to {ownerEmail}. If you need
-                    access, contact the site owner.
+                    This panel requires admin or staff access. Your current
+                    roles: {roles.length ? roles.join(", ") : "none"}.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex gap-2">
@@ -308,17 +293,6 @@ export default function Admin() {
     );
   }).length;
 
-  const blogHighlights = useMemo(
-    () =>
-      resolvedBlogPosts.slice(0, 4).map((post) => ({
-        slug: post.slug || String(post.id || "post"),
-        title: post.title || "Untitled",
-        category: post.category || "General",
-        date: post.date || post.published_at || null,
-      })),
-    [resolvedBlogPosts]
-  );
-
   useEffect(() => {
     (async () => {
       try {
@@ -353,7 +327,10 @@ export default function Admin() {
                 Control Center
               </h1>
               <p className="text-muted-foreground">
-                Manage platform, users, content, and integrations
+                Manage platform, users, content, and integrations · Roles:{" "}
+                <span className="text-aethex-300 font-medium">
+                  {roles.join(", ") || "none"}
+                </span>
               </p>
             </div>
 
@@ -589,7 +566,7 @@ export default function Admin() {
                 <AdminMemberManager
                   onSelectedIdChange={(id) => setSelectedMemberId(id)}
                   onRefresh={loadProfiles}
-                  ownerEmail={ownerEmail}
+                  ownerEmail="admin@aethex.tech"
                 />
                 <AdminAchievementManager targetUser={selectedMember} />
                 <AdminSpotlightManager profiles={managedProfiles} />
