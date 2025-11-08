@@ -81,11 +81,14 @@ export default async function handler(
     // POST - Create new role mapping
     if (req.method === "POST") {
       try {
-        const { arm, discord_role, server_id, user_type } = req.body;
+        const { arm, discord_role, discord_role_name, server_id, user_type } = req.body;
 
-        if (!arm || !discord_role) {
+        // Support both discord_role and discord_role_name for compatibility
+        const roleName = discord_role_name || discord_role;
+
+        if (!arm || !roleName) {
           return res.status(400).json({
-            error: "arm and discord_role are required",
+            error: "arm and discord_role (or discord_role_name) are required",
           });
         }
 
@@ -94,7 +97,7 @@ export default async function handler(
           .insert({
             arm,
             user_type: user_type || "community_member",
-            discord_role,
+            discord_role_name: roleName,
             server_id: server_id || null,
           })
           .select()
