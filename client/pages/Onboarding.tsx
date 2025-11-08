@@ -7,6 +7,7 @@ import UserTypeSelection from "@/components/onboarding/UserTypeSelection";
 import PersonalInfo from "@/components/onboarding/PersonalInfo";
 import Experience from "@/components/onboarding/Experience";
 import Interests from "@/components/onboarding/Interests";
+import CreatorProfile from "@/components/onboarding/CreatorProfile";
 import Welcome from "@/components/onboarding/Welcome";
 import { useAuth } from "@/contexts/AuthContext";
 import {
