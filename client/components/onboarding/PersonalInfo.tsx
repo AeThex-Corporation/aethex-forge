@@ -68,7 +68,7 @@ export default function PersonalInfo({
         const userTypeMap: Record<string, string> = {
           "game-developer": "game_developer",
           client: "client",
-          member: "game_developer",
+          member: "community_member",
           customer: "customer",
         };
         await signUp(
