@@ -163,6 +163,41 @@ export function AdminDiscordManagement() {
 
   return (
     <div className="space-y-6">
+      {/* Command Registration */}
+      <Card className="border-blue-500/30 bg-blue-950/20">
+        <CardHeader>
+          <CardTitle>Discord Commands</CardTitle>
+          <CardDescription>Register or update slash commands</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {registerError && (
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-300 text-sm">
+              ❌ {registerError}
+            </div>
+          )}
+          {registerSuccess && (
+            <div className="p-3 bg-green-500/10 border border-green-500/30 rounded text-green-300 text-sm">
+              ✅ {registerSuccess}
+            </div>
+          )}
+          <p className="text-sm text-gray-400">
+            Register Discord slash commands: /verify, /set-realm, /profile,
+            /unlink, /verify-role
+          </p>
+          <Button
+            onClick={handleRegisterCommands}
+            disabled={isRegisteringCommands}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+          >
+            {isRegisteringCommands ? "Registering..." : "Register Commands"}
+          </Button>
+          <p className="text-xs text-gray-500">
+            You'll be prompted to enter your admin registration token. This is a
+            one-time setup.
+          </p>
+        </CardContent>
+      </Card>
+
       {/* Bot Status */}
       <Card className="border-purple-500/30 bg-purple-950/20">
         <CardHeader>
