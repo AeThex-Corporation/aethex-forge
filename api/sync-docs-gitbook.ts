@@ -2,10 +2,15 @@ import { VercelRequest, VercelResponse } from "@vercel/node";
 import { readFileSync } from "fs";
 import { join } from "path";
 
-const GITBOOK_API_TOKEN =
-  process.env.GITBOOK_API_TOKEN ||
-  "gb_api_jORqpp2qlvg7pwlPiIKHAbgcFIDJBIJ1pz09WpIg";
-const GITBOOK_SPACE_ID = process.env.GITBOOK_SPACE_ID || "37ITJTgjD56eN3ZI5qtt";
+const GITBOOK_API_TOKEN = process.env.GITBOOK_API_TOKEN;
+const GITBOOK_SPACE_ID = process.env.GITBOOK_SPACE_ID;
+
+// Validate environment variables
+if (!GITBOOK_API_TOKEN || !GITBOOK_SPACE_ID) {
+  throw new Error(
+    "Missing required environment variables: GITBOOK_API_TOKEN and GITBOOK_SPACE_ID"
+  );
+}
 
 const PAGES = [
   {
