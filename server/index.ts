@@ -1015,7 +1015,10 @@ export function createServer() {
         }
 
         const result = await response.json();
-        console.log("[Discord] Commands registered successfully:", result.length);
+        console.log(
+          "[Discord] Commands registered successfully:",
+          result.length,
+        );
         res.setHeader("Content-Type", "application/json");
         return res.json({
           ok: true,
@@ -1023,11 +1026,16 @@ export function createServer() {
           commands: result,
         });
       } catch (e: any) {
-        console.error("[Discord] Exception registering commands:", e.message, e.stack);
+        console.error(
+          "[Discord] Exception registering commands:",
+          e.message,
+          e.stack,
+        );
         res.setHeader("Content-Type", "application/json");
         return res.status(500).json({
           error: e?.message || "Failed to register commands",
-          details: process.env.NODE_ENV === "development" ? e?.stack : undefined,
+          details:
+            process.env.NODE_ENV === "development" ? e?.stack : undefined,
         });
       }
     });
