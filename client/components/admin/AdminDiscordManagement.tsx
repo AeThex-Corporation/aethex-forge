@@ -389,7 +389,7 @@ export function AdminDiscordManagement() {
                         </Badge>
                       </td>
                       <td className="py-3 px-3 text-gray-300">
-                        {mapping.discord_role}
+                        {mapping.discord_role_name || mapping.discord_role}
                       </td>
                       <td className="py-3 px-3 text-gray-400 text-xs">
                         {mapping.server_id || "Global"}
