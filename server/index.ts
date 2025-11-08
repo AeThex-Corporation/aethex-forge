@@ -732,6 +732,153 @@ export function createServer() {
       }
     });
 
+    // Discord Role Mappings CRUD
+    app.get("/api/discord/role-mappings", async (req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("discord_role_mappings")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("[Discord] Error fetching role mappings:", error);
+          return res.status(500).json({
+            error: `Failed to fetch role mappings: ${error.message}`,
+          });
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        return res.json(data || []);
+      } catch (e: any) {
+        console.error("[Discord] Exception fetching role mappings:", e);
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          error: e?.message || "Failed to fetch role mappings",
+        });
+      }
+    });
+
+    app.post("/api/discord/role-mappings", async (req, res) => {
+      try {
+        const { arm, discord_role, discord_role_name, server_id, user_type } =
+          req.body;
+
+        const roleName = discord_role_name || discord_role;
+        if (!arm || !roleName) {
+          return res.status(400).json({
+            error: "arm and discord_role (or discord_role_name) are required",
+          });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("discord_role_mappings")
+          .insert({
+            arm,
+            user_type: user_type || "community_member",
+            discord_role_name: roleName,
+            server_id: server_id || null,
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error("[Discord] Error creating role mapping:", error);
+          return res.status(500).json({
+            error: `Failed to create mapping: ${error.message}`,
+          });
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        return res.status(201).json(data);
+      } catch (e: any) {
+        console.error("[Discord] Exception creating role mapping:", e);
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          error: e?.message || "Failed to create mapping",
+        });
+      }
+    });
+
+    app.put("/api/discord/role-mappings", async (req, res) => {
+      try {
+        const {
+          id,
+          arm,
+          discord_role,
+          discord_role_name,
+          server_id,
+          user_type,
+        } = req.body;
+
+        if (!id) {
+          return res.status(400).json({ error: "id is required" });
+        }
+
+        const updateData: any = {};
+        if (arm) updateData.arm = arm;
+        const roleName = discord_role_name || discord_role;
+        if (roleName) updateData.discord_role_name = roleName;
+        if (server_id !== undefined) updateData.server_id = server_id;
+        if (user_type) updateData.user_type = user_type;
+
+        const { data, error } = await adminSupabase
+          .from("discord_role_mappings")
+          .update(updateData)
+          .eq("id", id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error("[Discord] Error updating role mapping:", error);
+          return res.status(500).json({
+            error: `Failed to update mapping: ${error.message}`,
+          });
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        return res.json(data);
+      } catch (e: any) {
+        console.error("[Discord] Exception updating role mapping:", e);
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          error: e?.message || "Failed to update mapping",
+        });
+      }
+    });
+
+    app.delete("/api/discord/role-mappings", async (req, res) => {
+      try {
+        const { id } = req.query;
+
+        if (!id) {
+          return res.status(400).json({
+            error: "id query parameter is required",
+          });
+        }
+
+        const { error } = await adminSupabase
+          .from("discord_role_mappings")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          console.error("[Discord] Error deleting role mapping:", error);
+          return res.status(500).json({
+            error: `Failed to delete mapping: ${error.message}`,
+          });
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        return res.json({ success: true });
+      } catch (e: any) {
+        console.error("[Discord] Exception deleting role mapping:", e);
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          error: e?.message || "Failed to delete mapping",
+        });
+      }
+    });
+
     // Site settings (admin-managed)
     app.get("/api/site-settings", async (req, res) => {
       try {
