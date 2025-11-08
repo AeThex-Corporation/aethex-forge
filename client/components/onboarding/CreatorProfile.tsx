@@ -6,15 +6,12 @@ import { useState, useMemo } from "react";
 import { ChevronRight, Zap, Users, Code } from "lucide-react";
 
 interface CreatorProfileProps {
-  data: {
-    bio?: string;
-    skills: string[];
-    primaryArm?: string;
-  };
-  onChange: (data: any) => void;
-  onNext: () => void;
-  onPrev: () => void;
-  isTransitioning: boolean;
+  data: any;
+  updateData: (data: any) => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  currentStep: number;
+  totalSteps: number;
 }
 
 const AVAILABLE_ARMS = [
