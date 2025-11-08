@@ -134,10 +134,10 @@ export default function Corp() {
 
               <div className="space-y-6 mb-12">
                 <h1 className="text-5xl lg:text-7xl font-black text-blue-300 leading-tight">
-                  Transform Your Business
+                  The Profit Engine
                 </h1>
-                <p className="text-xl text-blue-100/80 max-w-3xl">
-                  Enterprise software solutions, digital transformation, and specialized consulting. We help Fortune 500 companies build the technology that drives competitive advantage.
+                <p className="text-xl text-blue-100/70 max-w-3xl">
+                  AeThex Corp delivers high-margin enterprise consulting and specialized software development. We leverage proprietary technologies from Labs to create cutting-edge solutions while generating stable, benchmarkable revenue that funds our ambitious R&D roadmap.
                 </p>
               </div>
 
