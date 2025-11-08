@@ -724,7 +724,7 @@ export default function Admin() {
                 <p className="text-xs text-muted-foreground">
                   Signed in as{" "}
                   <span className="text-foreground">
-                    {normalizedEmail || ownerEmail}
+                    {normalizedEmail}
                   </span>
                 </p>
               </div>
