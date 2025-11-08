@@ -256,6 +256,9 @@ const App = () => (
                   element={<DevLinkProfiles />}
                 />
 
+                {/* Nexus routes */}
+                <Route path="/nexus" element={<Nexus />} />
+
                 {/* Resource routes */}
                 <Route path="/docs" element={<DocsLayout />}>
                   <Route index element={<DocsOverview />} />
