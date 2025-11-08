@@ -13,9 +13,9 @@ This guide will help you configure GitHub and Google OAuth login for your AeThex
 ### 2. Configure Site URL
 
 1. Go to **Authentication** > **Settings**
-2. Set your Site URL to: `https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef.fly.dev`
+2. Set your Site URL to: `https://aethex.dev`
 3. Add Redirect URLs:
-   - `https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef.fly.dev/dashboard`
+   - `https://aethex.dev/dashboard`
    - `http://localhost:8080/dashboard` (for development)
 
 ## 🐙 GitHub OAuth Setup
@@ -26,7 +26,7 @@ This guide will help you configure GitHub and Google OAuth login for your AeThex
 2. Click **New OAuth App**
 3. Fill in the details:
    - **Application name**: `AeThex Application`
-   - **Homepage URL**: `https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef.fly.dev`
+   - **Homepage URL**: `https://aethex.dev`
    - **Authorization callback URL**: `https://kmdeisowhtsalsekkzqd.supabase.co/auth/v1/callback`
 4. Click **Register application**
 5. Copy the **Client ID** and **Client Secret**
