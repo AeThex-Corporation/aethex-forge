@@ -819,7 +819,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [clearClientAuthState]);
 
   const signOut = async () => {
-    // Clear local session immediately - don't show loading
+    // Clear local session immediately
     try {
       await supabase.auth.signOut({
         scope: "local",
@@ -828,33 +828,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.warn("Local sign-out error:", error);
     }
 
+    // Clear state immediately - this ensures buttons appear right away
     clearClientAuthState();
+    setLoading(false);
 
     // Fire and forget global sign-out - don't wait for it, don't block UI
     supabase.auth
       .signOut({ scope: "global" })
       .catch((error) => {
         console.warn("Global sign-out error:", error);
-        // Still try to show a toast even if global fails
-        try {
-          aethexToast.info({
-            title: "Signed out",
-            description: "You have been signed out successfully (local only).",
-          });
-        } catch (e) {
-          /* ignore */
-        }
-      })
-      .then(() => {
-        try {
-          aethexToast.info({
-            title: "Signed out",
-            description: "You have been signed out successfully.",
-          });
-        } catch (e) {
-          /* ignore */
-        }
       });
+
+    // Show toast after UI is updated
+    setTimeout(() => {
+      try {
+        aethexToast.info({
+          title: "Signed out",
+          description: "Come back soon!",
+        });
+      } catch (e) {
+        /* ignore */
+      }
+    }, 100);
   };
 
   const updateProfile = async (updates: Partial<AethexUserProfile>) => {
