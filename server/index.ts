@@ -922,8 +922,9 @@ export function createServer() {
           });
         }
 
-        // Validate token format
-        if (!botToken.includes(".") || botToken.length < 50) {
+        // Validate token format - Discord bot tokens are typically long strings
+        // They don't always have dots, but should be reasonably long
+        if (!botToken || botToken.trim().length < 20) {
           console.warn(
             "[Discord] Bot token appears invalid - length:",
             botToken.length,
