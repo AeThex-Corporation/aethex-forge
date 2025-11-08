@@ -173,7 +173,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!sessionRestored) {
         setLoading(false);
       }
-    }, 8000);
+    }, 3000);
 
     if (!storageClearedRef.current && typeof window !== "undefined") {
       try {
