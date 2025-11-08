@@ -65,6 +65,11 @@ const initialData: OnboardingData = {
     primaryGoals: [],
     preferredServices: [],
   },
+  creatorProfile: {
+    bio: "",
+    skills: [],
+    primaryArm: "",
+  },
 };
 
 export default function Onboarding() {
