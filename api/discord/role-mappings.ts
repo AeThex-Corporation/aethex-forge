@@ -122,7 +122,7 @@ export default async function handler(
     // PUT - Update role mapping
     if (req.method === "PUT") {
       try {
-        const { id, arm, discord_role, server_id, user_type } = req.body;
+        const { id, arm, discord_role, discord_role_name, server_id, user_type } = req.body;
 
         if (!id) {
           return res.status(400).json({ error: "id is required" });
@@ -130,7 +130,8 @@ export default async function handler(
 
         const updateData: any = {};
         if (arm) updateData.arm = arm;
-        if (discord_role) updateData.discord_role = discord_role;
+        const roleName = discord_role_name || discord_role;
+        if (roleName) updateData.discord_role_name = roleName;
         if (server_id !== undefined) updateData.server_id = server_id;
         if (user_type) updateData.user_type = user_type;
 
