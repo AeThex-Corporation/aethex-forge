@@ -100,15 +100,26 @@ export function AdminDiscordManagement() {
         body: JSON.stringify(newMapping),
       });
 
-      if (!response.ok) throw new Error("Failed to create mapping");
+      const contentType = response.headers.get("content-type");
+      if (!contentType?.includes("application/json")) {
+        throw new Error("Server returned non-JSON response");
+      }
+
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create mapping");
+      }
+
       setMappings([...mappings, data]);
       setNewMapping({ arm: "labs", discord_role: "", server_id: "" });
       setSuccess("Role mapping created successfully!");
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to create role mapping";
       console.error("Error creating mapping:", err);
-      setError("Failed to create role mapping");
+      setError(errorMsg);
     }
   };
 
