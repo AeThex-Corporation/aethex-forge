@@ -59,10 +59,74 @@ const handleDiscordInteractions = (
       return res.json({ type: 1 });
     }
 
-    // For all other interactions, acknowledge them
+    // Handle APPLICATION_COMMAND (slash commands)
+    if (interaction.type === 2) {
+      const commandName = interaction.data.name;
+      console.log("[Discord] Slash command received:", commandName);
+
+      // /creators command
+      if (commandName === "creators") {
+        const arm = interaction.data.options?.[0]?.value;
+        const armFilter = arm ? ` (${arm})` : " (all arms)";
+
+        return res.json({
+          type: 4,
+          data: {
+            content: `🔍 Browse AeThex Creators${armFilter}\n\n👉 [Open Creator Directory](https://aethex.dev/creators${arm ? `?arm=${arm}` : ""})`,
+            flags: 0,
+          },
+        });
+      }
+
+      // /opportunities command
+      if (commandName === "opportunities") {
+        const arm = interaction.data.options?.[0]?.value;
+        const armFilter = arm ? ` (${arm})` : " (all arms)";
+
+        return res.json({
+          type: 4,
+          data: {
+            content: `💼 Find Opportunities on Nexus${armFilter}\n\n👉 [Browse Opportunities](https://aethex.dev/opportunities${arm ? `?arm=${arm}` : ""})`,
+            flags: 0,
+          },
+        });
+      }
+
+      // /nexus command
+      if (commandName === "nexus") {
+        return res.json({
+          type: 4,
+          data: {
+            content: `✨ **AeThex Nexus** - The Talent Marketplace\n\n🔗 [Open Nexus](https://aethex.dev/nexus)\n\n**Quick Links:**\n• 🔍 [Browse Creators](https://aethex.dev/creators)\n• 💼 [Find Opportunities](https://aethex.dev/opportunities)\n• 📊 [View Metrics](https://aethex.dev/admin)`,
+            flags: 0,
+          },
+        });
+      }
+
+      // Default command response
+      return res.json({
+        type: 4,
+        data: {
+          content: `✨ AeThex - Advanced Development Platform\n\n**Available Commands:**\n• \`/creators [arm]\` - Browse creators across AeThex arms\n• \`/opportunities [arm]\` - Find job opportunities and collaborations\n• \`/nexus\` - Explore the Talent Marketplace`,
+          flags: 0,
+        },
+      });
+    }
+
+    // For MESSAGE_COMPONENT interactions (buttons, etc.)
+    if (interaction.type === 3) {
+      console.log("[Discord] Message component interaction:", interaction.data.custom_id);
+
+      return res.json({
+        type: 4,
+        data: { content: "Button clicked - feature coming soon!" },
+      });
+    }
+
+    // Acknowledge all other interactions
     return res.json({
       type: 4,
-      data: { content: "Interaction received" },
+      data: { content: "Interaction acknowledged" },
     });
   } catch (err: any) {
     console.error("[Discord] Error:", err?.message);
