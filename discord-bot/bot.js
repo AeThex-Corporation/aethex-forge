@@ -104,56 +104,24 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-// Register slash commands with Discord API
-async function registerCommands() {
-  try {
-    const commands = [];
-    for (const command of client.commands.values()) {
-      commands.push(command.data.toJSON());
-    }
+// IMPORTANT: Commands are now registered via a separate script
+// Run this ONCE during deployment: npm run register-commands
+// This prevents Error 50240 (Entry Point conflict) when Activities are enabled
+// The bot will simply load and listen for the already-registered commands
 
-    const rest = new REST({ version: "10" }).setToken(
-      process.env.DISCORD_BOT_TOKEN,
-    );
-
-    console.log(`📝 Registering ${commands.length} slash commands...`);
-
-    try {
-      const data = await rest.put(
-        Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
-        { body: commands },
-      );
-      console.log(`✅ Successfully registered ${data.length} slash commands.`);
-    } catch (error) {
-      // Handle Entry Point command conflict (Discord Activity)
-      if (error.code === 50240) {
-        console.warn(
-          "⚠️ Entry Point command detected (Discord Activity). Attempting to register without bulk update...",
-        );
-        // Post commands individually to avoid bulk update conflicts
-        for (const command of commands) {
-          await rest.post(
-            Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
-            { body: command },
-          );
-        }
-        console.log(
-          `✅ Successfully registered ${commands.length} slash commands (individual).`,
-        );
-      } else {
-        throw error;
-      }
-    }
-  } catch (error) {
-    console.error("❌ Error registering commands:", error.message || error);
-  }
-}
-
-// Login and register commands
 client.login(process.env.DISCORD_BOT_TOKEN);
 
-client.once("ready", async () => {
-  await registerCommands();
+client.once("ready", () => {
+  console.log(`✅ Bot logged in as ${client.user.tag}`);
+  console.log(`📡 Listening in ${client.guilds.cache.size} server(s)`);
+  console.log(
+    "ℹ️  Commands are registered via: npm run register-commands"
+  );
+
+  // Set bot status
+  client.user.setActivity("/verify to link your AeThex account", {
+    type: "LISTENING",
+  });
 });
 
 // Error handling
