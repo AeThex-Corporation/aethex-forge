@@ -851,8 +851,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setSession(null);
     setLoading(false);
 
-    // Step 2: Clear localStorage
-    console.log("Clearing localStorage...");
+    // Step 2: Clear localStorage and IndexedDB
+    console.log("Clearing localStorage and IndexedDB...");
     if (typeof window !== "undefined") {
       try {
         window.localStorage.removeItem("onboarding_complete");
@@ -862,13 +862,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             (key) =>
               key.startsWith("sb-") ||
               key.includes("supabase") ||
+              key.includes("auth-token") ||
               key.startsWith("mock_") ||
               key.startsWith("demo_"),
           )
           .forEach((key) => window.localStorage.removeItem(key));
         console.log("localStorage cleared");
+
+        // Clear IndexedDB (where Supabase stores sessions)
+        if (window.indexedDB) {
+          const dbs = ["supabase", "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop()];
+          dbs.forEach((dbName) => {
+            try {
+              const req = window.indexedDB.deleteDatabase(dbName);
+              req.onsuccess = () => console.log(`Cleared IndexedDB: ${dbName}`);
+              req.onerror = (e) => console.warn(`Failed to clear IndexedDB: ${dbName}`, e);
+            } catch {}
+          });
+        }
       } catch (e) {
-        console.warn("localStorage clear failed:", e);
+        console.warn("Storage clear failed:", e);
       }
     }
 
