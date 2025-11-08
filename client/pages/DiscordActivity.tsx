@@ -20,7 +20,13 @@ export default function DiscordActivity() {
   useEffect(() => {
     const initDiscordSDK = async () => {
       try {
-        // Discord SDK should be loaded by the script in index.html
+        // Load Discord SDK on demand
+        const loadDiscordSDK = (window as any).loadDiscordSDK;
+        if (loadDiscordSDK) {
+          await loadDiscordSDK();
+        }
+
+        // Discord SDK should now be loaded
         if (!(window as any).DiscordSDK) {
           throw new Error("Discord SDK not loaded");
         }
