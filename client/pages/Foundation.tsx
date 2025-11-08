@@ -167,6 +167,29 @@ export default function Foundation() {
                   Learn Free
                 </Button>
               </div>
+
+              {/* Creator Network CTAs */}
+              <div className="mt-8 pt-8 border-t border-red-400/20">
+                <p className="text-sm text-red-200/70 mb-4">Explore our creator community:</p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-red-400/30 text-red-300 hover:bg-red-500/10"
+                    onClick={() => navigate("/creators?arm=foundation")}
+                  >
+                    Browse Community Creators
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-red-400/30 text-red-300 hover:bg-red-500/10"
+                    onClick={() => navigate("/opportunities?arm=foundation")}
+                  >
+                    View Community Opportunities
+                  </Button>
+                </div>
+              </div>
             </div>
           </section>
 
