@@ -64,8 +64,7 @@ const ARM_LOGOS: Record<string, string> = {
 export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, roles, signOut, loading, profileComplete } = useAuth();
-  const isOwner = Array.isArray(roles) && roles.includes("owner");
+  const { user, profile, signOut, loading, profileComplete } = useAuth();
   const [mobileArmsOpen, setMobileArmsOpen] = useState(false);
 
   const navigation = [
