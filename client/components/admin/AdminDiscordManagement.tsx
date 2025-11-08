@@ -182,10 +182,11 @@ export function AdminDiscordManagement() {
       console.log("[Discord] Response data:", data);
 
       if (!response.ok) {
-        throw new Error(
-          data?.error ||
-            `Server error (${response.status}): Failed to register commands`,
-        );
+        const errorMsg = data?.discordError
+          ? `Discord API error: ${JSON.stringify(data.discordError)}`
+          : data?.error ||
+            `Server error (${response.status}): Failed to register commands`;
+        throw new Error(errorMsg);
       }
 
       setRegisterSuccess(
