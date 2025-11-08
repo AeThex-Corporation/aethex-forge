@@ -78,31 +78,40 @@ export default async function handler(
 
     // POST - Create new role mapping
     if (req.method === "POST") {
-      const { arm, discord_role, server_id, user_type } = req.body;
+      try {
+        const { arm, discord_role, server_id, user_type } = req.body;
 
-      if (!arm || !discord_role) {
-        return res
-          .status(400)
-          .json({ error: "arm and discord_role are required" });
+        if (!arm || !discord_role) {
+          return res.status(400).json({
+            error: "arm and discord_role are required",
+          });
+        }
+
+        const { data, error } = await supabase
+          .from("discord_role_mappings")
+          .insert({
+            arm,
+            user_type: user_type || "community_member",
+            discord_role,
+            server_id: server_id || null,
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error("Supabase error:", error);
+          return res.status(500).json({
+            error: `Failed to create mapping: ${error.message}`,
+          });
+        }
+
+        return res.status(201).json(data);
+      } catch (insertErr: any) {
+        console.error("Insert error:", insertErr);
+        return res.status(500).json({
+          error: `Insert error: ${insertErr?.message || "Unknown error"}`,
+        });
       }
-
-      const { data, error } = await supabase
-        .from("discord_role_mappings")
-        .insert({
-          arm,
-          user_type: user_type || "community_member",
-          discord_role,
-          server_id: server_id || null,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error("Supabase error:", error);
-        return res.status(500).json({ error: "Failed to create mapping" });
-      }
-
-      return res.status(201).json(data);
     }
 
     // PUT - Update role mapping
