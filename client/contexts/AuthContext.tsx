@@ -872,6 +872,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         description: "You have been signed out successfully.",
       });
     }
+
+    // Ensure loading is always false after sign-out completes
+    setLoading(false);
   };
 
   const updateProfile = async (updates: Partial<AethexUserProfile>) => {
