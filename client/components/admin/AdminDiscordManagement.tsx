@@ -88,8 +88,8 @@ export function AdminDiscordManagement() {
 
   const handleCreateMapping = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMapping.discord_role) {
-      setError("Discord role is required");
+    if (!newMapping.discord_role_name) {
+      setError("Discord role name is required");
       return;
     }
 
