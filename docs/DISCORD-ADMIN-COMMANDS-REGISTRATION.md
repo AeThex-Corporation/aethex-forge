@@ -24,10 +24,12 @@ Click this button.
 A popup will appear asking for your **admin registration token**.
 
 This token is:
+
 - Set in your Vercel environment variables as `DISCORD_ADMIN_REGISTER_TOKEN`
 - A random secure string (e.g., `sk-admin-aethex-discord-2024`)
 
 **Example popup:**
+
 ```
 Enter admin registration token (from environment variables):
 [_________________________]  [OK]  [Cancel]
@@ -40,16 +42,19 @@ The button will show **"Registering..."** with a spinning loader.
 Once complete, you'll see one of:
 
 **✅ Success:**
+
 ```
 ✅ Registered 5 new commands (Entry Point already exists)
 ```
 
 **⚠️ Partial Success (Error 50240):**
+
 ```
 ✅ Registered 5 new commands (Entry Point managed by Discord)
 ```
 
 **❌ Error:**
+
 ```
 ❌ Invalid or expired access token
 ```
@@ -77,6 +82,7 @@ Plus Discord's auto-generated **"Entry Point"** command (for Discord Activities)
 **Issue:** Getting this error when registering.
 
 **Solution:**
+
 1. Check your `DISCORD_ADMIN_REGISTER_TOKEN` environment variable in Vercel
 2. Make sure you entered the token exactly as it's set (case-sensitive)
 3. Verify token doesn't have extra spaces
@@ -86,6 +92,7 @@ Plus Discord's auto-generated **"Entry Point"** command (for Discord Activities)
 **Issue:** Generic error when clicking the button.
 
 **Check:**
+
 1. Is your bot deployed on PebbleHost?
 2. Are your `DISCORD_BOT_TOKEN` and `DISCORD_CLIENT_ID` env vars set on Vercel (backend)?
 3. Open browser console (F12) → Network tab → Check the POST request to `/api/discord/admin-register-commands`
@@ -93,6 +100,7 @@ Plus Discord's auto-generated **"Entry Point"** command (for Discord Activities)
 ### "Entry Point command already exists" (Not an Error)
 
 **This is expected!** When you enable Discord Activities:
+
 1. Discord auto-creates an "Entry Point" command
 2. Our script recognizes this and doesn't try to overwrite it
 3. Your bot's 5 commands live alongside it peacefully
@@ -102,6 +110,7 @@ Plus Discord's auto-generated **"Entry Point"** command (for Discord Activities)
 ## Environment Variables Required
 
 **On Vercel (Backend):**
+
 ```
 DISCORD_BOT_TOKEN=<your-bot-token>
 DISCORD_CLIENT_ID=578971245454950421
@@ -109,6 +118,7 @@ DISCORD_ADMIN_REGISTER_TOKEN=sk-admin-aethex-discord-2024
 ```
 
 **On PebbleHost (Bot):**
+
 ```
 DISCORD_BOT_TOKEN=<your-bot-token>
 DISCORD_CLIENT_ID=578971245454950421
@@ -124,6 +134,7 @@ SUPABASE_SERVICE_ROLE=<your-service-role>
 If the admin button doesn't work, you can also register commands using:
 
 ### curl (if you have PebbleHost console access)
+
 ```bash
 curl -X POST https://aethex.dev/api/discord/admin-register-commands \
   -H "Authorization: Bearer YOUR_DISCORD_ADMIN_REGISTER_TOKEN" \
@@ -131,6 +142,7 @@ curl -X POST https://aethex.dev/api/discord/admin-register-commands \
 ```
 
 ### Postman
+
 1. Create POST request to `https://aethex.dev/api/discord/admin-register-commands`
 2. Add header: `Authorization: Bearer YOUR_DISCORD_ADMIN_REGISTER_TOKEN`
 3. Click Send
@@ -142,6 +154,6 @@ curl -X POST https://aethex.dev/api/discord/admin-register-commands \
 ✅ Click "Register Commands" in Admin → Discord tab  
 ✅ Enter your admin token  
 ✅ Wait for success confirmation  
-✅ Commands are now live in Discord  
+✅ Commands are now live in Discord
 
 Done! 🎉

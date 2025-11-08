@@ -11,11 +11,13 @@ If you can't run `npm` in your development environment, follow this guide to dep
 Add these to your deployment platform (Vercel, PebbleHost):
 
 ### Vercel (Frontend)
+
 ```
 VITE_DISCORD_CLIENT_ID=578971245454950421
 ```
 
 ### PebbleHost (Discord Bot)
+
 ```
 DISCORD_BOT_TOKEN=<your-token>
 DISCORD_CLIENT_ID=578971245454950421
@@ -26,6 +28,7 @@ BOT_PORT=3000
 ```
 
 ### Vercel (Backend - for command registration)
+
 ```
 DISCORD_BOT_TOKEN=<your-token>
 DISCORD_CLIENT_ID=578971245454950421
@@ -68,15 +71,15 @@ You can add a button to `/admin` panel that triggers this endpoint:
 
 ```typescript
 async function registerCommands() {
-  const response = await fetch('/api/discord/admin-register-commands', {
-    method: 'POST',
+  const response = await fetch("/api/discord/admin-register-commands", {
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${process.env.DISCORD_ADMIN_REGISTER_TOKEN}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.DISCORD_ADMIN_REGISTER_TOKEN}`,
+      "Content-Type": "application/json",
     },
   });
   const data = await response.json();
-  console.log('Registration result:', data);
+  console.log("Registration result:", data);
 }
 ```
 
@@ -131,10 +134,12 @@ Command registration happens via the API endpoint (Step 3), not on bot startup.
 ### Error 50240: "Cannot remove Entry Point command"
 
 **This happens if:**
+
 - You enable Activities, then the bot tries to register commands via bulk update
 - The bot is trying to overwrite the auto-generated Entry Point command
 
 **Solution:**
+
 - ✅ Your bot code has been fixed (bot no longer registers on startup)
 - Just call the `/api/discord/admin-register-commands` endpoint (Step 3)
 - The endpoint handles Error 50240 gracefully
@@ -142,6 +147,7 @@ Command registration happens via the API endpoint (Step 3), not on bot startup.
 ### Activity not loading in Discord
 
 **Check:**
+
 1. Activities enabled in Discord Developer Portal ✅
 2. Activity URL is set to `https://aethex.dev/activity` (not an IP) ✅
 3. Frontend is deployed to Vercel ✅
@@ -151,6 +157,7 @@ Command registration happens via the API endpoint (Step 3), not on bot startup.
 ### "Unauthorized" error when calling register endpoint
 
 **Check:**
+
 1. `DISCORD_ADMIN_REGISTER_TOKEN` is set in Vercel environment variables
 2. You're passing the correct token in the `Authorization: Bearer` header
 3. The token matches exactly (no extra spaces)
@@ -158,6 +165,7 @@ Command registration happens via the API endpoint (Step 3), not on bot startup.
 ### Bot not responding to commands
 
 **Check:**
+
 1. Bot is online on PebbleHost (check logs)
 2. Commands are registered (call `/api/discord/admin-register-commands` and check response)
 3. Response shows commands registered successfully
@@ -167,13 +175,13 @@ Command registration happens via the API endpoint (Step 3), not on bot startup.
 
 ## Quick Reference
 
-| What | How |
-|------|-----|
-| Enable Activities | Discord Developer Portal → Settings → Activities → Enable |
+| What              | How                                                            |
+| ----------------- | -------------------------------------------------------------- |
+| Enable Activities | Discord Developer Portal → Settings → Activities → Enable      |
 | Register Commands | POST to `/api/discord/admin-register-commands` with auth token |
-| Deploy Bot | Push to PebbleHost, bot starts with `npm start` |
-| Deploy Frontend | Push to GitHub, Vercel auto-deploys |
-| Test Activity | Open Discord, click Activity button, should load |
+| Deploy Bot        | Push to PebbleHost, bot starts with `npm start`                |
+| Deploy Frontend   | Push to GitHub, Vercel auto-deploys                            |
+| Test Activity     | Open Discord, click Activity button, should load               |
 
 ---
 
@@ -209,6 +217,6 @@ Plus the auto-generated **Entry Point** command (managed by Discord for Activiti
 ✅ Everything can be deployed via web interfaces  
 ✅ Commands registered via API endpoint  
 ✅ Error 50240 handled automatically  
-✅ Activity loads instantly in Discord  
+✅ Activity loads instantly in Discord
 
 **You're all set!** 🚀

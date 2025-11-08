@@ -132,7 +132,9 @@ export default function Activity() {
               <code className="bg-blue-800 px-2 py-1 rounded">/profile</code>,{" "}
               <code className="bg-blue-800 px-2 py-1 rounded">/set-realm</code>,
               and{" "}
-              <code className="bg-blue-800 px-2 py-1 rounded">/verify-role</code>{" "}
+              <code className="bg-blue-800 px-2 py-1 rounded">
+                /verify-role
+              </code>{" "}
               to manage your account within Discord.
             </p>
           </div>

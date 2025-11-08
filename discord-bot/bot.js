@@ -114,9 +114,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 client.once("ready", () => {
   console.log(`✅ Bot logged in as ${client.user.tag}`);
   console.log(`📡 Listening in ${client.guilds.cache.size} server(s)`);
-  console.log(
-    "ℹ️  Commands are registered via: npm run register-commands"
-  );
+  console.log("ℹ️  Commands are registered via: npm run register-commands");
 
   // Set bot status
   client.user.setActivity("/verify to link your AeThex account", {

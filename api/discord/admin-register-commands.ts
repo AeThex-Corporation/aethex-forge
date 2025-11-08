@@ -46,10 +46,7 @@ const COMMANDS: CommandData[] = [
   },
 ];
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Verify this is a POST request
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -77,18 +74,16 @@ export default async function handler(
 
   try {
     const rest = new REST({ version: "10" }).setToken(
-      process.env.DISCORD_BOT_TOKEN!
+      process.env.DISCORD_BOT_TOKEN!,
     );
 
-    console.log(
-      `📝 Registering ${COMMANDS.length} Discord slash commands...`
-    );
+    console.log(`📝 Registering ${COMMANDS.length} Discord slash commands...`);
 
     try {
       // Try bulk update first
       const data = await rest.put(
         Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
-        { body: COMMANDS }
+        { body: COMMANDS },
       );
 
       console.log(`✅ Successfully registered ${data.length} slash commands`);
@@ -102,7 +97,7 @@ export default async function handler(
       // Handle Error 50240 (Entry Point conflict)
       if (bulkError.code === 50240) {
         console.warn(
-          "⚠️ Error 50240: Entry Point detected. Registering individually..."
+          "⚠️ Error 50240: Entry Point detected. Registering individually...",
         );
 
         const results = [];
@@ -114,7 +109,7 @@ export default async function handler(
             // Try to post individual command
             const posted = await rest.post(
               Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
-              { body: command }
+              { body: command },
             );
             results.push({
               name: command.name,
@@ -141,7 +136,7 @@ export default async function handler(
         }
 
         console.log(
-          `✅ Registration complete: ${successCount} new, ${skipCount} already existed`
+          `✅ Registration complete: ${successCount} new, ${skipCount} already existed`,
         );
 
         return res.status(200).json({

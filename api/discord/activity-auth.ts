@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_ROLE || ""
+  process.env.SUPABASE_SERVICE_ROLE || "",
 );
 
 interface ActivityAuthRequest {
@@ -21,10 +21,7 @@ interface UserData {
   primary_arm: string | null;
 }
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
@@ -38,15 +35,20 @@ export default async function handler(
     }
 
     // Verify the access token with Discord API
-    const discordResponse = await fetch("https://discord.com/api/v10/users/@me", {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
+    const discordResponse = await fetch(
+      "https://discord.com/api/v10/users/@me",
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
       },
-    });
+    );
 
     if (!discordResponse.ok) {
       if (discordResponse.status === 401) {
-        return res.status(401).json({ error: "Invalid or expired access token" });
+        return res
+          .status(401)
+          .json({ error: "Invalid or expired access token" });
       }
       throw new Error(`Discord API error: ${discordResponse.statusText}`);
     }

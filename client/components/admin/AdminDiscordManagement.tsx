@@ -127,7 +127,7 @@ export function AdminDiscordManagement() {
       setRegisterSuccess(null);
 
       const adminToken = prompt(
-        "Enter admin registration token (from environment variables):"
+        "Enter admin registration token (from environment variables):",
       );
       if (!adminToken) {
         setRegisterError("Registration cancelled");
@@ -149,7 +149,7 @@ export function AdminDiscordManagement() {
 
       const data = await response.json();
       setRegisterSuccess(
-        data.message || "Discord commands registered successfully!"
+        data.message || "Discord commands registered successfully!",
       );
       setTimeout(() => setRegisterSuccess(null), 5000);
     } catch (err) {

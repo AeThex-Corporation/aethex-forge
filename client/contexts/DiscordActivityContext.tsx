@@ -31,7 +31,7 @@ export const useDiscordActivity = () => {
   const context = useContext(DiscordActivityContext);
   if (!context) {
     throw new Error(
-      "useDiscordActivity must be used within DiscordActivityProvider"
+      "useDiscordActivity must be used within DiscordActivityProvider",
     );
   }
   return context;
@@ -41,9 +41,9 @@ interface DiscordActivityProviderProps {
   children: React.ReactNode;
 }
 
-export const DiscordActivityProvider: React.FC<DiscordActivityProviderProps> = ({
-  children,
-}) => {
+export const DiscordActivityProvider: React.FC<
+  DiscordActivityProviderProps
+> = ({ children }) => {
   const [isActivity, setIsActivity] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<DiscordUser | null>(null);
@@ -64,11 +64,10 @@ export const DiscordActivityProvider: React.FC<DiscordActivityProviderProps> = (
           setIsLoading(true);
 
           // Import the Discord SDK dynamically
-          const { DiscordSDK } = await import(
-            "@discord/embedded-app-sdk"
-          );
+          const { DiscordSDK } = await import("@discord/embedded-app-sdk");
 
-          const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
+          const clientId =
+            import.meta.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
 
           const sdk = new DiscordSDK({
             clientId,
@@ -119,7 +118,7 @@ export const DiscordActivityProvider: React.FC<DiscordActivityProviderProps> = (
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                access_token: currentUser.access_token || ""
+                access_token: currentUser.access_token || "",
               }),
             });
 
