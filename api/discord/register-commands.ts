@@ -48,6 +48,11 @@ const commands = [
     description: "Explore the AeThex Talent Marketplace",
     type: 1,
   },
+  {
+    name: "help",
+    description: "Get help about AeThex Discord commands",
+    type: 1,
+  },
 ];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
