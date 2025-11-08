@@ -27,7 +27,7 @@ import {
   FileText,
   Settings,
   Bug,
-  Lightbulb,
+  Sparkles,
   Shield,
   Zap,
 } from "lucide-react";
@@ -167,7 +167,7 @@ export default function Support() {
     {
       title: "Feature Requests",
       description: "Suggest new features and improvements",
-      icon: Lightbulb,
+      icon: Sparkles,
       link: "/feedback",
       color: "from-yellow-500 to-orange-600",
     },
