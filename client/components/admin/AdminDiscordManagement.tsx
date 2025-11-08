@@ -112,7 +112,7 @@ export function AdminDiscordManagement() {
       }
 
       setMappings([...mappings, data]);
-      setNewMapping({ arm: "labs", discord_role: "", server_id: "" });
+      setNewMapping({ arm: "labs", discord_role_name: "", server_id: "" });
       setSuccess("Role mapping created successfully!");
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
