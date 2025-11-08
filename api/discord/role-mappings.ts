@@ -44,21 +44,36 @@ export default async function handler(
   }
 
   try {
+    // Validate Supabase is initialized
+    if (!supabase) {
+      console.error("Supabase client not initialized");
+      return res.status(500).json({
+        error: "Server configuration error: Missing Supabase credentials",
+      });
+    }
+
     // GET - Fetch all role mappings
     if (req.method === "GET") {
-      const { data, error } = await supabase
-        .from("discord_role_mappings")
-        .select("*")
-        .order("created_at", { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from("discord_role_mappings")
+          .select("*")
+          .order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Supabase error:", error);
-        return res
-          .status(500)
-          .json({ error: "Failed to fetch role mappings" });
+        if (error) {
+          console.error("Supabase error:", error);
+          return res.status(500).json({
+            error: `Failed to fetch role mappings: ${error.message}`,
+          });
+        }
+
+        return res.status(200).json(data || []);
+      } catch (queryErr: any) {
+        console.error("Query error:", queryErr);
+        return res.status(500).json({
+          error: `Database query error: ${queryErr?.message || "Unknown error"}`,
+        });
       }
-
-      return res.status(200).json(data || []);
     }
 
     // POST - Create new role mapping
