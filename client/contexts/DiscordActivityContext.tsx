@@ -59,12 +59,14 @@ export const DiscordActivityProvider: React.FC<DiscordActivityProviderProps> = (
           setIsLoading(true);
 
           // Import the Discord SDK dynamically
-          const { DiscordSDKMixin } = await import(
+          const { DiscordSDK } = await import(
             "@discord/embedded-app-sdk"
           );
 
-          const sdk = new DiscordSDKMixin({
-            clientId: import.meta.env.VITE_DISCORD_CLIENT_ID || "578971245454950421",
+          const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
+
+          const sdk = new DiscordSDK({
+            clientId,
           });
 
           setDiscordSdk(sdk);
@@ -72,35 +74,64 @@ export const DiscordActivityProvider: React.FC<DiscordActivityProviderProps> = (
           // Wait for SDK to be ready
           await sdk.ready();
 
-          // Authorize with Discord
-          const { access_token } = await sdk.commands.authorize({
-            client_id: import.meta.env.VITE_DISCORD_CLIENT_ID || "578971245454950421",
-            response_type: "token",
-            scope: ["identify", "guilds"],
-          });
+          // Get the current user from the SDK
+          const currentUser = await sdk.user.getUser();
 
-          // Exchange access token for user data via our proxy
-          const response = await fetch("/api/discord/activity-auth", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ access_token }),
-          });
+          if (!currentUser) {
+            // User not authenticated, authorize them
+            const { access_token } = await sdk.commands.authorize({
+              scopes: ["identify", "guilds"],
+            });
 
-          if (!response.ok) {
-            const errorData = await response.json();
-            setError(errorData.error || "Failed to authenticate");
-            setIsLoading(false);
-            return;
-          }
+            // Exchange access token for user data via our proxy
+            const response = await fetch("/api/discord/activity-auth", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ access_token }),
+            });
 
-          const data = await response.json();
-          if (data.success && data.user) {
-            setUser(data.user);
-            setError(null);
+            if (!response.ok) {
+              const errorData = await response.json();
+              setError(errorData.error || "Failed to authenticate");
+              setIsLoading(false);
+              return;
+            }
+
+            const data = await response.json();
+            if (data.success && data.user) {
+              setUser(data.user);
+              setError(null);
+            } else {
+              setError("Authentication failed");
+            }
           } else {
-            setError("Authentication failed");
+            // User already authenticated, just fetch via our proxy
+            const response = await fetch("/api/discord/activity-auth", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                access_token: currentUser.access_token || ""
+              }),
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              setError(errorData.error || "Failed to fetch user data");
+              setIsLoading(false);
+              return;
+            }
+
+            const data = await response.json();
+            if (data.success && data.user) {
+              setUser(data.user);
+              setError(null);
+            } else {
+              setError("Failed to load user data");
+            }
           }
         } catch (err: any) {
           console.error("Discord Activity initialization error:", err);
