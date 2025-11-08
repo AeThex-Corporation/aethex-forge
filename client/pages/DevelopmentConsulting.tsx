@@ -30,7 +30,6 @@ import {
   Cloud,
   Settings,
   BarChart3,
-  Sparkles,
   Puzzle,
   Rocket,
   Globe,
