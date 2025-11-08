@@ -21,7 +21,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const token = authHeader.substring(7);
 
     // Verify token with Supabase
-    const { data: userData, error: authError } = await supabase.auth.getUser(token);
+    const { data: userData, error: authError } =
+      await supabase.auth.getUser(token);
     if (authError || !userData.user) {
       return res.status(401).json({ error: "Invalid token" });
     }

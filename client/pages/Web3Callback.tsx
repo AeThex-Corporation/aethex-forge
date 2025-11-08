@@ -60,7 +60,8 @@ export default function Web3Callback() {
         if (user && data.success) {
           toastSuccess({
             title: "Wallet linked",
-            description: "Your Ethereum wallet is now connected to your account",
+            description:
+              "Your Ethereum wallet is now connected to your account",
           });
           navigate("/dashboard?tab=connections");
           return;
@@ -93,11 +94,21 @@ export default function Web3Callback() {
     if (account && !authLoading) {
       handleWeb3Auth();
     }
-  }, [account, authLoading, signMessage, user, navigate, toastError, toastSuccess]);
+  }, [
+    account,
+    authLoading,
+    signMessage,
+    user,
+    navigate,
+    toastError,
+    toastSuccess,
+  ]);
 
   return (
     <LoadingScreen
-      message={isProcessing ? "Verifying your wallet..." : "Connecting wallet..."}
+      message={
+        isProcessing ? "Verifying your wallet..." : "Connecting wallet..."
+      }
       showProgress={true}
       duration={5000}
     />

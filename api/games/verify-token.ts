@@ -13,7 +13,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { session_token, game } = req.method === "POST" ? req.body : req.query;
+    const { session_token, game } =
+      req.method === "POST" ? req.body : req.query;
 
     if (!session_token) {
       return res.status(400).json({ error: "session_token is required" });
@@ -22,7 +23,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Find the session
     const { data: sessionData, error: sessionError } = await supabase
       .from("game_sessions")
-      .select("*, user_profiles!inner(id, username, email, full_name, metadata)")
+      .select(
+        "*, user_profiles!inner(id, username, email, full_name, metadata)",
+      )
       .eq("session_token", String(session_token))
       .single();
 
@@ -38,7 +41,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Optional: Verify game matches if provided
     if (game && sessionData.game !== String(game).toLowerCase()) {
-      return res.status(403).json({ error: "Token is not valid for this game" });
+      return res
+        .status(403)
+        .json({ error: "Token is not valid for this game" });
     }
 
     // Update last activity

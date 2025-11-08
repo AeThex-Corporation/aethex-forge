@@ -24,7 +24,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Verify request is from Discord bot (simple verification)
   const authorization = req.headers.authorization;
-  if (!authorization || authorization !== `Bearer ${process.env.DISCORD_BOT_TOKEN}`) {
+  if (
+    !authorization ||
+    authorization !== `Bearer ${process.env.DISCORD_BOT_TOKEN}`
+  ) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 

@@ -31,7 +31,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const clientId = process.env.ROBLOX_OAUTH_CLIENT_ID;
     const clientSecret = process.env.ROBLOX_OAUTH_CLIENT_SECRET;
     const redirectUri =
-      process.env.ROBLOX_OAUTH_REDIRECT_URI || "https://aethex.dev/roblox-callback";
+      process.env.ROBLOX_OAUTH_REDIRECT_URI ||
+      "https://aethex.dev/roblox-callback";
 
     if (!clientId || !clientSecret) {
       return res.status(500).json({ error: "Roblox OAuth not configured" });
@@ -59,9 +60,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const tokenData: RobloxTokenResponse = await tokenResponse.json();
 
     // Get user info with access token
-    const userResponse = await fetch("https://apis.roblox.com/oauth/v1/userinfo", {
-      headers: { Authorization: `Bearer ${tokenData.access_token}` },
-    });
+    const userResponse = await fetch(
+      "https://apis.roblox.com/oauth/v1/userinfo",
+      {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` },
+      },
+    );
 
     if (!userResponse.ok) {
       console.error("Failed to fetch Roblox user info");

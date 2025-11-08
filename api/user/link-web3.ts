@@ -22,7 +22,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const token = authHeader.substring(7);
 
     // Verify token with Supabase
-    const { data: userData, error: authError } = await supabase.auth.getUser(token);
+    const { data: userData, error: authError } =
+      await supabase.auth.getUser(token);
     if (authError || !userData.user) {
       return res.status(401).json({ error: "Invalid token" });
     }
@@ -66,15 +67,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .eq("nonce", nonce);
 
     // Link wallet to existing user
-    const { error: linkError } = await supabase
-      .from("web3_wallets")
-      .insert({
-        user_id: userData.user.id,
-        wallet_address: normalizedAddress,
-        chain_id: 1, // Ethereum mainnet
-      });
+    const { error: linkError } = await supabase.from("web3_wallets").insert({
+      user_id: userData.user.id,
+      wallet_address: normalizedAddress,
+      chain_id: 1, // Ethereum mainnet
+    });
 
-    if (linkError && !linkError.message.includes("violates unique constraint")) {
+    if (
+      linkError &&
+      !linkError.message.includes("violates unique constraint")
+    ) {
       console.error("Failed to link wallet:", linkError);
       return res.status(500).json({ error: "Failed to link wallet" });
     }

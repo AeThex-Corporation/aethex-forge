@@ -836,8 +836,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         window.localStorage.removeItem("onboarding_complete");
         window.localStorage.removeItem("aethex_onboarding_progress_v1");
         Object.keys(window.localStorage)
-          .filter(key => key.startsWith("sb-") || key.includes("supabase") || key.startsWith("mock_") || key.startsWith("demo_"))
-          .forEach(key => window.localStorage.removeItem(key));
+          .filter(
+            (key) =>
+              key.startsWith("sb-") ||
+              key.includes("supabase") ||
+              key.startsWith("mock_") ||
+              key.startsWith("demo_"),
+          )
+          .forEach((key) => window.localStorage.removeItem(key));
         console.log("localStorage cleared");
       } catch (e) {
         console.warn("localStorage clear failed:", e);

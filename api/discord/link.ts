@@ -64,18 +64,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (existingLink) {
       return res.status(409).json({
-        error: "This Discord account is already linked to another AeThex account",
+        error:
+          "This Discord account is already linked to another AeThex account",
       });
     }
 
     // Create the link
-    const { error: linkError } = await supabase
-      .from("discord_links")
-      .insert({
-        discord_id: verification.discord_id,
-        user_id,
-        primary_arm: "labs", // Default to labs
-      });
+    const { error: linkError } = await supabase.from("discord_links").insert({
+      discord_id: verification.discord_id,
+      user_id,
+      primary_arm: "labs", // Default to labs
+    });
 
     if (linkError) {
       console.error("Failed to create discord link:", linkError);

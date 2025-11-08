@@ -47,7 +47,8 @@ export default function RobloxCallback() {
           const errorData = await response.json();
           toastError({
             title: "Authentication failed",
-            description: errorData.error || "Could not authenticate with Roblox",
+            description:
+              errorData.error || "Could not authenticate with Roblox",
           });
           navigate("/login");
           return;

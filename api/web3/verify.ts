@@ -80,15 +80,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const username = normalizedAddress.substring(2, 10);
 
     // Create Supabase auth user
-    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-      email,
-      password: require("crypto").randomBytes(32).toString("hex"),
-      email_confirm: true,
-      user_metadata: {
-        wallet_address: normalizedAddress,
-        auth_method: "web3",
-      },
-    });
+    const { data: authData, error: authError } =
+      await supabase.auth.admin.createUser({
+        email,
+        password: require("crypto").randomBytes(32).toString("hex"),
+        email_confirm: true,
+        user_metadata: {
+          wallet_address: normalizedAddress,
+          auth_method: "web3",
+        },
+      });
 
     if (authError || !authData.user) {
       console.error("Failed to create auth user:", authError);

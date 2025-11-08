@@ -55,7 +55,8 @@ export default function DiscordVerify() {
 
         toastSuccess({
           title: "Discord Linked!",
-          description: "Your Discord account has been successfully linked to AeThex",
+          description:
+            "Your Discord account has been successfully linked to AeThex",
         });
 
         // Redirect to profile settings

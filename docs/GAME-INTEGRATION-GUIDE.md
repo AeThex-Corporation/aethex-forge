@@ -16,6 +16,7 @@ This guide covers how to integrate AeThex authentication with game engines: Robl
 ## Overview
 
 AeThex provides a unified authentication system for games to:
+
 - Authenticate players across different platforms
 - Link player accounts to Roblox, Ethereum wallets, and other providers
 - Store player profiles and achievements
@@ -53,13 +54,13 @@ function AethexAuth:authenticate(playerId, playerName)
         player_name = playerName,
         platform = "PC"
     })
-    
+
     local response = game:GetService("HttpService"):PostAsync(
         API_BASE .. "/games/game-auth",
         body,
         Enum.HttpContentType.ApplicationJson
     )
-    
+
     local data = game:GetService("HttpService"):JSONDecode(response)
     return data
 end
@@ -73,7 +74,7 @@ function AethexAuth:verifyToken(sessionToken)
         }),
         Enum.HttpContentType.ApplicationJson
     )
-    
+
     return game:GetService("HttpService"):JSONDecode(response)
 end
 
@@ -88,7 +89,7 @@ local AethexAuth = require(game.ServerScriptService:WaitForChild("AethexAuth"))
 
 Players.PlayerAdded:Connect(function(player)
     local authResult = AethexAuth:authenticate(player.UserId, player.Name)
-    
+
     if authResult.success then
         player:SetAttribute("AethexSessionToken", authResult.session_token)
         player:SetAttribute("AethexUserId", authResult.user_id)
@@ -118,7 +119,7 @@ using System.Collections;
 public class AethexAuth : MonoBehaviour
 {
     private const string API_BASE = "https://aethex.dev/api";
-    
+
     [System.Serializable]
     public class AuthResponse
     {
@@ -129,7 +130,7 @@ public class AethexAuth : MonoBehaviour
         public int expires_in;
         public string error;
     }
-    
+
     public static IEnumerator AuthenticatePlayer(
         string playerId,
         string playerName,
@@ -139,7 +140,7 @@ public class AethexAuth : MonoBehaviour
             $"{API_BASE}/games/game-auth",
             "POST"
         );
-        
+
         var requestBody = new AuthRequest
         {
             game = "unity",
@@ -147,14 +148,14 @@ public class AethexAuth : MonoBehaviour
             player_name = playerName,
             platform = "PC"
         };
-        
+
         string jsonBody = JsonUtility.ToJson(requestBody);
         request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonBody));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        
+
         yield return request.SendWebRequest();
-        
+
         if (request.result == UnityWebRequest.Result.Success)
         {
             var response = JsonUtility.FromJson<AuthResponse>(request.downloadHandler.text);
@@ -165,7 +166,7 @@ public class AethexAuth : MonoBehaviour
             callback(new AuthResponse { error = request.error });
         }
     }
-    
+
     [System.Serializable]
     private class AuthRequest
     {
@@ -186,10 +187,10 @@ public class GameManager : MonoBehaviour
     {
         string playerId = SystemInfo.deviceUniqueIdentifier;
         string playerName = "UnityPlayer_" + Random.Range(1000, 9999);
-        
+
         StartCoroutine(AethexAuth.AuthenticatePlayer(playerId, playerName, OnAuthComplete));
     }
-    
+
     void OnAuthComplete(AethexAuth.AuthResponse response)
     {
         if (response.success)
@@ -231,12 +232,12 @@ public:
         int32 ExpiresIn;
         FString Error;
     };
-    
+
     static void AuthenticatePlayer(
         const FString& PlayerId,
         const FString& PlayerName,
         TFunction<void(const FAuthResponse&)> OnComplete);
-    
+
 private:
     static void OnAuthResponse(
         FHttpRequestPtr Request,
@@ -259,30 +260,30 @@ void FAethexAuth::AuthenticatePlayer(
     TFunction<void(const FAuthResponse&)> OnComplete)
 {
     FHttpModule& HttpModule = FHttpModule::Get();
-    TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = 
+    TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request =
         HttpModule.CreateRequest();
-    
+
     Request->SetURL(TEXT("https://aethex.dev/api/games/game-auth"));
     Request->SetVerb(TEXT("POST"));
     Request->SetHeader(TEXT("Content-Type"), TEXT("application/json"));
-    
+
     // Create JSON body
     TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
     JsonObject->SetStringField(TEXT("game"), TEXT("unreal"));
     JsonObject->SetStringField(TEXT("player_id"), PlayerId);
     JsonObject->SetStringField(TEXT("player_name"), PlayerName);
     JsonObject->SetStringField(TEXT("platform"), TEXT("PC"));
-    
+
     FString OutputString;
     TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&OutputString);
     FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
-    
+
     Request->SetContentAsString(OutputString);
-    
+
     Request->OnProcessRequestComplete().BindStatic(
         &FAethexAuth::OnAuthResponse,
         OnComplete);
-    
+
     Request->ProcessRequest();
 }
 
@@ -293,12 +294,12 @@ void FAethexAuth::OnAuthResponse(
     TFunction<void(const FAuthResponse&)> OnComplete)
 {
     FAuthResponse AuthResponse;
-    
+
     if (bWasSuccessful && Response.IsValid())
     {
         TSharedPtr<FJsonObject> JsonObject;
         TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
-        
+
         if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
         {
             AuthResponse.bSuccess = JsonObject->GetBoolField(TEXT("success"));
@@ -312,7 +313,7 @@ void FAethexAuth::OnAuthResponse(
     {
         AuthResponse.Error = TEXT("Authentication request failed");
     }
-    
+
     OnComplete(AuthResponse);
 }
 ```
@@ -331,68 +332,68 @@ const API_BASE = "https://aethex.dev/api"
 func authenticate_player(player_id: String, player_name: String) -> Dictionary:
     var http_request = HTTPRequest.new()
     add_child(http_request)
-    
+
     var url = API_BASE + "/games/game-auth"
     var headers = ["Content-Type: application/json"]
-    
+
     var body = {
         "game": "godot",
         "player_id": player_id,
         "player_name": player_name,
         "platform": OS.get_name()
     }
-    
+
     var response = http_request.request(
         url,
         headers,
         HTTPClient.METHOD_POST,
         JSON.stringify(body)
     )
-    
+
     if response != OK:
         return {"error": "Request failed"}
-    
+
     var result = await http_request.request_completed
-    
+
     if result[1] != 200:
         return {"error": "Authentication failed"}
-    
+
     var response_data = JSON.parse_string(result[3].get_string_from_utf8())
     http_request.queue_free()
-    
+
     return response_data
 
 func verify_token(session_token: String) -> Dictionary:
     var http_request = HTTPRequest.new()
     add_child(http_request)
-    
+
     var url = API_BASE + "/games/verify-token"
     var headers = ["Content-Type: application/json"]
-    
+
     var body = {
         "session_token": session_token,
         "game": "godot"
     }
-    
+
     var response = http_request.request(
         url,
         headers,
         HTTPClient.METHOD_POST,
         JSON.stringify(body)
     )
-    
+
     var result = await http_request.request_completed
     var response_data = JSON.parse_string(result[3].get_string_from_utf8())
     http_request.queue_free()
-    
+
     return response_data
 
 func _ready():
     var player_id = OS.get_unique_id()
     var player_name = "GodotPlayer_" + str(randi_range(1000, 9999))
-    
+
     var auth_result = await authenticate_player(player_id, player_name)
-    
+
     if auth_result.has("success") and auth_result["success"]:
         print("Authenticated as: ", auth_result["username"])
         # Store token
@@ -413,27 +414,29 @@ func _ready():
 Authenticate a game player and create a session.
 
 **Request:**
+
 ```json
 {
-    "game": "unity|unreal|godot|roblox|custom",
-    "player_id": "unique-player-id",
-    "player_name": "player-display-name",
-    "device_id": "optional-device-id",
-    "platform": "PC|Mobile|Console"
+  "game": "unity|unreal|godot|roblox|custom",
+  "player_id": "unique-player-id",
+  "player_name": "player-display-name",
+  "device_id": "optional-device-id",
+  "platform": "PC|Mobile|Console"
 }
 ```
 
 **Response:**
+
 ```json
 {
-    "success": true,
-    "session_token": "token-string",
-    "user_id": "uuid",
-    "username": "username",
-    "game": "unity",
-    "expires_in": 604800,
-    "api_base_url": "https://aethex.dev/api",
-    "docs_url": "https://docs.aethex.dev/game-integration"
+  "success": true,
+  "session_token": "token-string",
+  "user_id": "uuid",
+  "username": "username",
+  "game": "unity",
+  "expires_in": 604800,
+  "api_base_url": "https://aethex.dev/api",
+  "docs_url": "https://docs.aethex.dev/game-integration"
 }
 ```
 
@@ -442,24 +445,26 @@ Authenticate a game player and create a session.
 Verify a game session token and get player data.
 
 **Request:**
+
 ```json
 {
-    "session_token": "token-string",
-    "game": "unity"
+  "session_token": "token-string",
+  "game": "unity"
 }
 ```
 
 **Response:**
+
 ```json
 {
-    "valid": true,
-    "user_id": "uuid",
-    "username": "username",
-    "email": "user@example.com",
-    "full_name": "Player Name",
-    "game": "unity",
-    "platform": "PC",
-    "expires_at": "2025-01-15T10:30:00Z"
+  "valid": true,
+  "user_id": "uuid",
+  "username": "username",
+  "email": "user@example.com",
+  "full_name": "Player Name",
+  "game": "unity",
+  "platform": "PC",
+  "expires_at": "2025-01-15T10:30:00Z"
 }
 ```
 
@@ -475,6 +480,7 @@ Verify a game session token and get player data.
 ## Support
 
 For issues or questions, visit:
+
 - Docs: https://docs.aethex.dev
 - Discord: https://discord.gg/aethex
 - Email: support@aethex.tech

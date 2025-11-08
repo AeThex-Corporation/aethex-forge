@@ -514,7 +514,10 @@ export default function Onboarding() {
                     selectedRealm={data.creatorProfile.primaryArm || ""}
                     onSelect={(realm) =>
                       updateData({
-                        creatorProfile: { ...data.creatorProfile, primaryArm: realm },
+                        creatorProfile: {
+                          ...data.creatorProfile,
+                          primaryArm: realm,
+                        },
                       })
                     }
                     onNext={nextStep}

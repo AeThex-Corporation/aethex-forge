@@ -12,6 +12,7 @@
 ### Step 1: Prepare the Bot Directory
 
 Ensure all bot files are committed:
+
 ```
 code/discord-bot/
 ├── bot.js
@@ -53,16 +54,19 @@ NODE_ENV=production
 In Spaceship Application Settings:
 
 **Build Command:**
+
 ```bash
 npm install
 ```
 
 **Start Command:**
+
 ```bash
 npm start
 ```
 
 **Root Directory:**
+
 ```
 code/discord-bot
 ```
@@ -80,6 +84,7 @@ code/discord-bot
 ### Step 6: Verify Bot is Online
 
 Once deployed:
+
 1. Go to your Discord server
 2. Type `/verify` - the command autocomplete should appear
 3. Bot should be online with status "Listening to /verify to link your AeThex account"
@@ -87,6 +92,7 @@ Once deployed:
 ## 📡 Discord Bot Endpoints
 
 The bot will be accessible at:
+
 ```
 https://<your-spaceship-domain>/
 ```
@@ -96,11 +102,13 @@ The bot uses Discord's WebSocket connection (not HTTP), so it doesn't need to ex
 ## 🔌 API Integration
 
 Frontend calls to link Discord accounts:
+
 - **Endpoint:** `POST /api/discord/link`
 - **Body:** `{ verification_code, user_id }`
 - **Response:** `{ success: true, message: "..." }`
 
 Discord Verify page (`/discord-verify?code=XXX`) will automatically:
+
 1. Call `/api/discord/link` with the verification code
 2. Link the Discord ID to the AeThex user account
 3. Redirect to dashboard on success
@@ -108,22 +116,26 @@ Discord Verify page (`/discord-verify?code=XXX`) will automatically:
 ## 🛠️ Debugging
 
 ### Check bot logs on Spaceship:
+
 - Application → Logs
 - Filter for "bot.js" or "error"
 
 ### Common issues:
 
 **"Discord bot not responding to commands"**
+
 - Check: `DISCORD_BOT_TOKEN` is correct
 - Check: Bot is added to the Discord server with "applications.commands" scope
 - Check: Spaceship logs show "✅ Logged in"
 
 **"Supabase verification fails"**
+
 - Check: `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE` are correct
 - Check: `discord_links` and `discord_verifications` tables exist
 - Run migration: `code/supabase/migrations/20250107_add_discord_integration.sql`
 
 **"Slash commands not appearing in Discord"**
+
 - Check: Logs show "✅ Successfully registered X slash commands"
 - Discord may need 1-2 minutes to sync commands
 - Try typing `/` in Discord to force refresh
@@ -132,12 +144,14 @@ Discord Verify page (`/discord-verify?code=XXX`) will automatically:
 ## 📊 Monitoring
 
 ### Key metrics to monitor:
+
 - Bot uptime (should be 24/7)
 - Command usage (in Supabase)
 - Verification code usage (in Supabase)
 - Discord role sync success rate
 
 ### View in Admin Dashboard:
+
 - AeThex Admin Panel → Discord Management tab
 - Shows:
   - Bot status
@@ -156,6 +170,7 @@ Discord Verify page (`/discord-verify?code=XXX`) will automatically:
 ## 🆘 Support
 
 For issues:
+
 1. Check Spaceship logs
 2. Review `/api/discord/link` endpoint response
 3. Verify all environment variables are set correctly
@@ -177,6 +192,7 @@ Run this migration on your AeThex Supabase:
 ## 🎉 You're All Set!
 
 Once deployed, users can:
+
 1. Click "Link Discord" in their profile settings
 2. Type `/verify` in Discord
 3. Click the verification link

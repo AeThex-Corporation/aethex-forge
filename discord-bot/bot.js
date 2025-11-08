@@ -1,11 +1,20 @@
-const { Client, GatewayIntentBits, REST, Routes, Collection, EmbedBuilder } = require('discord.js');
-const { createClient } = require('@supabase/supabase-js');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
+const {
+  Client,
+  GatewayIntentBits,
+  REST,
+  Routes,
+  Collection,
+  EmbedBuilder,
+} = require("discord.js");
+const { createClient } = require("@supabase/supabase-js");
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config();
 
 // Initialize Discord client
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages] });
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages],
+});
 
 // Initialize Supabase
 const supabase = createClient(
@@ -17,35 +26,41 @@ const supabase = createClient(
 client.commands = new Collection();
 
 // Load commands from commands directory
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const commandsPath = path.join(__dirname, "commands");
+const commandFiles = fs
+  .readdirSync(commandsPath)
+  .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
   const filePath = path.join(commandsPath, file);
   const command = require(filePath);
-  if ('data' in command && 'execute' in command) {
+  if ("data" in command && "execute" in command) {
     client.commands.set(command.data.name, command);
     console.log(`✅ Loaded command: ${command.data.name}`);
   }
 }
 
 // Bot ready event
-client.once('ready', () => {
+client.once("ready", () => {
   console.log(`✅ Bot logged in as ${client.user.tag}`);
   console.log(`📡 Listening in ${client.guilds.cache.size} server(s)`);
-  
+
   // Set bot status
-  client.user.setActivity('/verify to link your AeThex account', { type: 'LISTENING' });
+  client.user.setActivity("/verify to link your AeThex account", {
+    type: "LISTENING",
+  });
 });
 
 // Slash command interaction handler
-client.on('interactionCreate', async interaction => {
+client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const command = client.commands.get(interaction.commandName);
 
   if (!command) {
-    console.warn(`⚠️ No command matching ${interaction.commandName} was found.`);
+    console.warn(
+      `⚠️ No command matching ${interaction.commandName} was found.`,
+    );
     return;
   }
 
@@ -53,12 +68,12 @@ client.on('interactionCreate', async interaction => {
     await command.execute(interaction, supabase, client);
   } catch (error) {
     console.error(`❌ Error executing ${interaction.commandName}:`, error);
-    
+
     const errorEmbed = new EmbedBuilder()
-      .setColor(0xFF0000)
-      .setTitle('❌ Command Error')
-      .setDescription('There was an error while executing this command.')
-      .setFooter({ text: 'Contact support if this persists' });
+      .setColor(0xff0000)
+      .setTitle("❌ Command Error")
+      .setDescription("There was an error while executing this command.")
+      .setFooter({ text: "Contact support if this persists" });
 
     if (interaction.replied || interaction.deferred) {
       await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
@@ -76,7 +91,9 @@ async function registerCommands() {
       commands.push(command.data.toJSON());
     }
 
-    const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
+    const rest = new REST({ version: "10" }).setToken(
+      process.env.DISCORD_BOT_TOKEN,
+    );
 
     console.log(`📝 Registering ${commands.length} slash commands...`);
 
@@ -87,24 +104,24 @@ async function registerCommands() {
 
     console.log(`✅ Successfully registered ${data.length} slash commands.`);
   } catch (error) {
-    console.error('❌ Error registering commands:', error);
+    console.error("❌ Error registering commands:", error);
   }
 }
 
 // Login and register commands
 client.login(process.env.DISCORD_BOT_TOKEN);
 
-client.once('ready', async () => {
+client.once("ready", async () => {
   await registerCommands();
 });
 
 // Error handling
-process.on('unhandledRejection', error => {
-  console.error('❌ Unhandled Promise Rejection:', error);
+process.on("unhandledRejection", (error) => {
+  console.error("❌ Unhandled Promise Rejection:", error);
 });
 
-process.on('uncaughtException', error => {
-  console.error('❌ Uncaught Exception:', error);
+process.on("uncaughtException", (error) => {
+  console.error("❌ Uncaught Exception:", error);
   process.exit(1);
 });
 

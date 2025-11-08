@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import { aethexToast } from "@/lib/aethex-toast";
 
 export interface Web3ContextType {
@@ -13,7 +19,9 @@ export interface Web3ContextType {
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
-export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [account, setAccount] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -100,7 +108,11 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signMessage = useCallback(
     async (message: string): Promise<string> => {
-      if (!account || typeof window === "undefined" || !(window as any).ethereum) {
+      if (
+        !account ||
+        typeof window === "undefined" ||
+        !(window as any).ethereum
+      ) {
         throw new Error("Wallet not connected");
       }
 
@@ -144,8 +156,14 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     (window as any).ethereum.on("chainChanged", handleChainChanged);
 
     return () => {
-      (window as any).ethereum?.removeListener("accountsChanged", handleAccountsChanged);
-      (window as any).ethereum?.removeListener("chainChanged", handleChainChanged);
+      (window as any).ethereum?.removeListener(
+        "accountsChanged",
+        handleAccountsChanged,
+      );
+      (window as any).ethereum?.removeListener(
+        "chainChanged",
+        handleChainChanged,
+      );
     };
   }, []);
 

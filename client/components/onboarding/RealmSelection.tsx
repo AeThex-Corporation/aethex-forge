@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
 
@@ -12,7 +18,8 @@ const REALMS = [
   {
     id: "labs",
     title: "🧪 Labs",
-    description: "Research & Development - Cutting-edge innovation and experimentation",
+    description:
+      "Research & Development - Cutting-edge innovation and experimentation",
     color: "from-yellow-500/20 to-yellow-600/20",
     borderColor: "border-yellow-400",
   },
@@ -46,18 +53,25 @@ const REALMS = [
   },
 ];
 
-export default function RealmSelection({ selectedRealm, onSelect, onNext }: RealmSelectionProps) {
+export default function RealmSelection({
+  selectedRealm,
+  onSelect,
+  onNext,
+}: RealmSelectionProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Choose Your Primary Realm</h2>
+        <h2 className="text-2xl font-bold text-white mb-2">
+          Choose Your Primary Realm
+        </h2>
         <p className="text-gray-400">
-          Select the AeThex realm that best matches your primary focus. You can always change this later.
+          Select the AeThex realm that best matches your primary focus. You can
+          always change this later.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {REALMS.map(realm => (
+        {REALMS.map((realm) => (
           <div
             key={realm.id}
             onClick={() => onSelect(realm.id)}
@@ -67,7 +81,9 @@ export default function RealmSelection({ selectedRealm, onSelect, onNext }: Real
           >
             <Card
               className={`h-full border-2 ${realm.borderColor} ${
-                selectedRealm === realm.id ? "ring-2 ring-offset-2 ring-white" : ""
+                selectedRealm === realm.id
+                  ? "ring-2 ring-offset-2 ring-white"
+                  : ""
               } hover:shadow-lg transition-shadow`}
             >
               <CardHeader>
@@ -81,7 +97,9 @@ export default function RealmSelection({ selectedRealm, onSelect, onNext }: Real
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-sm">{realm.description}</CardDescription>
+                <CardDescription className="text-sm">
+                  {realm.description}
+                </CardDescription>
               </CardContent>
             </Card>
           </div>

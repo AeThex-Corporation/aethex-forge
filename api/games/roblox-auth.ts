@@ -31,7 +31,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const secret = process.env.ROBLOX_SHARED_SECRET || "";
 
     // Verify signature for security
-    if (signature && secret && !verifyRobloxSignature(payload, signature, secret)) {
+    if (
+      signature &&
+      secret &&
+      !verifyRobloxSignature(payload, signature, secret)
+    ) {
       console.warn("Invalid Roblox signature");
       return res.status(401).json({ error: "Invalid signature" });
     }
