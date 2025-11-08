@@ -1403,6 +1403,85 @@ export function createServer() {
       }
     });
 
+    app.post("/api/achievements/activate", async (req, res) => {
+      try {
+        const CORE_ACHIEVEMENTS = [
+          {
+            id: "welcome-to-aethex",
+            name: "Welcome to AeThex",
+            description: "Completed onboarding and joined the AeThex network.",
+            icon: "🎉",
+            badge_color: "#7C3AED",
+            xp_reward: 250,
+          },
+          {
+            id: "aethex-explorer",
+            name: "AeThex Explorer",
+            description:
+              "Engaged with community initiatives and posted first update.",
+            icon: "🧭",
+            badge_color: "#0EA5E9",
+            xp_reward: 400,
+          },
+          {
+            id: "community-champion",
+            name: "Community Champion",
+            description:
+              "Contributed feedback, resolved bugs, and mentored squads.",
+            icon: "🏆",
+            badge_color: "#22C55E",
+            xp_reward: 750,
+          },
+          {
+            id: "workshop-architect",
+            name: "Workshop Architect",
+            description: "Published a high-impact mod or toolkit adopted by teams.",
+            icon: "��️",
+            badge_color: "#F97316",
+            xp_reward: 1200,
+          },
+          {
+            id: "god-mode",
+            name: "GOD Mode",
+            description: "Legendary status awarded by AeThex studio leadership.",
+            icon: "⚡",
+            badge_color: "#FACC15",
+            xp_reward: 5000,
+          },
+        ];
+
+        const nowIso = new Date().toISOString();
+
+        const achievementResults = await Promise.all(
+          CORE_ACHIEVEMENTS.map(async (achievement) => {
+            const { error } = await adminSupabase
+              .from("achievements")
+              .upsert(achievement, { onConflict: "id" });
+
+            if (error) {
+              console.error(
+                `Failed to upsert achievement ${achievement.id}:`,
+                error,
+              );
+              throw error;
+            }
+            return achievement.id;
+          }),
+        );
+
+        return res.json({
+          ok: true,
+          achievementsSeeded: achievementResults.length,
+          achievements: achievementResults,
+        });
+      } catch (error: any) {
+        console.error("activate achievements error", error);
+        return res.status(500).json({
+          error: error?.message || "Failed to activate achievements",
+        });
+      }
+    });
+
     // Blog endpoints (Supabase-backed)
     app.get("/api/blog", async (req, res) => {
       const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 12));
