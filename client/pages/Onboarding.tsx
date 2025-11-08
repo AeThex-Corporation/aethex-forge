@@ -243,6 +243,10 @@ export default function Onboarding() {
         ...prev.interests,
         ...(newData.interests ?? {}),
       },
+      creatorProfile: {
+        ...prev.creatorProfile,
+        ...(newData.creatorProfile ?? {}),
+      },
     }));
   }, []);
 
