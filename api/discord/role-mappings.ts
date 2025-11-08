@@ -7,7 +7,7 @@ let supabase: any = null;
 try {
   supabase = createClient(
     process.env.SUPABASE_URL || "",
-    process.env.SUPABASE_SERVICE_ROLE || ""
+    process.env.SUPABASE_SERVICE_ROLE || "",
   );
 } catch (e) {
   console.error("Failed to initialize Supabase client:", e);
@@ -24,20 +24,17 @@ interface RoleMapping {
   updated_at: string;
 }
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT",
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
   );
 
   if (req.method === "OPTIONS") {
@@ -81,7 +78,8 @@ export default async function handler(
     // POST - Create new role mapping
     if (req.method === "POST") {
       try {
-        const { arm, discord_role, discord_role_name, server_id, user_type } = req.body;
+        const { arm, discord_role, discord_role_name, server_id, user_type } =
+          req.body;
 
         // Support both discord_role and discord_role_name for compatibility
         const roleName = discord_role_name || discord_role;
@@ -122,7 +120,14 @@ export default async function handler(
     // PUT - Update role mapping
     if (req.method === "PUT") {
       try {
-        const { id, arm, discord_role, discord_role_name, server_id, user_type } = req.body;
+        const {
+          id,
+          arm,
+          discord_role,
+          discord_role_name,
+          server_id,
+          user_type,
+        } = req.body;
 
         if (!id) {
           return res.status(400).json({ error: "id is required" });

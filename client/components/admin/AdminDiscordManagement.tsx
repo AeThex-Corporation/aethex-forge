@@ -66,7 +66,9 @@ export function AdminDiscordManagement() {
       if (!contentType?.includes("application/json")) {
         const text = await response.text();
         console.error("Non-JSON response:", text);
-        throw new Error("API returned non-JSON response (likely a deployment error)");
+        throw new Error(
+          "API returned non-JSON response (likely a deployment error)",
+        );
       }
 
       if (!response.ok) {
@@ -78,7 +80,8 @@ export function AdminDiscordManagement() {
       setMappings(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : "Failed to load role mappings";
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to load role mappings";
       console.error("Error fetching mappings:", err);
       setError(errorMsg);
     } finally {
