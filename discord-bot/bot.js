@@ -11,6 +11,27 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
+// Validate environment variables
+const requiredEnvVars = [
+  "DISCORD_BOT_TOKEN",
+  "DISCORD_CLIENT_ID",
+  "SUPABASE_URL",
+  "SUPABASE_SERVICE_ROLE",
+];
+
+const missingVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
+if (missingVars.length > 0) {
+  console.error(
+    "❌ FATAL ERROR: Missing required environment variables:",
+    missingVars.join(", ")
+  );
+  console.error("\nPlease set these in your Discloud/hosting environment:");
+  missingVars.forEach((envVar) => {
+    console.error(`  - ${envVar}`);
+  });
+  process.exit(1);
+}
+
 // Initialize Discord client
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages],
