@@ -119,6 +119,48 @@ export function AdminDiscordManagement() {
     return ARMS.find((a) => a.value === armValue)?.label || armValue;
   };
 
+  const handleRegisterCommands = async () => {
+    try {
+      setIsRegisteringCommands(true);
+      setRegisterError(null);
+      setRegisterSuccess(null);
+
+      const adminToken = prompt(
+        "Enter admin registration token (from environment variables):"
+      );
+      if (!adminToken) {
+        setRegisterError("Registration cancelled");
+        return;
+      }
+
+      const response = await fetch("/api/discord/admin-register-commands", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to register commands");
+      }
+
+      const data = await response.json();
+      setRegisterSuccess(
+        data.message || "Discord commands registered successfully!"
+      );
+      setTimeout(() => setRegisterSuccess(null), 5000);
+    } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to register commands";
+      console.error("Error registering commands:", err);
+      setRegisterError(errorMsg);
+    } finally {
+      setIsRegisteringCommands(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Bot Status */}
