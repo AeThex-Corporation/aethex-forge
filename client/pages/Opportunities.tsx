@@ -547,7 +547,7 @@ const Opportunities = () => {
               <Card className="border-border/40 bg-background/50 backdrop-blur">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
-                    <Lightbulb className="h-5 w-5 text-amber-300" />
+                    <Sparkles className="h-5 w-5 text-amber-300" />
                     Core Contributors
                   </CardTitle>
                   <CardDescription>
