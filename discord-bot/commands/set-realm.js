@@ -4,6 +4,7 @@ const {
   StringSelectMenuBuilder,
   ActionRowBuilder,
 } = require("discord.js");
+const { assignRoleByArm } = require("../utils/roleManager");
 
 const REALMS = [
   { value: "labs", label: "🧪 Labs", description: "Research & Development" },
