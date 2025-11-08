@@ -28,6 +28,7 @@ import {
   Lock,
   User,
   Info,
+  Wallet,
 } from "lucide-react";
 import {
   Dialog,
@@ -223,6 +224,16 @@ export default function Login() {
     }
   };
 
+  const handleWeb3Login = async () => {
+    setIsLoading(true);
+    try {
+      navigate("/web3-callback");
+    } catch (error: any) {
+      console.error("Web3 navigation error:", error);
+      setIsLoading(false);
+    }
+  };
+
   // Show loading screen only during form submission, not during auth context loading
   if (isLoading && !loading) {
     return (
@@ -349,6 +360,14 @@ export default function Login() {
                   >
                     <Mail className="h-4 w-4 mr-2" />
                     Continue with Google
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full hover-lift interactive-scale"
+                    onClick={handleWeb3Login}
+                  >
+                    <Wallet className="h-4 w-4 mr-2" />
+                    Connect Ethereum Wallet
                   </Button>
                   <Button
                     variant="outline"
