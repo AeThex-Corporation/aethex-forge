@@ -86,6 +86,7 @@ export default function Onboarding() {
     { title: "Personal Information", component: PersonalInfo },
     { title: "Experience Level", component: Experience },
     { title: "Interests & Goals", component: Interests },
+    { title: "Creator Profile Setup", component: CreatorProfile },
     { title: "Welcome to AeThex", component: Welcome },
   ];
 
