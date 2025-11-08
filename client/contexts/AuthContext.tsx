@@ -187,6 +187,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           "aethex_onboarding_progress_v1",
           "onboarding_complete",
         ].forEach((key) => window.localStorage.removeItem(key));
+
+        // Clear all Supabase-related keys
+        Object.keys(window.localStorage)
+          .filter((key) =>
+            key.startsWith("sb-") ||
+            key.includes("supabase") ||
+            key.includes("auth-token")
+          )
+          .forEach((key) => window.localStorage.removeItem(key));
+
+        // Clear IndexedDB (where Supabase stores sessions)
+        if (window.indexedDB) {
+          const dbs = ["supabase", "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop()];
+          dbs.forEach((dbName) => {
+            try {
+              const req = window.indexedDB.deleteDatabase(dbName);
+              req.onsuccess = () => console.log(`Cleared IndexedDB: ${dbName}`);
+              req.onerror = (e) => console.warn(`Failed to clear IndexedDB: ${dbName}`, e);
+            } catch {}
+          });
+        }
+
         storageClearedRef.current = true;
       } catch {
         storageClearedRef.current = true;
