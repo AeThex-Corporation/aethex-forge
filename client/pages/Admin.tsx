@@ -1136,6 +1136,157 @@ export default function Admin() {
                 <AdminMentorshipManager />
               </TabsContent>
 
+              <TabsContent value="foundation" className="space-y-6">
+                <div className="grid gap-6">
+                  {/* Foundation Impact Metrics */}
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Heart className="h-5 w-5 text-red-400" />
+                        <CardTitle>Foundation Impact Metrics</CardTitle>
+                      </div>
+                      <CardDescription>
+                        Track educational impact and talent pipeline effectiveness
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      {/* Student Persistence */}
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-sm">Student Persistence & Withdrawal Rates</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                            <p className="text-sm text-muted-foreground mb-2">Course Completion Rate</p>
+                            <p className="text-2xl font-bold text-green-400">87.5%</p>
+                            <p className="text-xs text-gray-400 mt-2">↑ +12% from last quarter</p>
+                          </div>
+                          <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                            <p className="text-sm text-muted-foreground mb-2">Withdrawal Rate</p>
+                            <p className="text-2xl font-bold text-yellow-400">5.2%</p>
+                            <p className="text-xs text-gray-400 mt-2">↓ -3.1% from last quarter</p>
+                          </div>
+                          <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                            <p className="text-sm text-muted-foreground mb-2">Active Learners</p>
+                            <p className="text-2xl font-bold text-blue-400">342</p>
+                            <p className="text-xs text-gray-400 mt-2">↑ +28 new enrollments</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Achievement Gaps */}
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-sm">Achievement Gap Analysis</h4>
+                        <div className="bg-background/40 rounded-lg p-4 border border-border/40 space-y-3">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-sm text-gray-400 mb-2">Average Grade by Demographic</p>
+                              <div className="space-y-2 text-sm">
+                                <div className="flex justify-between items-center">
+                                  <span>All Students</span>
+                                  <span className="font-semibold">3.42/4.0</span>
+                                </div>
+                                <div className="flex justify-between items-center text-green-400">
+                                  <span>Non-marginalized</span>
+                                  <span className="font-semibold">3.68/4.0</span>
+                                </div>
+                                <div className="flex justify-between items-center text-yellow-400">
+                                  <span>BIPOC Students</span>
+                                  <span className="font-semibold">3.24/4.0</span>
+                                </div>
+                                <div className="flex justify-between items-center text-orange-400">
+                                  <span>Pell Grant Recipients</span>
+                                  <span className="font-semibold">3.12/4.0</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <p className="text-sm text-gray-400 mb-2">Gap Closure Progress</p>
+                              <div className="space-y-2 text-sm">
+                                <div>
+                                  <p className="mb-1">BIPOC Gap: <span className="text-yellow-400 font-semibold">-0.44</span></p>
+                                  <div className="w-full bg-gray-800 rounded h-2">
+                                    <div className="bg-yellow-500 h-2 rounded" style={{width: "65%"}}></div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <p className="mb-1">Pell Grant Gap: <span className="text-orange-400 font-semibold">-0.56</span></p>
+                                  <div className="w-full bg-gray-800 rounded h-2">
+                                    <div className="bg-orange-500 h-2 rounded" style={{width: "45%"}}></div>
+                                  </div>
+                                </div>
+                                <p className="text-xs text-gray-500 mt-2">Goal: Close gaps by 2025</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Open Source Impact */}
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-sm">Open Source Project Adoption</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                          <div className="bg-background/40 rounded-lg p-3 border border-border/40">
+                            <p className="text-xs text-gray-400 mb-1">GitHub Forks</p>
+                            <p className="text-xl font-bold text-purple-400">2.3K</p>
+                          </div>
+                          <div className="bg-background/40 rounded-lg p-3 border border-border/40">
+                            <p className="text-xs text-gray-400 mb-1">Pull Requests</p>
+                            <p className="text-xl font-bold text-green-400">184</p>
+                          </div>
+                          <div className="bg-background/40 rounded-lg p-3 border border-border/40">
+                            <p className="text-xs text-gray-400 mb-1">External Usage</p>
+                            <p className="text-xl font-bold text-blue-400">452</p>
+                          </div>
+                          <div className="bg-background/40 rounded-lg p-3 border border-border/40">
+                            <p className="text-xs text-gray-400 mb-1">Contributors</p>
+                            <p className="text-xl font-bold text-cyan-400">67</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Talent Pipeline */}
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-sm">Talent Pipeline Metrics</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                            <p className="text-sm text-muted-foreground mb-2">Dev-Link Pipeline</p>
+                            <p className="text-2xl font-bold text-cyan-400">128</p>
+                            <p className="text-xs text-gray-400 mt-2">Qualified candidates joined platform</p>
+                          </div>
+                          <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                            <p className="text-sm text-muted-foreground mb-2">Placement Rate</p>
+                            <p className="text-2xl font-bold text-green-400">42%</p>
+                            <p className="text-xs text-gray-400 mt-2">54 graduates hired</p>
+                          </div>
+                          <div className="bg-background/40 rounded-lg p-4 border border-border/40">
+                            <p className="text-sm text-muted-foreground mb-2">Avg Starting Salary</p>
+                            <p className="text-2xl font-bold text-yellow-400">$84K</p>
+                            <p className="text-xs text-gray-400 mt-2">↑ $12K vs industry avg</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Action Items */}
+                  <Card className="bg-card/60 border-border/40 backdrop-blur">
+                    <CardHeader>
+                      <CardTitle className="text-sm">Foundation Actions</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex flex-wrap gap-2">
+                      <Button size="sm" onClick={() => navigate("/community")}>
+                        Visit Foundation Site
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        Export Metrics Report
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        View Curriculum Dashboard
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
               <TabsContent value="operations" className="space-y-6">
                 <div className="grid gap-6 lg:grid-cols-2">
                   <Card className="bg-card/60 border-border/40 backdrop-blur">
