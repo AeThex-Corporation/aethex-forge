@@ -180,6 +180,12 @@ const App = () => (
                 <Route path="/signup" element={<SignupRedirect />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
 
+                {/* Creator Network routes */}
+                <Route path="/creators" element={<CreatorDirectory />} />
+                <Route path="/creators/:username" element={<CreatorProfile />} />
+                <Route path="/opportunities" element={<OpportunitiesHub />} />
+                <Route path="/opportunities/:id" element={<OpportunityDetail />} />
+
                 {/* Service routes */}
                 <Route path="/game-development" element={<GameDevelopment />} />
                 <Route path="/consulting" element={<DevelopmentConsulting />} />
