@@ -1,10 +1,10 @@
 /**
  * Register Discord Slash Commands
  * Run this script once to register all slash commands with Discord
- * 
+ *
  * Usage:
  * npx ts-node scripts/register-discord-commands.ts
- * 
+ *
  * Required Environment Variables:
  * - DISCORD_BOT_TOKEN: Bot token from Discord Developer Portal
  * - DISCORD_CLIENT_ID: Application ID from Discord Developer Portal
@@ -14,9 +14,7 @@ const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID || "578971245454950421";
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 
 if (!DISCORD_BOT_TOKEN) {
-  console.error(
-    "❌ DISCORD_BOT_TOKEN environment variable is required",
-  );
+  console.error("❌ DISCORD_BOT_TOKEN environment variable is required");
   process.exit(1);
 }
 
@@ -103,14 +101,14 @@ async function registerCommands() {
     });
 
     console.log("\n📍 Next steps:");
-    console.log(
-      "1. Go to Discord Developer Portal > Application Settings",
-    );
+    console.log("1. Go to Discord Developer Portal > Application Settings");
     console.log(
       "2. Set Interactions Endpoint URL to: https://aethex.dev/api/discord/interactions",
     );
     console.log("3. Save changes");
-    console.log("4. Test commands in Discord with /creators, /opportunities, etc.");
+    console.log(
+      "4. Test commands in Discord with /creators, /opportunities, etc.",
+    );
   } catch (error) {
     console.error("❌ Error registering commands:", error);
     process.exit(1);

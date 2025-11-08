@@ -5,10 +5,7 @@ const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE || "";
 
 const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
-export async function linkDevConnectAccount(
-  req: Request,
-  userId: string
-) {
+export async function linkDevConnectAccount(req: Request, userId: string) {
   try {
     const body = await req.json();
     const { devconnect_username, devconnect_profile_url } = body;
@@ -16,7 +13,7 @@ export async function linkDevConnectAccount(
     if (!devconnect_username) {
       return new Response(
         JSON.stringify({ error: "DevConnect username is required" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -29,8 +26,10 @@ export async function linkDevConnectAccount(
 
     if (!creator) {
       return new Response(
-        JSON.stringify({ error: "Creator profile not found. Create profile first." }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        JSON.stringify({
+          error: "Creator profile not found. Create profile first.",
+        }),
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -50,7 +49,9 @@ export async function linkDevConnectAccount(
         .from("aethex_devconnect_links")
         .update({
           devconnect_username,
-          devconnect_profile_url: devconnect_profile_url || `https://devconnect.com/${devconnect_username}`,
+          devconnect_profile_url:
+            devconnect_profile_url ||
+            `https://devconnect.com/${devconnect_username}`,
         })
         .eq("aethex_creator_id", creator.id)
         .select()
@@ -66,7 +67,9 @@ export async function linkDevConnectAccount(
         .insert({
           aethex_creator_id: creator.id,
           devconnect_username,
-          devconnect_profile_url: devconnect_profile_url || `https://devconnect.com/${devconnect_username}`,
+          devconnect_profile_url:
+            devconnect_profile_url ||
+            `https://devconnect.com/${devconnect_username}`,
         })
         .select()
         .single();
@@ -89,7 +92,7 @@ export async function linkDevConnectAccount(
     console.error("Error linking DevConnect account:", error);
     return new Response(
       JSON.stringify({ error: "Failed to link DevConnect account" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
@@ -106,7 +109,7 @@ export async function getDevConnectLink(userId: string) {
     if (!creator) {
       return new Response(
         JSON.stringify({ error: "Creator profile not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -128,7 +131,7 @@ export async function getDevConnectLink(userId: string) {
     console.error("Error fetching DevConnect link:", error);
     return new Response(
       JSON.stringify({ error: "Failed to fetch DevConnect link" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
@@ -145,7 +148,7 @@ export async function unlinkDevConnectAccount(userId: string) {
     if (!creator) {
       return new Response(
         JSON.stringify({ error: "Creator profile not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -170,15 +173,12 @@ export async function unlinkDevConnectAccount(userId: string) {
     console.error("Error unlinking DevConnect account:", error);
     return new Response(
       JSON.stringify({ error: "Failed to unlink DevConnect account" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
 
-export async function verifyDevConnectLink(
-  req: Request,
-  userId: string
-) {
+export async function verifyDevConnectLink(req: Request, userId: string) {
   try {
     const body = await req.json();
     const { verification_code } = body;
@@ -193,7 +193,7 @@ export async function verifyDevConnectLink(
     if (!creator) {
       return new Response(
         JSON.stringify({ error: "Creator profile not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -216,7 +216,7 @@ export async function verifyDevConnectLink(
     console.error("Error verifying DevConnect link:", error);
     return new Response(
       JSON.stringify({ error: "Failed to verify DevConnect link" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }

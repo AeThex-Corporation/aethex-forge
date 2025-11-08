@@ -137,7 +137,11 @@ export default function Corp() {
                   The Profit Engine
                 </h1>
                 <p className="text-xl text-blue-100/70 max-w-3xl">
-                  AeThex Corp delivers high-margin enterprise consulting and specialized software development. We leverage proprietary technologies from Labs to create cutting-edge solutions while generating stable, benchmarkable revenue that funds our ambitious R&D roadmap.
+                  AeThex Corp delivers high-margin enterprise consulting and
+                  specialized software development. We leverage proprietary
+                  technologies from Labs to create cutting-edge solutions while
+                  generating stable, benchmarkable revenue that funds our
+                  ambitious R&D roadmap.
                 </p>
               </div>
 
@@ -160,7 +164,9 @@ export default function Corp() {
 
               {/* Creator Network CTAs */}
               <div className="mt-8 pt-8 border-t border-blue-400/20">
-                <p className="text-sm text-blue-200/70 mb-4">Explore our creator community:</p>
+                <p className="text-sm text-blue-200/70 mb-4">
+                  Explore our creator community:
+                </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     size="sm"
@@ -221,7 +227,9 @@ export default function Corp() {
                     className="bg-blue-950/20 border-blue-400/30 hover:border-blue-400/60 transition-all"
                   >
                     <CardHeader>
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center text-white mb-4`}>
+                      <div
+                        className={`w-12 h-12 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center text-white mb-4`}
+                      >
                         <Briefcase className="h-6 w-6" />
                       </div>
                       <CardTitle className="text-blue-300">
@@ -234,7 +242,10 @@ export default function Corp() {
                       </p>
                       <ul className="space-y-2">
                         {service.examples.map((example, i) => (
-                          <li key={i} className="flex items-center gap-2 text-sm text-blue-300">
+                          <li
+                            key={i}
+                            className="flex items-center gap-2 text-sm text-blue-300"
+                          >
                             <CheckCircle className="h-4 w-4 text-blue-400" />
                             {example}
                           </li>
@@ -255,10 +266,7 @@ export default function Corp() {
               </h2>
               <div className="space-y-6">
                 {recentWins.map((win, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-blue-950/20 border-blue-400/30"
-                  >
+                  <Card key={idx} className="bg-blue-950/20 border-blue-400/30">
                     <CardContent className="pt-6">
                       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div>
@@ -326,10 +334,7 @@ export default function Corp() {
                     description: "Specialized developers for your team",
                   },
                 ].map((model, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-blue-950/30 border-blue-400/40"
-                  >
+                  <Card key={idx} className="bg-blue-950/30 border-blue-400/40">
                     <CardContent className="pt-6 text-center">
                       <h3 className="font-bold text-blue-300 mb-2">
                         {model.model}
@@ -351,7 +356,8 @@ export default function Corp() {
                 Ready to Partner?
               </h2>
               <p className="text-lg text-blue-100/80 mb-8">
-                Let's discuss your business challenges and build a solution that drives results.
+                Let's discuss your business challenges and build a solution that
+                drives results.
               </p>
               <Button
                 className="bg-blue-400 text-black shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:bg-blue-300"

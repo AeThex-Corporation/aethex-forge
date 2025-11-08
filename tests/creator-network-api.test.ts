@@ -19,14 +19,14 @@ const log = (result: TestResult) => {
   results.push(result);
   const symbol = result.status === "✓" ? "✓" : "✗";
   console.log(
-    `${symbol} ${result.method.padEnd(6)} ${result.endpoint.padEnd(40)} - ${result.message}`
+    `${symbol} ${result.method.padEnd(6)} ${result.endpoint.padEnd(40)} - ${result.message}`,
   );
 };
 
 const testEndpoint = async (
   method: string,
   endpoint: string,
-  body?: any
+  body?: any,
 ): Promise<any> => {
   try {
     const options: RequestInit = {
@@ -56,7 +56,7 @@ async function runTests() {
   try {
     const { response, data } = await testEndpoint(
       "GET",
-      "/api/creators?page=1&limit=10"
+      "/api/creators?page=1&limit=10",
     );
     if (response.ok) {
       log({
@@ -89,7 +89,7 @@ async function runTests() {
   try {
     const { response, data } = await testEndpoint(
       "GET",
-      "/api/creators/testuser123"
+      "/api/creators/testuser123",
     );
     if (response.status === 404) {
       log({
@@ -178,7 +178,7 @@ async function runTests() {
   try {
     const { response, data } = await testEndpoint(
       "GET",
-      "/api/opportunities?page=1&limit=10"
+      "/api/opportunities?page=1&limit=10",
     );
     if (response.ok) {
       log({
@@ -211,7 +211,7 @@ async function runTests() {
   try {
     const { response, data } = await testEndpoint(
       "GET",
-      "/api/opportunities/fake-id-123"
+      "/api/opportunities/fake-id-123",
     );
     if (response.status === 404) {
       log({
@@ -251,7 +251,7 @@ async function runTests() {
         description: "A test job opportunity",
         job_type: "contract",
         arm_affiliation: "gameforge",
-      }
+      },
     );
 
     if (response.status === 404) {
@@ -320,7 +320,7 @@ async function runTests() {
       {
         user_id: "test-user-123",
         devconnect_username: "testuser",
-      }
+      },
     );
 
     if (response.status === 404) {
@@ -363,14 +363,16 @@ async function runTests() {
   const passed = results.filter((r) => r.status === "✓").length;
   const failed = results.filter((r) => r.status === "✗").length;
   console.log(
-    `\nTest Summary: ${passed} passed, ${failed} failed out of ${results.length} tests`
+    `\nTest Summary: ${passed} passed, ${failed} failed out of ${results.length} tests`,
   );
 
   if (failed > 0) {
     console.log("\n❌ Failed tests:");
-    results.filter((r) => r.status === "✗").forEach((r) => {
-      console.log(`  - ${r.method} ${r.endpoint}: ${r.message}`);
-    });
+    results
+      .filter((r) => r.status === "✗")
+      .forEach((r) => {
+        console.log(`  - ${r.method} ${r.endpoint}: ${r.message}`);
+      });
   } else {
     console.log("\n✅ All tests passed!");
   }

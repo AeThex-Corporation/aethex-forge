@@ -25,12 +25,7 @@ export default function FoundationLearnMore() {
         "Complete introduction to game development concepts and best practices",
       lessons: "50",
       duration: "20 hours",
-      topics: [
-        "Game loops",
-        "Physics",
-        "Input handling",
-        "Asset management",
-      ],
+      topics: ["Game loops", "Physics", "Input handling", "Asset management"],
       free: true,
     },
     {
@@ -59,12 +54,7 @@ export default function FoundationLearnMore() {
         "Learn scalable architectural patterns used in professional game development",
       modules: "8",
       projects: "4",
-      topics: [
-        "MVC pattern",
-        "ECS systems",
-        "Networking",
-        "State management",
-      ],
+      topics: ["MVC pattern", "ECS systems", "Networking", "State management"],
       free: true,
     },
     {
@@ -174,7 +164,9 @@ export default function FoundationLearnMore() {
                 Free Learning Resources
               </h1>
               <p className="text-lg text-red-100/80 max-w-3xl">
-                Learn game development from the ground up with our free, comprehensive educational resources. Everything you need to become an expert developer.
+                Learn game development from the ground up with our free,
+                comprehensive educational resources. Everything you need to
+                become an expert developer.
               </p>
             </div>
           </section>
@@ -426,8 +418,8 @@ export default function FoundationLearnMore() {
                 Start Your Learning Journey
               </h2>
               <p className="text-lg text-red-100/80 mb-8">
-                Choose a learning path and begin mastering game development today.
-                Everything is completely free and open to the community.
+                Choose a learning path and begin mastering game development
+                today. Everything is completely free and open to the community.
               </p>
               <Button
                 className="bg-red-400 text-black shadow-[0_0_30px_rgba(239,68,68,0.35)] hover:bg-red-300"

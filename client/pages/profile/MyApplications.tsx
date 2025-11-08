@@ -51,15 +51,13 @@ export default function MyApplications() {
     try {
       await withdrawApplication(applicationId);
       toast("Application withdrawn", "success");
-      setApplications(
-        applications.filter((app) => app.id !== applicationId)
-      );
+      setApplications(applications.filter((app) => app.id !== applicationId));
     } catch (error) {
       toast(
         error instanceof Error
           ? error.message
           : "Failed to withdraw application",
-        "error"
+        "error",
       );
     }
   };
@@ -215,7 +213,7 @@ export default function MyApplications() {
                             />
                           ))}
                       </TabsContent>
-                    )
+                    ),
                   )}
                 </Tabs>
               </>
@@ -265,10 +263,7 @@ function ApplicationCard({
 
             <div className="flex items-center gap-3 mb-3">
               <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={poster.avatar_url}
-                  alt={poster.username}
-                />
+                <AvatarImage src={poster.avatar_url} alt={poster.username} />
                 <AvatarFallback>
                   {poster.username.charAt(0).toUpperCase()}
                 </AvatarFallback>

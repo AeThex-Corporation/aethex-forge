@@ -115,7 +115,10 @@ const handleDiscordInteractions = (
 
     // For MESSAGE_COMPONENT interactions (buttons, etc.)
     if (interaction.type === 3) {
-      console.log("[Discord] Message component interaction:", interaction.data.custom_id);
+      console.log(
+        "[Discord] Message component interaction:",
+        interaction.data.custom_id,
+      );
 
       return res.json({
         type: 4,
@@ -2418,7 +2421,7 @@ export function createServer() {
             primary_arm,
             created_at
             `,
-            { count: "exact" }
+            { count: "exact" },
           )
           .eq("is_discoverable", true)
           .order("created_at", { ascending: false });
@@ -2475,7 +2478,7 @@ export function createServer() {
             primary_arm,
             created_at,
             updated_at
-            `
+            `,
           )
           .eq("username", username)
           .eq("is_discoverable", true)
@@ -2507,10 +2510,21 @@ export function createServer() {
     // Create creator profile
     app.post("/api/creators", async (req, res) => {
       try {
-        const { user_id, username, bio, skills, avatar_url, experience_level, primary_arm, arm_affiliations } = req.body;
+        const {
+          user_id,
+          username,
+          bio,
+          skills,
+          avatar_url,
+          experience_level,
+          primary_arm,
+          arm_affiliations,
+        } = req.body;
 
         if (!user_id || !username) {
-          return res.status(400).json({ error: "user_id and username required" });
+          return res
+            .status(400)
+            .json({ error: "user_id and username required" });
         }
 
         const { data, error } = await adminSupabase
@@ -2523,7 +2537,9 @@ export function createServer() {
             avatar_url: avatar_url || null,
             experience_level: experience_level || null,
             primary_arm: primary_arm || null,
-            arm_affiliations: Array.isArray(arm_affiliations) ? arm_affiliations : [],
+            arm_affiliations: Array.isArray(arm_affiliations)
+              ? arm_affiliations
+              : [],
           })
           .select()
           .single();
@@ -2538,7 +2554,9 @@ export function createServer() {
         return res.status(201).json(data);
       } catch (e: any) {
         console.error("[Creator API] Error creating creator:", e?.message);
-        return res.status(500).json({ error: "Failed to create creator profile" });
+        return res
+          .status(500)
+          .json({ error: "Failed to create creator profile" });
       }
     });
 
@@ -2550,7 +2568,16 @@ export function createServer() {
           return res.status(400).json({ error: "creator id required" });
         }
 
-        const { bio, skills, avatar_url, experience_level, primary_arm, arm_affiliations, is_discoverable, allow_recommendations } = req.body;
+        const {
+          bio,
+          skills,
+          avatar_url,
+          experience_level,
+          primary_arm,
+          arm_affiliations,
+          is_discoverable,
+          allow_recommendations,
+        } = req.body;
 
         const { data, error } = await adminSupabase
           .from("aethex_creators")
@@ -2560,7 +2587,9 @@ export function createServer() {
             avatar_url,
             experience_level,
             primary_arm,
-            arm_affiliations: Array.isArray(arm_affiliations) ? arm_affiliations : undefined,
+            arm_affiliations: Array.isArray(arm_affiliations)
+              ? arm_affiliations
+              : undefined,
             is_discoverable,
             allow_recommendations,
             updated_at: new Date().toISOString(),
@@ -2574,7 +2603,9 @@ export function createServer() {
         return res.json(data);
       } catch (e: any) {
         console.error("[Creator API] Error updating creator:", e?.message);
-        return res.status(500).json({ error: "Failed to update creator profile" });
+        return res
+          .status(500)
+          .json({ error: "Failed to update creator profile" });
       }
     });
 
@@ -2606,7 +2637,7 @@ export function createServer() {
             status,
             created_at
             `,
-            { count: "exact" }
+            { count: "exact" },
           )
           .eq("status", "open");
 
@@ -2615,7 +2646,9 @@ export function createServer() {
         }
 
         if (search) {
-          query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+          query = query.or(
+            `title.ilike.%${search}%,description.ilike.%${search}%`,
+          );
         }
 
         if (jobType) {
@@ -2646,7 +2679,10 @@ export function createServer() {
           },
         });
       } catch (e: any) {
-        console.error("[Opportunities API] Error fetching opportunities:", e?.message);
+        console.error(
+          "[Opportunities API] Error fetching opportunities:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to fetch opportunities" });
       }
     });
@@ -2676,7 +2712,7 @@ export function createServer() {
             status,
             created_at,
             updated_at
-            `
+            `,
           )
           .eq("id", opportunityId)
           .eq("status", "open")
@@ -2691,7 +2727,10 @@ export function createServer() {
 
         return res.json(data);
       } catch (e: any) {
-        console.error("[Opportunities API] Error fetching opportunity:", e?.message);
+        console.error(
+          "[Opportunities API] Error fetching opportunity:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to fetch opportunity" });
       }
     });
@@ -2699,7 +2738,16 @@ export function createServer() {
     // Create opportunity
     app.post("/api/opportunities", async (req, res) => {
       try {
-        const { user_id, title, description, job_type, salary_min, salary_max, experience_level, arm_affiliation } = req.body;
+        const {
+          user_id,
+          title,
+          description,
+          job_type,
+          salary_min,
+          salary_max,
+          experience_level,
+          arm_affiliation,
+        } = req.body;
 
         if (!user_id || !title) {
           return res.status(400).json({ error: "user_id and title required" });
@@ -2712,7 +2760,11 @@ export function createServer() {
           .single();
 
         if (!creator) {
-          return res.status(404).json({ error: "Creator profile not found. Create profile first." });
+          return res
+            .status(404)
+            .json({
+              error: "Creator profile not found. Create profile first.",
+            });
         }
 
         const { data, error } = await adminSupabase
@@ -2735,7 +2787,10 @@ export function createServer() {
 
         return res.status(201).json(data);
       } catch (e: any) {
-        console.error("[Opportunities API] Error creating opportunity:", e?.message);
+        console.error(
+          "[Opportunities API] Error creating opportunity:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to create opportunity" });
       }
     });
@@ -2744,10 +2799,21 @@ export function createServer() {
     app.put("/api/opportunities/:id", async (req, res) => {
       try {
         const opportunityId = String(req.params.id || "").trim();
-        const { user_id, title, description, job_type, salary_min, salary_max, experience_level, status } = req.body;
+        const {
+          user_id,
+          title,
+          description,
+          job_type,
+          salary_min,
+          salary_max,
+          experience_level,
+          status,
+        } = req.body;
 
         if (!opportunityId || !user_id) {
-          return res.status(400).json({ error: "opportunity id and user_id required" });
+          return res
+            .status(400)
+            .json({ error: "opportunity id and user_id required" });
         }
 
         const { data: opportunity } = await adminSupabase
@@ -2790,7 +2856,10 @@ export function createServer() {
 
         return res.json(data);
       } catch (e: any) {
-        console.error("[Opportunities API] Error updating opportunity:", e?.message);
+        console.error(
+          "[Opportunities API] Error updating opportunity:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to update opportunity" });
       }
     });
@@ -2831,7 +2900,7 @@ export function createServer() {
             updated_at,
             aethex_opportunities(id, title, arm_affiliation, job_type, posted_by_id, aethex_creators!aethex_opportunities_posted_by_id_fkey(username, avatar_url))
             `,
-            { count: "exact" }
+            { count: "exact" },
           )
           .eq("creator_id", creator.id);
 
@@ -2858,7 +2927,10 @@ export function createServer() {
           },
         });
       } catch (e: any) {
-        console.error("[Applications API] Error fetching applications:", e?.message);
+        console.error(
+          "[Applications API] Error fetching applications:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to fetch applications" });
       }
     });
@@ -2869,7 +2941,9 @@ export function createServer() {
         const { user_id, opportunity_id, cover_letter } = req.body;
 
         if (!user_id || !opportunity_id) {
-          return res.status(400).json({ error: "user_id and opportunity_id required" });
+          return res
+            .status(400)
+            .json({ error: "user_id and opportunity_id required" });
         }
 
         const { data: creator } = await adminSupabase
@@ -2890,7 +2964,9 @@ export function createServer() {
           .single();
 
         if (!opportunity) {
-          return res.status(404).json({ error: "Opportunity not found or closed" });
+          return res
+            .status(404)
+            .json({ error: "Opportunity not found or closed" });
         }
 
         const { data: existing } = await adminSupabase
@@ -2901,7 +2977,9 @@ export function createServer() {
           .maybeSingle();
 
         if (existing) {
-          return res.status(400).json({ error: "You have already applied to this opportunity" });
+          return res
+            .status(400)
+            .json({ error: "You have already applied to this opportunity" });
         }
 
         const { data, error } = await adminSupabase
@@ -2919,7 +2997,10 @@ export function createServer() {
 
         return res.status(201).json(data);
       } catch (e: any) {
-        console.error("[Applications API] Error submitting application:", e?.message);
+        console.error(
+          "[Applications API] Error submitting application:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to submit application" });
       }
     });
@@ -2931,7 +3012,9 @@ export function createServer() {
         const { user_id, status, response_message } = req.body;
 
         if (!applicationId || !user_id) {
-          return res.status(400).json({ error: "application id and user_id required" });
+          return res
+            .status(400)
+            .json({ error: "application id and user_id required" });
         }
 
         const { data: application } = await adminSupabase
@@ -2941,7 +3024,7 @@ export function createServer() {
             id,
             opportunity_id,
             aethex_opportunities(posted_by_id)
-            `
+            `,
           )
           .eq("id", applicationId)
           .single();
@@ -2975,7 +3058,10 @@ export function createServer() {
 
         return res.json(data);
       } catch (e: any) {
-        console.error("[Applications API] Error updating application:", e?.message);
+        console.error(
+          "[Applications API] Error updating application:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to update application" });
       }
     });
@@ -2987,7 +3073,9 @@ export function createServer() {
         const { user_id } = req.body;
 
         if (!applicationId || !user_id) {
-          return res.status(400).json({ error: "application id and user_id required" });
+          return res
+            .status(400)
+            .json({ error: "application id and user_id required" });
         }
 
         const { data: application } = await adminSupabase
@@ -3019,18 +3107,26 @@ export function createServer() {
 
         return res.json({ ok: true });
       } catch (e: any) {
-        console.error("[Applications API] Error withdrawing application:", e?.message);
-        return res.status(500).json({ error: "Failed to withdraw application" });
+        console.error(
+          "[Applications API] Error withdrawing application:",
+          e?.message,
+        );
+        return res
+          .status(500)
+          .json({ error: "Failed to withdraw application" });
       }
     });
 
     // Link DevConnect account
     app.post("/api/devconnect/link", async (req, res) => {
       try {
-        const { user_id, devconnect_username, devconnect_profile_url } = req.body;
+        const { user_id, devconnect_username, devconnect_profile_url } =
+          req.body;
 
         if (!user_id || !devconnect_username) {
-          return res.status(400).json({ error: "user_id and devconnect_username required" });
+          return res
+            .status(400)
+            .json({ error: "user_id and devconnect_username required" });
         }
 
         const { data: creator } = await adminSupabase
@@ -3040,7 +3136,11 @@ export function createServer() {
           .single();
 
         if (!creator) {
-          return res.status(404).json({ error: "Creator profile not found. Create profile first." });
+          return res
+            .status(404)
+            .json({
+              error: "Creator profile not found. Create profile first.",
+            });
         }
 
         const { data: existing } = await adminSupabase
@@ -3057,7 +3157,9 @@ export function createServer() {
             .from("aethex_devconnect_links")
             .update({
               devconnect_username,
-              devconnect_profile_url: devconnect_profile_url || `https://dev-link.me/${devconnect_username}`,
+              devconnect_profile_url:
+                devconnect_profile_url ||
+                `https://dev-link.me/${devconnect_username}`,
             })
             .eq("aethex_creator_id", creator.id)
             .select()
@@ -3072,7 +3174,9 @@ export function createServer() {
             .insert({
               aethex_creator_id: creator.id,
               devconnect_username,
-              devconnect_profile_url: devconnect_profile_url || `https://dev-link.me/${devconnect_username}`,
+              devconnect_profile_url:
+                devconnect_profile_url ||
+                `https://dev-link.me/${devconnect_username}`,
             })
             .select()
             .single();
@@ -3089,7 +3193,9 @@ export function createServer() {
         return res.status(status).json(result);
       } catch (e: any) {
         console.error("[DevConnect API] Error linking account:", e?.message);
-        return res.status(500).json({ error: "Failed to link DevConnect account" });
+        return res
+          .status(500)
+          .json({ error: "Failed to link DevConnect account" });
       }
     });
 
@@ -3125,7 +3231,9 @@ export function createServer() {
         return res.json({ data: data || null });
       } catch (e: any) {
         console.error("[DevConnect API] Error fetching link:", e?.message);
-        return res.status(500).json({ error: "Failed to fetch DevConnect link" });
+        return res
+          .status(500)
+          .json({ error: "Failed to fetch DevConnect link" });
       }
     });
 
@@ -3163,10 +3271,11 @@ export function createServer() {
         return res.json({ ok: true });
       } catch (e: any) {
         console.error("[DevConnect API] Error unlinking account:", e?.message);
-        return res.status(500).json({ error: "Failed to unlink DevConnect account" });
+        return res
+          .status(500)
+          .json({ error: "Failed to unlink DevConnect account" });
       }
     });
-
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }

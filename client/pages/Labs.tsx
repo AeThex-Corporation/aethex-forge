@@ -2,7 +2,14 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Microscope, Zap, Users, ArrowRight, Lightbulb, Target } from "lucide-react";
+import {
+  Microscope,
+  Zap,
+  Users,
+  ArrowRight,
+  Lightbulb,
+  Target,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Labs() {
@@ -29,8 +36,7 @@ export default function Labs() {
     },
     {
       title: "Procedural Content Generation",
-      description:
-        "Algorithms for infinite, dynamic game world generation",
+      description: "Algorithms for infinite, dynamic game world generation",
       status: "Published Research",
       team: 4,
       impact: "Game development tools",
@@ -57,7 +63,8 @@ export default function Labs() {
     {
       title: "Open Source: AeThex Game Engine",
       date: "November 2024",
-      description: "Lightweight, high-performance game engine for web and native",
+      description:
+        "Lightweight, high-performance game engine for web and native",
       stars: "2.5K GitHub stars",
     },
     {
@@ -99,10 +106,16 @@ export default function Labs() {
                   The Innovation Engine
                 </h1>
                 <p className="text-xl text-yellow-100/70 max-w-3xl">
-                  AeThex Labs is our dedicated R&D pillar, focused on breakthrough technologies that create lasting competitive advantage. We invest in bleeding-edge research—from advanced AI to next-generation web architectures—while cultivating thought leadership that shapes industry direction.
+                  AeThex Labs is our dedicated R&D pillar, focused on
+                  breakthrough technologies that create lasting competitive
+                  advantage. We invest in bleeding-edge research—from advanced
+                  AI to next-generation web architectures—while cultivating
+                  thought leadership that shapes industry direction.
                 </p>
                 <p className="text-xl text-yellow-100/80 max-w-3xl">
-                  Applied R&D pushing the boundaries of what's possible in software, games, and digital experiences. Our research today shapes tomorrow's products.
+                  Applied R&D pushing the boundaries of what's possible in
+                  software, games, and digital experiences. Our research today
+                  shapes tomorrow's products.
                 </p>
               </div>
 
@@ -125,7 +138,9 @@ export default function Labs() {
 
               {/* Creator Network CTAs */}
               <div className="mt-8 pt-8 border-t border-yellow-400/20">
-                <p className="text-sm text-yellow-200/70 mb-4">Explore our creator community:</p>
+                <p className="text-sm text-yellow-200/70 mb-4">
+                  Explore our creator community:
+                </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     size="sm"
@@ -161,7 +176,9 @@ export default function Labs() {
                     className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-all"
                   >
                     <CardHeader>
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${project.color} flex items-center justify-center text-white mb-4`}>
+                      <div
+                        className={`w-12 h-12 rounded-lg bg-gradient-to-r ${project.color} flex items-center justify-center text-white mb-4`}
+                      >
                         <Lightbulb className="h-6 w-6" />
                       </div>
                       <CardTitle className="text-yellow-300">
@@ -267,7 +284,9 @@ export default function Labs() {
                 Meet the Lab
               </h2>
               <p className="text-lg text-yellow-100/80 max-w-3xl mb-12">
-                Our research team consists of PhD-level researchers, innovative engineers, and pioneering thinkers. We collaborate across disciplines to tackle the hardest problems in technology.
+                Our research team consists of PhD-level researchers, innovative
+                engineers, and pioneering thinkers. We collaborate across
+                disciplines to tackle the hardest problems in technology.
               </p>
               <Button
                 className="bg-yellow-400 text-black hover:bg-yellow-300"
@@ -286,7 +305,8 @@ export default function Labs() {
                 Be Part of the Innovation
               </h2>
               <p className="text-lg text-yellow-100/80 mb-8">
-                We're hiring researchers and engineers to push the boundaries of what's possible.
+                We're hiring researchers and engineers to push the boundaries of
+                what's possible.
               </p>
               <Button
                 className="bg-yellow-400 text-black shadow-[0_0_30px_rgba(251,191,36,0.35)] hover:bg-yellow-300"

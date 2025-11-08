@@ -47,8 +47,10 @@ export function DevConnectLinkModal({
       onSuccess?.();
     } catch (error) {
       toast(
-        error instanceof Error ? error.message : "Failed to link DevConnect account",
-        "error"
+        error instanceof Error
+          ? error.message
+          : "Failed to link DevConnect account",
+        "error",
       );
     } finally {
       setIsLoading(false);
@@ -61,7 +63,8 @@ export function DevConnectLinkModal({
         <AlertDialogHeader>
           <AlertDialogTitle>Link Your DevConnect Account</AlertDialogTitle>
           <AlertDialogDescription>
-            Enter your DevConnect username to link your profile. This allows you to showcase your presence on both platforms.
+            Enter your DevConnect username to link your profile. This allows you
+            to showcase your presence on both platforms.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -79,7 +82,8 @@ export function DevConnectLinkModal({
               />
             </div>
             <p className="text-xs text-gray-500">
-              Your username will be used to create a link to your DevConnect profile
+              Your username will be used to create a link to your DevConnect
+              profile
             </p>
           </div>
         </div>

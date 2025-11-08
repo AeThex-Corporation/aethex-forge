@@ -2,7 +2,15 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Briefcase, Zap, Target, Network, Sparkles, ArrowRight } from "lucide-react";
+import {
+  Users,
+  Briefcase,
+  Zap,
+  Target,
+  Network,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Nexus() {
@@ -12,32 +20,38 @@ export default function Nexus() {
     {
       icon: Users,
       title: "Discover Talent",
-      description: "Browse creators across all AeThex arms with powerful filters and search."
+      description:
+        "Browse creators across all AeThex arms with powerful filters and search.",
     },
     {
       icon: Briefcase,
       title: "Post Opportunities",
-      description: "Create job postings and collaboration requests for your team or studio."
+      description:
+        "Create job postings and collaboration requests for your team or studio.",
     },
     {
       icon: Network,
       title: "Cross-Arm Integration",
-      description: "Find talent from Labs, GameForge, Corp, Foundation, and DevConnect."
+      description:
+        "Find talent from Labs, GameForge, Corp, Foundation, and DevConnect.",
     },
     {
       icon: Sparkles,
       title: "Hybrid Marketplace",
-      description: "Access both AeThex creators and DevConnect developers in one place."
+      description:
+        "Access both AeThex creators and DevConnect developers in one place.",
     },
     {
       icon: Target,
       title: "Smart Matching",
-      description: "Match opportunities with creators based on skills, experience, and interests."
+      description:
+        "Match opportunities with creators based on skills, experience, and interests.",
     },
     {
       icon: Zap,
       title: "Instant Apply",
-      description: "Apply for opportunities directly or track your applications in real-time."
+      description:
+        "Apply for opportunities directly or track your applications in real-time.",
     },
   ];
 
@@ -81,8 +95,8 @@ export default function Nexus() {
                 </h1>
 
                 <p className="text-lg text-purple-100/90 sm:text-xl">
-                  Connect creators with opportunities across all AeThex arms. 
-                  Find talent, post jobs, and build amazing teams in a unified 
+                  Connect creators with opportunities across all AeThex arms.
+                  Find talent, post jobs, and build amazing teams in a unified
                   marketplace powered by both AeThex and DevConnect.
                 </p>
 
@@ -135,7 +149,8 @@ export default function Nexus() {
                   Everything You Need
                 </h2>
                 <p className="text-purple-200/70">
-                  Connect creators with opportunities in a single, unified marketplace
+                  Connect creators with opportunities in a single, unified
+                  marketplace
                 </p>
               </div>
 
@@ -173,7 +188,8 @@ export default function Nexus() {
                   Multi-Arm Marketplace
                 </h2>
                 <p className="text-purple-200/70">
-                  Access talent and opportunities from all AeThex arms in one place
+                  Access talent and opportunities from all AeThex arms in one
+                  place
                 </p>
               </div>
 
@@ -205,7 +221,8 @@ export default function Nexus() {
                   Ready to Connect?
                 </h2>
                 <p className="text-purple-200/80 mb-8">
-                  Join the Nexus today and find your next opportunity or team member
+                  Join the Nexus today and find your next opportunity or team
+                  member
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">

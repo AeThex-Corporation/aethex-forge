@@ -144,7 +144,10 @@ const App = () => (
                 />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile/me" element={<Profile />} />
-                <Route path="/profile/applications" element={<MyApplications />} />
+                <Route
+                  path="/profile/applications"
+                  element={<MyApplications />}
+                />
 
                 <Route path="/developers" element={<DevelopersDirectory />} />
                 <Route
@@ -183,9 +186,15 @@ const App = () => (
 
                 {/* Creator Network routes */}
                 <Route path="/creators" element={<CreatorDirectory />} />
-                <Route path="/creators/:username" element={<CreatorProfile />} />
+                <Route
+                  path="/creators/:username"
+                  element={<CreatorProfile />}
+                />
                 <Route path="/opportunities" element={<OpportunitiesHub />} />
-                <Route path="/opportunities/:id" element={<OpportunityDetail />} />
+                <Route
+                  path="/opportunities/:id"
+                  element={<OpportunityDetail />}
+                />
 
                 {/* Service routes */}
                 <Route path="/game-development" element={<GameDevelopment />} />

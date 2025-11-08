@@ -130,35 +130,50 @@ export async function addProject(data: {
   return response.json();
 }
 
-export async function updateProject(projectId: string, data: {
-  title?: string;
-  description?: string;
-  url?: string;
-  image_url?: string;
-  tags?: string[];
-  is_featured?: boolean;
-}): Promise<Project> {
-  const response = await fetch(`${API_BASE}/api/creators/me/projects/${projectId}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+export async function updateProject(
+  projectId: string,
+  data: {
+    title?: string;
+    description?: string;
+    url?: string;
+    image_url?: string;
+    tags?: string[];
+    is_featured?: boolean;
+  },
+): Promise<Project> {
+  const response = await fetch(
+    `${API_BASE}/api/creators/me/projects/${projectId}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    },
+  );
   if (!response.ok) throw new Error("Failed to update project");
   return response.json();
 }
 
 export async function deleteProject(projectId: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/api/creators/me/projects/${projectId}`, {
-    method: "DELETE",
-  });
+  const response = await fetch(
+    `${API_BASE}/api/creators/me/projects/${projectId}`,
+    {
+      method: "DELETE",
+    },
+  );
   if (!response.ok) throw new Error("Failed to delete project");
 }
 
-export async function endorseSkill(creatorId: string, skill: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/api/creators/${creatorId}/endorse`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ skill }),
-  });
+export async function endorseSkill(
+  creatorId: string,
+  skill: string,
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE}/api/creators/${creatorId}/endorse`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ skill }),
+    },
+  );
   if (!response.ok) throw new Error("Failed to endorse skill");
 }

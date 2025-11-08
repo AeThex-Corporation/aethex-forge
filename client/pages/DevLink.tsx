@@ -137,7 +137,9 @@ export default function DevLink() {
 
               {/* Creator Network CTAs */}
               <div className="mt-8 pt-8 border-t border-cyan-400/20">
-                <p className="text-sm text-cyan-200/70 mb-4">Explore our creator community:</p>
+                <p className="text-sm text-cyan-200/70 mb-4">
+                  Explore our creator community:
+                </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button
                     size="sm"

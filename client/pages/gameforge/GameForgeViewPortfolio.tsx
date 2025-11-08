@@ -75,7 +75,8 @@ export default function GameForgeViewPortfolio() {
                 Released Games
               </h1>
               <p className="text-lg text-green-100/80 max-w-3xl">
-                Games shipped by GameForge. See player stats, revenue, and team sizes from our monthly releases.
+                Games shipped by GameForge. See player stats, revenue, and team
+                sizes from our monthly releases.
               </p>
             </div>
           </section>
@@ -109,9 +110,7 @@ export default function GameForgeViewPortfolio() {
                           <p className="text-lg font-bold text-green-300">
                             {game.players}
                           </p>
-                          <p className="text-xs text-green-200/60">
-                            active
-                          </p>
+                          <p className="text-xs text-green-200/60">active</p>
                         </div>
 
                         <div className="space-y-1">
@@ -119,7 +118,8 @@ export default function GameForgeViewPortfolio() {
                             RATING
                           </p>
                           <p className="text-lg font-bold text-green-300 flex items-center gap-1">
-                            {game.rating} <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            {game.rating}{" "}
+                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                           </p>
                           <p className="text-xs text-green-200/60">
                             {game.downloads} downloads

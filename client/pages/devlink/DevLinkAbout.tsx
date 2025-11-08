@@ -62,7 +62,9 @@ export default function DevLinkAbout() {
                 About Dev-Link
               </h1>
               <p className="text-lg text-cyan-100/80 max-w-3xl">
-                The professional networking platform built for Roblox developers. Connect, collaborate, and grow your career in game development.
+                The professional networking platform built for Roblox
+                developers. Connect, collaborate, and grow your career in game
+                development.
               </p>
             </div>
           </section>
@@ -75,7 +77,13 @@ export default function DevLinkAbout() {
               <Card className="bg-cyan-950/20 border-cyan-400/30">
                 <CardContent className="pt-6">
                   <p className="text-lg text-cyan-200/80 leading-relaxed">
-                    Dev-Link is on a mission to empower Roblox developers worldwide. We believe that the Roblox platform has created an incredible community of creators who deserve a professional space to connect, showcase their work, and find amazing opportunities. Just like LinkedIn transformed professional networking, Dev-Link is transforming how Roblox developers collaborate and build their careers.
+                    Dev-Link is on a mission to empower Roblox developers
+                    worldwide. We believe that the Roblox platform has created
+                    an incredible community of creators who deserve a
+                    professional space to connect, showcase their work, and find
+                    amazing opportunities. Just like LinkedIn transformed
+                    professional networking, Dev-Link is transforming how Roblox
+                    developers collaborate and build their careers.
                   </p>
                 </CardContent>
               </Card>
@@ -91,7 +99,10 @@ export default function DevLinkAbout() {
                 {values.map((value, idx) => {
                   const Icon = value.icon;
                   return (
-                    <Card key={idx} className="bg-cyan-950/20 border-cyan-400/30">
+                    <Card
+                      key={idx}
+                      className="bg-cyan-950/20 border-cyan-400/30"
+                    >
                       <CardContent className="pt-6">
                         <Icon className="h-8 w-8 text-cyan-400 mb-3" />
                         <h3 className="text-lg font-bold text-cyan-300 mb-2">

@@ -2,7 +2,14 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gamepad2, Calendar, Users, TrendingUp, Rocket, ArrowRight } from "lucide-react";
+import {
+  Gamepad2,
+  Calendar,
+  Users,
+  TrendingUp,
+  Rocket,
+  ArrowRight,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function GameForge() {
@@ -97,7 +104,11 @@ export default function GameForge() {
                   Shipping Games Monthly
                 </h1>
                 <p className="text-xl text-green-100/70 max-w-3xl">
-                  AeThex GameForge is our internal production studio that demonstrates disciplined, efficient development. We ship a new game every month using proprietary development pipelines and tools from Labs, proving our technology's real-world impact while maintaining controlled burn rates.
+                  AeThex GameForge is our internal production studio that
+                  demonstrates disciplined, efficient development. We ship a new
+                  game every month using proprietary development pipelines and
+                  tools from Labs, proving our technology's real-world impact
+                  while maintaining controlled burn rates.
                 </p>
               </div>
 
@@ -257,7 +268,8 @@ export default function GameForge() {
                   {
                     phase: "Prototyping",
                     duration: "1 week",
-                    description: "Build playable prototype to test core mechanics",
+                    description:
+                      "Build playable prototype to test core mechanics",
                   },
                   {
                     phase: "Development",
@@ -312,7 +324,8 @@ export default function GameForge() {
                 Part of Our Shipping Culture
               </h2>
               <p className="text-lg text-green-100/80 mb-8">
-                Our team represents the best of game development talent. Meet the people who make monthly shipping possible.
+                Our team represents the best of game development talent. Meet
+                the people who make monthly shipping possible.
               </p>
               <Button
                 className="bg-green-400 text-black shadow-[0_0_30px_rgba(34,197,94,0.35)] hover:bg-green-300"

@@ -35,15 +35,15 @@ export default function Foundation() {
     },
     {
       name: "Developer CLI",
-      description: "Command-line tools for streamlined game development workflow",
+      description:
+        "Command-line tools for streamlined game development workflow",
       stars: "1.2K",
       language: "Go",
       link: "github.com/aethex/dev-cli",
     },
     {
       name: "Multiplayer Framework",
-      description:
-        "Drop-in networking layer for real-time multiplayer games",
+      description: "Drop-in networking layer for real-time multiplayer games",
       stars: "980",
       language: "TypeScript",
       link: "github.com/aethex/multiplayer",
@@ -147,7 +147,11 @@ export default function Foundation() {
                   Community Impact & Talent Pipeline
                 </h1>
                 <p className="text-xl text-red-100/70 max-w-3xl">
-                  AeThex Foundation builds goodwill through open-source code (permissive licensing for maximum adoption), educational curriculum, and community workshops. We create a specialized talent pipeline feeding our ecosystem while advancing the broader developer community.
+                  AeThex Foundation builds goodwill through open-source code
+                  (permissive licensing for maximum adoption), educational
+                  curriculum, and community workshops. We create a specialized
+                  talent pipeline feeding our ecosystem while advancing the
+                  broader developer community.
                 </p>
               </div>
 
@@ -170,7 +174,9 @@ export default function Foundation() {
 
               {/* Creator Network CTAs */}
               <div className="mt-8 pt-8 border-t border-red-400/20">
-                <p className="text-sm text-red-200/70 mb-4">Explore our creator community:</p>
+                <p className="text-sm text-red-200/70 mb-4">
+                  Explore our creator community:
+                </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     size="sm"
@@ -300,10 +306,7 @@ export default function Foundation() {
               </h2>
               <div className="grid md:grid-cols-2 gap-6">
                 {resources.map((resource, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-red-950/20 border-red-400/30"
-                  >
+                  <Card key={idx} className="bg-red-950/20 border-red-400/30">
                     <CardContent className="pt-6">
                       <div className="space-y-3">
                         <div>
@@ -405,7 +408,9 @@ export default function Foundation() {
                 Ways to Contribute
               </h2>
               <p className="text-lg text-red-100/80 mb-12 max-w-3xl">
-                Join our community and help us build the future of game development. Whether you're a developer, designer, educator, or enthusiast, there's a place for you.
+                Join our community and help us build the future of game
+                development. Whether you're a developer, designer, educator, or
+                enthusiast, there's a place for you.
               </p>
               <div className="grid md:grid-cols-3 gap-6">
                 {[
@@ -425,10 +430,7 @@ export default function Foundation() {
                       "Help us improve by finding and reporting bugs",
                   },
                 ].map((item, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-red-950/20 border-red-400/30"
-                  >
+                  <Card key={idx} className="bg-red-950/20 border-red-400/30">
                     <CardContent className="pt-6 text-center">
                       <h3 className="font-bold text-red-300 mb-2">
                         {item.title}

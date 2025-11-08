@@ -5,10 +5,7 @@ const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE || "";
 
 const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
-export async function getMyApplications(
-  req: Request,
-  userId: string
-) {
+export async function getMyApplications(req: Request, userId: string) {
   const url = new URL(req.url);
   const page = parseInt(url.searchParams.get("page") || "1");
   const limit = parseInt(url.searchParams.get("limit") || "10");
@@ -25,7 +22,7 @@ export async function getMyApplications(
     if (!creator) {
       return new Response(
         JSON.stringify({ error: "Creator profile not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -43,7 +40,7 @@ export async function getMyApplications(
         updated_at,
         aethex_opportunities(id, title, arm_affiliation, job_type, posted_by_id, aethex_creators!aethex_opportunities_posted_by_id_fkey(username, avatar_url))
       `,
-        { count: "exact" }
+        { count: "exact" },
       )
       .eq("creator_id", creator.id);
 
@@ -73,20 +70,20 @@ export async function getMyApplications(
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error) {
     console.error("Error fetching applications:", error);
     return new Response(
       JSON.stringify({ error: "Failed to fetch applications" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
 
 export async function getApplicationsForOpportunity(
   opportunityId: string,
-  userId: string
+  userId: string,
 ) {
   try {
     // Verify user owns this opportunity
@@ -97,10 +94,10 @@ export async function getApplicationsForOpportunity(
       .single();
 
     if (!opportunity) {
-      return new Response(
-        JSON.stringify({ error: "Opportunity not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Opportunity not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const { data: creator } = await supabase
@@ -110,10 +107,10 @@ export async function getApplicationsForOpportunity(
       .single();
 
     if (creator?.id !== opportunity.posted_by_id) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 403, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const { data, error } = await supabase
@@ -126,7 +123,7 @@ export async function getApplicationsForOpportunity(
         cover_letter,
         applied_at,
         aethex_creators(username, avatar_url, bio, skills)
-      `
+      `,
       )
       .eq("opportunity_id", opportunityId)
       .order("applied_at", { ascending: false });
@@ -141,15 +138,12 @@ export async function getApplicationsForOpportunity(
     console.error("Error fetching opportunity applications:", error);
     return new Response(
       JSON.stringify({ error: "Failed to fetch applications" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
 
-export async function submitApplication(
-  req: Request,
-  userId: string
-) {
+export async function submitApplication(req: Request, userId: string) {
   try {
     const body = await req.json();
     const { opportunity_id, cover_letter } = body;
@@ -164,7 +158,7 @@ export async function submitApplication(
     if (!creator) {
       return new Response(
         JSON.stringify({ error: "Creator profile not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -179,7 +173,7 @@ export async function submitApplication(
     if (!opportunity) {
       return new Response(
         JSON.stringify({ error: "Opportunity not found or closed" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -193,8 +187,10 @@ export async function submitApplication(
 
     if (existing) {
       return new Response(
-        JSON.stringify({ error: "You have already applied to this opportunity" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        JSON.stringify({
+          error: "You have already applied to this opportunity",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -219,7 +215,7 @@ export async function submitApplication(
     console.error("Error submitting application:", error);
     return new Response(
       JSON.stringify({ error: "Failed to submit application" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
@@ -227,7 +223,7 @@ export async function submitApplication(
 export async function updateApplicationStatus(
   req: Request,
   applicationId: string,
-  userId: string
+  userId: string,
 ) {
   try {
     const body = await req.json();
@@ -241,16 +237,16 @@ export async function updateApplicationStatus(
         id,
         opportunity_id,
         aethex_opportunities(posted_by_id)
-      `
+      `,
       )
       .eq("id", applicationId)
       .single();
 
     if (!application) {
-      return new Response(
-        JSON.stringify({ error: "Application not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Application not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const { data: creator } = await supabase
@@ -260,10 +256,10 @@ export async function updateApplicationStatus(
       .single();
 
     if (creator?.id !== application.aethex_opportunities.posted_by_id) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 403, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const { data, error } = await supabase
@@ -287,14 +283,14 @@ export async function updateApplicationStatus(
     console.error("Error updating application:", error);
     return new Response(
       JSON.stringify({ error: "Failed to update application" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
 
 export async function withdrawApplication(
   applicationId: string,
-  userId: string
+  userId: string,
 ) {
   try {
     // Verify user owns this application
@@ -305,10 +301,10 @@ export async function withdrawApplication(
       .single();
 
     if (!application) {
-      return new Response(
-        JSON.stringify({ error: "Application not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Application not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const { data: creator } = await supabase
@@ -318,10 +314,10 @@ export async function withdrawApplication(
       .single();
 
     if (creator?.id !== application.creator_id) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 403, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const { error } = await supabase
@@ -339,7 +335,7 @@ export async function withdrawApplication(
     console.error("Error withdrawing application:", error);
     return new Response(
       JSON.stringify({ error: "Failed to withdraw application" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }

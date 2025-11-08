@@ -7,6 +7,7 @@ AeThex can be embedded as a Discord Activity, allowing users to access the platf
 ## What is a Discord Activity?
 
 A Discord Activity is an embedded application that runs within Discord. It allows users to:
+
 - Access AeThex features directly in Discord
 - Share their experience with server members
 - Collaborate in real-time without leaving Discord
@@ -51,6 +52,7 @@ This file tells Discord how to handle the AeThex Activity:
 ```
 
 **Key Configuration Points:**
+
 - `instance_url`: Where Discord Activity iframe loads (MUST be domain, not IP)
 - `redirect_uris`: OAuth callback endpoint (MUST match Discord app settings)
 - `scopes`: What Discord permissions the Activity requests
@@ -58,15 +60,18 @@ This file tells Discord how to handle the AeThex Activity:
 ### 2. Code Configuration
 
 **Frontend Pages** (`code/client/pages/`):
+
 - `DiscordActivity.tsx` - Main Activity page mounted at `/discord`
 - Discord OAuth callback handler at `/discord/callback`
 
 **Context** (`code/client/contexts/DiscordContext.tsx`):
+
 - Manages Discord user session
 - Handles OAuth flow
 - Exposes Discord user data to components
 
 **Routes** (`code/client/App.tsx`):
+
 ```typescript
 <Route path="/discord" element={<DiscordActivity />} />
 <Route path="/discord/callback" element={<DiscordOAuthCallback />} />
@@ -85,6 +90,7 @@ This must be present for Discord Activity to initialize.
 ## Local Testing
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 - Running AeThex dev server
@@ -92,6 +98,7 @@ This must be present for Discord Activity to initialize.
 ### Steps
 
 1. **Start the dev server:**
+
    ```bash
    npm run dev
    # or
@@ -99,6 +106,7 @@ This must be present for Discord Activity to initialize.
    ```
 
 2. **Access locally via tunnel** (if testing Discord Activity):
+
    - Use a tool like `ngrok` to expose localhost to Discord
    - Or use Discord's local testing tools
 
@@ -111,6 +119,7 @@ This must be present for Discord Activity to initialize.
 ⚠️ **Note**: Discord Activities require HTTPS and a proper domain. Local testing with IP addresses will fail with **Cloudflare Error 1003**.
 
 Local testing workarounds:
+
 - Use `ngrok` with a tunnel URL
 - Use Discord's local testing documentation
 - Test OAuth flow after deploying to staging
@@ -145,6 +154,7 @@ Local testing workarounds:
 ### Environment Variables
 
 No special environment variables needed for Discord Activity. The configuration is done via:
+
 - `code/public/discord-manifest.json`
 - Discord Application settings
 - `code/client/contexts/DiscordContext.tsx`
@@ -169,16 +179,19 @@ No special environment variables needed for Discord Activity. The configuration 
 ### Implementation Details
 
 **DiscordActivity.tsx** handles:
+
 - Discord SDK initialization
 - OAuth trigger and callback handling
 - Activity UI rendering
 
 **DiscordContext.tsx** manages:
+
 - Discord user state
 - Token storage
 - Session lifecycle
 
 **API calls** use Discord access token for:
+
 - User identification
 - Guild information
 - Activity-specific operations
@@ -190,6 +203,7 @@ No special environment variables needed for Discord Activity. The configuration 
 **Cause**: Accessing Activity via IP address instead of domain
 
 **Solution**:
+
 ```
 ❌ http://192.168.1.100:5173/discord
 ✅ https://aethex.dev/discord
@@ -197,6 +211,7 @@ No special environment variables needed for Discord Activity. The configuration 
 
 **Error Message in UI**:
 Users will see a helpful error message explaining:
+
 - The issue (Cloudflare blocking IP access)
 - How to fix it (use domain instead)
 - Troubleshooting steps
@@ -206,6 +221,7 @@ Users will see a helpful error message explaining:
 **Cause**: Discord SDK not loaded or manifest invalid
 
 **Solution**:
+
 - Verify Discord SDK script in `code/index.html`
 - Check manifest is accessible at `/public/discord-manifest.json`
 - Verify Discord Application ID: `578971245454950421`
@@ -244,6 +260,7 @@ Users will see a helpful error message explaining:
 **Error**: Blank white screen in Discord Activity
 
 **Debug Steps**:
+
 1. Open browser DevTools in Discord
 2. Check Console for errors
 3. Check Network tab for failed requests
@@ -251,6 +268,7 @@ Users will see a helpful error message explaining:
 5. Verify Cloudflare isn't blocking traffic
 
 **Common Causes**:
+
 - IP address used instead of domain (Cloudflare Error 1003)
 - Discord SDK script failed to load
 - Manifest file not accessible
@@ -261,12 +279,14 @@ Users will see a helpful error message explaining:
 **Error**: OAuth flow doesn't complete or redirect fails
 
 **Debug Steps**:
+
 1. Check Discord Application settings - redirect URIs match exactly
 2. Verify OAuth callback route exists: `/discord/callback`
 3. Check browser console for authorization error codes
 4. Verify Discord Application permissions (identify, email, guilds)
 
 **Common Causes**:
+
 - Redirect URI mismatch between manifest and Discord app
 - Discord Application doesn't have "Identify" scope enabled
 - Activity not installed in Discord server
@@ -276,6 +296,7 @@ Users will see a helpful error message explaining:
 **Error**: Guild list is empty or shows no servers
 
 **Debug Steps**:
+
 1. Verify "guilds" scope is in OAuth config
 2. Check user actually has permission in those guilds
 3. Verify Discord OAuth token has guilds scope
@@ -316,6 +337,7 @@ Using your deployment provider (Netlify, Vercel, custom):
 ### Step 5: Add to Discord
 
 In Discord Developer Portal:
+
 1. Go to Application Settings
 2. Add Activity URL: `https://aethex.dev/discord`
 3. Set OAuth2 Redirect URIs to: `https://aethex.dev/discord/callback`

@@ -104,7 +104,9 @@ export default function LabsJoinTeam() {
                   Meet the Lab
                 </h1>
                 <p className="text-lg text-yellow-100/80 max-w-3xl">
-                  World-class researchers and engineers dedicated to advancing technology. Our team includes PhD researchers, published authors, and visionary thinkers.
+                  World-class researchers and engineers dedicated to advancing
+                  technology. Our team includes PhD researchers, published
+                  authors, and visionary thinkers.
                 </p>
               </div>
             </div>
@@ -235,7 +237,8 @@ export default function LabsJoinTeam() {
                 Join the Lab
               </h2>
               <p className="text-lg text-yellow-100/80 mb-8">
-                We're looking for brilliant minds to join our team. Researchers, engineers, and visionaries welcome.
+                We're looking for brilliant minds to join our team. Researchers,
+                engineers, and visionaries welcome.
               </p>
               <Button
                 className="bg-yellow-400 text-black hover:bg-yellow-300"

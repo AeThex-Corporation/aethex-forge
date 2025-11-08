@@ -50,7 +50,9 @@ export default function CreatorProfile() {
         <div className="min-h-screen bg-black text-white flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Creator Not Found</h1>
-            <p className="text-gray-400 mb-6">The creator you're looking for doesn't exist.</p>
+            <p className="text-gray-400 mb-6">
+              The creator you're looking for doesn't exist.
+            </p>
             <Button onClick={() => navigate("/creators")}>
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Creators
@@ -87,7 +89,10 @@ export default function CreatorProfile() {
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-6">
                   <Avatar className="h-24 w-24">
-                    <AvatarImage src={creator.avatar_url} alt={creator.username} />
+                    <AvatarImage
+                      src={creator.avatar_url}
+                      alt={creator.username}
+                    />
                     <AvatarFallback>
                       {creator.username.charAt(0).toUpperCase()}
                     </AvatarFallback>
@@ -95,7 +100,9 @@ export default function CreatorProfile() {
 
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h1 className="text-3xl font-bold">@{creator.username}</h1>
+                      <h1 className="text-3xl font-bold">
+                        @{creator.username}
+                      </h1>
                       {creator.devconnect_linked && (
                         <Badge className="bg-cyan-500/10 text-cyan-300 border-cyan-500/20">
                           <ExternalLink className="h-3 w-3 mr-1" />
@@ -112,16 +119,16 @@ export default function CreatorProfile() {
                       {creator.arm_affiliations &&
                         creator.arm_affiliations
                           .filter((arm) => arm !== creator.primary_arm)
-                          .map((arm) => (
-                            <ArmBadge key={arm} arm={arm} />
-                          ))}
+                          .map((arm) => <ArmBadge key={arm} arm={arm} />)}
                     </div>
 
                     <div className="flex gap-3">
                       {creator.devconnect_link && (
                         <Button asChild>
                           <a
-                            href={creator.devconnect_link.devconnect_profile_url}
+                            href={
+                              creator.devconnect_link.devconnect_profile_url
+                            }
                             target="_blank"
                             rel="noopener noreferrer"
                           >

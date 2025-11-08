@@ -84,7 +84,8 @@ export default function DevLinkProfiles() {
                 Developer Directory
               </h1>
               <p className="text-lg text-cyan-100/80 max-w-3xl">
-                Find and connect with talented Roblox developers, browse portfolios, and discover collaboration opportunities.
+                Find and connect with talented Roblox developers, browse
+                portfolios, and discover collaboration opportunities.
               </p>
             </div>
           </section>
@@ -115,7 +116,10 @@ export default function DevLinkProfiles() {
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
-                          {dev.name.split(" ").map(n => n[0]).join("")}
+                          {dev.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
                         </div>
                         {dev.available && (
                           <Badge className="bg-green-500/20 text-green-300 border border-green-400/40 text-xs">
@@ -144,7 +148,9 @@ export default function DevLinkProfiles() {
 
                       <div className="pt-4 border-t border-cyan-400/10 space-y-3">
                         <div className="flex justify-between text-sm">
-                          <span className="text-cyan-200/70">{dev.portfolio}</span>
+                          <span className="text-cyan-200/70">
+                            {dev.portfolio}
+                          </span>
                           <span className="flex items-center gap-1 text-yellow-400">
                             <Star className="h-4 w-4 fill-yellow-400" />
                             {dev.rating}
@@ -172,9 +178,7 @@ export default function DevLinkProfiles() {
               <p className="text-lg text-cyan-100/80 mb-8">
                 Showcase your work and connect with other developers.
               </p>
-              <Button
-                className="bg-cyan-400 text-black hover:bg-cyan-300"
-              >
+              <Button className="bg-cyan-400 text-black hover:bg-cyan-300">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

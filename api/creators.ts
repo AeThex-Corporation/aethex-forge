@@ -28,7 +28,7 @@ export async function getCreators(req: Request) {
         created_at,
         aethex_projects(count)
       `,
-        { count: "exact" }
+        { count: "exact" },
       )
       .eq("is_discoverable", true)
       .order("created_at", { ascending: false });
@@ -38,9 +38,7 @@ export async function getCreators(req: Request) {
     }
 
     if (search) {
-      query = query.or(
-        `username.ilike.%${search}%,bio.ilike.%${search}%`
-      );
+      query = query.or(`username.ilike.%${search}%,bio.ilike.%${search}%`);
     }
 
     const start = (page - 1) * limit;
@@ -63,14 +61,14 @@ export async function getCreators(req: Request) {
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error) {
     console.error("Error fetching creators:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch creators" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Failed to fetch creators" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 
@@ -92,7 +90,7 @@ export async function getCreatorByUsername(username: string) {
         updated_at,
         aethex_projects(id, title, description, url, image_url, tags, is_featured),
         aethex_skill_endorsements(skill, count)
-      `
+      `,
       )
       .eq("username", username)
       .eq("is_discoverable", true)
@@ -117,10 +115,7 @@ export async function getCreatorByUsername(username: string) {
   }
 }
 
-export async function createCreatorProfile(
-  req: Request,
-  userId: string
-) {
+export async function createCreatorProfile(req: Request, userId: string) {
   try {
     const body = await req.json();
     const {
@@ -158,15 +153,12 @@ export async function createCreatorProfile(
     console.error("Error creating creator profile:", error);
     return new Response(
       JSON.stringify({ error: "Failed to create creator profile" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
 
-export async function updateCreatorProfile(
-  req: Request,
-  userId: string
-) {
+export async function updateCreatorProfile(req: Request, userId: string) {
   try {
     const body = await req.json();
     const {
@@ -209,15 +201,12 @@ export async function updateCreatorProfile(
     console.error("Error updating creator profile:", error);
     return new Response(
       JSON.stringify({ error: "Failed to update creator profile" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }
 
-export async function addProjectToCreator(
-  req: Request,
-  creatorId: string
-) {
+export async function addProjectToCreator(req: Request, creatorId: string) {
   try {
     const body = await req.json();
     const { title, description, url, image_url, tags, is_featured } = body;
@@ -244,17 +233,17 @@ export async function addProjectToCreator(
     });
   } catch (error) {
     console.error("Error adding project:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to add project" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Failed to add project" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 
 export async function endorseSkill(
   req: Request,
   creatorId: string,
-  endorsedByUserId: string
+  endorsedByUserId: string,
 ) {
   try {
     const body = await req.json();
@@ -270,7 +259,7 @@ export async function endorseSkill(
     if (!endorsingCreator) {
       return new Response(
         JSON.stringify({ error: "Endorsing user not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -292,9 +281,9 @@ export async function endorseSkill(
     });
   } catch (error) {
     console.error("Error endorsing skill:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to endorse skill" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Failed to endorse skill" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

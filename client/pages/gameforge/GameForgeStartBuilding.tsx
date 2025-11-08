@@ -122,7 +122,9 @@ export default function GameForgeStartBuilding() {
                 Production Pipeline
               </h1>
               <p className="text-lg text-green-100/80 max-w-3xl">
-                How we ship a game every month. Our proven process, team coordination, and development tools that make monthly shipping possible.
+                How we ship a game every month. Our proven process, team
+                coordination, and development tools that make monthly shipping
+                possible.
               </p>
             </div>
           </section>
@@ -234,11 +236,13 @@ export default function GameForgeStartBuilding() {
                             </p>
                           </div>
                         </div>
-                        <Badge className={`${
-                          item.status === "On Track"
-                            ? "bg-green-500/20 text-green-300 border border-green-400/40"
-                            : "bg-purple-500/20 text-purple-300 border border-purple-400/40"
-                        }`}>
+                        <Badge
+                          className={`${
+                            item.status === "On Track"
+                              ? "bg-green-500/20 text-green-300 border border-green-400/40"
+                              : "bg-purple-500/20 text-purple-300 border border-purple-400/40"
+                          }`}
+                        >
                           {item.status}
                         </Badge>
                       </div>
@@ -257,7 +261,10 @@ export default function GameForgeStartBuilding() {
               </h2>
               <div className="space-y-4">
                 {productionPhases.map((item, idx) => (
-                  <Card key={idx} className="bg-green-950/20 border-green-400/30">
+                  <Card
+                    key={idx}
+                    className="bg-green-950/20 border-green-400/30"
+                  >
                     <CardContent className="pt-6">
                       <div className="flex items-start gap-6">
                         <div className="h-12 w-12 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold flex-shrink-0">

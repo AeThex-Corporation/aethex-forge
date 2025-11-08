@@ -65,7 +65,8 @@ export default function GameForgeJoinGameForge() {
                 The Team
               </h1>
               <p className="text-lg text-green-100/80 max-w-3xl">
-                The talented developers, designers, and producers who ship a game every month.
+                The talented developers, designers, and producers who ship a
+                game every month.
               </p>
             </div>
           </section>
@@ -80,7 +81,10 @@ export default function GameForgeJoinGameForge() {
                   >
                     <CardContent className="pt-6">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold mb-3">
-                        {member.name.split(" ").map(n => n[0]).join("")}
+                        {member.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
                       </div>
                       <h3 className="text-lg font-bold text-green-300 mb-1">
                         {member.name}
@@ -115,7 +119,8 @@ export default function GameForgeJoinGameForge() {
                   {
                     icon: <Zap className="h-6 w-6" />,
                     title: "Ship Every Month",
-                    description: "We deliver a complete, polished game every month",
+                    description:
+                      "We deliver a complete, polished game every month",
                   },
                   {
                     icon: <Heart className="h-6 w-6" />,
@@ -125,7 +130,8 @@ export default function GameForgeJoinGameForge() {
                   {
                     icon: <Users className="h-6 w-6" />,
                     title: "Together",
-                    description: "Cross-functional teams working toward one goal",
+                    description:
+                      "Cross-functional teams working toward one goal",
                   },
                 ].map((item, idx) => (
                   <Card

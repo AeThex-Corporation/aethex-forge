@@ -15,7 +15,8 @@ export default function CorpScheduleConsultation() {
       id: "custom-dev",
       name: "Custom Software Development",
       duration: "60 min",
-      description: "Discuss your project requirements and our development approach",
+      description:
+        "Discuss your project requirements and our development approach",
       details: [
         "Project scope assessment",
         "Technology stack recommendations",
@@ -116,7 +117,9 @@ export default function CorpScheduleConsultation() {
                 Schedule Your Consultation
               </h1>
               <p className="text-lg text-blue-100/80 max-w-3xl">
-                Get expert guidance from our enterprise solutions team. Choose a service, pick your time, and let's discuss how we can help transform your business.
+                Get expert guidance from our enterprise solutions team. Choose a
+                service, pick your time, and let's discuss how we can help
+                transform your business.
               </p>
             </div>
           </section>
@@ -247,7 +250,9 @@ export default function CorpScheduleConsultation() {
                 What to Expect
               </h2>
               <p className="text-lg text-blue-100/80 mb-8">
-                Our consultants will assess your needs, provide expert recommendations, and create a customized solution proposal tailored to your business goals.
+                Our consultants will assess your needs, provide expert
+                recommendations, and create a customized solution proposal
+                tailored to your business goals.
               </p>
               <Button
                 className="bg-blue-400 text-black shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:bg-blue-300"

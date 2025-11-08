@@ -79,7 +79,7 @@ export default function OpportunityDetail() {
     } catch (error) {
       toast(
         error instanceof Error ? error.message : "Failed to submit application",
-        "error"
+        "error",
       );
     } finally {
       setIsApplying(false);
@@ -88,7 +88,8 @@ export default function OpportunityDetail() {
 
   const formatSalary = (min?: number, max?: number) => {
     if (!min && !max) return "Not specified";
-    if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
+    if (min && max)
+      return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
     if (min) return `$${min.toLocaleString()}+`;
     if (max) return `Up to $${max.toLocaleString()}`;
   };
@@ -152,9 +153,7 @@ export default function OpportunityDetail() {
                   <ArmBadge arm={opportunity.arm_affiliation} />
                 </div>
 
-                <h1 className="text-4xl font-bold mb-4">
-                  {opportunity.title}
-                </h1>
+                <h1 className="text-4xl font-bold mb-4">{opportunity.title}</h1>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 py-6 border-t border-b border-slate-700">
                   <div>
@@ -171,7 +170,7 @@ export default function OpportunityDetail() {
                       <p className="font-semibold text-sm">
                         {formatSalary(
                           opportunity.salary_min,
-                          opportunity.salary_max
+                          opportunity.salary_max,
                         )}
                       </p>
                     </div>
@@ -196,7 +195,10 @@ export default function OpportunityDetail() {
                 {/* Posted By */}
                 <div className="flex items-center gap-4 mb-8 p-4 bg-slate-700/30 rounded-lg">
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src={poster.avatar_url} alt={poster.username} />
+                    <AvatarImage
+                      src={poster.avatar_url}
+                      alt={poster.username}
+                    />
                     <AvatarFallback>
                       {poster.username.charAt(0).toUpperCase()}
                     </AvatarFallback>
@@ -206,9 +208,7 @@ export default function OpportunityDetail() {
                     <p className="font-semibold">@{poster.username}</p>
                   </div>
                   <Button
-                    onClick={() =>
-                      navigate(`/creators/${poster.username}`)
-                    }
+                    onClick={() => navigate(`/creators/${poster.username}`)}
                     variant="outline"
                   >
                     View Profile
@@ -253,8 +253,8 @@ export default function OpportunityDetail() {
             <AlertDialogHeader>
               <AlertDialogTitle>Apply for {opportunity.title}</AlertDialogTitle>
               <AlertDialogDescription>
-                Submit your application with a cover letter explaining why you're
-                interested in this opportunity.
+                Submit your application with a cover letter explaining why
+                you're interested in this opportunity.
               </AlertDialogDescription>
             </AlertDialogHeader>
 
@@ -280,9 +280,7 @@ export default function OpportunityDetail() {
                 disabled={isApplying || !coverLetter.trim()}
                 className="gap-2"
               >
-                {isApplying && (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                )}
+                {isApplying && <Loader2 className="h-4 w-4 animate-spin" />}
                 Submit Application
               </AlertDialogAction>
             </div>

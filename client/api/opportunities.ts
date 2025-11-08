@@ -57,7 +57,8 @@ export async function getOpportunities(filters?: {
   if (filters?.arm) params.append("arm", filters.arm);
   if (filters?.search) params.append("search", filters.search);
   if (filters?.jobType) params.append("jobType", filters.jobType);
-  if (filters?.experienceLevel) params.append("experienceLevel", filters.experienceLevel);
+  if (filters?.experienceLevel)
+    params.append("experienceLevel", filters.experienceLevel);
   if (filters?.sort) params.append("sort", filters.sort);
   if (filters?.page) params.append("page", String(filters.page));
   if (filters?.limit) params.append("limit", String(filters.limit));
@@ -73,7 +74,9 @@ export async function getOpportunityById(id: string): Promise<Opportunity> {
   return response.json();
 }
 
-export async function createOpportunity(data: CreateOpportunityData): Promise<Opportunity> {
+export async function createOpportunity(
+  data: CreateOpportunityData,
+): Promise<Opportunity> {
   const response = await fetch(`${API_BASE}/api/opportunities`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -85,7 +88,7 @@ export async function createOpportunity(data: CreateOpportunityData): Promise<Op
 
 export async function updateOpportunity(
   id: string,
-  data: Partial<CreateOpportunityData>
+  data: Partial<CreateOpportunityData>,
 ): Promise<Opportunity> {
   const response = await fetch(`${API_BASE}/api/opportunities/${id}`, {
     method: "PUT",
@@ -104,7 +107,9 @@ export async function closeOpportunity(id: string): Promise<void> {
 }
 
 export async function getApplicationsForOpportunity(opportunityId: string) {
-  const response = await fetch(`${API_BASE}/api/opportunities/${opportunityId}/applications`);
+  const response = await fetch(
+    `${API_BASE}/api/opportunities/${opportunityId}/applications`,
+  );
   if (!response.ok) throw new Error("Failed to fetch applications");
   return response.json();
 }

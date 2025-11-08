@@ -36,7 +36,9 @@ export async function unlinkDevConnectAccount(): Promise<void> {
   if (!response.ok) throw new Error("Failed to unlink DevConnect account");
 }
 
-export async function verifyDevConnectLink(verificationCode: string): Promise<DevConnectLink> {
+export async function verifyDevConnectLink(
+  verificationCode: string,
+): Promise<DevConnectLink> {
   const response = await fetch(`${API_BASE}/api/devconnect/link/verify`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

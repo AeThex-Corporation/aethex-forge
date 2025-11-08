@@ -19,12 +19,12 @@ const test = (
   passed: boolean,
   expectedStatus: number,
   actualStatus: number,
-  message: string
+  message: string,
 ) => {
   results.push({ name, passed, expectedStatus, actualStatus, message });
   const symbol = passed ? "✓" : "✗";
   console.log(
-    `${symbol} ${name.padEnd(50)} | Expected: ${expectedStatus}, Got: ${actualStatus}`
+    `${symbol} ${name.padEnd(50)} | Expected: ${expectedStatus}, Got: ${actualStatus}`,
   );
 };
 
@@ -46,7 +46,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should require user_id"
+    "Should require user_id",
   );
 
   res = await fetch(`${BASE_URL}/api/creators`, {
@@ -59,7 +59,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should require username"
+    "Should require username",
   );
 
   res = await fetch(`${BASE_URL}/api/opportunities`, {
@@ -72,7 +72,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should require title"
+    "Should require title",
   );
 
   res = await fetch(`${BASE_URL}/api/applications`, {
@@ -85,7 +85,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should require opportunity_id"
+    "Should require opportunity_id",
   );
 
   // ERROR CATEGORY 2: Not Found Errors
@@ -98,7 +98,7 @@ async function runErrorTests() {
     res.status === 404,
     404,
     res.status,
-    "Should return 404 for non-existent creator"
+    "Should return 404 for non-existent creator",
   );
 
   res = await fetch(`${BASE_URL}/api/opportunities/fake-opp-id-99999`);
@@ -107,7 +107,7 @@ async function runErrorTests() {
     res.status === 404,
     404,
     res.status,
-    "Should return 404 for non-existent opportunity"
+    "Should return 404 for non-existent opportunity",
   );
 
   res = await fetch(`${BASE_URL}/api/applications?user_id=nonexistent-user`);
@@ -116,7 +116,7 @@ async function runErrorTests() {
     res.status === 404,
     404,
     res.status,
-    "Should return 404 when creator doesn't exist"
+    "Should return 404 when creator doesn't exist",
   );
 
   // ERROR CATEGORY 3: Authorization/Ownership Errors
@@ -154,7 +154,7 @@ async function runErrorTests() {
       res.status === 500 || res.status === 404,
       404,
       res.status,
-      "Should reject invalid creator ID"
+      "Should reject invalid creator ID",
     );
   }
 
@@ -188,7 +188,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should prevent duplicate usernames"
+    "Should prevent duplicate usernames",
   );
 
   // Test duplicate application (create opportunity first)
@@ -260,7 +260,7 @@ async function runErrorTests() {
         res.status === 400,
         400,
         res.status,
-        "Should prevent duplicate applications"
+        "Should prevent duplicate applications",
       );
     }
   }
@@ -283,7 +283,7 @@ async function runErrorTests() {
     res.status === 404,
     404,
     res.status,
-    "Should require existing creator profile"
+    "Should require existing creator profile",
   );
 
   res = await fetch(`${BASE_URL}/api/applications`, {
@@ -299,7 +299,7 @@ async function runErrorTests() {
     res.status === 404,
     404,
     res.status,
-    "Should require existing creator profile"
+    "Should require existing creator profile",
   );
 
   // ERROR CATEGORY 6: Invalid Query Parameters
@@ -313,7 +313,7 @@ async function runErrorTests() {
     res.ok, // Should still work with default pagination
     200,
     res.status,
-    "Should handle invalid page gracefully"
+    "Should handle invalid page gracefully",
   );
 
   res = await fetch(`${BASE_URL}/api/opportunities?limit=999999`);
@@ -322,7 +322,7 @@ async function runErrorTests() {
     res.ok, // Should cap the limit
     200,
     res.status,
-    "Should cap maximum limit"
+    "Should cap maximum limit",
   );
 
   res = await fetch(`${BASE_URL}/api/creators?arm=invalid_arm`);
@@ -332,7 +332,7 @@ async function runErrorTests() {
     res.ok && Array.isArray(armData.data),
     200,
     res.status,
-    "Should return empty results or handle gracefully"
+    "Should return empty results or handle gracefully",
   );
 
   // ERROR CATEGORY 7: Empty/Null Values
@@ -352,7 +352,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should reject empty user_id"
+    "Should reject empty user_id",
   );
 
   res = await fetch(`${BASE_URL}/api/creators?search=`);
@@ -361,7 +361,7 @@ async function runErrorTests() {
     res.ok,
     200,
     res.status,
-    "Should handle empty search gracefully"
+    "Should handle empty search gracefully",
   );
 
   // ERROR CATEGORY 8: Missing DevConnect Parameters
@@ -378,7 +378,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should require user_id"
+    "Should require user_id",
   );
 
   res = await fetch(`${BASE_URL}/api/devconnect/link`, {
@@ -391,7 +391,7 @@ async function runErrorTests() {
     res.status === 400,
     400,
     res.status,
-    "Should require devconnect_username"
+    "Should require devconnect_username",
   );
 
   res = await fetch(`${BASE_URL}/api/devconnect/link`, {
@@ -407,7 +407,7 @@ async function runErrorTests() {
     res.status === 404,
     404,
     res.status,
-    "Should require existing creator profile"
+    "Should require existing creator profile",
   );
 
   // Summary
@@ -426,7 +426,9 @@ async function runErrorTests() {
       .filter((r) => !r.passed)
       .forEach((r) => {
         console.log(`   - ${r.name}`);
-        console.log(`     Expected ${r.expectedStatus}, got ${r.actualStatus}: ${r.message}`);
+        console.log(
+          `     Expected ${r.expectedStatus}, got ${r.actualStatus}: ${r.message}`,
+        );
       });
   } else {
     console.log("\n✅ All error handling tests passed!");

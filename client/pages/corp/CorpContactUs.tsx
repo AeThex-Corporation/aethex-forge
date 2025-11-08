@@ -53,7 +53,7 @@ export default function CorpContactUs() {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -91,7 +91,9 @@ export default function CorpContactUs() {
                 Get In Touch
               </h1>
               <p className="text-lg text-blue-100/80 max-w-3xl">
-                Have questions about our services? Want to schedule a consultation? Contact our enterprise team and we'll get back to you quickly.
+                Have questions about our services? Want to schedule a
+                consultation? Contact our enterprise team and we'll get back to
+                you quickly.
               </p>
             </div>
           </section>
@@ -272,9 +274,9 @@ export default function CorpContactUs() {
                         Expected Response Time
                       </h3>
                       <p className="text-blue-200/80">
-                        We typically respond to inquiries within 24 business hours.
-                        For urgent matters, please call our direct line during
-                        business hours (9AM-6PM EST, Monday-Friday).
+                        We typically respond to inquiries within 24 business
+                        hours. For urgent matters, please call our direct line
+                        during business hours (9AM-6PM EST, Monday-Friday).
                       </p>
                     </div>
                   </div>

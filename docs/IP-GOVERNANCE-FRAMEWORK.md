@@ -7,12 +7,14 @@ The AeThex organizational structure implements a centralized IP holding company 
 ## 1. Labs as IP Holding Company (IPCo)
 
 All core intellectual property developed by Labs is owned by Labs, including:
+
 - Patent portfolios (AI, algorithms, architectures)
 - Software copyrights and source code
 - Trade secrets and proprietary methodologies
 - Trademarks and brand assets
 
 **Benefits:**
+
 - **Clean IP Title**: Consolidated, encumbrance-free IP ownership improves enterprise valuation
 - **Protection**: IP separated from operational liabilities (Corp consulting disputes, Dev-Link platform issues)
 - **Management**: Centralized IP portfolio administration across subsidiaries
@@ -23,6 +25,7 @@ All core intellectual property developed by Labs is owned by Labs, including:
 ### Commercial Technology License
 
 Corp receives a Commercial License to "make and use" proprietary Lab technologies in commercial service delivery, specifically:
+
 - Advanced AI models for game development optimization
 - Custom algorithms for multiplayer architecture
 - Tools and frameworks created through R&D
@@ -43,6 +46,7 @@ Licensing fees from Corp to Labs must comply with the **Arm's Length Principle**
 For unique intangibles (advanced AI), cost-plus pricing is insufficient. Instead:
 
 1. **Economic Value Uplift**: Measure how Lab IP enables Corp to charge premium rates
+
    - Example: If Lab AI enables Corp to charge 30% premium for specialized dev services, royalty should reflect that uplift
    - Comparable: Industry benchmarks for AI licensing typically 15-25% of incremental revenue
 
@@ -67,6 +71,7 @@ Labs AI licensing to Corp:
 ## 3. Labs → Dev-Link: Licensing for Platform Features
 
 Dev-Link platform may license Lab IP for:
+
 - AI-assisted candidate assessment and matching
 - Specialized skill evaluation algorithms
 - Predictive analytics for placement success
@@ -92,12 +97,14 @@ Charge = Actual Costs + Markup (typically 5-15%)
 ```
 
 **Eligible Services:**
+
 - HR administration, payroll processing
 - IT infrastructure and support
 - General accounting and bookkeeping
 - Legal documentation review
 
 **Requirements:**
+
 - Clearly define which activities qualify
 - Meticulously track direct costs
 - Document markup selection (compare to similar service providers)
@@ -106,6 +113,7 @@ Charge = Actual Costs + Markup (typically 5-15%)
 ### Documentation
 
 Maintain **Intercompany Service Agreement** including:
+
 - Services provided
 - Cost allocation methodology
 - Markup rationale
@@ -118,11 +126,13 @@ The Foundation may receive services or assets from Corp/Dev-Link. **All must be 
 ### Examples of Related-Party Transactions
 
 1. **Corp provides office space to Foundation**
+
    - Must charge Fair Market Rent (comparable leases in area)
    - Document: Annual appraisal or comparable rent analysis
    - Forbidden: Below-market lease = private inurement
 
 2. **Corp donates curriculum materials to Foundation**
+
    - Document as charitable contribution
    - Fair value: Cost of development + reasonable markup
    - Record in Foundation's fund accounting system
@@ -135,6 +145,7 @@ The Foundation may receive services or assets from Corp/Dev-Link. **All must be 
 ### Conflict of Interest Policy
 
 Foundation must adopt and enforce a Conflict of Interest Policy including:
+
 - Board members declare conflicts with related for-profit entities
 - Disclosure of family/business relationships with Corp/Dev-Link executives
 - Voting restrictions: Conflicted directors abstain on related-party votes
@@ -147,11 +158,13 @@ Foundation must adopt and enforce a Conflict of Interest Policy including:
 ### Methodology
 
 **For Technology Licensing (Labs IP):**
+
 - Comparable License Analysis (market rates for similar IP)
 - Relief-from-Royalty (value of IP to users)
 - Residual Profit Split (allocate profit between Lab innovation and operational execution)
 
 **For Services:**
+
 - Comparable Uncontrolled Price (market rates for same services)
 - Cost-Plus Analysis (cost + reasonable markup)
 - Resale Price Method (if service is resold externally)
@@ -204,6 +217,7 @@ All transfers from Corp must be documented as grants/contributions with restrict
 ### Related-Party Transaction Board Approval
 
 Before any Corp transfer to Foundation:
+
 1. Independent majority votes
 2. Minority includes conflicted party vote counts documented
 3. FMV analysis presented
@@ -213,6 +227,7 @@ Before any Corp transfer to Foundation:
 ### Annual Form 990 Reporting
 
 Foundation must file IRS Form 990 disclosing:
+
 - Compensation of officers/directors
 - Related-party transactions
 - All grants and contributions received
@@ -223,6 +238,7 @@ Foundation must file IRS Form 990 disclosing:
 ## 9. Benefit Corporation Governance (Parent Level)
 
 Parent company incorporated as Benefit Corporation (not C-Corp) specifically to:
+
 - Balance shareholder profit with stakeholder interests
 - Legally protect Foundation funding decisions
 - Enable long-term R&D investment (Labs) even during fiscal pressure
@@ -231,6 +247,7 @@ Parent company incorporated as Benefit Corporation (not C-Corp) specifically to:
 ### Board Duties
 
 Benefit Corporation directors have legal duty to:
+
 1. Consider impact on stakeholders (workers, customers, community)
 2. Balance shareholder returns with general public benefit
 3. Document consideration of non-shareholder interests in board minutes
@@ -240,6 +257,7 @@ This provides legal cover for capital allocation to Foundation or high-burn Labs
 ## 10. Private Inurement Prevention
 
 ### Definition
+
 Private inurement = net earnings of Foundation inure to benefit of any shareholder/individual = immediate loss of 501(c)(3) status.
 
 ### High-Risk Transactions
@@ -259,15 +277,18 @@ Private inurement = net earnings of Foundation inure to benefit of any sharehold
 ## 11. Transfer Pricing Documentation Requirements
 
 ### When Required
+
 Any payment between related entities (Labs→Corp, Corp→Foundation, etc.) requires documentation.
 
 ### Documentation Package
 
 1. **Intercompany Agreement**
+
    - Parties, services/IP, payment terms, effective date
    - Signed and dated
 
 2. **Transfer Pricing Study**
+
    - Executive summary
    - Functional analysis (functions, assets, risks of each party)
    - Economic analysis (industry data, market conditions)
@@ -316,6 +337,7 @@ Maintain and update:
 ## Conclusion
 
 This framework ensures:
+
 1. **IP Protection**: Centralized control and defensive valuation
 2. **Tax Compliance**: Arm's Length transfer pricing reduces audit risk
 3. **Liability Insulation**: Separate entities prevent cross-contamination

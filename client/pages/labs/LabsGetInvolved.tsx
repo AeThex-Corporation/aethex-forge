@@ -2,7 +2,14 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, Users, BookOpen, Code, Zap, ArrowRight } from "lucide-react";
+import {
+  CheckCircle,
+  Users,
+  BookOpen,
+  Code,
+  Zap,
+  ArrowRight,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function LabsGetInvolved() {
@@ -109,7 +116,9 @@ export default function LabsGetInvolved() {
                   Get Involved
                 </h1>
                 <p className="text-lg text-yellow-100/80 max-w-3xl">
-                  There are many ways to collaborate with AeThex Labs. Whether you're a researcher, developer, or thought leader, we'd love to work together.
+                  There are many ways to collaborate with AeThex Labs. Whether
+                  you're a researcher, developer, or thought leader, we'd love
+                  to work together.
                 </p>
               </div>
             </div>
@@ -125,7 +134,9 @@ export default function LabsGetInvolved() {
                     className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-all"
                   >
                     <CardHeader>
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${opp.color} flex items-center justify-center text-white mb-4`}>
+                      <div
+                        className={`w-12 h-12 rounded-lg bg-gradient-to-r ${opp.color} flex items-center justify-center text-white mb-4`}
+                      >
                         {opp.icon}
                       </div>
                       <CardTitle className="text-yellow-300">

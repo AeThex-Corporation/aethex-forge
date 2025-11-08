@@ -173,7 +173,8 @@ export default function FoundationGetInvolved() {
                 Get Involved
               </h1>
               <p className="text-lg text-red-100/80 max-w-3xl">
-                Join our thriving community of developers. Whether you're just starting or a seasoned pro, there's a place for you here.
+                Join our thriving community of developers. Whether you're just
+                starting or a seasoned pro, there's a place for you here.
               </p>
             </div>
           </section>

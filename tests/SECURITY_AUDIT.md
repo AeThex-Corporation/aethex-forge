@@ -1,15 +1,18 @@
 # Creator Network Security Audit Checklist
+
 ## Phase 3: Testing & Validation
 
 ### 🔐 Authentication & Authorization
 
 - [ ] **JWT Validation**
+
   - [ ] All protected endpoints require valid JWT token
   - [ ] Expired tokens are rejected
   - [ ] Invalid/malformed tokens return 401
   - [ ] Token claims are validated before processing
 
 - [ ] **User Context Extraction**
+
   - [ ] user_id is extracted from Supabase auth context (not request body)
   - [ ] User cannot access/modify other users' data
   - [ ] Session invalidation works properly on logout
@@ -24,23 +27,27 @@
 ### 🛡️ Row Level Security (RLS) Policies
 
 - [ ] **aethex_creators table**
+
   - [ ] Users can read own profile
   - [ ] Users can update own profile
   - [ ] Public profiles are discoverable (is_discoverable=true)
   - [ ] Private profiles (is_discoverable=false) are hidden from directory
 
 - [ ] **aethex_opportunities table**
+
   - [ ] Anyone can read open opportunities
   - [ ] Only creator can update/delete own opportunities
   - [ ] Closed opportunities not visible to applicants
 
 - [ ] **aethex_applications table**
+
   - [ ] Users can read their own applications
   - [ ] Applicant can only see their own applications
   - [ ] Opportunity creator can see applications for their opportunities
   - [ ] Users cannot access others' applications
 
 - [ ] **aethex_devconnect_links table**
+
   - [ ] Users can only access their own DevConnect links
   - [ ] Links cannot be modified by non-owners
 
@@ -51,11 +58,13 @@
 ### 🔒 Data Protection
 
 - [ ] **Sensitive Data**
+
   - [ ] Passwords are never returned in API responses
   - [ ] Email addresses are not exposed in public profiles
   - [ ] Private notes/applications are not leaked
 
 - [ ] **Cover Letters**
+
   - [ ] Only applicant and opportunity creator can see cover letters
   - [ ] Cover letters are not visible in search results
 
@@ -67,16 +76,19 @@
 ### 🚫 Input Validation & Sanitization
 
 - [ ] **Text Fields**
+
   - [ ] Bio/description max length enforced (e.g., 500 chars)
   - [ ] Username format validated (alphanumeric, dashes, underscores)
   - [ ] HTML/script tags are escaped in output
 
 - [ ] **File Uploads**
+
   - [ ] Avatar URLs are validated/whitelisted
   - [ ] No malicious file types accepted
   - [ ] File size limits enforced
 
 - [ ] **Array Fields**
+
   - [ ] Skills array has max length
   - [ ] Arm affiliations are from valid set
   - [ ] Invalid values are rejected
@@ -89,16 +101,20 @@
 ### 🔗 API Endpoint Security
 
 **Creators Endpoints:**
+
 - [ ] GET /api/creators
+
   - [ ] Pagination parameters validated
   - [ ] Search doesn't expose private fields
   - [ ] Arm filter works correctly
 
 - [ ] GET /api/creators/:username
+
   - [ ] Returns 404 if profile is not discoverable
   - [ ] No sensitive data leaked
 
 - [ ] POST /api/creators
+
   - [ ] Requires auth
   - [ ] user_id extracted from auth context
   - [ ] Duplicate username prevention works
@@ -109,16 +125,20 @@
   - [ ] No privilege escalation possible
 
 **Opportunities Endpoints:**
+
 - [ ] GET /api/opportunities
+
   - [ ] Only open opportunities shown
   - [ ] Closed/draft opportunities hidden
   - [ ] Pagination and filters work
 
 - [ ] GET /api/opportunities/:id
+
   - [ ] Only returns open opportunities
   - [ ] Creator info is sanitized
 
 - [ ] POST /api/opportunities
+
   - [ ] Requires auth + creator profile
   - [ ] user_id extracted from auth
   - [ ] Only opportunity creator can post
@@ -129,18 +149,22 @@
   - [ ] Can't change posted_by_id
 
 **Applications Endpoints:**
+
 - [ ] GET /api/applications
+
   - [ ] Requires user_id + auth
   - [ ] Users only see their own applications
   - [ ] Opportunity creators can view applications
 
 - [ ] POST /api/applications
+
   - [ ] Requires auth + creator profile
   - [ ] Validates opportunity exists
   - [ ] Prevents duplicate applications
   - [ ] Validates cover letter length
 
 - [ ] PUT /api/applications/:id
+
   - [ ] Requires auth
   - [ ] Only opportunity creator can update
   - [ ] Can only change status/response_message
@@ -152,12 +176,15 @@
   - [ ] Application is properly deleted
 
 **DevConnect Endpoints:**
+
 - [ ] POST /api/devconnect/link
+
   - [ ] Requires auth + creator profile
   - [ ] user_id from auth context
   - [ ] Validates DevConnect username format
 
 - [ ] GET /api/devconnect/link
+
   - [ ] Requires user_id + auth
   - [ ] Users only see their own link
   - [ ] Returns null if not linked
@@ -170,6 +197,7 @@
 ### 🔍 SQL Injection Prevention
 
 - [ ] **Parameterized Queries**
+
   - [ ] All Supabase queries use parameterized queries (not string concatenation)
   - [ ] User input never directly in SQL strings
   - [ ] Search queries are sanitized
@@ -182,6 +210,7 @@
 ### 🌐 CORS & External Access
 
 - [ ] **CORS Headers**
+
   - [ ] Only allowed origins can call API
   - [ ] Credentials are properly scoped
   - [ ] Preflight requests handled correctly
@@ -194,6 +223,7 @@
 ### 📋 Audit Logging
 
 - [ ] **Critical Actions Logged**
+
   - [ ] User account creation
   - [ ] Opportunity creation/deletion
   - [ ] Application status changes
@@ -208,6 +238,7 @@
 ### 🔄 API Response Security
 
 - [ ] **Error Messages**
+
   - [ ] Don't leak system details
   - [ ] Don't expose database structure
   - [ ] Generic error messages for auth failures
@@ -222,11 +253,13 @@
 ### 📱 Frontend Security
 
 - [ ] **Token Management**
+
   - [ ] Tokens stored securely (not localStorage if possible)
   - [ ] Tokens cleared on logout
   - [ ] Token refresh handled properly
 
 - [ ] **XSS Prevention**
+
   - [ ] User input escaped in templates
   - [ ] No dangerouslySetInnerHTML without sanitization
   - [ ] No eval() or similar dangerous functions
@@ -238,17 +271,20 @@
 ### ✅ Testing Recommendations
 
 1. **Penetration Testing**
+
    - Test SQL injection attempts
    - Test XSS payloads in input fields
    - Test CSRF attacks
    - Test broken access control
 
 2. **Authorization Testing**
+
    - Try accessing other users' resources
    - Test privilege escalation attempts
    - Verify RLS policies are enforced
 
 3. **Data Validation Testing**
+
    - Send oversized inputs
    - Send malformed data
    - Test boundary values
@@ -269,7 +305,6 @@
 
 ---
 
-**Audit Date:** _________________
-**Auditor:** _________________
+**Audit Date:** ********\_********
+**Auditor:** ********\_********
 **Status:** PENDING ⏳
-

@@ -19,7 +19,9 @@ export function CreatorCard({ creator }: CreatorCardProps) {
         <div className="flex items-start justify-between mb-4">
           <Avatar className="h-16 w-16">
             <AvatarImage src={creator.avatar_url} alt={creator.username} />
-            <AvatarFallback>{creator.username.charAt(0).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>
+              {creator.username.charAt(0).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
           {creator.devconnect_linked && (
             <div className="text-xs bg-cyan-500/10 text-cyan-300 px-2 py-1 rounded-full border border-cyan-500/20">

@@ -15,10 +15,34 @@ interface CreatorProfileProps {
 }
 
 const AVAILABLE_ARMS = [
-  { id: "labs", name: "Labs", description: "R&D & Innovation", color: "from-yellow-500 to-orange-500", icon: Zap },
-  { id: "gameforge", name: "GameForge", description: "Game Development", color: "from-green-500 to-emerald-500", icon: Code },
-  { id: "corp", name: "Corp", description: "Enterprise Consulting", color: "from-blue-500 to-cyan-500", icon: Users },
-  { id: "foundation", name: "Foundation", description: "Education & Open Source", color: "from-red-500 to-pink-500", icon: Users },
+  {
+    id: "labs",
+    name: "Labs",
+    description: "R&D & Innovation",
+    color: "from-yellow-500 to-orange-500",
+    icon: Zap,
+  },
+  {
+    id: "gameforge",
+    name: "GameForge",
+    description: "Game Development",
+    color: "from-green-500 to-emerald-500",
+    icon: Code,
+  },
+  {
+    id: "corp",
+    name: "Corp",
+    description: "Enterprise Consulting",
+    color: "from-blue-500 to-cyan-500",
+    icon: Users,
+  },
+  {
+    id: "foundation",
+    name: "Foundation",
+    description: "Education & Open Source",
+    color: "from-red-500 to-pink-500",
+    icon: Users,
+  },
 ];
 
 const SKILL_SUGGESTIONS = [
@@ -48,7 +72,11 @@ export default function CreatorProfile({
   totalSteps,
 }: CreatorProfileProps) {
   const [inputValue, setInputValue] = useState("");
-  const creatorData = data.creatorProfile || { bio: "", skills: [], primaryArm: "" };
+  const creatorData = data.creatorProfile || {
+    bio: "",
+    skills: [],
+    primaryArm: "",
+  };
 
   const canProceed = useMemo(() => {
     return creatorData.primaryArm && creatorData.skills.length > 0;
@@ -138,7 +166,9 @@ export default function CreatorProfile({
                   </div>
                   <div>
                     <div className="font-semibold text-white">{arm.name}</div>
-                    <div className="text-xs text-gray-400">{arm.description}</div>
+                    <div className="text-xs text-gray-400">
+                      {arm.description}
+                    </div>
                   </div>
                 </div>
               </button>
@@ -150,7 +180,10 @@ export default function CreatorProfile({
       {/* Skills Selection */}
       <div className="space-y-4">
         <label className="text-sm font-semibold text-gray-200 block">
-          What are your skills? * <span className="text-xs text-gray-400 font-normal">(Add at least 1)</span>
+          What are your skills? *{" "}
+          <span className="text-xs text-gray-400 font-normal">
+            (Add at least 1)
+          </span>
         </label>
 
         {/* Skills Input */}
@@ -221,11 +254,7 @@ export default function CreatorProfile({
 
       {/* Navigation */}
       <div className="flex gap-3 pt-8 border-t border-gray-800">
-        <Button
-          onClick={prevStep}
-          variant="outline"
-          className="flex-1"
-        >
+        <Button onClick={prevStep} variant="outline" className="flex-1">
           Back
         </Button>
         <Button

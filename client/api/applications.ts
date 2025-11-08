@@ -63,7 +63,7 @@ export async function getMyApplications(filters?: {
 
 export async function getApplicationsForOpportunity(opportunityId: string) {
   const response = await fetch(
-    `${API_BASE}/api/opportunities/${opportunityId}/applications`
+    `${API_BASE}/api/opportunities/${opportunityId}/applications`,
   );
   if (!response.ok) throw new Error("Failed to fetch applications");
   const data = await response.json();
@@ -88,20 +88,28 @@ export async function updateApplicationStatus(
   data: {
     status: "reviewing" | "accepted" | "rejected";
     response_message?: string;
-  }
+  },
 ): Promise<Application> {
-  const response = await fetch(`${API_BASE}/api/applications/${applicationId}/status`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${API_BASE}/api/applications/${applicationId}/status`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    },
+  );
   if (!response.ok) throw new Error("Failed to update application");
   return response.json();
 }
 
-export async function withdrawApplication(applicationId: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/api/applications/${applicationId}`, {
-    method: "DELETE",
-  });
+export async function withdrawApplication(
+  applicationId: string,
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE}/api/applications/${applicationId}`,
+    {
+      method: "DELETE",
+    },
+  );
   if (!response.ok) throw new Error("Failed to withdraw application");
 }

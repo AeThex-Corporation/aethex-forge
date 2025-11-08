@@ -35,7 +35,8 @@ export interface ArmBadgeProps {
 
 export function ArmBadge({ arm, size = "md" }: ArmBadgeProps) {
   const colors = ARM_COLORS[arm.toLowerCase()] || ARM_COLORS.labs;
-  const sizeClass = size === "sm" ? "text-xs" : size === "lg" ? "text-base" : "text-sm";
+  const sizeClass =
+    size === "sm" ? "text-xs" : size === "lg" ? "text-base" : "text-sm";
 
   return (
     <Badge className={`${colors.bg} border-0 ${colors.text} ${sizeClass}`}>

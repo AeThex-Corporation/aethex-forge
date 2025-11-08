@@ -133,7 +133,8 @@ export default function CorpViewCaseStudies() {
                 Case Studies
               </h1>
               <p className="text-lg text-blue-100/80 max-w-3xl">
-                Real-world success stories from our enterprise clients. See how we've helped transform businesses across industries.
+                Real-world success stories from our enterprise clients. See how
+                we've helped transform businesses across industries.
               </p>
             </div>
           </section>
@@ -272,7 +273,8 @@ export default function CorpViewCaseStudies() {
                 Ready for Your Success Story?
               </h2>
               <p className="text-lg text-blue-100/80 mb-8">
-                Let's discuss how we can help transform your business and achieve similar results.
+                Let's discuss how we can help transform your business and
+                achieve similar results.
               </p>
               <Button
                 className="bg-blue-400 text-black shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:bg-blue-300"

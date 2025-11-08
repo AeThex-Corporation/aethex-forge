@@ -1,7 +1,7 @@
 /**
  * Creator Network End-to-End Test Suite
  * Phase 3: Testing & Validation
- * 
+ *
  * Tests complete user flows:
  * 1. Sign up → Create creator profile
  * 2. Post opportunity → Receive applications
@@ -21,9 +21,14 @@ const results: TestCase[] = [];
 const BASE_URL = "http://localhost:5173";
 
 // Test utilities
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const test = (name: string, passed: boolean, message: string, duration: number = 0) => {
+const test = (
+  name: string,
+  passed: boolean,
+  message: string,
+  duration: number = 0,
+) => {
   results.push({ name, passed, message, duration });
   const symbol = passed ? "✓" : "✗";
   console.log(`${symbol} ${name}`);
@@ -43,7 +48,12 @@ const assertExists = (value: any, msg: string) => {
   }
 };
 
-const assertInRange = (actual: number, min: number, max: number, msg: string) => {
+const assertInRange = (
+  actual: number,
+  min: number,
+  max: number,
+  msg: string,
+) => {
   if (actual < min || actual > max) {
     throw new Error(`${msg}: value ${actual} not in range [${min}, ${max}]`);
   }
@@ -69,7 +79,7 @@ async function runE2ETests() {
 
   // FLOW 1: Creator Registration and Profile Setup
   console.log("\n📝 FLOW 1: Creator Registration & Profile Setup");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   try {
     // Create first creator profile
@@ -95,13 +105,21 @@ async function runE2ETests() {
       "Create creator profile 1",
       createRes1.status === 201,
       `Status: ${createRes1.status}`,
-      createCreator1Duration
+      createCreator1Duration,
     );
 
     if (createRes1.ok) {
       assertExists(creator1Data.id, "Creator ID should exist");
-      assertEquals(creator1Data.username, testUsers.creator1.username, "Username mismatch");
-      assertEquals(creator1Data.primary_arm, "gameforge", "Primary arm mismatch");
+      assertEquals(
+        creator1Data.username,
+        testUsers.creator1.username,
+        "Username mismatch",
+      );
+      assertEquals(
+        creator1Data.primary_arm,
+        "gameforge",
+        "Primary arm mismatch",
+      );
     }
 
     // Create second creator profile
@@ -127,7 +145,7 @@ async function runE2ETests() {
       "Create creator profile 2",
       createRes2.status === 201,
       `Status: ${createRes2.status}`,
-      createCreator2Duration
+      createCreator2Duration,
     );
   } catch (error: any) {
     test("Create creator profiles", false, error.message);
@@ -135,7 +153,7 @@ async function runE2ETests() {
 
   // FLOW 2: Opportunity Creation
   console.log("\n📋 FLOW 2: Opportunity Creation & Discovery");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   let opportunityId: string | null = null;
 
@@ -148,7 +166,8 @@ async function runE2ETests() {
       body: JSON.stringify({
         user_id: testUsers.creator1.id,
         title: "Senior Game Dev - Unity Project",
-        description: "Looking for experienced Unity developer for 6-month contract",
+        description:
+          "Looking for experienced Unity developer for 6-month contract",
         job_type: "contract",
         salary_min: 80000,
         salary_max: 120000,
@@ -163,20 +182,24 @@ async function runE2ETests() {
       "Create opportunity",
       oppRes.status === 201,
       `Status: ${oppRes.status}`,
-      createOppDuration
+      createOppDuration,
     );
 
     if (oppRes.ok) {
       opportunityId = oppData.id;
       assertExists(oppData.id, "Opportunity ID should exist");
-      assertEquals(oppData.title, "Senior Game Dev - Unity Project", "Title mismatch");
+      assertEquals(
+        oppData.title,
+        "Senior Game Dev - Unity Project",
+        "Title mismatch",
+      );
       assertEquals(oppData.status, "open", "Status should be open");
     }
 
     // Browse opportunities with filters
     const browseOppStart = Date.now();
     const browseRes = await fetch(
-      `${BASE_URL}/api/opportunities?arm=gameforge&page=1&limit=10`
+      `${BASE_URL}/api/opportunities?arm=gameforge&page=1&limit=10`,
     );
     const browseData = await browseRes.json();
     const browseOppDuration = Date.now() - browseOppStart;
@@ -185,7 +208,7 @@ async function runE2ETests() {
       "Browse opportunities with filters",
       browseRes.ok && Array.isArray(browseData.data),
       `Status: ${browseRes.status}, Found: ${browseData.data?.length || 0}`,
-      browseOppDuration
+      browseOppDuration,
     );
 
     if (browseRes.ok) {
@@ -198,13 +221,13 @@ async function runE2ETests() {
 
   // FLOW 3: Creator Discovery
   console.log("\n👥 FLOW 3: Creator Discovery & Profiles");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   try {
     // Browse creators
     const browseCreatorsStart = Date.now();
     const creatorsRes = await fetch(
-      `${BASE_URL}/api/creators?arm=gameforge&page=1&limit=20`
+      `${BASE_URL}/api/creators?arm=gameforge&page=1&limit=20`,
     );
     const creatorsData = await creatorsRes.json();
     const browseCreatorsDuration = Date.now() - browseCreatorsStart;
@@ -213,13 +236,13 @@ async function runE2ETests() {
       "Browse creators with arm filter",
       creatorsRes.ok && Array.isArray(creatorsData.data),
       `Status: ${creatorsRes.status}, Found: ${creatorsData.data?.length || 0}`,
-      browseCreatorsDuration
+      browseCreatorsDuration,
     );
 
     // Get individual creator profile
     const getCreatorStart = Date.now();
     const creatorRes = await fetch(
-      `${BASE_URL}/api/creators/${testUsers.creator1.username}`
+      `${BASE_URL}/api/creators/${testUsers.creator1.username}`,
     );
     const creatorData = await creatorRes.json();
     const getCreatorDuration = Date.now() - getCreatorStart;
@@ -228,13 +251,17 @@ async function runE2ETests() {
       "Get creator profile by username",
       creatorRes.ok && creatorData.username === testUsers.creator1.username,
       `Status: ${creatorRes.status}, Username: ${creatorData.username}`,
-      getCreatorDuration
+      getCreatorDuration,
     );
 
     if (creatorRes.ok) {
       assertExists(creatorData.bio, "Bio should exist");
       assertExists(creatorData.skills, "Skills should exist");
-      assertEquals(Array.isArray(creatorData.arm_affiliations), true, "Arm affiliations should be array");
+      assertEquals(
+        Array.isArray(creatorData.arm_affiliations),
+        true,
+        "Arm affiliations should be array",
+      );
     }
   } catch (error: any) {
     test("Creator discovery and profiles", false, error.message);
@@ -242,7 +269,7 @@ async function runE2ETests() {
 
   // FLOW 4: Application Submission & Tracking
   console.log("\n✉️ FLOW 4: Apply for Opportunity & Track Status");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   let applicationId: string | null = null;
 
@@ -270,7 +297,7 @@ async function runE2ETests() {
       "Submit application",
       applyRes.status === 201,
       `Status: ${applyRes.status}`,
-      applyDuration
+      applyDuration,
     );
 
     if (applyRes.ok) {
@@ -295,13 +322,13 @@ async function runE2ETests() {
       "Prevent duplicate applications",
       dupRes.status === 400,
       `Status: ${dupRes.status} (should be 400)`,
-      0
+      0,
     );
 
     // Get applications for creator
     const getAppsStart = Date.now();
     const appsRes = await fetch(
-      `${BASE_URL}/api/applications?user_id=${testUsers.creator2.id}`
+      `${BASE_URL}/api/applications?user_id=${testUsers.creator2.id}`,
     );
     const appsData = await appsRes.json();
     const getAppsDuration = Date.now() - getAppsStart;
@@ -310,28 +337,31 @@ async function runE2ETests() {
       "Get creator's applications",
       appsRes.ok && Array.isArray(appsData.data),
       `Status: ${appsRes.status}, Found: ${appsData.data?.length || 0}`,
-      getAppsDuration
+      getAppsDuration,
     );
 
     // Update application status (as opportunity creator)
     if (applicationId) {
       const updateStart = Date.now();
-      const updateRes = await fetch(`${BASE_URL}/api/applications/${applicationId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: testUsers.creator1.id,
-          status: "accepted",
-          response_message: "Great! We'd love to have you on board.",
-        }),
-      });
+      const updateRes = await fetch(
+        `${BASE_URL}/api/applications/${applicationId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: testUsers.creator1.id,
+            status: "accepted",
+            response_message: "Great! We'd love to have you on board.",
+          }),
+        },
+      );
       const updateDuration = Date.now() - updateStart;
 
       test(
         "Update application status",
         updateRes.ok,
         `Status: ${updateRes.status}`,
-        updateDuration
+        updateDuration,
       );
     }
   } catch (error: any) {
@@ -340,7 +370,7 @@ async function runE2ETests() {
 
   // FLOW 5: DevConnect Linking
   console.log("\n�� FLOW 5: DevConnect Account Linking");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   try {
     // Link DevConnect account
@@ -361,13 +391,13 @@ async function runE2ETests() {
       "Link DevConnect account",
       linkRes.status === 201 || linkRes.status === 200,
       `Status: ${linkRes.status}`,
-      linkDuration
+      linkDuration,
     );
 
     // Get DevConnect link
     const getLinkStart = Date.now();
     const getLinkRes = await fetch(
-      `${BASE_URL}/api/devconnect/link?user_id=${testUsers.creator1.id}`
+      `${BASE_URL}/api/devconnect/link?user_id=${testUsers.creator1.id}`,
     );
     const getLinkData = await getLinkRes.json();
     const getLinkDuration = Date.now() - getLinkStart;
@@ -376,11 +406,15 @@ async function runE2ETests() {
       "Get DevConnect link",
       getLinkRes.ok && getLinkData.data,
       `Status: ${getLinkRes.status}`,
-      getLinkDuration
+      getLinkDuration,
     );
 
     if (getLinkRes.ok && getLinkData.data) {
-      assertEquals(getLinkData.data.devconnect_username, "devconnect_user_1", "Username mismatch");
+      assertEquals(
+        getLinkData.data.devconnect_username,
+        "devconnect_user_1",
+        "Username mismatch",
+      );
     }
 
     // Unlink DevConnect account
@@ -394,7 +428,7 @@ async function runE2ETests() {
       "Unlink DevConnect account",
       unlinkRes.ok,
       `Status: ${unlinkRes.status}`,
-      0
+      0,
     );
   } catch (error: any) {
     test("DevConnect linking", false, error.message);
@@ -402,13 +436,13 @@ async function runE2ETests() {
 
   // FLOW 6: Filtering and Search
   console.log("\n🔍 FLOW 6: Advanced Filtering & Search");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   try {
     // Test creator search
     const searchStart = Date.now();
     const searchRes = await fetch(
-      `${BASE_URL}/api/creators?search=${testUsers.creator1.username.substring(0, 5)}`
+      `${BASE_URL}/api/creators?search=${testUsers.creator1.username.substring(0, 5)}`,
     );
     const searchData = await searchRes.json();
     const searchDuration = Date.now() - searchStart;
@@ -417,13 +451,13 @@ async function runE2ETests() {
       "Search creators by name",
       searchRes.ok && Array.isArray(searchData.data),
       `Status: ${searchRes.status}, Found: ${searchData.data?.length || 0}`,
-      searchDuration
+      searchDuration,
     );
 
     // Test opportunity filtering by experience level
     const expFilterStart = Date.now();
     const expRes = await fetch(
-      `${BASE_URL}/api/opportunities?experienceLevel=senior`
+      `${BASE_URL}/api/opportunities?experienceLevel=senior`,
     );
     const expData = await expRes.json();
     const expFilterDuration = Date.now() - expFilterStart;
@@ -432,7 +466,7 @@ async function runE2ETests() {
       "Filter opportunities by experience level",
       expRes.ok && Array.isArray(expData.data),
       `Status: ${expRes.status}, Found: ${expData.data?.length || 0}`,
-      expFilterDuration
+      expFilterDuration,
     );
 
     // Test pagination
@@ -445,10 +479,13 @@ async function runE2ETests() {
       "Pagination - page 1",
       page1Res.ok && page1Data.pagination?.page === 1,
       `Page: ${page1Data.pagination?.page}, Limit: ${page1Data.pagination?.limit}`,
-      page1Duration
+      page1Duration,
     );
 
-    assertExists(page1Data.pagination?.pages, "Total pages should be calculated");
+    assertExists(
+      page1Data.pagination?.pages,
+      "Total pages should be calculated",
+    );
   } catch (error: any) {
     test("Filtering and search", false, error.message);
   }
@@ -463,14 +500,18 @@ async function runE2ETests() {
   console.log(`   ✓ Passed: ${passed}`);
   console.log(`   ✗ Failed: ${failed}`);
   console.log(`   Total: ${results.length}`);
-  console.log(`   Duration: ${totalDuration}ms (avg ${(totalDuration / results.length).toFixed(0)}ms per test)`);
+  console.log(
+    `   Duration: ${totalDuration}ms (avg ${(totalDuration / results.length).toFixed(0)}ms per test)`,
+  );
   console.log("\n" + "=".repeat(50));
 
   if (failed > 0) {
     console.log("\n❌ Failed Tests:");
-    results.filter((r) => !r.passed).forEach((r) => {
-      console.log(`   - ${r.name}: ${r.message}`);
-    });
+    results
+      .filter((r) => !r.passed)
+      .forEach((r) => {
+        console.log(`   - ${r.name}: ${r.message}`);
+      });
   } else {
     console.log("\n✅ All tests passed!");
   }

@@ -1,7 +1,7 @@
 /**
  * Performance Test Suite
  * Phase 3: Testing & Validation
- * 
+ *
  * Measures response times, throughput, and identifies bottlenecks
  */
 
@@ -23,7 +23,7 @@ const metrics: PerformanceMetric[] = [];
 async function measureRequest(
   method: string,
   endpoint: string,
-  body?: any
+  body?: any,
 ): Promise<number> {
   const start = performance.now();
   try {
@@ -45,10 +45,10 @@ async function benchmarkEndpoint(
   method: string,
   endpoint: string,
   numRequests: number = 50,
-  body?: any
+  body?: any,
 ): Promise<PerformanceMetric> {
   console.log(
-    `  Benchmarking ${method.padEnd(6)} ${endpoint.padEnd(35)} (${numRequests} requests)...`
+    `  Benchmarking ${method.padEnd(6)} ${endpoint.padEnd(35)} (${numRequests} requests)...`,
   );
 
   const times: number[] = [];
@@ -91,7 +91,11 @@ async function runPerformanceTests() {
 
   console.log("\nFilter endpoints (filtered queries):");
   await benchmarkEndpoint("GET", "/api/creators?arm=gameforge", 50);
-  await benchmarkEndpoint("GET", "/api/opportunities?arm=gameforge&sort=recent", 50);
+  await benchmarkEndpoint(
+    "GET",
+    "/api/opportunities?arm=gameforge&sort=recent",
+    50,
+  );
   await benchmarkEndpoint("GET", "/api/creators?search=test", 40);
 
   console.log("\nIndividual resource retrieval:");
@@ -155,12 +159,12 @@ async function runPerformanceTests() {
   await benchmarkEndpoint(
     "GET",
     "/api/creators?arm=gameforge&search=test&page=1&limit=50",
-    30
+    30,
   );
   await benchmarkEndpoint(
     "GET",
     "/api/opportunities?arm=labs&experienceLevel=senior&jobType=full-time&page=1&limit=50",
-    25
+    25,
   );
 
   console.log("\nMulti-page traversal:");
@@ -182,10 +186,15 @@ async function runPerformanceTests() {
 
   // Print detailed metrics
   grouped.forEach((metricList, endpoint) => {
-    const avg = metricList.reduce((sum, m) => sum + m.avgTime, 0) / metricList.length;
-    const p95 = metricList.reduce((sum, m) => sum + m.p95Time, 0) / metricList.length;
-    const p99 = metricList.reduce((sum, m) => sum + m.p99Time, 0) / metricList.length;
-    const rps = metricList.reduce((sum, m) => sum + m.requestsPerSecond, 0) / metricList.length;
+    const avg =
+      metricList.reduce((sum, m) => sum + m.avgTime, 0) / metricList.length;
+    const p95 =
+      metricList.reduce((sum, m) => sum + m.p95Time, 0) / metricList.length;
+    const p99 =
+      metricList.reduce((sum, m) => sum + m.p99Time, 0) / metricList.length;
+    const rps =
+      metricList.reduce((sum, m) => sum + m.requestsPerSecond, 0) /
+      metricList.length;
 
     console.log(`📍 ${endpoint}`);
     console.log(`   Avg:  ${avg.toFixed(2)}ms`);
@@ -210,21 +219,30 @@ async function runPerformanceTests() {
 
   metrics.forEach((m) => {
     if (m.method === "GET") {
-      targets["GET endpoints"].actual = Math.max(targets["GET endpoints"].actual, m.avgTime);
+      targets["GET endpoints"].actual = Math.max(
+        targets["GET endpoints"].actual,
+        m.avgTime,
+      );
     } else if (m.method === "POST") {
-      targets["POST endpoints"].actual = Math.max(targets["POST endpoints"].actual, m.avgTime);
+      targets["POST endpoints"].actual = Math.max(
+        targets["POST endpoints"].actual,
+        m.avgTime,
+      );
     } else if (m.method === "PUT") {
-      targets["PUT endpoints"].actual = Math.max(targets["PUT endpoints"].actual, m.avgTime);
+      targets["PUT endpoints"].actual = Math.max(
+        targets["PUT endpoints"].actual,
+        m.avgTime,
+      );
     }
   });
 
   // Check complex queries
   const complexQueries = metrics.filter(
-    (m) => m.endpoint.includes("?") && m.endpoint.split("&").length > 2
+    (m) => m.endpoint.includes("?") && m.endpoint.split("&").length > 2,
   );
   if (complexQueries.length > 0) {
     targets["Complex queries"].actual = Math.max(
-      ...complexQueries.map((m) => m.avgTime)
+      ...complexQueries.map((m) => m.avgTime),
     );
   }
 
@@ -234,7 +252,7 @@ async function runPerformanceTests() {
     const passed = data.actual <= data.target;
     const symbol = passed ? "✓" : "✗";
     console.log(
-      `${symbol} ${category.padEnd(20)} ${data.actual.toFixed(2)}ms ${data.threshold}`
+      `${symbol} ${category.padEnd(20)} ${data.actual.toFixed(2)}ms ${data.threshold}`,
     );
 
     if (passed) targetsPassed++;
@@ -247,24 +265,32 @@ async function runPerformanceTests() {
 
   const allTimes = metrics.map((m) => m.avgTime);
   const slowestEndpoint = metrics.reduce((a, b) =>
-    a.avgTime > b.avgTime ? a : b
+    a.avgTime > b.avgTime ? a : b,
   );
   const fastestEndpoint = metrics.reduce((a, b) =>
-    a.avgTime < b.avgTime ? a : b
+    a.avgTime < b.avgTime ? a : b,
   );
 
   console.log(`Total Endpoints Tested: ${metrics.length}`);
-  console.log(`Average Response Time: ${(allTimes.reduce((a, b) => a + b) / allTimes.length).toFixed(2)}ms`);
-  console.log(`Fastest: ${fastestEndpoint.method} ${fastestEndpoint.endpoint.split("?")[0]} (${fastestEndpoint.avgTime.toFixed(2)}ms)`);
-  console.log(`Slowest: ${slowestEndpoint.method} ${slowestEndpoint.endpoint.split("?")[0]} (${slowestEndpoint.avgTime.toFixed(2)}ms)`);
   console.log(
-    `\nPerformance Targets: ${targetsPassed} passed, ${targetsFailed} failed`
+    `Average Response Time: ${(allTimes.reduce((a, b) => a + b) / allTimes.length).toFixed(2)}ms`,
+  );
+  console.log(
+    `Fastest: ${fastestEndpoint.method} ${fastestEndpoint.endpoint.split("?")[0]} (${fastestEndpoint.avgTime.toFixed(2)}ms)`,
+  );
+  console.log(
+    `Slowest: ${slowestEndpoint.method} ${slowestEndpoint.endpoint.split("?")[0]} (${slowestEndpoint.avgTime.toFixed(2)}ms)`,
+  );
+  console.log(
+    `\nPerformance Targets: ${targetsPassed} passed, ${targetsFailed} failed`,
   );
 
   if (targetsFailed === 0) {
     console.log("\n✅ All performance targets met!");
   } else {
-    console.log(`\n⚠️ ${targetsFailed} performance targets not met. Optimization needed.`);
+    console.log(
+      `\n⚠️ ${targetsFailed} performance targets not met. Optimization needed.`,
+    );
   }
 
   console.log("\n" + "=".repeat(70));

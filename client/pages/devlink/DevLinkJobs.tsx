@@ -89,7 +89,8 @@ export default function DevLinkJobs() {
                 Job Board
               </h1>
               <p className="text-lg text-cyan-100/80 max-w-3xl">
-                Find your next opportunity in the Roblox ecosystem. Full-time, part-time, and contract roles available.
+                Find your next opportunity in the Roblox ecosystem. Full-time,
+                part-time, and contract roles available.
               </p>
             </div>
           </section>
@@ -118,11 +119,13 @@ export default function DevLinkJobs() {
 
                         <div className="space-y-3">
                           <div className="flex items-center gap-3">
-                            <Badge className={`${
-                              job.type === "Full-time"
-                                ? "bg-green-500/20 text-green-300 border border-green-400/40"
-                                : "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40"
-                            }`}>
+                            <Badge
+                              className={`${
+                                job.type === "Full-time"
+                                  ? "bg-green-500/20 text-green-300 border border-green-400/40"
+                                  : "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40"
+                              }`}
+                            >
                               {job.type}
                             </Badge>
                             <span className="flex items-center gap-1 text-sm text-cyan-200/70">
@@ -170,9 +173,7 @@ export default function DevLinkJobs() {
               <p className="text-lg text-cyan-100/80 mb-8">
                 Reach 50K+ talented Roblox developers.
               </p>
-              <Button
-                className="bg-cyan-400 text-black hover:bg-cyan-300"
-              >
+              <Button className="bg-cyan-400 text-black hover:bg-cyan-300">
                 Post a Job Opening
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

@@ -1154,29 +1154,56 @@ export default function Admin() {
                           <Lightbulb className="h-5 w-5 text-yellow-400" />
                           <CardTitle>Labs - Research & Innovation</CardTitle>
                         </div>
-                        <CardDescription>Research initiatives, publications, and innovation pipeline</CardDescription>
+                        <CardDescription>
+                          Research initiatives, publications, and innovation
+                          pipeline
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Active Research Projects</p>
-                            <p className="text-2xl font-bold text-yellow-400">12</p>
-                            <p className="text-xs text-gray-400 mt-2">↑ 3 new this quarter</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Active Research Projects
+                            </p>
+                            <p className="text-2xl font-bold text-yellow-400">
+                              12
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              ↑ 3 new this quarter
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Publications</p>
-                            <p className="text-2xl font-bold text-yellow-400">8</p>
-                            <p className="text-xs text-gray-400 mt-2">Peer-reviewed papers</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Publications
+                            </p>
+                            <p className="text-2xl font-bold text-yellow-400">
+                              8
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Peer-reviewed papers
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Research Team Size</p>
-                            <p className="text-2xl font-bold text-yellow-400">24</p>
-                            <p className="text-xs text-gray-400 mt-2">PhD & researchers</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Research Team Size
+                            </p>
+                            <p className="text-2xl font-bold text-yellow-400">
+                              24
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              PhD & researchers
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Impact Citations</p>
-                            <p className="text-2xl font-bold text-yellow-400">342</p>
-                            <p className="text-xs text-gray-400 mt-2">Academic references</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Impact Citations
+                            </p>
+                            <p className="text-2xl font-bold text-yellow-400">
+                              342
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Academic references
+                            </p>
                           </div>
                         </div>
                       </CardContent>
@@ -1190,29 +1217,55 @@ export default function Admin() {
                           <Zap className="h-5 w-5 text-green-400" />
                           <CardTitle>GameForge - Game Development</CardTitle>
                         </div>
-                        <CardDescription>Monthly shipping cycles and game production metrics</CardDescription>
+                        <CardDescription>
+                          Monthly shipping cycles and game production metrics
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Games in Production</p>
-                            <p className="text-2xl font-bold text-green-400">18</p>
-                            <p className="text-xs text-gray-400 mt-2">Active development</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Games in Production
+                            </p>
+                            <p className="text-2xl font-bold text-green-400">
+                              18
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Active development
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Games Shipped</p>
-                            <p className="text-2xl font-bold text-green-400">45</p>
-                            <p className="text-xs text-gray-400 mt-2">This year</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Games Shipped
+                            </p>
+                            <p className="text-2xl font-bold text-green-400">
+                              45
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              This year
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Player Base</p>
-                            <p className="text-2xl font-bold text-green-400">2.8M</p>
-                            <p className="text-xs text-gray-400 mt-2">Monthly active</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Player Base
+                            </p>
+                            <p className="text-2xl font-bold text-green-400">
+                              2.8M
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Monthly active
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Avg Shipping Velocity</p>
-                            <p className="text-2xl font-bold text-green-400">3.2x</p>
-                            <p className="text-xs text-gray-400 mt-2">vs industry standard</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Avg Shipping Velocity
+                            </p>
+                            <p className="text-2xl font-bold text-green-400">
+                              3.2x
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              vs industry standard
+                            </p>
                           </div>
                         </div>
                       </CardContent>
@@ -1226,29 +1279,55 @@ export default function Admin() {
                           <Briefcase className="h-5 w-5 text-blue-400" />
                           <CardTitle>Corp - Enterprise Services</CardTitle>
                         </div>
-                        <CardDescription>Enterprise consulting and business solutions</CardDescription>
+                        <CardDescription>
+                          Enterprise consulting and business solutions
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Active Clients</p>
-                            <p className="text-2xl font-bold text-blue-400">34</p>
-                            <p className="text-xs text-gray-400 mt-2">Enterprise accounts</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Active Clients
+                            </p>
+                            <p className="text-2xl font-bold text-blue-400">
+                              34
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Enterprise accounts
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">ARR</p>
-                            <p className="text-2xl font-bold text-blue-400">$4.2M</p>
-                            <p className="text-xs text-gray-400 mt-2">Annual recurring</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              ARR
+                            </p>
+                            <p className="text-2xl font-bold text-blue-400">
+                              $4.2M
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Annual recurring
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Retention Rate</p>
-                            <p className="text-2xl font-bold text-blue-400">94%</p>
-                            <p className="text-xs text-gray-400 mt-2">12-month</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Retention Rate
+                            </p>
+                            <p className="text-2xl font-bold text-blue-400">
+                              94%
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              12-month
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Consulting Team</p>
-                            <p className="text-2xl font-bold text-blue-400">16</p>
-                            <p className="text-xs text-gray-400 mt-2">Senior consultants</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Consulting Team
+                            </p>
+                            <p className="text-2xl font-bold text-blue-400">
+                              16
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Senior consultants
+                            </p>
                           </div>
                         </div>
                       </CardContent>
@@ -1260,51 +1339,93 @@ export default function Admin() {
                       <CardHeader>
                         <div className="flex items-center gap-2">
                           <Heart className="h-5 w-5 text-red-400" />
-                          <CardTitle>Foundation - Education & Community</CardTitle>
+                          <CardTitle>
+                            Foundation - Education & Community
+                          </CardTitle>
                         </div>
-                        <CardDescription>Educational impact and talent pipeline effectiveness</CardDescription>
+                        <CardDescription>
+                          Educational impact and talent pipeline effectiveness
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="space-y-4">
                           <div>
-                            <h4 className="font-semibold text-sm mb-3">Student Metrics</h4>
+                            <h4 className="font-semibold text-sm mb-3">
+                              Student Metrics
+                            </h4>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                               <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                                <p className="text-sm text-muted-foreground mb-2">Course Completion</p>
-                                <p className="text-2xl font-bold text-green-400">87.5%</p>
-                                <p className="text-xs text-gray-400 mt-2">↑ +12% YoY</p>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  Course Completion
+                                </p>
+                                <p className="text-2xl font-bold text-green-400">
+                                  87.5%
+                                </p>
+                                <p className="text-xs text-gray-400 mt-2">
+                                  ↑ +12% YoY
+                                </p>
                               </div>
                               <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                                <p className="text-sm text-muted-foreground mb-2">Active Learners</p>
-                                <p className="text-2xl font-bold text-blue-400">342</p>
-                                <p className="text-xs text-gray-400 mt-2">↑ +28 new</p>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  Active Learners
+                                </p>
+                                <p className="text-2xl font-bold text-blue-400">
+                                  342
+                                </p>
+                                <p className="text-xs text-gray-400 mt-2">
+                                  ↑ +28 new
+                                </p>
                               </div>
                               <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                                <p className="text-sm text-muted-foreground mb-2">Placement Rate</p>
-                                <p className="text-2xl font-bold text-yellow-400">42%</p>
-                                <p className="text-xs text-gray-400 mt-2">54 hired</p>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  Placement Rate
+                                </p>
+                                <p className="text-2xl font-bold text-yellow-400">
+                                  42%
+                                </p>
+                                <p className="text-xs text-gray-400 mt-2">
+                                  54 hired
+                                </p>
                               </div>
                             </div>
                           </div>
 
                           <div>
-                            <h4 className="font-semibold text-sm mb-3">Open Source Impact</h4>
+                            <h4 className="font-semibold text-sm mb-3">
+                              Open Source Impact
+                            </h4>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                               <div className="bg-background/40 rounded-lg p-3 border border-border/40">
-                                <p className="text-xs text-gray-400 mb-1">GitHub Forks</p>
-                                <p className="text-xl font-bold text-purple-400">2.3K</p>
+                                <p className="text-xs text-gray-400 mb-1">
+                                  GitHub Forks
+                                </p>
+                                <p className="text-xl font-bold text-purple-400">
+                                  2.3K
+                                </p>
                               </div>
                               <div className="bg-background/40 rounded-lg p-3 border border-border/40">
-                                <p className="text-xs text-gray-400 mb-1">PRs</p>
-                                <p className="text-xl font-bold text-green-400">184</p>
+                                <p className="text-xs text-gray-400 mb-1">
+                                  PRs
+                                </p>
+                                <p className="text-xl font-bold text-green-400">
+                                  184
+                                </p>
                               </div>
                               <div className="bg-background/40 rounded-lg p-3 border border-border/40">
-                                <p className="text-xs text-gray-400 mb-1">External Usage</p>
-                                <p className="text-xl font-bold text-blue-400">452</p>
+                                <p className="text-xs text-gray-400 mb-1">
+                                  External Usage
+                                </p>
+                                <p className="text-xl font-bold text-blue-400">
+                                  452
+                                </p>
                               </div>
                               <div className="bg-background/40 rounded-lg p-3 border border-border/40">
-                                <p className="text-xs text-gray-400 mb-1">Contributors</p>
-                                <p className="text-xl font-bold text-cyan-400">67</p>
+                                <p className="text-xs text-gray-400 mb-1">
+                                  Contributors
+                                </p>
+                                <p className="text-xl font-bold text-cyan-400">
+                                  67
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -1320,29 +1441,55 @@ export default function Admin() {
                           <Users className="h-5 w-5 text-purple-400" />
                           <CardTitle>Nexus - Talent Marketplace</CardTitle>
                         </div>
-                        <CardDescription>Creator network and opportunity matching metrics</CardDescription>
+                        <CardDescription>
+                          Creator network and opportunity matching metrics
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Active Creators</p>
-                            <p className="text-2xl font-bold text-purple-400">1,240</p>
-                            <p className="text-xs text-gray-400 mt-2">↑ +180 this month</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Active Creators
+                            </p>
+                            <p className="text-2xl font-bold text-purple-400">
+                              1,240
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              ↑ +180 this month
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Open Opportunities</p>
-                            <p className="text-2xl font-bold text-purple-400">342</p>
-                            <p className="text-xs text-gray-400 mt-2">Across all arms</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Open Opportunities
+                            </p>
+                            <p className="text-2xl font-bold text-purple-400">
+                              342
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Across all arms
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Successful Matches</p>
-                            <p className="text-2xl font-bold text-purple-400">87</p>
-                            <p className="text-xs text-gray-400 mt-2">This quarter</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Successful Matches
+                            </p>
+                            <p className="text-2xl font-bold text-purple-400">
+                              87
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              This quarter
+                            </p>
                           </div>
                           <div className="bg-background/40 rounded-lg p-4 border border-border/40">
-                            <p className="text-sm text-muted-foreground mb-2">Match Success Rate</p>
-                            <p className="text-2xl font-bold text-purple-400">68%</p>
-                            <p className="text-xs text-gray-400 mt-2">Application to hire</p>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Match Success Rate
+                            </p>
+                            <p className="text-2xl font-bold text-purple-400">
+                              68%
+                            </p>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Application to hire
+                            </p>
                           </div>
                         </div>
                       </CardContent>

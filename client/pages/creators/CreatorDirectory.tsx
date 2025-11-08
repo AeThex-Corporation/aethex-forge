@@ -15,7 +15,7 @@ export default function CreatorDirectory() {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [selectedArm, setSelectedArm] = useState<string | undefined>(
-    searchParams.get("arm") || undefined
+    searchParams.get("arm") || undefined,
   );
   const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
   const [totalPages, setTotalPages] = useState(0);
@@ -82,7 +82,8 @@ export default function CreatorDirectory() {
                   </h1>
                 </div>
                 <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                  Discover talented creators across all AeThex arms. Filter by specialty, skills, and arm affiliation.
+                  Discover talented creators across all AeThex arms. Filter by
+                  specialty, skills, and arm affiliation.
                 </p>
               </div>
 
@@ -166,21 +167,24 @@ export default function CreatorDirectory() {
                             Previous
                           </Button>
                           <div className="flex items-center gap-1">
-                            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                              (p) => (
-                                <Button
-                                  key={p}
-                                  onClick={() => setPage(p)}
-                                  variant={page === p ? "default" : "outline"}
-                                  size="sm"
-                                >
-                                  {p}
-                                </Button>
-                              )
-                            )}
+                            {Array.from(
+                              { length: totalPages },
+                              (_, i) => i + 1,
+                            ).map((p) => (
+                              <Button
+                                key={p}
+                                onClick={() => setPage(p)}
+                                variant={page === p ? "default" : "outline"}
+                                size="sm"
+                              >
+                                {p}
+                              </Button>
+                            ))}
                           </div>
                           <Button
-                            onClick={() => setPage(Math.min(totalPages, page + 1))}
+                            onClick={() =>
+                              setPage(Math.min(totalPages, page + 1))
+                            }
                             disabled={page === totalPages}
                             variant="outline"
                           >

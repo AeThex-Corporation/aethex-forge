@@ -29,7 +29,8 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
 
   const formatSalary = (min?: number, max?: number) => {
     if (!min && !max) return "Not specified";
-    if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
+    if (min && max)
+      return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
     if (min) return `$${min.toLocaleString()}+`;
     if (max) return `Up to $${max.toLocaleString()}`;
   };
@@ -41,11 +42,15 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
           <div className="flex items-start gap-3 flex-1">
             <Avatar className="h-12 w-12">
               <AvatarImage src={poster.avatar_url} alt={poster.username} />
-              <AvatarFallback>{poster.username.charAt(0).toUpperCase()}</AvatarFallback>
+              <AvatarFallback>
+                {poster.username.charAt(0).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div>
               <p className="text-xs text-gray-400">Posted by</p>
-              <p className="text-sm font-semibold text-white">@{poster.username}</p>
+              <p className="text-sm font-semibold text-white">
+                @{poster.username}
+              </p>
             </div>
           </div>
           <div className="text-xs text-gray-400 whitespace-nowrap">
@@ -86,7 +91,9 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
             <div className="flex items-center text-gray-400">
               <Clock className="h-4 w-4 mr-2 text-blue-400" />
               {opportunity.aethex_applications.count}{" "}
-              {opportunity.aethex_applications.count === 1 ? "applicant" : "applicants"}
+              {opportunity.aethex_applications.count === 1
+                ? "applicant"
+                : "applicants"}
             </div>
           )}
         </div>

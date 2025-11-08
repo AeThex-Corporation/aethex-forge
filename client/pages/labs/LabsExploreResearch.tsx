@@ -2,7 +2,14 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Users, Clock, Zap, Download, ExternalLink } from "lucide-react";
+import {
+  ArrowRight,
+  Users,
+  Clock,
+  Zap,
+  Download,
+  ExternalLink,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function LabsExploreResearch() {
@@ -105,7 +112,9 @@ export default function LabsExploreResearch() {
                 Research Projects
               </h1>
               <p className="text-lg text-yellow-100/80 max-w-3xl">
-                Explore the cutting-edge research being conducted in AeThex Labs. Each project represents our commitment to pushing the boundaries of technology.
+                Explore the cutting-edge research being conducted in AeThex
+                Labs. Each project represents our commitment to pushing the
+                boundaries of technology.
               </p>
             </div>
           </section>
@@ -125,13 +134,15 @@ export default function LabsExploreResearch() {
                           <CardTitle className="text-2xl text-yellow-300 mb-2">
                             {project.title}
                           </CardTitle>
-                          <Badge className={`${
-                            project.status === "Published"
-                              ? "bg-green-500/20 border border-green-400/40 text-green-300"
-                              : project.status === "Active Research"
-                                ? "bg-yellow-500/20 border border-yellow-400/40 text-yellow-300"
-                                : "bg-purple-500/20 border border-purple-400/40 text-purple-300"
-                          }`}>
+                          <Badge
+                            className={`${
+                              project.status === "Published"
+                                ? "bg-green-500/20 border border-green-400/40 text-green-300"
+                                : project.status === "Active Research"
+                                  ? "bg-yellow-500/20 border border-yellow-400/40 text-yellow-300"
+                                  : "bg-purple-500/20 border border-purple-400/40 text-purple-300"
+                            }`}
+                          >
                             {project.status}
                           </Badge>
                         </div>
@@ -148,7 +159,9 @@ export default function LabsExploreResearch() {
 
                     <CardContent className="space-y-6">
                       {/* Description */}
-                      <p className="text-yellow-200/80">{project.description}</p>
+                      <p className="text-yellow-200/80">
+                        {project.description}
+                      </p>
 
                       {/* Key Achievements */}
                       <div>
@@ -188,7 +201,9 @@ export default function LabsExploreResearch() {
                       {/* Impact & Links */}
                       <div className="pt-4 border-t border-yellow-400/10 flex flex-wrap items-center justify-between gap-4">
                         <p className="text-sm text-yellow-200/80">
-                          <span className="font-semibold text-yellow-400">Impact:</span>{" "}
+                          <span className="font-semibold text-yellow-400">
+                            Impact:
+                          </span>{" "}
                           {project.impact}
                         </p>
                         <div className="flex gap-3">
@@ -228,7 +243,8 @@ export default function LabsExploreResearch() {
                 Interested in Research?
               </h2>
               <p className="text-lg text-yellow-100/80 mb-8">
-                Join our research team and contribute to the future of technology.
+                Join our research team and contribute to the future of
+                technology.
               </p>
               <Button
                 className="bg-yellow-400 text-black hover:bg-yellow-300"

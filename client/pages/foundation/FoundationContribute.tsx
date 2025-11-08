@@ -84,7 +84,8 @@ export default function FoundationContribute() {
     },
     {
       name: "Developer CLI",
-      description: "Command-line tools for streamlined game development workflow",
+      description:
+        "Command-line tools for streamlined game development workflow",
       stars: "1.2K",
       language: "Go",
       issues: "15 open",
@@ -92,8 +93,7 @@ export default function FoundationContribute() {
     },
     {
       name: "Multiplayer Framework",
-      description:
-        "Drop-in networking layer for real-time multiplayer games",
+      description: "Drop-in networking layer for real-time multiplayer games",
       stars: "980",
       language: "TypeScript",
       issues: "10 open",
@@ -155,7 +155,9 @@ export default function FoundationContribute() {
                 Ways to Contribute
               </h1>
               <p className="text-lg text-red-100/80 max-w-3xl">
-                Join our community and help us build amazing open-source projects. There are many ways to contribute, regardless of your skill level.
+                Join our community and help us build amazing open-source
+                projects. There are many ways to contribute, regardless of your
+                skill level.
               </p>
             </div>
           </section>
