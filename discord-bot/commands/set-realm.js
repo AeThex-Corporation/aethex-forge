@@ -96,11 +96,23 @@ module.exports = {
 
         const realm = REALMS.find((r) => r.value === selectedRealm);
 
+        // Assign Discord role based on selected realm
+        const roleAssigned = await assignRoleByArm(
+          interaction.guild,
+          interaction.user.id,
+          selectedRealm,
+          supabase,
+        );
+
+        const roleStatus = roleAssigned
+          ? "✅ Discord role assigned!"
+          : "⚠️ No role mapping found for this realm in this server.";
+
         const confirmEmbed = new EmbedBuilder()
           .setColor(0x00ff00)
           .setTitle("✅ Realm Set")
           .setDescription(
-            `Your primary realm is now **${realm.label}**\n\nYou'll be assigned the corresponding Discord role.`,
+            `Your primary realm is now **${realm.label}**\n\n${roleStatus}`,
           );
 
         await i.update({ embeds: [confirmEmbed], components: [] });
