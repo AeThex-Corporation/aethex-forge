@@ -6,7 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "start": "node bot.js",
-    "dev": "nodemon bot.js"
+    "dev": "nodemon bot.js",
+    "register-commands": "node scripts/register-commands.js"
   },
   "keywords": [
     "discord",
