@@ -630,7 +630,7 @@ export default function DevelopmentConsulting() {
                     to="/engage#development-consulting"
                     className="flex items-center space-x-2"
                   >
-                    <Lightbulb className="h-5 w-5" />
+                    <Sparkles className="h-5 w-5" />
                     <span>Get Free Consultation</span>
                     <ArrowRight className="h-5 w-5" />
                   </Link>
