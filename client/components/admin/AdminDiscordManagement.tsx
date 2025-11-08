@@ -41,7 +41,7 @@ export function AdminDiscordManagement() {
   const [loading, setLoading] = useState(true);
   const [newMapping, setNewMapping] = useState({
     arm: "labs",
-    discord_role: "",
+    discord_role_name: "",
     server_id: "",
   });
   const [editingId, setEditingId] = useState<string | null>(null);
