@@ -873,8 +873,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     }
 
-    // Ensure loading is always false after sign-out completes
+    // CRITICAL: Guarantee loading is false so buttons appear
+    // Use synchronous call first, then timeout to catch any edge cases
     setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 100);
   };
 
   const updateProfile = async (updates: Partial<AethexUserProfile>) => {
