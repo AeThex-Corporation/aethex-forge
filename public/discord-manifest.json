@@ -1,0 +1,42 @@
+{
+  "id": "578971245454950421",
+  "name": "AeThex",
+  "description": "AeThex - Advanced development platform and community",
+  "version": "1.0.0",
+  "type": "game",
+  "icon": "https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=512&dpr=1&quality=100&sign=6c7576ce&sv=2",
+  "url": "https://aethex.dev",
+  "instance_url": "https://aethex.dev/discord",
+  "terms_of_service_url": "https://aethex.dev/terms",
+  "privacy_policy_url": "https://aethex.dev/privacy",
+  "rpc": {
+    "application_id": "578971245454950421",
+    "application_name": "AeThex",
+    "application_icon": "https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2",
+    "scopes": ["identify", "guilds"]
+  },
+  "oauth2": {
+    "client_id": "578971245454950421",
+    "scopes": ["identify", "email", "guilds"],
+    "redirect_uris": ["https://aethex.dev/discord/callback"]
+  },
+  "activity": {
+    "application_id": "578971245454950421",
+    "type": 1,
+    "instance": true,
+    "requires_url_fetch": false,
+    "preview_video_asset_id": null,
+    "shelf_video_asset_id": null,
+    "max_participants": 100,
+    "session_type": "group"
+  },
+  "embed": {
+    "enabled": true,
+    "install_url": "https://aethex.dev/discord",
+    "activity_config": {
+      "requires_urls": false,
+      "location": "channel",
+      "max_age_seconds": 0
+    }
+  }
+}
