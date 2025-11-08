@@ -564,6 +564,8 @@ export default function Admin() {
 
               <TabsContent value="community" className="space-y-6">
                 <AdminMemberManager
+                  profiles={managedProfiles}
+                  selectedId={selectedMemberId}
                   onSelectedIdChange={(id) => setSelectedMemberId(id)}
                   onRefresh={loadProfiles}
                   ownerEmail="admin@aethex.tech"
