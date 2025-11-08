@@ -7,7 +7,7 @@ const ARMS = [
   { id: "gameforge", label: "GameForge", icon: "🎮", color: "text-green-300" },
   { id: "corp", label: "Corp", icon: "💼", color: "text-blue-300" },
   { id: "foundation", label: "Foundation", icon: "🎓", color: "text-red-300" },
-  { id: "devlink", label: "Dev-Link", icon: "🔗", color: "text-cyan-300" },
+  { id: "nexus", label: "Nexus", icon: "✨", color: "text-purple-300" },
 ];
 
 export interface ArmFilterProps {
