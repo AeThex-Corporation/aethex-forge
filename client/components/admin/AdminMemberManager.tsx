@@ -132,7 +132,7 @@ const AdminMemberManager = ({
   const [profileDraft, setProfileDraft] = useState<ProfileDraft | null>(null);
 
   const selectedProfile = useMemo(
-    () => profiles.find((profile) => profile.id === selectedId) ?? null,
+    () => (profiles && Array.isArray(profiles)) ? profiles.find((profile) => profile.id === selectedId) ?? null : null,
     [profiles, selectedId],
   );
 
