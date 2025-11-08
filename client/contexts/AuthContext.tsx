@@ -339,11 +339,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         });
 
       // Don't wait for rolesPromise - continue immediately
-      setLoading(false);
+      // Always set loading to false, even if role fetching hasn't completed
+      setTimeout(() => {
+        setLoading(false);
+      }, 100);
       return userProfile;
     } catch (error) {
       console.error("Error fetching user profile:", error);
-      setLoading(false);
+      // Always set loading to false even on error
+      setTimeout(() => {
+        setLoading(false);
+      }, 100);
       return null;
     }
   };
