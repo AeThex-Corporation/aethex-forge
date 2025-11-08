@@ -144,10 +144,10 @@ export default function Foundation() {
 
               <div className="space-y-6 mb-12">
                 <h1 className="text-5xl lg:text-7xl font-black text-red-300 leading-tight">
-                  Give Back to Developers
+                  Community Impact & Talent Pipeline
                 </h1>
-                <p className="text-xl text-red-100/80 max-w-3xl">
-                  Free open-source projects, community education, and workshops. We're committed to helping the next generation of developers build amazing things.
+                <p className="text-xl text-red-100/70 max-w-3xl">
+                  AeThex Foundation builds goodwill through open-source code (permissive licensing for maximum adoption), educational curriculum, and community workshops. We create a specialized talent pipeline feeding our ecosystem while advancing the broader developer community.
                 </p>
               </div>
 
