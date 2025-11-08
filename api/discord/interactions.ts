@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { createVerify } from "crypto";
+import { createPublicKey, verify } from "crypto";
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -23,6 +23,11 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     const rawPublicKey = process.env.DISCORD_PUBLIC_KEY;
 
     if (!signature || !timestamp || !rawPublicKey) {
+      console.error("[Discord] Missing required headers or public key", {
+        hasSignature: !!signature,
+        hasTimestamp: !!timestamp,
+        hasPublicKey: !!rawPublicKey,
+      });
       return res
         .status(401)
         .json({ error: "Missing required headers or public key" });
@@ -41,49 +46,104 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     // Create the message that was signed
     const message = `${timestamp}${rawBody}`;
 
-    // Convert Discord's public key (hex string) to PEM format for Ed25519
+    // Convert Discord's public key (hex string) to buffer
     const publicKeyBuffer = Buffer.from(rawPublicKey, "hex");
-    const publicKeyPEM = `-----BEGIN PUBLIC KEY-----\n${publicKeyBuffer.toString("base64")}\n-----END PUBLIC KEY-----`;
+    const signatureBuffer = Buffer.from(signature, "hex");
 
-    try {
-      // Verify the signature
-      const signatureBuffer = Buffer.from(signature, "hex");
-      const verifier = createVerify("Ed25519");
-      verifier.update(message);
-      const isValid = verifier.verify(publicKeyPEM, signatureBuffer);
+    // Create public key object for Ed25519
+    const publicKey = createPublicKey({
+      key: publicKeyBuffer,
+      format: "raw",
+      type: "ed25519",
+    });
 
-      if (!isValid) {
-        return res.status(401).json({ error: "Invalid signature" });
-      }
-    } catch (err) {
-      // If Ed25519 fails, try with the raw key (some versions support this)
-      try {
-        const signatureBuffer = Buffer.from(signature, "hex");
-        const verifier = createVerify("Ed25519");
-        verifier.update(message);
-        const isValid = verifier.verify(publicKeyBuffer, signatureBuffer);
-        if (!isValid) {
-          return res.status(401).json({ error: "Invalid signature" });
-        }
-      } catch {
-        return res.status(401).json({ error: "Signature verification failed" });
-      }
+    // Verify the signature using Ed25519
+    const isValid = verify("Ed25519", Buffer.from(message), publicKey, signatureBuffer);
+
+    if (!isValid) {
+      console.error("[Discord] Signature verification failed");
+      return res.status(401).json({ error: "Invalid signature" });
     }
+
+    console.log("[Discord] Signature verified successfully");
 
     // Parse and handle the interaction
     const interaction = JSON.parse(rawBody);
+    console.log("[Discord] Interaction type:", interaction.type);
 
     // Response to PING with type 1
     if (interaction.type === 1) {
+      console.log("[Discord] PING received - responding with type 1");
       return res.status(200).json({ type: 1 });
     }
 
-    // Handle other interactions
+    // Handle APPLICATION_COMMAND (slash commands)
+    if (interaction.type === 2) {
+      const commandName = interaction.data.name;
+      console.log("[Discord] Slash command received:", commandName);
+
+      if (commandName === "creators") {
+        const arm = interaction.data.options?.[0]?.value;
+        const armFilter = arm ? ` (${arm})` : " (all arms)";
+        return res.status(200).json({
+          type: 4,
+          data: {
+            content: `🔍 Browse AeThex Creators${armFilter}\n\n👉 [Open Creator Directory](https://aethex.dev/creators${arm ? `?arm=${arm}` : ""})`,
+            flags: 0,
+          },
+        });
+      }
+
+      if (commandName === "opportunities") {
+        const arm = interaction.data.options?.[0]?.value;
+        const armFilter = arm ? ` (${arm})` : " (all arms)";
+        return res.status(200).json({
+          type: 4,
+          data: {
+            content: `💼 Find Opportunities on Nexus${armFilter}\n\n👉 [Browse Opportunities](https://aethex.dev/opportunities${arm ? `?arm=${arm}` : ""})`,
+            flags: 0,
+          },
+        });
+      }
+
+      if (commandName === "nexus") {
+        return res.status(200).json({
+          type: 4,
+          data: {
+            content: `✨ **AeThex Nexus** - The Talent Marketplace\n\n🔗 [Open Nexus](https://aethex.dev/nexus)\n\n**Quick Links:**\n• 🔍 [Browse Creators](https://aethex.dev/creators)\n• 💼 [Find Opportunities](https://aethex.dev/opportunities)\n• 📊 [View Metrics](https://aethex.dev/admin)`,
+            flags: 0,
+          },
+        });
+      }
+
+      return res.status(200).json({
+        type: 4,
+        data: {
+          content: `✨ AeThex - Advanced Development Platform\n\n**Available Commands:**\n• \`/creators [arm]\` - Browse creators across AeThex arms\n• \`/opportunities [arm]\` - Find job opportunities and collaborations\n• \`/nexus\` - Explore the Talent Marketplace`,
+          flags: 0,
+        },
+      });
+    }
+
+    // For MESSAGE_COMPONENT interactions (buttons, etc.)
+    if (interaction.type === 3) {
+      console.log(
+        "[Discord] Message component interaction:",
+        interaction.data.custom_id,
+      );
+      return res.status(200).json({
+        type: 4,
+        data: { content: "Button clicked - feature coming soon!" },
+      });
+    }
+
+    // Acknowledge all other interactions
     return res.status(200).json({
       type: 4,
-      data: { content: "Interaction received" },
+      data: { content: "Interaction acknowledged" },
     });
   } catch (err: any) {
+    console.error("[Discord] Error:", err?.message || err);
     return res.status(500).json({ error: "Server error" });
   }
 }
