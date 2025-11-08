@@ -349,6 +349,25 @@ export default function Onboarding() {
         ]),
       );
 
+      // Create creator profile if they provided primary arm
+      const creatorProfilePromise = data.creatorProfile.primaryArm
+        ? fetch(`/api/creators`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: user.id,
+              username: payload.username,
+              bio: data.creatorProfile.bio || null,
+              avatar_url: null, // Can be added later in profile settings
+              experience_level: data.experience.level || "junior",
+              primary_arm: data.creatorProfile.primaryArm,
+              arm_affiliations: [data.creatorProfile.primaryArm],
+              skills: data.creatorProfile.skills || [],
+              is_discoverable: true,
+            }),
+          })
+        : Promise.resolve();
+
       Promise.allSettled([
         interests.length
           ? fetch(`/api/interests`, {
@@ -358,6 +377,7 @@ export default function Onboarding() {
             })
           : Promise.resolve(),
         aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
+        creatorProfilePromise,
       ]).catch(() => undefined);
 
       // Mark onboarding complete locally (UI fallback)
