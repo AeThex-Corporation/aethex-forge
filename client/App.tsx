@@ -103,6 +103,7 @@ import DiscordActivity from "./pages/DiscordActivity";
 import DiscordOAuthCallback from "./pages/DiscordOAuthCallback";
 import RobloxCallback from "./pages/RobloxCallback";
 import Web3Callback from "./pages/Web3Callback";
+import DiscordVerify from "./pages/DiscordVerify";
 import { Analytics } from "@vercel/analytics/react";
 import CreatorDirectory from "./pages/creators/CreatorDirectory";
 import CreatorProfile from "./pages/creators/CreatorProfile";
@@ -189,6 +190,7 @@ const App = () => (
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/roblox-callback" element={<RobloxCallback />} />
                 <Route path="/web3-callback" element={<Web3Callback />} />
+                <Route path="/discord-verify" element={<DiscordVerify />} />
 
                 {/* Creator Network routes */}
                 <Route path="/creators" element={<CreatorDirectory />} />
