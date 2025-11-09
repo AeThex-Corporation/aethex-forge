@@ -32,11 +32,14 @@ export default function DiscordVerify() {
   }, [code]);
 
   useEffect(() => {
-    // Redirect if not authenticated
+    // Redirect if not authenticated, preserving the code param
     if (!user) {
-      navigate("/login?next=/profile/link-discord");
+      const redirectUrl = code
+        ? `/login?next=/discord-verify?code=${code}`
+        : "/login?next=/profile/link-discord";
+      navigate(redirectUrl);
     }
-  }, [user, navigate]);
+  }, [user, navigate, code]);
 
   const handleVerify = async (codeToVerify: string) => {
     if (!codeToVerify.trim()) {
