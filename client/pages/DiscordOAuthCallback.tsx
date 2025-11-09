@@ -44,6 +44,7 @@ export default function DiscordOAuthCallback() {
             code,
             state: state || "/dashboard",
           }),
+          credentials: "include", // Include cookies in request
         });
 
         const data = await response.json();
@@ -56,13 +57,20 @@ export default function DiscordOAuthCallback() {
 
         // Success
         setStatus("success");
-        setMessage("Successfully linked! Redirecting...");
+        setMessage(data.message || "Successfully authenticated!");
 
-        // The backend handles session setup, so just redirect
-        const nextPath = state && state.startsWith("/") ? state : "/dashboard";
+        // Save session tokens to localStorage if provided
+        if (data.session?.access_token) {
+          localStorage.setItem("sb-access-token", data.session.access_token);
+          localStorage.setItem("sb-refresh-token", data.session.refresh_token);
+        }
+
+        // Redirect to next page
+        const nextPath = state && state.startsWith("/") ? state : data.isNewUser ? "/onboarding" : "/dashboard";
         setTimeout(() => {
           navigate(nextPath);
-        }, 2000);
+          window.location.reload(); // Reload to pick up new auth context
+        }, 1500);
       } catch (error) {
         setStatus("error");
         setMessage(
