@@ -7,11 +7,9 @@ export interface BotHealthStatus {
   error?: string;
 }
 
-const BOT_HEALTH_URL = "http://144.217.139.239:8044/health";
-
 export async function checkBotHealth(): Promise<BotHealthStatus> {
   try {
-    const response = await fetch(BOT_HEALTH_URL, {
+    const response = await fetch("/api/discord/bot-health", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
