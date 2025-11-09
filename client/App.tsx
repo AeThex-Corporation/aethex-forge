@@ -203,7 +203,6 @@ const App = () => (
                       element={<RobloxCallback />}
                     />
                     <Route path="/web3-callback" element={<Web3Callback />} />
-                    <Route path="/discord" element={<DiscordOAuthCallback />} />
                     <Route path="/discord-verify" element={<DiscordVerify />} />
 
                     {/* Creator Network routes */}
