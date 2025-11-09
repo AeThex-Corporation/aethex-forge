@@ -1041,6 +1041,47 @@ export function createServer() {
       }
     });
 
+    // Discord Bot Health Check (proxy to avoid CSP issues)
+    app.get("/api/discord/bot-health", async (req, res) => {
+      try {
+        const botHealthUrl = "http://144.217.139.239:8044/health";
+
+        const response = await fetch(botHealthUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          return res.status(response.status).json({
+            status: "offline",
+            error: `HTTP ${response.status}: Failed to reach bot`,
+          });
+        }
+
+        const data = await response.json();
+        res.setHeader("Content-Type", "application/json");
+        return res.json({
+          status: data.status || "online",
+          guilds: data.guilds || 0,
+          commands: data.commands || 0,
+          uptime: data.uptime || 0,
+          timestamp: data.timestamp || new Date().toISOString(),
+        });
+      } catch (error: any) {
+        console.error("[Discord Bot Health] Error:", error);
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          status: "offline",
+          error:
+            error instanceof Error
+              ? error.message
+              : "Failed to reach bot health endpoint",
+        });
+      }
+    });
+
     // Site settings (admin-managed)
     app.get("/api/site-settings", async (req, res) => {
       try {
