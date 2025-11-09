@@ -248,7 +248,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       if (commandName === "unlink") {
-        const discordId = interaction.member?.user?.id;
+        const discordId = interaction.user?.id || interaction.member?.user?.id || "Unknown";
 
         return res.status(200).json({
           type: 4,
