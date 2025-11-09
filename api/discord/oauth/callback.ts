@@ -20,19 +20,14 @@ interface DiscordTokenResponse {
 }
 
 export default async function handler(req: any, res: any) {
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { code, state, error } = req.query;
-
-  // Handle Discord error
-  if (error) {
-    return res.redirect(`/login?error=${error}`);
-  }
+  const { code, state } = req.body;
 
   if (!code) {
-    return res.redirect("/login?error=no_code");
+    return res.status(400).json({ message: "No authorization code provided" });
   }
 
   const clientId = process.env.DISCORD_CLIENT_ID;
@@ -42,34 +37,33 @@ export default async function handler(req: any, res: any) {
 
   if (!clientId || !clientSecret || !supabaseUrl || !supabaseServiceRole) {
     console.error("[Discord OAuth] Missing environment variables");
-    return res.redirect("/login?error=config");
+    return res.status(500).json({ message: "Server configuration error" });
   }
 
   try {
     const redirectUri = `${process.env.VITE_API_BASE || "https://aethex.dev"}/discord`;
 
     // Exchange code for access token
-    const tokenResponse = await fetch(
-      "https://discord.com/api/v10/oauth2/token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          client_id: clientId,
-          client_secret: clientSecret,
-          grant_type: "authorization_code",
-          code,
-          redirect_uri: redirectUri,
-        }).toString(),
+    const tokenResponse = await fetch("https://discord.com/api/v10/oauth2/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    );
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri,
+      }).toString(),
+    });
 
     if (!tokenResponse.ok) {
       const errorData = await tokenResponse.json();
       console.error("[Discord OAuth] Token exchange failed:", errorData);
-      return res.redirect("/login?error=token_exchange");
+      return res.status(400).json({
+        message: "Failed to authenticate with Discord. Please try again.",
+      });
     }
 
     const tokenData: DiscordTokenResponse = await tokenResponse.json();
@@ -83,7 +77,9 @@ export default async function handler(req: any, res: any) {
 
     if (!userResponse.ok) {
       console.error("[Discord OAuth] User fetch failed:", userResponse.status);
-      return res.redirect("/login?error=user_fetch");
+      return res.status(400).json({
+        message: "Failed to fetch Discord profile. Please try again.",
+      });
     }
 
     const discordUser: DiscordUser = await userResponse.json();
@@ -118,47 +114,38 @@ export default async function handler(req: any, res: any) {
       } else {
         // Create new user
         // First create auth user
-        const { data: authData, error: authError } =
-          await supabase.auth.admin.createUser({
-            email: discordUser.email,
-            email_confirm: true,
-            user_metadata: {
-              full_name: discordUser.username,
-              avatar_url: discordUser.avatar
-                ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-                : null,
-            },
-          });
+        const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+          email: discordUser.email,
+          email_confirm: true,
+          user_metadata: {
+            full_name: discordUser.username,
+            avatar_url: discordUser.avatar
+              ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
+              : null,
+          },
+        });
 
         if (authError || !authData.user) {
-          console.error(
-            "[Discord OAuth] Auth user creation failed:",
-            authError,
-          );
-          return res.redirect("/login?error=auth_create");
+          console.error("[Discord OAuth] Auth user creation failed:", authError);
+          return res.status(500).json({ message: "Failed to create account" });
         }
 
         userId = authData.user.id;
         isNewUser = true;
 
         // Create user profile
-        const { error: profileError } = await supabase
-          .from("user_profiles")
-          .insert({
-            id: userId,
-            email: discordUser.email,
-            full_name: discordUser.username,
-            avatar_url: discordUser.avatar
-              ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-              : null,
-          });
+        const { error: profileError } = await supabase.from("user_profiles").insert({
+          id: userId,
+          email: discordUser.email,
+          full_name: discordUser.username,
+          avatar_url: discordUser.avatar
+            ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
+            : null,
+        });
 
         if (profileError) {
-          console.error(
-            "[Discord OAuth] Profile creation failed:",
-            profileError,
-          );
-          return res.redirect("/login?error=profile_create");
+          console.error("[Discord OAuth] Profile creation failed:", profileError);
+          return res.status(500).json({ message: "Failed to create user profile" });
         }
       }
     }
@@ -172,45 +159,40 @@ export default async function handler(req: any, res: any) {
 
     if (linkError) {
       console.error("[Discord OAuth] Link creation failed:", linkError);
-      return res.redirect("/login?error=link_create");
+      return res.status(500).json({ message: "Failed to link Discord account" });
     }
 
     // Generate session token
-    const { data: sessionData, error: sessionError } =
-      await supabase.auth.admin.createSession({
-        user_id: userId,
-      });
+    const { data: sessionData, error: sessionError } = await supabase.auth.admin.createSession({
+      user_id: userId,
+    });
 
     if (sessionError || !sessionData.session) {
       console.error("[Discord OAuth] Session creation failed:", sessionError);
-      return res.redirect("/login?error=session_create");
+      return res.status(500).json({ message: "Failed to create session" });
     }
 
-    // Redirect to next page with session
-    const nextPath =
-      state && typeof state === "string" && state.startsWith("/")
-        ? state
-        : isNewUser
-          ? "/onboarding"
-          : "/dashboard";
-    const redirectUrl = new URL(
-      nextPath,
-      process.env.VITE_API_BASE || "https://aethex.dev",
-    );
-
-    // Set cookies for session (similar to how Supabase does it)
-    res.setHeader(
-      "Set-Cookie",
-      `sb-access-token=${sessionData.session.access_token}; Path=/; HttpOnly; Secure; SameSite=Lax`,
-    );
-    res.setHeader(
-      "Set-Cookie",
-      `sb-refresh-token=${sessionData.session.refresh_token}; Path=/; HttpOnly; Secure; SameSite=Lax`,
-    );
-
-    res.redirect(redirectUrl.toString());
+    // Return session data to frontend
+    res.setHeader("Content-Type", "application/json");
+    return res.status(200).json({
+      success: true,
+      message: isNewUser ? "Account created successfully" : "Linked successfully",
+      session: {
+        access_token: sessionData.session.access_token,
+        refresh_token: sessionData.session.refresh_token,
+      },
+      user: {
+        id: userId,
+        email: discordUser.email,
+        full_name: discordUser.username,
+        discord_id: discordUser.id,
+      },
+      isNewUser,
+    });
   } catch (error) {
     console.error("[Discord OAuth] Callback error:", error);
-    res.redirect("/login?error=unknown");
+    res.status(500).json({
+      message: "An unexpected error occurred. Please try again.",
+    });
   }
 }
