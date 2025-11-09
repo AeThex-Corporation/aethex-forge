@@ -11,6 +11,7 @@
 The AETHEX project has made significant progress on Discord integration (Phase 2: Dual-Auth) and database schema (Phase 2/3). However, critical gaps exist in CSP configuration (Phase 1), RLS performance optimization (Phase 3), and CI/CD pipeline (Phase 4).
 
 **Key Findings:**
+
 - ✅ Discord OAuth backend fully implemented
 - ✅ Database schema for Discord integration complete
 - ✅ Discord bot (Discord.js) deployed and operational
@@ -27,6 +28,7 @@ The AETHEX project has made significant progress on Discord integration (Phase 2
 **File**: `code/vercel.json`
 
 #### What's Configured ✅
+
 ```json
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
@@ -36,8 +38,14 @@ The AETHEX project has made significant progress on Discord integration (Phase 2
       "headers": [
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=()"
+        },
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss:; frame-ancestors 'none'"
@@ -51,11 +59,13 @@ The AETHEX project has made significant progress on Discord integration (Phase 2
 #### Critical Issues ⚠️
 
 1. **`frame-ancestors 'none'`** - BLOCKS Discord Activity iFrame
+
    - Current policy: `frame-ancestors 'none'`
    - Required policy: `frame-ancestors 'self' https://*.discordsays.com`
    - **Impact**: Discord Activity cannot embed the app
 
 2. **Missing Supabase URL in `connect-src`**
+
    - Current: `connect-src 'self' https: wss:` (too broad, catch-all)
    - Should be explicit: `connect-src 'self' https://kmdeisowhtsalsekkzqd.supabase.co https://xakdofkmympbhxkbkxbh.supabase.co wss:`
 
@@ -84,6 +94,7 @@ Replace the CSP header in `vercel.json` line 47:
 **File**: `code/api/discord/oauth/callback.ts` (196 lines)
 
 **What's Working:**
+
 - ✅ Receives Discord OAuth code
 - ✅ Exchanges code for Discord access token
 - ✅ Fetches user profile via Discord API
@@ -92,6 +103,7 @@ Replace the CSP header in `vercel.json` line 47:
 - ✅ Redirects to /onboarding or /dashboard
 
 **Code Flow** (lines 48-120):
+
 ```typescript
 1. Receive Discord code
 2. POST to https://discord.com/api/v10/oauth2/token
@@ -106,11 +118,13 @@ Replace the CSP header in `vercel.json` line 47:
 
 #### Frontend Implementation ⚠️ PARTIALLY COMPLETE
 
-**Files**: 
+**Files**:
+
 - `code/client/contexts/DiscordActivityContext.tsx` (137 lines)
 - `code/client/pages/Activity.tsx` (152 lines)
 
 **What's Working:**
+
 - ✅ Discord SDK initialization in context
 - ✅ Detects iFrame context (frame_id query param)
 - ✅ Calls /api/discord/activity-auth endpoint
@@ -118,12 +132,14 @@ Replace the CSP header in `vercel.json` line 47:
 - ✅ Activity page with profile display
 
 **What's Missing:**
+
 - ❌ Custom dual-auth flow (Phase 2 Section A step 10)
   - Current: Uses standard `supabase.auth.setSession()`
   - Needed: Call `discordSdk.commands.authenticate()` with Discord token
   - Impact: Discord SDK commands unavailable inside Activity
 
 **Code Gap** (DiscordActivityContext.tsx line ~80):
+
 ```typescript
 // Current:
 await supabase.auth.setSession(supabaseSession);
@@ -151,7 +167,8 @@ Update `code/client/contexts/DiscordActivityContext.tsx` to complete the dual-au
 
 ### Current State
 
-**Files**: 
+**Files**:
+
 - `code/supabase/migrations/20250107_add_discord_integration.sql` (line 62)
 - `code/supabase/migrations/20250107_add_web3_and_games.sql` (lines 108-121)
 - `code/supabase/migrations/20251018_fix_team_memberships_rls.sql` (lines 15, 21, 34)
@@ -161,6 +178,7 @@ Update `code/client/contexts/DiscordActivityContext.tsx` to complete the dual-au
 #### Anti-Pattern Policies Found ⚠️
 
 **Policy 1: Discord Links** (20250107_add_discord_integration.sql:62)
+
 ```sql
 -- NON-PERFORMANT (Per-Row Execution):
 CREATE POLICY "discord_links_users_select" ON discord_links
@@ -169,6 +187,7 @@ CREATE POLICY "discord_links_users_select" ON discord_links
 ```
 
 **Policy 2: Web3 Nonces** (20250107_add_web3_and_games.sql:109)
+
 ```sql
 -- NON-PERFORMANT (Per-Row Execution):
 CREATE POLICY "web3_nonces_user_select" ON web3_nonces
@@ -177,6 +196,7 @@ CREATE POLICY "web3_nonces_user_select" ON web3_nonces
 ```
 
 **Policy 3: Team Memberships** (20251018_fix_team_memberships_rls.sql:15)
+
 ```sql
 -- NON-PERFORMANT (Per-Row Execution):
 CREATE POLICY team_memberships_users_read ON team_memberships
@@ -245,10 +265,12 @@ CREATE POLICY team_memberships_users_read ON team_memberships
 ### What's Missing ❌
 
 1. **GitHub Actions workflow file**: `.github/workflows/supabase-deploy.yml`
+
    - Not created
    - Would handle automated schema deployments
 
 2. **GitHub Environments**:
+
    - No `staging` environment configured
    - No `production` environment configured
    - No repository secrets configured
@@ -279,7 +301,7 @@ jobs:
   deploy-supabase-migrations:
     name: Deploy Supabase Migrations
     runs-on: ubuntu-latest
-    
+
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
 
@@ -289,7 +311,7 @@ jobs:
       - name: Set up Supabase CLI
         uses: supabase/setup-cli@v1
         with:
-          version: '*'
+          version: "*"
 
       - name: Set Environment Variables
         run: |
@@ -312,6 +334,7 @@ jobs:
 In repository settings (Settings → Environments):
 
 **Staging Environment:**
+
 - Branch: `develop`
 - Secrets:
   - `SUPABASE_ACCESS_TOKEN`: Personal token from supabase.com/account/tokens
@@ -319,6 +342,7 @@ In repository settings (Settings → Environments):
   - `SUPABASE_DB_PASSWORD`: Staging database password
 
 **Production Environment:**
+
 - Branch: `main`
 - Secrets:
   - `SUPABASE_ACCESS_TOKEN`: (same as above)
@@ -329,7 +353,7 @@ In repository settings (Settings → Environments):
 
 Create: `code/docs/SUPABASE_MIGRATION_WORKFLOW.md`
 
-```markdown
+````markdown
 # Supabase Migration Workflow
 
 ## For Developers
@@ -338,10 +362,12 @@ Create: `code/docs/SUPABASE_MIGRATION_WORKFLOW.md`
    ```bash
    supabase migration new <migration_name>
    ```
+````
 
 2. Edit migration in `supabase/migrations/`
 
 3. Test locally:
+
    ```bash
    supabase db reset
    ```
@@ -355,6 +381,7 @@ Create: `code/docs/SUPABASE_MIGRATION_WORKFLOW.md`
 7. After verification, merge `develop` → `main`
 
 8. Production deployment triggered automatically
+
 ```
 
 ---
@@ -481,6 +508,7 @@ Create: `code/docs/SUPABASE_MIGRATION_WORKFLOW.md`
 
 ---
 
-**Report Generated**: $(date)  
-**Reviewer**: AETHEX Development Team  
+**Report Generated**: $(date)
+**Reviewer**: AETHEX Development Team
 **Status**: Ready for Implementation
+```
