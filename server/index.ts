@@ -119,8 +119,10 @@ const handleDiscordInteractions = async (
           }
 
           // Generate verification code (random 6-digit)
-          const verificationCode =
-            Math.random().toString(36).substring(2, 8).toUpperCase();
+          const verificationCode = Math.random()
+            .toString(36)
+            .substring(2, 8)
+            .toUpperCase();
           const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // 15 min
 
           // Store verification code in Supabase
