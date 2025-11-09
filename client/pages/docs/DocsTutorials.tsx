@@ -1,3 +1,4 @@
+import DocsLayout from "@/components/docs/DocsLayout";
 import { useState } from "react";
 import {
   Card,
@@ -223,9 +224,14 @@ export default function DocsTutorials() {
   });
 
   return (
+    <DocsLayout
+      title="Tutorials"
+      description="Step-by-step guides for common use cases"
+      breadcrumbs={[{ label: "Tutorials" }]}
+    >
     <div>
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8 hidden">
         <h2 className="text-2xl font-bold text-white mb-4">
           Documentation Tutorials
         </h2>
@@ -409,5 +415,6 @@ export default function DocsTutorials() {
         </div>
       </div>
     </div>
+    </DocsLayout>
   );
 }
