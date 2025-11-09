@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Web3Provider } from "./contexts/Web3Context";
+import { DocsThemeProvider } from "./contexts/DocsThemeContext";
 import PageTransition from "./components/PageTransition";
 import SkipAgentController from "./components/SkipAgentController";
 import Index from "./pages/Index";
