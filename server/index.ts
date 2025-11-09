@@ -1015,6 +1015,221 @@ export function createServer() {
     });
 
     // Discord Admin Register Commands
+    app.get("/api/discord/admin-register-commands", async (req, res) => {
+      // GET: Show HTML form for browser access
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      return res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Register Discord Commands</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              min-height: 100vh;
+              margin: 0;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .container {
+              background: white;
+              padding: 40px;
+              border-radius: 12px;
+              box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+              text-align: center;
+              max-width: 500px;
+              width: 90%;
+            }
+            h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+            p { color: #666; margin-bottom: 30px; line-height: 1.6; }
+            .input-group {
+              margin-bottom: 20px;
+              text-align: left;
+            }
+            label {
+              display: block;
+              color: #333;
+              font-weight: bold;
+              margin-bottom: 8px;
+              font-size: 14px;
+            }
+            input {
+              width: 100%;
+              padding: 12px;
+              border: 2px solid #ddd;
+              border-radius: 6px;
+              font-size: 14px;
+              box-sizing: border-box;
+              transition: border-color 0.3s;
+            }
+            input:focus {
+              outline: none;
+              border-color: #667eea;
+            }
+            button {
+              background: #667eea;
+              color: white;
+              border: none;
+              padding: 14px 40px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 16px;
+              font-weight: bold;
+              transition: all 0.3s;
+              width: 100%;
+            }
+            button:hover {
+              background: #764ba2;
+              transform: translateY(-2px);
+              box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+            button:disabled {
+              background: #ccc;
+              cursor: not-allowed;
+              transform: none;
+            }
+            #result {
+              margin-top: 30px;
+              padding: 20px;
+              border-radius: 6px;
+              display: none;
+              font-size: 14px;
+              word-break: break-all;
+            }
+            #result.success {
+              background: #d4edda;
+              color: #155724;
+              border: 1px solid #c3e6cb;
+              display: block;
+            }
+            #result.error {
+              background: #f8d7da;
+              color: #721c24;
+              border: 1px solid #f5c6cb;
+              display: block;
+            }
+            #loading {
+              display: none;
+              color: #667eea;
+              font-weight: bold;
+              margin-top: 20px;
+            }
+            .commands-list {
+              background: #f0f0f0;
+              padding: 15px;
+              border-radius: 6px;
+              margin: 20px 0;
+              font-size: 13px;
+              text-align: left;
+              color: #333;
+            }
+            .commands-list li { margin: 5px 0; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>🤖 Discord Commands Registration</h1>
+            <p>Register all Discord slash commands for AeThex</p>
+
+            <div class="commands-list">
+              <strong>Commands to be registered:</strong>
+              <ul>
+                <li>✅ /verify - Link your Discord account</li>
+                <li>✅ /set-realm - Choose your primary arm</li>
+                <li>✅ /profile - View your AeThex profile</li>
+                <li>✅ /unlink - Disconnect your account</li>
+                <li>✅ /verify-role - Check your Discord roles</li>
+              </ul>
+            </div>
+
+            <div class="input-group">
+              <label for="token">Admin Token:</label>
+              <input type="password" id="token" placeholder="Enter admin token" value="aethex-link" />
+            </div>
+
+            <button id="registerBtn" onclick="registerCommands()">🚀 Register Commands Now</button>
+
+            <div id="loading">⏳ Registering commands... please wait...</div>
+            <div id="result"></div>
+          </div>
+
+          <script>
+            async function registerCommands() {
+              const btn = document.getElementById('registerBtn');
+              const loading = document.getElementById('loading');
+              const result = document.getElementById('result');
+              const token = document.getElementById('token').value;
+
+              if (!token.trim()) {
+                result.className = 'error';
+                result.innerHTML = '<h3>❌ Error</h3><p>Please enter the admin token</p>';
+                result.style.display = 'block';
+                return;
+              }
+
+              btn.disabled = true;
+              loading.style.display = 'block';
+              result.style.display = 'none';
+
+              try {
+                const response = await fetch('/api/discord/admin-register-commands', {
+                  method: 'POST',
+                  headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({})
+                });
+
+                const data = await response.json();
+
+                loading.style.display = 'none';
+                result.style.display = 'block';
+
+                if (response.ok && data.ok) {
+                  result.className = 'success';
+                  result.innerHTML = \`
+                    <h3>✅ Success!</h3>
+                    <p><strong>Registered \${data.commands.length} commands:</strong></p>
+                    <ul style="text-align: left;">
+                      \${data.commands.map(cmd => \`<li>✓ /\${cmd.name}</li>\`).join('')}
+                    </ul>
+                    <p style="margin-top: 15px; color: #155724;">You can now use these commands in Discord!</p>
+                  \`;
+                } else {
+                  result.className = 'error';
+                  result.innerHTML = \`
+                    <h3>❌ Registration Failed</h3>
+                    <p><strong>Error:</strong> \${data.error || 'Unknown error'}</p>
+                    \${data.details ? \`<p><strong>Details:</strong> \${data.details}</p>\` : ''}
+                  \`;
+                }
+              } catch (error) {
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                result.className = 'error';
+                result.innerHTML = \`
+                  <h3>❌ Request Failed</h3>
+                  <p>\${error.message}</p>
+                \`;
+              } finally {
+                btn.disabled = false;
+              }
+            }
+
+            // Try to register on page load with auto token
+            window.addEventListener('load', () => {
+              // Auto-focus token field
+              document.getElementById('token').focus();
+            });
+          </script>
+        </body>
+        </html>
+      `);
+    });
+
     app.post("/api/discord/admin-register-commands", async (req, res) => {
       try {
         const authHeader = req.headers.authorization;
