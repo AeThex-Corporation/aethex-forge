@@ -1,4 +1,3 @@
-import DocsLayout from "@/components/docs/DocsLayout";
 import { useState } from "react";
 import {
   Card,
@@ -224,11 +223,6 @@ export default function DocsTutorials() {
   });
 
   return (
-    <DocsLayout
-      title="Tutorials"
-      description="Step-by-step guides for common use cases"
-      breadcrumbs={[{ label: "Tutorials" }]}
-    >
     <div>
       {/* Header */}
       <div className="mb-8 hidden">
@@ -415,6 +409,5 @@ export default function DocsTutorials() {
         </div>
       </div>
     </div>
-    </DocsLayout>
   );
 }
