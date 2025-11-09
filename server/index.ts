@@ -894,6 +894,93 @@ export function createServer() {
       }
     });
 
+    // Discord Activity Token Exchange Endpoint
+    app.post("/api/discord/token", async (req, res) => {
+      try {
+        const { code } = req.body;
+
+        if (!code) {
+          return res.status(400).json({ error: "Missing authorization code" });
+        }
+
+        const clientId = process.env.DISCORD_CLIENT_ID;
+        const clientSecret = process.env.DISCORD_CLIENT_SECRET;
+
+        if (!clientId || !clientSecret) {
+          console.error("[Discord Token] Missing CLIENT_ID or CLIENT_SECRET");
+          return res.status(500).json({ error: "Server not configured" });
+        }
+
+        // Exchange authorization code for access token
+        const tokenResponse = await fetch(
+          "https://discord.com/api/v10/oauth2/token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+              client_id: clientId,
+              client_secret: clientSecret,
+              grant_type: "authorization_code",
+              code,
+              redirect_uri: "https://127.0.0.1", // Placeholder for Activity
+            }).toString(),
+          },
+        );
+
+        if (!tokenResponse.ok) {
+          const error = await tokenResponse.json();
+          console.error("[Discord Token] Token exchange failed:", error);
+          return res.status(400).json({
+            error: "Failed to exchange code for token",
+            details: error,
+          });
+        }
+
+        const tokenData = await tokenResponse.json();
+        const accessToken = tokenData.access_token;
+
+        if (!accessToken) {
+          console.error("[Discord Token] No access token in response");
+          return res.status(500).json({ error: "Failed to obtain access token" });
+        }
+
+        // Fetch Discord user info to ensure token is valid
+        const userResponse = await fetch("https://discord.com/api/v10/users/@me", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!userResponse.ok) {
+          console.error("[Discord Token] Failed to fetch user info");
+          return res.status(401).json({ error: "Invalid token" });
+        }
+
+        const discordUser = await userResponse.json();
+        console.log(
+          "[Discord Token] Token exchange successful for user:",
+          discordUser.id,
+        );
+
+        // Return access token to Activity
+        return res.status(200).json({
+          access_token: accessToken,
+          token_type: tokenData.token_type,
+          expires_in: tokenData.expires_in,
+          user_id: discordUser.id,
+          username: discordUser.username,
+        });
+      } catch (error) {
+        console.error("[Discord Token] Error:", error);
+        return res.status(500).json({
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        });
+      }
+    });
+
     app.post("/api/discord/role-mappings", async (req, res) => {
       try {
         const { arm, discord_role, discord_role_name, server_id, user_type } =
