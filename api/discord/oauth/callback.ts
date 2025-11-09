@@ -88,6 +88,14 @@ export default async function handler(req: any, res: any) {
 
     const discordUser: DiscordUser = await userResponse.json();
 
+    // Validate Discord user has email
+    if (!discordUser.email) {
+      console.error("[Discord OAuth] Discord user has no email");
+      return res.redirect(
+        "/login?error=no_email&message=Please+enable+email+on+your+Discord+account",
+      );
+    }
+
     // Initialize Supabase client with service role
     const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
