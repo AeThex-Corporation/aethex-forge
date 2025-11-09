@@ -305,7 +305,14 @@ const App = () => (
                     <Route path="/nexus" element={<Nexus />} />
 
                     {/* Resource routes */}
-                    <Route path="/docs" element={<DocsLayout />}>
+                    <Route
+                      path="/docs"
+                      element={
+                        <DocsThemeProvider>
+                          <DocsLayout />
+                        </DocsThemeProvider>
+                      }
+                    >
                       <Route index element={<DocsOverview />} />
                       <Route path="tutorials" element={<DocsTutorials />} />
                       <Route path="curriculum" element={<DocsCurriculum />} />
