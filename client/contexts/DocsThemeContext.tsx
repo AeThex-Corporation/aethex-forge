@@ -27,12 +27,12 @@ const professionalTheme: ThemeColors = {
   background: "bg-white",
   foreground: "text-black",
   sidebar: "bg-gradient-to-b from-slate-100 to-slate-50",
-  sidebarText: "text-slate-700",
+  sidebarText: "text-black",
   sidebarHover: "hover:bg-slate-200/60",
-  sidebarActive: "text-blue-600",
-  sidebarActiveBg: "bg-blue-50",
+  sidebarActive: "text-black",
+  sidebarActiveBg: "bg-slate-300/60",
   accent: "text-black",
-  accentHover: "hover:text-gray-700",
+  accentHover: "hover:text-gray-800",
   border: "border-gray-300",
   cardBg: "bg-gray-50",
   cardBorder: "border-gray-300",
@@ -41,7 +41,7 @@ const professionalTheme: ThemeColors = {
   inputBg: "bg-white border border-gray-300",
   inputBorder: "border-gray-300",
   headingColor: "text-black",
-  textMuted: "text-gray-600",
+  textMuted: "text-black",
 };
 
 const brandTheme: ThemeColors = {
