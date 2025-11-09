@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || "https://kmdeisowhtsalsekkzqd.supabase.co";
+const supabaseUrl =
+  process.env.VITE_SUPABASE_URL || "https://kmdeisowhtsalsekkzqd.supabase.co";
 const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE || "";
 
 export default async function handler(req: any, res: any) {
@@ -25,19 +26,22 @@ export default async function handler(req: any, res: any) {
     }
 
     // Exchange authorization code for access token
-    const tokenResponse = await fetch("https://discord.com/api/v10/oauth2/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+    const tokenResponse = await fetch(
+      "https://discord.com/api/v10/oauth2/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: clientId,
+          client_secret: clientSecret,
+          grant_type: "authorization_code",
+          code,
+          redirect_uri: "https://127.0.0.1", // Placeholder for Activity
+        }).toString(),
       },
-      body: new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        grant_type: "authorization_code",
-        code,
-        redirect_uri: "https://127.0.0.1", // Placeholder for Activity
-      }).toString(),
-    });
+    );
 
     if (!tokenResponse.ok) {
       const error = await tokenResponse.json();
@@ -69,7 +73,10 @@ export default async function handler(req: any, res: any) {
     }
 
     const discordUser = await userResponse.json();
-    console.log("[Discord Token] Token exchange successful for user:", discordUser.id);
+    console.log(
+      "[Discord Token] Token exchange successful for user:",
+      discordUser.id,
+    );
 
     // Return access token to Activity
     return res.status(200).json({

@@ -116,7 +116,9 @@ export const DiscordActivityProvider: React.FC<
               prompt: "none",
             });
 
-            console.log("[Discord Activity] Got authorization code, exchanging for token...");
+            console.log(
+              "[Discord Activity] Got authorization code, exchanging for token...",
+            );
 
             // Exchange code for access token via our backend
             const tokenResponse = await fetch("/api/discord/token", {
@@ -130,7 +132,10 @@ export const DiscordActivityProvider: React.FC<
             if (!tokenResponse.ok) {
               const errorData = await tokenResponse.json();
               const errMsg = errorData.error || "Failed to exchange code";
-              console.error("[Discord Activity] Token exchange failed:", errMsg);
+              console.error(
+                "[Discord Activity] Token exchange failed:",
+                errMsg,
+              );
               setError(errMsg);
               setIsLoading(false);
               return;
@@ -139,7 +144,9 @@ export const DiscordActivityProvider: React.FC<
             const tokenData = await tokenResponse.json();
             const access_token = tokenData.access_token;
 
-            console.log("[Discord Activity] Got access token, authenticating with SDK...");
+            console.log(
+              "[Discord Activity] Got access token, authenticating with SDK...",
+            );
 
             // Authenticate with SDK using the access token
             const authResult = await sdk.commands.authenticate({
@@ -153,15 +160,20 @@ export const DiscordActivityProvider: React.FC<
               return;
             }
 
-            console.log("[Discord Activity] Authenticated with SDK, fetching user profile...");
+            console.log(
+              "[Discord Activity] Authenticated with SDK, fetching user profile...",
+            );
             setAuth(authResult);
 
             // Get user info using the access token
-            const userResponse = await fetch("https://discord.com/api/v10/users/@me", {
-              headers: {
-                Authorization: `Bearer ${access_token}`,
+            const userResponse = await fetch(
+              "https://discord.com/api/v10/users/@me",
+              {
+                headers: {
+                  Authorization: `Bearer ${access_token}`,
+                },
               },
-            });
+            );
 
             if (!userResponse.ok) {
               console.error("[Discord Activity] Failed to fetch user profile");
@@ -171,13 +183,17 @@ export const DiscordActivityProvider: React.FC<
             }
 
             const discordUserData = await userResponse.json();
-            console.log("[Discord Activity] User profile fetched:", discordUserData.username);
+            console.log(
+              "[Discord Activity] User profile fetched:",
+              discordUserData.username,
+            );
 
             // Store the user data
             const userData: DiscordUser = {
               id: discordUserData.id,
               discord_id: discordUserData.id,
-              full_name: discordUserData.global_name || discordUserData.username,
+              full_name:
+                discordUserData.global_name || discordUserData.username,
               username: discordUserData.username,
               avatar_url: discordUserData.avatar
                 ? `https://cdn.discordapp.com/avatars/${discordUserData.id}/${discordUserData.avatar}.png`

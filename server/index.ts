@@ -943,15 +943,20 @@ export function createServer() {
 
         if (!accessToken) {
           console.error("[Discord Token] No access token in response");
-          return res.status(500).json({ error: "Failed to obtain access token" });
+          return res
+            .status(500)
+            .json({ error: "Failed to obtain access token" });
         }
 
         // Fetch Discord user info to ensure token is valid
-        const userResponse = await fetch("https://discord.com/api/v10/users/@me", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
+        const userResponse = await fetch(
+          "https://discord.com/api/v10/users/@me",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
           },
-        });
+        );
 
         if (!userResponse.ok) {
           console.error("[Discord Token] Failed to fetch user info");
