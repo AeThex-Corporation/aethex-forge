@@ -115,14 +115,15 @@ export default function DocsLayout({
 
   const isCurrentPage = (path: string) => location.pathname === path;
 
+  // Subtle grid only for professional theme
   const gridPatternStyle =
     theme === "professional"
       ? {
           backgroundImage: `
-            linear-gradient(0deg, transparent 24%, rgba(59, 130, 246, 0.05) 25%, rgba(59, 130, 246, 0.05) 26%, transparent 27%, transparent 74%, rgba(59, 130, 246, 0.05) 75%, rgba(59, 130, 246, 0.05) 76%, transparent 77%, transparent),
-            linear-gradient(90deg, transparent 24%, rgba(59, 130, 246, 0.05) 25%, rgba(59, 130, 246, 0.05) 26%, transparent 27%, transparent 74%, rgba(59, 130, 246, 0.05) 75%, rgba(59, 130, 246, 0.05) 76%, transparent 77%, transparent)
+            linear-gradient(0deg, transparent 24%, rgba(59, 130, 246, 0.02) 25%, rgba(59, 130, 246, 0.02) 26%, transparent 27%, transparent 74%, rgba(59, 130, 246, 0.02) 75%, rgba(59, 130, 246, 0.02) 76%, transparent 77%, transparent),
+            linear-gradient(90deg, transparent 24%, rgba(59, 130, 246, 0.02) 25%, rgba(59, 130, 246, 0.02) 26%, transparent 27%, transparent 74%, rgba(59, 130, 246, 0.02) 75%, rgba(59, 130, 246, 0.02) 76%, transparent 77%, transparent)
           `,
-          backgroundSize: "50px 50px",
+          backgroundSize: "100px 100px",
         }
       : undefined;
 
@@ -137,8 +138,20 @@ export default function DocsLayout({
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        {/* Back to Main Site Button */}
+        {/* AeThex Branding */}
         <div className={`p-4 border-b ${colors.border}`}>
+          <Link
+            to="/docs"
+            className="flex items-center justify-center gap-2 mb-4"
+          >
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
+              <BookOpen className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <div className={`font-bold ${colors.headingColor}`}>AeThex</div>
+              <div className={`text-xs ${colors.textMuted}`}>Docs</div>
+            </div>
+          </Link>
           <Link
             to="/"
             className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium ${colors.sidebarText} ${colors.sidebarHover} transition-colors w-full justify-center`}
