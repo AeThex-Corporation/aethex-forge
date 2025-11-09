@@ -36,7 +36,9 @@ export default function Activity() {
           <p className="text-gray-300 mb-8 text-sm">{error}</p>
 
           <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6 text-left">
-            <h3 className="text-white font-semibold mb-3">Troubleshooting Steps:</h3>
+            <h3 className="text-white font-semibold mb-3">
+              Troubleshooting Steps:
+            </h3>
             <ol className="text-gray-400 text-sm space-y-2 list-decimal list-inside">
               <li>Clear your browser cache (Ctrl+Shift+Delete)</li>
               <li>Close Discord completely</li>
@@ -47,7 +49,10 @@ export default function Activity() {
 
           <div className="bg-blue-900/20 border border-blue-700 rounded-lg p-3 mb-6">
             <p className="text-blue-300 text-xs">
-              💡 Open browser console (F12) and look for messages starting with <code className="bg-blue-950 px-1 rounded">[Discord Activity]</code>
+              💡 Open browser console (F12) and look for messages starting with{" "}
+              <code className="bg-blue-950 px-1 rounded">
+                [Discord Activity]
+              </code>
             </p>
           </div>
 

@@ -76,7 +76,10 @@ export const DiscordActivityProvider: React.FC<
           const clientId =
             import.meta.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
 
-          console.log("[Discord Activity] Creating SDK with clientId:", clientId);
+          console.log(
+            "[Discord Activity] Creating SDK with clientId:",
+            clientId,
+          );
 
           const sdk = new DiscordSDK({
             clientId,
@@ -91,7 +94,10 @@ export const DiscordActivityProvider: React.FC<
 
           // Get the current user from the SDK
           const currentUser = await sdk.user.getUser();
-          console.log("[Discord Activity] Current user:", currentUser ? "exists" : "null");
+          console.log(
+            "[Discord Activity] Current user:",
+            currentUser ? "exists" : "null",
+          );
 
           if (!currentUser) {
             // User not authenticated, authorize them
@@ -100,7 +106,9 @@ export const DiscordActivityProvider: React.FC<
               scopes: ["identify", "guilds"],
             });
 
-            console.log("[Discord Activity] Got access token, calling activity-auth...");
+            console.log(
+              "[Discord Activity] Got access token, calling activity-auth...",
+            );
             // Exchange access token for user data via our proxy
             const response = await fetch("/api/discord/activity-auth", {
               method: "POST",
@@ -125,12 +133,17 @@ export const DiscordActivityProvider: React.FC<
               setUser(data.user);
               setError(null);
             } else {
-              console.error("[Discord Activity] Authentication response invalid:", data);
+              console.error(
+                "[Discord Activity] Authentication response invalid:",
+                data,
+              );
               setError("Authentication failed");
             }
           } else {
             // User already authenticated, just fetch via our proxy
-            console.log("[Discord Activity] User already authenticated, fetching user data...");
+            console.log(
+              "[Discord Activity] User already authenticated, fetching user data...",
+            );
             const response = await fetch("/api/discord/activity-auth", {
               method: "POST",
               headers: {
@@ -156,7 +169,10 @@ export const DiscordActivityProvider: React.FC<
               setUser(data.user);
               setError(null);
             } else {
-              console.error("[Discord Activity] User data response invalid:", data);
+              console.error(
+                "[Discord Activity] User data response invalid:",
+                data,
+              );
               setError("Failed to load user data");
             }
           }
@@ -168,7 +184,7 @@ export const DiscordActivityProvider: React.FC<
             stack: err?.stack,
           });
           setError(
-            `${err?.message || "Failed to initialize Discord Activity"}. Check browser console for details.`
+            `${err?.message || "Failed to initialize Discord Activity"}. Check browser console for details.`,
           );
         } finally {
           setIsLoading(false);
@@ -176,7 +192,7 @@ export const DiscordActivityProvider: React.FC<
       } else {
         // Not in a Discord iframe
         console.log(
-          "[Discord Activity] Not in Discord Activity context (no frame_id)"
+          "[Discord Activity] Not in Discord Activity context (no frame_id)",
         );
         setIsActivity(false);
         setIsLoading(false);

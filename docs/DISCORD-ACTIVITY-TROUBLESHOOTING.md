@@ -3,11 +3,13 @@
 ## Error: 403 Forbidden on Directory API + X-Frame-Options Error
 
 ### Symptoms
+
 - Discord Activity shows blank screen
 - Browser console shows: `GET https://discord.com/api/v9/application-directory-static/applications/578971245454950421?locale=en-US 403 (Forbidden)`
 - Browser console shows: `Refused to display 'https://578971245454950421.discordsays.com/' in a frame because it set 'X-Frame-Options' to 'sameorigin'`
 
 ### Root Causes
+
 1. **Activities feature not enabled** in Discord Developer Portal
 2. **Activity URL not configured** in Discord Developer Portal
 3. **Interactions Endpoint URL not set** or not responding correctly
@@ -18,6 +20,7 @@
 ## Solution: Step-by-Step Configuration
 
 ### Step 1: Enable Activities Feature
+
 1. Go to **[Discord Developer Portal](https://discord.com/developers/applications)**
 2. Click on your app: **AeThex** (ID: `578971245454950421`)
 3. Navigate to **General Information** tab
@@ -27,6 +30,7 @@
    - If Activities is already enabled, proceed to Step 2
 
 ### Step 2: Configure Activity URL
+
 1. In **Activity Settings**, you should now see:
    - **Activity URL** field
    - Set it to: `https://aethex.dev/activity`
@@ -38,9 +42,11 @@
 5. **Wait 1-2 minutes** for Discord to process the configuration
 
 ### Step 3: Verify Interactions Endpoint
+
 Discord will test your Interactions Endpoint by sending a PING request.
 
 **Expected behavior:**
+
 - You should see a green checkmark next to the Interactions Endpoint URL
 - If it fails, check:
   1. Is `https://aethex.dev/api/discord/interactions` responding?
@@ -48,6 +54,7 @@ Discord will test your Interactions Endpoint by sending a PING request.
   3. Run this to test: `curl -X POST https://aethex.dev/api/discord/interactions -H "Content-Type: application/json" -d '{}'`
 
 ### Step 4: Check OAuth2 Settings
+
 1. Go to **OAuth2** → **General**
 2. Verify **Client ID**: `578971245454950421`
 3. Ensure **Client Secret** is populated
@@ -57,6 +64,7 @@ Discord will test your Interactions Endpoint by sending a PING request.
    - ✅ `guilds`
 
 ### Step 5: Test the Activity
+
 1. Add your bot to a test Discord server:
    - Go to **OAuth2** → **URL Generator**
    - Select scopes: `bot`, `applications.commands`
@@ -72,6 +80,7 @@ Discord will test your Interactions Endpoint by sending a PING request.
 ### Server-Side Checks
 
 #### 1. Verify Interactions Endpoint is Responding
+
 ```bash
 # Test if endpoint is reachable
 curl -v https://aethex.dev/api/discord/interactions
@@ -81,6 +90,7 @@ curl -v https://aethex.dev/api/discord/interactions
 ```
 
 #### 2. Check DISCORD_PUBLIC_KEY is Set
+
 ```bash
 # On your server/hosting platform, verify:
 echo $DISCORD_PUBLIC_KEY
@@ -88,6 +98,7 @@ echo $DISCORD_PUBLIC_KEY
 ```
 
 #### 3. Check X-Frame-Options Headers
+
 ```bash
 # Verify the server is allowing iframe embedding
 curl -I https://aethex.dev/api/discord/interactions
@@ -98,6 +109,7 @@ curl -I https://aethex.dev/api/discord/interactions
 ### Client-Side Checks
 
 #### 1. Open Browser Console (F12)
+
 - Look for `[Discord Activity]` log messages
 - They should show:
   - `Initialization starting...`
@@ -106,11 +118,13 @@ curl -I https://aethex.dev/api/discord/interactions
   - Either `Current user: exists` or `Authorizing user...`
 
 #### 2. Check frame_id Parameter
+
 - When inside Discord Activity, the URL should contain `?frame_id=...`
 - If no `frame_id`, Discord hasn't launched the Activity properly
 - This usually means the Activity URL is misconfigured
 
 #### 3. Check Discord SDK Loading
+
 - The Discord SDK should load from: `https://cdn.discordapp.com/assets/embedded/lazyload.min.js`
 - If this fails, check your CORS settings or ISP blocks
 
@@ -119,35 +133,43 @@ curl -I https://aethex.dev/api/discord/interactions
 ## Common Issues & Solutions
 
 ### Issue 1: "Not in Discord Activity context (no frame_id)"
+
 **Cause:** Discord is not launching the Activity with the required parameter
 
 **Solution:**
+
 1. Verify Activity URL is set to: `https://aethex.dev/activity` (exactly)
 2. Wait 5 minutes for Discord to cache the configuration
 3. Try again in Discord
 
 ### Issue 2: "Failed to initialize Discord Activity"
+
 **Cause:** Discord SDK failed to initialize or authorize
 
 **Solution:**
+
 1. Check browser console for specific error message
 2. Verify `VITE_DISCORD_CLIENT_ID=578971245454950421` is set
 3. Ensure `identify` scope is selected in OAuth2 settings
 4. Try opening Activity in an incognito window (clear cache)
 
 ### Issue 3: "X-Frame-Options: sameorigin" Error
+
 **Cause:** Server is sending restrictive frame headers
 
 **Solution:**
+
 1. Verify `/api/discord/interactions` endpoint exists and is reachable
 2. Check that `X-Frame-Options: ALLOWALL` is being set (line 159 of code/server/index.ts)
 3. Check that `Access-Control-Allow-Origin: *` is being set
 4. Restart the server to apply header changes
 
 ### Issue 4: 403 Forbidden on Directory API
+
 **Cause:** Discord can't validate your app configuration
 
 **Solution:**
+
 1. Ensure Activities feature is fully enabled
 2. Wait 10 minutes after changing any settings
 3. Clear browser cache (Ctrl+Shift+Delete)
@@ -159,12 +181,14 @@ curl -I https://aethex.dev/api/discord/interactions
 ## Testing Activity in Development
 
 ### Using Discord's Embedded Test
+
 1. Go to your app's Activity Settings
 2. Click "Test Activity" or "Preview" button
 3. Activity should open in a modal window
 4. Check console (F12) for errors
 
 ### Using a Test Server
+
 1. Create a private Discord server
 2. Add bot to the server
 3. Right-click bot name → Apps → Select your activity
