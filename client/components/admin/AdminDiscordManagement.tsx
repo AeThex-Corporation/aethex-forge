@@ -277,27 +277,73 @@ export function AdminDiscordManagement() {
           <CardTitle>Discord Bot Status</CardTitle>
           <CardDescription>Real-time bot configuration</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <div className="flex gap-2 mb-4">
+            <Button
+              onClick={checkBotHealthStatus}
+              disabled={botHealthLoading}
+              variant="outline"
+              size="sm"
+              className="text-xs"
+            >
+              {botHealthLoading ? (
+                <>
+                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                  Checking...
+                </>
+              ) : (
+                "Check Now"
+              )}
+            </Button>
+            {botHealth?.timestamp && (
+              <p className="text-xs text-gray-400 self-center">
+                Last check: {new Date(botHealth.timestamp).toLocaleTimeString()}
+              </p>
+            )}
+          </div>
+
+          {botHealth?.error && (
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-300 text-sm mb-4">
+              ⚠️ {botHealth.error}
+            </div>
+          )}
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-green-500/10 to-green-600/5 p-4 rounded-lg border border-green-500/20">
-              <p className="text-sm text-green-300">Bot Status</p>
-              <p className="text-lg font-bold text-green-400 mt-1">Online</p>
+            <div
+              className={`bg-gradient-to-br p-4 rounded-lg border ${
+                botHealth?.status === "online"
+                  ? "from-green-500/10 to-green-600/5 border-green-500/20"
+                  : "from-red-500/10 to-red-600/5 border-red-500/20"
+              }`}
+            >
+              <p className="text-sm text-gray-300">Bot Status</p>
+              <p
+                className={`text-lg font-bold mt-1 ${
+                  botHealth?.status === "online"
+                    ? "text-green-400"
+                    : "text-red-400"
+                }`}
+              >
+                {botHealth ? (botHealth.status === "online" ? "🟢 Online" : "🔴 Offline") : "..."}
+              </p>
             </div>
             <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 p-4 rounded-lg border border-blue-500/20">
-              <p className="text-sm text-blue-300">Linked Accounts</p>
+              <p className="text-sm text-blue-300">Guilds</p>
               <p className="text-lg font-bold text-blue-400 mt-1">
-                {mappings.length > 0 ? "Active" : "0"}
+                {botHealth?.guilds ?? "—"}
               </p>
             </div>
             <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 p-4 rounded-lg border border-purple-500/20">
-              <p className="text-sm text-purple-300">Role Mappings</p>
+              <p className="text-sm text-purple-300">Commands</p>
               <p className="text-lg font-bold text-purple-400 mt-1">
-                {mappings.length}
+                {botHealth?.commands ?? "—"}
               </p>
             </div>
             <div className="bg-gradient-to-br from-pink-500/10 to-pink-600/5 p-4 rounded-lg border border-pink-500/20">
-              <p className="text-sm text-pink-300">Servers</p>
-              <p className="text-lg font-bold text-pink-400 mt-1">6</p>
+              <p className="text-sm text-pink-300">Uptime</p>
+              <p className="text-lg font-bold text-pink-400 mt-1">
+                {botHealth ? formatUptime(botHealth.uptime) : "—"}
+              </p>
             </div>
           </div>
         </CardContent>
