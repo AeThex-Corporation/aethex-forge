@@ -145,7 +145,10 @@ export default function DocsLayout({
             className="flex flex-col items-center justify-center gap-4 w-full"
           >
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fbac6154f77e94521bcbfe35abd605cd0?format=webp&width=800"
+              src={theme === "professional"
+                ? "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fbac6154f77e94521bcbfe35abd605cd0?format=webp&width=800"
+                : "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F1d007dd573c54339ad35fde9cd637516?format=webp&width=800"
+              }
               alt="AeThex Logo"
               className="h-16 w-16 object-contain"
             />
