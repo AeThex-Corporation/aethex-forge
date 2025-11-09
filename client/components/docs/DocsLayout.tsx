@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Outlet } from "react-router-dom";
 import {
   Search,
   Menu,
@@ -81,8 +81,8 @@ const docNavigation: DocNavItem[] = [
 ];
 
 interface DocsLayoutProps {
-  children: React.ReactNode;
-  title: string;
+  children?: React.ReactNode;
+  title?: string;
   description?: string;
   breadcrumbs?: Array<{ label: string; path?: string }>;
   tableOfContents?: Array<{ id: string; label: string; level: number }>;
@@ -90,7 +90,7 @@ interface DocsLayoutProps {
 
 export default function DocsLayout({
   children,
-  title,
+  title = "Documentation",
   description,
   breadcrumbs,
   tableOfContents = [],
@@ -211,16 +211,19 @@ export default function DocsLayout({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 px-6 md:px-8 py-8 max-w-7xl mx-auto">
           {/* Content */}
           <div className="lg:col-span-3">
-            {/* Page Header */}
-            <div className="mb-8">
-              <h1 className="text-5xl font-bold text-slate-900 mb-3">{title}</h1>
-              {description && (
-                <p className="text-lg text-slate-600">{description}</p>
-              )}
-            </div>
+            {title && (
+              <div className="mb-8">
+                <h1 className="text-5xl font-bold text-slate-900 mb-3">{title}</h1>
+                {description && (
+                  <p className="text-lg text-slate-600">{description}</p>
+                )}
+              </div>
+            )}
 
-            {/* Content */}
-            <div className="prose prose-slate max-w-none">{children}</div>
+            {/* Content - either children (for wrapper) or Outlet (for routing) */}
+            <div className="prose prose-slate max-w-none">
+              {children || <Outlet />}
+            </div>
           </div>
 
           {/* Table of Contents - Right Sidebar */}
