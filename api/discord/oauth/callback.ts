@@ -172,8 +172,13 @@ export default async function handler(req: any, res: any) {
       return res.status(500).json({ message: "Failed to create session" });
     }
 
-    // Return session data to frontend
+    // Set session cookies
+    const accessTokenCookie = `sb-access-token=${sessionData.session.access_token}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=3600`;
+    const refreshTokenCookie = `sb-refresh-token=${sessionData.session.refresh_token}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=604800`;
+
+    res.setHeader("Set-Cookie", [accessTokenCookie, refreshTokenCookie]);
     res.setHeader("Content-Type", "application/json");
+
     return res.status(200).json({
       success: true,
       message: isNewUser ? "Account created successfully" : "Linked successfully",
