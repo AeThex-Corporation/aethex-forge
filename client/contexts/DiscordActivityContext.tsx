@@ -49,6 +49,7 @@ export const DiscordActivityProvider: React.FC<
   const [user, setUser] = useState<DiscordUser | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [discordSdk, setDiscordSdk] = useState<any>(null);
+  const [auth, setAuth] = useState<any>(null);
 
   useEffect(() => {
     const initializeActivity = async () => {
