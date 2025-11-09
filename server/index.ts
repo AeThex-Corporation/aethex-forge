@@ -1274,15 +1274,28 @@ export function createServer() {
           }
         }
 
-        const botToken = process.env.DISCORD_BOT_TOKEN;
-        const clientId = process.env.DISCORD_CLIENT_ID;
+        const botToken = process.env.DISCORD_BOT_TOKEN?.trim();
+        const clientId = process.env.DISCORD_CLIENT_ID?.trim();
 
         console.log(
           "[Discord] Config check - botToken set:",
           !!botToken,
           "clientId set:",
           !!clientId,
+          "botToken length:",
+          botToken?.length,
         );
+
+        // Log first and last few chars of token for debugging (safe logging)
+        if (botToken) {
+          const first = botToken.substring(0, 5);
+          const last = botToken.substring(botToken.length - 5);
+          console.log(
+            "[Discord] Token preview: " + first + "..." + last,
+            "Total length:",
+            botToken.length,
+          );
+        }
 
         if (!botToken || !clientId) {
           return res.status(500).json({
@@ -1290,9 +1303,8 @@ export function createServer() {
           });
         }
 
-        // Validate token format - Discord bot tokens are typically long strings
-        // They don't always have dots, but should be reasonably long
-        if (!botToken || botToken.trim().length < 20) {
+        // Validate token format
+        if (botToken.length < 20) {
           console.warn(
             "[Discord] Bot token appears invalid - length:",
             botToken.length,
