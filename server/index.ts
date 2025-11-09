@@ -1044,7 +1044,7 @@ export function createServer() {
     // Discord Bot Health Check (proxy to avoid CSP issues)
     app.get("/api/discord/bot-health", async (req, res) => {
       try {
-        const botHealthUrl = "http://144.217.139.239:8044/health";
+        const botHealthUrl = "https://aethex.railway.internal:8044/health";
 
         const response = await fetch(botHealthUrl, {
           method: "GET",
