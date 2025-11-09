@@ -453,7 +453,24 @@ http
     );
   });
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+// Login with error handling
+client.login(process.env.DISCORD_BOT_TOKEN).catch((error) => {
+  console.error("❌ FATAL ERROR: Failed to login to Discord");
+  console.error(`   Error Code: ${error.code}`);
+  console.error(`   Error Message: ${error.message}`);
+
+  if (error.code === "TokenInvalid") {
+    console.error("\n⚠️  DISCORD_BOT_TOKEN is invalid!");
+    console.error("   Possible causes:");
+    console.error("   1. Token has been revoked by Discord");
+    console.error("   2. Token has expired");
+    console.error("   3. Token format is incorrect");
+    console.error("\n   Solution: Get a new bot token from Discord Developer Portal");
+    console.error("   https://discord.com/developers/applications");
+  }
+
+  process.exit(1);
+});
 
 client.once("ready", () => {
   console.log(`✅ Bot logged in as ${client.user.tag}`);
