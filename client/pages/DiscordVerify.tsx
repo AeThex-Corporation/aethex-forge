@@ -34,12 +34,25 @@ export default function DiscordVerify() {
   useEffect(() => {
     // Redirect if not authenticated, preserving the code param
     if (!user) {
-      const redirectUrl = code
-        ? `/login?next=/discord-verify?code=${code}`
-        : "/login?next=/profile/link-discord";
-      navigate(redirectUrl);
+      // Store code in sessionStorage so we can retrieve it after login
+      if (code) {
+        sessionStorage.setItem("discord_verification_code", code);
+      }
+      navigate("/login?next=/discord-verify");
     }
   }, [user, navigate, code]);
+
+  // On component mount, check if code was stored in sessionStorage
+  useEffect(() => {
+    if (user && !code) {
+      const storedCode = sessionStorage.getItem("discord_verification_code");
+      if (storedCode) {
+        setVerificationCode(storedCode);
+        handleVerify(storedCode);
+        sessionStorage.removeItem("discord_verification_code");
+      }
+    }
+  }, [user]);
 
   const handleVerify = async (codeToVerify: string) => {
     if (!codeToVerify.trim()) {
