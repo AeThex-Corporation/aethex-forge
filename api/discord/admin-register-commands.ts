@@ -45,6 +45,9 @@ const COMMANDS: CommandData[] = [
   },
 ];
 
+const DISCORD_API_VERSION = "10";
+const DISCORD_API_URL = `https://discord.com/api/v${DISCORD_API_VERSION}`;
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     // Allow both GET and POST
@@ -77,32 +80,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Import discord.js dynamically to avoid import errors
-    const { REST, Routes } = await import("discord.js");
-
-    const rest = new REST({ version: "10" }).setToken(
-      process.env.DISCORD_BOT_TOKEN!,
-    );
+    const botToken = process.env.DISCORD_BOT_TOKEN!;
+    const clientId = process.env.DISCORD_CLIENT_ID!;
+    const authorizationHeader = `Bot ${botToken}`;
 
     console.log(`📝 Registering ${COMMANDS.length} Discord slash commands...`);
 
+    // Try bulk update first
     try {
-      // Try bulk update first
-      const data = await rest.put(
-        Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
-        { body: COMMANDS },
+      const bulkResponse = await fetch(
+        `${DISCORD_API_URL}/applications/${clientId}/commands`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: authorizationHeader,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(COMMANDS),
+        },
       );
 
-      console.log(`✅ Successfully registered ${data.length} slash commands`);
+      if (bulkResponse.ok) {
+        const data = await bulkResponse.json();
+        console.log(`✅ Successfully registered ${data.length} slash commands`);
 
-      return res.status(200).json({
-        success: true,
-        message: `Registered ${data.length} slash commands`,
-        commands: (data as any[]).map((cmd: any) => cmd.name),
-      });
-    } catch (bulkError: any) {
-      // Handle Error 50240 (Entry Point conflict)
-      if (bulkError.code === 50240) {
+        return res.status(200).json({
+          success: true,
+          message: `Registered ${data.length} slash commands`,
+          commands: (data as any[]).map((cmd: any) => cmd.name),
+        });
+      }
+
+      // If bulk update failed, try individual registration
+      const errorData = await bulkResponse.json();
+      const errorCode = errorData?.code;
+
+      if (errorCode === 50240) {
+        // Error 50240: Entry Point conflict (Discord Activity enabled)
         console.warn(
           "⚠️ Error 50240: Entry Point detected. Registering individually...",
         );
@@ -113,32 +127,47 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         for (const command of COMMANDS) {
           try {
-            // Try to post individual command
-            const posted = await rest.post(
-              Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
-              { body: command },
+            const postResponse = await fetch(
+              `${DISCORD_API_URL}/applications/${clientId}/commands`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: authorizationHeader,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(command),
+              },
             );
-            results.push({
-              name: command.name,
-              status: "registered",
-              id: (posted as any).id,
-            });
-            successCount++;
-          } catch (postError: any) {
-            // If command already exists (50045), skip it
-            if (postError.code === 50045) {
+
+            if (postResponse.ok) {
+              const posted = await postResponse.json();
+              results.push({
+                name: command.name,
+                status: "registered",
+                id: posted.id,
+              });
+              successCount++;
+            } else if (postResponse.status === 400) {
+              // Error 50045: Command already exists
               results.push({
                 name: command.name,
                 status: "already_exists",
               });
               skipCount++;
             } else {
+              const errData = await postResponse.json();
               results.push({
                 name: command.name,
                 status: "error",
-                error: postError.message,
+                error: errData.message || `HTTP ${postResponse.status}`,
               });
             }
+          } catch (postError: any) {
+            results.push({
+              name: command.name,
+              status: "error",
+              error: postError.message,
+            });
           }
         }
 
@@ -154,16 +183,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
       }
 
-      throw bulkError;
+      throw new Error(
+        `Discord API error: ${errorData?.message || bulkResponse.statusText}`,
+      );
+    } catch (error: any) {
+      console.error("❌ Failed to register commands:", error);
+
+      return res.status(500).json({
+        success: false,
+        error: error?.message || "Failed to register commands",
+      });
     }
   } catch (error: any) {
-    console.error("❌ Failed to register commands:", error);
+    console.error("❌ Unexpected error:", error);
 
     return res.status(500).json({
       success: false,
-      error: error?.message || "Failed to register commands",
-      code: error?.code,
-      details: error?.stack,
+      error: error?.message || "Internal server error",
     });
   }
 }
