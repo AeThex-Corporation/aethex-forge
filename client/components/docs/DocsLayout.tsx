@@ -139,17 +139,19 @@ export default function DocsLayout({
         }`}
       >
         {/* AeThex Branding */}
-        <div className={`p-4 border-b ${colors.border}`}>
+        <div className={`p-6 border-b ${colors.border} flex flex-col items-center justify-center`}>
           <Link
             to="/docs"
-            className="flex items-center justify-center gap-2 mb-4"
+            className="flex flex-col items-center justify-center gap-4 w-full"
           >
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center">
-              <BookOpen className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <div className={`font-bold ${colors.headingColor}`}>AeThex</div>
-              <div className={`text-xs ${colors.textMuted}`}>Docs</div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fbac6154f77e94521bcbfe35abd605cd0?format=webp&width=800"
+              alt="AeThex Logo"
+              className="h-16 w-16 object-contain"
+            />
+            <div className="text-center">
+              <div className={`font-bold text-lg ${colors.headingColor}`}>AeThex</div>
+              <div className={`text-xs ${colors.textMuted}`}>Documentation</div>
             </div>
           </Link>
           <Link
