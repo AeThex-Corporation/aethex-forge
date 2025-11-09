@@ -191,41 +191,22 @@ export const DiscordActivityProvider: React.FC<
             setError(null);
             console.log("[Discord Activity] User authenticated successfully");
           } else {
-            // User already authenticated, just get their info
-            console.log(
-              "[Discord Activity] User already authenticated, fetching user data...",
-            );
-            const response = await fetch("/api/discord/activity-auth", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                access_token: currentUser.access_token || "",
-              }),
-            });
-
-            if (!response.ok) {
-              const errorData = await response.json();
-              const errMsg = errorData.error || "Failed to fetch user data";
-              console.error("[Discord Activity] Fetch failed:", errMsg);
-              setError(errMsg);
-              setIsLoading(false);
-              return;
-            }
-
-            const data = await response.json();
-            if (data.success && data.user) {
-              console.log("[Discord Activity] User data loaded successfully");
-              setUser(data.user);
-              setError(null);
-            } else {
-              console.error(
-                "[Discord Activity] User data response invalid:",
-                data,
-              );
-              setError("Failed to load user data");
-            }
+            // User already authenticated
+            console.log("[Discord Activity] User already authenticated");
+            const userData: DiscordUser = {
+              id: currentUser.id,
+              discord_id: currentUser.id,
+              full_name: currentUser.global_name || currentUser.username,
+              username: currentUser.username,
+              avatar_url: currentUser.avatar
+                ? `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png`
+                : null,
+              bio: null,
+              user_type: "community_member",
+              primary_arm: "labs",
+            };
+            setUser(userData);
+            setError(null);
           }
         } catch (err: any) {
           console.error("Discord Activity initialization error:", err);
