@@ -201,12 +201,18 @@ curl -I https://aethex.dev/api/discord/interactions
 On your hosting platform (Vercel, Railway, etc.), ensure these are set:
 
 ```
-DISCORD_BOT_TOKEN=NTc4OTcxMjQ1NDU0OTUwNDIx.Gxq1Fg.tvKSDkB7YnohZMUNJs6_Glp06_HjmL0kCcLhQ0
-DISCORD_PUBLIC_KEY=d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1eb0
+DISCORD_BOT_TOKEN=<your_bot_token_from_discord_portal>
+DISCORD_PUBLIC_KEY=<your_public_key_from_discord_portal>
 DISCORD_CLIENT_ID=578971245454950421
-DISCORD_CLIENT_SECRET=JKlilGzcTWgfmt2wEqiHO8wpCel5VEji
+DISCORD_CLIENT_SECRET=<your_client_secret_from_discord_portal>
 VITE_DISCORD_CLIENT_ID=578971245454950421
 ```
+
+**⚠️ CRITICAL SECURITY WARNING:**
+- **NEVER** include real tokens, secrets, or keys in documentation
+- **NEVER** commit these to git or public repositories
+- Only set these values in your hosting platform's environment variables dashboard
+- Get these values from: Discord Developer Portal > Your App
 
 ---
 
