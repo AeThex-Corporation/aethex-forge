@@ -1183,7 +1183,15 @@ export function createServer() {
                   body: JSON.stringify({})
                 });
 
-                const data = await response.json();
+                let data;
+                const contentType = response.headers.get('content-type');
+
+                if (contentType && contentType.includes('application/json')) {
+                  data = await response.json();
+                } else {
+                  const text = await response.text();
+                  data = { error: text };
+                }
 
                 loading.style.display = 'none';
                 result.style.display = 'block';
@@ -1201,7 +1209,7 @@ export function createServer() {
                 } else {
                   result.className = 'error';
                   result.innerHTML = \`
-                    <h3>❌ Registration Failed</h3>
+                    <h3>❌ Registration Failed (\${response.status})</h3>
                     <p><strong>Error:</strong> \${data.error || 'Unknown error'}</p>
                     \${data.details ? \`<p><strong>Details:</strong> \${data.details}</p>\` : ''}
                   \`;
@@ -1219,9 +1227,8 @@ export function createServer() {
               }
             }
 
-            // Try to register on page load with auto token
+            // Auto-focus token field on page load
             window.addEventListener('load', () => {
-              // Auto-focus token field
               document.getElementById('token').focus();
             });
           </script>
