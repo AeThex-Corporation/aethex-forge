@@ -8,7 +8,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Github, ExternalLink, Users } from "lucide-react";
-import DocsLayout from "@/components/docs/DocsLayout";
 import DocsHeroSection from "@/components/docs/DocsHeroSection";
 import QuickStartSection from "@/components/docs/QuickStartSection";
 import ResourceSectionsGrid from "@/components/docs/ResourceSectionsGrid";
@@ -18,11 +17,7 @@ import DocsSupportCTA from "@/components/docs/DocsSupportCTA";
 
 export default function DocsOverview() {
   return (
-    <DocsLayout
-      title="Documentation"
-      description="Learn how to build amazing applications with AeThex"
-      breadcrumbs={[{ label: "Overview" }]}
-    >
+    <>
       <DocsHeroSection />
       <QuickStartSection />
       <ResourceSectionsGrid />
@@ -86,6 +81,6 @@ export default function DocsOverview() {
       </div>
 
       <DocsSupportCTA />
-    </DocsLayout>
+    </>
   );
 }
