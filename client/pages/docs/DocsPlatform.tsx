@@ -1,3 +1,4 @@
+import DocsLayout from "@/components/docs/DocsLayout";
 import {
   Card,
   CardContent,
@@ -163,6 +164,11 @@ const resourceLinks = [
 
 export default function DocsPlatform() {
   return (
+    <DocsLayout
+      title="Platform"
+      description="Deliver cohesive player and builder journeys on AeThex"
+      breadcrumbs={[{ label: "Platform" }]}
+    >
     <div className="space-y-12">
       <section className="space-y-4">
         <Badge className="bg-cyan-500/20 text-cyan-100 uppercase tracking-wide">
@@ -394,5 +400,6 @@ export default function DocsPlatform() {
         </div>
       </section>
     </div>
+    </DocsLayout>
   );
 }
