@@ -278,7 +278,7 @@ export default function DocsLayout({
             )}
 
             {/* Content - either children (for wrapper) or Outlet (for routing) */}
-            <div className="prose prose-slate max-w-none">
+            <div className={`prose max-w-none ${theme === "professional" ? "prose-neutral" : "prose-invert"}`}>
               {children || <Outlet />}
             </div>
           </div>
@@ -313,30 +313,57 @@ export default function DocsLayout({
         {/* Footer */}
         <footer className={`border-t ${colors.border} ${colors.cardBg} mt-12`}>
           <div className="max-w-7xl mx-auto px-6 md:px-8 py-8">
-            {/* AeThex Arms */}
-            <div className="mb-8 pb-8 border-b border-slate-200">
+            {/* AeThex Arms - Grayscale for professional, colored for brand */}
+            <div className={`mb-8 pb-8 border-b ${colors.border}`}>
               <h3 className={`text-sm font-semibold ${colors.headingColor} mb-3`}>AeThex Platforms</h3>
               <div className="flex flex-wrap gap-2">
-                <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-yellow-100">
-                  <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
-                  <span className="text-xs font-medium text-yellow-900">Labs</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-green-100">
-                  <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                  <span className="text-xs font-medium text-green-900">GameForge</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-100">
-                  <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                  <span className="text-xs font-medium text-blue-900">Corp</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-red-100">
-                  <div className="h-2 w-2 rounded-full bg-red-500"></div>
-                  <span className="text-xs font-medium text-red-900">Foundation</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-cyan-100">
-                  <div className="h-2 w-2 rounded-full bg-cyan-500"></div>
-                  <span className="text-xs font-medium text-cyan-900">Dev-Link</span>
-                </div>
+                {theme === "professional" ? (
+                  <>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
+                      <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                      <span className="text-xs font-medium text-gray-700">Labs</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
+                      <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                      <span className="text-xs font-medium text-gray-700">GameForge</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
+                      <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                      <span className="text-xs font-medium text-gray-700">Corp</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
+                      <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                      <span className="text-xs font-medium text-gray-700">Foundation</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
+                      <div className="h-2 w-2 rounded-full bg-gray-400"></div>
+                      <span className="text-xs font-medium text-gray-700">Dev-Link</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-yellow-100">
+                      <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
+                      <span className="text-xs font-medium text-yellow-900">Labs</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-green-100">
+                      <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                      <span className="text-xs font-medium text-green-900">GameForge</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-100">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                      <span className="text-xs font-medium text-blue-900">Corp</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-red-100">
+                      <div className="h-2 w-2 rounded-full bg-red-500"></div>
+                      <span className="text-xs font-medium text-red-900">Foundation</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-cyan-100">
+                      <div className="h-2 w-2 rounded-full bg-cyan-500"></div>
+                      <span className="text-xs font-medium text-cyan-900">Dev-Link</span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
