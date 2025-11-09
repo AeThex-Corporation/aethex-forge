@@ -1,3 +1,4 @@
+import DocsLayout from "@/components/docs/DocsLayout";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -89,6 +90,11 @@ const troubleshooting = [
 
 export default function DocsIntegrations() {
   return (
+    <DocsLayout
+      title="Integrations"
+      description="Third-party integrations and platform connections"
+      breadcrumbs={[{ label: "Integrations" }]}
+    >
     <div className="space-y-12">
       <section id="overview" className="space-y-4">
         <Badge className="bg-indigo-500/20 text-indigo-100 uppercase tracking-wide">
@@ -316,5 +322,6 @@ export default function DocsIntegrations() {
         </div>
       </section>
     </div>
+    </DocsLayout>
   );
 }
