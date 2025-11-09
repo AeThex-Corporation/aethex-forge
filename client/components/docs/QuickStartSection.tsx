@@ -16,6 +16,7 @@ import {
   Link as LinkIcon,
   LucideIcon,
 } from "lucide-react";
+import { useDocsTheme } from "@/contexts/DocsThemeContext";
 
 export interface QuickStartCard {
   title: string;
@@ -87,36 +88,51 @@ interface QuickStartSectionProps {
 export default function QuickStartSection({
   cards = defaultCards,
 }: QuickStartSectionProps) {
+  const { colors, theme } = useDocsTheme();
+
   return (
     <div className="mb-12">
-      <h3 className="text-2xl font-bold text-white mb-6">Quick Start</h3>
+      <h3 className={`text-2xl font-bold ${colors.headingColor} mb-6`}>
+        Quick Start
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cards.map((card, index) => {
           const Icon = card.icon;
+          const hoverBorderColor =
+            theme === "professional" ? "hover:border-gray-400" : "hover:border-purple-500/50";
+          const iconColor =
+            theme === "professional" ? "text-gray-700" : "text-purple-400";
+          const hoverTitleColor =
+            theme === "professional" ? "group-hover:text-gray-900" : "group-hover:text-purple-400";
+
           return (
             <Card
               key={index}
-              className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 cursor-pointer group"
+              className={`${colors.cardBg} border ${colors.cardBorder} ${hoverBorderColor} transition-all duration-300 hover:scale-105 cursor-pointer group`}
             >
               <Link to={card.href}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between mb-2">
-                    <Icon className="h-8 w-8 text-purple-400" />
+                    <Icon className={`h-8 w-8 ${iconColor}`} />
                     {card.isNew && (
                       <Badge className="bg-green-600 text-white text-xs">
                         New
                       </Badge>
                     )}
                   </div>
-                  <CardTitle className="text-white text-lg group-hover:text-purple-400 transition-colors">
+                  <CardTitle
+                    className={`${colors.headingColor} text-lg ${hoverTitleColor} transition-colors`}
+                  >
                     {card.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-gray-400 mb-3">
+                  <CardDescription className={`${colors.textMuted} mb-3`}>
                     {card.description}
                   </CardDescription>
-                  <div className="flex items-center justify-between text-xs text-gray-500">
+                  <div
+                    className={`flex items-center justify-between text-xs ${colors.textMuted}`}
+                  >
                     <span>{card.duration}</span>
                     <Badge variant="outline" className="text-xs">
                       {card.difficulty}
