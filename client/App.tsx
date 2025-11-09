@@ -372,10 +372,6 @@ const App = () => (
                     {/* Discord routes */}
                     <Route path="/activity" element={<Activity />} />
                     <Route path="/discord" element={<DiscordActivity />} />
-                    <Route
-                      path="/discord/callback"
-                      element={<DiscordOAuthCallback />}
-                    />
 
                     {/* Explicit 404 route for static hosting fallbacks */}
                     <Route path="/404" element={<FourOhFourPage />} />
