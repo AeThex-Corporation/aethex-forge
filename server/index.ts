@@ -1160,9 +1160,12 @@ export function createServer() {
               const btn = document.getElementById('registerBtn');
               const loading = document.getElementById('loading');
               const result = document.getElementById('result');
-              const token = document.getElementById('token').value;
+              const token = document.getElementById('token').value.trim();
 
-              if (!token.trim()) {
+              console.log('[Form] Token length:', token.length);
+              console.log('[Form] Token value:', 'Bearer ' + token);
+
+              if (!token) {
                 result.className = 'error';
                 result.innerHTML = '<h3>❌ Error</h3><p>Please enter the admin token</p>';
                 result.style.display = 'block';
@@ -1174,13 +1177,16 @@ export function createServer() {
               result.style.display = 'none';
 
               try {
+                const authHeader = 'Bearer ' + token;
+                console.log('[Form] Sending auth header:', authHeader);
+
                 const response = await fetch('/api/discord/admin-register-commands', {
                   method: 'POST',
                   headers: {
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': authHeader,
                     'Content-Type': 'application/json'
                   },
-                  body: JSON.stringify({})
+                  body: JSON.stringify({ token: token })
                 });
 
                 let data;
