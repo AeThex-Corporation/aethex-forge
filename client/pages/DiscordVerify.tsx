@@ -77,7 +77,9 @@ export default function DiscordVerify() {
       }, 3000);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An error occurred. Please try again."
+        err instanceof Error
+          ? err.message
+          : "An error occurred. Please try again.",
       );
       setIsLoading(false);
     }
@@ -129,7 +131,8 @@ export default function DiscordVerify() {
                       Discord User
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {discordUser.username}#{discordUser.discriminator || "0000"}
+                      {discordUser.username}#
+                      {discordUser.discriminator || "0000"}
                     </p>
                   </div>
 
@@ -153,8 +156,15 @@ export default function DiscordVerify() {
                     </p>
                     <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
                       <li>Open Discord</li>
-                      <li>Go to any server where the AeThex bot is installed</li>
-                      <li>Type <code className="bg-background/50 px-2 py-1 rounded">/verify</code></li>
+                      <li>
+                        Go to any server where the AeThex bot is installed
+                      </li>
+                      <li>
+                        Type{" "}
+                        <code className="bg-background/50 px-2 py-1 rounded">
+                          /verify
+                        </code>
+                      </li>
                       <li>Copy the 6-digit code from the bot's response</li>
                     </ol>
                   </div>
@@ -213,8 +223,8 @@ export default function DiscordVerify() {
           {/* Info Box */}
           <div className="mt-6 p-4 rounded-lg bg-secondary/20 border border-border/50">
             <p className="text-xs text-muted-foreground">
-              💡 <strong>Tip:</strong> You can also sign in directly with Discord
-              on the login page if you're creating a new account.
+              💡 <strong>Tip:</strong> You can also sign in directly with
+              Discord on the login page if you're creating a new account.
             </p>
           </div>
         </div>

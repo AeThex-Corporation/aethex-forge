@@ -49,19 +49,22 @@ export default async function handler(req: any, res: any) {
     const redirectUri = `${process.env.VITE_API_BASE || "https://aethex.dev"}/api/discord/oauth/callback`;
 
     // Exchange code for access token
-    const tokenResponse = await fetch("https://discord.com/api/v10/oauth2/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+    const tokenResponse = await fetch(
+      "https://discord.com/api/v10/oauth2/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: clientId,
+          client_secret: clientSecret,
+          grant_type: "authorization_code",
+          code,
+          redirect_uri: redirectUri,
+        }).toString(),
       },
-      body: new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        grant_type: "authorization_code",
-        code,
-        redirect_uri: redirectUri,
-      }).toString(),
-    });
+    );
 
     if (!tokenResponse.ok) {
       const errorData = await tokenResponse.json();
@@ -115,19 +118,23 @@ export default async function handler(req: any, res: any) {
       } else {
         // Create new user
         // First create auth user
-        const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-          email: discordUser.email,
-          email_confirm: true,
-          user_metadata: {
-            full_name: discordUser.username,
-            avatar_url: discordUser.avatar
-              ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-              : null,
-          },
-        });
+        const { data: authData, error: authError } =
+          await supabase.auth.admin.createUser({
+            email: discordUser.email,
+            email_confirm: true,
+            user_metadata: {
+              full_name: discordUser.username,
+              avatar_url: discordUser.avatar
+                ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
+                : null,
+            },
+          });
 
         if (authError || !authData.user) {
-          console.error("[Discord OAuth] Auth user creation failed:", authError);
+          console.error(
+            "[Discord OAuth] Auth user creation failed:",
+            authError,
+          );
           return res.redirect("/login?error=auth_create");
         }
 
@@ -135,17 +142,22 @@ export default async function handler(req: any, res: any) {
         isNewUser = true;
 
         // Create user profile
-        const { error: profileError } = await supabase.from("user_profiles").insert({
-          id: userId,
-          email: discordUser.email,
-          full_name: discordUser.username,
-          avatar_url: discordUser.avatar
-            ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-            : null,
-        });
+        const { error: profileError } = await supabase
+          .from("user_profiles")
+          .insert({
+            id: userId,
+            email: discordUser.email,
+            full_name: discordUser.username,
+            avatar_url: discordUser.avatar
+              ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
+              : null,
+          });
 
         if (profileError) {
-          console.error("[Discord OAuth] Profile creation failed:", profileError);
+          console.error(
+            "[Discord OAuth] Profile creation failed:",
+            profileError,
+          );
           return res.redirect("/login?error=profile_create");
         }
       }
@@ -164,9 +176,10 @@ export default async function handler(req: any, res: any) {
     }
 
     // Generate session token
-    const { data: sessionData, error: sessionError } = await supabase.auth.admin.createSession({
-      user_id: userId,
-    });
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.admin.createSession({
+        user_id: userId,
+      });
 
     if (sessionError || !sessionData.session) {
       console.error("[Discord OAuth] Session creation failed:", sessionError);
@@ -174,17 +187,25 @@ export default async function handler(req: any, res: any) {
     }
 
     // Redirect to next page with session
-    const nextPath = state && typeof state === "string" && state.startsWith("/") ? state : isNewUser ? "/onboarding" : "/dashboard";
-    const redirectUrl = new URL(nextPath, process.env.VITE_API_BASE || "https://aethex.dev");
-    
+    const nextPath =
+      state && typeof state === "string" && state.startsWith("/")
+        ? state
+        : isNewUser
+          ? "/onboarding"
+          : "/dashboard";
+    const redirectUrl = new URL(
+      nextPath,
+      process.env.VITE_API_BASE || "https://aethex.dev",
+    );
+
     // Set cookies for session (similar to how Supabase does it)
     res.setHeader(
       "Set-Cookie",
-      `sb-access-token=${sessionData.session.access_token}; Path=/; HttpOnly; Secure; SameSite=Lax`
+      `sb-access-token=${sessionData.session.access_token}; Path=/; HttpOnly; Secure; SameSite=Lax`,
     );
     res.setHeader(
       "Set-Cookie",
-      `sb-refresh-token=${sessionData.session.refresh_token}; Path=/; HttpOnly; Secure; SameSite=Lax`
+      `sb-refresh-token=${sessionData.session.refresh_token}; Path=/; HttpOnly; Secure; SameSite=Lax`,
     );
 
     res.redirect(redirectUrl.toString());

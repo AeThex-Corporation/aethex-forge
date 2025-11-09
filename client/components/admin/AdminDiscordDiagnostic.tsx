@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { AlertCircle, CheckCircle, AlertTriangle, RefreshCw } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle,
+  AlertTriangle,
+  RefreshCw,
+} from "lucide-react";
 
 interface DiagnosticData {
   timestamp: string;
@@ -46,7 +51,7 @@ export default function AdminDiscordDiagnostic() {
       setDiagnostic(data);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to fetch diagnostic"
+        err instanceof Error ? err.message : "Failed to fetch diagnostic",
       );
     } finally {
       setLoading(false);
@@ -60,7 +65,9 @@ export default function AdminDiscordDiagnostic() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold text-white">Discord Configuration Diagnostic</h3>
+        <h3 className="text-lg font-bold text-white">
+          Discord Configuration Diagnostic
+        </h3>
         <button
           onClick={fetchDiagnostic}
           disabled={loading}

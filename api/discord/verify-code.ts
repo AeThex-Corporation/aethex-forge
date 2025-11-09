@@ -12,7 +12,9 @@ export default async function handler(req: any, res: any) {
   const { verification_code, user_id } = req.body;
 
   if (!verification_code || !user_id) {
-    return res.status(400).json({ message: "Missing verification code or user ID" });
+    return res
+      .status(400)
+      .json({ message: "Missing verification code or user ID" });
   }
 
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
@@ -35,7 +37,8 @@ export default async function handler(req: any, res: any) {
 
     if (verifyError || !verification) {
       return res.status(400).json({
-        message: "Invalid or expired verification code. Please try /verify again.",
+        message:
+          "Invalid or expired verification code. Please try /verify again.",
       });
     }
 
@@ -50,7 +53,8 @@ export default async function handler(req: any, res: any) {
 
     if (existingLink && existingLink.user_id !== user_id) {
       return res.status(400).json({
-        message: "This Discord account is already linked to another AeThex account.",
+        message:
+          "This Discord account is already linked to another AeThex account.",
       });
     }
 
@@ -63,7 +67,9 @@ export default async function handler(req: any, res: any) {
 
     if (linkError) {
       console.error("[Discord Verify] Link creation failed:", linkError);
-      return res.status(500).json({ message: "Failed to link Discord account" });
+      return res
+        .status(500)
+        .json({ message: "Failed to link Discord account" });
     }
 
     // Delete used verification code

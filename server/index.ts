@@ -1500,21 +1500,21 @@ export function createServer() {
         // Add recommendations based on validation
         if (!botToken) {
           diagnostics.recommendations.push(
-            "❌ DISCORD_BOT_TOKEN not set. Set it in environment variables."
+            "❌ DISCORD_BOT_TOKEN not set. Set it in environment variables.",
           );
         } else if ((botToken?.length || 0) < 20) {
           diagnostics.recommendations.push(
-            `❌ DISCORD_BOT_TOKEN appears invalid (length: ${botToken?.length}). Should be 60+ characters.`
+            `❌ DISCORD_BOT_TOKEN appears invalid (length: ${botToken?.length}). Should be 60+ characters.`,
           );
         } else {
           diagnostics.recommendations.push(
-            "✅ DISCORD_BOT_TOKEN format looks valid"
+            "✅ DISCORD_BOT_TOKEN format looks valid",
           );
         }
 
         if (!clientId) {
           diagnostics.recommendations.push(
-            "❌ DISCORD_CLIENT_ID not set. Set it to your application's ID."
+            "❌ DISCORD_CLIENT_ID not set. Set it to your application's ID.",
           );
         } else {
           diagnostics.recommendations.push("✅ DISCORD_CLIENT_ID is set");
@@ -1522,7 +1522,7 @@ export function createServer() {
 
         if (!publicKey) {
           diagnostics.recommendations.push(
-            "❌ DISCORD_PUBLIC_KEY not set. Needed for signature verification."
+            "❌ DISCORD_PUBLIC_KEY not set. Needed for signature verification.",
           );
         } else {
           diagnostics.recommendations.push("✅ DISCORD_PUBLIC_KEY is set");
@@ -1537,22 +1537,25 @@ export function createServer() {
                 headers: {
                   Authorization: `Bot ${botToken}`,
                 },
-              }
+              },
             );
 
             diagnostics.testRequest = {
               ...diagnostics.testRequest,
-              status: testResponse.status === 200 ? "✅ Success" : `❌ Failed (${testResponse.status})`,
+              status:
+                testResponse.status === 200
+                  ? "✅ Success"
+                  : `❌ Failed (${testResponse.status})`,
               responseCode: testResponse.status,
             };
 
             if (testResponse.status === 401) {
               diagnostics.recommendations.push(
-                "❌ Token authentication failed (401). The token may be invalid or revoked."
+                "❌ Token authentication failed (401). The token may be invalid or revoked.",
               );
             } else if (testResponse.status === 200) {
               diagnostics.recommendations.push(
-                "✅ Token authentication successful with Discord API!"
+                "✅ Token authentication successful with Discord API!",
               );
             }
           } catch (error) {

@@ -94,7 +94,8 @@ const ARM_DESCRIPTIONS: Record<string, string> = {
   gameforge:
     "Game Development - Shipping games at the speed of thought with monthly cycles",
   corp: "Enterprise Solutions - Consulting for large-scale transformations",
-  foundation: "Community & Education - Building open-source and talent pipelines",
+  foundation:
+    "Community & Education - Building open-source and talent pipelines",
   devlink:
     "Professional Networking - LinkedIn for Roblox developers and creators",
   nexus: "Talent Marketplace - Cross-arm collaboration and opportunities",
@@ -128,7 +129,9 @@ export default function ArmSwitcherModal({
     onClose();
   };
 
-  const selectedArmData = selectedArm ? ARMS.find((a) => a.id === selectedArm) : null;
+  const selectedArmData = selectedArm
+    ? ARMS.find((a) => a.id === selectedArm)
+    : null;
 
   if (!isOpen) return null;
 
@@ -179,7 +182,9 @@ export default function ArmSwitcherModal({
                         {ARM_DESCRIPTIONS[arm.id]}
                       </p>
                     </div>
-                    <div className={`w-2 h-2 rounded-full mt-1 ${arm.textColor}`} />
+                    <div
+                      className={`w-2 h-2 rounded-full mt-1 ${arm.textColor}`}
+                    />
                   </div>
                 </button>
               ))}
@@ -213,13 +218,17 @@ export default function ArmSwitcherModal({
               </div>
 
               {/* Features */}
-              <div className={`p-4 rounded-lg ${selectedArmData.bgColor} border border-gray-700`}>
+              <div
+                className={`p-4 rounded-lg ${selectedArmData.bgColor} border border-gray-700`}
+              >
                 <h3 className="text-sm font-semibold text-gray-200 mb-3">
                   What you'll get:
                 </h3>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
-                    <span className={`text-lg mt-0.5 ${selectedArmData.textColor}`}>
+                    <span
+                      className={`text-lg mt-0.5 ${selectedArmData.textColor}`}
+                    >
                       ✨
                     </span>
                     <span className="text-sm text-gray-300">
@@ -227,7 +236,9 @@ export default function ArmSwitcherModal({
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className={`text-lg mt-0.5 ${selectedArmData.textColor}`}>
+                    <span
+                      className={`text-lg mt-0.5 ${selectedArmData.textColor}`}
+                    >
                       🚀
                     </span>
                     <span className="text-sm text-gray-300">
@@ -235,7 +246,9 @@ export default function ArmSwitcherModal({
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className={`text-lg mt-0.5 ${selectedArmData.textColor}`}>
+                    <span
+                      className={`text-lg mt-0.5 ${selectedArmData.textColor}`}
+                    >
                       🎯
                     </span>
                     <span className="text-sm text-gray-300">
