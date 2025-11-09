@@ -465,7 +465,9 @@ client.login(process.env.DISCORD_BOT_TOKEN).catch((error) => {
     console.error("   1. Token has been revoked by Discord");
     console.error("   2. Token has expired");
     console.error("   3. Token format is incorrect");
-    console.error("\n   Solution: Get a new bot token from Discord Developer Portal");
+    console.error(
+      "\n   Solution: Get a new bot token from Discord Developer Portal",
+    );
     console.error("   https://discord.com/developers/applications");
   }
 
