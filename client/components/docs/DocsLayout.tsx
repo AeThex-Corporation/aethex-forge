@@ -511,3 +511,11 @@ function DocsLayoutContent({
     </div>
   );
 }
+
+export default function DocsLayout(props: DocsLayoutProps) {
+  return (
+    <DocsThemeProvider>
+      <DocsLayoutContent {...props} />
+    </DocsThemeProvider>
+  );
+}
