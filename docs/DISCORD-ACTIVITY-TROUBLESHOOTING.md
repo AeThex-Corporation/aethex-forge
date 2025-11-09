@@ -209,6 +209,7 @@ VITE_DISCORD_CLIENT_ID=578971245454950421
 ```
 
 **⚠️ CRITICAL SECURITY WARNING:**
+
 - **NEVER** include real tokens, secrets, or keys in documentation
 - **NEVER** commit these to git or public repositories
 - Only set these values in your hosting platform's environment variables dashboard

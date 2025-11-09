@@ -177,6 +177,7 @@ VITE_DISCORD_CLIENT_ID=578971245454950421
 ```
 
 **⚠️ CRITICAL SECURITY: Never commit these secrets to git or upload to documentation!**
+
 - Get `DISCORD_BOT_TOKEN` from Discord Developer Portal > Bot section
 - Get `DISCORD_CLIENT_SECRET` from OAuth2 > General section
 - Get `DISCORD_PUBLIC_KEY` from Bot section
