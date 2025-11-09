@@ -67,7 +67,7 @@ A valid Discord bot token:
 - ✅ Is ~70+ characters long
 - ✅ Contains only alphanumeric characters, dots, hyphens, and underscores
 
-Example: `NTc4OTcxMjQ1NDU0OTUwNDIx.Gv-kuN.MiaXTUhlTzCqsTdwhO8sbYci0lIIY5uC08O5Ug`
+Example: `NTc4OTcxMjQ1NDU0OTUwNDIx.GxxxXX.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
 ## Common Issues & Fixes
 
