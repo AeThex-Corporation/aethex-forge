@@ -18,6 +18,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
+import {
+  checkBotHealth,
+  formatUptime,
+  type BotHealthStatus,
+} from "../../lib/discord-bot-status";
 
 interface RoleMapping {
   id: string;
