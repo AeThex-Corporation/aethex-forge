@@ -142,7 +142,10 @@ export default async function handler(req: any, res: any) {
             );
           }
         } catch (err) {
-          console.log("[Discord OAuth] Could not check existing auth users:", err);
+          console.log(
+            "[Discord OAuth] Could not check existing auth users:",
+            err,
+          );
         }
 
         if (!userId_temp) {
@@ -160,15 +163,12 @@ export default async function handler(req: any, res: any) {
             });
 
           if (authError || !authData.user) {
-            console.error(
-              "[Discord OAuth] Auth user creation failed:",
-              {
-                email: discordUser.email,
-                username: discordUser.username,
-                error_message: authError?.message,
-                error_code: authError?.code,
-              },
-            );
+            console.error("[Discord OAuth] Auth user creation failed:", {
+              email: discordUser.email,
+              username: discordUser.username,
+              error_message: authError?.message,
+              error_code: authError?.code,
+            });
             return res.redirect(
               `/login?error=auth_create&message=${encodeURIComponent(authError?.message || "Failed to create account")}`,
             );
