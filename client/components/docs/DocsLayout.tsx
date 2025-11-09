@@ -13,8 +13,11 @@ import {
   Layers,
   BookMarked,
   ArrowLeft,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useDocsTheme } from "@/contexts/DocsThemeContext";
 
 interface DocNavItem {
   title: string;
@@ -98,6 +101,7 @@ export default function DocsLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
+  const { colors, toggleTheme, theme } = useDocsTheme();
 
   const filteredNav = useMemo(() => {
     if (!searchQuery) return docNavigation;
@@ -112,31 +116,52 @@ export default function DocsLayout({
   const isCurrentPage = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 pt-20 md:pt-0">
+    <div className={`min-h-screen ${colors.background} ${colors.foreground} transition-colors duration-300`}>
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 border-r border-slate-200 bg-white overflow-y-auto transition-all duration-300 pt-20 md:pt-0 ${
+        className={`fixed inset-y-0 left-0 z-30 w-64 ${colors.sidebar} border-r ${colors.border} overflow-y-auto transition-all duration-300 pt-20 md:pt-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         {/* Back to Main Site Button */}
-        <div className="p-4 border-b border-slate-200">
+        <div className={`p-4 border-b ${colors.border}`}>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors w-full justify-center"
+            className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium ${colors.sidebarText} ${colors.sidebarHover} transition-colors w-full justify-center`}
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Main Site
           </Link>
         </div>
 
+        {/* Theme Toggle */}
+        <div className={`p-4 border-b ${colors.border} flex justify-center`}>
+          <button
+            onClick={toggleTheme}
+            className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium ${colors.sidebarText} ${colors.sidebarHover} transition-colors`}
+            title={`Switch to ${theme === "professional" ? "AeThex Brand" : "Professional"} theme`}
+          >
+            {theme === "professional" ? (
+              <>
+                <Moon className="h-4 w-4" />
+                <span className="text-xs">Brand</span>
+              </>
+            ) : (
+              <>
+                <Sun className="h-4 w-4" />
+                <span className="text-xs">Light</span>
+              </>
+            )}
+          </button>
+        </div>
+
         {/* Search Bar */}
-        <div className="p-4 border-b border-slate-200">
+        <div className={`p-4 border-b ${colors.border}`}>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${colors.textMuted}`} />
             <Input
               placeholder="Search docs..."
-              className="bg-slate-50 border-slate-300 pl-10 pr-4 text-sm"
+              className={`${colors.inputBg} border-${colors.border} pl-10 pr-4 text-sm ${colors.foreground}`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -145,7 +170,7 @@ export default function DocsLayout({
 
         {/* Navigation */}
         <nav className="p-4 space-y-1">
-          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 px-2">
+          <div className={`text-xs font-semibold ${colors.textMuted} uppercase tracking-wider mb-4 px-2`}>
             Documentation
           </div>
           {filteredNav.map((item) => (
@@ -155,15 +180,15 @@ export default function DocsLayout({
               onClick={() => setSidebarOpen(false)}
               className={`flex items-start gap-3 px-3 py-3 rounded-lg transition-all group ${
                 isCurrentPage(item.path)
-                  ? "bg-blue-50 border border-blue-200"
-                  : "hover:bg-slate-50"
+                  ? `${colors.sidebarActiveBg} border ${colors.border}`
+                  : colors.sidebarHover
               }`}
             >
               <div
                 className={`h-5 w-5 flex-shrink-0 mt-0.5 ${
                   isCurrentPage(item.path)
-                    ? "text-blue-600"
-                    : "text-slate-400 group-hover:text-slate-600"
+                    ? colors.sidebarActive
+                    : `${colors.textMuted} group-hover:${colors.sidebarText}`
                 }`}
               >
                 {item.icon}
@@ -172,14 +197,14 @@ export default function DocsLayout({
                 <div
                   className={`text-sm font-medium ${
                     isCurrentPage(item.path)
-                      ? "text-slate-900"
-                      : "text-slate-700"
+                      ? colors.headingColor
+                      : colors.sidebarText
                   }`}
                 >
                   {item.title}
                 </div>
                 {item.description && (
-                  <div className="text-xs text-slate-500 line-clamp-1">
+                  <div className={`text-xs ${colors.textMuted} line-clamp-1`}>
                     {item.description}
                   </div>
                 )}
@@ -192,10 +217,10 @@ export default function DocsLayout({
       {/* Main Content */}
       <main className="md:ml-64">
         {/* Mobile Header */}
-        <div className="md:hidden sticky top-0 z-20 border-b border-slate-200 bg-white p-4 flex items-center justify-between">
+        <div className={`md:hidden sticky top-0 z-20 border-b ${colors.border} ${colors.cardBg} p-4 flex items-center justify-between`}>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-slate-100 rounded-lg"
+            className={`p-2 ${colors.sidebarHover} rounded-lg`}
           >
             {sidebarOpen ? (
               <X className="h-5 w-5" />
@@ -203,7 +228,7 @@ export default function DocsLayout({
               <Menu className="h-5 w-5" />
             )}
           </button>
-          <Link to="/" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+          <Link to="/" className={`text-sm font-medium ${colors.accent}`}>
             ← Back
           </Link>
         </div>
@@ -213,9 +238,9 @@ export default function DocsLayout({
           <div className="lg:col-span-3">
             {title && (
               <div className="mb-8">
-                <h1 className="text-5xl font-bold text-slate-900 mb-3">{title}</h1>
+                <h1 className={`text-5xl font-bold ${colors.headingColor} mb-3`}>{title}</h1>
                 {description && (
-                  <p className="text-lg text-slate-600">{description}</p>
+                  <p className={`text-lg ${colors.textMuted}`}>{description}</p>
                 )}
               </div>
             )}
@@ -230,7 +255,7 @@ export default function DocsLayout({
           {tableOfContents.length > 0 && (
             <aside className="hidden lg:block">
               <div className="sticky top-8">
-                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
+                <div className={`text-xs font-semibold ${colors.textMuted} uppercase tracking-wider mb-4`}>
                   On this page
                 </div>
                 <nav className="space-y-2">
@@ -240,8 +265,8 @@ export default function DocsLayout({
                       href={`#${item.id}`}
                       className={`block text-sm transition-colors line-clamp-2 ${
                         item.level === 2
-                          ? "text-slate-700 hover:text-slate-900 font-medium"
-                          : "text-slate-600 hover:text-slate-900 pl-4"
+                          ? `${colors.headingColor} font-medium ${colors.accentHover}`
+                          : `${colors.textMuted} ${colors.accentHover} pl-4`
                       }`}
                     >
                       {item.label}
@@ -254,80 +279,77 @@ export default function DocsLayout({
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-slate-200 bg-slate-50 mt-12">
+        <footer className={`border-t ${colors.border} ${colors.cardBg} mt-12`}>
           <div className="max-w-7xl mx-auto px-6 md:px-8 py-12">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div>
-                <h3 className="font-semibold text-slate-900 mb-4">Product</h3>
-                <ul className="space-y-2 text-sm text-slate-600">
+                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>Product</h3>
+                <ul className={`space-y-2 text-sm ${colors.textMuted}`}>
                   <li>
-                    <Link to="/docs" className="hover:text-slate-900">
+                    <Link to="/docs" className={`${colors.accentHover}`}>
                       Features
                     </Link>
                   </li>
                   <li>
-                    <Link to="/docs/platform" className="hover:text-slate-900">
+                    <Link to="/docs/platform" className={`${colors.accentHover}`}>
                       Platform
                     </Link>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-slate-900">
+                    <a href="#" className={`${colors.accentHover}`}>
                       Pricing
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-slate-900 mb-4">Resources</h3>
-                <ul className="space-y-2 text-sm text-slate-600">
+                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>Resources</h3>
+                <ul className={`space-y-2 text-sm ${colors.textMuted}`}>
                   <li>
-                    <Link to="/docs/tutorials" className="hover:text-slate-900">
+                    <Link to="/docs/tutorials" className={`${colors.accentHover}`}>
                       Tutorials
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      to="/docs/api"
-                      className="hover:text-slate-900"
-                    >
+                    <Link to="/docs/api" className={`${colors.accentHover}`}>
                       API Reference
                     </Link>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-slate-900">
+                    <a href="#" className={`${colors.accentHover}`}>
                       Blog
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-slate-900 mb-4">Community</h3>
-                <ul className="space-y-2 text-sm text-slate-600">
+                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>Community</h3>
+                <ul className={`space-y-2 text-sm ${colors.textMuted}`}>
                   <li>
-                    <a href="#" className="hover:text-slate-900">
+                    <a href="#" className={`${colors.accentHover}`}>
                       Discord
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-slate-900">
+                    <a href="#" className={`${colors.accentHover}`}>
                       GitHub
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-slate-900">
+                    <a href="#" className={`${colors.accentHover}`}>
                       Twitter
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
-            <div className="border-t border-slate-200 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm text-slate-600">
+            <div className={`border-t ${colors.border} mt-8 pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm ${colors.textMuted}`}>
               <p>&copy; 2025 AeThex. All rights reserved.</p>
               <div className="flex gap-6">
-                <a href="#" className="hover:text-slate-900">
+                <a href="#" className={`${colors.accentHover}`}>
                   Privacy
                 </a>
-                <a href="#" className="hover:text-slate-900">
+                <a href="#" className={`${colors.accentHover}`}>
                   Terms
                 </a>
               </div>
