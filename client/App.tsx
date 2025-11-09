@@ -156,6 +156,10 @@ const App = () => (
                       path="/profile/applications"
                       element={<MyApplications />}
                     />
+                    <Route
+                      path="/profile/link-discord"
+                      element={<DiscordVerify />}
+                    />
 
                     <Route
                       path="/developers"
