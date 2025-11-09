@@ -24,7 +24,7 @@ interface ThemeColors {
 }
 
 const professionalTheme: ThemeColors = {
-  background: "bg-white",
+  background: "bg-gradient-to-br from-white via-blue-50/30 to-slate-100",
   foreground: "text-slate-900",
   sidebar: "bg-white",
   sidebarText: "text-slate-700",
@@ -34,11 +34,11 @@ const professionalTheme: ThemeColors = {
   accent: "text-blue-600",
   accentHover: "hover:text-blue-700",
   border: "border-slate-200",
-  cardBg: "bg-slate-50",
+  cardBg: "bg-white border border-slate-200",
   cardBorder: "border-slate-200",
   buttonBg: "bg-blue-600",
   buttonText: "text-white",
-  inputBg: "bg-slate-50",
+  inputBg: "bg-white border border-slate-200",
   inputBorder: "border-slate-300",
   headingColor: "text-slate-900",
   textMuted: "text-slate-600",
