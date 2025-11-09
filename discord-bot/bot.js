@@ -110,6 +110,41 @@ client.on("interactionCreate", async (interaction) => {
 // This prevents Error 50240 (Entry Point conflict) when Activities are enabled
 // The bot will simply load and listen for the already-registered commands
 
+// Start HTTP health check server
+const healthPort = process.env.HEALTH_PORT || 3000;
+http
+  .createServer((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.setHeader("Content-Type", "application/json");
+
+    if (req.method === "OPTIONS") {
+      res.writeHead(200);
+      res.end();
+      return;
+    }
+
+    if (req.url === "/health") {
+      res.writeHead(200);
+      res.end(
+        JSON.stringify({
+          status: "online",
+          guilds: client.guilds.cache.size,
+          commands: client.commands.size,
+          uptime: Math.floor(process.uptime()),
+          timestamp: new Date().toISOString(),
+        }),
+      );
+      return;
+    }
+
+    res.writeHead(404);
+    res.end(JSON.stringify({ error: "Not found" }));
+  })
+  .listen(healthPort, () => {
+    console.log(`🏥 Health check server running on port ${healthPort}`);
+  });
+
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 client.once("ready", () => {
