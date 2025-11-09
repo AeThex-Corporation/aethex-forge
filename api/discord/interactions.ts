@@ -141,7 +141,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             process.env.SUPABASE_SERVICE_ROLE || "",
           );
 
-          const discordId = interaction.user?.id || interaction.member?.user?.id;
+          const discordId =
+            interaction.user?.id || interaction.member?.user?.id;
 
           if (!discordId) {
             return res.status(200).json({
@@ -235,8 +236,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       if (commandName === "profile") {
-        const username = interaction.user?.username || interaction.member?.user?.username || "Unknown";
-        const discordId = interaction.user?.id || interaction.member?.user?.id || "Unknown";
+        const username =
+          interaction.user?.username ||
+          interaction.member?.user?.username ||
+          "Unknown";
+        const discordId =
+          interaction.user?.id || interaction.member?.user?.id || "Unknown";
 
         return res.status(200).json({
           type: 4,
@@ -248,7 +253,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       if (commandName === "unlink") {
-        const discordId = interaction.user?.id || interaction.member?.user?.id || "Unknown";
+        const discordId =
+          interaction.user?.id || interaction.member?.user?.id || "Unknown";
 
         return res.status(200).json({
           type: 4,
