@@ -33,6 +33,16 @@ if (missingVars.length > 0) {
   process.exit(1);
 }
 
+// Validate token format
+const token = process.env.DISCORD_BOT_TOKEN;
+if (!token || token.length < 20) {
+  console.error("❌ FATAL ERROR: DISCORD_BOT_TOKEN is empty or invalid");
+  console.error(`  Length: ${token ? token.length : 0}`);
+  process.exit(1);
+}
+
+console.log("[Token] Bot token loaded (length: " + token.length + " chars)");
+
 // Initialize Discord client
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages],
