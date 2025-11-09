@@ -116,45 +116,68 @@ export default async function handler(req: any, res: any) {
         // Link Discord to existing email
         userId = existingUser.id;
       } else {
-        // Create new user
-        // First create auth user
-        const { data: authData, error: authError } =
-          await supabase.auth.admin.createUser({
-            email: discordUser.email,
-            email_confirm: true,
-            user_metadata: {
-              full_name: discordUser.username,
-              avatar_url: discordUser.avatar
-                ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-                : null,
-            },
-          });
+        // Check if email already exists in auth (might be from another provider)
+        let userId_temp: string | null = null;
 
-        if (authError || !authData.user) {
-          console.error(
-            "[Discord OAuth] Auth user creation failed:",
-            authError,
-            {
-              email: discordUser.email,
-              username: discordUser.username,
-              message: authError?.message,
-              status: authError?.status,
-            },
+        try {
+          // Try to look up auth user by email using admin API
+          const { data: authUsers } = await supabase.auth.admin.listUsers();
+          const existingAuthUser = authUsers?.find(
+            (u) => u.email === discordUser.email,
           );
-          return res
-            .status(500)
-            .json({
-              error: "auth_create",
-              message: authError?.message || "Failed to create auth user",
-              details: {
-                email: discordUser.email,
-                error_code: authError?.code,
-              },
-            });
+
+          if (existingAuthUser) {
+            // Email already exists in auth - just link Discord
+            userId_temp = existingAuthUser.id;
+            console.log(
+              "[Discord OAuth] Email already exists in auth, linking Discord",
+            );
+          }
+        } catch (err) {
+          console.log("[Discord OAuth] Could not check existing auth users:", err);
         }
 
-        userId = authData.user.id;
-        isNewUser = true;
+        if (!userId_temp) {
+          // Create new auth user
+          const { data: authData, error: authError } =
+            await supabase.auth.admin.createUser({
+              email: discordUser.email,
+              email_confirm: true,
+              user_metadata: {
+                full_name: discordUser.username,
+                avatar_url: discordUser.avatar
+                  ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
+                  : null,
+              },
+            });
+
+          if (authError || !authData.user) {
+            console.error(
+              "[Discord OAuth] Auth user creation failed:",
+              {
+                email: discordUser.email,
+                username: discordUser.username,
+                error_message: authError?.message,
+                error_code: authError?.code,
+              },
+            );
+            return res
+              .status(500)
+              .json({
+                error: "auth_create",
+                message: authError?.message || "Failed to create auth user",
+                details: {
+                  email: discordUser.email,
+                  error_code: authError?.code,
+                },
+              });
+          }
+
+          userId_temp = authData.user.id;
+          isNewUser = true;
+        }
+
+        userId = userId_temp;
 
         // Create user profile
         const { error: profileError } = await supabase
