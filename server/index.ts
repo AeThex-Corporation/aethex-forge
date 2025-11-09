@@ -1272,7 +1272,7 @@ export function createServer() {
         }
 
         const botToken = process.env.DISCORD_BOT_TOKEN;
-        const clientId = process.env.VITE_DISCORD_CLIENT_ID;
+        const clientId = process.env.DISCORD_CLIENT_ID;
 
         console.log(
           "[Discord] Config check - botToken set:",
