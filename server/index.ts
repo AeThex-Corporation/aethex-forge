@@ -106,7 +106,6 @@ const handleDiscordInteractions = (
       // /verify command - Generate verification code and link
       if (commandName === "verify") {
         try {
-          const supabase = createSupabaseClient();
           const discordId = interaction.member?.user?.id;
 
           if (!discordId) {
@@ -125,7 +124,7 @@ const handleDiscordInteractions = (
           const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // 15 min
 
           // Store verification code in Supabase
-          const { error } = await supabase
+          const { error } = await adminSupabase
             .from("discord_verifications")
             .insert([
               {
@@ -231,7 +230,7 @@ const handleDiscordInteractions = (
         return res.json({
           type: 4,
           data: {
-            content: `✅ **Discord Roles**\n\nYour assigned AeThex roles are shown below.\n\n📊 [View Full Profile](https://aethex.dev/profile)`,
+            content: `✅ **Discord Roles**\n\nYour assigned AeThex roles are shown below.\n\n���� [View Full Profile](https://aethex.dev/profile)`,
             flags: 0,
           },
         });
