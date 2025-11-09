@@ -256,28 +256,181 @@ http
       return;
     }
 
-    if (req.url === "/register-commands" && req.method === "POST") {
-      // Verify admin token if provided
-      const authHeader = req.headers.authorization;
-      const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
+    if (req.url === "/register-commands") {
+      if (req.method === "GET") {
+        // Show HTML form with button
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.end(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Register Discord Commands</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              }
+              .container {
+                background: white;
+                padding: 40px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                text-align: center;
+                max-width: 500px;
+              }
+              h1 {
+                color: #333;
+                margin-bottom: 20px;
+              }
+              p {
+                color: #666;
+                margin-bottom: 30px;
+              }
+              button {
+                background: #667eea;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+                transition: background 0.3s;
+              }
+              button:hover {
+                background: #764ba2;
+              }
+              button:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+              }
+              #result {
+                margin-top: 30px;
+                padding: 20px;
+                border-radius: 5px;
+                display: none;
+              }
+              #result.success {
+                background: #d4edda;
+                color: #155724;
+                display: block;
+              }
+              #result.error {
+                background: #f8d7da;
+                color: #721c24;
+                display: block;
+              }
+              #loading {
+                display: none;
+                color: #667eea;
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>🤖 Discord Commands Registration</h1>
+              <p>Click the button below to register all Discord slash commands (/verify, /set-realm, /profile, /unlink, /verify-role)</p>
 
-      if (adminToken && authHeader !== `Bearer ${adminToken}`) {
-        res.writeHead(401);
-        res.end(JSON.stringify({ error: "Unauthorized" }));
+              <button id="registerBtn" onclick="registerCommands()">Register Commands</button>
+
+              <div id="loading">⏳ Registering... please wait...</div>
+              <div id="result"></div>
+            </div>
+
+            <script>
+              async function registerCommands() {
+                const btn = document.getElementById('registerBtn');
+                const loading = document.getElementById('loading');
+                const result = document.getElementById('result');
+
+                btn.disabled = true;
+                loading.style.display = 'block';
+                result.style.display = 'none';
+
+                try {
+                  const response = await fetch('/register-commands', {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': 'Bearer aethex-link',
+                      'Content-Type': 'application/json'
+                    }
+                  });
+
+                  const data = await response.json();
+
+                  loading.style.display = 'none';
+                  result.style.display = 'block';
+
+                  if (response.ok && data.success) {
+                    result.className = 'success';
+                    result.innerHTML = \`
+                      <h3>✅ Success!</h3>
+                      <p>Registered \${data.count} commands</p>
+                      \${data.skipped ? \`<p>(\${data.skipped} commands already existed)</p>\` : ''}
+                      <p>You can now use the following commands in Discord:</p>
+                      <ul>
+                        <li>/verify - Link your account</li>
+                        <li>/set-realm - Choose your realm</li>
+                        <li>/profile - View your profile</li>
+                        <li>/unlink - Disconnect account</li>
+                        <li>/verify-role - Check your roles</li>
+                      </ul>
+                    \`;
+                  } else {
+                    result.className = 'error';
+                    result.innerHTML = \`
+                      <h3>❌ Error</h3>
+                      <p>\${data.error || 'Failed to register commands'}</p>
+                    \`;
+                  }
+                } catch (error) {
+                  loading.style.display = 'none';
+                  result.style.display = 'block';
+                  result.className = 'error';
+                  result.innerHTML = \`
+                    <h3>❌ Error</h3>
+                    <p>\${error.message}</p>
+                  \`;
+                } finally {
+                  btn.disabled = false;
+                }
+              }
+            </script>
+          </body>
+          </html>
+        `);
         return;
       }
 
-      // Register commands
-      registerDiscordCommands().then((result) => {
-        if (result.success) {
-          res.writeHead(200);
-          res.end(JSON.stringify(result));
-        } else {
-          res.writeHead(500);
-          res.end(JSON.stringify(result));
+      if (req.method === "POST") {
+        // Verify admin token if provided
+        const authHeader = req.headers.authorization;
+        const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
+
+        if (adminToken && authHeader !== `Bearer ${adminToken}`) {
+          res.writeHead(401);
+          res.end(JSON.stringify({ error: "Unauthorized" }));
+          return;
         }
-      });
-      return;
+
+        // Register commands
+        registerDiscordCommands().then((result) => {
+          if (result.success) {
+            res.writeHead(200);
+            res.end(JSON.stringify(result));
+          } else {
+            res.writeHead(500);
+            res.end(JSON.stringify(result));
+          }
+        });
+        return;
+      }
     }
 
     res.writeHead(404);
