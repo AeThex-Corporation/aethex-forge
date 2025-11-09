@@ -141,18 +141,14 @@ If the Client Secret is hidden, click "Reset Secret" (you'll need to update your
 
 1. Click **"Bot"** in the left sidebar
 2. Look for **"TOKEN"** section
-3. You should see:
-   ```
-   NTc4OTcxMjQ1NDU0OTUwNDIx.Gxq1Fg.tvKSDkB7YnohZMUNJs6_Glp06_HjmL0kCcLhQ0
-   ```
+3. Copy your bot token (it will be a long string starting with your app ID)
+4. **⚠️ NEVER share or commit your bot token to git or documentation**
 
 ### Step 4.2: Verify Public Key
 
 1. In the same Bot section, look for **"PUBLIC KEY"**
-2. Should be:
-   ```
-   d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1eb0
-   ```
+2. Copy it (it's a 64-character hex string)
+3. **⚠️ NEVER share or commit your public key to public documentation**
 
 ### Step 4.3: Ensure Bot Has Required Permissions
 
