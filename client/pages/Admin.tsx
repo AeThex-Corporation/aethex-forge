@@ -680,6 +680,7 @@ export default function Admin() {
 
               <TabsContent value="discord" className="space-y-6">
                 <AdminDiscordManagement />
+                <AdminDiscordDiagnostic />
               </TabsContent>
 
               <TabsContent value="operations" className="space-y-6">
