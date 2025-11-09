@@ -12,7 +12,9 @@ export default function DiscordOAuthCallback() {
   const [searchParams] = useSearchParams();
   const { user, signIn } = useAuth();
 
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading",
+  );
   const [message, setMessage] = useState("Connecting to Discord...");
 
   useEffect(() => {
@@ -66,7 +68,12 @@ export default function DiscordOAuthCallback() {
         }
 
         // Redirect to next page
-        const nextPath = state && state.startsWith("/") ? state : data.isNewUser ? "/onboarding" : "/dashboard";
+        const nextPath =
+          state && state.startsWith("/")
+            ? state
+            : data.isNewUser
+              ? "/onboarding"
+              : "/dashboard";
         setTimeout(() => {
           navigate(nextPath);
           window.location.reload(); // Reload to pick up new auth context
@@ -76,7 +83,7 @@ export default function DiscordOAuthCallback() {
         setMessage(
           error instanceof Error
             ? error.message
-            : "An unexpected error occurred"
+            : "An unexpected error occurred",
         );
       }
     };
