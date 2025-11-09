@@ -12,7 +12,7 @@ export default function handler(req: any, res: any) {
     return res.status(500).json({ error: "Discord client ID not configured" });
   }
 
-  const redirectUri = `${process.env.VITE_API_BASE || "https://aethex.dev"}/api/discord/oauth/callback`;
+  const redirectUri = "https://aethex.dev/api/discord/oauth/callback";
 
   // Get the next URL from query params (where to redirect after login)
   const next = req.query.state || "/dashboard";
