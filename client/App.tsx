@@ -41,7 +41,7 @@ import FoundationLearnMore from "./pages/foundation/FoundationLearnMore";
 import FoundationGetInvolved from "./pages/foundation/FoundationGetInvolved";
 import RequireAccess from "@/components/RequireAccess";
 import Engage from "./pages/Pricing";
-import DocsLayout from "./pages/DocsLayout";
+import DocsLayout from "@/components/docs/DocsLayout";
 import DocsOverview from "./pages/docs/DocsOverview";
 import DocsTutorials from "./pages/docs/DocsTutorials";
 import DocsGettingStarted from "./pages/docs/DocsGettingStarted";
