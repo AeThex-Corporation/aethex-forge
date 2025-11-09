@@ -169,12 +169,18 @@ If you're using **Vercel**, **Railway**, or another hosting platform:
 2. Under "Environment Variables", ensure these are set:
 
 ```
-DISCORD_BOT_TOKEN=NTc4OTcxMjQ1NDU0OTUwNDIx.Gxq1Fg.tvKSDkB7YnohZMUNJs6_Glp06_HjmL0kCcLhQ0
+DISCORD_BOT_TOKEN=<your_bot_token_from_discord_portal>
 DISCORD_CLIENT_ID=578971245454950421
-DISCORD_CLIENT_SECRET=JKlilGzcTWgfmt2wEqiHO8wpCel5VEji
-DISCORD_PUBLIC_KEY=d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1eb0
+DISCORD_CLIENT_SECRET=<your_client_secret_from_discord_portal>
+DISCORD_PUBLIC_KEY=<your_public_key_from_discord_portal>
 VITE_DISCORD_CLIENT_ID=578971245454950421
 ```
+
+**⚠️ CRITICAL SECURITY: Never commit these secrets to git or upload to documentation!**
+- Get `DISCORD_BOT_TOKEN` from Discord Developer Portal > Bot section
+- Get `DISCORD_CLIENT_SECRET` from OAuth2 > General section
+- Get `DISCORD_PUBLIC_KEY` from Bot section
+- Only set these in your hosting platform's environment variables (Vercel, Railway, etc.)
 
 **Do NOT commit these secrets to git!**
 
