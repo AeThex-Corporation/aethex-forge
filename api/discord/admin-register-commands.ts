@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { REST, Routes } from "discord.js";
 
 interface CommandData {
   name: string;
@@ -47,32 +46,40 @@ const COMMANDS: CommandData[] = [
 ];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Verify this is a POST request
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  // Basic security: Check if requester has admin token
-  const authHeader = req.headers.authorization;
-  const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
-
-  if (!adminToken || authHeader !== `Bearer ${adminToken}`) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  // Validate environment variables
-  const requiredVars = ["DISCORD_BOT_TOKEN", "DISCORD_CLIENT_ID"];
-  const missingVars = requiredVars.filter((v) => !process.env[v]);
-
-  if (missingVars.length > 0) {
-    return res.status(500).json({
-      error: "Missing environment variables",
-      missing: missingVars,
-    });
-  }
-
   try {
+    // Allow both GET and POST
+    if (req.method !== "POST" && req.method !== "GET") {
+      res.setHeader("Allow", "GET, POST");
+      return res.status(405).json({ error: "Method not allowed" });
+    }
+
+    // Basic security: Check if requester has admin token
+    const authHeader = req.headers.authorization;
+    const queryToken = req.query.token;
+    const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
+
+    const providedToken = authHeader
+      ? authHeader.replace("Bearer ", "")
+      : queryToken;
+
+    if (!adminToken || providedToken !== adminToken) {
+      return res.status(401).json({ error: "Unauthorized - Invalid token" });
+    }
+
+    // Validate environment variables
+    const requiredVars = ["DISCORD_BOT_TOKEN", "DISCORD_CLIENT_ID"];
+    const missingVars = requiredVars.filter((v) => !process.env[v]);
+
+    if (missingVars.length > 0) {
+      return res.status(500).json({
+        error: "Missing environment variables",
+        missing: missingVars,
+      });
+    }
+
+    // Import discord.js dynamically to avoid import errors
+    const { REST, Routes } = await import("discord.js");
+
     const rest = new REST({ version: "10" }).setToken(
       process.env.DISCORD_BOT_TOKEN!,
     );
@@ -156,6 +163,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       success: false,
       error: error?.message || "Failed to register commands",
       code: error?.code,
+      details: error?.stack,
     });
   }
 }
