@@ -382,15 +382,78 @@ const App = () => (
                     <Route path="/discord" element={<DiscordActivity />} />
 
                     {/* Docs routes */}
-                    <Route path="/docs" element={<DocsLayout><DocsOverview /></DocsLayout>} />
-                    <Route path="/docs/getting-started" element={<DocsLayout><DocsGettingStarted /></DocsLayout>} />
-                    <Route path="/docs/platform" element={<DocsLayout><DocsPlatform /></DocsLayout>} />
-                    <Route path="/docs/api" element={<DocsLayout><DocsApiReference /></DocsLayout>} />
-                    <Route path="/docs/cli" element={<DocsLayout><DocsCli /></DocsLayout>} />
-                    <Route path="/docs/tutorials" element={<DocsLayout><DocsTutorials /></DocsLayout>} />
-                    <Route path="/docs/examples" element={<DocsLayout><DocsExamples /></DocsLayout>} />
-                    <Route path="/docs/integrations" element={<DocsLayout><DocsIntegrations /></DocsLayout>} />
-                    <Route path="/docs/curriculum" element={<DocsLayout><DocsCurriculum /></DocsLayout>} />
+                    <Route
+                      path="/docs"
+                      element={
+                        <DocsLayout>
+                          <DocsOverview />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/getting-started"
+                      element={
+                        <DocsLayout>
+                          <DocsGettingStarted />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/platform"
+                      element={
+                        <DocsLayout>
+                          <DocsPlatform />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/api"
+                      element={
+                        <DocsLayout>
+                          <DocsApiReference />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/cli"
+                      element={
+                        <DocsLayout>
+                          <DocsCli />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/tutorials"
+                      element={
+                        <DocsLayout>
+                          <DocsTutorials />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/examples"
+                      element={
+                        <DocsLayout>
+                          <DocsExamples />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/integrations"
+                      element={
+                        <DocsLayout>
+                          <DocsIntegrations />
+                        </DocsLayout>
+                      }
+                    />
+                    <Route
+                      path="/docs/curriculum"
+                      element={
+                        <DocsLayout>
+                          <DocsCurriculum />
+                        </DocsLayout>
+                      }
+                    />
 
                     {/* Explicit 404 route for static hosting fallbacks */}
                     <Route path="/404" element={<FourOhFourPage />} />
