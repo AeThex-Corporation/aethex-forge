@@ -1,18 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import Dashboard from "./Dashboard";
-
-// Import Discord SDK
-let DiscordSDK: any;
-if (typeof window !== "undefined") {
-  // Discord SDK is loaded from discord-manifest.json
-  if ((window as any).DiscordSDK) {
-    DiscordSDK = (window as any).DiscordSDK;
-  }
-}
 
 export default function Activity() {
   const navigate = useNavigate();
