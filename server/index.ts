@@ -1247,7 +1247,8 @@ export function createServer() {
     app.post("/api/discord/admin-register-commands", async (req, res) => {
       try {
         // Skip auth for localhost/development
-        const isLocalhost = req.hostname === "localhost" || req.hostname === "127.0.0.1";
+        const isLocalhost =
+          req.hostname === "localhost" || req.hostname === "127.0.0.1";
 
         if (!isLocalhost) {
           const authHeader = req.headers.authorization;
@@ -1264,7 +1265,9 @@ export function createServer() {
           const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
 
           if (!adminToken || !token || token !== adminToken) {
-            console.error("[Discord] Authorization failed - token mismatch or missing");
+            console.error(
+              "[Discord] Authorization failed - token mismatch or missing",
+            );
             return res.status(401).json({
               error: "Unauthorized - invalid or missing admin token",
             });
