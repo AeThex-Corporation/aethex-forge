@@ -229,7 +229,7 @@ async function registerDiscordCommands() {
 }
 
 // Start HTTP health check server
-const healthPort = process.env.HEALTH_PORT || 3000;
+const healthPort = process.env.HEALTH_PORT || 8044;
 http
   .createServer((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
