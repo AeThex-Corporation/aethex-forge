@@ -1445,9 +1445,31 @@ export function createServer() {
               timeout: 5000,
             });
 
-            if (response.ok) {
+            const contentType = response.headers.get("content-type") || "";
+            const responseBody = await response.text();
+
+            console.log(
+              `[Discord Bot Health] Response from ${url}: Status ${response.status}, Content-Type: ${contentType}, Body start: ${responseBody.substring(0, 100)}`,
+            );
+
+            if (response.ok && contentType.includes("application/json")) {
               console.log(`[Discord Bot Health] Success from ${url}`);
-              break;
+              const data = JSON.parse(responseBody);
+              res.setHeader("Content-Type", "application/json");
+              return res.json({
+                status: data.status || "online",
+                guilds: data.guilds || 0,
+                commands: data.commands || 0,
+                uptime: data.uptime || 0,
+                timestamp: data.timestamp || new Date().toISOString(),
+              });
+            }
+
+            if (response.ok && !contentType.includes("application/json")) {
+              lastError = new Error(
+                `Got non-JSON response (${contentType}): ${responseBody.substring(0, 100)}`,
+              );
+              continue;
             }
           } catch (err) {
             lastError = err instanceof Error ? err : new Error(String(err));
@@ -1458,14 +1480,10 @@ export function createServer() {
           }
         }
 
-        if (!response?.ok) {
-          return res.status(503).json({
-            status: "offline",
-            error: `Could not reach bot health endpoint. Last error: ${lastError?.message || "Unknown error"}`,
-          });
-        }
-
-        const data = await response.json();
+        return res.status(503).json({
+          status: "offline",
+          error: `Could not reach bot health endpoint. Last error: ${lastError?.message || "Unknown error"}`,
+        });
         res.setHeader("Content-Type", "application/json");
         return res.json({
           status: data.status || "online",
