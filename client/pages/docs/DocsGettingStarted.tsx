@@ -1,4 +1,3 @@
-import DocsLayout from "@/components/docs/DocsLayout";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -191,11 +190,6 @@ const explorationLinks = [
 
 export default function DocsGettingStarted() {
   return (
-    <DocsLayout
-      title="Getting Started"
-      description="Launch your first AeThex project in under 30 minutes"
-      breadcrumbs={[{ label: "Getting Started" }]}
-    >
     <div className="space-y-12">
       <section className="space-y-4">
         <Badge className="bg-purple-600/20 text-purple-200 uppercase tracking-wide">
@@ -449,6 +443,5 @@ export default function DocsGettingStarted() {
         </div>
       </section>
     </div>
-    </DocsLayout>
   );
 }

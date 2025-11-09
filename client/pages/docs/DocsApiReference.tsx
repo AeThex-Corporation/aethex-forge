@@ -1,4 +1,3 @@
-import DocsLayout from "@/components/docs/DocsLayout";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -105,11 +104,6 @@ const errorExamples = [
 
 export default function DocsApiReference() {
   return (
-    <DocsLayout
-      title="API Reference"
-      description="Complete API documentation with examples"
-      breadcrumbs={[{ label: "API Reference" }]}
-    >
     <div className="space-y-12">
       <section id="overview" className="space-y-4">
         <Badge className="bg-blue-600/20 text-blue-200 uppercase tracking-wide">
@@ -343,6 +337,5 @@ export default function DocsApiReference() {
         </div>
       </section>
     </div>
-    </DocsLayout>
   );
 }

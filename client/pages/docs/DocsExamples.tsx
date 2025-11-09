@@ -1,4 +1,3 @@
-import DocsLayout from "@/components/docs/DocsLayout";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -137,11 +136,6 @@ const integrationIdeas = [
 
 export default function DocsExamples() {
   return (
-    <DocsLayout
-      title="Code Examples"
-      description="Production-ready code examples and snippets"
-      breadcrumbs={[{ label: "Examples" }]}
-    >
     <div className="space-y-12">
       <section id="overview" className="space-y-4">
         <Badge className="bg-emerald-500/20 text-emerald-100 uppercase tracking-wide">
@@ -299,6 +293,5 @@ export default function DocsExamples() {
         </div>
       </section>
     </div>
-    </DocsLayout>
   );
 }

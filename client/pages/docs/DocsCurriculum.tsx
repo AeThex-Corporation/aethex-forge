@@ -1,4 +1,3 @@
-import DocsLayout from "@/components/docs/DocsLayout";
 import {
   Accordion,
   AccordionContent,
@@ -302,11 +301,6 @@ const supplementalResources = [
 
 export default function DocsCurriculum() {
   return (
-    <DocsLayout
-      title="Curriculum & Learning Paths"
-      description="Structured learning paths for different skill levels"
-      breadcrumbs={[{ label: "Curriculum" }]}
-    >
     <div className="space-y-8">
       <section className="relative overflow-hidden rounded-3xl border border-slate-800/60 bg-slate-900/80 p-8">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.2),transparent_60%)]" />
@@ -652,6 +646,5 @@ export default function DocsCurriculum() {
         </div>
       </section>
     </div>
-    </DocsLayout>
   );
 }
