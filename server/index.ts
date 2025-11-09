@@ -6,7 +6,7 @@ import { emailService } from "./email";
 import { randomUUID, createHash, createVerify } from "crypto";
 
 // Discord Interactions Handler
-const handleDiscordInteractions = (
+const handleDiscordInteractions = async (
   req: express.Request,
   res: express.Response,
 ) => {
