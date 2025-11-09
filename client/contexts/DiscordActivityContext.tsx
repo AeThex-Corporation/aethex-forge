@@ -92,6 +92,11 @@ export const DiscordActivityProvider: React.FC<
           await sdk.ready();
           console.log("[Discord Activity] SDK is ready");
 
+          // Authenticate the session with Discord
+          console.log("[Discord Activity] Authenticating session...");
+          await sdk.authenticate();
+          console.log("[Discord Activity] Session authenticated");
+
           // Get the current user from the SDK
           const currentUser = await sdk.user.getUser();
           console.log(
