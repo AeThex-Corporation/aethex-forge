@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { Link, useLocation, Outlet, useState } from "react-router-dom";
 import {
   Search,
   Menu,
@@ -17,7 +17,7 @@ import {
   Sun,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useDocsTheme } from "@/contexts/DocsThemeContext";
+import { DocsThemeProvider, useDocsTheme } from "@/contexts/DocsThemeContext";
 
 interface DocNavItem {
   title: string;
@@ -91,7 +91,7 @@ interface DocsLayoutProps {
   tableOfContents?: Array<{ id: string; label: string; level: number }>;
 }
 
-export default function DocsLayout({
+function DocsLayoutContent({
   children,
   title = "Documentation",
   description,
