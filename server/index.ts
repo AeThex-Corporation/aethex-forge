@@ -1245,43 +1245,29 @@ export function createServer() {
 
     app.post("/api/discord/admin-register-commands", async (req, res) => {
       try {
-        const authHeader = req.headers.authorization;
-        const tokenFromBody = req.body?.token as string;
+        // Skip auth for localhost/development
+        const isLocalhost = req.hostname === "localhost" || req.hostname === "127.0.0.1";
 
-        // Extract token from Bearer header
-        let token = null;
-        if (authHeader && authHeader.startsWith("Bearer ")) {
-          token = authHeader.substring(7); // Remove "Bearer " prefix
-        } else if (tokenFromBody) {
-          token = tokenFromBody;
-        }
+        if (!isLocalhost) {
+          const authHeader = req.headers.authorization;
+          const tokenFromBody = req.body?.token as string;
 
-        const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
+          // Extract token from Bearer header
+          let token = null;
+          if (authHeader && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+          } else if (tokenFromBody) {
+            token = tokenFromBody;
+          }
 
-        // Log for debugging
-        console.log(
-          "[Discord] Token auth check:",
-          JSON.stringify({
-            adminToken: adminToken ? `***${adminToken.slice(-3)}` : "NOT_SET",
-            token: token ? `***${token.slice(-3)}` : "MISSING",
-            authHeader: authHeader ? "PRESENT" : "MISSING",
-            tokenFromBody: tokenFromBody ? "PRESENT" : "MISSING",
-            matches: token === adminToken,
-          })
-        );
+          const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
 
-        if (!adminToken || !token || token !== adminToken) {
-          console.error(
-            "[Discord] Authorization failed - token mismatch or missing"
-          );
-          return res.status(401).json({
-            error: "Unauthorized - invalid or missing admin token",
-            debug: {
-              hasAdminToken: !!adminToken,
-              hasProvidedToken: !!token,
-              tokenMatches: token === adminToken,
-            }
-          });
+          if (!adminToken || !token || token !== adminToken) {
+            console.error("[Discord] Authorization failed - token mismatch or missing");
+            return res.status(401).json({
+              error: "Unauthorized - invalid or missing admin token",
+            });
+          }
         }
 
         const botToken = process.env.DISCORD_BOT_TOKEN;
