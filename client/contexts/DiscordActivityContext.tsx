@@ -58,6 +58,13 @@ export const DiscordActivityProvider: React.FC<
       const frameId = searchParams.get("frame_id");
       const isInDiscordActivity = frameId !== null;
 
+      console.log("[Discord Activity] Initialization starting...", {
+        frameId,
+        isInDiscordActivity,
+        userAgent: navigator.userAgent,
+        href: window.location.href,
+      });
+
       if (isInDiscordActivity) {
         try {
           setIsActivity(true);
@@ -69,6 +76,8 @@ export const DiscordActivityProvider: React.FC<
           const clientId =
             import.meta.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
 
+          console.log("[Discord Activity] Creating SDK with clientId:", clientId);
+
           const sdk = new DiscordSDK({
             clientId,
           });
@@ -76,17 +85,22 @@ export const DiscordActivityProvider: React.FC<
           setDiscordSdk(sdk);
 
           // Wait for SDK to be ready
+          console.log("[Discord Activity] Waiting for SDK to be ready...");
           await sdk.ready();
+          console.log("[Discord Activity] SDK is ready");
 
           // Get the current user from the SDK
           const currentUser = await sdk.user.getUser();
+          console.log("[Discord Activity] Current user:", currentUser ? "exists" : "null");
 
           if (!currentUser) {
             // User not authenticated, authorize them
+            console.log("[Discord Activity] Authorizing user...");
             const { access_token } = await sdk.commands.authorize({
               scopes: ["identify", "guilds"],
             });
 
+            console.log("[Discord Activity] Got access token, calling activity-auth...");
             // Exchange access token for user data via our proxy
             const response = await fetch("/api/discord/activity-auth", {
               method: "POST",
@@ -98,20 +112,25 @@ export const DiscordActivityProvider: React.FC<
 
             if (!response.ok) {
               const errorData = await response.json();
-              setError(errorData.error || "Failed to authenticate");
+              const errMsg = errorData.error || "Failed to authenticate";
+              console.error("[Discord Activity] Auth failed:", errMsg);
+              setError(errMsg);
               setIsLoading(false);
               return;
             }
 
             const data = await response.json();
             if (data.success && data.user) {
+              console.log("[Discord Activity] User authenticated successfully");
               setUser(data.user);
               setError(null);
             } else {
+              console.error("[Discord Activity] Authentication response invalid:", data);
               setError("Authentication failed");
             }
           } else {
             // User already authenticated, just fetch via our proxy
+            console.log("[Discord Activity] User already authenticated, fetching user data...");
             const response = await fetch("/api/discord/activity-auth", {
               method: "POST",
               headers: {
@@ -124,27 +143,41 @@ export const DiscordActivityProvider: React.FC<
 
             if (!response.ok) {
               const errorData = await response.json();
-              setError(errorData.error || "Failed to fetch user data");
+              const errMsg = errorData.error || "Failed to fetch user data";
+              console.error("[Discord Activity] Fetch failed:", errMsg);
+              setError(errMsg);
               setIsLoading(false);
               return;
             }
 
             const data = await response.json();
             if (data.success && data.user) {
+              console.log("[Discord Activity] User data loaded successfully");
               setUser(data.user);
               setError(null);
             } else {
+              console.error("[Discord Activity] User data response invalid:", data);
               setError("Failed to load user data");
             }
           }
         } catch (err: any) {
           console.error("Discord Activity initialization error:", err);
-          setError(err?.message || "Failed to initialize Discord Activity");
+          console.error("Error details:", {
+            message: err?.message,
+            code: err?.code,
+            stack: err?.stack,
+          });
+          setError(
+            `${err?.message || "Failed to initialize Discord Activity"}. Check browser console for details.`
+          );
         } finally {
           setIsLoading(false);
         }
       } else {
         // Not in a Discord iframe
+        console.log(
+          "[Discord Activity] Not in Discord Activity context (no frame_id)"
+        );
         setIsActivity(false);
         setIsLoading(false);
       }
