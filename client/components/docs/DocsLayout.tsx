@@ -115,14 +115,15 @@ export default function DocsLayout({
 
   const isCurrentPage = (path: string) => location.pathname === path;
 
-  // Subtle texture only for professional theme - very faint diagonal lines for depth
+  // Subtle geometric grid for professional theme - precise lines matching the logo aesthetic
   const gridPatternStyle =
     theme === "professional"
       ? {
           backgroundImage: `
-            linear-gradient(135deg, transparent 24%, rgba(15, 23, 42, 0.01) 25%, rgba(15, 23, 42, 0.01) 26%, transparent 27%, transparent 74%, rgba(15, 23, 42, 0.01) 75%, rgba(15, 23, 42, 0.01) 76%, transparent 77%, transparent)
+            linear-gradient(0deg, transparent 24%, rgba(71, 85, 105, 0.015) 25%, rgba(71, 85, 105, 0.015) 26%, transparent 27%, transparent 74%, rgba(71, 85, 105, 0.015) 75%, rgba(71, 85, 105, 0.015) 76%, transparent 77%, transparent),
+            linear-gradient(90deg, transparent 24%, rgba(71, 85, 105, 0.015) 25%, rgba(71, 85, 105, 0.015) 26%, transparent 27%, transparent 74%, rgba(71, 85, 105, 0.015) 75%, rgba(71, 85, 105, 0.015) 76%, transparent 77%, transparent)
           `,
-          backgroundSize: "60px 60px",
+          backgroundSize: "80px 80px",
         }
       : undefined;
 
