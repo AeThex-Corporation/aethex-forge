@@ -1,3 +1,4 @@
+import DocsLayout from "@/components/docs/DocsLayout";
 import {
   Card,
   CardContent,
@@ -82,6 +83,11 @@ const automationTips = [
 
 export default function DocsCli() {
   return (
+    <DocsLayout
+      title="CLI Reference"
+      description="Command-line interface documentation and commands"
+      breadcrumbs={[{ label: "CLI" }]}
+    >
     <div className="space-y-12">
       <section id="overview" className="space-y-4">
         <Badge className="bg-amber-500/20 text-amber-100 uppercase tracking-wide">
@@ -281,5 +287,6 @@ export default function DocsCli() {
         </div>
       </section>
     </div>
+    </DocsLayout>
   );
 }
