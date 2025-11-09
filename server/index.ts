@@ -1427,9 +1427,8 @@ export function createServer() {
         // Try multiple bot health URLs in order of preference
         const botHealthUrls = [
           process.env.DISCORD_BOT_HEALTH_URL,
+          "https://aethex.railway.internal:8044/health",
           "http://localhost:3000/health",
-          "https://aethex.railway.internal:3000/health",
-          "https://aethex.railway.internal:8044/health", // Fallback to old Railway URL
         ].filter(Boolean) as string[];
 
         let lastError: Error | null = null;
