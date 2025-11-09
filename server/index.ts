@@ -1451,7 +1451,9 @@ export function createServer() {
             }
           } catch (err) {
             lastError = err instanceof Error ? err : new Error(String(err));
-            console.warn(`[Discord Bot Health] Failed to reach ${url}: ${lastError.message}`);
+            console.warn(
+              `[Discord Bot Health] Failed to reach ${url}: ${lastError.message}`,
+            );
             continue;
           }
         }
