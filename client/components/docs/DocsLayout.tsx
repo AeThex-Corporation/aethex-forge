@@ -26,7 +26,7 @@ interface DocNavItem {
 const docNavigation: DocNavItem[] = [
   {
     title: "Overview",
-    path: "/docs/overview",
+    path: "/docs",
     icon: <BookOpen className="h-5 w-5" />,
     description: "Get started with AeThex",
   },
@@ -44,7 +44,7 @@ const docNavigation: DocNavItem[] = [
   },
   {
     title: "API Reference",
-    path: "/docs/api-reference",
+    path: "/docs/api",
     icon: <Code2 className="h-5 w-5" />,
     description: "Complete API documentation",
   },
@@ -258,7 +258,7 @@ export default function DocsLayout({
                 <h3 className="font-semibold text-slate-900 mb-4">Product</h3>
                 <ul className="space-y-2 text-sm text-slate-600">
                   <li>
-                    <Link to="/docs/overview" className="hover:text-slate-900">
+                    <Link to="/docs" className="hover:text-slate-900">
                       Features
                     </Link>
                   </li>
@@ -284,7 +284,7 @@ export default function DocsLayout({
                   </li>
                   <li>
                     <Link
-                      to="/docs/api-reference"
+                      to="/docs/api"
                       className="hover:text-slate-900"
                     >
                       API Reference
