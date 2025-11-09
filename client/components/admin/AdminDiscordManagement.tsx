@@ -56,10 +56,29 @@ export function AdminDiscordManagement() {
   const [isRegisteringCommands, setIsRegisteringCommands] = useState(false);
   const [registerError, setRegisterError] = useState<string | null>(null);
   const [registerSuccess, setRegisterSuccess] = useState<string | null>(null);
+  const [botHealth, setBotHealth] = useState<BotHealthStatus | null>(null);
+  const [botHealthLoading, setBotHealthLoading] = useState(false);
 
   useEffect(() => {
     fetchMappings();
+    checkBotHealthStatus();
+
+    // Refresh bot health every 30 seconds
+    const interval = setInterval(checkBotHealthStatus, 30000);
+    return () => clearInterval(interval);
   }, []);
+
+  const checkBotHealthStatus = async () => {
+    setBotHealthLoading(true);
+    try {
+      const health = await checkBotHealth();
+      setBotHealth(health);
+    } catch (err) {
+      console.error("Error checking bot health:", err);
+    } finally {
+      setBotHealthLoading(false);
+    }
+  };
 
   const fetchMappings = async () => {
     try {
