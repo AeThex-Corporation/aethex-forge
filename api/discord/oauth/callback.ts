@@ -134,8 +134,23 @@ export default async function handler(req: any, res: any) {
           console.error(
             "[Discord OAuth] Auth user creation failed:",
             authError,
+            {
+              email: discordUser.email,
+              username: discordUser.username,
+              message: authError?.message,
+              status: authError?.status,
+            },
           );
-          return res.redirect("/login?error=auth_create");
+          return res
+            .status(500)
+            .json({
+              error: "auth_create",
+              message: authError?.message || "Failed to create auth user",
+              details: {
+                email: discordUser.email,
+                error_code: authError?.code,
+              },
+            });
         }
 
         userId = authData.user.id;
