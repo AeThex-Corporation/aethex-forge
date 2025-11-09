@@ -112,10 +112,10 @@ export default function DocsLayout({
   const isCurrentPage = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900 pt-20 md:pt-0">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 border-r border-slate-200 bg-white overflow-y-auto transition-all duration-300 ${
+        className={`fixed inset-y-0 left-0 z-30 w-64 border-r border-slate-200 bg-white overflow-y-auto transition-all duration-300 pt-20 md:pt-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
