@@ -46,7 +46,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const redirectUri = `${process.env.VITE_API_BASE || "https://aethex.dev"}/api/discord/oauth/callback`;
+    const redirectUri = "https://aethex.dev/api/discord/oauth/callback";
 
     // Exchange code for access token
     const tokenResponse = await fetch(
