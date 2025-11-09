@@ -169,16 +169,9 @@ export default async function handler(req: any, res: any) {
                 error_code: authError?.code,
               },
             );
-            return res
-              .status(500)
-              .json({
-                error: "auth_create",
-                message: authError?.message || "Failed to create auth user",
-                details: {
-                  email: discordUser.email,
-                  error_code: authError?.code,
-                },
-              });
+            return res.redirect(
+              `/login?error=auth_create&message=${encodeURIComponent(authError?.message || "Failed to create account")}`,
+            );
           }
 
           userId_temp = authData.user.id;
