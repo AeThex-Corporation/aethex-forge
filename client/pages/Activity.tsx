@@ -29,13 +29,43 @@ export default function Activity() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <div className="text-center">
+        <div className="text-center max-w-md">
           <h1 className="text-3xl font-bold text-red-500 mb-4">
             ❌ Activity Error
           </h1>
-          <p className="text-gray-300 mb-8">{error}</p>
-          <p className="text-gray-400 text-sm">
-            Please try opening the Activity again in Discord.
+          <p className="text-gray-300 mb-8 text-sm">{error}</p>
+
+          <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6 text-left">
+            <h3 className="text-white font-semibold mb-3">Troubleshooting Steps:</h3>
+            <ol className="text-gray-400 text-sm space-y-2 list-decimal list-inside">
+              <li>Clear your browser cache (Ctrl+Shift+Delete)</li>
+              <li>Close Discord completely</li>
+              <li>Reopen Discord</li>
+              <li>Try opening the Activity again</li>
+            </ol>
+          </div>
+
+          <div className="bg-blue-900/20 border border-blue-700 rounded-lg p-3 mb-6">
+            <p className="text-blue-300 text-xs">
+              💡 Open browser console (F12) and look for messages starting with <code className="bg-blue-950 px-1 rounded">[Discord Activity]</code>
+            </p>
+          </div>
+
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
+          >
+            Retry
+          </button>
+
+          <p className="text-gray-500 text-xs mt-4">
+            Still having issues? Check the{" "}
+            <a
+              href="/docs/troubleshooting"
+              className="text-blue-400 hover:text-blue-300"
+            >
+              troubleshooting guide
+            </a>
           </p>
         </div>
       </div>
