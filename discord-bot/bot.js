@@ -156,7 +156,9 @@ async function registerDiscordCommands() {
       process.env.DISCORD_BOT_TOKEN,
     );
 
-    console.log(`📝 Registering ${COMMANDS_TO_REGISTER.length} slash commands...`);
+    console.log(
+      `📝 Registering ${COMMANDS_TO_REGISTER.length} slash commands...`,
+    );
 
     try {
       // Try bulk update first
@@ -283,7 +285,9 @@ http
   })
   .listen(healthPort, () => {
     console.log(`���� Health check server running on port ${healthPort}`);
-    console.log(`📝 Register commands at: POST http://localhost:${healthPort}/register-commands`);
+    console.log(
+      `📝 Register commands at: POST http://localhost:${healthPort}/register-commands`,
+    );
   });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
