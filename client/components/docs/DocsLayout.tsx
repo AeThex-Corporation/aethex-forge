@@ -115,8 +115,22 @@ export default function DocsLayout({
 
   const isCurrentPage = (path: string) => location.pathname === path;
 
+  const gridPatternStyle =
+    theme === "professional"
+      ? {
+          backgroundImage: `
+            linear-gradient(0deg, transparent 24%, rgba(59, 130, 246, 0.05) 25%, rgba(59, 130, 246, 0.05) 26%, transparent 27%, transparent 74%, rgba(59, 130, 246, 0.05) 75%, rgba(59, 130, 246, 0.05) 76%, transparent 77%, transparent),
+            linear-gradient(90deg, transparent 24%, rgba(59, 130, 246, 0.05) 25%, rgba(59, 130, 246, 0.05) 26%, transparent 27%, transparent 74%, rgba(59, 130, 246, 0.05) 75%, rgba(59, 130, 246, 0.05) 76%, transparent 77%, transparent)
+          `,
+          backgroundSize: "50px 50px",
+        }
+      : undefined;
+
   return (
-    <div className={`min-h-screen ${colors.background} ${colors.foreground} transition-colors duration-300`}>
+    <div
+      className={`min-h-screen ${colors.background} ${colors.foreground} transition-colors duration-300`}
+      style={gridPatternStyle}
+    >
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-30 w-64 ${colors.sidebar} border-r ${colors.border} overflow-y-auto transition-all duration-300 pt-20 md:pt-0 ${
