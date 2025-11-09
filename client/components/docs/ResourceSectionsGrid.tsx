@@ -16,6 +16,7 @@ import {
   Puzzle,
   LayoutDashboard,
 } from "lucide-react";
+import { useDocsTheme } from "@/contexts/DocsThemeContext";
 
 export interface ResourceSection {
   title: string;
@@ -91,9 +92,21 @@ interface ResourceSectionsGridProps {
 export default function ResourceSectionsGrid({
   sections = defaultSections,
 }: ResourceSectionsGridProps) {
+  const { colors, theme } = useDocsTheme();
+  const iconColor = theme === "professional" ? "text-gray-700" : "text-purple-400";
+  const hoverBorderColor =
+    theme === "professional" ? "hover:border-gray-400" : "hover:border-purple-500/50";
+  const hoverTitleColor =
+    theme === "professional" ? "group-hover:text-gray-900" : "group-hover:text-purple-400";
+  const arrowColor = theme === "professional" ? "text-gray-600" : "text-purple-400";
+  const explorehoverColor =
+    theme === "professional"
+      ? "group-hover:text-gray-900"
+      : "group-hover:text-purple-300";
+
   return (
     <div className="mb-12">
-      <h3 className="text-2xl font-bold text-white mb-6">
+      <h3 className={`text-2xl font-bold ${colors.headingColor} mb-6`}>
         Documentation Sections
       </h3>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -102,18 +115,20 @@ export default function ResourceSectionsGrid({
           return (
             <Card
               key={index}
-              className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group"
+              className={`${colors.cardBg} border ${colors.cardBorder} ${hoverBorderColor} transition-all duration-300 cursor-pointer group`}
             >
               <Link to={section.href}>
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
-                    <Icon className="h-8 w-8 text-purple-400" />
+                    <Icon className={`h-8 w-8 ${iconColor}`} />
                     <Badge variant="outline">{section.badge}</Badge>
                   </div>
-                  <CardTitle className="text-white group-hover:text-purple-400 transition-colors">
+                  <CardTitle
+                    className={`${colors.headingColor} ${hoverTitleColor} transition-colors`}
+                  >
                     {section.title}
                   </CardTitle>
-                  <CardDescription className="text-gray-400">
+                  <CardDescription className={colors.textMuted}>
                     {section.description}
                   </CardDescription>
                 </CardHeader>
@@ -122,14 +137,16 @@ export default function ResourceSectionsGrid({
                     {section.items.map((item, itemIndex) => (
                       <li
                         key={itemIndex}
-                        className="text-sm text-gray-400 flex items-center"
+                        className={`text-sm ${colors.textMuted} flex items-center`}
                       >
-                        <ArrowRight className="h-3 w-3 mr-2 text-purple-400" />
+                        <ArrowRight className={`h-3 w-3 mr-2 ${arrowColor}`} />
                         {item}
                       </li>
                     ))}
                   </ul>
-                  <div className="flex items-center text-purple-400 text-sm group-hover:text-purple-300 transition-colors">
+                  <div
+                    className={`flex items-center ${theme === "professional" ? "text-gray-700" : "text-purple-400"} text-sm ${explorehoverColor} transition-colors`}
+                  >
                     Explore section
                     <ArrowRight className="h-4 w-4 ml-1" />
                   </div>

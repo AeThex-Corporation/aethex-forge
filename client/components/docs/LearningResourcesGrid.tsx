@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Video, Headphones, Github, Download, LucideIcon } from "lucide-react";
+import { useDocsTheme } from "@/contexts/DocsThemeContext";
 
 export interface LearningResource {
   title: string;
@@ -61,16 +62,22 @@ interface LearningResourcesGridProps {
 export default function LearningResourcesGrid({
   resources = defaultResources,
 }: LearningResourcesGridProps) {
+  const { colors, theme } = useDocsTheme();
+  const hoverBorderColor =
+    theme === "professional" ? "hover:border-gray-400" : "hover:border-purple-500/50";
+
   return (
     <div className="mb-12">
-      <h3 className="text-2xl font-bold text-white mb-6">Learning resources</h3>
+      <h3 className={`text-2xl font-bold ${colors.headingColor} mb-6`}>
+        Learning resources
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {resources.map((resource, index) => {
           const Icon = resource.icon;
           return (
             <Card
               key={resource.title}
-              className="text-center bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300"
+              className={`text-center ${colors.cardBg} border ${colors.cardBorder} ${hoverBorderColor} transition-all duration-300`}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardHeader>
@@ -79,10 +86,10 @@ export default function LearningResourcesGrid({
                 >
                   <Icon className="h-8 w-8 text-white" />
                 </div>
-                <CardTitle className="text-white text-lg">
+                <CardTitle className={`${colors.headingColor} text-lg`}>
                   {resource.title}
                 </CardTitle>
-                <CardDescription className="text-gray-400">
+                <CardDescription className={colors.textMuted}>
                   {resource.description}
                 </CardDescription>
               </CardHeader>
