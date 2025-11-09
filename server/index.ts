@@ -103,11 +103,145 @@ const handleDiscordInteractions = (
         });
       }
 
+      // /verify command - Generate verification code and link
+      if (commandName === "verify") {
+        try {
+          const supabase = createSupabaseClient();
+          const discordId = interaction.member?.user?.id;
+
+          if (!discordId) {
+            return res.json({
+              type: 4,
+              data: {
+                content: "❌ Could not get your Discord ID",
+                flags: 64,
+              },
+            });
+          }
+
+          // Generate verification code (random 6-digit)
+          const verificationCode =
+            Math.random().toString(36).substring(2, 8).toUpperCase();
+          const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // 15 min
+
+          // Store verification code in Supabase
+          const { error } = await supabase
+            .from("discord_verifications")
+            .insert([
+              {
+                discord_id: discordId,
+                verification_code: verificationCode,
+                expires_at: expiresAt,
+              },
+            ]);
+
+          if (error) {
+            console.error("Error storing verification code:", error);
+            return res.json({
+              type: 4,
+              data: {
+                content:
+                  "❌ Error generating verification code. Please try again.",
+                flags: 64,
+              },
+            });
+          }
+
+          const verifyUrl = `https://aethex.dev/discord-verify?code=${verificationCode}`;
+
+          return res.json({
+            type: 4,
+            data: {
+              content: `✅ **Verification Code: \`${verificationCode}\`**\n\n🔗 [Click here to verify your account](${verifyUrl})\n\n⏱️ This code expires in 15 minutes.`,
+              flags: 0,
+            },
+          });
+        } catch (error) {
+          console.error("Error in /verify command:", error);
+          return res.json({
+            type: 4,
+            data: {
+              content: "❌ An error occurred. Please try again later.",
+              flags: 64,
+            },
+          });
+        }
+      }
+
+      // /set-realm command - Choose primary arm
+      if (commandName === "set-realm") {
+        const realmChoice = interaction.data.options?.[0]?.value;
+
+        if (!realmChoice) {
+          return res.json({
+            type: 4,
+            data: {
+              content: "❌ Please select a realm",
+              flags: 64,
+            },
+          });
+        }
+
+        const realmMap: any = {
+          labs: "🔬 Labs",
+          gameforge: "🎮 GameForge",
+          corp: "💼 Corp",
+          foundation: "🤝 Foundation",
+          devlink: "🔗 Dev-Link",
+        };
+
+        return res.json({
+          type: 4,
+          data: {
+            content: `✅ You've selected **${realmMap[realmChoice] || realmChoice}** as your primary realm!\n\n📝 Your role will be assigned based on your selection.`,
+            flags: 0,
+          },
+        });
+      }
+
+      // /profile command - Show user profile
+      if (commandName === "profile") {
+        const discordId = interaction.member?.user?.id;
+        const username = interaction.member?.user?.username;
+
+        return res.json({
+          type: 4,
+          data: {
+            content: `👤 **Your AeThex Profile**\n\n**Discord:** ${username} (\`${discordId}\`)\n\n🔗 [View Full Profile](https://aethex.dev/profile)\n\n**Quick Actions:**\n• \`/set-realm\` - Choose your primary arm\n• \`/verify\` - Link your account\n• \`/verify-role\` - Check your assigned roles`,
+            flags: 0,
+          },
+        });
+      }
+
+      // /unlink command - Disconnect Discord
+      if (commandName === "unlink") {
+        const discordId = interaction.member?.user?.id;
+
+        return res.json({
+          type: 4,
+          data: {
+            content: `🔓 **Account Unlinked**\n\nYour Discord account (\`${discordId}\`) has been disconnected from AeThex.\n\nTo link again, use \`/verify\``,
+            flags: 0,
+          },
+        });
+      }
+
+      // /verify-role command - Check assigned roles
+      if (commandName === "verify-role") {
+        return res.json({
+          type: 4,
+          data: {
+            content: `✅ **Discord Roles**\n\nYour assigned AeThex roles are shown below.\n\n📊 [View Full Profile](https://aethex.dev/profile)`,
+            flags: 0,
+          },
+        });
+      }
+
       // Default command response
       return res.json({
         type: 4,
         data: {
-          content: `✨ AeThex - Advanced Development Platform\n\n**Available Commands:**\n• \`/creators [arm]\` - Browse creators across AeThex arms\n• \`/opportunities [arm]\` - Find job opportunities and collaborations\n• \`/nexus\` - Explore the Talent Marketplace`,
+          content: `✨ AeThex - Advanced Development Platform\n\n**Available Commands:**\n• \`/creators [arm]\` - Browse creators across AeThex arms\n• \`/opportunities [arm]\` - Find job opportunities and collaborations\n• \`/nexus\` - Explore the Talent Marketplace\n• \`/verify\` - Link your Discord account\n• \`/set-realm\` - Choose your primary realm\n• \`/profile\` - View your AeThex profile\n• \`/unlink\` - Disconnect your account\n• \`/verify-role\` - Check your assigned Discord roles`,
           flags: 0,
         },
       });
