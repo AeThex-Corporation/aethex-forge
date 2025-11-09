@@ -46,7 +46,9 @@ export async function checkBotHealth(): Promise<BotHealthStatus> {
       uptime: 0,
       timestamp: new Date().toISOString(),
       error:
-        error instanceof Error ? error.message : "Failed to reach bot health endpoint",
+        error instanceof Error
+          ? error.message
+          : "Failed to reach bot health endpoint",
     };
   }
 }

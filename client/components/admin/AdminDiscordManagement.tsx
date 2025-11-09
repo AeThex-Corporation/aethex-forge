@@ -324,7 +324,11 @@ export function AdminDiscordManagement() {
                     : "text-red-400"
                 }`}
               >
-                {botHealth ? (botHealth.status === "online" ? "🟢 Online" : "🔴 Offline") : "..."}
+                {botHealth
+                  ? botHealth.status === "online"
+                    ? "🟢 Online"
+                    : "🔴 Offline"
+                  : "..."}
               </p>
             </div>
             <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 p-4 rounded-lg border border-blue-500/20">
