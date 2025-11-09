@@ -27,9 +27,7 @@ export default function DocsSupportCTA({
       : "border-purple-400/60 text-purple-200";
 
   return (
-    <div
-      className={`mt-12 rounded-2xl border ${ctaBg} p-8 text-center`}
-    >
+    <div className={`mt-12 rounded-2xl border ${ctaBg} p-8 text-center`}>
       <h3 className={`text-3xl font-semibold ${colors.headingColor} mb-4`}>
         {title}
       </h3>

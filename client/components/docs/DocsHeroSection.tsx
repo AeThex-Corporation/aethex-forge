@@ -41,7 +41,12 @@ export default function DocsHeroSection({
               Get Started
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className={outlineButtonClass}>
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className={outlineButtonClass}
+          >
             <Link to="/docs/tutorials">
               <Play className="h-5 w-5 mr-2" />
               Watch Tutorials

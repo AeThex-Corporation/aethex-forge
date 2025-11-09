@@ -109,7 +109,7 @@ export default function DocsLayout({
     return docNavigation.filter(
       (item) =>
         item.title.toLowerCase().includes(query) ||
-        item.description?.toLowerCase().includes(query)
+        item.description?.toLowerCase().includes(query),
     );
   }, [searchQuery]);
 
@@ -139,21 +139,26 @@ export default function DocsLayout({
         }`}
       >
         {/* AeThex Branding */}
-        <div className={`p-6 border-b ${colors.border} flex flex-col items-center justify-center`}>
+        <div
+          className={`p-6 border-b ${colors.border} flex flex-col items-center justify-center`}
+        >
           <Link
             to="/docs"
             className="flex flex-col items-center justify-center gap-4 w-full"
           >
             <img
-              src={theme === "professional"
-                ? "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fbac6154f77e94521bcbfe35abd605cd0?format=webp&width=800"
-                : "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F1d007dd573c54339ad35fde9cd637516?format=webp&width=800"
+              src={
+                theme === "professional"
+                  ? "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fbac6154f77e94521bcbfe35abd605cd0?format=webp&width=800"
+                  : "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F1d007dd573c54339ad35fde9cd637516?format=webp&width=800"
               }
               alt="AeThex Logo"
               className="h-16 w-16 object-contain"
             />
             <div className="text-center">
-              <div className={`font-bold text-lg ${colors.headingColor}`}>AeThex</div>
+              <div className={`font-bold text-lg ${colors.headingColor}`}>
+                AeThex
+              </div>
               <div className={`text-xs ${colors.textMuted}`}>Documentation</div>
             </div>
           </Link>
@@ -190,7 +195,9 @@ export default function DocsLayout({
         {/* Search Bar */}
         <div className={`p-4 border-b ${colors.border}`}>
           <div className="relative">
-            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${colors.textMuted}`} />
+            <Search
+              className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${colors.textMuted}`}
+            />
             <Input
               placeholder="Search docs..."
               className={`${colors.inputBg} border-${colors.border} pl-10 pr-4 text-sm ${colors.foreground}`}
@@ -202,7 +209,9 @@ export default function DocsLayout({
 
         {/* Navigation */}
         <nav className="p-4 space-y-1">
-          <div className={`text-xs font-semibold ${colors.textMuted} uppercase tracking-wider mb-4 px-2`}>
+          <div
+            className={`text-xs font-semibold ${colors.textMuted} uppercase tracking-wider mb-4 px-2`}
+          >
             Documentation
           </div>
           {filteredNav.map((item) => (
@@ -249,7 +258,9 @@ export default function DocsLayout({
       {/* Main Content */}
       <main className="md:ml-64">
         {/* Mobile Header */}
-        <div className={`md:hidden sticky top-0 z-20 border-b ${colors.border} ${colors.cardBg} p-4 flex items-center justify-between`}>
+        <div
+          className={`md:hidden sticky top-0 z-20 border-b ${colors.border} ${colors.cardBg} p-4 flex items-center justify-between`}
+        >
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className={`p-2 ${colors.sidebarHover} rounded-lg`}
@@ -270,7 +281,11 @@ export default function DocsLayout({
           <div className="lg:col-span-3">
             {title && (
               <div className="mb-8">
-                <h1 className={`text-5xl font-bold ${colors.headingColor} mb-3`}>{title}</h1>
+                <h1
+                  className={`text-5xl font-bold ${colors.headingColor} mb-3`}
+                >
+                  {title}
+                </h1>
                 {description && (
                   <p className={`text-lg ${colors.textMuted}`}>{description}</p>
                 )}
@@ -278,7 +293,9 @@ export default function DocsLayout({
             )}
 
             {/* Content - either children (for wrapper) or Outlet (for routing) */}
-            <div className={`prose max-w-none ${theme === "professional" ? "prose-neutral" : "prose-invert"}`}>
+            <div
+              className={`prose max-w-none ${theme === "professional" ? "prose-neutral" : "prose-invert"}`}
+            >
               {children || <Outlet />}
             </div>
           </div>
@@ -287,7 +304,9 @@ export default function DocsLayout({
           {tableOfContents.length > 0 && (
             <aside className="hidden lg:block">
               <div className="sticky top-8">
-                <div className={`text-xs font-semibold ${colors.textMuted} uppercase tracking-wider mb-4`}>
+                <div
+                  className={`text-xs font-semibold ${colors.textMuted} uppercase tracking-wider mb-4`}
+                >
                   On this page
                 </div>
                 <nav className="space-y-2">
@@ -315,52 +334,76 @@ export default function DocsLayout({
           <div className="max-w-7xl mx-auto px-6 md:px-8 py-8">
             {/* AeThex Arms - Grayscale for professional, colored for brand */}
             <div className={`mb-8 pb-8 border-b ${colors.border}`}>
-              <h3 className={`text-sm font-semibold ${colors.headingColor} mb-3`}>AeThex Platforms</h3>
+              <h3
+                className={`text-sm font-semibold ${colors.headingColor} mb-3`}
+              >
+                AeThex Platforms
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {theme === "professional" ? (
                   <>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
                       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-                      <span className="text-xs font-medium text-gray-700">Labs</span>
+                      <span className="text-xs font-medium text-gray-700">
+                        Labs
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
                       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-                      <span className="text-xs font-medium text-gray-700">GameForge</span>
+                      <span className="text-xs font-medium text-gray-700">
+                        GameForge
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
                       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-                      <span className="text-xs font-medium text-gray-700">Corp</span>
+                      <span className="text-xs font-medium text-gray-700">
+                        Corp
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
                       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-                      <span className="text-xs font-medium text-gray-700">Foundation</span>
+                      <span className="text-xs font-medium text-gray-700">
+                        Foundation
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-200">
                       <div className="h-2 w-2 rounded-full bg-gray-400"></div>
-                      <span className="text-xs font-medium text-gray-700">Dev-Link</span>
+                      <span className="text-xs font-medium text-gray-700">
+                        Dev-Link
+                      </span>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-yellow-100">
                       <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
-                      <span className="text-xs font-medium text-yellow-900">Labs</span>
+                      <span className="text-xs font-medium text-yellow-900">
+                        Labs
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-green-100">
                       <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                      <span className="text-xs font-medium text-green-900">GameForge</span>
+                      <span className="text-xs font-medium text-green-900">
+                        GameForge
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-100">
                       <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                      <span className="text-xs font-medium text-blue-900">Corp</span>
+                      <span className="text-xs font-medium text-blue-900">
+                        Corp
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-red-100">
                       <div className="h-2 w-2 rounded-full bg-red-500"></div>
-                      <span className="text-xs font-medium text-red-900">Foundation</span>
+                      <span className="text-xs font-medium text-red-900">
+                        Foundation
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-cyan-100">
                       <div className="h-2 w-2 rounded-full bg-cyan-500"></div>
-                      <span className="text-xs font-medium text-cyan-900">Dev-Link</span>
+                      <span className="text-xs font-medium text-cyan-900">
+                        Dev-Link
+                      </span>
                     </div>
                   </>
                 )}
@@ -369,7 +412,9 @@ export default function DocsLayout({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div>
-                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>Product</h3>
+                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>
+                  Product
+                </h3>
                 <ul className={`space-y-2 text-sm ${colors.textMuted}`}>
                   <li>
                     <Link to="/docs" className={`${colors.accentHover}`}>
@@ -377,7 +422,10 @@ export default function DocsLayout({
                     </Link>
                   </li>
                   <li>
-                    <Link to="/docs/platform" className={`${colors.accentHover}`}>
+                    <Link
+                      to="/docs/platform"
+                      className={`${colors.accentHover}`}
+                    >
                       Platform
                     </Link>
                   </li>
@@ -389,10 +437,15 @@ export default function DocsLayout({
                 </ul>
               </div>
               <div>
-                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>Resources</h3>
+                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>
+                  Resources
+                </h3>
                 <ul className={`space-y-2 text-sm ${colors.textMuted}`}>
                   <li>
-                    <Link to="/docs/tutorials" className={`${colors.accentHover}`}>
+                    <Link
+                      to="/docs/tutorials"
+                      className={`${colors.accentHover}`}
+                    >
                       Tutorials
                     </Link>
                   </li>
@@ -409,7 +462,9 @@ export default function DocsLayout({
                 </ul>
               </div>
               <div>
-                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>Community</h3>
+                <h3 className={`font-semibold ${colors.headingColor} mb-4`}>
+                  Community
+                </h3>
                 <ul className={`space-y-2 text-sm ${colors.textMuted}`}>
                   <li>
                     <a href="#" className={`${colors.accentHover}`}>
@@ -429,7 +484,9 @@ export default function DocsLayout({
                 </ul>
               </div>
             </div>
-            <div className={`border-t ${colors.border} mt-8 pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm ${colors.textMuted}`}>
+            <div
+              className={`border-t ${colors.border} mt-8 pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm ${colors.textMuted}`}
+            >
               <p>&copy; 2025 AeThex. All rights reserved.</p>
               <div className="flex gap-6">
                 <a href="#" className={`${colors.accentHover}`}>

@@ -72,7 +72,7 @@ interface DocsThemeContextType {
 }
 
 const DocsThemeContext = createContext<DocsThemeContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function DocsThemeProvider({ children }: { children: React.ReactNode }) {

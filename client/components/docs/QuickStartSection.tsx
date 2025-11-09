@@ -99,11 +99,15 @@ export default function QuickStartSection({
         {cards.map((card, index) => {
           const Icon = card.icon;
           const hoverBorderColor =
-            theme === "professional" ? "hover:border-gray-400" : "hover:border-purple-500/50";
+            theme === "professional"
+              ? "hover:border-gray-400"
+              : "hover:border-purple-500/50";
           const iconColor =
             theme === "professional" ? "text-gray-700" : "text-purple-400";
           const hoverTitleColor =
-            theme === "professional" ? "group-hover:text-gray-900" : "group-hover:text-purple-400";
+            theme === "professional"
+              ? "group-hover:text-gray-900"
+              : "group-hover:text-purple-400";
 
           return (
             <Card

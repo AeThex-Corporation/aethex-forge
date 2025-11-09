@@ -93,12 +93,18 @@ export default function ResourceSectionsGrid({
   sections = defaultSections,
 }: ResourceSectionsGridProps) {
   const { colors, theme } = useDocsTheme();
-  const iconColor = theme === "professional" ? "text-gray-700" : "text-purple-400";
+  const iconColor =
+    theme === "professional" ? "text-gray-700" : "text-purple-400";
   const hoverBorderColor =
-    theme === "professional" ? "hover:border-gray-400" : "hover:border-purple-500/50";
+    theme === "professional"
+      ? "hover:border-gray-400"
+      : "hover:border-purple-500/50";
   const hoverTitleColor =
-    theme === "professional" ? "group-hover:text-gray-900" : "group-hover:text-purple-400";
-  const arrowColor = theme === "professional" ? "text-gray-600" : "text-purple-400";
+    theme === "professional"
+      ? "group-hover:text-gray-900"
+      : "group-hover:text-purple-400";
+  const arrowColor =
+    theme === "professional" ? "text-gray-600" : "text-purple-400";
   const explorehoverColor =
     theme === "professional"
       ? "group-hover:text-gray-900"

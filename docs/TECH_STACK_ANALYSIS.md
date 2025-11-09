@@ -9,6 +9,7 @@ This document provides a comprehensive analysis of the AETHEX project's actual t
 ## 1. FRONTEND STACK (Vercel)
 
 ### Current Implementation
+
 - **Framework**: Vite + React (Custom architecture)
 - **NOT Next.js** - This is a significant difference from the development plan
 - **Build Tool**: Vite for fast development and optimized production builds
@@ -19,6 +20,7 @@ This document provides a comprehensive analysis of the AETHEX project's actual t
 ### Architecture Components
 
 #### Page Structure
+
 ```
 code/client/pages/
 ├── Auth Pages
@@ -52,6 +54,7 @@ code/client/pages/
 ```
 
 #### Context Providers
+
 ```
 code/client/contexts/
 ├── AuthContext.tsx (User authentication state)
@@ -61,6 +64,7 @@ code/client/contexts/
 ```
 
 #### Key Components
+
 ```
 code/client/components/
 ├── Layout.tsx (Main layout with header, navigation, footer)
@@ -87,6 +91,7 @@ code/client/components/
 ```
 
 ### Authentication Methods Supported
+
 1. **Email/Password** (Native Supabase)
 2. **GitHub OAuth** (Supabase)
 3. **Google OAuth** (Supabase)
@@ -95,6 +100,7 @@ code/client/components/
 6. **Web3/Ethereum** (Metamask signature verification)
 
 ### Critical Notes on Frontend
+
 - ✅ Uses custom Supabase client (NOT the new @supabase/ssr package)
 - ⚠️ Does NOT use Next.js App Router or middleware
 - ⚠️ CSP headers need configuration in Vite for Discord Activity
@@ -108,6 +114,7 @@ code/client/components/
 ### Database (PostgreSQL via Supabase)
 
 #### Core Tables
+
 ```
 public.user_profiles
 ├── id (UUID, PK)
@@ -129,6 +136,7 @@ auth.users (Managed by Supabase Auth)
 ```
 
 #### Discord Integration Tables
+
 ```
 public.discord_links
 ├── discord_id (TEXT, PK)
@@ -161,6 +169,7 @@ public.discord_user_roles
 ```
 
 #### Creator Network Tables
+
 ```
 public.aethex_creators
 ├── user_id (UUID, FK)
@@ -196,6 +205,7 @@ public.aethex_endorsements
 ```
 
 #### Web3 Integration
+
 ```
 public.web3_nonces
 ├── wallet_address (TEXT, PK)
@@ -210,6 +220,7 @@ user_profiles extensions:
 ```
 
 #### Game Integration
+
 ```
 public.game_auth_tokens
 ├── id (UUID, PK)
@@ -229,6 +240,7 @@ public.game_sessions
 ### Row Level Security (RLS) Status
 
 **Current State**: Basic RLS policies implemented
+
 ```sql
 -- Example: Users can see their own profile
 CREATE POLICY "User can see their own profile"
@@ -242,6 +254,7 @@ CREATE POLICY "User can update their own profile"
 ```
 
 **Status**: ⚠️ NOT YET OPTIMIZED (Plan recommends performance optimization)
+
 ```sql
 -- Should be optimized to:
 CREATE POLICY "User can see their own profile"
@@ -254,14 +267,17 @@ CREATE POLICY "User can see their own profile"
 #### Location: `code/api/` directory
 
 ##### Discord OAuth
+
 - `code/api/discord/oauth/start.ts` - GET endpoint, redirects to Discord
 - `code/api/discord/oauth/callback.ts` - GET endpoint, handles OAuth callback
 
 ##### Discord Linking & Verification
+
 - `code/api/discord/verify-code.ts` - POST, verifies 6-digit code from /verify command
 - `code/api/discord/link.ts` - POST, links Discord account to user
 
 ##### Discord Management
+
 - `code/api/discord/role-mappings.ts` - GET/POST/PUT/DELETE role mapping CRUD
 - `code/api/discord/sync-roles.ts` - POST, assigns Discord roles based on arm + user_type
 - `code/api/discord/admin-register-commands.ts` - POST, registers slash commands (requires admin token)
@@ -269,16 +285,19 @@ CREATE POLICY "User can see their own profile"
 - `code/api/discord/verify.ts` - POST, checks if user is linked to Discord
 
 ##### Creator Network
+
 - `code/api/creators.ts` - GET/POST/PUT, manage creator profiles
 - `code/api/opportunities.ts` - GET/POST/PUT, manage job opportunities
 - `code/api/applications.ts` - GET/POST/PUT/DELETE, manage job applications
 
 ##### Game Integration
+
 - `code/api/games/game-auth.ts` - POST, unified game authentication (Unity/Unreal/Godot/Roblox)
 - `code/api/games/roblox-auth.ts` - POST, Roblox-specific authentication
 - `code/api/games/verify-token.ts` - POST, verify game session tokens
 
 ##### Other
+
 - `code/api/user/link-roblox.ts` - POST, link Roblox account
 - `code/api/user/link-web3.ts` - POST, link Ethereum wallet
 - `code/api/web3/nonce.ts` - POST, generate Web3 nonce
@@ -289,6 +308,7 @@ CREATE POLICY "User can see their own profile"
 **Location**: `code/server/index.ts`
 
 **Responsibilities**:
+
 - Discord slash command handlers (/creators, /opportunities, /nexus)
 - Discord interactions endpoint (signature verification)
 - Health check endpoints
@@ -296,6 +316,7 @@ CREATE POLICY "User can see their own profile"
 - Admin functions
 
 **Key Features**:
+
 - ED25519 signature verification for Discord requests
 - Slash command routing
 - Admin token validation (DISCORD_ADMIN_REGISTER_TOKEN)
@@ -306,6 +327,7 @@ CREATE POLICY "User can see their own profile"
 ## 3. DISCORD BOT STACK (Railway)
 
 ### Current Deployment
+
 - **Platform**: Railway (PaaS)
 - **Language**: Node.js with discord.js v14
 - **Hosting Status**: ✅ Successfully deployed and running
@@ -328,6 +350,7 @@ CREATE POLICY "User can see their own profile"
 ### Implemented Slash Commands
 
 #### 1. `/verify` (Account Linking)
+
 - **File**: `code/discord-bot/commands/verify.js`
 - **Function**: Generates 15-minute verification code
 - **Flow**:
@@ -338,6 +361,7 @@ CREATE POLICY "User can see their own profile"
   5. discord_links record created
 
 #### 2. `/set-realm` (Choose Primary Arm)
+
 - **File**: `code/discord-bot/commands/set-realm.js`
 - **Function**: Dropdown menu to select primary arm
 - **Options**: labs, gameforge, corp, foundation, devlink, nexus
@@ -346,15 +370,18 @@ CREATE POLICY "User can see their own profile"
   2. Triggers role assignment via roleManager.js
 
 #### 3. `/profile` (Show Profile)
+
 - **File**: `code/discord-bot/commands/profile.js`
 - **Function**: Displays linked AeThex profile in Discord
 - **Shows**: Username, bio, avatar, primary realm, link to full profile
 
 #### 4. `/unlink` (Disconnect Account)
+
 - **File**: `code/discord-bot/commands/unlink.js`
 - **Function**: Removes Discord link and revokes roles
 
 #### 5. `/verify-role` (Check Assigned Roles)
+
 - **File**: `code/discord-bot/commands/verify-role.js`
 - **Function**: Shows current Discord roles and expected roles from mappings
 
@@ -363,13 +390,14 @@ CREATE POLICY "User can see their own profile"
 ```javascript
 // code/discord-bot/utils/roleManager.js
 {
-  assignRoleByArm(discord_id, arm, server_id)  // Assign role based on arm
-  getUserArm(discord_id)                        // Get user's primary arm
-  syncRolesAcrossGuilds(discord_id)            // Sync roles in all servers
+  assignRoleByArm(discord_id, arm, server_id); // Assign role based on arm
+  getUserArm(discord_id); // Get user's primary arm
+  syncRolesAcrossGuilds(discord_id); // Sync roles in all servers
 }
 ```
 
 ### Dependencies
+
 ```json
 {
   "discord.js": "^14.13.0",
@@ -379,6 +407,7 @@ CREATE POLICY "User can see their own profile"
 ```
 
 ### Environment Variables
+
 ```
 DISCORD_BOT_TOKEN=<bot token>
 DISCORD_CLIENT_ID=578971245454950421
@@ -390,6 +419,7 @@ BOT_PORT=3000
 ```
 
 ### Bot Health Check
+
 - **Endpoint**: POST /health
 - **Returns**: { status, guilds, commands, uptime, timestamp }
 - **Used by**: Frontend `/api/discord/bot-health` proxy
@@ -451,7 +481,9 @@ Redirects to /profile/settings
 ```
 
 ### Discord Manifest
+
 **Location**: `code/public/discord-manifest.json`
+
 ```json
 {
   "id": "578971245454950421",
@@ -470,6 +502,7 @@ Redirects to /profile/settings
 ## 5. PLANNED vs. ACTUAL - KEY DIFFERENCES
 
 ### Development Plan Says... | Actually Have... | Status
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ FRONTEND                                                         │
@@ -528,6 +561,7 @@ Redirects to /profile/settings
 ## 6. ENVIRONMENT VARIABLES (All Set)
 
 ### Supabase
+
 ```
 VITE_SUPABASE_URL=https://kmdeisowhtsalsekkzqd.supabase.co
 VITE_SUPABASE_ANON_KEY=sb_publishable_DfTB6qME8BkTmHNJ3dCBew_t1NLATEq
@@ -536,6 +570,7 @@ SUPABASE_URL=https://supabase.aethex.tech
 ```
 
 ### Discord OAuth
+
 ```
 DISCORD_CLIENT_ID=578971245454950421
 DISCORD_CLIENT_SECRET=JKlilGzcTWgfmt2wEqiHO8wpCel5VEji
@@ -545,6 +580,7 @@ DISCORD_ADMIN_REGISTER_TOKEN=aethex-link
 ```
 
 ### Roblox OAuth
+
 ```
 ROBLOX_OAUTH_CLIENT_ID=4727645256213520722
 ROBLOX_OAUTH_CLIENT_SECRET=RBX-hTAHd1iV-U-JSodk9GDkx0beYrLf00YKdZbWyMPzTWysCsys-UPEvT9ON_qSEeM2
@@ -552,11 +588,13 @@ ROBLOX_OAUTH_REDIRECT_URI=https://aethex.dev/roblox-callback
 ```
 
 ### Web3
+
 ```
 (No env vars needed - signature verification is client-side)
 ```
 
 ### API Base
+
 ```
 VITE_API_BASE=https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef.fly.dev
 ```
@@ -583,21 +621,25 @@ VITE_API_BASE=https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef
 ## 8. WHAT NEEDS WORK ⏳
 
 1. **CSP Headers for Discord Activity**
+
    - Status: ⏳ NEEDS FIX
    - Action: Add to vite.config.ts and vercel.json
    - Priority: HIGH
 
 2. **Discord Embedded App SDK (Dual Auth)**
+
    - Status: ⏳ PARTIALLY DONE
    - Action: Implement full dual-auth flow in DiscordActivity.tsx
    - Priority: MEDIUM
 
 3. **RLS Policy Optimization**
+
    - Status: ✅ WORKS, CAN OPTIMIZE
    - Action: Wrap auth.uid() in (select auth.uid()) for performance
    - Priority: LOW
 
 4. **GitHub Actions CI/CD**
+
    - Status: ⏳ NOT IMPLEMENTED
    - Action: Create .github/workflows/deploy-supabase.yml
    - Priority: MEDIUM
@@ -616,18 +658,18 @@ Frontend:
   code/client/pages/       - All pages
   code/client/contexts/    - Auth, Web3, Discord contexts
   code/client/components/  - All UI components
-  
+
 Backend:
   code/api/                - All API endpoints
   code/server/index.ts     - Express server + Discord handlers
-  
+
 Database:
   code/supabase/migrations/ - All SQL migrations
-  
+
 Discord Bot:
   code/discord-bot/        - All bot code
   code/discord-bot/commands/ - Slash commands
-  
+
 Documentation:
   code/docs/               - All guides and documentation
 ```
@@ -637,23 +679,27 @@ Documentation:
 ## 10. DEPLOYMENT CHECKLIST
 
 ### Frontend (Vercel)
+
 - [ ] Environment variables set in Vercel dashboard
 - [ ] CSP headers configured in vercel.json
 - [ ] Branch deployments working
 - [ ] Discord OAuth redirect URI set in Discord portal
 
 ### Backend (Supabase)
+
 - [ ] All migrations applied
 - [ ] RLS policies enabled on all tables
 - [ ] Service role key securely stored
 
 ### Bot (Railway)
+
 - [ ] Environment variables set
 - [ ] Bot token valid and bot is online
 - [ ] Slash commands registered
 - [ ] Database connection working
 
 ### Discord Developer Portal
+
 - [ ] OAuth2 redirect URI: https://aethex.dev/api/discord/oauth/callback
 - [ ] Bot invited to test servers
 - [ ] Slash commands enabled

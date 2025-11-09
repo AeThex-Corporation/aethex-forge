@@ -49,7 +49,9 @@ export default function RecentUpdatesSection({
       ? "border-gray-300 text-black hover:bg-gray-100"
       : "border-slate-600 text-white hover:bg-slate-800";
   const hoverBorderColor =
-    theme === "professional" ? "hover:border-gray-400" : "hover:border-purple-500/50";
+    theme === "professional"
+      ? "hover:border-gray-400"
+      : "hover:border-purple-500/50";
 
   return (
     <div className="mb-12">
