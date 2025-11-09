@@ -101,7 +101,6 @@ import DocsSync from "./pages/DocsSync";
 import { DiscordProvider } from "./contexts/DiscordContext";
 import { DiscordActivityProvider } from "./contexts/DiscordActivityContext";
 import DiscordActivity from "./pages/DiscordActivity";
-import DiscordOAuthCallback from "./pages/DiscordOAuthCallback";
 import Activity from "./pages/Activity";
 import RobloxCallback from "./pages/RobloxCallback";
 import Web3Callback from "./pages/Web3Callback";
