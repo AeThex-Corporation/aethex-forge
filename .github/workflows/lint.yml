@@ -23,13 +23,10 @@ jobs:
         run: npm ci
       
       - name: Run ESLint
-        run: npm run lint 2>&1 || echo "Note: Linting issues detected"
-        continue-on-error: true
+        run: npm run lint || true
       
       - name: Type check
-        run: npm run type-check 2>&1 || echo "Note: Type check issues detected"
-        continue-on-error: true
+        run: npm run type-check || true
       
       - name: Format check
-        run: npm run format:check 2>&1 || echo "Note: Formatting issues detected"
-        continue-on-error: true
+        run: npm run format:check || true
