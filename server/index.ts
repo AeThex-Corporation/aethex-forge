@@ -1462,6 +1462,119 @@ export function createServer() {
       }
     });
 
+    // Discord Token Diagnostic Endpoint
+    app.get("/api/discord/diagnostic", async (req, res) => {
+      try {
+        const botToken = process.env.DISCORD_BOT_TOKEN?.trim();
+        const clientId = process.env.DISCORD_CLIENT_ID?.trim();
+        const publicKey = process.env.DISCORD_PUBLIC_KEY?.trim();
+
+        const diagnostics = {
+          timestamp: new Date().toISOString(),
+          environment: {
+            botTokenSet: !!botToken,
+            clientIdSet: !!clientId,
+            publicKeySet: !!publicKey,
+          },
+          tokenValidation: {
+            length: botToken?.length || 0,
+            format: botToken ? "valid_format" : "missing",
+            preview: botToken
+              ? `${botToken.substring(0, 15)}...${botToken.substring(botToken.length - 10)}`
+              : null,
+            minLengthMet: (botToken?.length || 0) >= 20,
+          },
+          clientIdValidation: {
+            value: clientId || null,
+            isNumeric: /^\d+$/.test(clientId || ""),
+          },
+          testRequest: {
+            url: `https://discord.com/api/v10/applications/${clientId}/commands`,
+            method: "PUT",
+            headerFormat: "Bot {token}",
+            status: "ready_to_test",
+          },
+          recommendations: [] as string[],
+        };
+
+        // Add recommendations based on validation
+        if (!botToken) {
+          diagnostics.recommendations.push(
+            "❌ DISCORD_BOT_TOKEN not set. Set it in environment variables."
+          );
+        } else if ((botToken?.length || 0) < 20) {
+          diagnostics.recommendations.push(
+            `❌ DISCORD_BOT_TOKEN appears invalid (length: ${botToken?.length}). Should be 60+ characters.`
+          );
+        } else {
+          diagnostics.recommendations.push(
+            "✅ DISCORD_BOT_TOKEN format looks valid"
+          );
+        }
+
+        if (!clientId) {
+          diagnostics.recommendations.push(
+            "❌ DISCORD_CLIENT_ID not set. Set it to your application's ID."
+          );
+        } else {
+          diagnostics.recommendations.push("✅ DISCORD_CLIENT_ID is set");
+        }
+
+        if (!publicKey) {
+          diagnostics.recommendations.push(
+            "❌ DISCORD_PUBLIC_KEY not set. Needed for signature verification."
+          );
+        } else {
+          diagnostics.recommendations.push("✅ DISCORD_PUBLIC_KEY is set");
+        }
+
+        // Test if token works with Discord API
+        if (botToken && clientId) {
+          try {
+            const testResponse = await fetch(
+              `https://discord.com/api/v10/applications/${clientId}`,
+              {
+                headers: {
+                  Authorization: `Bot ${botToken}`,
+                },
+              }
+            );
+
+            diagnostics.testRequest = {
+              ...diagnostics.testRequest,
+              status: testResponse.status === 200 ? "✅ Success" : `❌ Failed (${testResponse.status})`,
+              responseCode: testResponse.status,
+            };
+
+            if (testResponse.status === 401) {
+              diagnostics.recommendations.push(
+                "❌ Token authentication failed (401). The token may be invalid or revoked."
+              );
+            } else if (testResponse.status === 200) {
+              diagnostics.recommendations.push(
+                "✅ Token authentication successful with Discord API!"
+              );
+            }
+          } catch (error) {
+            diagnostics.testRequest = {
+              ...diagnostics.testRequest,
+              status: "⚠️ Network Error",
+              error: error instanceof Error ? error.message : "Unknown error",
+            };
+          }
+        }
+
+        res.setHeader("Content-Type", "application/json");
+        return res.json(diagnostics);
+      } catch (error: any) {
+        console.error("[Discord Diagnostic] Error:", error);
+        res.setHeader("Content-Type", "application/json");
+        return res.status(500).json({
+          error: error instanceof Error ? error.message : "Diagnostic failed",
+        });
+      }
+    });
+
     // Site settings (admin-managed)
     app.get("/api/site-settings", async (req, res) => {
       try {
