@@ -7,7 +7,7 @@ export interface BotHealthStatus {
   error?: string;
 }
 
-const BOT_HEALTH_URL = "http://144.217.139.239:3001/health";
+const BOT_HEALTH_URL = "http://144.217.139.239:8044/health";
 
 export async function checkBotHealth(): Promise<BotHealthStatus> {
   try {
