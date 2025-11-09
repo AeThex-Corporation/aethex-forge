@@ -141,13 +141,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             process.env.SUPABASE_SERVICE_ROLE || "",
           );
 
-          const discordId = interaction.member?.user?.id;
+          const discordId = interaction.user?.id || interaction.member?.user?.id;
 
           if (!discordId) {
             return res.status(200).json({
               type: 4,
               data: {
-                content: "❌ Could not get your Discord ID",
+                content: "❌ Could not get your Discord ID. Please try again.",
                 flags: 64,
               },
             });
