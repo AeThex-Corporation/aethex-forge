@@ -1424,19 +1424,43 @@ export function createServer() {
     // Discord Bot Health Check (proxy to avoid CSP issues)
     app.get("/api/discord/bot-health", async (req, res) => {
       try {
-        const botHealthUrl = "https://aethex.railway.internal:8044/health";
+        // Try multiple bot health URLs in order of preference
+        const botHealthUrls = [
+          process.env.DISCORD_BOT_HEALTH_URL,
+          "http://localhost:3000/health",
+          "https://aethex.railway.internal:3000/health",
+          "https://aethex.railway.internal:8044/health", // Fallback to old Railway URL
+        ].filter(Boolean) as string[];
 
-        const response = await fetch(botHealthUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        let lastError: Error | null = null;
+        let response: Response | null = null;
 
-        if (!response.ok) {
-          return res.status(response.status).json({
+        for (const url of botHealthUrls) {
+          try {
+            console.log(`[Discord Bot Health] Trying ${url}...`);
+            response = await fetch(url, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              timeout: 5000,
+            });
+
+            if (response.ok) {
+              console.log(`[Discord Bot Health] Success from ${url}`);
+              break;
+            }
+          } catch (err) {
+            lastError = err instanceof Error ? err : new Error(String(err));
+            console.warn(`[Discord Bot Health] Failed to reach ${url}: ${lastError.message}`);
+            continue;
+          }
+        }
+
+        if (!response?.ok) {
+          return res.status(503).json({
             status: "offline",
-            error: `HTTP ${response.status}: Failed to reach bot`,
+            error: `Could not reach bot health endpoint. Last error: ${lastError?.message || "Unknown error"}`,
           });
         }
 
