@@ -84,7 +84,8 @@ export default function Activity() {
             🎮 Discord Activity
           </h1>
           <p className="text-gray-300 mb-8">
-            This page is designed to run as a Discord Activity. Open it within Discord to get started!
+            This page is designed to run as a Discord Activity. Open it within
+            Discord to get started!
           </p>
           <p className="text-gray-500 text-sm">
             Not in Discord? Visit the main app at{" "}
@@ -135,7 +136,8 @@ export default function Activity() {
 
           <div className="bg-blue-900/20 border border-blue-700 rounded-lg p-3 mb-6">
             <p className="text-blue-300 text-xs">
-              💡 Open Discord DevTools (Ctrl+Shift+I) and check the console for messages starting with{" "}
+              💡 Open Discord DevTools (Ctrl+Shift+I) and check the console for
+              messages starting with{" "}
               <code className="bg-blue-950 px-1 rounded">
                 [Discord Activity]
               </code>
@@ -204,7 +206,9 @@ export default function Activity() {
                 realm-specific features.
               </p>
               <button
-                onClick={() => window.open(`${appBaseUrl}/profile/settings`, "_blank")}
+                onClick={() =>
+                  window.open(`${appBaseUrl}/profile/settings`, "_blank")
+                }
                 className="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
               >
                 Change Realm
@@ -224,13 +228,17 @@ export default function Activity() {
                 🎨 Browse Creators
               </button>
               <button
-                onClick={() => window.open(`${appBaseUrl}/opportunities`, "_blank")}
+                onClick={() =>
+                  window.open(`${appBaseUrl}/opportunities`, "_blank")
+                }
                 className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-center transition-colors font-medium"
               >
                 💼 Find Opportunities
               </button>
               <button
-                onClick={() => window.open(`${appBaseUrl}/profile/settings`, "_blank")}
+                onClick={() =>
+                  window.open(`${appBaseUrl}/profile/settings`, "_blank")
+                }
                 className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-center transition-colors font-medium"
               >
                 ⚙️ Settings
@@ -241,9 +249,17 @@ export default function Activity() {
           <div className="bg-blue-900/20 border border-blue-700 rounded-lg p-4">
             <p className="text-blue-100 text-sm">
               💡 <strong>Discord Commands:</strong> Use{" "}
-              <code className="bg-blue-950 px-2 py-1 rounded text-xs">/profile</code>,{" "}
-              <code className="bg-blue-950 px-2 py-1 rounded text-xs">/set-realm</code>, and{" "}
-              <code className="bg-blue-950 px-2 py-1 rounded text-xs">/verify-role</code>{" "}
+              <code className="bg-blue-950 px-2 py-1 rounded text-xs">
+                /profile
+              </code>
+              ,{" "}
+              <code className="bg-blue-950 px-2 py-1 rounded text-xs">
+                /set-realm
+              </code>
+              , and{" "}
+              <code className="bg-blue-950 px-2 py-1 rounded text-xs">
+                /verify-role
+              </code>{" "}
               to manage your account directly in Discord.
             </p>
           </div>

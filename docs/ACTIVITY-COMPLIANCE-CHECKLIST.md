@@ -7,16 +7,19 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ### Activity Component (code/client/pages/Activity.tsx)
 
 - [ ] **No React Router Navigation**
+
   - [ ] No `useNavigate()` hook
   - [ ] No `navigate()` calls
   - [ ] No `<Link to="...">` components
 
 - [ ] **No Internal Page Navigation**
+
   - [ ] All internal navigation removed
   - [ ] Routes like `/creators`, `/opportunities`, `/settings` don't exist in Activity
   - [ ] If accessing main app features, use `window.open(url, "_blank")`
 
 - [ ] **Proper Error Handling**
+
   - [ ] Graceful error state display
   - [ ] Loading state handled properly
   - [ ] "Not in Discord" state shows helpful message instead of crashing
@@ -29,11 +32,13 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ### Manifest Configuration (code/public/discord-manifest.json)
 
 - [ ] **Discord Proxy Domain Only**
+
   - [ ] `rpc_origins` contains ONLY: `"https://578971245454950421.discordsays.com"`
   - [ ] No external domains listed
   - [ ] No `aethex.dev` in rpc_origins
 
 - [ ] **Valid JSON Structure**
+
   - [ ] `id` matches Discord app ID: `"578971245454950421"`
   - [ ] `version` is set: `"1"`
   - [ ] `name` describes the Activity
@@ -46,12 +51,14 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ### Context/SDK Setup (code/client/contexts/DiscordActivityContext.tsx)
 
 - [ ] **Proper SDK Initialization**
+
   - [ ] SDK imported: `@discord/embedded-app-sdk`
   - [ ] `DiscordSDK` instantiated with client ID
   - [ ] `sdk.ready()` awaited before using SDK
   - [ ] `sdk.authenticate()` called after ready
 
 - [ ] **Correct OAuth Flow**
+
   - [ ] Uses `sdk.commands.authorize()` for OAuth
   - [ ] Exchanges code for token via `/api/discord/activity-auth`
   - [ ] Token used to authenticate with SDK
@@ -68,10 +75,11 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ### Link Handling
 
 - [ ] **All External Links Use window.open()**
+
   ```typescript
   // ✅ CORRECT
   <button onClick={() => window.open(url, "_blank")}>
-  
+
   // ❌ WRONG
   <a href={url}>
   <Link to={url}>
@@ -79,6 +87,7 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
   ```
 
 - [ ] **All Buttons Have Clear Intent**
+
   - [ ] "View Profile" → Opens profile in new window
   - [ ] "Browse Creators" → Opens main app in new window
   - [ ] "Settings" → Opens settings in new window
@@ -93,6 +102,7 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ### User Data
 
 - [ ] **Data Fetched from Backend**
+
   - [ ] Uses `/api/discord/activity-auth` endpoint
   - [ ] Passes access token from SDK
   - [ ] Displays cached/static data, not real-time
@@ -108,12 +118,14 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ### Pre-Deployment
 
 - [ ] **Build Succeeds**
+
   ```bash
   npm run build
   # Should produce no errors about Activity
   ```
 
 - [ ] **Dev Server Works**
+
   ```bash
   npm run dev
   # Activity loads without console errors
@@ -127,11 +139,13 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ### Post-Deployment
 
 - [ ] **Manifest Served Correctly**
+
   - [ ] `https://aethex.dev/discord-manifest.json` returns valid JSON
   - [ ] Content-Type is `application/json`
   - [ ] No 404 errors
 
 - [ ] **Activity Loads in Discord**
+
   - [ ] Can launch from Discord
   - [ ] No loading stuck state
   - [ ] User profile displays
@@ -168,6 +182,7 @@ This checklist ensures your Discord Activity meets Discord's Single-Page Applica
 ## 🔍 Verification Steps
 
 ### Step 1: Code Review
+
 ```bash
 # Check Activity component
 grep -n "navigate\|useNavigate\|<Link\|href=" code/client/pages/Activity.tsx
@@ -179,6 +194,7 @@ grep -n "react-router" code/client/pages/Activity.tsx
 ```
 
 ### Step 2: Manifest Validation
+
 ```bash
 # Check manifest domains
 cat code/public/discord-manifest.json
@@ -187,6 +203,7 @@ cat code/public/discord-manifest.json
 ```
 
 ### Step 3: Runtime Testing
+
 1. Launch Activity in Discord
 2. Open DevTools (F12)
 3. Check console for `[Discord Activity]` logs
@@ -195,6 +212,7 @@ cat code/public/discord-manifest.json
 6. Reload Activity - should re-initialize properly
 
 ### Step 4: Cross-Origin Testing
+
 1. In Discord DevTools:
    - Go to Console tab
    - Look for CORS errors
@@ -205,14 +223,14 @@ cat code/public/discord-manifest.json
 
 ## Common Issues & Fixes
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| Activity won't load | Missing frame_id in URL | Check you're in Discord iframe |
-| "Cannot find module 'react-router'" | Router still imported | Remove router imports |
-| Links navigate within Activity | Using `href` or `navigate()` | Change to `window.open(..., "_blank")` |
-| User data doesn't load | `/api/discord/activity-auth` failing | Check SDK authentication success |
-| CORS errors in console | External domains in rpc_origins | Remove from manifest, use Discord proxy |
-| Manifest 404 error | File not in public directory | Move to `code/public/discord-manifest.json` |
+| Issue                               | Cause                                | Fix                                         |
+| ----------------------------------- | ------------------------------------ | ------------------------------------------- |
+| Activity won't load                 | Missing frame_id in URL              | Check you're in Discord iframe              |
+| "Cannot find module 'react-router'" | Router still imported                | Remove router imports                       |
+| Links navigate within Activity      | Using `href` or `navigate()`         | Change to `window.open(..., "_blank")`      |
+| User data doesn't load              | `/api/discord/activity-auth` failing | Check SDK authentication success            |
+| CORS errors in console              | External domains in rpc_origins      | Remove from manifest, use Discord proxy     |
+| Manifest 404 error                  | File not in public directory         | Move to `code/public/discord-manifest.json` |
 
 ## Certification Summary
 

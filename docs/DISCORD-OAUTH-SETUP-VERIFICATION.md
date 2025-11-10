@@ -20,6 +20,7 @@ https://aethex.dev/api/discord/oauth/callback
 ```
 
 **If you're using a different domain** (like localhost for testing):
+
 ```
 http://localhost:5173/api/discord/oauth/callback
 ```
@@ -37,6 +38,7 @@ If the URL is NOT listed:
 4. **Wait** - changes may take 1-2 minutes to propagate
 
 ⚠️ **IMPORTANT:** The redirect URI must match EXACTLY:
+
 - Correct: `https://aethex.dev/api/discord/oauth/callback`
 - Wrong: `https://aethex.dev/api/discord/callback` (missing `/oauth`)
 - Wrong: `aethex.dev/api/discord/oauth/callback` (missing `https://`)
@@ -59,9 +61,11 @@ After verifying the redirect URI, test both flows:
 7. You should see Discord in your connections list
 
 **If it redirects to `/profile/settings` instead:**
+
 - This has been FIXED in the code update
 
 **If it shows an error:**
+
 - Check the error message in the browser console
 - Note: Session may be lost if redirect URI not registered
 
@@ -81,12 +85,14 @@ This is the flow that had session loss issues.
 8. **EXPECTED:** Discord should appear in your connections
 
 **If you're redirected to `/login` instead:**
+
 - Session was lost during OAuth callback
 - **Cause:** Redirect URI not registered in Discord Dev Portal
 - **Solution:** Follow Step 1-3 above to add the redirect URI
 - **Then:** Try the flow again
 
 **If you see an error about session being lost:**
+
 - This means the backend detected missing session cookies
 - Check the browser console for error details
 - The error message now tells you to verify Discord Dev Portal settings
@@ -100,12 +106,15 @@ Verify these are set correctly:
 ### Frontend (code/.env or deployment platform)
 
 - [ ] `VITE_API_BASE` is set to your API domain
+
   ```
   VITE_API_BASE=https://aethex.dev
   ```
+
   (Or your actual deployment domain)
 
 - [ ] `VITE_SUPABASE_URL` is correct
+
   ```
   VITE_SUPABASE_URL=https://kmdeisowhtsalsekkzqd.supabase.co
   ```
@@ -115,17 +124,21 @@ Verify these are set correctly:
 ### Backend/Server (environment variables)
 
 - [ ] `DISCORD_CLIENT_ID` is set
+
   ```
   DISCORD_CLIENT_ID=578971245454950421
   ```
 
 - [ ] `DISCORD_CLIENT_SECRET` is set (production)
+
   ```
   DISCORD_CLIENT_SECRET=JKlilGzcTWgfmt2wEqiHO8wpCel5VEji
   ```
+
   ⚠️ **NOTE:** This is sensitive - only set in production, not in code
 
 - [ ] `VITE_SUPABASE_URL` is set on backend
+
   ```
   VITE_SUPABASE_URL=https://kmdeisowhtsalsekkzqd.supabase.co
   ```
@@ -145,6 +158,7 @@ Verify these are set correctly:
 **Cause:** Redirect URI not registered in Discord Dev Portal
 
 **Solution:**
+
 1. Open Discord Developer Portal
 2. Go to OAuth2 → Redirects
 3. Verify `https://aethex.dev/api/discord/oauth/callback` is listed
@@ -158,6 +172,7 @@ Verify these are set correctly:
 **Cause:** Linking succeeded but auth state not refreshed
 
 **Solution:**
+
 1. Verify the `discord_links` table in Supabase has the record
    - Go to: https://app.supabase.com/project/kmdeisowhtsalsekkzqd
    - Find table: `discord_links`
@@ -177,6 +192,7 @@ Verify these are set correctly:
 **Old Problem:** Redirected to `/profile/settings`
 
 **Solution:** ✅ FIXED in code
+
 - The code now redirects to `/dashboard?tab=connections`
 - If you're still seeing `/profile/settings`:
   - Clear browser cache (Ctrl+Shift+Delete)
@@ -189,6 +205,7 @@ Verify these are set correctly:
 **Cause:** Discord account already linked to an AeThex account
 
 **Solutions:**
+
 - Option A: Use a different Discord account
 - Option B: Contact admin to unlink the Discord account from the other AeThex account
 - Option C: If it's your old account, use `\unlink` command to disconnect it, then `/verify` again

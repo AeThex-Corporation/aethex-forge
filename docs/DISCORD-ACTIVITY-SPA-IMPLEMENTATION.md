@@ -26,15 +26,18 @@ Discord Client
 ## Key Changes from Previous Implementation
 
 ### 1. **Removed Router Navigation**
+
 - **Before:** Activity used `useNavigate()` to redirect within React Router
 - **After:** Activity is completely self-contained, no internal navigation
 
 ### 2. **Links Now Open in New Windows**
+
 - **Before:** `<a href="/creators">` navigated within the iframe
 - **After:** `<button onClick={() => window.open(url, "_blank")}>` opens the main app in a new tab
 - This allows users to see full features without breaking Activity isolation
 
 ### 3. **Simplified Manifest**
+
 - **Before:** Manifest referenced multiple domains including aethex.dev
 - **After:** Manifest ONLY references Discord proxy domain (`578971245454950421.discordsays.com`)
 - This ensures Activity is properly sandboxed through Discord's proxy
@@ -44,6 +47,7 @@ Discord Client
 ### code/client/pages/Activity.tsx
 
 **Removed:**
+
 ```typescript
 import { useNavigate } from "react-router-dom";
 const navigate = useNavigate();
@@ -55,6 +59,7 @@ useEffect(() => {
 ```
 
 **Added:**
+
 ```typescript
 import { useState } from "react";
 const [showContent, setShowContent] = useState(false);
@@ -67,6 +72,7 @@ useEffect(() => {
 ```
 
 **Link Changes:**
+
 ```typescript
 // Before:
 <a href="/creators" className="...">🎨 Browse Creators</a>
@@ -83,6 +89,7 @@ useEffect(() => {
 ### code/public/discord-manifest.json
 
 **Before:**
+
 ```json
 {
   "rpc_origins": [
@@ -98,11 +105,10 @@ useEffect(() => {
 ```
 
 **After:**
+
 ```json
 {
-  "rpc_origins": [
-    "https://578971245454950421.discordsays.com"
-  ]
+  "rpc_origins": ["https://578971245454950421.discordsays.com"]
 }
 ```
 
@@ -134,11 +140,13 @@ useEffect(() => {
 ### Local Testing
 
 1. Start the dev server:
+
    ```bash
    npm run dev
    ```
 
 2. Open Discord and find an Activity that can be launched
+
    - Right-click on a voice channel
    - Select "Launch Activity"
    - Look for "AeThex Activity"
@@ -152,6 +160,7 @@ useEffect(() => {
 ### Deployment Testing
 
 1. After deploying to production:
+
    ```bash
    npm run build
    npm start
@@ -169,10 +178,13 @@ If you want to add more features to the Activity without breaking isolation, use
 ```typescript
 // Activity sends message to parent window (if applicable)
 if (window.opener) {
-  window.opener.postMessage({
-    type: 'navigate',
-    path: '/opportunities'
-  }, 'https://aethex.dev');
+  window.opener.postMessage(
+    {
+      type: "navigate",
+      path: "/opportunities",
+    },
+    "https://aethex.dev",
+  );
 }
 ```
 
@@ -185,9 +197,7 @@ If Activity needs to access external APIs, update the manifest:
   "interactions": {
     "request_url": "https://aethex.dev/api/discord/interactions"
   },
-  "rpc_origins": [
-    "https://578971245454950421.discordsays.com"
-  ],
+  "rpc_origins": ["https://578971245454950421.discordsays.com"],
   "url_mapping": {
     "/api/external": "https://api.external-service.com",
     "/uploads": "https://cdn.aethex.dev/uploads"
@@ -196,8 +206,9 @@ If Activity needs to access external APIs, update the manifest:
 ```
 
 Then in code, use relative paths:
+
 ```typescript
-fetch('/api/external/data') // Discord proxy transforms to https://api.external-service.com/data
+fetch("/api/external/data"); // Discord proxy transforms to https://api.external-service.com/data
 ```
 
 ## Troubleshooting
@@ -211,7 +222,7 @@ fetch('/api/external/data') // Discord proxy transforms to https://api.external-
 
 ### Links Not Working
 
-1. **Ensure target="_blank" or window.open()** - Regular navigation breaks Activity
+1. **Ensure target="\_blank" or window.open()** - Regular navigation breaks Activity
 2. **Check URL construction** - Verify full URL is correct
 3. **Test in separate browser tab** - Verify links work outside Activity
 
@@ -229,7 +240,7 @@ fetch('/api/external/data') // Discord proxy transforms to https://api.external-
 - [ ] Backend OAuth endpoints configured (/api/discord/activity-auth)
 - [ ] Discord Developer Portal has manifest URL configured
 - [ ] Test server has AeThex bot installed
-- [ ] All links use window.open() with "_blank" target
+- [ ] All links use window.open() with "\_blank" target
 - [ ] No React Router navigation in Activity component
 
 ## Related Documentation

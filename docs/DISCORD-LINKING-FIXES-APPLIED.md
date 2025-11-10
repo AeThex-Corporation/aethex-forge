@@ -13,12 +13,14 @@ All Discord linking flow issues have been identified and fixed. This document su
 **File:** `code/client/pages/DiscordVerify.tsx` (Line 91-93)
 
 **What was broken:**
+
 - After `/verify` command in Discord, user clicks link
-- Code auto-submits successfully  
+- Code auto-submits successfully
 - BUT redirected to `/profile/settings` (wrong page)
 - User can't see Discord in connections list
 
 **What was fixed:**
+
 ```typescript
 // BEFORE
 setTimeout(() => {
@@ -40,6 +42,7 @@ setTimeout(() => {
 **File:** `code/client/pages/DiscordVerify.tsx` (Lines 160, 228)
 
 **What was broken:**
+
 - "Go to Settings" button on success screen → `/profile/settings`
 - "Cancel" button on input screen → `/profile/settings`
 - Both sent users to wrong location
@@ -47,6 +50,7 @@ setTimeout(() => {
 **What was fixed:**
 
 Button 1 (Line 160):
+
 ```typescript
 // BEFORE
 onClick={() => navigate("/profile/settings")}
@@ -56,6 +60,7 @@ onClick={() => navigate("/dashboard?tab=connections")}
 ```
 
 Button 2 (Line 228):
+
 ```typescript
 // BEFORE
 onClick={() => navigate("/profile/settings")}
@@ -73,11 +78,13 @@ onClick={() => navigate("/dashboard")}
 **File:** `code/api/discord/oauth/callback.ts` (Lines 105-113)
 
 **What was broken:**
+
 - When session lost, error message was generic: "Please sign in before linking Discord"
 - No diagnostic information to help debug
 - Users didn't know what went wrong
 
 **What was fixed:**
+
 ```typescript
 // BEFORE
 console.error("[Discord OAuth] Linking flow but no authenticated user found");
@@ -86,9 +93,16 @@ return res.redirect(
 );
 
 // AFTER
-console.error("[Discord OAuth] Linking flow but no authenticated user found - session cookies not present in request");
-console.error("[Discord OAuth] DIAGNOSTIC: Ensure Discord Dev Portal OAuth2 Redirects includes:", "https://aethex.dev/api/discord/oauth/callback");
-console.error("[Discord OAuth] If using custom domain, update the redirect URI accordingly");
+console.error(
+  "[Discord OAuth] Linking flow but no authenticated user found - session cookies not present in request",
+);
+console.error(
+  "[Discord OAuth] DIAGNOSTIC: Ensure Discord Dev Portal OAuth2 Redirects includes:",
+  "https://aethex.dev/api/discord/oauth/callback",
+);
+console.error(
+  "[Discord OAuth] If using custom domain, update the redirect URI accordingly",
+);
 return res.redirect(
   `/login?error=session_lost&message=${encodeURIComponent("Your session was lost. Please sign in again and try linking Discord.")}`,
 );
@@ -103,6 +117,7 @@ return res.redirect(
 ### Session Loss During Dashboard OAuth Linking
 
 **What happens:**
+
 1. User on `/dashboard?tab=connections`
 2. Clicks "Link Discord" button
 3. Redirected to Discord OAuth
@@ -112,13 +127,14 @@ return res.redirect(
 7. Backend can't extract user_id from cookies
 8. User redirected to login
 
-**Root cause:** 
+**Root cause:**
 One of the following:
+
 1. **Redirect URI not registered in Discord Dev Portal** ← MOST LIKELY
    - Discord doesn't redirect to the correct URL
    - Causes issues with cookie handling
-   
 2. Browser cookie policy (SameSite=Lax)
+
    - Cookies might not be sent in cross-site redirect
    - Less likely but possible
 
@@ -186,6 +202,7 @@ Expected flow:
 ```
 
 **Status:** ⚠️ DEPENDS ON - Discord Dev Portal configuration
+
 - If redirect URI not registered: User redirected to login
 - Fix: Verify Discord Dev Portal has correct redirect URI registered (see step above)
 
@@ -207,11 +224,13 @@ Expected when trying to link again:
 ## 📚 Documentation Created
 
 1. **DISCORD-LINKING-FLOW-ANALYSIS.md**
+
    - Complete flow diagrams
    - Issue breakdown
    - Root cause analysis
 
 2. **DISCORD-OAUTH-SETUP-VERIFICATION.md** ← READ THIS NEXT
+
    - Step-by-step Discord Dev Portal verification
    - Testing procedures
    - Debugging guide
@@ -236,12 +255,14 @@ Expected when trying to link again:
 ## Environment Variables Required
 
 ### Already Set ✅
+
 - `DISCORD_CLIENT_ID=578971245454950421`
 - `DISCORD_PUBLIC_KEY=...`
 - `VITE_SUPABASE_URL=...`
 - `VITE_SUPABASE_ANON_KEY=...`
 
 ### Verify These Are Set ⚠️
+
 - `DISCORD_CLIENT_SECRET` (set in production only)
 - `SUPABASE_SERVICE_ROLE` (set in production only)
 - `VITE_API_BASE` (correct domain for your deployment)
@@ -250,30 +271,31 @@ Expected when trying to link again:
 
 ## Code Changes Summary
 
-| File | Change | Status |
-|------|--------|--------|
-| `code/client/pages/DiscordVerify.tsx` | Lines 91-93: Auto-redirect to connections tab | ✅ FIXED |
-| `code/client/pages/DiscordVerify.tsx` | Line 160: Button redirect to connections tab | ✅ FIXED |
-| `code/client/pages/DiscordVerify.tsx` | Line 228: Cancel button redirect to dashboard | ✅ FIXED |
-| `code/api/discord/oauth/callback.ts` | Lines 105-113: Better error messages | ✅ IMPROVED |
-| Discord Dev Portal | OAuth2 Redirect URI registration | ⚠️ NEEDS VERIFICATION |
+| File                                  | Change                                        | Status                |
+| ------------------------------------- | --------------------------------------------- | --------------------- |
+| `code/client/pages/DiscordVerify.tsx` | Lines 91-93: Auto-redirect to connections tab | ✅ FIXED              |
+| `code/client/pages/DiscordVerify.tsx` | Line 160: Button redirect to connections tab  | ✅ FIXED              |
+| `code/client/pages/DiscordVerify.tsx` | Line 228: Cancel button redirect to dashboard | ✅ FIXED              |
+| `code/api/discord/oauth/callback.ts`  | Lines 105-113: Better error messages          | ✅ IMPROVED           |
+| Discord Dev Portal                    | OAuth2 Redirect URI registration              | ⚠️ NEEDS VERIFICATION |
 
 ---
 
 ## Issue Resolution Status
 
-| Issue | Status | Solution |
-|-------|--------|----------|
-| Wrong redirect after /verify | ✅ FIXED | Update code + deploy |
-| Session lost during OAuth | ⚠️ PARTIALLY FIXED | Need Discord Dev Portal verification |
-| Generic error messages | ✅ IMPROVED | Better console logging |
-| UI consistency | ✅ FIXED | All redirects now go to connections tab |
+| Issue                        | Status             | Solution                                |
+| ---------------------------- | ------------------ | --------------------------------------- |
+| Wrong redirect after /verify | ✅ FIXED           | Update code + deploy                    |
+| Session lost during OAuth    | ⚠️ PARTIALLY FIXED | Need Discord Dev Portal verification    |
+| Generic error messages       | ✅ IMPROVED        | Better console logging                  |
+| UI consistency               | ✅ FIXED           | All redirects now go to connections tab |
 
 ---
 
 ## Deployment Instructions
 
 1. **Deploy code changes:**
+
    ```bash
    npm run build
    npm run deploy
@@ -281,11 +303,13 @@ Expected when trying to link again:
    ```
 
 2. **Verify Discord Dev Portal:**
+
    - Follow steps in DISCORD-OAUTH-SETUP-VERIFICATION.md
    - Add redirect URI if missing
    - Wait for propagation
 
 3. **Test thoroughly:**
+
    - Test /verify flow
    - Test Dashboard "Link Discord" button
    - Check session persistence
@@ -307,6 +331,7 @@ Expected when trying to link again:
 ## Questions?
 
 Refer to:
+
 1. **DISCORD-OAUTH-SETUP-VERIFICATION.md** - Setup & testing
 2. **DISCORD-LINKING-FLOW-ANALYSIS.md** - Architecture & flow diagrams
 3. Browser console - Look for `[Discord OAuth]` debug messages

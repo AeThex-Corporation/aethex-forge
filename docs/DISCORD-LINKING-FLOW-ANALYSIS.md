@@ -26,7 +26,8 @@ Returns success response with discord username ✅
 Should redirect to: /dashboard?tab=connections
 ```
 
-**Why it's broken:** 
+**Why it's broken:**
+
 - Line 92 of `DiscordVerify.tsx` hardcoded to navigate to `/profile/settings`
 - User needs to see **Connections** tab to verify Discord was linked
 - Shows wrong page, feels like "demo BS" or missing content
@@ -64,11 +65,13 @@ Redirects to: /login?error=not_authenticated
 ```
 
 **Why it's broken:**
+
 1. Session cookies not being sent with OAuth callback request
 2. OR session was cleared/expired during OAuth roundtrip
 3. OR redirectUri mismatch causing issues
 
-**Root cause:** 
+**Root cause:**
+
 - Browser cookies might not be sent cross-domain
 - SameSite=Lax might be blocking cookies
 - The redirectUri registered in Discord Dev Portal might not match
@@ -94,6 +97,7 @@ Never completes the linking
 ### Fix 1: DiscordVerify.tsx Redirect (Line 92)
 
 **Current (WRONG):**
+
 ```typescript
 setTimeout(() => {
   navigate("/profile/settings");
@@ -101,6 +105,7 @@ setTimeout(() => {
 ```
 
 **Should be (CORRECT):**
+
 ```typescript
 setTimeout(() => {
   navigate("/dashboard?tab=connections");
@@ -116,9 +121,10 @@ setTimeout(() => {
 The `/api/discord/oauth/callback.ts` needs to ensure:
 
 1. **SameSite Cookie Policy** - Cookies must be sent with cross-site requests
+
    ```typescript
    // In oauth callback response headers
-   res.setHeader('Set-Cookie', [
+   res.setHeader("Set-Cookie", [
      `sb-access-token=...; SameSite=None; Secure; Path=/`,
      `sb-refresh-token=...; SameSite=None; Secure; Path=/`,
    ]);
@@ -133,6 +139,7 @@ The `/api/discord/oauth/callback.ts` needs to ensure:
 ### Fix 3: Verify Discord OAuth Redirect URI
 
 **In Discord Developer Portal:**
+
 1. Go to Applications > Your App
 2. OAuth2 > Redirects
 3. Make sure this is listed:
@@ -142,6 +149,7 @@ The `/api/discord/oauth/callback.ts` needs to ensure:
    (Or whatever domain is in production)
 
 **In Code:**
+
 - `code/api/discord/oauth/start.ts` - Uses dynamic domain ✅
 - `code/api/discord/oauth/callback.ts` - Uses dynamic domain ✅
 
@@ -157,11 +165,14 @@ After successful linking, before redirecting:
 // After successful link at line 225
 if (isLinkingFlow && authenticatedUserId) {
   // ... linking logic ...
-  
+
   // IMPORTANT: Set cookies explicitly for browser
   // (Supabase session cookies should already be set, but ensure)
-  
-  console.log("[Discord OAuth] Successfully linked, redirecting to:", redirectTo);
+
+  console.log(
+    "[Discord OAuth] Successfully linked, redirecting to:",
+    redirectTo,
+  );
   return res.redirect(302, redirectTo); // Use 302 instead of default
 }
 ```
@@ -175,21 +186,25 @@ if (isLinkingFlow && authenticatedUserId) {
 File: `code/client/pages/DiscordVerify.tsx`
 
 Change line 92 from:
+
 ```typescript
 navigate("/profile/settings");
 ```
 
 To:
+
 ```typescript
 navigate("/dashboard?tab=connections");
 ```
 
 Also change the button on line 160 from:
+
 ```typescript
 onClick={() => navigate("/profile/settings")}
 ```
 
 To:
+
 ```typescript
 onClick={() => navigate("/dashboard?tab=connections")}
 ```
@@ -199,6 +214,7 @@ onClick={() => navigate("/dashboard?tab=connections")}
 ### Step 2: Verify Discord OAuth Redirect URI
 
 Check Discord Developer Portal:
+
 - Application: AeThex
 - OAuth2 → Redirects
 - Confirm this is registered: `https://aethex.dev/api/discord/oauth/callback`
@@ -231,11 +247,12 @@ To help debug session issues, add logging in AuthContext:
 File: `code/client/contexts/AuthContext.tsx`
 
 In the useEffect that checks cookies, add:
+
 ```typescript
 useEffect(() => {
   // Debug: Log current session state
-  const cookies = document.cookie.split('; ').map(c => {
-    const [key] = c.split('=');
+  const cookies = document.cookie.split("; ").map((c) => {
+    const [key] = c.split("=");
     return key;
   });
   console.log("[AuthContext] Available cookies:", cookies);
@@ -282,12 +299,15 @@ useEffect(() => {
 ### Issue: Still Redirected to Login After Linking
 
 **Possible causes:**
+
 1. Session cookies not being sent
+
    - Check: DevTools → Network → Find the OAuth callback request
    - Look for "Cookie" header in request
    - If missing, cookies might be blocked
 
 2. OAuth Redirect URI mismatch
+
    - Check: Discord Developer Portal OAuth2 redirects
    - Should exactly match what backend is using
 
@@ -296,6 +316,7 @@ useEffect(() => {
    - Might need SameSite=None; Secure
 
 **Debug steps:**
+
 1. Open browser DevTools (F12)
 2. Go to Network tab
 3. Do the Discord link flow
@@ -312,10 +333,13 @@ useEffect(() => {
 ### Issue: Discord Doesn't Show in Connections List
 
 **Possible causes:**
+
 1. Linking succeeded but user not refreshed
+
    - Fix: Page reload or refreshAuthState() call
 
 2. Discord link created but user lookup fails
+
    - Check: Supabase discord_links table has the record
    - Check: User ID matches in both tables
 
@@ -327,11 +351,11 @@ useEffect(() => {
 
 ## File Changes Summary
 
-| File | Change | Line(s) |
-|------|--------|---------|
+| File                                  | Change                             | Line(s) |
+| ------------------------------------- | ---------------------------------- | ------- |
 | `code/client/pages/DiscordVerify.tsx` | Change redirect to connections tab | 92, 160 |
-| `code/api/discord/oauth/callback.ts` | Add explicit status code | 225 |
-| Discord Dev Portal | Verify redirect URI | N/A |
+| `code/api/discord/oauth/callback.ts`  | Add explicit status code           | 225     |
+| Discord Dev Portal                    | Verify redirect URI                | N/A     |
 
 ---
 
