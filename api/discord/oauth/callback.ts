@@ -310,10 +310,10 @@ export default async function handler(req: any, res: any) {
 
         userId = userId_temp;
 
-        // Create user profile
+        // Create user profile if it doesn't exist
         const { error: profileError } = await supabase
           .from("user_profiles")
-          .insert({
+          .upsert({
             id: userId,
             email: discordUser.email,
             full_name: discordUser.username,
