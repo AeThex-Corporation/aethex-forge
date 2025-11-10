@@ -1062,7 +1062,7 @@ export default function Dashboard() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
-                    <Button onClick={() => navigate("/staff")}>
+                    <Button onClick={() => navigate("/admin")}>
                       Open Staff Console
                     </Button>
                     <Button variant="outline" onClick={() => navigate("/feed")}>

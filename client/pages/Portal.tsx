@@ -19,7 +19,7 @@ const realmRoute: Record<RealmKey, string> = {
   client: "/consulting",
   community_member: "/community",
   customer: "/get-started",
-  staff: "/staff",
+  staff: "/admin",
 };
 
 export default function Portal() {
