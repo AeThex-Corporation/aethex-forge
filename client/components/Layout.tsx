@@ -259,7 +259,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                           <Link
                             to="/onboarding"
                             onClick={scrollToTop}
-                            className="block rounded-md bg-gradient-to-r from-aethex-500 to-neon-blue px-3 py-2 text-xs font-semibold text-white"
+                            className="block rounded-md bg-gradient-to-r from-aethex-500 to-neon-blue px-2.5 py-1.5 text-xs font-semibold text-white"
                           >
                             Join AeThex
                           </Link>
@@ -268,7 +268,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                           <Link
                             to="/login"
                             onClick={scrollToTop}
-                            className="block rounded-md px-3 py-2 text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
+                            className="block rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
                           >
                             Sign In
                           </Link>
