@@ -404,6 +404,38 @@ const App = () => (
                       element={<StaffAchievements />}
                     />
                     <Route path="/staff/chat" element={<StaffChat />} />
+                    <Route
+                      path="/staff/knowledge-base"
+                      element={<StaffKnowledgeBase />}
+                    />
+                    <Route
+                      path="/staff/team-handbook"
+                      element={<StaffTeamHandbook />}
+                    />
+                    <Route
+                      path="/staff/project-tracking"
+                      element={<StaffProjectTracking />}
+                    />
+                    <Route
+                      path="/staff/learning-portal"
+                      element={<StaffLearningPortal />}
+                    />
+                    <Route
+                      path="/staff/marketplace"
+                      element={<StaffInternalMarketplace />}
+                    />
+                    <Route
+                      path="/staff/announcements"
+                      element={<StaffAnnouncements />}
+                    />
+                    <Route
+                      path="/staff/performance-reviews"
+                      element={<StaffPerformanceReviews />}
+                    />
+                    <Route
+                      path="/staff/expenses"
+                      element={<StaffExpenseReports />}
+                    />
 
                     <Route path="/support" element={<Support />} />
                     <Route path="/status" element={<Status />} />
