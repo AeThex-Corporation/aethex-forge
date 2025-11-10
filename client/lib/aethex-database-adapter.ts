@@ -712,6 +712,28 @@ export const aethexProjectService = {
       throw error;
     }
 
+    if (data && data.user_id) {
+      try {
+        if (updates.status === "completed") {
+          await aethexNotificationService.createNotification(
+            data.user_id,
+            "success",
+            `✅ Project Completed: ${data.name || "Untitled"}`,
+            "Congratulations on finishing your project!",
+          );
+        } else if (updates.status === "in_progress") {
+          await aethexNotificationService.createNotification(
+            data.user_id,
+            "info",
+            `⏱️ Project Started: ${data.name || "Untitled"}`,
+            "You've started working on this project.",
+          );
+        }
+      } catch (notifError) {
+        console.warn("Failed to create project status notification:", notifError);
+      }
+    }
+
     return data as AethexProject;
   },
 
