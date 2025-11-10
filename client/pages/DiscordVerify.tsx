@@ -37,8 +37,12 @@ export default function DiscordVerify() {
       // Store code in sessionStorage so we can retrieve it after login
       if (code) {
         sessionStorage.setItem("discord_verification_code", code);
+        // Redirect to login with the code preserved in the URL
+        navigate(`/login?next=/discord-verify?code=${code}`);
+      } else {
+        // No code, redirect to regular login
+        navigate("/login?next=/discord-verify");
       }
-      navigate("/login?next=/discord-verify");
     }
   }, [user, navigate, code]);
 
