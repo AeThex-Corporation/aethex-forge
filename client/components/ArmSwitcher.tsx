@@ -96,6 +96,7 @@ export default function ArmSwitcher() {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleArmClick = (href: string) => {
     navigate(href);
@@ -154,6 +155,31 @@ export default function ArmSwitcher() {
         ))}
       </div>
 
+      {/* Mobile Version - Single Button that opens Fullscreen Modal */}
+      <div className="flex md:hidden items-center">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          aria-label="Open Arm Switcher"
+          className="p-2 rounded-md bg-gray-800/60 hover:bg-gray-700 transition-colors"
+        >
+          <Zap className="w-5 h-5 text-white" />
+        </button>
+      </div>
+
+      {/* Modal for mobile fullscreen arm switching */}
+      {/* Lazy import via component file to keep code organized */}
+      {isModalOpen && (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore - dynamic import handled at build time
+        require("./ArmSwitcherModal").default ? (
+          // If the module is available, render it
+          //@ts-expect-error
+          React.createElement(require("./ArmSwitcherModal").default, {
+            isOpen: isModalOpen,
+            onClose: () => setIsModalOpen(false),
+          })
+        ) : null
+      )}
     </>
   );
 }
