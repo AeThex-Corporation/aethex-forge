@@ -105,8 +105,20 @@ export default function Login() {
     if (!loading && user) {
       const params = new URLSearchParams(location.search);
       const next = params.get("next");
-      const safeNext = next && next.startsWith("/") ? next : null;
-      navigate(safeNext || (profileComplete ? "/dashboard" : "/onboarding"), {
+
+      // Check if there's an OAuth redirect destination stored (e.g., from staff login)
+      const oauthRedirect = sessionStorage.getItem("oauth_redirect_to");
+      const redirectDest =
+        (next && next.startsWith("/") ? next : null) ||
+        oauthRedirect ||
+        (profileComplete ? "/dashboard" : "/onboarding");
+
+      // Clear the stored redirect after using it
+      if (oauthRedirect) {
+        sessionStorage.removeItem("oauth_redirect_to");
+      }
+
+      navigate(redirectDest, {
         replace: true,
       });
     }
