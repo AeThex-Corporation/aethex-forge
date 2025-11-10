@@ -135,10 +135,11 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down">
         <div className="container mx-auto max-w-7xl flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-2 min-w-0">
           {/* Logo */}
-          <div className="flex items-center shrink-0">
+          <div className="flex items-center shrink-0 relative">
+            {/* Desktop - Regular Link */}
             <Link
               to="/"
-              className="hover-glow group inline-block"
+              className="hover-glow group inline-block hidden sm:block"
             >
               <img
                 src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
@@ -146,6 +147,44 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 className="h-10 w-10 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
               />
             </Link>
+
+            {/* Mobile - Spinning Logo Button */}
+            <button
+              type="button"
+              onClick={() => setIsArmModalOpen(true)}
+              className={`sm:hidden relative h-12 w-12 flex items-center justify-center rounded-xl transition-all duration-300 cursor-pointer ${
+                isArmModalOpen
+                  ? "bg-gradient-to-r from-yellow-500/30 via-green-500/30 to-blue-500/30 scale-110 shadow-lg shadow-purple-500/30"
+                  : "bg-gray-700/40 hover:bg-gray-600/60 shadow-lg"
+              }`}
+              title="Select Arm"
+            >
+              <div
+                className={`absolute inset-0 rounded-xl border-2 transition-all duration-300 ${
+                  isArmModalOpen
+                    ? "border-purple-400/80 animate-spin"
+                    : "border-gray-600/40"
+                }`}
+                style={{
+                  animation: isArmModalOpen
+                    ? "spin 3s linear infinite"
+                    : "none",
+                }}
+              />
+              <img
+                src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
+                alt="AeThex Logo"
+                className={`relative h-9 w-9 transition-all duration-300 ${
+                  isArmModalOpen ? "rotate-180 scale-85" : "rotate-0"
+                }`}
+              />
+            </button>
+
+            {/* Arm Selector Modal */}
+            <ArmSwitcherModal
+              isOpen={isArmModalOpen}
+              onClose={() => setIsArmModalOpen(false)}
+            />
           </div>
 
           {/* Navigation */}
