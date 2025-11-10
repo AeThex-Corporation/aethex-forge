@@ -214,7 +214,7 @@ export default async function handler(req: any, res: any) {
       return res.redirect(redirectTo);
     }
 
-    // LOGIN/SIGNUP FLOW: Standard OAuth login
+    // LOGIN FLOW: Don't auto-create accounts
     // Check if Discord user already exists
     const { data: existingLink } = await supabase
       .from("discord_links")
@@ -226,110 +226,54 @@ export default async function handler(req: any, res: any) {
     let isNewUser = false;
 
     if (existingLink) {
-      // User already linked - use existing user
+      // Discord ID already linked - use existing user
       userId = existingLink.user_id;
+      console.log(
+        "[Discord OAuth] Discord ID already linked to user:",
+        userId,
+      );
     } else {
+      // Discord not linked yet. Check if we should auto-link.
+
       // Check if email exists in user_profiles
-      const { data: existingUser } = await supabase
+      const { data: existingUserProfile } = await supabase
         .from("user_profiles")
         .select("id")
         .eq("email", discordUser.email)
         .single();
 
-      if (existingUser) {
-        // Link Discord to existing email
-        userId = existingUser.id;
+      if (existingUserProfile) {
+        // Discord email matches existing user profile - link it
+        userId = existingUserProfile.id;
+        console.log(
+          "[Discord OAuth] Discord email matches existing user profile, linking Discord",
+        );
       } else {
-        // Check if email already exists in auth (might be from another provider)
-        let userId_temp: string | null = null;
-
-        try {
-          // Try to look up auth user by email using admin API
-          const { data: authUsers } = await supabase.auth.admin.listUsers();
-          const existingAuthUser = authUsers?.find(
-            (u) => u.email === discordUser.email,
-          );
-
-          if (existingAuthUser) {
-            // Email already exists in auth - just link Discord
-            userId_temp = existingAuthUser.id;
-            console.log(
-              "[Discord OAuth] Email already exists in auth, linking Discord",
-            );
-          }
-        } catch (err) {
-          console.log(
-            "[Discord OAuth] Could not check existing auth users:",
-            err,
-          );
-        }
-
-        if (!userId_temp) {
-          // Create new auth user
-          const { data: authData, error: authError } =
-            await supabase.auth.admin.createUser({
-              email: discordUser.email,
-              email_confirm: true,
-              user_metadata: {
-                full_name: discordUser.username,
-                avatar_url: discordUser.avatar
-                  ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-                  : null,
-              },
-            });
-
-          if (authError || !authData.user) {
-            // Check if error is because email already exists
-            if (
-              authError?.message &&
-              authError.message.toLowerCase().includes("already")
-            ) {
-              console.log(
-                "[Discord OAuth] Email already registered, redirecting to link flow",
-              );
-              // Redirect to login page where user can link Discord to existing account
-              return res.redirect(
-                `/login?error=account_exists&message=${encodeURIComponent("Please sign in first, then link your Discord account from settings")}`,
-              );
-            }
-
-            console.error("[Discord OAuth] Auth user creation failed:", {
-              email: discordUser.email,
-              username: discordUser.username,
-              error_message: authError?.message,
-              error_code: authError?.code,
-            });
-            return res.redirect(
-              `/login?error=auth_create&message=${encodeURIComponent(authError?.message || "Failed to create account")}`,
-            );
-          }
-
-          userId_temp = authData.user.id;
-          isNewUser = true;
-        }
-
-        userId = userId_temp;
-
-        // Create user profile if it doesn't exist
-        const { error: profileError } = await supabase
-          .from("user_profiles")
-          .upsert({
-            id: userId,
-            email: discordUser.email,
-            full_name: discordUser.username,
-            avatar_url: discordUser.avatar
-              ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
-              : null,
-          });
-
-        if (profileError) {
-          console.error(
-            "[Discord OAuth] Profile creation failed:",
-            profileError,
-          );
-          return res.redirect("/login?error=profile_create");
-        }
+        // Discord email doesn't match any existing account
+        // Instead of auto-creating, redirect user to sign in with email first
+        console.log(
+          "[Discord OAuth] Discord email not found in existing accounts, asking user to sign in first",
+          {
+            discord_email: discordUser.email,
+          },
+        );
+        return res.redirect(
+          `/login?error=discord_no_match&message=${encodeURIComponent("Discord email (${discordUser.email}) not found. Please sign in with your email account first, then link Discord from settings.")}`,
+        );
       }
+    }
+
+    // At this point, userId is guaranteed to exist in user_profiles
+    // Create Discord link
+    const { error: linkError } = await supabase.from("discord_links").upsert({
+      discord_id: discordUser.id,
+      user_id: userId,
+      linked_at: new Date().toISOString(),
+    });
+
+    if (linkError) {
+      console.error("[Discord OAuth] Link creation failed:", linkError);
+      return res.redirect("/login?error=link_create");
     }
 
     // Create Discord link
