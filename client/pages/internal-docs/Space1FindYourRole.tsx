@@ -95,7 +95,10 @@ export default function Space1FindYourRole() {
                     </p>
                     <ul className="space-y-2">
                       {role.details.map((detail, idx) => (
-                        <li key={idx} className="text-sm text-slate-300 flex gap-2">
+                        <li
+                          key={idx}
+                          className="text-sm text-slate-300 flex gap-2"
+                        >
                           <span className="text-blue-400">→</span>
                           <span>{detail}</span>
                         </li>

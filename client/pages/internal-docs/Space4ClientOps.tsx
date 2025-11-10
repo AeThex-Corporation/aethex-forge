@@ -26,11 +26,31 @@ export default function Space4ClientOps() {
 
             <div className="space-y-3">
               {[
-                { num: "1", title: "Kickoff", desc: "Meet team, set goals, define scope" },
-                { num: "2", title: "Discovery", desc: "Understand problem, current state, constraints" },
-                { num: "3", title: "Planning", desc: "Create project plan, timeline, deliverables" },
-                { num: "4", title: "Team Assignment", desc: "Assign PM, engineers, set communication cadence" },
-                { num: "5", title: "Execution", desc: "Weekly meetings, status reports, feedback" },
+                {
+                  num: "1",
+                  title: "Kickoff",
+                  desc: "Meet team, set goals, define scope",
+                },
+                {
+                  num: "2",
+                  title: "Discovery",
+                  desc: "Understand problem, current state, constraints",
+                },
+                {
+                  num: "3",
+                  title: "Planning",
+                  desc: "Create project plan, timeline, deliverables",
+                },
+                {
+                  num: "4",
+                  title: "Team Assignment",
+                  desc: "Assign PM, engineers, set communication cadence",
+                },
+                {
+                  num: "5",
+                  title: "Execution",
+                  desc: "Weekly meetings, status reports, feedback",
+                },
               ].map((step) => (
                 <div
                   key={step.num}
@@ -40,7 +60,9 @@ export default function Space4ClientOps() {
                     {step.num}
                   </div>
                   <div>
-                    <p className="font-semibold text-white mb-1">{step.title}</p>
+                    <p className="font-semibold text-white mb-1">
+                      {step.title}
+                    </p>
                     <p className="text-sm text-slate-300">{step.desc}</p>
                   </div>
                 </div>
@@ -73,22 +95,18 @@ export default function Space4ClientOps() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">Benefits</h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  ✓ Corp gets vetted, community-proven talent
-                </li>
-                <li>
-                  ✓ Foundation community members get paid work
-                </li>
-                <li>
-                  ✓ Win-win partnership between entities
-                </li>
+                <li>✓ Corp gets vetted, community-proven talent</li>
+                <li>✓ Foundation community members get paid work</li>
+                <li>✓ Win-win partnership between entities</li>
               </ul>
             </div>
           </div>
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Engagement Models</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Engagement Models
+          </h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">
@@ -105,9 +123,7 @@ export default function Space4ClientOps() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                Fixed Price
-              </h4>
+              <h4 className="font-semibold text-white mb-2">Fixed Price</h4>
               <p className="text-sm text-slate-300 mb-2">
                 Fixed fee for defined scope. Good for clear deliverables.
               </p>
@@ -119,9 +135,7 @@ export default function Space4ClientOps() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                Retainer
-              </h4>
+              <h4 className="font-semibold text-white mb-2">Retainer</h4>
               <p className="text-sm text-slate-300 mb-2">
                 Monthly fee for ongoing support. Good for long-term clients.
               </p>

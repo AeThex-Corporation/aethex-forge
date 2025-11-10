@@ -78,7 +78,8 @@ const articles: KnowledgeArticle[] = [
     id: "5",
     title: "Security & Access Control",
     category: "Security",
-    description: "Security policies, password management, and access procedures",
+    description:
+      "Security policies, password management, and access procedures",
     tags: ["security", "access", "compliance"],
     views: 112,
     updated: "1 day ago",
@@ -165,7 +166,9 @@ export default function StaffKnowledgeBase() {
               {categories.map((category) => (
                 <Button
                   key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
+                  variant={
+                    selectedCategory === category ? "default" : "outline"
+                  }
                   size="sm"
                   onClick={() => setSelectedCategory(category)}
                   className={

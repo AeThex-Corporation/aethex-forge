@@ -16,7 +16,9 @@ export default function Space4PlatformStrategy() {
         </div>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Platform Vision</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Platform Vision
+          </h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">What Is It?</h4>
@@ -58,8 +60,8 @@ export default function Space4PlatformStrategy() {
               <h4 className="font-semibold text-white mb-2">Tech Stack</h4>
               <div className="text-sm text-slate-300 space-y-2">
                 <p>
-                  <strong>Frontend:</strong> React 18 + TypeScript, Tailwind CSS,
-                  Vite
+                  <strong>Frontend:</strong> React 18 + TypeScript, Tailwind
+                  CSS, Vite
                 </p>
                 <p>
                   <strong>Backend:</strong> Node.js + Express + TypeScript
@@ -142,9 +144,7 @@ export default function Space4PlatformStrategy() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">
-            KPIs & Metrics
-          </h3>
+          <h3 className="text-2xl font-bold text-white mb-4">KPIs & Metrics</h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">User Metrics</h4>
@@ -157,7 +157,9 @@ export default function Space4PlatformStrategy() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Business Metrics</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Business Metrics
+              </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
                 <li>• Platform revenue</li>
                 <li>• Transaction volume</li>

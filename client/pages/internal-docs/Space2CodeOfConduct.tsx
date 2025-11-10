@@ -2,10 +2,7 @@ import InternalDocsLayout from "./InternalDocsLayout";
 
 export default function Space2CodeOfConduct() {
   return (
-    <InternalDocsLayout
-      title="Code of Conduct"
-      description="How We All Act"
-    >
+    <InternalDocsLayout title="Code of Conduct" description="How We All Act">
       <div className="space-y-8">
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
           <p className="text-slate-300 leading-relaxed">
@@ -164,9 +161,7 @@ export default function Space2CodeOfConduct() {
           </section>
 
           <section>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Consequences
-            </h3>
+            <h3 className="text-2xl font-bold text-white mb-4">Consequences</h3>
             <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
               <p className="text-sm text-slate-300 mb-4">
                 Violations of this Code of Conduct will be addressed promptly

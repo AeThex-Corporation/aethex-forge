@@ -157,7 +157,9 @@ export default function StaffAnnouncements() {
                 {categories.map((category) => (
                   <Button
                     key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
+                    variant={
+                      selectedCategory === category ? "default" : "outline"
+                    }
                     size="sm"
                     onClick={() => setSelectedCategory(category)}
                     className={

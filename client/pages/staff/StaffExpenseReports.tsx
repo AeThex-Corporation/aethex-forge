@@ -60,7 +60,7 @@ const expenses: Expense[] = [
   {
     id: "3",
     description: "Client Dinner Meeting",
-    amount: 85.50,
+    amount: 85.5,
     category: "Entertainment",
     date: "February 28, 2025",
     status: "Reimbursed",
@@ -189,7 +189,9 @@ export default function StaffExpenseReports() {
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-green-200/70">Total Submitted</p>
+                      <p className="text-sm text-green-200/70">
+                        Total Submitted
+                      </p>
                       <p className="text-3xl font-bold text-green-100">
                         ${totalSpent.toFixed(2)}
                       </p>
@@ -255,10 +257,7 @@ export default function StaffExpenseReports() {
                           {budget.percentage}%
                         </p>
                       </div>
-                      <Progress
-                        value={budget.percentage}
-                        className="h-2"
-                      />
+                      <Progress value={budget.percentage} className="h-2" />
                     </CardContent>
                   </Card>
                 ))}

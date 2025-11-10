@@ -2,10 +2,7 @@ import InternalDocsLayout from "./InternalDocsLayout";
 
 export default function Space5Onboarding() {
   return (
-    <InternalDocsLayout
-      title="New Hire Onboarding"
-      description="SOP-300"
-    >
+    <InternalDocsLayout title="New Hire Onboarding" description="SOP-300">
       <div className="space-y-8">
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
           <p className="text-slate-300 leading-relaxed">
@@ -83,7 +80,8 @@ export default function Space5Onboarding() {
                   Day 4-5: First Task
                 </p>
                 <p className="text-sm text-slate-300">
-                  Manager assigns small, achievable first task to get comfortable
+                  Manager assigns small, achievable first task to get
+                  comfortable
                 </p>
               </div>
             </div>

@@ -9,8 +9,9 @@ export default function Space4ProductOps() {
       <div className="space-y-8">
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
           <p className="text-slate-300 leading-relaxed">
-            The Corp's engineering team follows a disciplined product development
-            lifecycle. This ensures quality, reliability, and continuous delivery.
+            The Corp's engineering team follows a disciplined product
+            development lifecycle. This ensures quality, reliability, and
+            continuous delivery.
           </p>
         </div>
 
@@ -50,7 +51,9 @@ export default function Space4ProductOps() {
                   key={stage.title}
                   className="bg-slate-800/30 border border-slate-700 rounded-lg p-4"
                 >
-                  <h4 className="font-semibold text-white mb-1">{stage.title}</h4>
+                  <h4 className="font-semibold text-white mb-1">
+                    {stage.title}
+                  </h4>
                   <p className="text-sm text-slate-300">{stage.desc}</p>
                 </div>
               ))}
@@ -72,7 +75,9 @@ export default function Space4ProductOps() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Sprint Ceremonies</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Sprint Ceremonies
+              </h4>
               <ul className="text-sm text-slate-300 space-y-2 pl-4">
                 <li>
                   <strong>Sprint Planning (Mon):</strong> Agree on sprint goal &
@@ -91,7 +96,9 @@ export default function Space4ProductOps() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Definition of Done</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Definition of Done
+              </h4>
               <p className="text-sm text-slate-300 mb-2">
                 Work is "done" only when:
               </p>
@@ -124,7 +131,9 @@ export default function Space4ProductOps() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Review Standards</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Review Standards
+              </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
                 <li>✓ Code is readable and well-commented</li>
                 <li>✓ No security vulnerabilities</li>
@@ -137,22 +146,18 @@ export default function Space4ProductOps() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">Deployment</h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Main branch auto-deploys to staging environment
-                </li>
-                <li>
-                  • Release branch (vX.Y.Z) deploys to production
-                </li>
-                <li>
-                  • Hotfixes go direct to main + release
-                </li>
+                <li>• Main branch auto-deploys to staging environment</li>
+                <li>• Release branch (vX.Y.Z) deploys to production</li>
+                <li>• Hotfixes go direct to main + release</li>
               </ul>
             </div>
           </div>
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Quality Standards</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Quality Standards
+          </h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">Performance</h4>

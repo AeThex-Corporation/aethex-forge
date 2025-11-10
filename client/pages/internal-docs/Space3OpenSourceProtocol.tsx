@@ -9,9 +9,9 @@ export default function Space3OpenSourceProtocol() {
       <div className="space-y-8">
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
           <p className="text-slate-300 leading-relaxed">
-            The AeThex Foundation maintains the Axiom Protocol—an open-source
-            AI Ethics framework. This protocol is our contribution to the
-            broader tech community.
+            The AeThex Foundation maintains the Axiom Protocol—an open-source AI
+            Ethics framework. This protocol is our contribution to the broader
+            tech community.
           </p>
         </div>
 
@@ -24,15 +24,13 @@ export default function Space3OpenSourceProtocol() {
               <h4 className="font-semibold text-white mb-2">Purpose</h4>
               <p className="text-sm text-slate-300">
                 The Axiom Protocol is an ethical framework for AI development.
-                It's built on the principle that technology should be transparent,
-                accountable, and human-centered.
+                It's built on the principle that technology should be
+                transparent, accountable, and human-centered.
               </p>
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                Core Principles
-              </h4>
+              <h4 className="font-semibold text-white mb-2">Core Principles</h4>
               <ul className="text-sm text-slate-300 space-y-2 pl-4">
                 <li>
                   <strong>Transparency:</strong> AI systems must be explainable
@@ -54,9 +52,7 @@ export default function Space3OpenSourceProtocol() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                Status
-              </h4>
+              <h4 className="font-semibold text-white mb-2">Status</h4>
               <p className="text-sm text-slate-300">
                 Open-source on GitHub. Community contributions welcome via PIP
                 (Protocol Improvement Proposals).
@@ -99,7 +95,8 @@ export default function Space3OpenSourceProtocol() {
                     Community Discussion
                   </p>
                   <p className="text-sm text-slate-300">
-                    Community provides feedback. Minimum 1-week discussion window.
+                    Community provides feedback. Minimum 1-week discussion
+                    window.
                   </p>
                 </div>
               </div>
@@ -166,9 +163,7 @@ export default function Space3OpenSourceProtocol() {
                   7
                 </div>
                 <div>
-                  <p className="font-semibold text-white mb-1">
-                    Release
-                  </p>
+                  <p className="font-semibold text-white mb-1">Release</p>
                   <p className="text-sm text-slate-300">
                     Included in next protocol release. Author credited.
                   </p>
@@ -186,42 +181,28 @@ export default function Space3OpenSourceProtocol() {
             <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
               <h4 className="font-semibold text-green-400 mb-2">✓ We Accept</h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Bug fixes and improvements to existing protocols
-                </li>
-                <li>
-                  • New frameworks aligned with our core principles
-                </li>
-                <li>
-                  • Documentation improvements
-                </li>
-                <li>
-                  • Use cases and real-world examples
-                </li>
+                <li>• Bug fixes and improvements to existing protocols</li>
+                <li>• New frameworks aligned with our core principles</li>
+                <li>• Documentation improvements</li>
+                <li>• Use cases and real-world examples</li>
               </ul>
             </div>
 
             <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4">
-              <h4 className="font-semibold text-red-400 mb-2">✗ We Don't Accept</h4>
+              <h4 className="font-semibold text-red-400 mb-2">
+                ✗ We Don't Accept
+              </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Proposals that violate core principles
-                </li>
-                <li>
-                  • Undocumented changes
-                </li>
-                <li>
-                  • Proprietary or patent-encumbered code
-                </li>
+                <li>• Proposals that violate core principles</li>
+                <li>• Undocumented changes</li>
+                <li>• Proprietary or patent-encumbered code</li>
               </ul>
             </div>
           </div>
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">
-            Nexus Platform
-          </h3>
+          <h3 className="text-2xl font-bold text-white mb-4">Nexus Platform</h3>
           <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
             <p className="text-sm text-slate-300 mb-3">
               The Foundation operates Nexus—a talent marketplace built on open

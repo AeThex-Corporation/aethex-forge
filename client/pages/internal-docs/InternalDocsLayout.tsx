@@ -218,7 +218,9 @@ export default function InternalDocsLayout({
                   <div className="text-xs font-semibold text-blue-400 uppercase tracking-wider">
                     {space.title}
                   </div>
-                  <div className="text-xs text-slate-500">{space.description}</div>
+                  <div className="text-xs text-slate-500">
+                    {space.description}
+                  </div>
                 </div>
               </div>
 
@@ -262,7 +264,11 @@ export default function InternalDocsLayout({
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
           >
-            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {sidebarOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
           <Link
             to="/"

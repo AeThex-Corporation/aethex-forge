@@ -167,13 +167,18 @@ export default function StaffInternalMarketplace() {
                   <p className="text-2xl font-bold text-amber-100">
                     {services.length}
                   </p>
-                  <p className="text-sm text-amber-200/70">Available Services</p>
+                  <p className="text-sm text-amber-200/70">
+                    Available Services
+                  </p>
                 </CardContent>
               </Card>
               <Card className="bg-amber-950/30 border-amber-500/30">
                 <CardContent className="pt-6">
                   <p className="text-2xl font-bold text-amber-100">
-                    {services.filter((s) => s.availability === "Available").length}
+                    {
+                      services.filter((s) => s.availability === "Available")
+                        .length
+                    }
                   </p>
                   <p className="text-sm text-amber-200/70">Ready to Book</p>
                 </CardContent>
@@ -203,7 +208,9 @@ export default function StaffInternalMarketplace() {
                 {categories.map((category) => (
                   <Button
                     key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
+                    variant={
+                      selectedCategory === category ? "default" : "outline"
+                    }
                     size="sm"
                     onClick={() => setSelectedCategory(category)}
                     className={

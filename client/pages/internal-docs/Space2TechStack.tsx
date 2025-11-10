@@ -56,8 +56,8 @@ export default function Space2TechStack() {
                   integration
                 </p>
                 <p>
-                  <strong>Purpose:</strong> Creator directory, opportunity board,
-                  applications
+                  <strong>Purpose:</strong> Creator directory, opportunity
+                  board, applications
                 </p>
               </div>
             </div>
@@ -80,10 +80,14 @@ export default function Space2TechStack() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Backend Services</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Backend Services
+          </h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">📧 Email Service</h4>
+              <h4 className="font-semibold text-white mb-2">
+                📧 Email Service
+              </h4>
               <p className="text-sm text-slate-300 mb-2">
                 <strong>Provider:</strong> Hostinger SMTP (support@aethex.tech)
               </p>
@@ -105,7 +109,9 @@ export default function Space2TechStack() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">🎮 Game Platform</h4>
+              <h4 className="font-semibold text-white mb-2">
+                🎮 Game Platform
+              </h4>
               <p className="text-sm text-slate-300 mb-2">
                 <strong>Integration:</strong> Roblox OAuth + Open Cloud API
               </p>
@@ -221,9 +227,7 @@ export default function Space2TechStack() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">
-            Key Principles
-          </h3>
+          <h3 className="text-2xl font-bold text-white mb-4">Key Principles</h3>
           <div className="space-y-3">
             <div className="flex gap-3">
               <div className="text-2xl">🔒</div>
@@ -261,7 +265,9 @@ export default function Space2TechStack() {
             <div className="flex gap-3">
               <div className="text-2xl">🛠️</div>
               <div>
-                <p className="font-semibold text-white mb-1">Developer Experience</p>
+                <p className="font-semibold text-white mb-1">
+                  Developer Experience
+                </p>
                 <p className="text-sm text-slate-400">
                   We invest in tools, docs, and processes that make developers
                   happy.

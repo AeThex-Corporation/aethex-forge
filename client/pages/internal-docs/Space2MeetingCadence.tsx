@@ -32,7 +32,8 @@ export default function Space2MeetingCadence() {
                   <strong>Duration:</strong> 90 minutes
                 </p>
                 <p>
-                  <strong>Attendees:</strong> All AeThex team members (mandatory)
+                  <strong>Attendees:</strong> All AeThex team members
+                  (mandatory)
                 </p>
                 <p>
                   <strong>Agenda:</strong> Ecosystem updates, strategic
@@ -67,7 +68,9 @@ export default function Space2MeetingCadence() {
           <h3 className="text-2xl font-bold text-white mb-4">Team Meetings</h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">📊 Team Stand-up</h4>
+              <h4 className="font-semibold text-white mb-2">
+                📊 Team Stand-up
+              </h4>
               <div className="space-y-2 text-sm text-slate-300">
                 <p>
                   <strong>Frequency:</strong> 2-3x per week (team-dependent)
@@ -240,8 +243,8 @@ export default function Space2MeetingCadence() {
               and who owns it
             </p>
             <p className="text-sm text-slate-300">
-              <strong>✓ OPTIONAL ATTENDANCE</strong> - Make it clear if attendance
-              is optional
+              <strong>✓ OPTIONAL ATTENDANCE</strong> - Make it clear if
+              attendance is optional
             </p>
             <p className="text-sm text-slate-300">
               <strong>✗ DON'T LIVE REMOTE</strong> - Either all remote or all

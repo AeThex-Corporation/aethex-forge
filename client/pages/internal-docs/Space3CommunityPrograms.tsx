@@ -16,9 +16,7 @@ export default function Space3CommunityPrograms() {
         </div>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">
-            Core Programs
-          </h3>
+          <h3 className="text-2xl font-bold text-white mb-4">Core Programs</h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">
@@ -37,7 +35,8 @@ export default function Space3CommunityPrograms() {
                   revenue share from platform
                 </p>
                 <p>
-                  <strong>Process:</strong> SOP-003: Architect Nomination Process
+                  <strong>Process:</strong> SOP-003: Architect Nomination
+                  Process
                 </p>
               </div>
             </div>
@@ -120,17 +119,17 @@ export default function Space3CommunityPrograms() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">📈 Outcomes Focus</h4>
+              <h4 className="font-semibold text-white mb-2">
+                📈 Outcomes Focus
+              </h4>
               <p className="text-sm text-slate-300">
-                We track results: job placements, skills gained, portfolio built,
-                retention.
+                We track results: job placements, skills gained, portfolio
+                built, retention.
               </p>
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                💰 Sustainable
-              </h4>
+              <h4 className="font-semibold text-white mb-2">💰 Sustainable</h4>
               <p className="text-sm text-slate-300">
                 Funded by Foundation grants and corporate sponsorships, never by
                 participant fees.
@@ -171,9 +170,7 @@ export default function Space3CommunityPrograms() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                As an Architect
-              </h4>
+              <h4 className="font-semibold text-white mb-2">As an Architect</h4>
               <ol className="text-sm text-slate-300 space-y-2 pl-4 list-decimal">
                 <li>Get nominated or self-nominate</li>
                 <li>Go through nomination process</li>
@@ -194,7 +191,8 @@ export default function Space3CommunityPrograms() {
             <p className="font-semibold text-white">We track:</p>
             <ul className="text-sm text-slate-300 space-y-2 pl-4">
               <li>
-                <strong>Participation:</strong> Number of participants by program
+                <strong>Participation:</strong> Number of participants by
+                program
               </li>
               <li>
                 <strong>Completion:</strong> % who finish vs. drop out
@@ -228,7 +226,9 @@ export default function Space3CommunityPrograms() {
                 📊
               </div>
               <div>
-                <p className="font-semibold text-white mb-1">Foundation Grants</p>
+                <p className="font-semibold text-white mb-1">
+                  Foundation Grants
+                </p>
                 <p className="text-sm text-slate-300">
                   Base funding from Foundation endowment
                 </p>
@@ -244,7 +244,8 @@ export default function Space3CommunityPrograms() {
                   Corporate Sponsorship
                 </p>
                 <p className="text-sm text-slate-300">
-                  Companies sponsor individual programs (non-binding, no strings)
+                  Companies sponsor individual programs (non-binding, no
+                  strings)
                 </p>
               </div>
             </div>
@@ -254,7 +255,9 @@ export default function Space3CommunityPrograms() {
                 🎁
               </div>
               <div>
-                <p className="font-semibold text-white mb-1">Individual Donors</p>
+                <p className="font-semibold text-white mb-1">
+                  Individual Donors
+                </p>
                 <p className="text-sm text-slate-300">
                   Community members donate to support specific programs
                 </p>

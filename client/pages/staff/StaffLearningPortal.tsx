@@ -196,7 +196,9 @@ export default function StaffLearningPortal() {
                 {categories.map((category) => (
                   <Button
                     key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
+                    variant={
+                      selectedCategory === category ? "default" : "outline"
+                    }
                     size="sm"
                     onClick={() => setSelectedCategory(category)}
                     className={
@@ -247,7 +249,9 @@ export default function StaffLearningPortal() {
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="text-slate-400">Progress</span>
-                          <span className="text-cyan-300">{course.progress}%</span>
+                          <span className="text-cyan-300">
+                            {course.progress}%
+                          </span>
                         </div>
                         <Progress value={course.progress} className="h-2" />
                       </div>

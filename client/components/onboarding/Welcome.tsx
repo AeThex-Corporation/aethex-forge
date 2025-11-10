@@ -509,7 +509,11 @@ export default function Welcome({
           className="bg-aethex-500/20 text-aethex-100 border border-aethex-500/40"
         >
           <Link
-            to={user ? "/dashboard?tab=connections" : `/login?next=${encodeURIComponent('/dashboard?tab=connections')}`}
+            to={
+              user
+                ? "/dashboard?tab=connections"
+                : `/login?next=${encodeURIComponent("/dashboard?tab=connections")}`
+            }
             className="flex items-center gap-2"
           >
             <ShieldCheck className="h-4 w-4" />

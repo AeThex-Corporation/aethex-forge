@@ -33,8 +33,8 @@ export default function Space4CorpBlueprints() {
                   enterprises
                 </p>
                 <p>
-                  <strong>Docs:</strong> PRD, Architecture, Roadmap (see
-                  product channel)
+                  <strong>Docs:</strong> PRD, Architecture, Roadmap (see product
+                  channel)
                 </p>
               </div>
             </div>
@@ -120,15 +120,9 @@ export default function Space4CorpBlueprints() {
                 Product Manager Role
               </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  �� Owns product strategy & roadmap
-                </li>
-                <li>
-                  • Sets priorities & defines scope
-                </li>
-                <li>
-                  • Reports to VP of Product
-                </li>
+                <li>�� Owns product strategy & roadmap</li>
+                <li>• Sets priorities & defines scope</li>
+                <li>• Reports to VP of Product</li>
               </ul>
             </div>
 
@@ -137,15 +131,9 @@ export default function Space4CorpBlueprints() {
                 Product Review Cadence
               </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Weekly: Team standup (engineering)
-                </li>
-                <li>
-                  • Bi-weekly: Product review (PM + leadership)
-                </li>
-                <li>
-                  • Monthly: Stakeholder review (board-level)
-                </li>
+                <li>• Weekly: Team standup (engineering)</li>
+                <li>• Bi-weekly: Product review (PM + leadership)</li>
+                <li>• Monthly: Stakeholder review (board-level)</li>
               </ul>
             </div>
 
@@ -154,18 +142,10 @@ export default function Space4CorpBlueprints() {
                 Feature Prioritization
               </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Impact on revenue or growth
-                </li>
-                <li>
-                  • Customer feedback & requests
-                </li>
-                <li>
-                  • Technical debt & maintenance
-                </li>
-                <li>
-                  • Strategic alignment
-                </li>
+                <li>• Impact on revenue or growth</li>
+                <li>• Customer feedback & requests</li>
+                <li>• Technical debt & maintenance</li>
+                <li>• Strategic alignment</li>
               </ul>
             </div>
           </div>

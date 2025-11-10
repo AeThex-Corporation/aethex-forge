@@ -107,7 +107,9 @@ export default function StaffProjectTracking() {
     : okrs;
 
   const avgProgress =
-    Math.round(filtered.reduce((sum, okr) => sum + okr.progress, 0) / filtered.length) || 0;
+    Math.round(
+      filtered.reduce((sum, okr) => sum + okr.progress, 0) / filtered.length,
+    ) || 0;
 
   return (
     <Layout>
@@ -146,9 +148,7 @@ export default function StaffProjectTracking() {
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-indigo-200/70">
-                        Active OKRs
-                      </p>
+                      <p className="text-sm text-indigo-200/70">Active OKRs</p>
                       <p className="text-3xl font-bold text-indigo-100">
                         {filtered.length}
                       </p>
@@ -161,9 +161,7 @@ export default function StaffProjectTracking() {
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-indigo-200/70">
-                        Avg Progress
-                      </p>
+                      <p className="text-sm text-indigo-200/70">Avg Progress</p>
                       <p className="text-3xl font-bold text-indigo-100">
                         {avgProgress}%
                       </p>
@@ -238,9 +236,7 @@ export default function StaffProjectTracking() {
                           {okr.description}
                         </CardDescription>
                       </div>
-                      <Badge
-                        className={`border ${getStatusColor(okr.status)}`}
-                      >
+                      <Badge className={`border ${getStatusColor(okr.status)}`}>
                         {okr.status}
                       </Badge>
                     </div>

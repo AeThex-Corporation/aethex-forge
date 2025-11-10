@@ -183,7 +183,6 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 }`}
               />
             </button>
-
           </div>
 
           {/* Navigation */}
@@ -213,7 +212,9 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                   className="bg-black/98 backdrop-blur-lg border-gray-800/50 p-3"
                 >
                   <SheetHeader className="text-left mb-3">
-                    <SheetTitle className="text-xs font-semibold">Navigate</SheetTitle>
+                    <SheetTitle className="text-xs font-semibold">
+                      Navigate
+                    </SheetTitle>
                   </SheetHeader>
 
                   <nav className="flex flex-col gap-0.5 mb-3">

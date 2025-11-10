@@ -126,7 +126,9 @@ export default function ArmSwitcherModal({
     }
   };
 
-  const selectedArmData = selectedArm ? ARMS.find((a) => a.id === selectedArm) : null;
+  const selectedArmData = selectedArm
+    ? ARMS.find((a) => a.id === selectedArm)
+    : null;
 
   if (!isOpen) return null;
 

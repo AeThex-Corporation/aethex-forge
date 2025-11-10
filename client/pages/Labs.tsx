@@ -139,8 +139,8 @@ export default function Labs() {
                     The Innovation Engine
                   </h1>
                   <p className="text-lg text-yellow-100/90 mb-4">
-                    Real-time window into the AeThex Labs mainframe. Breakthrough
-                    R&D pushing the boundaries of what's possible.
+                    Real-time window into the AeThex Labs mainframe.
+                    Breakthrough R&D pushing the boundaries of what's possible.
                   </p>
                 </div>
 
@@ -305,8 +305,8 @@ export default function Labs() {
                     Recent Innovations
                   </h2>
                   <p className="mt-2 max-w-3xl text-sm text-yellow-100/70 sm:text-base">
-                    Broadcasts directly from Labs operations. Latest breakthroughs
-                    and publications from our research teams.
+                    Broadcasts directly from Labs operations. Latest
+                    breakthroughs and publications from our research teams.
                   </p>
                 </div>
                 <Zap className="hidden h-10 w-10 text-yellow-400/70 sm:block" />

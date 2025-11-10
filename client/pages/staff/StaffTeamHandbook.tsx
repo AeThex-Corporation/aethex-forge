@@ -70,12 +70,7 @@ const sections: HandbookSection[] = [
     title: "Remote Work & Flexibility",
     icon: <MapPin className="h-6 w-6" />,
     content: "Work from home policies, office hours, and location flexibility",
-    subsections: [
-      "WFH Policy",
-      "Core Hours",
-      "Office Access",
-      "Equipment",
-    ],
+    subsections: ["WFH Policy", "Core Hours", "Office Access", "Equipment"],
   },
   {
     id: "5",
@@ -199,10 +194,7 @@ export default function StaffTeamHandbook() {
                         </Badge>
                       ))}
                     </div>
-                    <Button
-                      size="sm"
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                       View Details
                     </Button>
                   </CardContent>

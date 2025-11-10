@@ -51,9 +51,7 @@ export default function Space5Finance() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                Where to Submit
-              </h4>
+              <h4 className="font-semibold text-white mb-2">Where to Submit</h4>
               <p className="text-sm text-slate-300">
                 Email invoices to: <strong>invoicing@aethex.tech</strong>
               </p>
@@ -63,9 +61,7 @@ export default function Space5Finance() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                Late Payments
-              </h4>
+              <h4 className="font-semibold text-white mb-2">Late Payments</h4>
               <p className="text-sm text-slate-300">
                 If you don't receive payment within 3 business days of the due
                 date, contact HR immediately. We prioritize on-time payment.
@@ -139,8 +135,8 @@ export default function Space5Finance() {
                 Email: <strong>expenses@aethex.tech</strong>
               </p>
               <p className="text-sm text-slate-300 mt-2">
-                Attach receipts as PDF or image files. Subject: "EXPENSE
-                REPORT - [Your Name] - [Month]"
+                Attach receipts as PDF or image files. Subject: "EXPENSE REPORT
+                - [Your Name] - [Month]"
               </p>
             </div>
           </div>
@@ -180,8 +176,8 @@ export default function Space5Finance() {
                 Q: When do I get paid?
               </h4>
               <p className="text-sm text-slate-300">
-                A: Contractors: 15th of following month. Employees: bi-weekly per
-                payroll schedule.
+                A: Contractors: 15th of following month. Employees: bi-weekly
+                per payroll schedule.
               </p>
             </div>
 

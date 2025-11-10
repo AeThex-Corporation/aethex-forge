@@ -23,10 +23,10 @@ export default function Space2BrandVoice() {
                 Who We Are
               </p>
               <p className="text-slate-300">
-                AeThex is a purpose-driven technology company building innovative
-                products while maintaining community trust. We operate as a 3-entity
-                ecosystem: The Foundation (non-profit), The LLC (IP vault), and The
-                Corp (for-profit).
+                AeThex is a purpose-driven technology company building
+                innovative products while maintaining community trust. We
+                operate as a 3-entity ecosystem: The Foundation (non-profit),
+                The LLC (IP vault), and The Corp (for-profit).
               </p>
             </div>
 
@@ -35,8 +35,8 @@ export default function Space2BrandVoice() {
                 Why We Exist
               </p>
               <p className="text-slate-300">
-                We're building a new architecture for trust. Technology should serve
-                both profit and purpose. We prove it's possible.
+                We're building a new architecture for trust. Technology should
+                serve both profit and purpose. We prove it's possible.
               </p>
             </div>
 
@@ -46,8 +46,8 @@ export default function Space2BrandVoice() {
               </p>
               <p className="text-slate-300">
                 With transparency, accountability, and integrity. We separate
-                innovation, protection, and delivery. We're open about our values
-                and willing to be held accountable.
+                innovation, protection, and delivery. We're open about our
+                values and willing to be held accountable.
               </p>
             </div>
           </div>
@@ -57,7 +57,9 @@ export default function Space2BrandVoice() {
           <h3 className="text-2xl font-bold text-white mb-4">Tone & Voice</h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
-              <h4 className="font-semibold text-green-400 mb-3">✓ We Sound Like</h4>
+              <h4 className="font-semibold text-green-400 mb-3">
+                ✓ We Sound Like
+              </h4>
               <ul className="text-sm text-slate-300 space-y-2">
                 <li>
                   <strong>Honest:</strong> We admit mistakes and limitations
@@ -108,8 +110,8 @@ export default function Space2BrandVoice() {
                 1. Innovation with Purpose
               </p>
               <p className="text-sm text-slate-300">
-                We're building technology that makes money AND makes a difference.
-                Profit and purpose aren't mutually exclusive.
+                We're building technology that makes money AND makes a
+                difference. Profit and purpose aren't mutually exclusive.
               </p>
             </div>
 
@@ -118,8 +120,9 @@ export default function Space2BrandVoice() {
                 2. Transparent Operations
               </p>
               <p className="text-sm text-slate-300">
-                Our 3-entity model separates innovation, protection, and delivery.
-                We're open about our structure because it's nothing to hide.
+                Our 3-entity model separates innovation, protection, and
+                delivery. We're open about our structure because it's nothing to
+                hide.
               </p>
             </div>
 
@@ -128,8 +131,8 @@ export default function Space2BrandVoice() {
                 3. Community-First
               </p>
               <p className="text-sm text-slate-300">
-                We invest in communities, developers, and creatives. We build with
-                them, not at them.
+                We invest in communities, developers, and creatives. We build
+                with them, not at them.
               </p>
             </div>
 
@@ -164,8 +167,8 @@ export default function Space2BrandVoice() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <p className="font-semibold text-green-400 mb-2">🎮 GameForge</p>
               <p className="text-sm text-slate-300 mb-2">
-                "Building games better. We prove that monthly shipping cycles and
-                technical excellence aren't mutually exclusive."
+                "Building games better. We prove that monthly shipping cycles
+                and technical excellence aren't mutually exclusive."
               </p>
               <p className="text-xs text-slate-500">
                 Focus: creative tools, developer experience, studio efficiency
@@ -204,7 +207,9 @@ export default function Space2BrandVoice() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">✓ DO</h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>• Be specific: "We shipped X" not "We shipped great things"</li>
+                <li>
+                  • Be specific: "We shipped X" not "We shipped great things"
+                </li>
                 <li>• Use "we" and "us" to build community</li>
                 <li>• Tell stories about real problems we solve</li>
                 <li>• Reference our values when appropriate</li>
@@ -215,9 +220,7 @@ export default function Space2BrandVoice() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">✗ DON'T</h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Use corporate jargon ("synergy," "disruptive," etc.)
-                </li>
+                <li>• Use corporate jargon ("synergy," "disruptive," etc.)</li>
                 <li>• Make claims we can't back up</li>
                 <li>• Denigrate competitors</li>
                 <li>• Share confidential information</li>

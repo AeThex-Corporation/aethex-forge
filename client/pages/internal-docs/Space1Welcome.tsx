@@ -47,8 +47,8 @@ export default function Space1Welcome() {
               The Axiom Model
             </h3>
             <p className="text-sm text-slate-400 mb-4">
-              Understand our 3-entity structure: The Foundation, The LLC, and The
-              Corp.
+              Understand our 3-entity structure: The Foundation, The LLC, and
+              The Corp.
             </p>
             <div className="inline-flex items-center gap-2 text-blue-400 text-sm font-medium">
               Learn more <ArrowRight className="h-4 w-4" />

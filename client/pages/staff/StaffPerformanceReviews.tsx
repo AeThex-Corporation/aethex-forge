@@ -197,7 +197,10 @@ export default function StaffPerformanceReviews() {
                           {metric.score}
                         </p>
                       </div>
-                      <Progress value={(metric.score / 10) * 100} className="h-2" />
+                      <Progress
+                        value={(metric.score / 10) * 100}
+                        className="h-2"
+                      />
                     </CardContent>
                   </Card>
                 ))}

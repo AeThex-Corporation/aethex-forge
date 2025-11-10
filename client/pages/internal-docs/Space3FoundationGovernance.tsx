@@ -21,13 +21,16 @@ export default function Space3FoundationGovernance() {
           </h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Board of Directors</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Board of Directors
+              </h4>
               <ul className="text-sm text-slate-300 space-y-2 pl-4">
                 <li>
                   <strong>Size:</strong> 5-9 members (odd number for voting)
                 </li>
                 <li>
-                  <strong>Term:</strong> 2 years, staggered (2-3 rotate annually)
+                  <strong>Term:</strong> 2 years, staggered (2-3 rotate
+                  annually)
                 </li>
                 <li>
                   <strong>Role:</strong> Set strategy, approve budget, oversee
@@ -60,9 +63,7 @@ export default function Space3FoundationGovernance() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">
-                Committees
-              </h4>
+              <h4 className="font-semibold text-white mb-2">Committees</h4>
               <div className="text-sm text-slate-300 space-y-2 pl-4">
                 <li>
                   <strong>• Finance Committee:</strong> Budget, audit,
@@ -82,7 +83,9 @@ export default function Space3FoundationGovernance() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Decision Making</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Decision Making
+          </h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">Board Meetings</h4>
@@ -97,33 +100,25 @@ export default function Space3FoundationGovernance() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">Voting Rules</h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Major decisions: Simple majority (50% + 1) vote
-                </li>
+                <li>• Major decisions: Simple majority (50% + 1) vote</li>
                 <li>
                   • Budget: Requires Board approval & Finance Committee review
                 </li>
-                <li>
-                  • Governance changes: Supermajority (2/3)
-                </li>
-                <li>
-                  • Program approval: Program Committee then Board
-                </li>
+                <li>• Governance changes: Supermajority (2/3)</li>
+                <li>• Program approval: Program Committee then Board</li>
               </ul>
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Conflict of Interest</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Conflict of Interest
+              </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
-                <li>
-                  • Board members must disclose potential conflicts
-                </li>
+                <li>• Board members must disclose potential conflicts</li>
                 <li>
                   • No voting on decisions where you have a personal stake
                 </li>
-                <li>
-                  • Annual COI disclosures required
-                </li>
+                <li>• Annual COI disclosures required</li>
               </ul>
             </div>
           </div>
@@ -153,7 +148,9 @@ export default function Space3FoundationGovernance() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Legal & Compliance</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Legal & Compliance
+              </h4>
               <ul className="text-sm text-slate-300 space-y-1 pl-4">
                 <li>• Maintain 501(c)(3) status</li>
                 <li>• Follow state charity regulations</li>
@@ -165,7 +162,9 @@ export default function Space3FoundationGovernance() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Fund Accounting</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Fund Accounting
+          </h3>
           <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4 space-y-3">
             <p className="text-sm text-slate-300">
               The Foundation maintains separate funds for accountability:

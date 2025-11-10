@@ -37,13 +37,13 @@ export default function Space2Communication() {
               </thead>
               <tbody>
                 <tr className="border-b border-slate-700">
-                  <td className="py-3 px-4 font-semibold text-white">Discord</td>
+                  <td className="py-3 px-4 font-semibold text-white">
+                    Discord
+                  </td>
                   <td className="py-3 px-4 text-slate-300">
                     Real-time chat, urgent issues, team coordination
                   </td>
-                  <td className="py-3 px-4 text-slate-300">
-                    5 minutes
-                  </td>
+                  <td className="py-3 px-4 text-slate-300">5 minutes</td>
                   <td className="py-3 px-4 text-slate-300">All team members</td>
                 </tr>
                 <tr className="border-b border-slate-700">
@@ -51,9 +51,7 @@ export default function Space2Communication() {
                   <td className="py-3 px-4 text-slate-300">
                     Formal communication, decisions, legal records
                   </td>
-                  <td className="py-3 px-4 text-slate-300">
-                    24 hours
-                  </td>
+                  <td className="py-3 px-4 text-slate-300">24 hours</td>
                   <td className="py-3 px-4 text-slate-300">All team members</td>
                 </tr>
                 <tr>
@@ -63,9 +61,7 @@ export default function Space2Communication() {
                   <td className="py-3 px-4 text-slate-300">
                     Decisions, feedback, deep work, sensitive topics
                   </td>
-                  <td className="py-3 px-4 text-slate-300">
-                    N/A
-                  </td>
+                  <td className="py-3 px-4 text-slate-300">N/A</td>
                   <td className="py-3 px-4 text-slate-300">
                     Required participants
                   </td>
@@ -76,7 +72,9 @@ export default function Space2Communication() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Discord Etiquette</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Discord Etiquette
+          </h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">Channels</h4>
@@ -117,7 +115,9 @@ export default function Space2Communication() {
           <h3 className="text-2xl font-bold text-white mb-4">Email Protocol</h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">✓ Use Email For:</h4>
+              <h4 className="font-semibold text-white mb-2">
+                ✓ Use Email For:
+              </h4>
               <ul className="text-sm text-slate-300 space-y-2 pl-4">
                 <li>• Policy updates and announcements</li>
                 <li>• Important decisions with records</li>
@@ -128,11 +128,11 @@ export default function Space2Communication() {
             </div>
 
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
-              <h4 className="font-semibold text-white mb-2">Email Best Practices:</h4>
+              <h4 className="font-semibold text-white mb-2">
+                Email Best Practices:
+              </h4>
               <ul className="text-sm text-slate-300 space-y-2 pl-4">
-                <li>
-                  • Clear subject line (what is this email about?)
-                </li>
+                <li>• Clear subject line (what is this email about?)</li>
                 <li>• Keep it brief—use bullets when possible</li>
                 <li>• Call out action items in bold or separate section</li>
                 <li>• Reply within 24 hours</li>
@@ -143,16 +143,16 @@ export default function Space2Communication() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-white mb-4">Meeting Culture</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Meeting Culture
+          </h3>
           <div className="space-y-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-2">
                 ✓ Schedule a Meeting When:
               </h4>
               <ul className="text-sm text-slate-300 space-y-2 pl-4">
-                <li>
-                  • You need to make a decision with stakeholders
-                </li>
+                <li>• You need to make a decision with stakeholders</li>
                 <li>• The topic is sensitive or requires nuance</li>
                 <li>• You need face-to-face (video) interaction</li>
                 <li>• Async communication has broken down</li>

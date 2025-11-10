@@ -36,9 +36,7 @@ export default function Space1AxiomModel() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-slate-300 font-medium mb-1">
-                  Owns:
-                </p>
+                <p className="text-sm text-slate-300 font-medium mb-1">Owns:</p>
                 <ul className="text-xs text-slate-400 space-y-1 pl-4">
                   <li>• Axiom Protocol (AI Ethics)</li>
                   <li>• Nexus (Talent Marketplace)</li>
@@ -85,9 +83,7 @@ export default function Space1AxiomModel() {
                 </ul>
               </div>
               <div>
-                <p className="text-sm text-slate-300 font-medium mb-1">
-                  Role:
-                </p>
+                <p className="text-sm text-slate-300 font-medium mb-1">Role:</p>
                 <p className="text-xs text-slate-400">
                   Financial separation & asset protection
                 </p>
@@ -123,9 +119,7 @@ export default function Space1AxiomModel() {
                 </ul>
               </div>
               <div>
-                <p className="text-sm text-slate-300 font-medium mb-1">
-                  Team:
-                </p>
+                <p className="text-sm text-slate-300 font-medium mb-1">Team:</p>
                 <p className="text-xs text-slate-400">
                   Employees, Contractors, Operations
                 </p>
