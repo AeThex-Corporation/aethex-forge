@@ -563,12 +563,7 @@ export default function Dashboard() {
     }
   };
 
-  // If no user and auth is resolved, let the redirect happen without flashing a loader
-  if (!user && !authLoading) {
-    return null;
-  }
-
-  // Show loading only while auth or data is loading
+  // Show loading while auth is resolving
   if (authLoading || isLoading) {
     return (
       <LoadingScreen
@@ -576,6 +571,46 @@ export default function Dashboard() {
         showProgress={true}
         duration={1200}
       />
+    );
+  }
+
+  // If no user and auth is resolved, show login prompt (don't auto-redirect)
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="max-w-md text-center">
+          <h1 className="text-3xl font-bold text-white mb-4">Welcome to AeThex</h1>
+          <p className="text-gray-400 mb-8">
+            You need to be signed in to access the dashboard
+          </p>
+          <button
+            onClick={() => navigate("/login")}
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // If user but no profile, show incomplete profile message
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="max-w-md text-center">
+          <h1 className="text-3xl font-bold text-white mb-4">Complete Your Profile</h1>
+          <p className="text-gray-400 mb-8">
+            Let's set up your profile to get started with AeThex
+          </p>
+          <button
+            onClick={() => navigate("/onboarding")}
+            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+          >
+            Complete Profile
+          </button>
+        </div>
+      </div>
     );
   }
 
