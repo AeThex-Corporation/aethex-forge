@@ -225,7 +225,7 @@ export default function DiscordVerify() {
                   </Button>
 
                   <Button
-                    onClick={() => navigate("/profile/settings")}
+                    onClick={() => navigate("/dashboard")}
                     variant="outline"
                     className="w-full"
                   >
