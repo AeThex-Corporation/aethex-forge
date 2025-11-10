@@ -275,6 +275,11 @@ export default async function handler(req: any, res: any) {
       return res.redirect("/login?error=link_create");
     }
 
+    // Send notification if this is a new link (not from existing linking flow)
+    if (!existingLink) {
+      await notifyAccountLinked(userId, "Discord");
+    }
+
     // Generate session token
     const { data: sessionData, error: sessionError } =
       await supabase.auth.admin.createSession({
