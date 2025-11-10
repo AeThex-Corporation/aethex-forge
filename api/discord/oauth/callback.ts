@@ -276,18 +276,6 @@ export default async function handler(req: any, res: any) {
       return res.redirect("/login?error=link_create");
     }
 
-    // Create Discord link
-    const { error: linkError } = await supabase.from("discord_links").upsert({
-      discord_id: discordUser.id,
-      user_id: userId,
-      linked_at: new Date().toISOString(),
-    });
-
-    if (linkError) {
-      console.error("[Discord OAuth] Link creation failed:", linkError);
-      return res.redirect("/login?error=link_create");
-    }
-
     // Generate session token
     const { data: sessionData, error: sessionError } =
       await supabase.auth.admin.createSession({
