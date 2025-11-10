@@ -142,6 +142,45 @@ export default async function handler(req: any, res: any) {
     // Initialize Supabase client with service role
     const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
+    // LINKING FLOW: Link Discord to authenticated user
+    if (isLinkingFlow && authenticatedUserId) {
+      console.log("[Discord OAuth] Linking Discord to user:", authenticatedUserId);
+
+      // Check if Discord ID is already linked to someone else
+      const { data: existingLink } = await supabase
+        .from("discord_links")
+        .select("user_id")
+        .eq("discord_id", discordUser.id)
+        .single();
+
+      if (existingLink && existingLink.user_id !== authenticatedUserId) {
+        console.error("[Discord OAuth] Discord ID already linked to different user");
+        return res.redirect(
+          `/dashboard?error=already_linked&message=${encodeURIComponent("This Discord account is already linked to another AeThex account")}`,
+        );
+      }
+
+      // Create or update Discord link
+      const { error: linkError } = await supabase
+        .from("discord_links")
+        .upsert({
+          discord_id: discordUser.id,
+          user_id: authenticatedUserId,
+          linked_at: new Date().toISOString(),
+        });
+
+      if (linkError) {
+        console.error("[Discord OAuth] Link creation failed:", linkError);
+        return res.redirect(
+          `/dashboard?error=link_failed&message=${encodeURIComponent("Failed to link Discord account")}`,
+        );
+      }
+
+      console.log("[Discord OAuth] Successfully linked Discord:", discordUser.id);
+      return res.redirect(redirectTo);
+    }
+
+    // LOGIN/SIGNUP FLOW: Standard OAuth login
     // Check if Discord user already exists
     const { data: existingLink } = await supabase
       .from("discord_links")
