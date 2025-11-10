@@ -532,6 +532,20 @@ export const aethexUserService = {
           .select()
           .single();
         if (upsertError) throw upsertError;
+
+        if (upserted && updates.onboarded === true) {
+          try {
+            await aethexNotificationService.createNotification(
+              userId,
+              "success",
+              "🎉 Welcome to AeThex!",
+              "You've completed your profile setup. Let's get started!",
+            );
+          } catch (notifError) {
+            console.warn("Failed to create onboarding notification:", notifError);
+          }
+        }
+
         return upserted as AethexUserProfile;
       }
 
@@ -542,6 +556,19 @@ export const aethexUserService = {
       }
 
       throw error;
+    }
+
+    if (data && updates.onboarded === true) {
+      try {
+        await aethexNotificationService.createNotification(
+          userId,
+          "success",
+          "🎉 Welcome to AeThex!",
+          "You've completed your profile setup. Let's get started!",
+        );
+      } catch (notifError) {
+        console.warn("Failed to create onboarding notification:", notifError);
+      }
     }
 
     return normalizeProfile(data);
