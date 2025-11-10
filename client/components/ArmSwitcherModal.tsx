@@ -145,7 +145,7 @@ export default function ArmSwitcherModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md overflow-hidden">
+    <div className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-md overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 opacity-30">
         <div className={`absolute inset-0 bg-gradient-to-br ${selectedArmData?.bgGradient || "from-purple-600 to-blue-600"} opacity-20`} />
