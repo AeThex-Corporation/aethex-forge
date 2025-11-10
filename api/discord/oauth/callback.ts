@@ -104,11 +104,18 @@ export default async function handler(req: any, res: any) {
 
     if (!authenticatedUserId) {
       console.error(
-        "[Discord OAuth] Linking flow but no authenticated user found",
+        "[Discord OAuth] Linking flow but no authenticated user found - session cookies not present in request",
+      );
+      console.error(
+        "[Discord OAuth] DIAGNOSTIC: Ensure Discord Dev Portal OAuth2 Redirects includes:",
+        "https://aethex.dev/api/discord/oauth/callback",
+      );
+      console.error(
+        "[Discord OAuth] If using custom domain, update the redirect URI accordingly",
       );
       // Redirect to login with a helpful message
       return res.redirect(
-        `/login?error=not_authenticated&message=${encodeURIComponent("Please sign in before linking Discord")}`,
+        `/login?error=session_lost&message=${encodeURIComponent("Your session was lost. Please sign in again and try linking Discord.")}`,
       );
     }
   }
