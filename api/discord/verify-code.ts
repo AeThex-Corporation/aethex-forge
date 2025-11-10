@@ -21,6 +21,10 @@ export default async function handler(req: any, res: any) {
   const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE;
 
   if (!supabaseUrl || !supabaseServiceRole) {
+    console.error("[Discord Verify] Missing env vars:", {
+      supabaseUrl: !!supabaseUrl,
+      supabaseServiceRole: !!supabaseServiceRole,
+    });
     return res.status(500).json({ message: "Server configuration error" });
   }
 
