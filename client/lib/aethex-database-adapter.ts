@@ -786,7 +786,7 @@ export const aethexAchievementService = {
 
     const { data: achievement, error: fetchError } = await supabase
       .from("achievements")
-      .select("id, xp_reward")
+      .select("id, name, xp_reward")
       .eq("id", achievementId)
       .maybeSingle();
 
@@ -809,6 +809,17 @@ export const aethexAchievementService = {
 
     if (!error && achievement?.xp_reward) {
       await this.updateUserXPAndLevel(userId, achievement.xp_reward ?? 0);
+
+      try {
+        await aethexNotificationService.createNotification(
+          userId,
+          "success",
+          `🏆 Achievement Unlocked: ${achievement.name}`,
+          `You've earned ${achievement.xp_reward} XP!`,
+        );
+      } catch (notifError) {
+        console.warn("Failed to create achievement notification:", notifError);
+      }
     }
   },
 
