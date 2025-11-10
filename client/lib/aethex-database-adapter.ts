@@ -910,6 +910,7 @@ export const aethexAchievementService = {
     const newTotalXP = (currentProfile.total_xp || 0) + xpDelta;
     const newLevel = Math.floor(newTotalXP / 1000) + 1;
     const newLoyaltyPoints = (currentProfile.loyalty_points || 0) + xpDelta;
+    const oldLevel = currentProfile.level || 1;
 
     const updates: Record<string, number> = {};
     if ("total_xp" in currentProfile) updates.total_xp = newTotalXP;
@@ -924,6 +925,19 @@ export const aethexAchievementService = {
         .eq("id", userId);
 
       if (updateError) throw updateError;
+
+      if (newLevel > oldLevel) {
+        try {
+          await aethexNotificationService.createNotification(
+            userId,
+            "success",
+            `⬆️ Level Up!`,
+            `You've reached level ${newLevel}! Keep it up!`,
+          );
+        } catch (notifError) {
+          console.warn("Failed to create level up notification:", notifError);
+        }
+      }
     }
   },
 
