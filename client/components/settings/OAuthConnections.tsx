@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Loader2, Link as LinkIcon, Unlink, ShieldCheck } from "lucide-react";
 
-export type ProviderKey = "google" | "github";
+export type ProviderKey = "google" | "github" | "discord";
 
 export interface ProviderDescriptor {
   provider: ProviderKey;
