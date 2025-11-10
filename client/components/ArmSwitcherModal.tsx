@@ -152,22 +152,22 @@ export default function ArmSwitcherModal({
       <div className="flex-1 overflow-y-auto flex items-center justify-center px-4 sm:px-6 py-4 sm:py-2">
         {!selectedArm ? (
           // Arm Grid - Minimal
-          <div className="w-full max-w-sm space-y-1.5">
+          <div className="w-full max-w-sm space-y-1">
             {ARMS.map((arm) => (
               <button
                 key={arm.id}
                 type="button"
                 onClick={() => handleSelectArm(arm.id)}
-                className="w-full p-4 rounded-lg border border-gray-700/50 bg-gray-900/30 hover:bg-gray-800/50 hover:border-gray-600 transition-all duration-200 text-left group"
+                className="w-full p-3 rounded-lg border border-gray-700/50 bg-gray-900/30 hover:bg-gray-800/50 hover:border-gray-600 transition-all duration-200 text-left group"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <img
                     src={arm.icon}
                     alt={arm.label}
-                    className="w-10 h-10 object-contain group-hover:scale-110 transition-transform"
+                    className="w-8 h-8 object-contain group-hover:scale-110 transition-transform flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className={`font-semibold text-sm ${arm.textColor}`}>
+                    <h3 className={`font-semibold text-xs ${arm.textColor}`}>
                       {arm.label}
                     </h3>
                     <p className="text-xs text-gray-500 truncate">{arm.tip}</p>
