@@ -680,6 +680,19 @@ export const aethexProjectService = {
       throw error;
     }
 
+    if (data && project.user_id) {
+      try {
+        await aethexNotificationService.createNotification(
+          project.user_id,
+          "success",
+          `🚀 Project Created: ${project.name || "Untitled"}`,
+          "Your new project is ready to go!",
+        );
+      } catch (notifError) {
+        console.warn("Failed to create project notification:", notifError);
+      }
+    }
+
     return data as AethexProject;
   },
 
