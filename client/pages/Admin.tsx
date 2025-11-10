@@ -162,7 +162,7 @@ export default function Admin() {
     setProjectApplicationsLoading(true);
     try {
       const response = await fetch(
-        `/api/applications?owner=${encodeURIComponent(user.id)}`,
+        `/api/applications?user_id=${encodeURIComponent(user.id)}`,
       );
       if (response.ok) {
         const data = await response.json();
