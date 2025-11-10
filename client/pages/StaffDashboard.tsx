@@ -187,18 +187,21 @@ export default function StaffDashboard() {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle>Shortcuts</CardTitle>
-                  <CardDescription>Common operational links</CardDescription>
+                  <CardTitle>Staff Resources</CardTitle>
+                  <CardDescription>Knowledge & HR tools</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/admin">Admin panel</a>
+                    <a href="/staff/knowledge-base">Knowledge Base</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/community#mentorship">Mentorship hub</a>
+                    <a href="/staff/team-handbook">Team Handbook</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/feed">Community feed</a>
+                    <a href="/staff/announcements">Announcements</a>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <a href="/staff/learning-portal">Learning Portal</a>
                   </Button>
                 </CardContent>
               </Card>
