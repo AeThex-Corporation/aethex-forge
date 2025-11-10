@@ -1,20 +1,18 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import LoadingScreen from "@/components/LoadingScreen";
-import { useAuth } from "@/contexts/AuthContext";
-import Dashboard from "./Dashboard";
 
 export default function Activity() {
-  const navigate = useNavigate();
   const { isActivity, isLoading, user, error } = useDiscordActivity();
-  const { user: authUser } = useAuth();
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    if (!isActivity && !isLoading) {
-      navigate("/", { replace: true });
+    // Only show content if we're actually in a Discord Activity
+    // This is a one-time check - we don't navigate away
+    if (isActivity && !isLoading) {
+      setShowContent(true);
     }
-  }, [isActivity, isLoading, navigate]);
+  }, [isActivity, isLoading]);
 
   if (isLoading) {
     return (
