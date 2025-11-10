@@ -157,10 +157,10 @@ export default function DiscordVerify() {
                   </p>
 
                   <Button
-                    onClick={() => navigate("/profile/settings")}
+                    onClick={() => navigate("/dashboard?tab=connections")}
                     className="w-full"
                   >
-                    Go to Settings
+                    View Connections
                   </Button>
                 </div>
               ) : (
