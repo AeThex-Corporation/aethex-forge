@@ -89,24 +89,22 @@ export default async function handler(req: any, res: any) {
     }
 
     // Delete used verification code
-    await supabase
+    const { error: deleteError } = await supabase
       .from("discord_verifications")
       .delete()
       .eq("verification_code", verification_code.trim());
 
-    // Fetch Discord user info from verification for response
-    const { data: discordUser } = await supabase
-      .from("discord_verifications")
-      .select("*")
-      .eq("discord_id", discordId)
-      .maybeSingle();
+    if (deleteError) {
+      console.error("[Discord Verify] Failed to delete verification code:", deleteError);
+      // Don't return error - code is already used and link is created
+    }
 
     res.status(200).json({
       success: true,
       message: "Discord account linked successfully!",
       discord_user: {
         id: discordId,
-        username: discordUser?.username || "Discord User",
+        username: verification.username || "Discord User",
         discriminator: "0000",
       },
     });
