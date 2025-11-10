@@ -13,7 +13,8 @@ export default function handler(req: any, res: any) {
   }
 
   // Get the current API base from the request origin
-  const protocol = req.headers["x-forwarded-proto"] || req.headers.protocol || "https";
+  const protocol =
+    req.headers["x-forwarded-proto"] || req.headers.protocol || "https";
   const host = req.headers["x-forwarded-host"] || req.headers.host;
   const apiBase = `${protocol}://${host}`;
 

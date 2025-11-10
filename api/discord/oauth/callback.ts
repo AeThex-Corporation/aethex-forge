@@ -66,25 +66,46 @@ export default async function handler(req: any, res: any) {
         const tokenParts = accessToken.split(".");
         if (tokenParts.length === 3) {
           try {
-            const payload = JSON.parse(Buffer.from(tokenParts[1], "base64").toString());
+            const payload = JSON.parse(
+              Buffer.from(tokenParts[1], "base64").toString(),
+            );
             authenticatedUserId = payload.sub;
-            console.log("[Discord OAuth] Successfully extracted user ID from token:", authenticatedUserId);
+            console.log(
+              "[Discord OAuth] Successfully extracted user ID from token:",
+              authenticatedUserId,
+            );
           } catch (decodeError) {
-            console.error("[Discord OAuth] Failed to decode JWT payload:", decodeError);
+            console.error(
+              "[Discord OAuth] Failed to decode JWT payload:",
+              decodeError,
+            );
           }
         } else {
-          console.error("[Discord OAuth] Token does not have 3 parts:", tokenParts.length);
+          console.error(
+            "[Discord OAuth] Token does not have 3 parts:",
+            tokenParts.length,
+          );
         }
       } else {
-        console.warn("[Discord OAuth] No sb-access-token cookie found in request");
-        console.log("[Discord OAuth] Available cookies:", cookie.substring(0, 200));
+        console.warn(
+          "[Discord OAuth] No sb-access-token cookie found in request",
+        );
+        console.log(
+          "[Discord OAuth] Available cookies:",
+          cookie.substring(0, 200),
+        );
       }
     } catch (e) {
-      console.error("[Discord OAuth] Error extracting user ID from cookies:", e);
+      console.error(
+        "[Discord OAuth] Error extracting user ID from cookies:",
+        e,
+      );
     }
 
     if (!authenticatedUserId) {
-      console.error("[Discord OAuth] Linking flow but no authenticated user found");
+      console.error(
+        "[Discord OAuth] Linking flow but no authenticated user found",
+      );
       // Redirect to login with a helpful message
       return res.redirect(
         `/login?error=not_authenticated&message=${encodeURIComponent("Please sign in before linking Discord")}`,
@@ -162,7 +183,10 @@ export default async function handler(req: any, res: any) {
 
     // LINKING FLOW: Link Discord to authenticated user
     if (isLinkingFlow && authenticatedUserId) {
-      console.log("[Discord OAuth] Linking Discord to user:", authenticatedUserId);
+      console.log(
+        "[Discord OAuth] Linking Discord to user:",
+        authenticatedUserId,
+      );
 
       // Check if Discord ID is already linked to someone else
       const { data: existingLink } = await supabase
@@ -172,20 +196,20 @@ export default async function handler(req: any, res: any) {
         .single();
 
       if (existingLink && existingLink.user_id !== authenticatedUserId) {
-        console.error("[Discord OAuth] Discord ID already linked to different user");
+        console.error(
+          "[Discord OAuth] Discord ID already linked to different user",
+        );
         return res.redirect(
           `/dashboard?error=already_linked&message=${encodeURIComponent("This Discord account is already linked to another AeThex account")}`,
         );
       }
 
       // Create or update Discord link
-      const { error: linkError } = await supabase
-        .from("discord_links")
-        .upsert({
-          discord_id: discordUser.id,
-          user_id: authenticatedUserId,
-          linked_at: new Date().toISOString(),
-        });
+      const { error: linkError } = await supabase.from("discord_links").upsert({
+        discord_id: discordUser.id,
+        user_id: authenticatedUserId,
+        linked_at: new Date().toISOString(),
+      });
 
       if (linkError) {
         console.error("[Discord OAuth] Link creation failed:", linkError);
@@ -194,7 +218,10 @@ export default async function handler(req: any, res: any) {
         );
       }
 
-      console.log("[Discord OAuth] Successfully linked Discord:", discordUser.id);
+      console.log(
+        "[Discord OAuth] Successfully linked Discord:",
+        discordUser.id,
+      );
       return res.redirect(redirectTo);
     }
 
