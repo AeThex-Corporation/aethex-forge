@@ -156,26 +156,6 @@ export default function ArmSwitcher() {
         ))}
       </div>
 
-      {/* Mobile Version - Full-screen Modal (< md) */}
-      <div className="md:hidden">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="relative h-12 w-12 flex items-center justify-center rounded-lg bg-gray-700/40 hover:bg-gray-600/50 transition-all duration-300 hover:scale-110"
-          title="Open Arm Switcher"
-        >
-          <img
-            src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
-            alt="AeThex Arms"
-            className="h-8 w-8 object-contain"
-          />
-        </button>
-
-        {/* Full-screen Modal */}
-        <ArmSwitcherModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      </div>
     </>
   );
 }
