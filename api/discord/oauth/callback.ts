@@ -49,73 +49,55 @@ export default async function handler(req: any, res: any) {
     }
   }
 
-  // For linking flow, extract user ID from auth cookies
+  // For linking flow, extract user ID from temporary session stored in database
   let authenticatedUserId: string | null = null;
   if (isLinkingFlow) {
     try {
-      const cookie = req.headers.cookie || "";
-      console.log("[Discord OAuth] Cookie header present:", !!cookie);
+      const stateData = JSON.parse(decodeURIComponent(state));
+      const sessionToken = stateData.sessionToken;
 
-      // Try to find the access token cookie
-      const accessTokenMatch = cookie.match(/sb-access-token=([^;,\s]+)/);
-      if (accessTokenMatch) {
-        const accessToken = accessTokenMatch[1];
-        console.log("[Discord OAuth] Found access token in cookies");
-
-        // Decode JWT to get user ID
-        const tokenParts = accessToken.split(".");
-        if (tokenParts.length === 3) {
-          try {
-            const payload = JSON.parse(
-              Buffer.from(tokenParts[1], "base64").toString(),
-            );
-            authenticatedUserId = payload.sub;
-            console.log(
-              "[Discord OAuth] Successfully extracted user ID from token:",
-              authenticatedUserId,
-            );
-          } catch (decodeError) {
-            console.error(
-              "[Discord OAuth] Failed to decode JWT payload:",
-              decodeError,
-            );
-          }
-        } else {
-          console.error(
-            "[Discord OAuth] Token does not have 3 parts:",
-            tokenParts.length,
-          );
-        }
-      } else {
-        console.warn(
-          "[Discord OAuth] No sb-access-token cookie found in request",
+      if (!sessionToken) {
+        console.error(
+          "[Discord OAuth] No session token found in linking flow state",
         );
-        console.log(
-          "[Discord OAuth] Available cookies:",
-          cookie.substring(0, 200),
+        return res.redirect(
+          "/login?error=session_lost&message=Session%20expired.%20Please%20try%20linking%20Discord%20again.",
         );
       }
-    } catch (e) {
-      console.error(
-        "[Discord OAuth] Error extracting user ID from cookies:",
-        e,
-      );
-    }
 
-    if (!authenticatedUserId) {
-      console.error(
-        "[Discord OAuth] Linking flow but no authenticated user found - session cookies not present in request",
+      // Query database for the temporary linking session
+      const { data: session, error: sessionError } = await adminSupabase
+        .from("discord_linking_sessions")
+        .select("user_id")
+        .eq("session_token", sessionToken)
+        .gt("expires_at", new Date().toISOString())
+        .single();
+
+      if (sessionError || !session) {
+        console.error(
+          "[Discord OAuth] Linking session not found or expired",
+          sessionError,
+        );
+        return res.redirect(
+          "/login?error=session_lost&message=Session%20expired.%20Please%20try%20linking%20Discord%20again.",
+        );
+      }
+
+      authenticatedUserId = session.user_id;
+      console.log(
+        "[Discord OAuth] Linking session found, user_id:",
+        authenticatedUserId,
       );
-      console.error(
-        "[Discord OAuth] DIAGNOSTIC: Ensure Discord Dev Portal OAuth2 Redirects includes:",
-        "https://aethex.dev/api/discord/oauth/callback",
-      );
-      console.error(
-        "[Discord OAuth] If using custom domain, update the redirect URI accordingly",
-      );
-      // Redirect to login with a helpful message
+
+      // Clean up: delete the temporary session
+      await adminSupabase
+        .from("discord_linking_sessions")
+        .delete()
+        .eq("session_token", sessionToken);
+    } catch (e) {
+      console.error("[Discord OAuth] Error parsing/using session token:", e);
       return res.redirect(
-        `/login?error=session_lost&message=${encodeURIComponent("Your session was lost. Please sign in again and try linking Discord.")}`,
+        "/login?error=session_lost&message=Session%20error.%20Please%20try%20again.",
       );
     }
   }
