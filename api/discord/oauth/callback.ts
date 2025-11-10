@@ -292,13 +292,8 @@ export default async function handler(req: any, res: any) {
 
     res.setHeader("Set-Cookie", [accessTokenCookie, refreshTokenCookie]);
 
-    // Redirect to next page
-    const nextPath =
-      state && typeof state === "string" && state.startsWith("/")
-        ? state
-        : isNewUser
-          ? "/onboarding"
-          : "/dashboard";
+    // Redirect to dashboard (we only log in existing users here)
+    const nextPath = "/dashboard";
 
     // Determine the base URL from environment or request origin
     let baseUrl = process.env.VITE_API_BASE || process.env.API_BASE;
