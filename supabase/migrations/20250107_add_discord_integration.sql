@@ -23,6 +23,22 @@ CREATE TABLE IF NOT EXISTS discord_verifications (
 CREATE INDEX IF NOT EXISTS idx_discord_verifications_code ON discord_verifications(verification_code);
 CREATE INDEX IF NOT EXISTS idx_discord_verifications_expires ON discord_verifications(expires_at);
 
+-- Temporary linking sessions (for OAuth linking flow to avoid cookie loss during redirect)
+CREATE TABLE IF NOT EXISTS discord_linking_sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
+  session_token TEXT NOT NULL UNIQUE,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_discord_linking_sessions_token ON discord_linking_sessions(session_token);
+CREATE INDEX IF NOT EXISTS idx_discord_linking_sessions_expires ON discord_linking_sessions(expires_at);
+
+ALTER TABLE discord_linking_sessions ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "discord_linking_sessions_service_role" ON discord_linking_sessions
+  FOR ALL TO service_role USING (true);
+
 -- Discord Role Mappings (Maps AeThex roles to Discord roles)
 CREATE TABLE IF NOT EXISTS discord_role_mappings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
