@@ -52,85 +52,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-function OrgLogin() {
-  const [email, setEmail] = useState("");
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const isValid = /@aethex\.dev$/i.test(email);
-  return (
-    <div className="space-y-3 p-3 rounded border border-border/40 bg-background/50">
-      <div className="flex items-center justify-between">
-        <div className="text-sm font-medium">Aethex Login (org)</div>
-        <Badge variant="outline" className="uppercase">
-          @aethex.dev
-        </Badge>
-      </div>
-      {sent ? (
-        <Alert className="border-aethex-400/30 bg-aethex-500/10 text-foreground">
-          <AlertTitle>Check your inbox</AlertTitle>
-          <AlertDescription>
-            We sent a magic link to {email}. If email isn’t configured, a manual
-            link is shown below.
-          </AlertDescription>
-          {sent.startsWith("http") && (
-            <p className="mt-2 break-all rounded bg-background/60 px-3 py-2 font-mono text-xs text-foreground/90">
-              {sent}
-            </p>
-          )}
-        </Alert>
-      ) : null}
-      {error ? (
-        <Alert className="border-red-400/30 bg-red-500/10 text-foreground">
-          <AlertTitle>Request failed</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      ) : null}
-      <div className="grid gap-2 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <Input
-            type="email"
-            placeholder="name@aethex.dev"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <Button
-          type="button"
-          disabled={!isValid || sending}
-          onClick={async () => {
-            setSending(true);
-            setError(null);
-            setSent(null);
-            try {
-              const r = await fetch("/api/auth/send-org-link", {
-                method: "POST",
-                headers: { "content-type": "application/json" },
-                body: JSON.stringify({
-                  email,
-                  redirectTo: window.location.origin + "/dashboard",
-                }),
-              });
-              if (!r.ok) {
-                const msg = await r.text().catch(() => "");
-                throw new Error(msg || String(r.status));
-              }
-              const data = await r.json().catch(() => ({}));
-              setSent(data?.verificationUrl ?? "sent");
-            } catch (e: any) {
-              setError(e?.message || "Unexpected error");
-            } finally {
-              setSending(false);
-            }
-          }}
-        >
-          {sending ? "Sending…" : "Send magic link"}
-        </Button>
-      </div>
-    </div>
-  );
-}
-
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -198,106 +119,134 @@ export default function Login() {
     try {
       if (isSignUp) {
         const result = await signUp(email, password, {
-          id: "",
-          full_name: fullName,
-          user_type: "game_developer",
-          username: email.split("@")[0],
+          data: {
+            full_name: fullName,
+          },
         });
-
-        if (result?.emailSent) {
-          setManualVerificationLink(null);
-        } else if (result?.verificationUrl) {
-          setManualVerificationLink(result.verificationUrl);
-          try {
-            if (
-              typeof navigator !== "undefined" &&
-              navigator.clipboard?.writeText
-            ) {
-              await navigator.clipboard.writeText(result.verificationUrl);
-              toastInfo({
-                title: "Verification link copied",
-                description:
-                  "We copied the manual verification link to your clipboard. Paste it into your browser to finish signup.",
-              });
-            } else {
-              throw new Error("clipboard unsupported");
-            }
-          } catch {
-            toastInfo({
-              title: "Manual verification required",
-              description:
-                "Copy the link shown in the banner to verify your account.",
-            });
-          }
+        if (result?.user) {
+          toastInfo({
+            title: "Account created",
+            description:
+              result?.identities?.length === 0
+                ? "Please verify your email to log in"
+                : "Redirecting to onboarding...",
+          });
+          await aethexUserService.ensureUserProfile(result.user);
+          navigate("/onboarding", { replace: true });
         }
-
-        setIsSignUp(false);
       } else {
-        await signIn(email, password);
-        // Do not navigate immediately; wait for auth state to update
+        const result = await signIn(email, password);
+        if (result?.user) {
+          const params = new URLSearchParams(location.search);
+          const next = params.get("next");
+          const safeNext = next && next.startsWith("/") ? next : null;
+          navigate(
+            safeNext ||
+              (result?.user_metadata?.profile_complete
+                ? "/dashboard"
+                : "/onboarding"),
+            { replace: true },
+          );
+        }
       }
     } catch (error: any) {
-      console.error("Authentication error:", error);
+      console.error("Auth error:", error);
+      const message =
+        error?.message ||
+        (isSignUp ? "Failed to create account" : "Failed to sign in");
       toastError({
-        title: "Authentication failed",
-        description:
-          error?.message || "Something went wrong. Please try again.",
+        title: isSignUp ? "Signup failed" : "Login failed",
+        description: message,
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSocialLogin = async (provider: "github" | "google") => {
-    setIsLoading(true);
+  const handleSocialLogin = async (provider: string) => {
     try {
       await signInWithOAuth(provider);
-    } catch (error: any) {
-      console.error(`${provider} authentication error:`, error);
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error("OAuth error:", error);
     }
   };
 
   const handleWeb3Login = async () => {
-    setIsLoading(true);
     try {
-      navigate("/web3-callback");
+      const nonce = await fetch("/api/web3/nonce", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address: "",
+        }),
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null);
+
+      if (!nonce?.nonce) {
+        toastError({
+          title: "Web3 login unavailable",
+          description: "Please try again later",
+        });
+        return;
+      }
+
+      const message = `Sign this message to verify your Ethereum wallet:\n\nNonce: ${nonce.nonce}`;
+      const address = (window as any).ethereum?.selectedAddress;
+
+      if (!address || !(window as any).ethereum) {
+        toastError({
+          title: "Wallet not connected",
+          description:
+            "Please install MetaMask or another Ethereum wallet extension",
+        });
+        return;
+      }
+
+      const signature = await (window as any).ethereum.request({
+        method: "personal_sign",
+        params: [message, address],
+      });
+
+      const result = await fetch("/api/web3/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address,
+          nonce: nonce.nonce,
+          signature,
+          redirectTo:
+            window.location.origin +
+            (profileComplete ? "/dashboard" : "/onboarding"),
+        }),
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null);
+
+      if (result?.url) {
+        window.location.href = result.url;
+      }
     } catch (error: any) {
-      console.error("Web3 navigation error:", error);
-      setIsLoading(false);
+      console.error("Web3 error:", error);
+      toastError({
+        title: "Web3 verification failed",
+        description:
+          error?.message || "Could not verify your wallet signature",
+      });
     }
   };
 
-  // Show loading screen only during form submission, not during auth context loading
-  if (isLoading && !loading) {
-    return (
-      <LoadingScreen
-        message="Authenticating your account..."
-        showProgress={true}
-        duration={2000}
-      />
-    );
-  }
-
-  // If auth context is still loading, show a different loading state
   if (loading) {
-    return (
-      <LoadingScreen
-        message="Initializing AeThex OS..."
-        showProgress={true}
-        duration={3000}
-      />
-    );
+    return <LoadingScreen />;
   }
 
   return (
     <>
       <SEO
-        pageTitle="Login"
-        description="Sign in to your AeThex account to access the dashboard and community."
-        canonical={
-          typeof window !== "undefined"
+        title="Sign In to AeThex"
+        description="Create or access your AeThex creator account"
+        image={
+          window.location.href
             ? window.location.href
             : (undefined as any)
         }
@@ -451,20 +400,6 @@ export default function Login() {
                   </Button>
                 </div>
 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-border/50" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      Or continue with email
-                    </span>
-                  </div>
-                </div>
-
-                {/* Aethex Org Login (Magic Link) */}
-                <OrgLogin />
-
                 {/* Email/Password Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {isSignUp && (
@@ -598,49 +533,6 @@ export default function Login() {
             </div>
           </div>
         </div>
-
-        <Dialog open={showReset} onOpenChange={setShowReset}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Reset your password</DialogTitle>
-              <DialogDescription>
-                Enter the email associated with your account. We'll send a reset
-                link.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-3 py-2">
-              <Label htmlFor="resetEmail" className="text-sm font-medium">
-                Email Address
-              </Label>
-              <Input
-                id="resetEmail"
-                type="email"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                placeholder="you@example.com"
-              />
-            </div>
-            <DialogFooter className="sm:justify-end">
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button
-                onClick={async () => {
-                  if (!resetEmail) return;
-                  setIsLoading(true);
-                  try {
-                    await requestPasswordReset(resetEmail);
-                    setShowReset(false);
-                  } catch {}
-                  setIsLoading(false);
-                }}
-                disabled={!resetEmail || isLoading}
-              >
-                Send reset link
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </Layout>
     </>
   );
