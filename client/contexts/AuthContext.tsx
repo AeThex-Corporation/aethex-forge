@@ -714,7 +714,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             );
             aethexToast.error({
               title: "Auth failed",
-              description: "Unable to get authentication token. Please refresh and try again.",
+              description:
+                "Unable to get authentication token. Please refresh and try again.",
             });
             return;
           }
@@ -749,7 +750,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           const sessionToken = sessionJson?.token;
 
           if (!sessionToken) {
-            console.error("[Discord Link] No session token in response:", sessionJson);
+            console.error(
+              "[Discord Link] No session token in response:",
+              sessionJson,
+            );
             throw new Error("Invalid session response from server");
           }
 
@@ -773,7 +777,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           aethexToast.error({
             title: "Link failed",
             description:
-              error?.message || "Unable to link Discord right now. Please try again.",
+              error?.message ||
+              "Unable to link Discord right now. Please try again.",
           });
         }
       }

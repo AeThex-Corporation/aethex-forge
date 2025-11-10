@@ -96,7 +96,10 @@ export default async function handler(req: any, res: any) {
       .eq("verification_code", verification_code.trim());
 
     if (deleteError) {
-      console.error("[Discord Verify] Failed to delete verification code:", deleteError);
+      console.error(
+        "[Discord Verify] Failed to delete verification code:",
+        deleteError,
+      );
       // Don't return error - code is already used and link is created
     }
 
