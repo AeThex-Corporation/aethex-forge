@@ -862,39 +862,58 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (typeof window === "undefined") return;
 
     const onAuthError = (ev: any) => {
+      // Get message from various possible sources
       const reason = ev?.reason || ev?.error || ev?.message || ev;
-      const message = String(
+      const messageStr = String(
         reason?.message ?? reason ?? ev?.toString?.() ?? "",
       ).toLowerCase();
 
-      // IGNORE Discord SDK, Builder.io, and other non-auth errors
-      if (
-        message.includes("agent source") ||
-        message.includes("discord") ||
-        message.includes("@discord") ||
-        message.includes("wix") ||
-        message.includes("frame_id") ||
-        message.includes("cross-origin") ||
-        message.includes("host validation") ||
-        message.includes("host is not") ||
-        message.includes("host is not supported") ||
-        message.includes("host is not valid") ||
-        message.includes("insights whitelist") ||
-        message.includes("read -") ||
-        message.includes("@import rules") ||
-        message.includes("construct-stylesheets")
-      ) {
+      // Also check the error source (for Builder errors)
+      const source = String(ev?.filename || ev?.source || "").toLowerCase();
+      const fullMessage = messageStr + " " + source;
+
+      // IGNORE non-auth errors from known sources:
+      // - Discord SDK ("agent source", "discord", "@discord")
+      // - Builder/CMS ("host", "read", "@import", "construct-stylesheets", "wix")
+      // - Cross-origin issues ("frame_id", "cross-origin")
+      // - Storage/misc issues
+      const nonAuthPatterns = [
+        "agent source",
+        "discord",
+        "@discord",
+        "wix",
+        "frame_id",
+        "cross-origin",
+        "host validation",
+        "host is not",
+        "host is not supported",
+        "host is not valid",
+        "insights whitelist",
+        "read -",
+        "read event",
+        "@import rules",
+        "construct-stylesheets",
+        "quota exceeded",
+        "storage quota",
+        "security/strict-origin-when-cross-origin",
+      ];
+
+      if (nonAuthPatterns.some((pattern) => fullMessage.includes(pattern))) {
         // Just log but don't clear session
-        console.debug("Non-auth error (ignoring):", message);
+        console.debug("Non-auth error (ignoring):", fullMessage);
         return;
       }
 
       // Only clear session for actual auth errors
-      if (
-        message.includes("invalid refresh token") ||
-        message.includes("session expired") ||
-        message.includes("revoked")
-      ) {
+      const authErrorPatterns = [
+        "invalid refresh token",
+        "session expired",
+        "revoked",
+        "unauthorized",
+        "auth/",
+      ];
+
+      if (authErrorPatterns.some((pattern) => messageStr.includes(pattern))) {
         console.warn("Captured auth error (clearing local session):", reason);
         try {
           clearClientAuthState();
