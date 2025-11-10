@@ -16,13 +16,13 @@ interface Arm {
 const ARMS: Arm[] = [
   {
     id: "staff",
-    label: "Staff",
+    label: "Admin",
     color: "#7c3aed",
     bgGradient: "from-purple-600 to-purple-400",
     textColor: "text-purple-400",
-    href: "/staff",
+    href: "/admin",
     icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc0414efd7af54ef4b821a05d469150d0?format=webp&width=800",
-    tip: "Internal operations for AeThex employees",
+    tip: "Admin panel & staff management",
   },
   {
     id: "labs",
