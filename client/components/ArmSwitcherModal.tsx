@@ -133,156 +133,158 @@ export default function ArmSwitcherModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] bg-black/98 backdrop-blur-lg overflow-hidden flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-2 border-b border-gray-800/50 flex-shrink-0">
-        <button
-          type="button"
-          onClick={handleBack}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-xs"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          {selectedArm ? "Back" : "Close"}
-        </button>
-        <h1 className="text-xs font-semibold text-white">
-          {selectedArm ? selectedArmData?.label : "Select Arm"}
-        </h1>
-        <div className="w-10" />
-      </div>
-
-      {/* Content */}
-      <div className="overflow-y-auto px-4 sm:px-6 py-8 sm:py-6 flex flex-col items-center justify-start flex-1 min-h-0">
-        {!selectedArm ? (
-          // Arm Grid - Minimal
-          <div className="w-full max-w-sm space-y-1">
-            {ARMS.map((arm) => (
-              <button
-                key={arm.id}
-                type="button"
-                onClick={() => handleSelectArm(arm.id)}
-                className="w-full p-3 rounded-lg border border-gray-700/50 bg-gray-900/30 hover:bg-gray-800/50 hover:border-gray-600 transition-all duration-200 text-left group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src={arm.icon}
-                    alt={arm.label}
-                    className="w-8 h-8 object-contain group-hover:scale-110 transition-transform flex-shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <h3 className={`font-semibold text-xs ${arm.textColor}`}>
-                      {arm.label}
-                    </h3>
-                    <p className="text-xs text-gray-500 truncate">{arm.tip}</p>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        ) : selectedArmData && !isNavigating ? (
-          // Landing Page - Minimal
-          <div className="w-full max-w-sm space-y-6 text-center">
-            {/* Icon */}
-            <div className="flex justify-center">
-              <div
-                className={`w-20 h-20 flex items-center justify-center rounded-2xl bg-gradient-to-br ${selectedArmData.bgGradient} p-4`}
-                style={{
-                  boxShadow: `0 0 40px ${selectedArmData.color}40`,
-                }}
-              >
-                <img
-                  src={selectedArmData.icon}
-                  alt={selectedArmData.label}
-                  className="w-16 h-16 object-contain"
-                />
-              </div>
-            </div>
-
-            {/* Title & Tip */}
-            <div className="space-y-3">
-              <h2 className={`text-3xl font-bold ${selectedArmData.textColor}`}>
-                {selectedArmData.label}
-              </h2>
-              <p className="text-sm text-gray-400">{selectedArmData.tip}</p>
-            </div>
-
-            {/* Progress Bars */}
-            <div className="flex justify-center gap-1">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className={`${selectedArmData.textColor.replace("text-", "bg-")} rounded-full opacity-80`}
-                  style={{
-                    width: "8px",
-                    height: `${16 + i * 8}px`,
-                    animation: "pulse 1.5s ease-in-out infinite",
-                    animationDelay: `${i * 0.15}s`,
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        ) : (
-          // Loading State
-          <div className="w-full max-w-sm space-y-6 text-center">
-            <div className="flex justify-center gap-1">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className={`${selectedArmData?.textColor.replace("text-", "bg-") || "bg-purple-400"} rounded-full`}
-                  style={{
-                    width: "8px",
-                    height: `${16 + i * 8}px`,
-                    animation: "pulse 1s ease-in-out infinite",
-                    animationDelay: `${i * 0.1}s`,
-                  }}
-                />
-              ))}
-            </div>
-            <p className="text-sm text-gray-400">Initializing...</p>
-          </div>
-        )}
-      </div>
-
-      {/* Footer - Buttons */}
-      <div className="px-4 sm:px-6 py-4 border-t border-gray-800/50 space-y-2 flex-shrink-0 bg-black/50">
-        {selectedArm && !isNavigating ? (
-          <>
-            <button
-              type="button"
-              onClick={handleProceed}
-              className={`w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-gradient-to-r ${selectedArmData?.bgGradient} hover:shadow-lg active:scale-95`}
-            >
-              Proceed to {selectedArmData?.label}
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedArm(null)}
-              className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
-            >
-              Choose Different
-            </button>
-          </>
-        ) : !isNavigating ? (
+    <div className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-gray-950/95 border border-gray-800 rounded-xl shadow-2xl flex flex-col max-h-[85vh]">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-gray-800/50 flex-shrink-0">
           <button
             type="button"
             onClick={handleBack}
-            className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
+            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-xs"
           >
-            Close
+            <ArrowLeft className="w-3.5 h-3.5" />
+            {selectedArm ? "Back" : "Close"}
           </button>
-        ) : null}
-      </div>
+          <h1 className="text-xs font-semibold text-white">
+            {selectedArm ? selectedArmData?.label : "Select Arm"}
+          </h1>
+          <div className="w-10" />
+        </div>
 
-      <style>{`
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.4;
+        {/* Content */}
+        <div className="overflow-y-auto px-4 sm:px-6 py-6 flex flex-col items-center justify-start flex-1 min-h-0">
+          {!selectedArm ? (
+            // Arm Grid - Minimal
+            <div className="w-full space-y-1">
+              {ARMS.map((arm) => (
+                <button
+                  key={arm.id}
+                  type="button"
+                  onClick={() => handleSelectArm(arm.id)}
+                  className="w-full p-3 rounded-lg border border-gray-700/50 bg-gray-900/30 hover:bg-gray-800/50 hover:border-gray-600 transition-all duration-200 text-left group"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <img
+                      src={arm.icon}
+                      alt={arm.label}
+                      className="w-8 h-8 object-contain group-hover:scale-110 transition-transform flex-shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h3 className={`font-semibold text-xs ${arm.textColor}`}>
+                        {arm.label}
+                      </h3>
+                      <p className="text-xs text-gray-500 truncate">{arm.tip}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : selectedArmData && !isNavigating ? (
+            // Landing Page - Minimal
+            <div className="w-full space-y-6 text-center">
+              {/* Icon */}
+              <div className="flex justify-center">
+                <div
+                  className={`w-20 h-20 flex items-center justify-center rounded-2xl bg-gradient-to-br ${selectedArmData.bgGradient} p-4`}
+                  style={{
+                    boxShadow: `0 0 40px ${selectedArmData.color}40`,
+                  }}
+                >
+                  <img
+                    src={selectedArmData.icon}
+                    alt={selectedArmData.label}
+                    className="w-16 h-16 object-contain"
+                  />
+                </div>
+              </div>
+
+              {/* Title & Tip */}
+              <div className="space-y-3">
+                <h2 className={`text-3xl font-bold ${selectedArmData.textColor}`}>
+                  {selectedArmData.label}
+                </h2>
+                <p className="text-sm text-gray-400">{selectedArmData.tip}</p>
+              </div>
+
+              {/* Progress Bars */}
+              <div className="flex justify-center gap-1">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className={`${selectedArmData.textColor.replace("text-", "bg-")} rounded-full opacity-80`}
+                    style={{
+                      width: "8px",
+                      height: `${16 + i * 8}px`,
+                      animation: "pulse 1.5s ease-in-out infinite",
+                      animationDelay: `${i * 0.15}s`,
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            // Loading State
+            <div className="w-full space-y-6 text-center">
+              <div className="flex justify-center gap-1">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className={`${selectedArmData?.textColor.replace("text-", "bg-") || "bg-purple-400"} rounded-full`}
+                    style={{
+                      width: "8px",
+                      height: `${16 + i * 8}px`,
+                      animation: "pulse 1s ease-in-out infinite",
+                      animationDelay: `${i * 0.1}s`,
+                    }}
+                  />
+                ))}
+              </div>
+              <p className="text-sm text-gray-400">Initializing...</p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer - Buttons */}
+        <div className="px-4 sm:px-6 py-4 border-t border-gray-800/50 space-y-2 flex-shrink-0">
+          {selectedArm && !isNavigating ? (
+            <>
+              <button
+                type="button"
+                onClick={handleProceed}
+                className={`w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-gradient-to-r ${selectedArmData?.bgGradient} hover:shadow-lg active:scale-95`}
+              >
+                Proceed to {selectedArmData?.label}
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedArm(null)}
+                className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
+              >
+                Choose Different
+              </button>
+            </>
+          ) : !isNavigating ? (
+            <button
+              type="button"
+              onClick={handleBack}
+              className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
+            >
+              Close
+            </button>
+          ) : null}
+        </div>
+
+        <style>{`
+          @keyframes pulse {
+            0%, 100% {
+              opacity: 0.4;
+            }
+            50% {
+              opacity: 1;
+            }
           }
-          50% {
-            opacity: 1;
-          }
-        }
-      `}</style>
+        `}</style>
+      </div>
     </div>
   );
 }
