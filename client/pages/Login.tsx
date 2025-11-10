@@ -142,6 +142,7 @@ export default function Login() {
   >(null);
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const [errorFromUrl, setErrorFromUrl] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -154,6 +155,29 @@ export default function Login() {
     requestPasswordReset,
   } = useAuth();
   const { info: toastInfo, error: toastError } = useAethexToast();
+
+  // Check for error messages from URL query parameters (e.g., from OAuth callbacks)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const errorType = params.get("error");
+    const errorMessage = params.get("message");
+
+    if (errorType && errorMessage) {
+      setErrorFromUrl(decodeURIComponent(errorMessage));
+      // Show in toast as well
+      if (errorType === "account_exists") {
+        toastError({
+          title: "Account Already Exists",
+          description: errorMessage,
+        });
+      } else if (errorType === "auth_create") {
+        toastError({
+          title: "Authentication Error",
+          description: errorMessage,
+        });
+      }
+    }
+  }, [location.search, toastError]);
 
   // After auth resolves and a user exists, navigate to next path or dashboard
   useEffect(() => {
