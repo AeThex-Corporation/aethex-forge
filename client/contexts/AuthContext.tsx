@@ -704,14 +704,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             (import.meta as any)?.env?.VITE_API_BASE || window.location.origin;
 
           // Get current auth session to get auth token
-          const session = await supabase.auth.getSession();
-          if (!session?.data?.session?.access_token) {
+          const { data: sessionData, error: sessionError } =
+            await supabase.auth.getSession();
+
+          if (sessionError || !sessionData?.session?.access_token) {
+            console.error(
+              "[Discord Link] Failed to get session:",
+              sessionError || "No access token",
+            );
             aethexToast.error({
               title: "Auth failed",
-              description: "Unable to get authentication token.",
+              description: "Unable to get authentication token. Please refresh and try again.",
             });
             return;
           }
+
+          console.log("[Discord Link] Creating linking session...");
 
           // Create temporary linking session
           const sessionRes = await fetch(
@@ -719,17 +727,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${session.data.session.access_token}`,
+                Authorization: `Bearer ${sessionData.session.access_token}`,
                 "Content-Type": "application/json",
               },
             },
           );
 
           if (!sessionRes.ok) {
-            throw new Error("Failed to create linking session");
+            const errorText = await sessionRes.text().catch(() => "");
+            console.error(
+              "[Discord Link] Session creation failed:",
+              sessionRes.status,
+              errorText,
+            );
+            throw new Error(
+              `Session creation failed (${sessionRes.status}). Please try again.`,
+            );
           }
 
-          const { token: sessionToken } = await sessionRes.json();
+          const sessionJson = await sessionRes.json().catch(() => null);
+          const sessionToken = sessionJson?.token;
+
+          if (!sessionToken) {
+            console.error("[Discord Link] No session token in response:", sessionJson);
+            throw new Error("Invalid session response from server");
+          }
+
+          console.log("[Discord Link] Redirecting to Discord OAuth...");
 
           const u = new URL("/api/discord/oauth/start", apiBase);
           u.searchParams.set(
@@ -745,10 +769,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           window.location.href = u.toString();
           return;
         } catch (error: any) {
-          console.error("Discord link error:", error);
+          console.error("[Discord Link] Error:", error);
           aethexToast.error({
             title: "Link failed",
-            description: error?.message || "Unable to link Discord right now.",
+            description:
+              error?.message || "Unable to link Discord right now. Please try again.",
           });
         }
       }
