@@ -919,10 +919,13 @@ export function createServer() {
         }
 
         const discordId = verification.discord_id;
-        console.log("[Discord Verify] Found verification code for Discord ID:", {
-          discordId,
-          userId: user_id,
-        });
+        console.log(
+          "[Discord Verify] Found verification code for Discord ID:",
+          {
+            discordId,
+            userId: user_id,
+          },
+        );
 
         // Check if already linked
         const { data: existingLink, error: linkCheckError } =
@@ -942,7 +945,11 @@ export function createServer() {
         if (existingLink && existingLink.user_id !== user_id) {
           console.warn(
             "[Discord Verify] Discord ID already linked to different user:",
-            { discordId, existingUserId: existingLink.user_id, newUserId: user_id },
+            {
+              discordId,
+              existingUserId: existingLink.user_id,
+              newUserId: user_id,
+            },
           );
           return res.status(400).json({
             message:
