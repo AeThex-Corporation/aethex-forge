@@ -71,25 +71,30 @@ export default function Terms() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-semibold">Discord Integration & Bot Services</h2>
+            <h2 className="font-semibold">
+              Discord Integration & Bot Services
+            </h2>
             <p className="text-sm text-muted-foreground">
-              When you authorize Discord account linking, you grant AeThex permission to:
-              access your Discord profile information, manage verification codes, and assign
-              Discord roles based on your AeThex realm. Discord bot commands (/verify, /set-realm,
-              /profile, /unlink) are provided as part of our Services. You remain responsible
-              for any actions taken on your Discord account through our bot. Discord services
-              are governed by Discord's Terms of Service in addition to these Terms.
+              When you authorize Discord account linking, you grant AeThex
+              permission to: access your Discord profile information, manage
+              verification codes, and assign Discord roles based on your AeThex
+              realm. Discord bot commands (/verify, /set-realm, /profile,
+              /unlink) are provided as part of our Services. You remain
+              responsible for any actions taken on your Discord account through
+              our bot. Discord services are governed by Discord's Terms of
+              Service in addition to these Terms.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="font-semibold">Web3 & Wallet Authentication</h2>
             <p className="text-sm text-muted-foreground">
-              When you connect a Web3 wallet (Ethereum, MetaMask, etc.), you authorize AeThex
-              to verify your wallet ownership through message signing. You acknowledge that:
-              message signing is read-only and does not authorize any fund transfers,
-              wallet address is public blockchain data, and you remain fully responsible
-              for wallet security and management. AeThex does not store or handle wallet
+              When you connect a Web3 wallet (Ethereum, MetaMask, etc.), you
+              authorize AeThex to verify your wallet ownership through message
+              signing. You acknowledge that: message signing is read-only and
+              does not authorize any fund transfers, wallet address is public
+              blockchain data, and you remain fully responsible for wallet
+              security and management. AeThex does not store or handle wallet
               private keys or funds.
             </p>
           </section>
@@ -97,34 +102,41 @@ export default function Terms() {
           <section className="space-y-3">
             <h2 className="font-semibold">Roblox Account Linking</h2>
             <p className="text-sm text-muted-foreground">
-              When you link your Roblox account via OAuth, you grant AeThex permission to
-              access your Roblox profile information and game development data. Your use of
-              Roblox services through AeThex is subject to Roblox's Terms of Service.
-              You are responsible for maintaining the confidentiality of your Roblox account
-              credentials and can unlink your Roblox account at any time.
+              When you link your Roblox account via OAuth, you grant AeThex
+              permission to access your Roblox profile information and game
+              development data. Your use of Roblox services through AeThex is
+              subject to Roblox's Terms of Service. You are responsible for
+              maintaining the confidentiality of your Roblox account credentials
+              and can unlink your Roblox account at any time.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-semibold">Game Authentication & Developer Services</h2>
+            <h2 className="font-semibold">
+              Game Authentication & Developer Services
+            </h2>
             <p className="text-sm text-muted-foreground">
-              Game developers using AeThex authentication services (Unity, Unreal, Godot, etc.)
-              agree that: authentication tokens must be kept confidential, tokens are for
-              authorized use only and must not be shared or sold, game servers are responsible
-              for validating tokens before granting access, and AeThex is not liable for
-              unauthorized access if tokens are compromised. Game session data may be retained
-              for analytics and debugging purposes in accordance with our Privacy Policy.
+              Game developers using AeThex authentication services (Unity,
+              Unreal, Godot, etc.) agree that: authentication tokens must be
+              kept confidential, tokens are for authorized use only and must not
+              be shared or sold, game servers are responsible for validating
+              tokens before granting access, and AeThex is not liable for
+              unauthorized access if tokens are compromised. Game session data
+              may be retained for analytics and debugging purposes in accordance
+              with our Privacy Policy.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="font-semibold">OAuth & Third-Party Authorization</h2>
             <p className="text-sm text-muted-foreground">
-              We support OAuth integration with GitHub, Google, Discord, Roblox, and Web3 providers.
-              When you authorize through any provider, you are granting AeThex permission to receive
-              and use the data they share. You can review, modify, and revoke these permissions at
-              any time through your account settings or the third-party service's authorization page.
-              Revoking access may limit certain AeThex features that depend on that integration.
+              We support OAuth integration with GitHub, Google, Discord, Roblox,
+              and Web3 providers. When you authorize through any provider, you
+              are granting AeThex permission to receive and use the data they
+              share. You can review, modify, and revoke these permissions at any
+              time through your account settings or the third-party service's
+              authorization page. Revoking access may limit certain AeThex
+              features that depend on that integration.
             </p>
           </section>
 

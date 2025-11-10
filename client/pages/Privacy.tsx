@@ -65,53 +65,65 @@ export default function Privacy() {
           <section className="space-y-3">
             <h2 className="font-semibold">Discord Integration</h2>
             <p className="text-sm text-muted-foreground">
-              When you link your Discord account, we collect and store your Discord user ID,
-              username, profile picture, and email. We use this data to enable account linking,
-              execute Discord bot commands (/verify, /set-realm, /profile, /unlink),
-              assign Discord roles based on your AeThex realm, and display your profile
-              in Discord Activities. Discord-related data is processed under Discord's Privacy Policy.
-              You can unlink your Discord account at any time.
+              When you link your Discord account, we collect and store your
+              Discord user ID, username, profile picture, and email. We use this
+              data to enable account linking, execute Discord bot commands
+              (/verify, /set-realm, /profile, /unlink), assign Discord roles
+              based on your AeThex realm, and display your profile in Discord
+              Activities. Discord-related data is processed under Discord's
+              Privacy Policy. You can unlink your Discord account at any time.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-semibold">Web3 & Ethereum Wallet Integration</h2>
+            <h2 className="font-semibold">
+              Web3 & Ethereum Wallet Integration
+            </h2>
             <p className="text-sm text-muted-foreground">
-              When you connect an Ethereum wallet (via MetaMask or similar), we collect and store
-              your wallet address. We use this data for Web3 authentication and identity verification.
-              We never store private keys, seed phrases, or transaction history. Signature verification
-              is performed locally on your device. Your wallet address is public blockchain data.
+              When you connect an Ethereum wallet (via MetaMask or similar), we
+              collect and store your wallet address. We use this data for Web3
+              authentication and identity verification. We never store private
+              keys, seed phrases, or transaction history. Signature verification
+              is performed locally on your device. Your wallet address is public
+              blockchain data.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="font-semibold">Roblox Integration</h2>
             <p className="text-sm text-muted-foreground">
-              When you link your Roblox account via OAuth, we collect your Roblox user ID, username,
-              profile details, and game session data. We use this data to enable account linking,
-              track game development activities, and display your Roblox portfolio. Roblox data is
+              When you link your Roblox account via OAuth, we collect your
+              Roblox user ID, username, profile details, and game session data.
+              We use this data to enable account linking, track game development
+              activities, and display your Roblox portfolio. Roblox data is
               processed under Roblox's Terms of Service.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-semibold">Game Authentication & Server Integration</h2>
+            <h2 className="font-semibold">
+              Game Authentication & Server Integration
+            </h2>
             <p className="text-sm text-muted-foreground">
-              For game developers using AeThex authentication (Unity, Unreal, Godot, etc.), we collect
-              game session tokens, player IDs, and game-specific authentication data. This data is used
-              to verify player identity, manage game sessions, and provide analytics. Game developers
-              can request deletion of their game data in accordance with data retention policies.
+              For game developers using AeThex authentication (Unity, Unreal,
+              Godot, etc.), we collect game session tokens, player IDs, and
+              game-specific authentication data. This data is used to verify
+              player identity, manage game sessions, and provide analytics. Game
+              developers can request deletion of their game data in accordance
+              with data retention policies.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="font-semibold">OAuth Providers</h2>
             <p className="text-sm text-muted-foreground">
-              We support multiple OAuth providers including GitHub, Google, Discord, Roblox, and Web3
-              authentication methods. When you authorize through any provider, we receive and store the
-              data they share (typically ID, email, profile info). You can manage linked accounts in
-              your profile settings and unlink them at any time. Each provider has its own privacy policy
-              governing how they handle your data.
+              We support multiple OAuth providers including GitHub, Google,
+              Discord, Roblox, and Web3 authentication methods. When you
+              authorize through any provider, we receive and store the data they
+              share (typically ID, email, profile info). You can manage linked
+              accounts in your profile settings and unlink them at any time.
+              Each provider has its own privacy policy governing how they handle
+              your data.
             </p>
           </section>
 
