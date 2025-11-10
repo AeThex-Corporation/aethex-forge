@@ -2,7 +2,13 @@ import { useEffect } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Key, Database, Code2, ExternalLink } from "lucide-react";
@@ -17,7 +23,12 @@ export default function StaffDocs() {
     }
   }, [user, loading, navigate]);
 
-  if (loading) return <Layout><div className="container py-20">Loading...</div></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <div className="container py-20">Loading...</div>
+      </Layout>
+    );
 
   const docs = [
     {
@@ -57,13 +68,19 @@ export default function StaffDocs() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="container mx-auto px-4 py-12">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">Documentation & API</h1>
-            <p className="text-slate-400">Internal docs, API keys, and credentials</p>
+            <h1 className="text-4xl font-bold text-white mb-2">
+              Documentation & API
+            </h1>
+            <p className="text-slate-400">
+              Internal docs, API keys, and credentials
+            </p>
           </div>
 
           {/* Documentation */}
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">Documentation</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">
+              Documentation
+            </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {docs.map((doc, idx) => {
                 const IconComponent = doc.icon;
@@ -79,7 +96,9 @@ export default function StaffDocs() {
                             <IconComponent className="h-5 w-5 text-blue-400" />
                           </div>
                           <div>
-                            <CardTitle className="text-white">{doc.title}</CardTitle>
+                            <CardTitle className="text-white">
+                              {doc.title}
+                            </CardTitle>
                             <CardDescription className="text-slate-400">
                               {doc.description}
                             </CardDescription>
@@ -88,7 +107,10 @@ export default function StaffDocs() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <Button variant="ghost" className="text-blue-400 hover:text-blue-300 p-0">
+                      <Button
+                        variant="ghost"
+                        className="text-blue-400 hover:text-blue-300 p-0"
+                      >
                         Read Docs <ExternalLink className="ml-2 h-4 w-4" />
                       </Button>
                     </CardContent>
@@ -116,13 +138,19 @@ export default function StaffDocs() {
                     >
                       <div>
                         <p className="text-white font-medium">{key.name}</p>
-                        <p className="text-slate-400 text-sm font-mono">{key.key}</p>
+                        <p className="text-slate-400 text-sm font-mono">
+                          {key.key}
+                        </p>
                       </div>
                       <div className="flex items-center gap-3">
                         <Badge className="bg-green-500/20 text-green-300 border-green-500/50 capitalize">
                           {key.status}
                         </Badge>
-                        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-blue-400 hover:text-blue-300"
+                        >
                           Copy
                         </Button>
                       </div>

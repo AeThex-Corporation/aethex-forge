@@ -2,10 +2,23 @@ import { useEffect } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, Shield, Settings, GitBranch, Eye, RefreshCw } from "lucide-react";
+import {
+  Users,
+  Shield,
+  Settings,
+  GitBranch,
+  Eye,
+  RefreshCw,
+} from "lucide-react";
 
 export default function StaffAdmin() {
   const { user, roles, loading } = useAuth();
@@ -17,14 +30,19 @@ export default function StaffAdmin() {
       return;
     }
     const isAdmin = roles?.some((r) =>
-      ["owner", "admin", "founder"].includes(r.toLowerCase())
+      ["owner", "admin", "founder"].includes(r.toLowerCase()),
     );
     if (!isAdmin) {
       navigate("/staff/dashboard");
     }
   }, [user, roles, loading, navigate]);
 
-  if (loading) return <Layout><div className="container py-20">Loading...</div></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <div className="container py-20">Loading...</div>
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -32,7 +50,9 @@ export default function StaffAdmin() {
         <div className="container mx-auto px-4 py-12">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-white mb-2">Admin Tools</h1>
-            <p className="text-slate-400">Manage users, roles, and platform configuration</p>
+            <p className="text-slate-400">
+              Manage users, roles, and platform configuration
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -45,7 +65,9 @@ export default function StaffAdmin() {
                       <Users className="h-5 w-5 text-blue-400" />
                       Users
                     </CardTitle>
-                    <CardDescription className="text-slate-400">Manage team members and roles</CardDescription>
+                    <CardDescription className="text-slate-400">
+                      Manage team members and roles
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -65,7 +87,9 @@ export default function StaffAdmin() {
                       <Shield className="h-5 w-5 text-purple-400" />
                       Permissions
                     </CardTitle>
-                    <CardDescription className="text-slate-400">Configure role-based access</CardDescription>
+                    <CardDescription className="text-slate-400">
+                      Configure role-based access
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -85,7 +109,9 @@ export default function StaffAdmin() {
                       <Settings className="h-5 w-5 text-indigo-400" />
                       Settings
                     </CardTitle>
-                    <CardDescription className="text-slate-400">Platform configuration</CardDescription>
+                    <CardDescription className="text-slate-400">
+                      Platform configuration
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -105,7 +131,9 @@ export default function StaffAdmin() {
                       <GitBranch className="h-5 w-5 text-green-400" />
                       API Keys
                     </CardTitle>
-                    <CardDescription className="text-slate-400">Manage authentication tokens</CardDescription>
+                    <CardDescription className="text-slate-400">
+                      Manage authentication tokens
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -125,7 +153,9 @@ export default function StaffAdmin() {
                       <Eye className="h-5 w-5 text-yellow-400" />
                       Audit Log
                     </CardTitle>
-                    <CardDescription className="text-slate-400">Platform activity history</CardDescription>
+                    <CardDescription className="text-slate-400">
+                      Platform activity history
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -145,7 +175,9 @@ export default function StaffAdmin() {
                       <RefreshCw className="h-5 w-5 text-red-400" />
                       Maintenance
                     </CardTitle>
-                    <CardDescription className="text-slate-400">System operations</CardDescription>
+                    <CardDescription className="text-slate-400">
+                      System operations
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>

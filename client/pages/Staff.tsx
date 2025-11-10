@@ -4,7 +4,13 @@ import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lock, Users, FileText, Zap, Award, MessageSquare } from "lucide-react";
 
@@ -45,8 +51,9 @@ export default function Staff() {
             </h1>
 
             <p className="text-xl text-purple-200/80 max-w-2xl mx-auto mb-12">
-              The internal hub for AeThex employees and authorized contractors. 
-              Unified access to dashboards, tools, documentation, and collaboration features.
+              The internal hub for AeThex employees and authorized contractors.
+              Unified access to dashboards, tools, documentation, and
+              collaboration features.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -88,7 +95,8 @@ export default function Staff() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-purple-200/70">
-                    Real-time operations metrics, service status, and quick access to common tools.
+                    Real-time operations metrics, service status, and quick
+                    access to common tools.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -105,7 +113,8 @@ export default function Staff() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-blue-200/70">
-                    Browse team members, view profiles, and find contact information.
+                    Browse team members, view profiles, and find contact
+                    information.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -117,12 +126,15 @@ export default function Staff() {
                     <div className="p-2 rounded bg-indigo-500/20">
                       <Lock className="h-5 w-5 text-indigo-400" />
                     </div>
-                    <CardTitle className="text-indigo-100">Admin Tools</CardTitle>
+                    <CardTitle className="text-indigo-100">
+                      Admin Tools
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-indigo-200/70">
-                    Manage users, roles, permissions, and platform configuration.
+                    Manage users, roles, permissions, and platform
+                    configuration.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -139,7 +151,8 @@ export default function Staff() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-cyan-200/70">
-                    Internal documentation, API keys, credentials, and setup guides.
+                    Internal documentation, API keys, credentials, and setup
+                    guides.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -151,12 +164,15 @@ export default function Staff() {
                     <div className="p-2 rounded bg-amber-500/20">
                       <Award className="h-5 w-5 text-amber-400" />
                     </div>
-                    <CardTitle className="text-amber-100">Achievements</CardTitle>
+                    <CardTitle className="text-amber-100">
+                      Achievements
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-amber-200/70">
-                    Track team accomplishments, milestones, and performance metrics.
+                    Track team accomplishments, milestones, and performance
+                    metrics.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -168,7 +184,9 @@ export default function Staff() {
                     <div className="p-2 rounded bg-rose-500/20">
                       <MessageSquare className="h-5 w-5 text-rose-400" />
                     </div>
-                    <CardTitle className="text-rose-100">Collaboration</CardTitle>
+                    <CardTitle className="text-rose-100">
+                      Collaboration
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -184,7 +202,9 @@ export default function Staff() {
           <div className="container mx-auto px-4 py-20 border-t border-purple-500/20">
             <div className="grid md:grid-cols-2 gap-12">
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-purple-100">Who Can Access?</h3>
+                <h3 className="text-2xl font-bold mb-4 text-purple-100">
+                  Who Can Access?
+                </h3>
                 <ul className="space-y-3 text-purple-200/80">
                   <li className="flex gap-2">
                     <span className="text-purple-400">✓</span>
@@ -202,7 +222,9 @@ export default function Staff() {
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-purple-100">Getting Started</h3>
+                <h3 className="text-2xl font-bold mb-4 text-purple-100">
+                  Getting Started
+                </h3>
                 <ol className="space-y-3 text-purple-200/80">
                   <li className="flex gap-2">
                     <span className="text-purple-400">1.</span>

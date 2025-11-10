@@ -75,7 +75,7 @@ export default function StaffLogin() {
       if (!isAethexDev) {
         // Email is not @aethex.dev - show error
         setErrorFromUrl(
-          "Only @aethex.dev email addresses can access the Staff Portal. If you're an authorized contractor, please use your assigned contractor email."
+          "Only @aethex.dev email addresses can access the Staff Portal. If you're an authorized contractor, please use your assigned contractor email.",
         );
         toastError({
           title: "Access Denied",
@@ -114,10 +114,7 @@ export default function StaffLogin() {
 
   return (
     <Layout>
-      <SEO
-        title="Staff Login"
-        description="AeThex staff and employees only"
-      />
+      <SEO title="Staff Login" description="AeThex staff and employees only" />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
         <div className="absolute inset-0 opacity-10">
@@ -159,7 +156,9 @@ export default function StaffLogin() {
                   className="w-full bg-white hover:bg-slate-100 text-slate-900 font-semibold"
                 >
                   <GoogleIcon />
-                  <span>{isLoading ? "Signing in..." : "Sign in with Google"}</span>
+                  <span>
+                    {isLoading ? "Signing in..." : "Sign in with Google"}
+                  </span>
                 </Button>
               </div>
 
@@ -188,7 +187,10 @@ export default function StaffLogin() {
               <div className="pt-4 border-t border-slate-700">
                 <p className="text-xs text-slate-500 text-center">
                   Public login available at{" "}
-                  <a href="/login" className="text-purple-400 hover:text-purple-300">
+                  <a
+                    href="/login"
+                    className="text-purple-400 hover:text-purple-300"
+                  >
                     aethex.dev/login
                   </a>
                 </p>

@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Trophy, Zap, Users, Target } from "lucide-react";
@@ -61,7 +67,12 @@ export default function StaffAchievements() {
     }
   }, [user, loading, navigate]);
 
-  if (loading) return <Layout><div className="container py-20">Loading...</div></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <div className="container py-20">Loading...</div>
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -69,14 +80,18 @@ export default function StaffAchievements() {
         <div className="container mx-auto px-4 py-12">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-white mb-2">Achievements</h1>
-            <p className="text-slate-400">Track team accomplishments and milestones</p>
+            <p className="text-slate-400">
+              Track team accomplishments and milestones
+            </p>
           </div>
 
           {/* Stats */}
           <div className="grid md:grid-cols-4 gap-6 mb-12">
             <Card className="border-slate-700/50 bg-slate-900/50 backdrop-blur">
               <CardContent className="p-6">
-                <div className="text-sm text-slate-400 mb-2">Total Achievements</div>
+                <div className="text-sm text-slate-400 mb-2">
+                  Total Achievements
+                </div>
                 <div className="text-3xl font-bold text-white">4</div>
               </CardContent>
             </Card>
@@ -97,7 +112,9 @@ export default function StaffAchievements() {
 
             <Card className="border-slate-700/50 bg-slate-900/50 backdrop-blur">
               <CardContent className="p-6">
-                <div className="text-sm text-slate-400 mb-2">Completion Rate</div>
+                <div className="text-sm text-slate-400 mb-2">
+                  Completion Rate
+                </div>
                 <div className="text-3xl font-bold text-purple-400">50%</div>
               </CardContent>
             </Card>
@@ -133,7 +150,11 @@ export default function StaffAchievements() {
                         />
                       </div>
                       <div>
-                        <CardTitle className={achievement.earned ? "text-green-300" : "text-white"}>
+                        <CardTitle
+                          className={
+                            achievement.earned ? "text-green-300" : "text-white"
+                          }
+                        >
                           {achievement.title}
                         </CardTitle>
                         <CardDescription className="text-slate-400 mt-1">
@@ -149,20 +170,27 @@ export default function StaffAchievements() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {!achievement.earned && achievement.progress !== undefined && (
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs text-slate-400">Progress</span>
-                        <span className="text-xs text-slate-300 font-medium">
-                          {achievement.progress}%
-                        </span>
+                  {!achievement.earned &&
+                    achievement.progress !== undefined && (
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs text-slate-400">
+                            Progress
+                          </span>
+                          <span className="text-xs text-slate-300 font-medium">
+                            {achievement.progress}%
+                          </span>
+                        </div>
+                        <Progress
+                          value={achievement.progress}
+                          className="h-2"
+                        />
                       </div>
-                      <Progress value={achievement.progress} className="h-2" />
-                    </div>
-                  )}
+                    )}
                   {achievement.earnedDate && (
                     <p className="text-xs text-slate-500">
-                      Earned on {new Date(achievement.earnedDate).toLocaleDateString()}
+                      Earned on{" "}
+                      {new Date(achievement.earnedDate).toLocaleDateString()}
                     </p>
                   )}
                 </CardContent>

@@ -71,21 +71,30 @@ export default function StaffDirectory() {
         (member) =>
           member.full_name.toLowerCase().includes(query) ||
           member.email.toLowerCase().includes(query) ||
-          member.department?.toLowerCase().includes(query)
+          member.department?.toLowerCase().includes(query),
       );
       setFilteredMembers(filtered);
     }
   }, [searchQuery, staffMembers]);
 
-  if (loading) return <Layout><div className="container py-20">Loading...</div></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <div className="container py-20">Loading...</div>
+      </Layout>
+    );
 
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="container mx-auto px-4 py-12">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">Team Directory</h1>
-            <p className="text-slate-400">Find and connect with AeThex team members</p>
+            <h1 className="text-4xl font-bold text-white mb-2">
+              Team Directory
+            </h1>
+            <p className="text-slate-400">
+              Find and connect with AeThex team members
+            </p>
           </div>
 
           {/* Search Bar */}
@@ -105,7 +114,9 @@ export default function StaffDirectory() {
 
           {/* Results */}
           {isLoading ? (
-            <div className="text-center py-12 text-slate-400">Loading team members...</div>
+            <div className="text-center py-12 text-slate-400">
+              Loading team members...
+            </div>
           ) : filteredMembers.length === 0 ? (
             <div className="text-center py-12 text-slate-400">
               No staff members found matching your search
@@ -120,8 +131,12 @@ export default function StaffDirectory() {
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <CardTitle className="text-white">{member.full_name}</CardTitle>
-                        <p className="text-sm text-slate-400 mt-1">{member.position || "Team Member"}</p>
+                        <CardTitle className="text-white">
+                          {member.full_name}
+                        </CardTitle>
+                        <p className="text-sm text-slate-400 mt-1">
+                          {member.position || "Team Member"}
+                        </p>
                       </div>
                       {member.role && (
                         <Badge className="bg-purple-500/30 text-purple-300 border-purple-500/50 capitalize">
@@ -143,7 +158,10 @@ export default function StaffDirectory() {
                     {member.phone && (
                       <div className="flex items-center gap-2 text-slate-400 text-sm">
                         <Phone className="h-4 w-4 text-slate-500" />
-                        <a href={`tel:${member.phone}`} className="hover:text-purple-400">
+                        <a
+                          href={`tel:${member.phone}`}
+                          className="hover:text-purple-400"
+                        >
                           {member.phone}
                         </a>
                       </div>
@@ -163,7 +181,8 @@ export default function StaffDirectory() {
           {/* Stats */}
           <div className="mt-12 pt-8 border-t border-slate-700/50">
             <p className="text-center text-slate-400">
-              Showing {filteredMembers.length} of {staffMembers.length} team members
+              Showing {filteredMembers.length} of {staffMembers.length} team
+              members
             </p>
           </div>
         </div>

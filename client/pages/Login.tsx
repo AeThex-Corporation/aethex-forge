@@ -230,8 +230,7 @@ export default function Login() {
       console.error("Web3 error:", error);
       toastError({
         title: "Web3 verification failed",
-        description:
-          error?.message || "Could not verify your wallet signature",
+        description: error?.message || "Could not verify your wallet signature",
       });
     }
   };
@@ -245,11 +244,7 @@ export default function Login() {
       <SEO
         title="Sign In to AeThex"
         description="Create or access your AeThex creator account"
-        image={
-          window.location.href
-            ? window.location.href
-            : (undefined as any)
-        }
+        image={window.location.href ? window.location.href : (undefined as any)}
       />
       <Layout>
         <div className="min-h-screen bg-aethex-gradient py-12 flex items-center justify-center">

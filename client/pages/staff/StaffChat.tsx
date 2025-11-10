@@ -2,7 +2,13 @@ import { useEffect } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Users, Hash, Lock, Plus } from "lucide-react";
@@ -57,7 +63,12 @@ export default function StaffChat() {
     }
   }, [user, loading, navigate]);
 
-  if (loading) return <Layout><div className="container py-20">Loading...</div></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <div className="container py-20">Loading...</div>
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -65,7 +76,9 @@ export default function StaffChat() {
         <div className="container mx-auto px-4 py-12">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-white mb-2">Team Chat</h1>
-            <p className="text-slate-400">Internal collaboration and team discussions</p>
+            <p className="text-slate-400">
+              Internal collaboration and team discussions
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -160,9 +173,12 @@ export default function StaffChat() {
                   <div className="flex gap-3">
                     <div className="w-10 h-10 rounded-full bg-blue-500/20 flex-shrink-0" />
                     <div>
-                      <p className="text-sm text-white font-medium">Sarah Johnson</p>
+                      <p className="text-sm text-white font-medium">
+                        Sarah Johnson
+                      </p>
                       <p className="text-slate-300 text-sm mt-1">
-                        Welcome to the internal team chat! This is where we collaborate and share updates.
+                        Welcome to the internal team chat! This is where we
+                        collaborate and share updates.
                       </p>
                       <p className="text-xs text-slate-500 mt-2">10:30 AM</p>
                     </div>
@@ -171,9 +187,12 @@ export default function StaffChat() {
                   <div className="flex gap-3">
                     <div className="w-10 h-10 rounded-full bg-purple-500/20 flex-shrink-0" />
                     <div>
-                      <p className="text-sm text-white font-medium">Mike Chen</p>
+                      <p className="text-sm text-white font-medium">
+                        Mike Chen
+                      </p>
                       <p className="text-slate-300 text-sm mt-1">
-                        Great! Looking forward to building amazing things together.
+                        Great! Looking forward to building amazing things
+                        together.
                       </p>
                       <p className="text-xs text-slate-500 mt-2">10:35 AM</p>
                     </div>
@@ -187,7 +206,9 @@ export default function StaffChat() {
                       placeholder="Type a message..."
                       className="flex-1 px-4 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
                     />
-                    <Button className="bg-purple-600 hover:bg-purple-700">Send</Button>
+                    <Button className="bg-purple-600 hover:bg-purple-700">
+                      Send
+                    </Button>
                   </div>
                 </div>
               </Card>
@@ -201,18 +222,10 @@ export default function StaffChat() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-blue-200/80 space-y-2">
-                  <p>
-                    • Full-featured internal messaging platform
-                  </p>
-                  <p>
-                    • Channels for teams and projects
-                  </p>
-                  <p>
-                    • Direct messages and group chats
-                  </p>
-                  <p>
-                    • File sharing and integrations
-                  </p>
+                  <p>• Full-featured internal messaging platform</p>
+                  <p>• Channels for teams and projects</p>
+                  <p>• Direct messages and group chats</p>
+                  <p>• File sharing and integrations</p>
                 </CardContent>
               </Card>
             </div>
