@@ -1023,7 +1023,6 @@ export const aethexNotificationService = {
       .from("notifications")
       .select("*")
       .eq("user_id", userId)
-      .order("read", { ascending: true })
       .order("created_at", { ascending: false })
       .limit(20);
 
