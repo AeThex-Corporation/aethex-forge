@@ -868,6 +868,45 @@ export function createServer() {
       }
     });
 
+    // Discord Create Linking Session: Creates temporary session for OAuth linking
+    app.post("/api/discord/create-linking-session", async (req, res) => {
+      try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+          return res.status(401).json({ error: "Not authenticated" });
+        }
+
+        const token = authHeader.replace("Bearer ", "");
+        const { data: { user }, error } = await adminSupabase.auth.getUser(token);
+
+        if (error || !user) {
+          return res.status(401).json({ error: "Invalid auth token" });
+        }
+
+        const crypto = require("crypto");
+        const sessionToken = crypto.randomBytes(32).toString("hex");
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+        const { error: insertError } = await adminSupabase
+          .from("discord_linking_sessions")
+          .insert({
+            user_id: user.id,
+            session_token: sessionToken,
+            expires_at: expiresAt,
+          });
+
+        if (insertError) {
+          console.error("[Discord] Session insert error:", insertError);
+          return res.status(500).json({ error: insertError.message });
+        }
+
+        res.json({ token: sessionToken });
+      } catch (error: any) {
+        console.error("[Discord] Create session error:", error);
+        res.status(500).json({ error: error.message });
+      }
+    });
+
     // Discord Verify Code: Link account using verification code
     app.post("/api/discord/verify-code", async (req, res) => {
       const { verification_code, user_id } = req.body || {};
