@@ -220,7 +220,7 @@ export default function NotificationBell({
         <Button
           variant="ghost"
           size="sm"
-          className={cn("relative hover-lift", className)}
+          className={cn("relative overflow-visible hover-lift", className)}
         >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 ? (
