@@ -117,13 +117,13 @@ export const REALM_OPTIONS: RealmOption[] = [
   {
     id: "staff",
     name: "Operations Command",
-    title: "AeThex Staff",
+    title: "Admin Panel",
     description:
-      "Internal realm for site staff and employees: operations dashboards, moderation, and admin tooling.",
+      "Admin realm for site staff and employees: operations dashboards, moderation, and admin tooling.",
     icon: Shield,
     gradient: "from-sky-600 to-indigo-700",
-    route: "/staff",
-    routeLabel: "Staff",
+    route: "/admin",
+    routeLabel: "Admin",
     highlights: [
       "Moderation & triage",
       "Operational dashboards",
