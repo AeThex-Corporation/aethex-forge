@@ -170,10 +170,10 @@ export default function ArmSwitcherModal({
                       className="w-8 h-8 object-contain group-hover:scale-110 transition-transform flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <h3 className={`font-semibold text-xs ${arm.textColor}`}>
+                      <h3 className={`font-semibold text-xs sm:text-sm ${arm.textColor}`}>
                         {arm.label}
                       </h3>
-                      <p className="text-xs text-gray-500 truncate">{arm.tip}</p>
+                      <p className="text-[11px] sm:text-xs text-gray-500 truncate">{arm.tip}</p>
                     </div>
                   </div>
                 </button>
