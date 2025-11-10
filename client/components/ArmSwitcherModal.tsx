@@ -133,8 +133,8 @@ export default function ArmSwitcherModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="w-full max-w-sm bg-gray-950/95 border border-gray-800 rounded-xl shadow-2xl flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-gray-950/95 border border-gray-800 rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[auto] sm:max-h-[600px] animate-in slide-in-from-bottom-4 sm:slide-in-from-center duration-300">
         {/* Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-gray-800/50 flex-shrink-0">
           <button
