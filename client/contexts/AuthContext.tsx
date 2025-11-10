@@ -321,7 +321,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // Fetch user profile with a 3-second timeout to prevent hanging
       const profilePromise = aethexUserService.getCurrentUser();
       const timeoutPromise = new Promise<null>((resolve) =>
-        setTimeout(() => resolve(null), 3000)
+        setTimeout(() => resolve(null), 3000),
       );
       const userProfile = await Promise.race([profilePromise, timeoutPromise]);
 
