@@ -133,26 +133,26 @@ export default function ArmSwitcherModal({
   return (
     <div className="fixed inset-0 z-[999] bg-black/98 backdrop-blur-lg overflow-hidden flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-800/50">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-gray-800/50">
         <button
           type="button"
           onClick={handleBack}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
+          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-xs"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           {selectedArm ? "Back" : "Close"}
         </button>
-        <h1 className="text-sm font-semibold text-white">
+        <h1 className="text-xs font-semibold text-white">
           {selectedArm ? selectedArmData?.label : "Select Arm"}
         </h1>
-        <div className="w-12" />
+        <div className="w-10" />
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto flex items-center justify-center px-4 sm:px-6 py-8">
+      <div className="flex-1 overflow-y-auto flex items-center justify-center px-4 sm:px-6 py-6">
         {!selectedArm ? (
           // Arm Grid - Minimal
-          <div className="w-full max-w-md space-y-2">
+          <div className="w-full max-w-sm space-y-1.5">
             {ARMS.map((arm) => (
               <button
                 key={arm.id}
