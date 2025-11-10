@@ -385,6 +385,12 @@ export default function Onboarding() {
           : Promise.resolve(),
         aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
         creatorProfilePromise,
+        aethexNotificationService.createNotification(
+          user.id,
+          "success",
+          "🎉 Welcome to AeThex!",
+          "You've completed your profile setup. Let's get started!",
+        ),
       ]).catch(() => undefined);
 
       // Mark onboarding complete locally (UI fallback)
