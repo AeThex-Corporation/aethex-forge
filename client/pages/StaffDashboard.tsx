@@ -229,7 +229,9 @@ export default function StaffDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/admin/staff/performance-reviews">Performance Reviews</a>
+                    <a href="/admin/staff/performance-reviews">
+                      Performance Reviews
+                    </a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
                     <a href="/admin/staff/expenses">Expense Reports</a>
