@@ -490,7 +490,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw new Error("Please provide both email and password.");
       }
 
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -502,6 +502,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       } catch (e) {
         // ignore
       }
+
+      // Return user data for caller to use (e.g., Login.tsx)
+      return { user: data?.user ?? null };
     } catch (error: any) {
       console.error("SignIn error details:", error);
 
