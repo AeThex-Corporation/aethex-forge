@@ -77,9 +77,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Ensure core achievements exist
     const achievementResults = await Promise.all(
       CORE_ACHIEVEMENTS.map(async (achievement) => {
+        const uuidId = generateDeterministicUUID(achievement.id);
         const { error } = await admin.from("achievements").upsert(
           {
-            id: achievement.id,
+            id: uuidId,
             name: achievement.name,
             description: achievement.description,
             icon: achievement.icon,
