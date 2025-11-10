@@ -2378,6 +2378,27 @@ export function createServer() {
       }
     });
 
+    app.get("/api/blog", async (req, res) => {
+      const limit = Math.min(Number(req.query.limit) || 50, 200);
+      try {
+        const { data, error } = await adminSupabase
+          .from("blog_posts")
+          .select("*")
+          .order("published_at", { ascending: false })
+          .limit(limit);
+        if (error) {
+          // Table might not exist yet, return empty array
+          if (error.message?.includes("does not exist")) {
+            return res.json([]);
+          }
+          return res.status(500).json({ error: error.message });
+        }
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.post("/api/blog", async (req, res) => {
       const p = req.body || {};
       const row = {
