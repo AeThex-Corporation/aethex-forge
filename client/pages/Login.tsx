@@ -147,18 +147,15 @@ export default function Login() {
           navigate("/onboarding", { replace: true });
         }
       } else {
+        // Sign in with email/password
         const result = await signIn(email, password);
         if (result?.user) {
-          const params = new URLSearchParams(location.search);
-          const next = params.get("next");
-          const safeNext = next && next.startsWith("/") ? next : null;
-          navigate(
-            safeNext ||
-              (result?.user_metadata?.profile_complete
-                ? "/dashboard"
-                : "/onboarding"),
-            { replace: true },
-          );
+          // Don't navigate immediately - let Auth context update and the useEffect below handle redirect
+          // This ensures profile data is fetched and profileComplete is properly calculated
+          toastInfo({
+            title: "Signing you in",
+            description: "Redirecting...",
+          });
         }
       }
     } catch (error: any) {
