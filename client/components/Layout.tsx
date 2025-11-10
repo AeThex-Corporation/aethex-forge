@@ -71,7 +71,6 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, profile, signOut, loading, profileComplete } = useAuth();
-  const [mobileArmsOpen, setMobileArmsOpen] = useState(false);
 
   const navigation = [
     { name: "Home", href: "/" },
