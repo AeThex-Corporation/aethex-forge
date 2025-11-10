@@ -39,7 +39,7 @@ export default function StaffDashboard() {
         title: "Sign in required",
         description: "Staff area requires authentication",
       });
-      navigate("/staff/login");
+      navigate("/admin");
       return;
     }
     if (!hasAccess) {
@@ -192,16 +192,16 @@ export default function StaffDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/knowledge-base">Knowledge Base</a>
+                    <a href="/admin/staff/knowledge-base">Knowledge Base</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/team-handbook">Team Handbook</a>
+                    <a href="/admin/staff/team-handbook">Team Handbook</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/announcements">Announcements</a>
+                    <a href="/admin/staff/announcements">Announcements</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/learning-portal">Learning Portal</a>
+                    <a href="/admin/staff/learning-portal">Learning Portal</a>
                   </Button>
                 </CardContent>
               </Card>
@@ -215,10 +215,10 @@ export default function StaffDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/project-tracking">Project Tracking</a>
+                    <a href="/admin/staff/project-tracking">Project Tracking</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/announcements">Announcements</a>
+                    <a href="/admin/staff/announcements">Announcements</a>
                   </Button>
                 </CardContent>
               </Card>
@@ -229,13 +229,13 @@ export default function StaffDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/performance-reviews">Performance Reviews</a>
+                    <a href="/admin/staff/performance-reviews">Performance Reviews</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/expenses">Expense Reports</a>
+                    <a href="/admin/staff/expenses">Expense Reports</a>
                   </Button>
                   <Button asChild variant="outline" className="w-full">
-                    <a href="/staff/marketplace">Internal Marketplace</a>
+                    <a href="/admin/staff/marketplace">Internal Marketplace</a>
                   </Button>
                 </CardContent>
               </Card>
