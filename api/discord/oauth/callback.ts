@@ -212,6 +212,8 @@ export default async function handler(req: any, res: any) {
         "[Discord OAuth] Successfully linked Discord:",
         discordUser.id,
       );
+
+      await notifyAccountLinked(authenticatedUserId, "Discord");
       return res.redirect(redirectTo);
     }
 
