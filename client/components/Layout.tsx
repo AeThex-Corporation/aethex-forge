@@ -696,6 +696,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
       {/* Supabase Configuration Status */}
       <SupabaseStatus />
 
+      {/* Arm Selector Modal - Rendered at root level */}
+      <ArmSwitcherModal
+        isOpen={isArmModalOpen}
+        onClose={() => setIsArmModalOpen(false)}
+      />
+
       <style>{`
         @keyframes spin {
           from {
