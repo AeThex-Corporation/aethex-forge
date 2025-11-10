@@ -10,7 +10,7 @@ export default function Privacy() {
               Privacy Policy
             </h1>
             <p className="text-sm text-muted-foreground">
-              Effective date: 2025-10-18
+              Effective date: 2025-01-21
             </p>
             <p className="text-sm text-muted-foreground">
               This Privacy Policy explains how AeThex ("we", "us") collects,
