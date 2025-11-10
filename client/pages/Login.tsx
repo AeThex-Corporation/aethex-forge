@@ -348,6 +348,13 @@ export default function Login() {
               </CardHeader>
 
               <CardContent className="space-y-6">
+                {errorFromUrl ? (
+                  <Alert className="border-red-500/30 bg-red-500/10 text-foreground">
+                    <Info className="h-4 w-4 text-red-400" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>{errorFromUrl}</AlertDescription>
+                  </Alert>
+                ) : null}
                 {manualVerificationLink ? (
                   <Alert className="border-aethex-400/30 bg-aethex-500/10 text-foreground">
                     <Info className="h-4 w-4 text-aethex-300" />
