@@ -171,6 +171,7 @@ const App = () => (
                     <Route path="/directory" element={<Directory />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/admin/docs-sync" element={<DocsSync />} />
+                    <Route path="/arms" element={<Arms />} />
                     <Route path="/feed" element={<Feed />} />
                     <Route path="/teams" element={<Teams />} />
                     <Route path="/squads" element={<Squads />} />
