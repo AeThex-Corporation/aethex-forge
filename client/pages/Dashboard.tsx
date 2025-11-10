@@ -578,11 +578,13 @@ export default function Dashboard() {
   // Show loading while auth is resolving
   if (authLoading || isLoading) {
     return (
-      <LoadingScreen
-        message="Loading your dashboard..."
-        showProgress={true}
-        duration={1200}
-      />
+      <Layout hideFooter={true}>
+        <LoadingScreen
+          message="Loading your dashboard..."
+          showProgress={true}
+          duration={1200}
+        />
+      </Layout>
     );
   }
 
