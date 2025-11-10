@@ -318,8 +318,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     userId: string,
   ): Promise<AethexUserProfile | null> => {
     try {
-      // Fetch user profile - let errors happen naturally rather than with aggressive timeouts
-      const userProfile = await aethexUserService.getCurrentUser();
+      // Fetch user profile with a 3-second timeout to prevent hanging
+      const profilePromise = aethexUserService.getCurrentUser();
+      const timeoutPromise = new Promise<null>((resolve) =>
+        setTimeout(() => resolve(null), 3000)
+      );
+      const userProfile = await Promise.race([profilePromise, timeoutPromise]);
+
+      if (!userProfile) {
+        console.warn("Profile fetch timed out or returned null");
+        setProfile(null);
+        return null;
+      }
+
       setProfile(userProfile);
 
       // Fetch roles in parallel (non-blocking) - don't await here
