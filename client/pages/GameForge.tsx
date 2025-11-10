@@ -11,9 +11,38 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
+import { aethexToast } from "@/lib/aethex-toast";
 
 export default function GameForge() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const toastShownRef = useRef(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      if (!toastShownRef.current) {
+        aethexToast.system("GameForge engine initialized");
+        toastShownRef.current = true;
+      }
+    }, 900);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        message="Booting GameForge Engine..."
+        showProgress={true}
+        duration={900}
+        accentColor="from-green-500 to-green-400"
+        armLogo="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800"
+      />
+    );
+  }
 
   const monthlyReleases = [
     {
