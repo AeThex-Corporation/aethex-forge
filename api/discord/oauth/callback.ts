@@ -223,7 +223,6 @@ export default async function handler(req: any, res: any) {
       .single();
 
     let userId: string;
-    let isNewUser = false;
 
     if (existingLink) {
       // Discord ID already linked - use existing user
@@ -233,7 +232,7 @@ export default async function handler(req: any, res: any) {
         userId,
       );
     } else {
-      // Discord not linked yet. Check if we should auto-link.
+      // Discord not linked yet. Check if email matches existing account.
 
       // Check if email exists in user_profiles
       const { data: existingUserProfile } = await supabase
@@ -250,9 +249,9 @@ export default async function handler(req: any, res: any) {
         );
       } else {
         // Discord email doesn't match any existing account
-        // Instead of auto-creating, redirect user to sign in with email first
+        // Don't auto-create - ask user to sign in with email first
         console.log(
-          "[Discord OAuth] Discord email not found in existing accounts, asking user to sign in first",
+          "[Discord OAuth] Discord email not found in existing accounts, redirecting to sign in",
           {
             discord_email: discordUser.email,
           },
