@@ -231,46 +231,24 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                   </nav>
                   <div className="border-t border-gray-800/50 pt-3 space-y-2">
                     {loading ? (
-                      <div className="space-y-2">
-                        <div className="h-4 w-32 animate-pulse rounded bg-border/40" />
-                        <div className="h-4 w-24 animate-pulse rounded bg-border/40" />
-                      </div>
+                      <div className="h-8 bg-gray-800/40 rounded-md animate-pulse" />
                     ) : user ? (
                       <>
                         <SheetClose asChild>
                           <Link
                             to="/dashboard"
                             onClick={scrollToTop}
-                            className="block rounded-lg bg-gradient-to-r from-aethex-500 to-neon-blue px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-aethex-500/20"
+                            className="block rounded-md bg-gradient-to-r from-aethex-500 to-neon-blue px-3 py-2 text-xs font-semibold text-white"
                           >
-                            Go to Dashboard
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            to="/profile"
-                            onClick={scrollToTop}
-                            className="block rounded-lg border border-border/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-aethex-400/40 hover:text-aethex-200"
-                          >
-                            View Profile
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            to="/dashboard?tab=profile#settings"
-                            onClick={scrollToTop}
-                            className="block rounded-lg border border-border/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-aethex-400/40 hover:text-aethex-200"
-                          >
-                            Account Settings
+                            Dashboard
                           </Link>
                         </SheetClose>
                         <SheetClose asChild>
                           <button
                             type="button"
-                            className="flex w-full items-center justify-start rounded-lg border border-transparent px-3 py-2 text-sm font-medium text-red-400 transition-colors hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-300"
+                            className="w-full text-left rounded-md px-3 py-2 text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
                             onClick={() => signOut()}
                           >
-                            <LogOut className="mr-2 h-4 w-4" />
                             Sign out
                           </button>
                         </SheetClose>
@@ -281,7 +259,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                           <Link
                             to="/onboarding"
                             onClick={scrollToTop}
-                            className="block rounded-lg bg-gradient-to-r from-aethex-500 to-neon-blue px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-aethex-500/20"
+                            className="block rounded-md bg-gradient-to-r from-aethex-500 to-neon-blue px-3 py-2 text-xs font-semibold text-white"
                           >
                             Join AeThex
                           </Link>
@@ -290,7 +268,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                           <Link
                             to="/login"
                             onClick={scrollToTop}
-                            className="block rounded-lg border border-border/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-aethex-400/40 hover:text-aethex-200"
+                            className="block rounded-md px-3 py-2 text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
                           >
                             Sign In
                           </Link>
