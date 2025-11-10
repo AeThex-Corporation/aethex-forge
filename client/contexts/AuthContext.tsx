@@ -168,12 +168,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     let sessionRestored = false;
 
     // Add timeout to ensure loading doesn't get stuck
+    // Increased from 3s to 5s to allow more time for session restoration after OAuth
     const loadingTimeout = setTimeout(() => {
       console.log("Auth loading timeout - forcing loading to false");
       if (!sessionRestored) {
         setLoading(false);
       }
-    }, 3000);
+    }, 5000);
 
     if (!storageClearedRef.current && typeof window !== "undefined") {
       try {
