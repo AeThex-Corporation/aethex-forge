@@ -107,6 +107,25 @@ export const aethexCollabService = {
       .from("project_members")
       .insert({ project_id: projectId, user_id: userId, role });
     if (error) throw new Error(error.message || "Unable to add project member");
+
+    try {
+      const { data: project } = await supabase
+        .from("projects")
+        .select("name")
+        .eq("id", projectId)
+        .single();
+
+      if (project) {
+        await aethexNotificationService.createNotification(
+          userId,
+          "info",
+          `📌 Added to Project: ${project.name}`,
+          `You've been added as a ${role} to the project.`,
+        );
+      }
+    } catch (notifError) {
+      console.warn("Failed to create project member notification:", notifError);
+    }
   },
 
   async listProjectMembers(projectId: string) {
