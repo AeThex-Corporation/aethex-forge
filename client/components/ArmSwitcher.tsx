@@ -157,22 +157,6 @@ export default function ArmSwitcher() {
         ))}
       </div>
 
-      {/* Mobile Version - Single Button that opens Fullscreen Modal */}
-      <div className="flex md:hidden items-center">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          aria-label="Open Arm Switcher"
-          className="p-2 rounded-md bg-gray-800/60 hover:bg-gray-700 transition-colors"
-        >
-          <Zap className="w-5 h-5 text-white" />
-        </button>
-      </div>
-
-      {/* Modal for mobile fullscreen arm switching */}
-      <ArmSwitcherModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </>
   );
 }
