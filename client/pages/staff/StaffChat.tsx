@@ -59,7 +59,7 @@ export default function StaffChat() {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/staff/login");
+      navigate("/admin");
     }
   }, [user, loading, navigate]);
 

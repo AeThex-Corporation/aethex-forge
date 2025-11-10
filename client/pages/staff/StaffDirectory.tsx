@@ -30,7 +30,7 @@ export default function StaffDirectory() {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/staff/login");
+      navigate("/admin");
     }
   }, [user, loading, navigate]);
 

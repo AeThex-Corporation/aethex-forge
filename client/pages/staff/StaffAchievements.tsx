@@ -63,7 +63,7 @@ export default function StaffAchievements() {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/staff/login");
+      navigate("/admin");
     }
   }, [user, loading, navigate]);
 
