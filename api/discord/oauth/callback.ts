@@ -54,24 +54,38 @@ export default async function handler(req: any, res: any) {
   if (isLinkingFlow) {
     try {
       const cookie = req.headers.cookie || "";
-      const accessTokenMatch = cookie.match(/sb-access-token=([^;]+)/);
+      console.log("[Discord OAuth] Cookie header present:", !!cookie);
+
+      // Try to find the access token cookie
+      const accessTokenMatch = cookie.match(/sb-access-token=([^;,\s]+)/);
       if (accessTokenMatch) {
         const accessToken = accessTokenMatch[1];
-        // We'll validate this token later with Supabase
-        // For now, we'll get the user ID from the JWT
+        console.log("[Discord OAuth] Found access token in cookies");
+
+        // Decode JWT to get user ID
         const tokenParts = accessToken.split(".");
         if (tokenParts.length === 3) {
-          const payload = JSON.parse(Buffer.from(tokenParts[1], "base64").toString());
-          authenticatedUserId = payload.sub;
-          console.log("[Discord OAuth] Extracted user ID from auth token:", authenticatedUserId);
+          try {
+            const payload = JSON.parse(Buffer.from(tokenParts[1], "base64").toString());
+            authenticatedUserId = payload.sub;
+            console.log("[Discord OAuth] Successfully extracted user ID from token:", authenticatedUserId);
+          } catch (decodeError) {
+            console.error("[Discord OAuth] Failed to decode JWT payload:", decodeError);
+          }
+        } else {
+          console.error("[Discord OAuth] Token does not have 3 parts:", tokenParts.length);
         }
+      } else {
+        console.warn("[Discord OAuth] No sb-access-token cookie found in request");
+        console.log("[Discord OAuth] Available cookies:", cookie.substring(0, 200));
       }
     } catch (e) {
-      console.log("[Discord OAuth] Could not extract user ID from cookies:", e);
+      console.error("[Discord OAuth] Error extracting user ID from cookies:", e);
     }
 
     if (!authenticatedUserId) {
       console.error("[Discord OAuth] Linking flow but no authenticated user found");
+      // Redirect to login with a helpful message
       return res.redirect(
         `/login?error=not_authenticated&message=${encodeURIComponent("Please sign in before linking Discord")}`,
       );
