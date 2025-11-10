@@ -26,14 +26,14 @@ export default function StaffAdmin() {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/staff/login");
+      navigate("/admin");
       return;
     }
     const isAdmin = roles?.some((r) =>
       ["owner", "admin", "founder"].includes(r.toLowerCase()),
     );
     if (!isAdmin) {
-      navigate("/staff/dashboard");
+      navigate("/admin");
     }
   }, [user, roles, loading, navigate]);
 
