@@ -46,9 +46,14 @@ export default function DiscordVerify() {
     }
   }, [user, navigate, code]);
 
-  // On component mount, check if code was stored in sessionStorage
+  // Auto-verify once user is authenticated
   useEffect(() => {
-    if (user && !code) {
+    // Case 1: Code in URL and user is now authenticated
+    if (user && code && verificationCode && !isLoading) {
+      handleVerify(verificationCode);
+    }
+    // Case 2: Code in sessionStorage (from redirect back from login) and user is now authenticated
+    else if (user && !code && !isLoading) {
       const storedCode = sessionStorage.getItem("discord_verification_code");
       if (storedCode) {
         setVerificationCode(storedCode);
@@ -56,7 +61,7 @@ export default function DiscordVerify() {
         sessionStorage.removeItem("discord_verification_code");
       }
     }
-  }, [user]);
+  }, [user, isLoading]);
 
   const handleVerify = async (codeToVerify: string) => {
     if (!codeToVerify.trim()) {
