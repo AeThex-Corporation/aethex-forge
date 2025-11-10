@@ -57,6 +57,7 @@ import {
   BarChart3,
   Github,
   Globe,
+  MessageCircle,
 } from "lucide-react";
 
 export default function Dashboard() {
