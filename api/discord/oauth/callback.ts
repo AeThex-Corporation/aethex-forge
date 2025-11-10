@@ -35,6 +35,20 @@ export default async function handler(req: any, res: any) {
     return res.redirect("/login?error=no_code");
   }
 
+  // Parse state to determine if this is a linking or login flow
+  let isLinkingFlow = false;
+  let redirectTo = "/dashboard";
+
+  if (state) {
+    try {
+      const stateData = JSON.parse(decodeURIComponent(state as string));
+      isLinkingFlow = stateData.action === "link";
+      redirectTo = stateData.redirectTo || redirectTo;
+    } catch (e) {
+      console.log("[Discord OAuth] Could not parse state:", e);
+    }
+  }
+
   const clientId = process.env.DISCORD_CLIENT_ID;
   const clientSecret = process.env.DISCORD_CLIENT_SECRET;
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
