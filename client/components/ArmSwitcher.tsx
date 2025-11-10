@@ -97,7 +97,6 @@ export default function ArmSwitcher() {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleArmClick = (href: string) => {
     navigate(href);
