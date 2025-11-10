@@ -55,17 +55,28 @@ export const DiscordActivityProvider: React.FC<
     const initializeActivity = async () => {
       // Check if we're running inside a Discord Activity
       // Discord passes frame_id as a query parameter when launching an Activity
+      if (typeof window === "undefined") {
+        return; // Skip on server-side
+      }
+
       const searchParams = new URLSearchParams(window.location.search);
       const frameId = searchParams.get("frame_id");
       const isInDiscordActivity = frameId !== null;
 
-      console.log("[Discord Activity] Initialization starting...", {
+      console.log("[Discord Activity] Checking for Discord context...", {
         frameId,
         isInDiscordActivity,
-        userAgent: navigator.userAgent,
-        href: window.location.href,
       });
 
+      // If we're NOT in Discord Activity, exit early - don't load Discord SDK
+      if (!isInDiscordActivity) {
+        console.log("[Discord Activity] Not in Discord Activity - skipping SDK load");
+        setIsActivity(false);
+        setIsLoading(false);
+        return;
+      }
+
+      // Only initialize Discord SDK if we're actually in a Discord Activity
       if (isInDiscordActivity) {
         try {
           setIsActivity(true);
