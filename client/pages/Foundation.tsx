@@ -12,9 +12,38 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
+import { aethexToast } from "@/lib/aethex-toast";
 
 export default function Foundation() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const toastShownRef = useRef(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      if (!toastShownRef.current) {
+        aethexToast.system("Foundation network connected");
+        toastShownRef.current = true;
+      }
+    }, 900);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        message="Connecting Foundation Network..."
+        showProgress={true}
+        duration={900}
+        accentColor="from-red-500 to-red-400"
+        armLogo="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800"
+      />
+    );
+  }
 
   const openSourceProjects = [
     {
