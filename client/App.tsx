@@ -111,6 +111,13 @@ import CreatorProfile from "./pages/creators/CreatorProfile";
 import OpportunitiesHub from "./pages/opportunities/OpportunitiesHub";
 import OpportunityDetail from "./pages/opportunities/OpportunityDetail";
 import MyApplications from "./pages/profile/MyApplications";
+import StaffLogin from "./pages/StaffLogin";
+import StaffDashboard from "./pages/StaffDashboard";
+import StaffDirectory from "./pages/staff/StaffDirectory";
+import StaffAdmin from "./pages/staff/StaffAdmin";
+import StaffDocs from "./pages/staff/StaffDocs";
+import StaffAchievements from "./pages/staff/StaffAchievements";
+import StaffChat from "./pages/staff/StaffChat";
 
 const queryClient = new QueryClient();
 
