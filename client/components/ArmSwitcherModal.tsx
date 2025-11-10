@@ -152,7 +152,7 @@ export default function ArmSwitcherModal({
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto px-4 sm:px-6 py-6 flex flex-col items-center justify-start flex-1 min-h-0">
+        <div className="overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col items-center justify-start flex-1 min-h-0">
           {!selectedArm ? (
             // Arm Grid - Minimal
             <div className="w-full space-y-1">
