@@ -95,7 +95,8 @@ export default function StaffLogin() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signInWithOAuth("google");
+      // Pass the staff dashboard as the intended destination after OAuth completes
+      await signInWithOAuth("google", "/staff/dashboard");
     } catch (error: any) {
       console.error("Google sign-in error:", error);
       toastError({
