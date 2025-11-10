@@ -184,31 +184,7 @@
       })();
     </script>
 
-    <!-- Discord SDK for Activities (loaded only in /discord context) -->
-    <script>
-      window.discordSdkReady = false;
-
-      // Only attempt to load Discord SDK if we're in the Discord Activity route
-      window.loadDiscordSDK = async function () {
-        if (window.discordSdkReady) return;
-        try {
-          const { DiscordSDK } = await import(
-            "https://cdn.discordapp.com/assets/embedded/lazyload.min.js"
-          );
-          if (DiscordSDK) {
-            window.DiscordSDK = new DiscordSDK({
-              clientId: "578971245454950421",
-            });
-            window.discordSdkReady = true;
-          }
-        } catch (e) {
-          console.warn(
-            "Discord SDK loading skipped (not in Activity context):",
-            e.message,
-          );
-        }
-      };
-    </script>
+    <!-- Discord SDK is imported in DiscordActivityContext.tsx from @discord/embedded-app-sdk npm package -->
   </head>
 
   <body>
