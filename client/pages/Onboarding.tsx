@@ -388,8 +388,11 @@ export default function Onboarding() {
         localStorage.removeItem(ONBOARDING_STORAGE_KEY);
       } catch {}
 
-      // Refresh profile so UI updates immediately
-      await refreshProfile();
+      // Refresh profile in background (don't block on this)
+      // If it fails, the dashboard will handle showing stale data temporarily
+      refreshProfile().catch((err) => {
+        console.warn("Profile refresh failed after onboarding:", err);
+      });
 
       // Success toast
       aethexToast.success({
@@ -397,15 +400,16 @@ export default function Onboarding() {
         description: "Profile setup complete. Welcome to your dashboard.",
       });
 
-      // Navigate after success (with lightweight fallback)
+      // Navigate immediately (don't wait for profile refresh)
       navigate("/dashboard", { replace: true });
 
+      // Ensure we navigate away even if React routing has issues
       if (typeof window !== "undefined") {
         setTimeout(() => {
           if (window.location.pathname.includes("onboarding")) {
-            navigate("/dashboard", { replace: true });
+            window.location.href = "/dashboard";
           }
-        }, 300);
+        }, 500);
       }
     } catch (e) {
       function formatError(err: any) {
