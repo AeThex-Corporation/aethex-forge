@@ -46,6 +46,8 @@ import {
   Grid3x3,
   MessageSquare,
   Gauge,
+  Award,
+  FileText,
 } from "lucide-react";
 
 type Studio = {
