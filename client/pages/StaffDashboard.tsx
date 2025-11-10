@@ -206,6 +206,40 @@ export default function StaffDashboard() {
                 </CardContent>
               </Card>
             </div>
+
+            <div className="grid gap-4 md:grid-cols-2 mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Operations</CardTitle>
+                  <CardDescription>Tracking and management</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button asChild variant="outline" className="w-full">
+                    <a href="/staff/project-tracking">Project Tracking</a>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <a href="/staff/announcements">Announcements</a>
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Employee Services</CardTitle>
+                  <CardDescription>HR and financial tools</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button asChild variant="outline" className="w-full">
+                    <a href="/staff/performance-reviews">Performance Reviews</a>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <a href="/staff/expenses">Expense Reports</a>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <a href="/staff/marketplace">Internal Marketplace</a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="moderation" className="mt-6">
