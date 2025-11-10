@@ -74,6 +74,9 @@ const initialData: OnboardingData = {
 };
 
 export default function Onboarding() {
+  // Helper: link to existing account to avoid accidental new account creation
+  // Show a small banner that sends users to login with a next param back to onboarding
+  const signInExistingHref = "/login?next=/onboarding";
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(initialData);
   const [isLoading, setIsLoading] = useState(true);
