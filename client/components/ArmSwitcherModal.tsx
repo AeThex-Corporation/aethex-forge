@@ -161,7 +161,7 @@ export default function ArmSwitcherModal({
                   key={arm.id}
                   type="button"
                   onClick={() => handleSelectArm(arm.id)}
-                  className="w-full p-3 rounded-lg border border-gray-700/50 bg-gray-900/30 hover:bg-gray-800/50 hover:border-gray-600 transition-all duration-200 text-left group"
+                  className="w-full p-2 sm:p-3 rounded-lg border border-gray-700/50 bg-gray-900/30 hover:bg-gray-800/50 hover:border-gray-600 transition-all duration-200 text-left group"
                 >
                   <div className="flex items-center gap-2.5">
                     <img
