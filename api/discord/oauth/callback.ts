@@ -89,7 +89,11 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const redirectUri = "https://aethex.dev/api/discord/oauth/callback";
+    // Get the current API base from the request origin
+    const protocol = req.headers["x-forwarded-proto"] || "https";
+    const host = req.headers["x-forwarded-host"] || req.headers.host;
+    const apiBase = `${protocol}://${host}`;
+    const redirectUri = `${apiBase}/api/discord/oauth/callback`;
 
     // Exchange code for access token
     const tokenResponse = await fetch(
