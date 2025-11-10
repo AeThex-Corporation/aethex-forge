@@ -137,7 +137,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         try {
           const { createClient } = await import("@supabase/supabase-js");
           const supabase = createClient(
-            process.env.VITE_SUPABASE_URL || "",
+            process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "",
             process.env.SUPABASE_SERVICE_ROLE || "",
           );
 
