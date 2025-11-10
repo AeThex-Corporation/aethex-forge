@@ -59,11 +59,11 @@ export default function Staff() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                onClick={() => navigate("/staff/login")}
+                onClick={() => navigate("/admin")}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
               >
                 <Lock className="mr-2 h-5 w-5" />
-                Staff Login
+                Admin Dashboard
               </Button>
               <Button
                 size="lg"
