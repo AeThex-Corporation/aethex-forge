@@ -141,8 +141,13 @@ const ensureDailyStreakForProfile = async (
   };
 };
 
-export function checkProfileComplete(p?: AethexUserProfile | null): boolean {
+export function checkProfileComplete(p?: AethexUserProfile | null, roles?: string[]): boolean {
   if (!p) return false;
+
+  // Admins/owners are always considered complete
+  if (roles?.some((r) => ["owner", "admin", "founder", "staff"].includes(r.toLowerCase()))) {
+    return true;
+  }
 
   if ((p as any).onboarded === true) {
     return true;
