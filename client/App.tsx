@@ -118,6 +118,23 @@ import StaffAdmin from "./pages/staff/StaffAdmin";
 import StaffDocs from "./pages/staff/StaffDocs";
 import StaffAchievements from "./pages/staff/StaffAchievements";
 import StaffChat from "./pages/staff/StaffChat";
+import Space1Welcome from "./pages/internal-docs/Space1Welcome";
+import Space1AxiomModel from "./pages/internal-docs/Space1AxiomModel";
+import Space1FindYourRole from "./pages/internal-docs/Space1FindYourRole";
+import Space2CodeOfConduct from "./pages/internal-docs/Space2CodeOfConduct";
+import Space2Communication from "./pages/internal-docs/Space2Communication";
+import Space2MeetingCadence from "./pages/internal-docs/Space2MeetingCadence";
+import Space2BrandVoice from "./pages/internal-docs/Space2BrandVoice";
+import Space2TechStack from "./pages/internal-docs/Space2TechStack";
+import Space3FoundationGovernance from "./pages/internal-docs/Space3FoundationGovernance";
+import Space3OpenSourceProtocol from "./pages/internal-docs/Space3OpenSourceProtocol";
+import Space3CommunityPrograms from "./pages/internal-docs/Space3CommunityPrograms";
+import Space4ProductOps from "./pages/internal-docs/Space4ProductOps";
+import Space4CorpBlueprints from "./pages/internal-docs/Space4CorpBlueprints";
+import Space4ClientOps from "./pages/internal-docs/Space4ClientOps";
+import Space4PlatformStrategy from "./pages/internal-docs/Space4PlatformStrategy";
+import Space5Onboarding from "./pages/internal-docs/Space5Onboarding";
+import Space5Finance from "./pages/internal-docs/Space5Finance";
 
 const queryClient = new QueryClient();
 
