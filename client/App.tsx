@@ -86,7 +86,6 @@ import SignupRedirect from "./pages/SignupRedirect";
 import MentorshipRequest from "./pages/community/MentorshipRequest";
 import MentorApply from "./pages/community/MentorApply";
 import MentorProfile from "./pages/community/MentorProfile";
-import Staff from "./pages/Staff";
 import Realms from "./pages/Realms";
 import Investors from "./pages/Investors";
 import Roadmap from "./pages/Roadmap";
@@ -111,7 +110,6 @@ import CreatorProfile from "./pages/creators/CreatorProfile";
 import OpportunitiesHub from "./pages/opportunities/OpportunitiesHub";
 import OpportunityDetail from "./pages/opportunities/OpportunityDetail";
 import MyApplications from "./pages/profile/MyApplications";
-import StaffLogin from "./pages/StaffLogin";
 import StaffDashboard from "./pages/StaffDashboard";
 import StaffDirectory from "./pages/staff/StaffDirectory";
 import StaffAdmin from "./pages/staff/StaffAdmin";
@@ -386,54 +384,48 @@ const App = () => (
                     />
                     <Route path="/community/:tabId" element={<Community />} />
 
-                    {/* Staff Arm Routes */}
-                    <Route path="/staff" element={<Staff />} />
-                    <Route path="/staff/login" element={<StaffLogin />} />
+                    {/* Admin & Staff Routes - Unified */}
                     <Route
-                      path="/staff/dashboard"
-                      element={<StaffDashboard />}
-                    />
-                    <Route
-                      path="/staff/directory"
+                      path="/admin/staff/directory"
                       element={<StaffDirectory />}
                     />
-                    <Route path="/staff/admin" element={<StaffAdmin />} />
-                    <Route path="/staff/docs" element={<StaffDocs />} />
+                    <Route path="/admin/staff/admin" element={<StaffAdmin />} />
+                    <Route path="/admin/staff/docs" element={<StaffDocs />} />
                     <Route
-                      path="/staff/achievements"
+                      path="/admin/staff/achievements"
                       element={<StaffAchievements />}
                     />
-                    <Route path="/staff/chat" element={<StaffChat />} />
+                    <Route path="/admin/staff/chat" element={<StaffChat />} />
                     <Route
-                      path="/staff/knowledge-base"
+                      path="/admin/staff/knowledge-base"
                       element={<StaffKnowledgeBase />}
                     />
                     <Route
-                      path="/staff/team-handbook"
+                      path="/admin/staff/team-handbook"
                       element={<StaffTeamHandbook />}
                     />
                     <Route
-                      path="/staff/project-tracking"
+                      path="/admin/staff/project-tracking"
                       element={<StaffProjectTracking />}
                     />
                     <Route
-                      path="/staff/learning-portal"
+                      path="/admin/staff/learning-portal"
                       element={<StaffLearningPortal />}
                     />
                     <Route
-                      path="/staff/marketplace"
+                      path="/admin/staff/marketplace"
                       element={<StaffInternalMarketplace />}
                     />
                     <Route
-                      path="/staff/announcements"
+                      path="/admin/staff/announcements"
                       element={<StaffAnnouncements />}
                     />
                     <Route
-                      path="/staff/performance-reviews"
+                      path="/admin/staff/performance-reviews"
                       element={<StaffPerformanceReviews />}
                     />
                     <Route
-                      path="/staff/expenses"
+                      path="/admin/staff/expenses"
                       element={<StaffExpenseReports />}
                     />
 
