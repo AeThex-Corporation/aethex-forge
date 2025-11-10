@@ -66,15 +66,31 @@ export default function StaffLogin() {
     }
   }, [location.search, toastError]);
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated (with @aethex.dev email validation)
   useEffect(() => {
     if (!loading && user) {
+      const userEmail = user.email || "";
+      const isAethexDev = userEmail.endsWith("@aethex.dev");
+
+      if (!isAethexDev) {
+        // Email is not @aethex.dev - show error
+        setErrorFromUrl(
+          "Only @aethex.dev email addresses can access the Staff Portal. If you're an authorized contractor, please use your assigned contractor email."
+        );
+        toastError({
+          title: "Access Denied",
+          description: "This email domain is not authorized for staff access.",
+        });
+        return;
+      }
+
+      // Valid staff email - redirect to dashboard
       const params = new URLSearchParams(location.search);
       const next = params.get("next");
       const safeNext = next && next.startsWith("/staff") ? next : null;
       navigate(safeNext || "/staff/dashboard", { replace: true });
     }
-  }, [user, loading, navigate, location.search]);
+  }, [user, loading, navigate, location.search, toastError]);
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
