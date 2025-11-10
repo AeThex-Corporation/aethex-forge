@@ -180,7 +180,7 @@ public.aethex_creators
 ├── arm_affiliations (TEXT[])
 
 public.aethex_opportunities
-├── id (UUID, PK)
+├─�� id (UUID, PK)
 ├── title (TEXT)
 ├── description (TEXT)
 ├── job_type (TEXT)
@@ -476,7 +476,7 @@ Backend validates code in discord_verifications table
 Creates/updates discord_links record
   ↓
 Shows success message
-  ↓
+  ���
 Redirects to /profile/settings
 ```
 
@@ -522,7 +522,7 @@ Redirects to /profile/settings
 │ Plan: Discord Embedded App SDK integration                      │
 │ Actual: Not yet implemented (DiscordActivity.tsx exists)        │
 │ Status: ⏳ IN PROGRESS                                          │
-├─────���───────────────────────────────────────────────────────────┤
+├─────���───────────────────────────────────────────��───────────────┤
 │ BACKEND                                                         │
 ├─────────────────────────────────────────────────────────────────┤
 │ Plan: PostgreSQL + RLS with optimized policies                  │
@@ -534,7 +534,7 @@ Redirects to /profile/settings
 │ Status: ⏳ NOT YET AUTOMATED                                    │
 ├─────────────────────────────────────────────────────────────────┤
 │ BOT                                                             │
-├─────────────────────────────────────────────────────────────────┤
+├────────────────────────────────���────────────────────────────────┤
 │ Plan: discord.js + Railway + direct Supabase                    │
 │ Actual: ✅ EXACTLY AS PLANNED                                   │
 │ Status: ✅ READY                                                │
@@ -572,18 +572,18 @@ SUPABASE_URL=https://supabase.aethex.tech
 ### Discord OAuth
 
 ```
-DISCORD_CLIENT_ID=578971245454950421
-DISCORD_CLIENT_SECRET=JKlilGzcTWgfmt2wEqiHO8wpCel5VEji
-DISCORD_BOT_TOKEN=NTc4OTcxMjQ1NDU0OTUwNDIx.Gv-kuN...
-DISCORD_PUBLIC_KEY=d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1eb0
-DISCORD_ADMIN_REGISTER_TOKEN=aethex-link
+DISCORD_CLIENT_ID=<from Discord Developer Portal>
+DISCORD_CLIENT_SECRET=<REDACTED - from Discord Developer Portal>
+DISCORD_BOT_TOKEN=<REDACTED - from Discord Developer Portal Bot section>
+DISCORD_PUBLIC_KEY=<REDACTED - from Discord Developer Portal>
+DISCORD_ADMIN_REGISTER_TOKEN=<secure random token>
 ```
 
 ### Roblox OAuth
 
 ```
-ROBLOX_OAUTH_CLIENT_ID=4727645256213520722
-ROBLOX_OAUTH_CLIENT_SECRET=RBX-hTAHd1iV-U-JSodk9GDkx0beYrLf00YKdZbWyMPzTWysCsys-UPEvT9ON_qSEeM2
+ROBLOX_OAUTH_CLIENT_ID=<from Roblox Developer Console>
+ROBLOX_OAUTH_CLIENT_SECRET=<REDACTED - from Roblox Developer Console>
 ROBLOX_OAUTH_REDIRECT_URI=https://aethex.dev/roblox-callback
 ```
 
