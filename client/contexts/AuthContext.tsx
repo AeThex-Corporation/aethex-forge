@@ -177,6 +177,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (!storageClearedRef.current && typeof window !== "undefined") {
       try {
+        // ONLY clear mock/demo data, NOT actual Supabase auth session
         [
           "mock_user",
           "mock_profile",
@@ -185,34 +186,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           "demo_posts",
           "demo_seed_v1",
           "aethex_onboarding_progress_v1",
-          "onboarding_complete",
         ].forEach((key) => window.localStorage.removeItem(key));
 
-        // Clear all Supabase-related keys
-        Object.keys(window.localStorage)
-          .filter(
-            (key) =>
-              key.startsWith("sb-") ||
-              key.includes("supabase") ||
-              key.includes("auth-token"),
-          )
-          .forEach((key) => window.localStorage.removeItem(key));
-
-        // Clear IndexedDB (where Supabase stores sessions)
-        if (window.indexedDB) {
-          const dbs = [
-            "supabase",
-            "sb_" + (process.env.VITE_SUPABASE_URL || "").split("/").pop(),
-          ];
-          dbs.forEach((dbName) => {
-            try {
-              const req = window.indexedDB.deleteDatabase(dbName);
-              req.onsuccess = () => console.log(`Cleared IndexedDB: ${dbName}`);
-              req.onerror = (e) =>
-                console.warn(`Failed to clear IndexedDB: ${dbName}`, e);
-            } catch {}
-          });
-        }
+        // NOTE: We deliberately DO NOT clear:
+        // - sb-* keys (Supabase session tokens)
+        // - auth-token keys
+        // - IndexedDB (where Supabase stores sessions)
+        // Clearing these breaks session persistence across page reloads/redirects!
 
         storageClearedRef.current = true;
       } catch {
