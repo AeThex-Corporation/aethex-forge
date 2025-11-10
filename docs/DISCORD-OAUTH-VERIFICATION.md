@@ -9,9 +9,11 @@
 ## What Should Work
 
 ### ✅ 1. Login with Discord (New Scenario)
+
 **Scenario**: User clicks "Continue with Discord" on `/login` with Discord email matching existing account
 
 **Steps**:
+
 1. Go to `https://aethex.dev/login`
 2. Click **"Continue with Discord"** button
 3. Authorize on Discord
@@ -22,9 +24,11 @@
 ---
 
 ### ✅ 2. Login with Discord (Email Mismatch)
+
 **Scenario**: Discord email doesn't match any existing AeThex account
 
 **Steps**:
+
 1. Go to `https://aethex.dev/login`
 2. Click **"Continue with Discord"** button
 3. Authorize with Discord account that has different email
@@ -36,9 +40,11 @@
 ---
 
 ### ✅ 3. Link Discord from Dashboard
+
 **Scenario**: User already logged in, wants to link Discord
 
 **Steps**:
+
 1. Sign in with email/password on `/login`
 2. Go to `/dashboard?tab=connections`
 3. Find Discord card
@@ -51,9 +57,11 @@
 ---
 
 ### ✅ 4. Discord Bot Commands
+
 **Scenario**: User types Discord commands in a server where bot is present
 
 **Commands to Test**:
+
 ```
 /verify              - Bot sends verification code
 /set-realm gameforge - Bot confirms realm change + assigns role
@@ -121,15 +129,18 @@ DISCORD_PUBLIC_KEY=d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1
 Make sure these are configured in Discord Developer Portal:
 
 - [ ] **General Information**:
+
   - [ ] Application name: "AeThex"
   - [ ] Client ID: `578971245454950421`
   - [ ] Public Key: `d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1eb0`
 
 - [ ] **OAuth2 > General**:
+
   - [ ] Client Secret configured
   - [ ] Redirect URIs includes: `https://aethex.dev/api/discord/oauth/callback`
 
 - [ ] **Bot**:
+
   - [ ] Bot token set (new GmEHDt token)
   - [ ] Intents enabled: `Message Content`, `Guilds`
   - [ ] Permissions: `Administrator` or specific permissions
@@ -143,12 +154,15 @@ Make sure these are configured in Discord Developer Portal:
 ## Testing Checklist
 
 ### Basic Connectivity
+
 - [ ] API endpoint responds: `curl https://aethex.dev/api/discord/oauth/start -I`
 - [ ] Discord bot online (shows in server member list)
 - [ ] Discord bot can execute commands (`/verify` works)
 
 ### OAuth Login Tests
+
 - [ ] **Test 1**: Login with Discord email matching existing account
+
   - [ ] Click "Continue with Discord"
   - [ ] Authorize
   - [ ] Redirects to dashboard ✅
@@ -160,7 +174,9 @@ Make sure these are configured in Discord Developer Portal:
   - [ ] Can sign in with email instead ✅
 
 ### OAuth Linking Tests
+
 - [ ] **Test 3**: Link Discord from Dashboard
+
   - [ ] Sign in with email
   - [ ] Go to Dashboard → Connections
   - [ ] Click "Link Discord"
@@ -175,12 +191,15 @@ Make sure these are configured in Discord Developer Portal:
   - [ ] Successfully re-linked ✅
 
 ### Bot Command Tests
+
 - [ ] **Test 5**: `/verify` command generates code
+
   - [ ] Type `/verify` in Discord
   - [ ] Bot sends code with link
   - [ ] Link works: `https://aethex.dev/discord-verify?code=...` ✅
 
 - [ ] **Test 6**: `/set-realm` command works
+
   - [ ] Type `/set-realm`
   - [ ] Select an arm (gameforge, labs, etc)
   - [ ] Bot confirms change ✅
@@ -195,18 +214,22 @@ Make sure these are configured in Discord Developer Portal:
 ## Troubleshooting
 
 ### "Redirect URI mismatch" error
+
 - Problem: Discord OAuth callback failing
 - Solution: Verify `https://aethex.dev/api/discord/oauth/callback` is registered in Discord Developer Portal
 
 ### "Invalid token" error
+
 - Problem: Bot token expired or revoked
 - Solution: Get new token from Discord Developer Portal
 
 ### Bot commands not working
+
 - Problem: Commands not registered with Discord
 - Solution: Run `/api/discord/admin-register-commands` endpoint with DISCORD_ADMIN_REGISTER_TOKEN
 
 ### Session lost during linking
+
 - Problem: User logged out after Discord OAuth redirect
 - Solution: This should NOT happen anymore - we use database sessions instead of cookies
 
@@ -222,4 +245,3 @@ All flows working when you see:
 4. ✅ Bot commands work in Discord
 5. ✅ No session loss during OAuth redirects
 6. ✅ Helpful error messages when things go wrong
-
