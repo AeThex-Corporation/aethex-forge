@@ -1746,17 +1746,11 @@ export function createServer() {
           }
         }
 
+        // Could not reach any health endpoint
+        res.setHeader("Content-Type", "application/json");
         return res.status(503).json({
           status: "offline",
           error: `Could not reach bot health endpoint. Last error: ${lastError?.message || "Unknown error"}`,
-        });
-        res.setHeader("Content-Type", "application/json");
-        return res.json({
-          status: data.status || "online",
-          guilds: data.guilds || 0,
-          commands: data.commands || 0,
-          uptime: data.uptime || 0,
-          timestamp: data.timestamp || new Date().toISOString(),
         });
       } catch (error: any) {
         console.error("[Discord Bot Health] Error:", error);
@@ -1823,7 +1817,7 @@ export function createServer() {
 
         if (!clientId) {
           diagnostics.recommendations.push(
-            "❌ DISCORD_CLIENT_ID not set. Set it to your application's ID.",
+            "�� DISCORD_CLIENT_ID not set. Set it to your application's ID.",
           );
         } else {
           diagnostics.recommendations.push("✅ DISCORD_CLIENT_ID is set");
