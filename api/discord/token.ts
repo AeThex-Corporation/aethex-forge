@@ -38,7 +38,7 @@ export default async function handler(req: any, res: any) {
           client_secret: clientSecret,
           grant_type: "authorization_code",
           code,
-          redirect_uri: "https://aethex.dev/activity",
+          redirect_uri: process.env.DISCORD_ACTIVITY_REDIRECT_URI || "https://aethex.dev/activity",
         }).toString(),
       },
     );
