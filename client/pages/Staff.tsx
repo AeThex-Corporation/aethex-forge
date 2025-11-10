@@ -20,7 +20,7 @@ export default function Staff() {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate("/staff/dashboard", { replace: true });
+      navigate("/admin", { replace: true });
     }
   }, [user, loading, navigate]);
 
