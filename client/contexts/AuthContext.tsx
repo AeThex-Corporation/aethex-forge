@@ -1126,8 +1126,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [user]);
 
   const profileCompletedByData = useMemo(
-    () => checkProfileComplete(profile),
-    [profile],
+    () => checkProfileComplete(profile, roles),
+    [profile, roles],
   );
 
   const localOnboardingComplete =
