@@ -13,9 +13,38 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
+import { aethexToast } from "@/lib/aethex-toast";
 
 export default function Labs() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const toastShownRef = useRef(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      if (!toastShownRef.current) {
+        aethexToast.system("Labs mainframe linked");
+        toastShownRef.current = true;
+      }
+    }, 900);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        message="Initializing Research Module..."
+        showProgress={true}
+        duration={900}
+        accentColor="from-yellow-500 to-yellow-400"
+        armLogo="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800"
+      />
+    );
+  }
 
   const projects = [
     {
