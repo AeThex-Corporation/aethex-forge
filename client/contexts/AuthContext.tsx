@@ -866,6 +866,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         reason?.message ?? reason ?? ev?.toString?.() ?? "",
       ).toLowerCase();
 
+      // IGNORE Discord SDK and other non-auth errors
+      if (
+        message.includes("agent source") ||
+        message.includes("discord") ||
+        message.includes("@discord") ||
+        message.includes("wix") ||
+        message.includes("frame_id") ||
+        message.includes("cross-origin")
+      ) {
+        // Just log but don't clear session
+        console.debug("Non-auth error (ignoring):", message);
+        return;
+      }
+
+      // Only clear session for actual auth errors
       if (
         message.includes("invalid refresh token") ||
         message.includes("session expired") ||
