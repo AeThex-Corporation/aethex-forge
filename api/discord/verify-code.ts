@@ -17,7 +17,8 @@ export default async function handler(req: any, res: any) {
       .json({ message: "Missing verification code or user ID" });
   }
 
-  const supabaseUrl = process.env.VITE_SUPABASE_URL;
+  // Try both possible env var names for backwards compatibility
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
   const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE;
 
   if (!supabaseUrl || !supabaseServiceRole) {
