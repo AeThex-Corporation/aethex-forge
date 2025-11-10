@@ -1,11 +1,13 @@
 # AeThex Discord System - Complete Flow Documentation
 
 ## Overview
+
 There are 5 completely separate Discord flows in AeThex. Each one is independent but some share infrastructure.
 
 ---
 
 ## FLOW 1: Discord OAuth Login
+
 **When**: User clicks "Continue with Discord" on `/login` page
 **Goal**: Create new account OR link Discord to existing email
 **Files Involved**: Login.tsx → oauth/start.ts → oauth/callback.ts
@@ -45,6 +47,7 @@ There are 5 completely separate Discord flows in AeThex. Each one is independent
 ```
 
 ### Database Operations (Login Flow)
+
 ```
 discord_links table:
   INSERT: { discord_id: "123", user_id: "uuid", linked_at: now() }
@@ -58,20 +61,24 @@ auth.users table:
 ```
 
 ### Success Path
+
 ✅ User sees dashboard or onboarding screen
 ✅ User is fully logged in
 ✅ Discord account is linked
 
 ### Failure Paths
+
 ❌ Email already exists → Redirect to `/login?error=account_exists&message=...`
-   - User must sign in with email first, then link from Dashboard
-❌ Auth user creation fails → Redirect to `/login?error=auth_create`
-❌ Profile creation fails → Redirect to `/login?error=profile_create`
-❌ Discord link creation fails → Redirect to `/login?error=link_create`
+
+- User must sign in with email first, then link from Dashboard
+  ❌ Auth user creation fails → Redirect to `/login?error=auth_create`
+  ❌ Profile creation fails → Redirect to `/login?error=profile_create`
+  ❌ Discord link creation fails → Redirect to `/login?error=link_create`
 
 ---
 
 ## FLOW 2: Discord Account Linking (from Dashboard)
+
 **When**: User clicks "Link Discord" button in `/dashboard?tab=connections`
 **Goal**: Add Discord account to existing AeThex account (user already logged in)
 **Files Involved**: Dashboard.tsx → AuthContext.linkProvider() → oauth/start.ts → oauth/callback.ts
@@ -140,6 +147,7 @@ auth.users table:
 ```
 
 ### Database Operations (Linking Flow)
+
 ```
 discord_linking_sessions table:
   INSERT: { user_id: uuid, session_token: "hex", expires_at: now+5min }
@@ -150,18 +158,22 @@ discord_links table:
 ```
 
 ### Success Path
+
 ✅ Browser redirects to `/dashboard?tab=connections`
 ✅ Discord appears as "linked" in connections section
 ✅ User can now use /verify command in Discord to link roles
 
 ### Failure Paths
+
 ❌ Auth token missing/invalid → User sees "Auth failed" toast
 ❌ Session creation fails → User sees "Link failed" toast
 ❌ Session expired during OAuth redirect → Redirect to login
 ❌ Discord ID already linked to different account → Redirect to login with error
 
 ### Critical: Session Persistence
+
 ⚠️ **KEY ISSUE THAT WAS FIXED**:
+
 - During Discord OAuth redirect (step 2D above), browser leaves aethex.dev
 - Session cookies might not be sent to Discord redirect back
 - **SOLUTION**: We store user_id in temporary database session (discord_linking_sessions)
@@ -171,6 +183,7 @@ discord_links table:
 ---
 
 ## FLOW 3: Discord Verification Code (Bot /verify Command)
+
 **When**: User types `/verify` in Discord, bot sends code, user clicks link
 **Goal**: Link Discord account without OAuth flow (alternative to Flow 2)
 **Files Involved**: bot.js /verify command → DiscordVerify.tsx → api/discord/verify-code.ts
@@ -224,6 +237,7 @@ discord_links table:
 ```
 
 ### Database Operations (Verification Flow)
+
 ```
 discord_verifications table:
   INSERT: { discord_id: "123", verification_code: "456789", expires_at: now+15min }
@@ -235,17 +249,20 @@ discord_links table:
 ```
 
 ### Success Path
+
 ✅ Page shows "Discord linked successfully!"
 ✅ Browser redirects to connections tab
 ✅ Discord appears as linked
 
 ### Failure Paths
+
 ❌ Code expired → Show error "Code expired, ask bot to run /verify again"
 ❌ Code not found → Show error "Invalid code"
 ❌ Discord ID already linked to different user → Show error "This Discord is already linked to another account"
 ❌ User not logged in when clicking link → Redirect to login (code preserved)
 
 ### Why This Flow Exists
+
 - Simpler than OAuth (no redirect to discord.com)
 - Works if user's Discord is not verified with email
 - Manual process but more user-friendly for some
@@ -253,6 +270,7 @@ discord_links table:
 ---
 
 ## FLOW 4: Discord Activity (Standalone SPA in Discord)
+
 **When**: User opens Activity in Discord desktop app
 **Goal**: Show AeThex dashboard inside Discord as an Activity
 **Files Involved**: Activity.tsx → DiscordActivityContext.tsx → api/discord/activity-auth.ts
@@ -298,6 +316,7 @@ discord_links table:
 ```
 
 ### Database Operations (Activity Flow)
+
 ```
 user_profiles table:
   SELECT: WHERE id = user_id (from token)
@@ -305,17 +324,20 @@ user_profiles table:
 ```
 
 ### Success Path
+
 ✅ Activity loads in Discord
 ✅ Shows user profile
 ✅ Buttons open links in new tabs
 ✅ Activity stays in Discord
 
 ### Failure Paths
+
 ❌ Not in Discord iframe → Show message "Open this in Discord Activity"
 ❌ Token invalid → Show error "Authentication failed"
 ❌ SDK failed to load → Show error "Discord SDK unavailable"
 
 ### Key Difference from Other Flows
+
 - This uses Discord SDK (embedded in iframe)
 - NOT OAuth (no redirect to discord.com)
 - NOT a regular login (Activity is ephemeral)
@@ -324,6 +346,7 @@ user_profiles table:
 ---
 
 ## FLOW 5: Discord Bot Commands
+
 **When**: User types slash commands in Discord
 **Goal**: Manage Discord account, set realm, view profile, etc.
 **Files Involved**: bot.js → /api/discord/interactions.ts
@@ -331,15 +354,18 @@ user_profiles table:
 ### Available Commands
 
 #### /verify
+
 ```
 User: /verify
 Bot: "Click to link: https://aethex.dev/discord-verify?code=123456"
 User: (clicks link, links Discord account)
 Bot: Role assignment happens (if set in discord_role_mappings)
 ```
+
 Uses: Flow 3 (Verification Code)
 
 #### /set-realm [arm]
+
 ```
 User: /set-realm
 Bot: Shows dropdown with 5 arms (labs, gameforge, corp, foundation, devlink)
@@ -349,6 +375,7 @@ Bot: Assigns Discord role based on arm + user_type mapping
 ```
 
 #### /profile
+
 ```
 User: /profile
 Bot: Embeds card with user's AeThex profile
@@ -356,6 +383,7 @@ Bot: Embeds card with user's AeThex profile
 ```
 
 #### /unlink
+
 ```
 User: /unlink
 Bot: Removes discord_links record
@@ -364,6 +392,7 @@ User: Discord account no longer linked
 ```
 
 #### /verify-role
+
 ```
 User: /verify-role
 Bot: Shows current assigned roles
@@ -376,6 +405,7 @@ Bot: Option to auto-assign missing roles
 ## Database Schema
 
 ### discord_links
+
 ```sql
 id UUID PRIMARY KEY
 discord_id TEXT UNIQUE NOT NULL        -- Discord user ID
@@ -383,39 +413,48 @@ user_id UUID NOT NULL REFERENCES user_profiles(id)
 primary_arm TEXT                       -- 'labs', 'gameforge', etc
 linked_at TIMESTAMP DEFAULT now()
 ```
+
 **Used by**: All flows
 **Query patterns**:
+
 - Find user by discord_id (Flow 2, 3, 4, 5)
 - Find discord_id by user_id (Dashboard connections check)
 - Update primary_arm (Flow 5 /set-realm)
 
 ### discord_linking_sessions
+
 ```sql
 id UUID PRIMARY KEY
 user_id UUID NOT NULL REFERENCES user_profiles(id)
 session_token TEXT UNIQUE NOT NULL    -- Random hex string
 expires_at TIMESTAMP NOT NULL         -- 5 minute expiry
 ```
+
 **Used by**: Flow 2 (OAuth Linking)
 **Query patterns**:
+
 - Insert when user clicks "Link Discord" (create-linking-session endpoint)
 - Select when OAuth callback received (lookup user_id from token)
 - Delete after lookup (cleanup)
 
 ### discord_verifications
+
 ```sql
 id UUID PRIMARY KEY
 discord_id TEXT NOT NULL              -- Discord user ID
 verification_code TEXT UNIQUE NOT NULL
 expires_at TIMESTAMP NOT NULL         -- 15 minute expiry
 ```
+
 **Used by**: Flow 3 (Verification Code)
 **Query patterns**:
+
 - Insert when bot /verify command runs (generate code)
 - Select when user submits code (verify-code endpoint)
 - Delete after verification (cleanup)
 
 ### discord_role_mappings
+
 ```sql
 id UUID PRIMARY KEY
 arm TEXT NOT NULL                     -- 'labs', 'gameforge', etc
@@ -424,12 +463,15 @@ discord_role_name TEXT NOT NULL       -- Role name in Discord
 discord_role_id TEXT                  -- Role ID (optional)
 server_id TEXT                        -- Optional (specific server)
 ```
+
 **Used by**: Flow 5 (Bot role assignment)
 **Query patterns**:
+
 - Select by (arm, user_type) to find which role to assign
 - Managed in Admin panel
 
 ### discord_user_roles
+
 ```sql
 id UUID PRIMARY KEY
 discord_id TEXT NOT NULL              -- Discord user ID
@@ -440,8 +482,10 @@ assigned_at TIMESTAMP DEFAULT now()
 last_verified TIMESTAMP               -- When role was last verified
 UNIQUE(discord_id, server_id, role_id)
 ```
+
 **Used by**: Flow 5 (Bot tracking)
 **Query patterns**:
+
 - Insert when role is assigned
 - Update when verified
 - Select to show /verify-role command
@@ -466,34 +510,38 @@ DISCORD_BOT_HEALTH_URL="https://aethex.railway.internal:8044/health"
 
 ## Quick Comparison
 
-| Flow | Entry | Goal | Auth Type | Endpoints | Status |
-|------|-------|------|-----------|-----------|--------|
-| **1: OAuth Login** | /login button | Create account or link to existing email | OAuth + email | /api/discord/oauth/start, /callback | ✅ Working |
-| **2: OAuth Linking** | Dashboard button | Link to logged-in account | OAuth + session token | /api/discord/create-linking-session, /oauth/start, /callback | ✅ Working |
-| **3: Verification Code** | Discord bot /verify | Link to logged-in account | Manual code | /api/discord/verify-code | ✅ Working |
-| **4: Activity** | Discord Activity | Show dashboard in Discord | Discord SDK | /api/discord/activity-auth | ✅ Working |
-| **5: Bot Commands** | Discord slash commands | Manage account & roles | None (bot to backend) | /api/discord/interactions | ✅ Working |
+| Flow                     | Entry                  | Goal                                     | Auth Type             | Endpoints                                                    | Status     |
+| ------------------------ | ---------------------- | ---------------------------------------- | --------------------- | ------------------------------------------------------------ | ---------- |
+| **1: OAuth Login**       | /login button          | Create account or link to existing email | OAuth + email         | /api/discord/oauth/start, /callback                          | ✅ Working |
+| **2: OAuth Linking**     | Dashboard button       | Link to logged-in account                | OAuth + session token | /api/discord/create-linking-session, /oauth/start, /callback | ✅ Working |
+| **3: Verification Code** | Discord bot /verify    | Link to logged-in account                | Manual code           | /api/discord/verify-code                                     | ✅ Working |
+| **4: Activity**          | Discord Activity       | Show dashboard in Discord                | Discord SDK           | /api/discord/activity-auth                                   | ✅ Working |
+| **5: Bot Commands**      | Discord slash commands | Manage account & roles                   | None (bot to backend) | /api/discord/interactions                                    | ✅ Working |
 
 ---
 
 ## Common Issues & Solutions
 
 ### Session Lost During OAuth Linking
+
 **Problem**: User logs in with email, clicks "Link Discord", gets redirected to login page
 **Cause**: Session cookies not sent during Discord redirect
 **Solution**: We use `discord_linking_sessions` table to store user_id before redirect ✅
 
 ### Forced Onboarding After Email Login
+
 **Problem**: User logs in with email, is sent to onboarding even though they completed it before
 **Cause**: Profile not marked as `onboarded: true` after completion
 **Solution**: Onboarding now sets `onboarded: true` flag ✅
 
 ### Discord Already Linked Error
+
 **Problem**: User tries to link Discord account that's already linked to different AeThex account
 **Cause**: discord_links.discord_id is UNIQUE
 **Solution**: Check if discord_id exists and belongs to different user, show error ✅
 
 ### Verification Code Expired
+
 **Problem**: User takes too long to click Discord link or verify
 **Cause**: discord_verifications has 15-min expiry
 **Solution**: Tell user to ask bot to run /verify again ✅
@@ -540,4 +588,3 @@ DISCORD_BOT_HEALTH_URL="https://aethex.railway.internal:8044/health"
 │                                                              │
 └────────────────────────────────────────��────────────────────┘
 ```
-

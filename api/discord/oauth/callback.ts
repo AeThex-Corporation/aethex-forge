@@ -227,10 +227,7 @@ export default async function handler(req: any, res: any) {
     if (existingLink) {
       // Discord ID already linked - use existing user
       userId = existingLink.user_id;
-      console.log(
-        "[Discord OAuth] Discord ID already linked to user:",
-        userId,
-      );
+      console.log("[Discord OAuth] Discord ID already linked to user:", userId);
     } else {
       // Discord not linked yet. Check if email matches existing account.
 

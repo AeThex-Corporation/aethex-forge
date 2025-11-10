@@ -99,7 +99,9 @@ export default function Login() {
       } else if (errorType === "discord_no_match") {
         toastError({
           title: "Discord Email Not Found",
-          description: decodeURIComponent(errorMessage) || "Your Discord email doesn't match any existing AeThex account. Please sign in with your email first.",
+          description:
+            decodeURIComponent(errorMessage) ||
+            "Your Discord email doesn't match any existing AeThex account. Please sign in with your email first.",
         });
       }
     }
