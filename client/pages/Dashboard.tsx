@@ -269,6 +269,13 @@ export default function Dashboard() {
         Icon: Github,
         gradient: "from-gray-600 to-gray-900",
       },
+      {
+        provider: "discord",
+        name: "Discord",
+        description: "Link your Discord account to join the AeThex community.",
+        Icon: MessageCircle,
+        gradient: "from-indigo-600 to-purple-900",
+      },
     ],
     [],
   );
