@@ -496,6 +496,73 @@ const App = () => (
                       }
                     />
 
+                    {/* Internal Docs Hub Routes */}
+                    <Route path="/internal-docs" element={<Space1Welcome />} />
+                    <Route
+                      path="/internal-docs/axiom-model"
+                      element={<Space1AxiomModel />}
+                    />
+                    <Route
+                      path="/internal-docs/find-your-role"
+                      element={<Space1FindYourRole />}
+                    />
+                    <Route
+                      path="/internal-docs/code-of-conduct"
+                      element={<Space2CodeOfConduct />}
+                    />
+                    <Route
+                      path="/internal-docs/communication"
+                      element={<Space2Communication />}
+                    />
+                    <Route
+                      path="/internal-docs/meetings"
+                      element={<Space2MeetingCadence />}
+                    />
+                    <Route
+                      path="/internal-docs/brand"
+                      element={<Space2BrandVoice />}
+                    />
+                    <Route
+                      path="/internal-docs/tech-stack"
+                      element={<Space2TechStack />}
+                    />
+                    <Route
+                      path="/internal-docs/foundation-governance"
+                      element={<Space3FoundationGovernance />}
+                    />
+                    <Route
+                      path="/internal-docs/foundation-protocol"
+                      element={<Space3OpenSourceProtocol />}
+                    />
+                    <Route
+                      path="/internal-docs/foundation-programs"
+                      element={<Space3CommunityPrograms />}
+                    />
+                    <Route
+                      path="/internal-docs/corp-product"
+                      element={<Space4ProductOps />}
+                    />
+                    <Route
+                      path="/internal-docs/corp-blueprints"
+                      element={<Space4CorpBlueprints />}
+                    />
+                    <Route
+                      path="/internal-docs/corp-clients"
+                      element={<Space4ClientOps />}
+                    />
+                    <Route
+                      path="/internal-docs/corp-platform"
+                      element={<Space4PlatformStrategy />}
+                    />
+                    <Route
+                      path="/internal-docs/onboarding"
+                      element={<Space5Onboarding />}
+                    />
+                    <Route
+                      path="/internal-docs/finance"
+                      element={<Space5Finance />}
+                    />
+
                     {/* Explicit 404 route for static hosting fallbacks */}
                     <Route path="/404" element={<FourOhFourPage />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
