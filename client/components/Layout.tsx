@@ -654,7 +654,6 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
       {/* Supabase Configuration Status */}
       <SupabaseStatus />
 
-
       <style>{`
         @keyframes spin {
           from {

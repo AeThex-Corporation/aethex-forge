@@ -152,7 +152,7 @@ export default function Arms() {
             className="absolute w-2 h-2 rounded-full opacity-20"
             style={{
               background: `hsl(${i * 45}, 100%, 50%)`,
-              left: `${(i * 12.5) + 5}%`,
+              left: `${i * 12.5 + 5}%`,
               top: `${Math.random() * 100}%`,
               animation: `float ${8 + i}s ease-in-out infinite`,
               animationDelay: `${i * 0.5}s`,
@@ -179,7 +179,9 @@ export default function Arms() {
           <div className="inline-block">
             <div className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/30 mb-4">
               <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-xs sm:text-sm text-purple-300">Select Your Arm</span>
+              <span className="text-xs sm:text-sm text-purple-300">
+                Select Your Arm
+              </span>
             </div>
           </div>
 
@@ -188,7 +190,9 @@ export default function Arms() {
               Choose Your Arm
             </h1>
             <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-              Select the arm that best matches your interests and goals. Each arm represents a unique pillar of the AeThex ecosystem with its own mission, team, and opportunities.
+              Select the arm that best matches your interests and goals. Each
+              arm represents a unique pillar of the AeThex ecosystem with its
+              own mission, team, and opportunities.
             </p>
           </div>
 
@@ -266,7 +270,9 @@ export default function Arms() {
 
                 {/* Label */}
                 <div className="space-y-2">
-                  <h2 className={`text-2xl sm:text-3xl font-bold ${arm.textColor} group-hover:text-white transition-colors duration-500`}>
+                  <h2
+                    className={`text-2xl sm:text-3xl font-bold ${arm.textColor} group-hover:text-white transition-colors duration-500`}
+                  >
                     {arm.label}
                   </h2>
                   <p className="text-xs sm:text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-500 line-clamp-2">
@@ -283,7 +289,9 @@ export default function Arms() {
                       opacity: hoveredArm === arm.id ? 1 : 0.5,
                     }}
                   />
-                  <span className={`text-xs font-semibold uppercase tracking-wider ${arm.textColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}>
+                  <span
+                    className={`text-xs font-semibold uppercase tracking-wider ${arm.textColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  >
                     Enter
                   </span>
                 </div>
