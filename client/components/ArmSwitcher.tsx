@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Zap, X } from "lucide-react";
+import ArmSwitcherModal from "./ArmSwitcherModal";
 
 interface Arm {
   id: string;
@@ -167,19 +168,7 @@ export default function ArmSwitcher() {
       </div>
 
       {/* Modal for mobile fullscreen arm switching */}
-      {/* Lazy import via component file to keep code organized */}
-      {isModalOpen && (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore - dynamic import handled at build time
-        require("./ArmSwitcherModal").default ? (
-          // If the module is available, render it
-          //@ts-expect-error
-          React.createElement(require("./ArmSwitcherModal").default, {
-            isOpen: isModalOpen,
-            onClose: () => setIsModalOpen(false),
-          })
-        ) : null
-      )}
+      <ArmSwitcherModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }
