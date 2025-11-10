@@ -24,10 +24,10 @@ export default function DiscordVerify() {
   const code = searchParams.get("code");
 
   useEffect(() => {
-    // If code in URL, auto-fill it
+    // If code in URL, store it but don't verify yet (need user to be authenticated first)
     if (code) {
       setVerificationCode(code);
-      handleVerify(code);
+      // Don't call handleVerify here - wait for user authentication below
     }
   }, [code]);
 
