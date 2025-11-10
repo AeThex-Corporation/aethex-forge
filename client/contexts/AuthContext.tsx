@@ -679,12 +679,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           const apiBase =
             (import.meta as any)?.env?.VITE_API_BASE || window.location.origin;
+
+          // Get current auth session to get auth token
+          const session = await supabase.auth.getSession();
+          if (!session?.data?.session?.access_token) {
+            aethexToast.error({
+              title: "Auth failed",
+              description: "Unable to get authentication token.",
+            });
+            return;
+          }
+
+          // Create temporary linking session
+          const sessionRes = await fetch(
+            `${apiBase}/api/discord/create-linking-session`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${session.data.session.access_token}`,
+                "Content-Type": "application/json",
+              },
+            },
+          );
+
+          if (!sessionRes.ok) {
+            throw new Error("Failed to create linking session");
+          }
+
+          const { token: sessionToken } = await sessionRes.json();
+
           const u = new URL("/api/discord/oauth/start", apiBase);
           u.searchParams.set(
             "state",
             encodeURIComponent(
               JSON.stringify({
                 action: "link",
+                sessionToken: sessionToken,
                 redirectTo: `${window.location.origin}/dashboard?tab=connections`,
               }),
             ),
