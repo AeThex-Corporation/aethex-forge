@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   aethexUserService,
   aethexAchievementService,
+  aethexNotificationService,
   type AethexUserProfile,
   type AethexAchievement,
 } from "@/lib/aethex-database-adapter";
