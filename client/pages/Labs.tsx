@@ -9,6 +9,8 @@ import {
   ArrowRight,
   Sparkles,
   Target,
+  CheckCircle,
+  ExternalLink,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -78,93 +80,155 @@ export default function Labs() {
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
-        {/* Background */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#fbbf24_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(251,191,36,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
+        {/* Cyberpunk Background Effects */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#facc15_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(250,204,21,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(251,191,36,0.1)_1px,transparent_1px),linear-gradient(0deg,rgba(251,191,36,0.1)_1px,transparent_1px)] [background-size:50px_50px] animate-pulse" />
-        <div className="pointer-events-none absolute top-20 left-10 w-72 h-72 bg-yellow-500/20 rounded-full blur-3xl animate-blob" />
-        <div className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 bg-yellow-600/10 rounded-full blur-3xl animate-blob animation-delay-2000" />
+        <div className="pointer-events-none absolute top-20 left-10 w-96 h-96 bg-yellow-500/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
+        <div className="pointer-events-none absolute bottom-20 right-10 w-96 h-96 bg-yellow-600/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
 
         <main className="relative z-10">
-          {/* Hero Section */}
-          <section className="py-16 lg:py-24">
-            <div className="container mx-auto max-w-6xl px-4">
-              <div className="mb-8 flex justify-center">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fd93f7113d34347469e74421c3a3412e5?format=webp&width=800"
-                  alt="Labs Logo"
-                  className="h-32 w-32 object-contain drop-shadow-lg filter drop-shadow-[0_0_20px_rgba(251,191,36,0.4)]"
-                />
-              </div>
-              <Badge className="border-yellow-400/40 bg-yellow-500/10 text-yellow-300 shadow-[0_0_20px_rgba(251,191,36,0.2)] mb-6">
-                <Microscope className="h-4 w-4 mr-2" />
-                AeThex Labs
-              </Badge>
+          {/* Hero Section - L.A.B.S. Interface */}
+          <section className="relative overflow-hidden py-20 lg:py-28 border-b border-yellow-400/10">
+            <div className="container mx-auto max-w-6xl px-4 text-center">
+              <div className="mx-auto flex max-w-3xl flex-col items-center gap-8">
+                <div className="flex justify-center mb-4">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fd93f7113d34347469e74421c3a3412e5?format=webp&width=800"
+                    alt="Labs Logo"
+                    className="h-24 w-24 object-contain drop-shadow-lg filter drop-shadow-[0_0_20px_rgba(251,191,36,0.4)]"
+                  />
+                </div>
 
-              <div className="space-y-6 mb-12">
-                <h1 className="text-5xl lg:text-7xl font-black text-yellow-300 leading-tight">
-                  The Innovation Engine
-                </h1>
-                <p className="text-xl text-yellow-100/70 max-w-3xl">
+                <Badge className="border-yellow-400/40 bg-yellow-500/10 text-yellow-300 shadow-[0_0_20px_rgba(250,204,21,0.2)]">
+                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-yellow-300" />
+                  Research & Development Uplink
+                </Badge>
+
+                <div>
+                  <h1 className="text-5xl lg:text-7xl font-black text-yellow-300 leading-tight mb-4">
+                    The Innovation Engine
+                  </h1>
+                  <p className="text-lg text-yellow-100/90 mb-4">
+                    Real-time window into the AeThex Labs mainframe. Breakthrough
+                    R&D pushing the boundaries of what's possible.
+                  </p>
+                </div>
+
+                <p className="text-xl text-yellow-100/80 max-w-3xl">
                   AeThex Labs is our dedicated R&D pillar, focused on
                   breakthrough technologies that create lasting competitive
-                  advantage. We invest in bleeding-edge research—from advanced
-                  AI to next-generation web architectures—while cultivating
-                  thought leadership that shapes industry direction.
+                  advantage. Applied R&D pushing the boundaries of what's
+                  possible in software, games, and digital experiences.
                 </p>
-                <p className="text-xl text-yellow-100/80 max-w-3xl">
-                  Applied R&D pushing the boundaries of what's possible in
-                  software, games, and digital experiences. Our research today
-                  shapes tomorrow's products.
-                </p>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  className="bg-yellow-400 text-black hover:bg-yellow-300"
-                  onClick={() => navigate("/labs/explore-research")}
-                >
-                  Explore Research
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-yellow-400/40 text-yellow-300 hover:bg-yellow-500/10"
-                  onClick={() => navigate("/careers")}
-                >
-                  Join Our Team
-                </Button>
-              </div>
-
-              {/* Creator Network CTAs */}
-              <div className="mt-8 pt-8 border-t border-yellow-400/20">
-                <p className="text-sm text-yellow-200/70 mb-4">
-                  Explore our creator community:
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <Button
-                    size="sm"
-                    variant="outline"
-                    className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
-                    onClick={() => navigate("/creators?arm=labs")}
+                    className="bg-yellow-400 text-black hover:bg-yellow-300 shadow-[0_0_30px_rgba(250,204,21,0.35)]"
+                    onClick={() => navigate("/labs/explore-research")}
                   >
-                    Browse Labs Creators
+                    <Microscope className="mr-2 h-5 w-5" />
+                    Explore Research
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                   <Button
-                    size="sm"
                     variant="outline"
-                    className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
-                    onClick={() => navigate("/opportunities?arm=labs")}
+                    className="border-yellow-400/40 text-yellow-300 hover:bg-yellow-500/10"
+                    onClick={() => navigate("/careers")}
                   >
-                    View Labs Opportunities
+                    Join Our Team
                   </Button>
+                </div>
+
+                {/* Creator Network CTAs */}
+                <div className="pt-8 border-t border-yellow-400/20 w-full">
+                  <p className="text-sm text-yellow-200/70 mb-4">
+                    Explore our creator community:
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
+                      onClick={() => navigate("/creators?arm=labs")}
+                    >
+                      Browse Labs Creators
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
+                      onClick={() => navigate("/opportunities?arm=labs")}
+                    >
+                      View Labs Opportunities
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
+          {/* Active Research Projects - Core Directives */}
+          <section className="border-b border-yellow-400/10 bg-black/80 py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="mb-12 flex items-start justify-between gap-6">
+                <div>
+                  <h2 className="text-3xl font-bold text-yellow-300 sm:text-4xl">
+                    Active Research Projects
+                  </h2>
+                  <p className="mt-3 max-w-2xl text-sm text-yellow-100/70 sm:text-base">
+                    Programmes sourced from the Labs backbone. Core directives
+                    driving innovation across all AeThex platforms.
+                  </p>
+                </div>
+                <Zap className="hidden h-10 w-10 text-yellow-400/70 sm:block" />
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+                {projects.map((project, idx) => (
+                  <Card
+                    key={idx}
+                    className="flex h-full flex-col border border-yellow-400/20 bg-black/60 backdrop-blur"
+                  >
+                    <CardHeader className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div
+                          className={`w-12 h-12 rounded-lg bg-gradient-to-r ${project.color} flex items-center justify-center text-white`}
+                        >
+                          <Sparkles className="h-6 w-6" />
+                        </div>
+                        <Badge className="bg-yellow-500/10 text-xs text-yellow-300">
+                          {project.status}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-xl text-yellow-100">
+                        {project.title}
+                      </CardTitle>
+                      <Badge className="bg-yellow-500/20 border border-yellow-400/40 text-yellow-300 text-xs w-fit">
+                        {project.team} researchers
+                      </Badge>
+                    </CardHeader>
+                    <CardContent className="flex flex-1 flex-col gap-4">
+                      <p className="text-sm text-yellow-100/80">
+                        {project.description}
+                      </p>
+                      <div className="pt-4 border-t border-yellow-400/10">
+                        <p className="text-xs font-semibold text-yellow-400 uppercase">
+                          Expected Impact
+                        </p>
+                        <p className="text-sm text-yellow-200/80">
+                          {project.impact}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+
           {/* Innovation in Action - Video Showcase */}
-          <section className="py-16 border-t border-yellow-400/10 bg-gradient-to-b from-black/20 to-black/80">
+          <section className="py-16 border-b border-yellow-400/10 bg-gradient-to-b from-black/20 to-black/80">
             <div className="container mx-auto max-w-5xl px-4">
               <div className="mb-8">
                 <h2 className="text-3xl font-bold text-yellow-300 mb-2">
@@ -183,7 +247,7 @@ export default function Labs() {
                     autoPlay
                     muted
                     loop
-                    poster="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F85fe7910cff6483db1ea99c154684844?format=webp&width=800"
+                    poster="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fd93f7113d34347469e74421c3a3412e5?format=webp&width=800"
                   >
                     <source
                       src="https://cdn.builder.io/o/assets%2Ffc53d607e21d497595ac97e0637001a1%2Ff34f06fb256c44c98103fd2fc72f1af1?alt=media&token=a23b3a3c-59e4-4894-8b61-43b02e5df904&apiKey=fc53d607e21d497595ac97e0637001a1"
@@ -203,66 +267,27 @@ export default function Labs() {
             </div>
           </section>
 
-          {/* Current Research Projects */}
-          <section className="py-16 border-t border-yellow-400/10 bg-black/40">
+          {/* Recent Innovations - Labs Transmissions */}
+          <section className="py-16 border-b border-yellow-400/10">
             <div className="container mx-auto max-w-6xl px-4">
-              <h2 className="text-3xl font-bold text-yellow-300 mb-12">
-                Active Research Projects
-              </h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                {projects.map((project, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-all"
-                  >
-                    <CardHeader>
-                      <div
-                        className={`w-12 h-12 rounded-lg bg-gradient-to-r ${project.color} flex items-center justify-center text-white mb-4`}
-                      >
-                        <Sparkles className="h-6 w-6" />
-                      </div>
-                      <CardTitle className="text-yellow-300">
-                        {project.title}
-                      </CardTitle>
-                      <div className="flex gap-2 mt-3">
-                        <Badge className="bg-yellow-500/20 border border-yellow-400/40 text-yellow-300 text-xs">
-                          {project.status}
-                        </Badge>
-                        <Badge className="bg-yellow-500/20 border border-yellow-400/40 text-yellow-300 text-xs">
-                          {project.team} researchers
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <p className="text-sm text-yellow-200/70">
-                        {project.description}
-                      </p>
-                      <div className="pt-4 border-t border-yellow-400/10">
-                        <p className="text-xs font-semibold text-yellow-400">
-                          Expected Impact
-                        </p>
-                        <p className="text-sm text-yellow-200/80">
-                          {project.impact}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+              <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 className="text-3xl font-bold text-yellow-300 sm:text-4xl">
+                    Recent Innovations
+                  </h2>
+                  <p className="mt-2 max-w-3xl text-sm text-yellow-100/70 sm:text-base">
+                    Broadcasts directly from Labs operations. Latest breakthroughs
+                    and publications from our research teams.
+                  </p>
+                </div>
+                <Zap className="hidden h-10 w-10 text-yellow-400/70 sm:block" />
               </div>
-            </div>
-          </section>
 
-          {/* Innovations & Publications */}
-          <section className="py-16">
-            <div className="container mx-auto max-w-6xl px-4">
-              <h2 className="text-3xl font-bold text-yellow-300 mb-12">
-                Recent Innovations
-              </h2>
               <div className="space-y-4">
                 {innovations.map((item, idx) => (
                   <Card
                     key={idx}
-                    className="bg-yellow-950/20 border-yellow-400/30 hover:border-yellow-400/60 transition-all"
+                    className="border border-yellow-400/10 bg-black/70 backdrop-blur"
                   >
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between">
@@ -318,7 +343,7 @@ export default function Labs() {
           </section>
 
           {/* Lab Team Section */}
-          <section className="py-16 border-t border-yellow-400/10 bg-black/40">
+          <section className="py-16 border-b border-yellow-400/10 bg-black/40">
             <div className="container mx-auto max-w-6xl px-4">
               <h2 className="text-3xl font-bold text-yellow-300 mb-6">
                 Meet the Lab
@@ -338,8 +363,8 @@ export default function Labs() {
             </div>
           </section>
 
-          {/* CTA */}
-          <section className="py-16 border-t border-yellow-400/10">
+          {/* CTA - Be Part of Innovation */}
+          <section className="py-16">
             <div className="container mx-auto max-w-4xl px-4 text-center">
               <h2 className="text-3xl font-bold text-yellow-300 mb-4">
                 Be Part of the Innovation
