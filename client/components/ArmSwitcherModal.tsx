@@ -155,7 +155,7 @@ export default function ArmSwitcherModal({
         <div className="overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col items-center justify-start flex-1 min-h-0">
           {!selectedArm ? (
             // Arm Grid - Minimal
-            <div className="w-full space-y-1">
+            <div className="w-full space-y-0.5 sm:space-y-1">
               {ARMS.map((arm) => (
                 <button
                   key={arm.id}
