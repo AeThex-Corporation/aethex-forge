@@ -106,7 +106,7 @@ export default function ArmSwitcher() {
         {ARMS.map((arm) => (
           <button
             key={arm.id}
-            onClick={() => handleArmClick(arm.href)}
+            onClick={handleArmClick}
             className="group relative h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
             title={arm.name}
           >
@@ -133,7 +133,7 @@ export default function ArmSwitcher() {
         {ARMS.map((arm) => (
           <button
             key={arm.id}
-            onClick={() => handleArmClick(arm.href)}
+            onClick={handleArmClick}
             className="group relative h-12 w-12 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
             title={arm.name}
           >
