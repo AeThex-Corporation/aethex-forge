@@ -95,8 +95,8 @@ const LOGO_URLS: Record<string, string> = {
 export default function ArmSwitcher() {
   const navigate = useNavigate();
 
-  const handleArmClick = (href: string) => {
-    navigate(href);
+  const handleArmClick = () => {
+    navigate("/arms");
   };
 
   return (
