@@ -1688,13 +1688,18 @@ export function createServer() {
     });
 
     // Discord Bot Health Check (proxy to avoid CSP issues)
+    // Set DISCORD_BOT_HEALTH_URL env var to bot's actual health endpoint
+    // Examples:
+    //   - Railway internal: http://aethex.railway.internal:8044/health
+    //   - External URL: https://bot.example.com/health
+    //   - Local: http://localhost:3000/health
     app.get("/api/discord/bot-health", async (req, res) => {
       try {
         // Try multiple bot health URLs in order of preference
         const botHealthUrls = [
           process.env.DISCORD_BOT_HEALTH_URL,
-          "http://aethex.railway.internal:8044/health", // Use HTTP for internal Railway network
-          "http://localhost:3000/health",
+          "http://aethex.railway.internal:8044/health", // Railway internal network
+          "http://localhost:3000/health", // Local fallback
         ].filter(Boolean) as string[];
 
         let lastError: Error | null = null;
