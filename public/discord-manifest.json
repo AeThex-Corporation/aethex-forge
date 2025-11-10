@@ -1,15 +1,9 @@
 {
   "id": "578971245454950421",
   "version": "1",
-  "name": "AeThex",
-  "description": "AeThex Creator Network & Talent Platform - Activity",
+  "name": "AeThex Activity",
+  "description": "AeThex Creator Network & Talent Platform - Discord Activity",
   "rpc_origins": [
-    "https://aethex.dev",
-    "https://discord.com",
-    "https://*.discordsays.com",
     "https://578971245454950421.discordsays.com"
-  ],
-  "interactions": {
-    "request_url": "https://aethex.dev/api/discord/interactions"
-  }
+  ]
 }
