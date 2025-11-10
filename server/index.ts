@@ -872,7 +872,16 @@ export function createServer() {
     app.post("/api/discord/verify-code", async (req, res) => {
       const { verification_code, user_id } = req.body || {};
 
+      console.log("[Discord Verify] Request received:", {
+        verification_code: verification_code ? "***" : "missing",
+        user_id: user_id || "missing",
+      });
+
       if (!verification_code || !user_id) {
+        console.error("[Discord Verify] Missing params:", {
+          hasCode: !!verification_code,
+          hasUserId: !!user_id,
+        });
         return res.status(400).json({
           message: "Missing verification code or user ID",
         });
@@ -887,7 +896,22 @@ export function createServer() {
           .gt("expires_at", new Date().toISOString())
           .single();
 
-        if (verifyError || !verification) {
+        if (verifyError) {
+          console.error(
+            "[Discord Verify] Error querying verification code:",
+            verifyError,
+          );
+          return res.status(400).json({
+            message:
+              "Invalid or expired verification code. Please try /verify again.",
+          });
+        }
+
+        if (!verification) {
+          console.warn(
+            "[Discord Verify] Verification code not found or expired:",
+            verification_code,
+          );
           return res.status(400).json({
             message:
               "Invalid or expired verification code. Please try /verify again.",
@@ -895,15 +919,31 @@ export function createServer() {
         }
 
         const discordId = verification.discord_id;
+        console.log("[Discord Verify] Found verification code for Discord ID:", {
+          discordId,
+          userId: user_id,
+        });
 
         // Check if already linked
-        const { data: existingLink } = await adminSupabase
-          .from("discord_links")
-          .select("*")
-          .eq("discord_id", discordId)
-          .single();
+        const { data: existingLink, error: linkCheckError } =
+          await adminSupabase
+            .from("discord_links")
+            .select("*")
+            .eq("discord_id", discordId)
+            .single();
+
+        if (linkCheckError && linkCheckError.code !== "PGRST116") {
+          console.error(
+            "[Discord Verify] Error checking existing link:",
+            linkCheckError,
+          );
+        }
 
         if (existingLink && existingLink.user_id !== user_id) {
+          console.warn(
+            "[Discord Verify] Discord ID already linked to different user:",
+            { discordId, existingUserId: existingLink.user_id, newUserId: user_id },
+          );
           return res.status(400).json({
             message:
               "This Discord account is already linked to another AeThex account.",
@@ -922,9 +962,14 @@ export function createServer() {
         if (linkError) {
           console.error("[Discord Verify] Link creation failed:", linkError);
           return res.status(500).json({
-            message: "Failed to link Discord account",
+            message: "Failed to link Discord account: " + linkError.message,
           });
         }
+
+        console.log("[Discord Verify] Link created successfully:", {
+          discordId,
+          userId: user_id,
+        });
 
         // Delete used verification code
         await adminSupabase
@@ -941,9 +986,9 @@ export function createServer() {
           },
         });
       } catch (error: any) {
-        console.error("[Discord Verify] Error:", error);
+        console.error("[Discord Verify] Unexpected error:", error);
         res.status(500).json({
-          message: "An error occurred. Please try again.",
+          message: "An error occurred. Please try again: " + error?.message,
         });
       }
     });
