@@ -495,16 +495,18 @@ UNIQUE(discord_id, server_id, role_id)
 ## Environment Variables
 
 ```bash
-# Required
+# Required (get from Discord Developer Portal)
 DISCORD_CLIENT_ID="578971245454950421"
-DISCORD_CLIENT_SECRET="JKlilGzcTWgfmt2wEqiHO8wpCel5VEji"
-DISCORD_PUBLIC_KEY="d9771dd29e3a6f030cb313e33bb4b51384c7c36829bd551df714681dcf1e1eb0"
-DISCORD_BOT_TOKEN="NTc4OTcxMjQ1NDU0OTUwNDIx.GS3vNk.QbRXV0vC6OoUFxhChI6Tp-YEDVtT-pDqrfczvk"
+DISCORD_CLIENT_SECRET="<REDACTED - Get from Discord Developer Portal>"
+DISCORD_PUBLIC_KEY="<REDACTED - Get from Discord Developer Portal>"
+DISCORD_BOT_TOKEN="<REDACTED - Get from Discord Developer Portal Bot section>"
 
 # Optional
-DISCORD_ADMIN_REGISTER_TOKEN="aethex-link"
+DISCORD_ADMIN_REGISTER_TOKEN="<secure random token>"
 DISCORD_BOT_HEALTH_URL="https://aethex.railway.internal:8044/health"
 ```
+
+⚠️ **SECURITY NOTE**: Never put actual tokens in documentation or version control. Keep them in environment variables only.
 
 ---
 
