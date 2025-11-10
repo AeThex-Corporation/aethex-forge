@@ -101,7 +101,6 @@ import WixFaq from "./pages/WixFaq";
 import DocsSync from "./pages/DocsSync";
 import { DiscordProvider } from "./contexts/DiscordContext";
 import { DiscordActivityProvider } from "./contexts/DiscordActivityContext";
-import DiscordActivity from "./pages/DiscordActivity";
 import Activity from "./pages/Activity";
 import RobloxCallback from "./pages/RobloxCallback";
 import Web3Callback from "./pages/Web3Callback";
@@ -377,9 +376,8 @@ const App = () => (
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/terms" element={<Terms />} />
 
-                    {/* Discord routes */}
+                    {/* Discord Activity route */}
                     <Route path="/activity" element={<Activity />} />
-                    <Route path="/discord" element={<DiscordActivity />} />
 
                     {/* Docs routes */}
                     <Route
