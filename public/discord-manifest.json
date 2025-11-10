@@ -3,11 +3,13 @@
   "version": "1",
   "name": "AeThex",
   "description": "AeThex Creator Network & Talent Platform - Activity",
-  "rpc_origins": ["https://aethex.dev", "https://discord.com"],
-  "verifyToken": "aethex-verify-token-v1",
+  "rpc_origins": [
+    "https://aethex.dev",
+    "https://discord.com",
+    "https://*.discordsays.com",
+    "https://578971245454950421.discordsays.com"
+  ],
   "interactions": {
     "request_url": "https://aethex.dev/api/discord/interactions"
-  },
-  "instanceUrl": "https://aethex.dev/activity",
-  "orientation": "portrait-primary"
+  }
 }
