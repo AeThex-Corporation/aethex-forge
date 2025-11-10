@@ -12,17 +12,22 @@ export default function handler(req: any, res: any) {
     return res.status(500).json({ error: "Discord client ID not configured" });
   }
 
-  const redirectUri = "https://aethex.dev/api/discord/oauth/callback";
+  // Get the current API base from the request origin
+  const protocol = req.headers["x-forwarded-proto"] || req.headers.protocol || "https";
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  const apiBase = `${protocol}://${host}`;
 
-  // Get the next URL from query params (where to redirect after login)
-  const next = req.query.state || "/dashboard";
+  const redirectUri = `${apiBase}/api/discord/oauth/callback`;
+
+  // Get the state from query params (can be a JSON string with action and redirectTo)
+  const state = req.query.state || "/dashboard";
 
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
     response_type: "code",
     scope: "identify email",
-    state: typeof next === "string" ? next : "/dashboard",
+    state: typeof state === "string" ? state : "/dashboard",
   });
 
   const discordOAuthUrl = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
