@@ -248,14 +248,14 @@ export default function ArmSwitcherModal({
             <button
               type="button"
               onClick={handleProceed}
-              className={`w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-gradient-to-r ${selectedArmData?.bgGradient} hover:shadow-lg active:scale-95`}
+              className={`w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-gradient-to-r ${selectedArmData?.bgGradient} hover:shadow-lg active:scale-95`}
             >
               Proceed to {selectedArmData?.label}
             </button>
             <button
               type="button"
               onClick={() => setSelectedArm(null)}
-              className="w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
+              className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
             >
               Choose Different
             </button>
@@ -264,7 +264,7 @@ export default function ArmSwitcherModal({
           <button
             type="button"
             onClick={handleBack}
-            className="w-full py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
+            className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-200 text-gray-300 bg-gray-800/40 hover:bg-gray-700/40 active:scale-95"
           >
             Close
           </button>
