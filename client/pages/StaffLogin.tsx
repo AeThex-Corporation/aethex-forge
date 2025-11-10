@@ -84,11 +84,11 @@ export default function StaffLogin() {
         return;
       }
 
-      // Valid staff email - redirect to dashboard
+      // Valid staff email - redirect to admin dashboard
       const params = new URLSearchParams(location.search);
       const next = params.get("next");
-      const safeNext = next && next.startsWith("/staff") ? next : null;
-      navigate(safeNext || "/staff/dashboard", { replace: true });
+      const safeNext = next && next.startsWith("/admin") ? next : null;
+      navigate(safeNext || "/admin", { replace: true });
     }
   }, [user, loading, navigate, location.search, toastError]);
 
