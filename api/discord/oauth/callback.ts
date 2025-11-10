@@ -163,6 +163,20 @@ export default async function handler(req: any, res: any) {
             });
 
           if (authError || !authData.user) {
+            // Check if error is because email already exists
+            if (
+              authError?.message &&
+              authError.message.toLowerCase().includes("already")
+            ) {
+              console.log(
+                "[Discord OAuth] Email already registered, redirecting to link flow",
+              );
+              // Redirect to login page where user can link Discord to existing account
+              return res.redirect(
+                `/login?error=account_exists&message=${encodeURIComponent("Please sign in first, then link your Discord account from settings")}`,
+              );
+            }
+
             console.error("[Discord OAuth] Auth user creation failed:", {
               email: discordUser.email,
               username: discordUser.username,
