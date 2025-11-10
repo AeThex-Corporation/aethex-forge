@@ -641,8 +641,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const signInWithOAuth = async (provider: SupportedOAuthProvider) => {
+  const signInWithOAuth = async (
+    provider: SupportedOAuthProvider,
+    redirectTo?: string,
+  ) => {
     try {
+      // Store the intended redirect destination for after OAuth completes
+      if (redirectTo) {
+        sessionStorage.setItem("oauth_redirect_to", redirectTo);
+      }
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
