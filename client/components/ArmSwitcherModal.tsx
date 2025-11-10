@@ -133,7 +133,7 @@ export default function ArmSwitcherModal({
   return (
     <div className="fixed inset-0 z-[999] bg-black/98 backdrop-blur-lg overflow-hidden flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-gray-800/50">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-2 border-b border-gray-800/50">
         <button
           type="button"
           onClick={handleBack}
@@ -149,7 +149,7 @@ export default function ArmSwitcherModal({
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto flex items-center justify-center px-4 sm:px-6 py-6">
+      <div className="flex-1 overflow-y-auto flex items-center justify-center px-4 sm:px-6 py-4 sm:py-2">
         {!selectedArm ? (
           // Arm Grid - Minimal
           <div className="w-full max-w-sm space-y-1.5">
