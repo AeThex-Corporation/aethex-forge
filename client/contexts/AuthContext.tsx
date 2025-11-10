@@ -867,14 +867,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         reason?.message ?? reason ?? ev?.toString?.() ?? "",
       ).toLowerCase();
 
-      // IGNORE Discord SDK and other non-auth errors
+      // IGNORE Discord SDK, Builder.io, and other non-auth errors
       if (
         message.includes("agent source") ||
         message.includes("discord") ||
         message.includes("@discord") ||
         message.includes("wix") ||
         message.includes("frame_id") ||
-        message.includes("cross-origin")
+        message.includes("cross-origin") ||
+        message.includes("host validation") ||
+        message.includes("host is not") ||
+        message.includes("host is not supported") ||
+        message.includes("host is not valid") ||
+        message.includes("insights whitelist") ||
+        message.includes("read -") ||
+        message.includes("@import rules") ||
+        message.includes("construct-stylesheets")
       ) {
         // Just log but don't clear session
         console.debug("Non-auth error (ignoring):", message);
