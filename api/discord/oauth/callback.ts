@@ -49,6 +49,35 @@ export default async function handler(req: any, res: any) {
     }
   }
 
+  // For linking flow, extract user ID from auth cookies
+  let authenticatedUserId: string | null = null;
+  if (isLinkingFlow) {
+    try {
+      const cookie = req.headers.cookie || "";
+      const accessTokenMatch = cookie.match(/sb-access-token=([^;]+)/);
+      if (accessTokenMatch) {
+        const accessToken = accessTokenMatch[1];
+        // We'll validate this token later with Supabase
+        // For now, we'll get the user ID from the JWT
+        const tokenParts = accessToken.split(".");
+        if (tokenParts.length === 3) {
+          const payload = JSON.parse(Buffer.from(tokenParts[1], "base64").toString());
+          authenticatedUserId = payload.sub;
+          console.log("[Discord OAuth] Extracted user ID from auth token:", authenticatedUserId);
+        }
+      }
+    } catch (e) {
+      console.log("[Discord OAuth] Could not extract user ID from cookies:", e);
+    }
+
+    if (!authenticatedUserId) {
+      console.error("[Discord OAuth] Linking flow but no authenticated user found");
+      return res.redirect(
+        `/login?error=not_authenticated&message=${encodeURIComponent("Please sign in before linking Discord")}`,
+      );
+    }
+  }
+
   const clientId = process.env.DISCORD_CLIENT_ID;
   const clientSecret = process.env.DISCORD_CLIENT_SECRET;
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
