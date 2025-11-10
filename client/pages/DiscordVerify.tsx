@@ -89,7 +89,7 @@ export default function DiscordVerify() {
 
       // Redirect to dashboard after 3 seconds
       setTimeout(() => {
-        navigate("/profile/settings");
+        navigate("/dashboard?tab=connections");
       }, 3000);
     } catch (err) {
       setError(
