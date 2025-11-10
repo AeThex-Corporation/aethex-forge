@@ -12,9 +12,37 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
+import { aethexToast } from "@/lib/aethex-toast";
 
 export default function Nexus() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const toastShownRef = useRef(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      if (!toastShownRef.current) {
+        aethexToast.system("Nexus talent marketplace connected");
+        toastShownRef.current = true;
+      }
+    }, 900);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        message="Initializing Talent Nexus..."
+        showProgress={true}
+        duration={900}
+        accentColor="from-purple-500 to-purple-400"
+      />
+    );
+  }
 
   const features = [
     {
