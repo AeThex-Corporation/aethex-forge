@@ -210,26 +210,26 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 </SheetTrigger>
                 <SheetContent
                   side="left"
-                  className="bg-black/98 backdrop-blur-lg border-gray-800/50 p-4"
+                  className="bg-black/98 backdrop-blur-lg border-gray-800/50 p-3"
                 >
-                  <SheetHeader className="text-left mb-4">
-                    <SheetTitle className="text-sm font-semibold">Navigate</SheetTitle>
+                  <SheetHeader className="text-left mb-3">
+                    <SheetTitle className="text-xs font-semibold">Navigate</SheetTitle>
                   </SheetHeader>
 
-                  <nav className="flex flex-col gap-0.5 mb-4">
+                  <nav className="flex flex-col gap-0.5 mb-3">
                     {(user ? userNavigation : publicNavigation).map((item) => (
                       <SheetClose key={item.href} asChild>
                         <Link
                           to={item.href}
                           onClick={scrollToTop}
-                          className="rounded-md px-3 py-2 text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
+                          className="rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
                         >
                           {item.name}
                         </Link>
                       </SheetClose>
                     ))}
                   </nav>
-                  <div className="border-t border-gray-800/50 pt-3 space-y-2">
+                  <div className="border-t border-gray-800/50 pt-2 space-y-1.5">
                     {loading ? (
                       <div className="h-8 bg-gray-800/40 rounded-md animate-pulse" />
                     ) : user ? (
