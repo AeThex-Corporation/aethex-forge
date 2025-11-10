@@ -244,7 +244,7 @@ export default function ArmSwitcherModal({
       </div>
 
       {/* Footer - Buttons */}
-      <div className="px-4 sm:px-6 py-3 border-t border-gray-800/50 space-y-2">
+      <div className="px-4 sm:px-6 py-4 border-t border-gray-800/50 space-y-2 flex-shrink-0 bg-black/50">
         {selectedArm && !isNavigating ? (
           <>
             <button
