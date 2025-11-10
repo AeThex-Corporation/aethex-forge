@@ -868,6 +868,86 @@ export function createServer() {
       }
     });
 
+    // Discord Verify Code: Link account using verification code
+    app.post("/api/discord/verify-code", async (req, res) => {
+      const { verification_code, user_id } = req.body || {};
+
+      if (!verification_code || !user_id) {
+        return res.status(400).json({
+          message: "Missing verification code or user ID",
+        });
+      }
+
+      try {
+        // Find valid verification code
+        const { data: verification, error: verifyError } = await adminSupabase
+          .from("discord_verifications")
+          .select("*")
+          .eq("verification_code", verification_code.trim())
+          .gt("expires_at", new Date().toISOString())
+          .single();
+
+        if (verifyError || !verification) {
+          return res.status(400).json({
+            message:
+              "Invalid or expired verification code. Please try /verify again.",
+          });
+        }
+
+        const discordId = verification.discord_id;
+
+        // Check if already linked
+        const { data: existingLink } = await adminSupabase
+          .from("discord_links")
+          .select("*")
+          .eq("discord_id", discordId)
+          .single();
+
+        if (existingLink && existingLink.user_id !== user_id) {
+          return res.status(400).json({
+            message:
+              "This Discord account is already linked to another AeThex account.",
+          });
+        }
+
+        // Create or update link
+        const { error: linkError } = await adminSupabase
+          .from("discord_links")
+          .upsert({
+            discord_id: discordId,
+            user_id: user_id,
+            linked_at: new Date().toISOString(),
+          });
+
+        if (linkError) {
+          console.error("[Discord Verify] Link creation failed:", linkError);
+          return res.status(500).json({
+            message: "Failed to link Discord account",
+          });
+        }
+
+        // Delete used verification code
+        await adminSupabase
+          .from("discord_verifications")
+          .delete()
+          .eq("verification_code", verification_code.trim());
+
+        res.status(200).json({
+          success: true,
+          message: "Discord account linked successfully!",
+          discord_user: {
+            id: discordId,
+            username: verification.username || "Discord User",
+          },
+        });
+      } catch (error: any) {
+        console.error("[Discord Verify] Error:", error);
+        res.status(500).json({
+          message: "An error occurred. Please try again.",
+        });
+      }
+    });
+
     // Discord Role Mappings CRUD
     app.get("/api/discord/role-mappings", async (req, res) => {
       try {
