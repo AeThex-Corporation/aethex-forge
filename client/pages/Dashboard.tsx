@@ -287,28 +287,28 @@ export default function Dashboard() {
       authLoading,
     });
 
-    // Only redirect to login when auth is resolved and there's no user
-    if (!user && !authLoading) {
-      console.log("No user after auth resolved, redirecting to onboarding");
-      setIsLoading(false);
-      navigate("/onboarding", { replace: true });
-      return;
-    }
-
     // While auth is still resolving, keep showing loading state
-    if (!user && authLoading) {
+    if (authLoading) {
       setIsLoading(true);
       return;
     }
 
+    // Auth resolved - check user state
+    if (!user) {
+      console.log("No user, showing login prompt (not redirecting)");
+      setIsLoading(false);
+      return;
+    }
+
+    // User exists - load dashboard data
     if (user && profile) {
       console.log("User and profile exist, loading dashboard data");
       loadDashboardData();
-    } else if (user && !profile && !authLoading) {
-      console.log("User exists but no profile, clearing loading");
+    } else if (user && !profile) {
+      console.log("User exists but no profile, showing message (not redirecting)");
       setIsLoading(false);
     }
-  }, [user, profile, authLoading, navigate]);
+  }, [user, profile, authLoading]);
 
   // Sync local settings form with profile
   useEffect(() => {
