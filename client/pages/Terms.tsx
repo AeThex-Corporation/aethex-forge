@@ -10,7 +10,7 @@ export default function Terms() {
               Terms of Service
             </h1>
             <p className="text-sm text-muted-foreground">
-              Effective date: 2025-10-18
+              Effective date: 2025-01-21
             </p>
             <p className="text-sm text-muted-foreground">
               These Terms govern your access to and use of the AeThex Services.
