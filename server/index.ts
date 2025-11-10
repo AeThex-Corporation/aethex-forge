@@ -1703,13 +1703,23 @@ export function createServer() {
         for (const url of botHealthUrls) {
           try {
             console.log(`[Discord Bot Health] Trying ${url}...`);
-            response = await fetch(url, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              timeout: 5000,
-            });
+            // Create AbortController with 5 second timeout for internal Railway, 3 seconds for localhost
+            const isInternal = url.includes("railway.internal");
+            const timeoutMs = isInternal ? 5000 : 3000;
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+            try {
+              response = await fetch(url, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                signal: controller.signal,
+              });
+            } finally {
+              clearTimeout(timeoutId);
+            }
 
             const contentType = response.headers.get("content-type") || "";
             const responseBody = await response.text();
