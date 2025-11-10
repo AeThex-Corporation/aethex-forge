@@ -360,7 +360,17 @@ const App = () => (
                       element={<MentorProfile />}
                     />
                     <Route path="/community/:tabId" element={<Community />} />
+
+                    {/* Staff Arm Routes */}
                     <Route path="/staff" element={<Staff />} />
+                    <Route path="/staff/login" element={<StaffLogin />} />
+                    <Route path="/staff/dashboard" element={<StaffDashboard />} />
+                    <Route path="/staff/directory" element={<StaffDirectory />} />
+                    <Route path="/staff/admin" element={<StaffAdmin />} />
+                    <Route path="/staff/docs" element={<StaffDocs />} />
+                    <Route path="/staff/achievements" element={<StaffAchievements />} />
+                    <Route path="/staff/chat" element={<StaffChat />} />
+
                     <Route path="/support" element={<Support />} />
                     <Route path="/status" element={<Status />} />
                     <Route path="/changelog" element={<Changelog />} />
