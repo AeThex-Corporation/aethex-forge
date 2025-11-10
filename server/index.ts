@@ -877,7 +877,10 @@ export function createServer() {
         }
 
         const token = authHeader.replace("Bearer ", "");
-        const { data: { user }, error } = await adminSupabase.auth.getUser(token);
+        const {
+          data: { user },
+          error,
+        } = await adminSupabase.auth.getUser(token);
 
         if (error || !user) {
           return res.status(401).json({ error: "Invalid auth token" });
