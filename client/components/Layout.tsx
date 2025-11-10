@@ -210,29 +210,26 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 </SheetTrigger>
                 <SheetContent
                   side="left"
-                  className="bg-background/95 backdrop-blur-xl border-border/40"
+                  className="bg-black/98 backdrop-blur-lg border-gray-800/50 p-4"
                 >
-                  <SheetHeader className="text-left">
-                    <SheetTitle>Navigate AeThex</SheetTitle>
-                    <SheetDescription>
-                      Access any section without leaving your flow.
-                    </SheetDescription>
+                  <SheetHeader className="text-left mb-4">
+                    <SheetTitle className="text-sm font-semibold">Navigate</SheetTitle>
                   </SheetHeader>
 
-                  <nav className="mt-6 flex flex-col gap-1">
+                  <nav className="flex flex-col gap-0.5 mb-4">
                     {(user ? userNavigation : publicNavigation).map((item) => (
                       <SheetClose key={item.href} asChild>
                         <Link
                           to={item.href}
                           onClick={scrollToTop}
-                          className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/50 hover:text-aethex-200"
+                          className="rounded-md px-3 py-2 text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
                         >
                           {item.name}
                         </Link>
                       </SheetClose>
                     ))}
                   </nav>
-                  <div className="mt-8 space-y-3 border-t border-border/40 pt-4">
+                  <div className="border-t border-gray-800/50 pt-3 space-y-2">
                     {loading ? (
                       <div className="space-y-2">
                         <div className="h-4 w-32 animate-pulse rounded bg-border/40" />
