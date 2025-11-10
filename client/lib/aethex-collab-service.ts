@@ -76,6 +76,25 @@ export const aethexCollabService = {
       .from("team_memberships")
       .insert({ team_id: teamId, user_id: userId, role });
     if (error) throw new Error(error.message || "Unable to add member");
+
+    try {
+      const { data: team } = await supabase
+        .from("teams")
+        .select("name")
+        .eq("id", teamId)
+        .single();
+
+      if (team) {
+        await aethexNotificationService.createNotification(
+          userId,
+          "info",
+          `👥 Added to Team: ${team.name}`,
+          `You've been added as a ${role} to the team.`,
+        );
+      }
+    } catch (notifError) {
+      console.warn("Failed to create team member notification:", notifError);
+    }
   },
 
   // Projects
