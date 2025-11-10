@@ -224,6 +224,39 @@ export default function Admin() {
     }
   }, [managedProfiles, selectedMemberId]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoadingPosts(true);
+        const res = await fetch("/api/blog?limit=100");
+        const data = res.ok ? await res.json() : [];
+        if (Array.isArray(data)) setBlogPosts(data);
+      } catch (e) {
+        console.warn("Failed to load blog posts:", e);
+      } finally {
+        setLoadingPosts(false);
+      }
+    })();
+  }, []);
+
+  const resolvedBlogPosts = blogPosts.length ? blogPosts : blogSeedPosts;
+  const selectedMember = useMemo(
+    () =>
+      managedProfiles.find((profile) => profile.id === selectedMemberId) ??
+      null,
+    [managedProfiles, selectedMemberId],
+  );
+
+  const totalMembers = managedProfiles.length;
+  const publishedPosts = resolvedBlogPosts.length;
+  const featuredStudios = studios.length;
+  const pendingProjectApplications = projectApplications.filter((app) => {
+    const status = (app.status ?? "").toLowerCase();
+    return (
+      status !== "approved" && status !== "completed" && status !== "closed"
+    );
+  }).length;
+
   if (loading) {
     return (
       <LoadingScreen
@@ -275,39 +308,6 @@ export default function Admin() {
       </>
     );
   }
-
-  const resolvedBlogPosts = blogPosts.length ? blogPosts : blogSeedPosts;
-  const selectedMember = useMemo(
-    () =>
-      managedProfiles.find((profile) => profile.id === selectedMemberId) ??
-      null,
-    [managedProfiles, selectedMemberId],
-  );
-
-  const totalMembers = managedProfiles.length;
-  const publishedPosts = resolvedBlogPosts.length;
-  const featuredStudios = studios.length;
-  const pendingProjectApplications = projectApplications.filter((app) => {
-    const status = (app.status ?? "").toLowerCase();
-    return (
-      status !== "approved" && status !== "completed" && status !== "closed"
-    );
-  }).length;
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingPosts(true);
-        const res = await fetch("/api/blog?limit=100");
-        const data = res.ok ? await res.json() : [];
-        if (Array.isArray(data)) setBlogPosts(data);
-      } catch (e) {
-        console.warn("Failed to load blog posts:", e);
-      } finally {
-        setLoadingPosts(false);
-      }
-    })();
-  }, []);
 
   return (
     <>
