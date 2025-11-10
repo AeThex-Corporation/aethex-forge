@@ -19,7 +19,7 @@ import {
   checkProfileComplete,
 } from "@/lib/aethex-database-adapter";
 
-type SupportedOAuthProvider = "github" | "google";
+type SupportedOAuthProvider = "github" | "google" | "discord";
 
 interface LinkedProvider {
   provider: SupportedOAuthProvider;
@@ -743,7 +743,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const identities = (user.identities ?? []) as any[];
       const supportedLinkedCount = identities.filter((item: any) =>
-        ["github", "google"].includes(item.provider),
+        ["github", "google", "discord"].includes(item.provider),
       ).length;
       const hasEmailIdentity = identities.some(
         (item: any) => item.provider === "email",
@@ -978,7 +978,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const linkedProviders = useMemo<LinkedProvider[]>(() => {
-    const supported: SupportedOAuthProvider[] = ["github", "google"];
+    const supported: SupportedOAuthProvider[] = ["github", "google", "discord"];
     if (!user?.identities) return [];
     return (user.identities as any[])
       .filter((identity) =>
