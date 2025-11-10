@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Zap, X } from "lucide-react";
-import ArmSwitcherModal from "./ArmSwitcherModal";
 
 interface Arm {
   id: string;
