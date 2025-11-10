@@ -39,7 +39,7 @@ interface LayoutProps {
 }
 
 const ARMS = [
-  { id: "staff", label: "Staff", color: "#7c3aed", href: "/staff" },
+  { id: "staff", label: "Admin", color: "#7c3aed", href: "/admin" },
   { id: "labs", label: "Labs", color: "#FBBF24", href: "/labs" },
   { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/gameforge" },
   { id: "corp", label: "Corp", color: "#3B82F6", href: "/corp" },
