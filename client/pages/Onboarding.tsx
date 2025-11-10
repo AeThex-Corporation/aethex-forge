@@ -466,7 +466,7 @@ export default function Onboarding() {
                 <div className="text-sm text-muted-foreground">
                   Already have an account?{" "}
                   <Link
-                    to="/login"
+                    to="/login?next=/onboarding"
                     className="text-aethex-400 hover:text-aethex-300 underline transition-colors"
                   >
                     Sign In
