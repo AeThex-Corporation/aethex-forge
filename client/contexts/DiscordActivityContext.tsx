@@ -70,7 +70,9 @@ export const DiscordActivityProvider: React.FC<
 
       // If we're NOT in Discord Activity, exit early - don't load Discord SDK
       if (!isInDiscordActivity) {
-        console.log("[Discord Activity] Not in Discord Activity - skipping SDK load");
+        console.log(
+          "[Discord Activity] Not in Discord Activity - skipping SDK load",
+        );
         setIsActivity(false);
         setIsLoading(false);
         return;
