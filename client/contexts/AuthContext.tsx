@@ -693,6 +693,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         });
         return;
       }
+
+      // Special handling for Discord - use custom OAuth endpoint
+      if (provider === "discord") {
+        try {
+          const apiBase =
+            (import.meta as any)?.env?.VITE_API_BASE ||
+            window.location.origin;
+          const u = new URL("/api/discord/oauth/start", apiBase);
+          u.searchParams.set("state", encodeURIComponent(JSON.stringify({
+            action: "link",
+            redirectTo: `${window.location.origin}/dashboard?tab=connections`,
+          })));
+          window.location.href = u.toString();
+          return;
+        } catch (error: any) {
+          console.error("Discord link error:", error);
+          aethexToast.error({
+            title: "Link failed",
+            description:
+              error?.message || "Unable to link Discord right now.",
+          });
+        }
+      }
+
+      // For other providers (GitHub, Google), use Supabase's built-in linking
       try {
         const { data, error } = (await supabase.auth.linkIdentity({
           provider,
