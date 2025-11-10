@@ -184,11 +184,6 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
               />
             </button>
 
-            {/* Arm Selector Modal */}
-            <ArmSwitcherModal
-              isOpen={isArmModalOpen}
-              onClose={() => setIsArmModalOpen(false)}
-            />
           </div>
 
           {/* Navigation */}
