@@ -11,9 +11,38 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
+import { aethexToast } from "@/lib/aethex-toast";
 
 export default function Corp() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const toastShownRef = useRef(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      if (!toastShownRef.current) {
+        aethexToast.system("Corp systems engaged");
+        toastShownRef.current = true;
+      }
+    }, 900);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        message="Engaging Corp Systems..."
+        showProgress={true}
+        duration={900}
+        accentColor="from-blue-500 to-blue-400"
+        armLogo="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800"
+      />
+    );
+  }
 
   const highlights = [
     {
