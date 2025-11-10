@@ -305,7 +305,9 @@ export default function Dashboard() {
       console.log("User and profile exist, loading dashboard data");
       loadDashboardData();
     } else if (user && !profile) {
-      console.log("User exists but no profile, showing message (not redirecting)");
+      console.log(
+        "User exists but no profile, showing message (not redirecting)",
+      );
       setIsLoading(false);
     }
   }, [user, profile, authLoading]);
@@ -579,7 +581,9 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="max-w-md text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">Welcome to AeThex</h1>
+          <h1 className="text-3xl font-bold text-white mb-4">
+            Welcome to AeThex
+          </h1>
           <p className="text-gray-400 mb-8">
             You need to be signed in to access the dashboard
           </p>
@@ -599,7 +603,9 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="max-w-md text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">Complete Your Profile</h1>
+          <h1 className="text-3xl font-bold text-white mb-4">
+            Complete Your Profile
+          </h1>
           <p className="text-gray-400 mb-8">
             Let's set up your profile to get started with AeThex
           </p>

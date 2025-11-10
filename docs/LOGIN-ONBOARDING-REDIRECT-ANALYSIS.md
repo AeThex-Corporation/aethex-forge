@@ -3,6 +3,7 @@
 ## Problem Statement
 
 User reports:
+
 1. After logging in, they get redirected to onboarding
 2. When first loading the site, it shows them as "logged in" but with incomplete profile
 3. Frustrated because users shouldn't be shown as logged in without a complete profile
@@ -15,6 +16,7 @@ User reports:
 ### Issue 1: Session Restoration Before Profile Completion Check
 
 **What happens:**
+
 1. User logs in successfully
 2. Session cookies are set by Supabase
 3. Page reloads or user navigates
@@ -25,6 +27,7 @@ User reports:
 8. Once profile loads, if incomplete, they might be redirected
 
 **Why it's confusing:**
+
 - User sees themselves logged in
 - But profile might still be loading
 - Then get redirected to onboarding
@@ -36,12 +39,14 @@ User reports:
 
 **What's happening:**
 The AuthContext loads the session from browser storage immediately:
+
 - Supabase session stored in cookies/IndexedDB
 - On page load, `onAuthStateChange` fires with existing session
 - User state is set
 - UI shows user as authenticated
 
 **But:**
+
 - Profile data takes time to load from database
 - UI briefly shows "logged in" before profile is available
 - This can feel like users are logged in "by default"
@@ -51,6 +56,7 @@ The AuthContext loads the session from browser storage immediately:
 ### Issue 3: Onboarding Redirect Logic
 
 **Current logic in Dashboard.tsx (line 291):**
+
 ```typescript
 if (!user && !authLoading) {
   navigate("/onboarding", { replace: true });
@@ -58,6 +64,7 @@ if (!user && !authLoading) {
 ```
 
 **Issues with this:**
+
 1. Redirects to onboarding if NO user
 2. But never checks if profile is INCOMPLETE
 3. Should either:
@@ -71,11 +78,13 @@ if (!user && !authLoading) {
 **Current behavior is confusing because:**
 
 1. **Mixed signals:**
+
    - User sees themselves logged in
    - Then gets redirected to onboarding
    - Feels like auth is broken
 
 2. **No clear intent:**
+
    - Onboarding is meant to COMPLETE the profile
    - But if you're already logged in, you should be on dashboard
    - Redirect should only happen if profile is incomplete
@@ -93,13 +102,15 @@ if (!user && !authLoading) {
 
 **Current:** Line 291-295 in Dashboard.tsx checks `if (!user)` and redirects
 
-**Should be:**  
+**Should be:**
+
 - If no user → stay on dashboard (it handles showing loading state)
 - If user but profile incomplete → show a prompt, don't redirect
 - If user and profile complete → show full dashboard
 
 **Change:**
 Remove the automatic redirect to onboarding. Instead:
+
 - Let Dashboard render
 - Show a "Complete Your Profile" banner if profile is incomplete
 - Let user click to go to onboarding, don't force redirect
@@ -111,6 +122,7 @@ Remove the automatic redirect to onboarding. Instead:
 **Current:** Session restored from cookies → UI shows user as logged in immediately
 
 **Should be:**
+
 - Show loading state while profile is being fetched
 - Don't show user as "logged in" until profile is loaded
 - Once profile loads, show actual dashboard
@@ -125,11 +137,13 @@ Ensure `loading` state is true while profile is being fetched, then show Loading
 **Current:** Onboarding shows up unexpectedly after login
 
 **Should be:**
+
 - Onboarding only when INTENTIONALLY started (user clicks "Complete Profile")
 - Not automatically triggered by auth state
 - Dashboard can show "Profile incomplete" message with link to onboarding
 
 **Change:**
+
 - Remove auto-redirect logic
 - Let Dashboard handle incomplete profile display
 - User explicitly chooses to complete profile
@@ -141,13 +155,14 @@ Ensure `loading` state is true while profile is being fetched, then show Loading
 ### In code/client/pages/Dashboard.tsx (Lines 283-311)
 
 **Current (WRONG):**
+
 ```typescript
 useEffect(() => {
   if (!user && !authLoading) {
     navigate("/onboarding", { replace: true });
     return;
   }
-  
+
   if (user && profile) {
     loadDashboardData();
   }
@@ -155,11 +170,12 @@ useEffect(() => {
 ```
 
 **Should be:**
+
 ```typescript
 useEffect(() => {
   // Don't auto-redirect to onboarding
   // Let Dashboard render and handle missing profile gracefully
-  
+
   if (user && profile) {
     loadDashboardData();
   }
@@ -171,6 +187,7 @@ useEffect(() => {
 ### In code/client/pages/Dashboard.tsx (Top level)
 
 **Add this check:**
+
 ```typescript
 // If loading, show loading state
 if (authLoading) {
@@ -212,6 +229,7 @@ if (!profile) {
 ## Expected Behavior After Fix
 
 ### Scenario 1: Fresh Login
+
 1. User logs in with email/password
 2. Redirected to dashboard
 3. Dashboard shows loading state while profile is fetched
@@ -220,6 +238,7 @@ if (!profile) {
    - If profile incomplete → show "Complete Your Profile" banner with link to onboarding
 
 ### Scenario 2: Page Reload While Logged In
+
 1. User is logged in, page reloads
 2. Supabase session restored from cookies
 3. AuthContext restores user and fetches profile
@@ -227,6 +246,7 @@ if (!profile) {
 5. Once profile loaded → show dashboard (complete or with banner)
 
 ### Scenario 3: Not Logged In
+
 1. Unauthenticated user visits `/dashboard`
 2. Dashboard detects no user
 3. Shows "Please sign in" message
@@ -253,11 +273,11 @@ After implementing fixes:
 
 ## Files to Update
 
-| File | Lines | Change |
-|------|-------|--------|
-| `code/client/pages/Dashboard.tsx` | 283-311 | Remove onboarding redirect |
+| File                              | Lines           | Change                        |
+| --------------------------------- | --------------- | ----------------------------- |
+| `code/client/pages/Dashboard.tsx` | 283-311         | Remove onboarding redirect    |
 | `code/client/pages/Dashboard.tsx` | Start of render | Add loading/auth state checks |
-| `code/client/pages/Dashboard.tsx` | TBD | Add "Complete Profile" banner |
+| `code/client/pages/Dashboard.tsx` | TBD             | Add "Complete Profile" banner |
 
 ---
 
@@ -273,7 +293,7 @@ After implementing fixes:
 
 ## Related Issues
 
-- AuthContext clearing session on page load: ✅ FIXED (preserves sb-* keys)
+- AuthContext clearing session on page load: ✅ FIXED (preserves sb-\* keys)
 - Session persistence: ✅ WORKING (cookies restored correctly)
 - Profile loading timing: ⚠️ CAUSES UI CONFUSION (session shown before profile)
 

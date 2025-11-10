@@ -3,6 +3,7 @@
 ## Problem
 
 You reported that:
+
 1. After logging in, you get redirected to onboarding unexpectedly
 2. Site shows you as "logged in" on initial page load but with incomplete profile
 3. Users shouldn't appear logged in without a complete profile
@@ -27,32 +28,35 @@ You reported that:
 **File:** `code/client/pages/Dashboard.tsx` (Lines 283-311)
 
 **What changed:**
+
 - ❌ **REMOVED:** Code that auto-redirected to `/onboarding` when no user
 - ❌ **REMOVED:** Comment saying "redirect to login when auth is resolved"
 - ✅ **ADDED:** Simple state handling without redirects
 - ✅ **ADDED:** Clear separation of auth loading vs auth resolved states
 
 **Old behavior:**
+
 ```typescript
 if (!user && !authLoading) {
-  navigate("/onboarding", { replace: true });  // AUTO-REDIRECT!
+  navigate("/onboarding", { replace: true }); // AUTO-REDIRECT!
 }
 ```
 
 **New behavior:**
+
 ```typescript
 if (authLoading) {
-  setIsLoading(true);  // Show loading state
+  setIsLoading(true); // Show loading state
   return;
 }
 
 if (!user) {
-  setIsLoading(false);  // Auth resolved, no user
+  setIsLoading(false); // Auth resolved, no user
   return;
 }
 
 if (user && profile) {
-  loadDashboardData();  // Load dashboard data
+  loadDashboardData(); // Load dashboard data
 }
 ```
 
@@ -63,6 +67,7 @@ if (user && profile) {
 **File:** `code/client/pages/Dashboard.tsx` (Lines 566-602)
 
 **What changed:**
+
 - ❌ **REMOVED:** `return null` when no user (which allowed redirect to happen)
 - ✅ **ADDED:** "Please Sign In" message with button
 - ✅ **ADDED:** "Complete Your Profile" message with button
@@ -71,6 +76,7 @@ if (user && profile) {
 **New behavior:**
 
 **When not logged in:**
+
 ```
 ┌─────────────────────────┐
 │   Welcome to AeThex     │
@@ -84,6 +90,7 @@ if (user && profile) {
 ```
 
 **When logged in but profile incomplete:**
+
 ```
 ┌─────────────────────────┐
 │ Complete Your Profile   │
@@ -97,6 +104,7 @@ if (user && profile) {
 ```
 
 **When logged in with complete profile:**
+
 - Full dashboard shown normally
 
 ---
@@ -106,11 +114,13 @@ if (user && profile) {
 ### Scenario 1: Logging In
 
 **Before:**
+
 1. Enter email/password
 2. Submit
 3. ❌ Redirected to onboarding (confusing!)
 
 **After:**
+
 1. Enter email/password
 2. Submit
 3. ✅ See dashboard or "Complete Profile" message
@@ -121,11 +131,13 @@ if (user && profile) {
 ### Scenario 2: Page Reload While Logged In
 
 **Before:**
+
 1. Reload page
 2. ❌ See yourself "logged in" for a moment
 3. ❌ Maybe get redirected to onboarding
 
 **After:**
+
 1. Reload page
 2. ✅ See loading state briefly
 3. ✅ Dashboard appears or message about completing profile
@@ -136,10 +148,12 @@ if (user && profile) {
 ### Scenario 3: Visiting Dashboard When Not Logged In
 
 **Before:**
+
 1. Visit `/dashboard` without being logged in
 2. ❌ Redirected to onboarding (wrong!)
 
 **After:**
+
 1. Visit `/dashboard` without being logged in
 2. ✅ See "Please Sign In" message
 3. ✅ Click button to go to login page
@@ -149,19 +163,23 @@ if (user && profile) {
 ## What This Means
 
 ✅ **No more mysterious redirects**
+
 - You won't be auto-redirected to onboarding unexpectedly
 - Your destination is clear (dashboard or complete profile)
 
 ✅ **No confusing "logged in by default" state**
+
 - Loading spinner shows while profile is being fetched
 - You don't see yourself logged in until profile is actually loaded
 
 ✅ **User control over onboarding**
+
 - You choose when to complete your profile
 - Not forced by automatic redirects
 - Clear button to start onboarding
 
 ✅ **Clear error messages**
+
 - "Sign In" message when not authenticated
 - "Complete Profile" message when missing profile data
 - No guessing what state you're in
@@ -171,6 +189,7 @@ if (user && profile) {
 ## Testing the Fix
 
 ### Test 1: Log In and Go to Dashboard
+
 1. Visit `/login`
 2. Sign in with email/password
 3. **Expected:** Should see dashboard or "Complete Profile" message
@@ -178,6 +197,7 @@ if (user && profile) {
 5. **If profile incomplete:** Click "Complete Profile" button intentionally
 
 ### Test 2: Reload Dashboard While Logged In
+
 1. Log in successfully
 2. Visit `/dashboard`
 3. Reload page (F5 or Ctrl+R)
@@ -185,12 +205,14 @@ if (user && profile) {
 5. **NOT expected:** Redirect to onboarding or seeing "logged in by default"
 
 ### Test 3: Visit Dashboard When Not Logged In
+
 1. Make sure you're logged out (go to `/logout` or clear cookies)
 2. Visit `/dashboard`
 3. **Expected:** See "Please Sign In" message with button
 4. **NOT expected:** Redirect to onboarding
 
 ### Test 4: Sign Out and Back In
+
 1. While on dashboard, click Sign Out
 2. **Expected:** Should see "Please Sign In" message
 3. Click Sign In button
@@ -202,8 +224,8 @@ if (user && profile) {
 
 ## Files Modified
 
-| File | Changes | Status |
-|------|---------|--------|
+| File                              | Changes                                     | Status   |
+| --------------------------------- | ------------------------------------------- | -------- |
 | `code/client/pages/Dashboard.tsx` | Removed auto-redirect logic (lines 283-311) | ✅ FIXED |
 | `code/client/pages/Dashboard.tsx` | Added proper state messages (lines 566-602) | ✅ FIXED |
 
@@ -212,6 +234,7 @@ if (user && profile) {
 ## Architecture Changes
 
 **Before:**
+
 ```
 User logs in
   ↓
@@ -223,6 +246,7 @@ User redirected unexpectedly
 ```
 
 **After:**
+
 ```
 User logs in
   ↓
@@ -252,16 +276,19 @@ User sees clear message, no redirects
 ## Potential Issues to Watch For
 
 ### If you're still seeing redirects:
+
 1. Clear browser cache (Ctrl+Shift+Delete)
 2. Hard refresh the page (Ctrl+Shift+R)
 3. Make sure you deployed the latest code
 
 ### If messages don't appear:
+
 1. Check browser console (F12) for errors
 2. Verify Dashboard.tsx was updated correctly
 3. Check that you're seeing the new Dashboard code
 
 ### If onboarding still appears:
+
 1. It should only appear if you click "Complete Profile"
 2. Check that auto-redirect code was removed
 3. Verify changes to lines 283-311 and 566-602
@@ -280,6 +307,7 @@ User sees clear message, no redirects
 ## Questions?
 
 Refer to:
+
 1. **LOGIN-ONBOARDING-REDIRECT-ANALYSIS.md** - Detailed root cause analysis
 2. Browser console (F12) - Check for error messages
 3. Network tab (F12 → Network) - Check what endpoints are being called
