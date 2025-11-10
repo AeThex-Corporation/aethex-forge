@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 
 interface Arm {
   id: string;
@@ -11,6 +11,8 @@ interface Arm {
   bgGradient: string;
   textColor: string;
   href: string;
+  icon: string;
+  tip: string;
 }
 
 const ARMS: Arm[] = [
@@ -23,6 +25,8 @@ const ARMS: Arm[] = [
     bgGradient: "from-purple-600 to-purple-400",
     textColor: "text-purple-400",
     href: "/staff",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc0414efd7af54ef4b821a05d469150d0?format=webp&width=800",
+    tip: "Internal operations and tools for AeThex employees",
   },
   {
     id: "labs",
@@ -33,6 +37,8 @@ const ARMS: Arm[] = [
     bgGradient: "from-yellow-600 to-yellow-400",
     textColor: "text-yellow-400",
     href: "/labs",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fd93f7113d34347469e74421c3a3412e5?format=webp&width=800",
+    tip: "Research & Development - Pushing the boundaries of innovation",
   },
   {
     id: "gameforge",
@@ -43,6 +49,8 @@ const ARMS: Arm[] = [
     bgGradient: "from-green-600 to-green-400",
     textColor: "text-green-400",
     href: "/gameforge",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
+    tip: "Game Development - Shipping games at the speed of thought",
   },
   {
     id: "corp",
@@ -53,6 +61,8 @@ const ARMS: Arm[] = [
     bgGradient: "from-blue-600 to-blue-400",
     textColor: "text-blue-400",
     href: "/corp",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800",
+    tip: "Enterprise Solutions - Consulting for large-scale transformations",
   },
   {
     id: "foundation",
@@ -63,6 +73,8 @@ const ARMS: Arm[] = [
     bgGradient: "from-red-600 to-red-400",
     textColor: "text-red-400",
     href: "/foundation",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
+    tip: "Community & Education - Building open-source and talent pipelines",
   },
   {
     id: "devlink",
@@ -73,6 +85,8 @@ const ARMS: Arm[] = [
     bgGradient: "from-cyan-600 to-cyan-400",
     textColor: "text-cyan-400",
     href: "/dev-link",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
+    tip: "Professional Networking - LinkedIn for Roblox developers and creators",
   },
   {
     id: "nexus",
@@ -83,36 +97,10 @@ const ARMS: Arm[] = [
     bgGradient: "from-purple-600 to-purple-400",
     textColor: "text-purple-400",
     href: "/nexus",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F6df123b87a144b1fb99894d94198d97b?format=webp&width=800",
+    tip: "Talent Marketplace - Cross-arm collaboration and opportunities",
   },
 ];
-
-const LOGO_URLS: Record<string, string> = {
-  staff:
-    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc0414efd7af54ef4b821a05d469150d0?format=webp&width=800",
-  labs: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fd93f7113d34347469e74421c3a3412e5?format=webp&width=800",
-  gameforge:
-    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
-  corp: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800",
-  foundation:
-    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
-  devlink:
-    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
-  nexus:
-    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F6df123b87a144b1fb99894d94198d97b?format=webp&width=800",
-};
-
-const ARM_DESCRIPTIONS: Record<string, string> = {
-  staff: "Internal operations and tools for AeThex employees",
-  labs: "Research & Development - Pushing the boundaries of innovation",
-  gameforge:
-    "Game Development - Shipping games at the speed of thought with monthly cycles",
-  corp: "Enterprise Solutions - Consulting for large-scale transformations",
-  foundation:
-    "Community & Education - Building open-source and talent pipelines",
-  devlink:
-    "Professional Networking - LinkedIn for Roblox developers and creators",
-  nexus: "Talent Marketplace - Cross-arm collaboration and opportunities",
-};
 
 interface ArmSwitcherModalProps {
   isOpen: boolean;
@@ -125,21 +113,29 @@ export default function ArmSwitcherModal({
 }: ArmSwitcherModalProps) {
   const navigate = useNavigate();
   const [selectedArm, setSelectedArm] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleProceed = () => {
     if (selectedArm) {
       const arm = ARMS.find((a) => a.id === selectedArm);
       if (arm) {
-        navigate(arm.href);
-        onClose();
-        setSelectedArm(null);
+        setIsLoading(true);
+        setTimeout(() => {
+          navigate(arm.href);
+          onClose();
+          setSelectedArm(null);
+          setIsLoading(false);
+        }, 300);
       }
     }
   };
 
   const handleBack = () => {
-    setSelectedArm(null);
-    onClose();
+    if (selectedArm) {
+      setSelectedArm(null);
+    } else {
+      onClose();
+    }
   };
 
   const selectedArmData = selectedArm
@@ -149,144 +145,164 @@ export default function ArmSwitcherModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 md:hidden">
-      {/* Full screen background */}
-      <div className="absolute inset-0 bg-gray-950/95 backdrop-blur-md" />
+    <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 opacity-30">
+        <div className={`absolute inset-0 bg-gradient-to-br ${selectedArmData?.bgGradient || "from-purple-600 to-blue-600"} opacity-20`} />
+        <div className="absolute inset-0 [background-image:radial-gradient(circle_at_top,rgba(255,255,255,0.1)_0,transparent_50%)]" />
+      </div>
 
       {/* Content */}
       <div className="relative h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-6 border-b border-gray-800">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-6 border-b border-gray-800">
           <button
             onClick={handleBack}
             className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back</span>
+            <span className="text-sm font-medium">{selectedArm ? "Back" : "Close"}</span>
           </button>
-          <h1 className="text-lg font-bold text-white">Choose Your Arm</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-white">
+            {selectedArm ? selectedArmData?.label : "Choose Your Arm"}
+          </h1>
           <div className="w-12" />
         </div>
 
-        {/* Body - Show selected arm details or grid */}
-        <div className="flex-1 overflow-y-auto px-4 py-6">
+        {/* Body - Arm Grid or Landing Page */}
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-8">
           {!selectedArm ? (
-            // Grid of all arms
-            <div className="space-y-3">
+            // Arm Selection Grid
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
               {ARMS.map((arm) => (
                 <button
                   key={arm.id}
                   onClick={() => setSelectedArm(arm.id)}
-                  className={`w-full p-4 rounded-lg border-2 transition-all duration-200 text-left hover:scale-105 active:scale-95 ${
+                  className={`group p-6 rounded-xl border-2 transition-all duration-300 text-left hover:scale-105 active:scale-95 backdrop-blur-sm ${
                     arm.bgColor
                   } border-gray-700 hover:border-white/30`}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-4">
                     <img
-                      src={LOGO_URLS[arm.id]}
+                      src={arm.icon}
                       alt={arm.label}
-                      className="w-12 h-12 object-contain flex-shrink-0"
+                      className="w-16 h-16 object-contain flex-shrink-0 group-hover:scale-110 transition-transform"
                     />
                     <div className="flex-1">
-                      <h3 className="font-bold text-white text-base">
+                      <h3 className={`font-bold text-lg ${arm.textColor} mb-2`}>
                         {arm.label}
                       </h3>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {ARM_DESCRIPTIONS[arm.id]}
+                      <p className="text-xs sm:text-sm text-gray-400">
+                        {arm.tip}
                       </p>
                     </div>
-                    <div
-                      className={`w-2 h-2 rounded-full mt-1 ${arm.textColor}`}
-                    />
+                    <div className={`w-3 h-3 rounded-full mt-1 ${arm.textColor}`} />
                   </div>
                 </button>
               ))}
             </div>
           ) : selectedArmData ? (
-            // Selected arm detail view
-            <div className="space-y-6">
-              {/* Large logo */}
-              <div className="flex justify-center py-8">
+            // Arm Landing Page - Fullscreen Sci-Fi Experience
+            <div className="max-w-2xl mx-auto space-y-8 py-8">
+              {/* Large Logo */}
+              <div className="flex justify-center">
                 <div
-                  className={`w-32 h-32 flex items-center justify-center rounded-2xl bg-gradient-to-br ${selectedArmData.bgGradient} p-4`}
+                  className={`w-48 h-48 flex items-center justify-center rounded-3xl bg-gradient-to-br ${selectedArmData.bgGradient} p-8 shadow-2xl glow-effect`}
+                  style={{
+                    boxShadow: `0 0 60px ${selectedArmData.color}40, inset 0 0 30px ${selectedArmData.color}20`,
+                  }}
                 >
                   <img
-                    src={LOGO_URLS[selectedArmData.id]}
+                    src={selectedArmData.icon}
                     alt={selectedArmData.label}
-                    className="w-24 h-24 object-contain"
+                    className="w-32 h-32 object-contain animate-pulse"
                   />
                 </div>
               </div>
 
-              {/* Title and description */}
-              <div className="text-center space-y-3">
+              {/* Title and Description */}
+              <div className="text-center space-y-4">
                 <h2
-                  className={`text-3xl font-bold ${selectedArmData.textColor}`}
+                  className={`text-4xl sm:text-5xl font-black ${selectedArmData.textColor}`}
                 >
                   {selectedArmData.label}
                 </h2>
-                <p className="text-gray-300 text-base leading-relaxed">
-                  {ARM_DESCRIPTIONS[selectedArmData.id]}
-                </p>
+                <div className="flex items-center justify-center gap-2 text-gray-400">
+                  <Sparkles className="w-4 h-4" />
+                  <p className="text-base sm:text-lg">Initializing {selectedArmData.label} systems...</p>
+                </div>
+              </div>
+
+              {/* Quick Tip Section */}
+              <div
+                className={`p-6 rounded-xl border-2 backdrop-blur-sm ${selectedArmData.bgColor} border-gray-700`}
+              >
+                <div className="flex gap-3">
+                  <div className={`text-3xl flex-shrink-0 ${selectedArmData.textColor}`}>
+                    ⚡
+                  </div>
+                  <div>
+                    <h3 className={`font-semibold ${selectedArmData.textColor} mb-2`}>
+                      Quick Briefing
+                    </h3>
+                    <p className="text-gray-300 leading-relaxed">
+                      {selectedArmData.tip}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Features */}
-              <div
-                className={`p-4 rounded-lg ${selectedArmData.bgColor} border border-gray-700`}
-              >
-                <h3 className="text-sm font-semibold text-gray-200 mb-3">
-                  What you'll get:
-                </h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2">
-                    <span
-                      className={`text-lg mt-0.5 ${selectedArmData.textColor}`}
-                    >
-                      ✨
-                    </span>
-                    <span className="text-sm text-gray-300">
-                      Access to exclusive opportunities
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span
-                      className={`text-lg mt-0.5 ${selectedArmData.textColor}`}
-                    >
-                      🚀
-                    </span>
-                    <span className="text-sm text-gray-300">
-                      Connect with like-minded creators
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span
-                      className={`text-lg mt-0.5 ${selectedArmData.textColor}`}
-                    >
-                      🎯
-                    </span>
-                    <span className="text-sm text-gray-300">
-                      Discover resources tailored to your interests
-                    </span>
-                  </li>
-                </ul>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-4 rounded-lg bg-gray-800/40 border border-gray-700 text-center">
+                  <div className={`text-2xl mb-2 ${selectedArmData.textColor}`}>🚀</div>
+                  <p className="text-sm text-gray-300">Get Started</p>
+                </div>
+                <div className="p-4 rounded-lg bg-gray-800/40 border border-gray-700 text-center">
+                  <div className={`text-2xl mb-2 ${selectedArmData.textColor}`}>🎯</div>
+                  <p className="text-sm text-gray-300">Explore</p>
+                </div>
+                <div className="p-4 rounded-lg bg-gray-800/40 border border-gray-700 text-center">
+                  <div className={`text-2xl mb-2 ${selectedArmData.textColor}`}>✨</div>
+                  <p className="text-sm text-gray-300">Connect</p>
+                </div>
               </div>
+
+              {/* Loading Animation */}
+              {isLoading && (
+                <div className="flex justify-center gap-1">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className={`w-1 rounded-full animate-pulse ${selectedArmData.textColor.replace("text-", "bg-")}`}
+                      style={{
+                        height: `${20 + i * 10}px`,
+                        animationDelay: `${i * 0.2}s`,
+                        animationDuration: "1s",
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           ) : null}
         </div>
 
-        {/* Footer - Back/Proceed buttons */}
-        <div className="px-4 py-6 border-t border-gray-800 space-y-3">
+        {/* Footer - Action Buttons */}
+        <div className="px-4 sm:px-6 py-6 border-t border-gray-800 space-y-3">
           {selectedArm ? (
             <>
               <button
                 onClick={handleProceed}
-                className={`w-full py-3 rounded-lg font-semibold transition-all duration-200 text-white bg-gradient-to-r ${selectedArmData?.bgGradient} hover:shadow-lg active:scale-95`}
+                disabled={isLoading}
+                className={`w-full py-3 rounded-lg font-semibold transition-all duration-200 text-white bg-gradient-to-r ${selectedArmData?.bgGradient} hover:shadow-lg active:scale-95 disabled:opacity-50`}
               >
-                Proceed to {selectedArmData?.label}
+                {isLoading ? "Initializing..." : `Proceed to ${selectedArmData?.label}`}
               </button>
               <button
                 onClick={() => setSelectedArm(null)}
-                className="w-full py-3 rounded-lg font-semibold transition-all duration-200 text-gray-300 bg-gray-800/50 hover:bg-gray-700/50 active:scale-95"
+                disabled={isLoading}
+                className="w-full py-3 rounded-lg font-semibold transition-all duration-200 text-gray-300 bg-gray-800/50 hover:bg-gray-700/50 active:scale-95 disabled:opacity-50"
               >
                 Choose Different Arm
               </button>
