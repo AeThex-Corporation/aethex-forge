@@ -53,7 +53,7 @@ const normalizeProfile = (
   ...(row as AethexUserProfile),
   email: email ?? (row as any)?.email,
   username: (row as any)?.username ?? email?.split("@")[0] ?? "user",
-  onboarded: true,
+  onboarded: (row as any)?.onboarded ?? false,
   role: (row as any)?.role ?? "developer",
   loyalty_points: (row as any)?.loyalty_points ?? 0,
   current_streak: (row as any)?.current_streak ?? 0,
