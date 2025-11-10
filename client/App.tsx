@@ -26,6 +26,7 @@ import Foundation from "./pages/Foundation";
 import DevLink from "./pages/DevLink";
 import DevLinkProfiles from "./pages/DevLinkProfiles";
 import Nexus from "./pages/Nexus";
+import Arms from "./pages/Arms";
 import FoundationTeams from "./pages/foundation/FoundationTeams";
 import FoundationAbout from "./pages/foundation/FoundationAbout";
 import LabsExploreResearch from "./pages/labs/LabsExploreResearch";
