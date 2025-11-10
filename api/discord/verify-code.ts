@@ -39,7 +39,19 @@ export default async function handler(req: any, res: any) {
       .gt("expires_at", new Date().toISOString())
       .single();
 
-    if (verifyError || !verification) {
+    if (verifyError) {
+      console.error("[Discord Verify] Code lookup failed:", {
+        code: verification_code.trim(),
+        error: verifyError,
+      });
+      return res.status(400).json({
+        message:
+          "Invalid or expired verification code. Please try /verify again.",
+        error: verifyError.message,
+      });
+    }
+
+    if (!verification) {
       return res.status(400).json({
         message:
           "Invalid or expired verification code. Please try /verify again.",
