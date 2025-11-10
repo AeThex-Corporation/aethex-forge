@@ -344,6 +344,7 @@ export default function Admin() {
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="system-map">System Map</TabsTrigger>
                 <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
+                <TabsTrigger value="staff">Staff</TabsTrigger>
                 <TabsTrigger value="content">Content</TabsTrigger>
                 <TabsTrigger value="community">Community</TabsTrigger>
                 <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
