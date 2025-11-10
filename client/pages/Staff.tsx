@@ -1,371 +1,240 @@
-import React, { useEffect, useMemo, useState } from "react";
-import Layout from "@/components/Layout";
-import { useAuth } from "@/contexts/AuthContext";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { aethexToast } from "@/lib/aethex-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-
-function useHasStaffAccess(roles: string[]) {
-  return useMemo(
-    () =>
-      roles.some((r) =>
-        ["owner", "admin", "founder", "staff", "employee"].includes(
-          r.toLowerCase(),
-        ),
-      ),
-    [roles],
-  );
-}
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Lock, Users, FileText, Zap, Award, MessageSquare } from "lucide-react";
 
 export default function Staff() {
-  const { user, roles, loading } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const hasAccess = useHasStaffAccess(roles);
 
   useEffect(() => {
-    if (loading) return;
-    if (!user) {
-      aethexToast.info({
-        title: "Sign in required",
-        description: "Staff area requires authentication",
-      });
-      navigate("/onboarding");
-      return;
+    if (!loading && user) {
+      navigate("/staff/dashboard", { replace: true });
     }
-    if (!hasAccess) {
-      aethexToast.error({
-        title: "Access denied",
-        description: "You don't have staff permissions",
-      });
-      navigate("/dashboard");
-    }
-  }, [user, roles, hasAccess, loading, navigate]);
-
-  const [activeTab, setActiveTab] = useState("overview");
-  const [openReports, setOpenReports] = useState<any[]>([]);
-  const [mentorshipAll, setMentorshipAll] = useState<any[]>([]);
-  const [loadingData, setLoadingData] = useState(false);
-  const [searchQ, setSearchQ] = useState("");
-  const [users, setUsers] = useState<any[]>([]);
-
-  const refresh = async () => {
-    setLoadingData(true);
-    try {
-      const [r1, r2] = await Promise.all([
-        fetch("/api/moderation/reports?status=open&limit=100"),
-        fetch("/api/mentorship/requests/all?limit=50&status=pending"),
-      ]);
-      const reports = r1.ok ? await r1.json() : [];
-      const m = r2.ok ? await r2.json() : [];
-      setOpenReports(Array.isArray(reports) ? reports : []);
-      setMentorshipAll(Array.isArray(m) ? m : []);
-    } catch (e) {
-      /* ignore */
-    } finally {
-      setLoadingData(false);
-    }
-  };
-
-  useEffect(() => {
-    if (user && hasAccess) refresh();
-  }, [user, hasAccess]);
-
-  const loadUsers = async () => {
-    try {
-      const params = new URLSearchParams();
-      if (searchQ.trim()) params.set("q", searchQ.trim());
-      params.set("limit", "25");
-      const resp = await fetch(`/api/staff/users?${params.toString()}`);
-      const data = resp.ok ? await resp.json() : [];
-      setUsers(Array.isArray(data) ? data : []);
-    } catch {
-      setUsers([]);
-    }
-  };
-
-  const updateReportStatus = async (
-    id: string,
-    status: "resolved" | "ignored" | "open",
-  ) => {
-    try {
-      const resp = await fetch(
-        `/api/moderation/reports/${encodeURIComponent(id)}/status`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status }),
-        },
-      );
-      if (resp.ok) {
-        aethexToast.success({
-          title: "Updated",
-          description: `Report marked ${status}`,
-        });
-        refresh();
-      }
-    } catch {}
-  };
+  }, [user, loading, navigate]);
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-10">
-        <div className="mb-6">
-          <Badge variant="outline" className="mb-2">
-            Internal
-          </Badge>
-          <h1 className="text-3xl font-bold">Operations Command</h1>
-          <p className="text-muted-foreground">
-            Staff dashboards, moderation, and internal tools.
-          </p>
+      <SEO
+        title="AeThex Staff"
+        description="Internal platform for AeThex employees and authorized contractors"
+      />
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 relative overflow-hidden">
+        {/* Animated background */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-10 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="moderation">Moderation</TabsTrigger>
-            <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-          </TabsList>
+        <div className="relative">
+          {/* Hero Section */}
+          <div className="container mx-auto px-4 py-20 text-center">
+            <Badge className="mb-4 inline-block bg-purple-500/20 text-purple-300 border-purple-500/50">
+              Internal Platform
+            </Badge>
 
-          <TabsContent value="overview" className="mt-6">
-            <div className="grid gap-4 md:grid-cols-3">
-              <Card>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              AeThex Staff
+            </h1>
+
+            <p className="text-xl text-purple-200/80 max-w-2xl mx-auto mb-12">
+              The internal hub for AeThex employees and authorized contractors. 
+              Unified access to dashboards, tools, documentation, and collaboration features.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                onClick={() => navigate("/staff/login")}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+              >
+                <Lock className="mr-2 h-5 w-5" />
+                Staff Login
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => navigate("/dashboard")}
+                className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10"
+              >
+                Back to AeThex
+              </Button>
+            </div>
+          </div>
+
+          {/* Features Grid */}
+          <div className="container mx-auto px-4 py-20">
+            <h2 className="text-3xl font-bold text-center mb-12 text-purple-100">
+              Staff Tools & Features
+            </h2>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Dashboard */}
+              <Card className="border-purple-500/30 bg-purple-950/30 backdrop-blur hover:border-purple-400/50 transition-colors">
                 <CardHeader>
-                  <CardTitle>Community Health</CardTitle>
-                  <CardDescription>
-                    Quick pulse across posts and reports
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded bg-purple-500/20">
+                      <Zap className="h-5 w-5 text-purple-400" />
+                    </div>
+                    <CardTitle className="text-purple-100">Dashboard</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-purple-200/70">
+                    Real-time operations metrics, service status, and quick access to common tools.
                   </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-muted-foreground">
-                      Open reports
-                    </div>
-                    <div className="text-xl font-semibold">
-                      {openReports.length}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="text-sm text-muted-foreground">
-                      Mentorship requests
-                    </div>
-                    <div className="text-xl font-semibold">
-                      {mentorshipAll.length}
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
-              <Card>
+
+              {/* Directory */}
+              <Card className="border-blue-500/30 bg-blue-950/30 backdrop-blur hover:border-blue-400/50 transition-colors">
                 <CardHeader>
-                  <CardTitle>Service Status</CardTitle>
-                  <CardDescription>APIs and queues</CardDescription>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded bg-blue-500/20">
+                      <Users className="h-5 w-5 text-blue-400" />
+                    </div>
+                    <CardTitle className="text-blue-100">Directory</CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-muted-foreground">
-                      Admin API
-                    </div>
-                    <Badge className="bg-emerald-600">OK</Badge>
-                  </div>
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="text-sm text-muted-foreground">
-                      Notifications
-                    </div>
-                    <Badge className="bg-emerald-600">OK</Badge>
-                  </div>
+                  <CardDescription className="text-blue-200/70">
+                    Browse team members, view profiles, and find contact information.
+                  </CardDescription>
                 </CardContent>
               </Card>
-              <Card>
+
+              {/* Admin Tools */}
+              <Card className="border-indigo-500/30 bg-indigo-950/30 backdrop-blur hover:border-indigo-400/50 transition-colors">
                 <CardHeader>
-                  <CardTitle>Shortcuts</CardTitle>
-                  <CardDescription>Common operational links</CardDescription>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded bg-indigo-500/20">
+                      <Lock className="h-5 w-5 text-indigo-400" />
+                    </div>
+                    <CardTitle className="text-indigo-100">Admin Tools</CardTitle>
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  <Button asChild variant="outline" className="w-full">
-                    <a href="/admin">Admin panel</a>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full">
-                    <a href="/community#mentorship">Mentorship hub</a>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full">
-                    <a href="/feed">Community feed</a>
-                  </Button>
+                <CardContent>
+                  <CardDescription className="text-indigo-200/70">
+                    Manage users, roles, permissions, and platform configuration.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+
+              {/* Docs */}
+              <Card className="border-cyan-500/30 bg-cyan-950/30 backdrop-blur hover:border-cyan-400/50 transition-colors">
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded bg-cyan-500/20">
+                      <FileText className="h-5 w-5 text-cyan-400" />
+                    </div>
+                    <CardTitle className="text-cyan-100">Docs & API</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-cyan-200/70">
+                    Internal documentation, API keys, credentials, and setup guides.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+
+              {/* Achievements */}
+              <Card className="border-amber-500/30 bg-amber-950/30 backdrop-blur hover:border-amber-400/50 transition-colors">
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded bg-amber-500/20">
+                      <Award className="h-5 w-5 text-amber-400" />
+                    </div>
+                    <CardTitle className="text-amber-100">Achievements</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-amber-200/70">
+                    Track team accomplishments, milestones, and performance metrics.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+
+              {/* Collaboration */}
+              <Card className="border-rose-500/30 bg-rose-950/30 backdrop-blur hover:border-rose-400/50 transition-colors">
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded bg-rose-500/20">
+                      <MessageSquare className="h-5 w-5 text-rose-400" />
+                    </div>
+                    <CardTitle className="text-rose-100">Collaboration</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-rose-200/70">
+                    Internal chat, team discussions, and project coordination.
+                  </CardDescription>
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
+          </div>
 
-          <TabsContent value="moderation" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Moderation Queue</CardTitle>
-                <CardDescription>Flagged content and actions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {loadingData && (
-                  <p className="text-sm text-muted-foreground">Loading…</p>
-                )}
-                {!loadingData && openReports.length === 0 && (
-                  <p className="text-sm text-muted-foreground">
-                    No items in queue.
-                  </p>
-                )}
-                <div className="space-y-3">
-                  {openReports.map((r) => (
-                    <div
-                      key={r.id}
-                      className="rounded border border-border/50 p-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-sm font-medium">{r.reason}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {r.details}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => updateReportStatus(r.id, "ignored")}
-                          >
-                            Ignore
-                          </Button>
-                          <Button
-                            size="sm"
-                            onClick={() => updateReportStatus(r.id, "resolved")}
-                          >
-                            Resolve
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+          {/* Info Section */}
+          <div className="container mx-auto px-4 py-20 border-t border-purple-500/20">
+            <div className="grid md:grid-cols-2 gap-12">
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-purple-100">Who Can Access?</h3>
+                <ul className="space-y-3 text-purple-200/80">
+                  <li className="flex gap-2">
+                    <span className="text-purple-400">✓</span>
+                    <span>AeThex employees (@aethex.dev)</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-purple-400">✓</span>
+                    <span>Authorized contractors (invited)</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-purple-400">✓</span>
+                    <span>Partners with special access</span>
+                  </li>
+                </ul>
+              </div>
 
-          <TabsContent value="mentorship" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Mentorship Requests</CardTitle>
-                <CardDescription>
-                  Review recent mentor/mentee activity
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {loadingData && (
-                  <p className="text-sm text-muted-foreground">Loading…</p>
-                )}
-                {!loadingData && mentorshipAll.length === 0 && (
-                  <p className="text-sm text-muted-foreground">
-                    No requests to review.
-                  </p>
-                )}
-                <div className="space-y-3">
-                  {mentorshipAll.map((req) => (
-                    <div
-                      key={req.id}
-                      className="rounded border border-border/50 p-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-sm font-medium">
-                            {req.mentee?.full_name || req.mentee?.username} →{" "}
-                            {req.mentor?.full_name || req.mentor?.username}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {req.message || "No message"}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Badge
-                            variant="outline"
-                            className="text-xs capitalize"
-                          >
-                            {req.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Separator className="my-4" />
-                <div className="flex gap-2">
-                  <Button asChild>
-                    <a href="/community/mentorship">Open requests</a>
-                  </Button>
-                  <Button asChild variant="outline">
-                    <a href="/community/mentorship/apply">Mentor directory</a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-purple-100">Getting Started</h3>
+                <ol className="space-y-3 text-purple-200/80">
+                  <li className="flex gap-2">
+                    <span className="text-purple-400">1.</span>
+                    <span>Click "Staff Login" to sign in with Google</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-purple-400">2.</span>
+                    <span>Use your @aethex.dev email address</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-purple-400">3.</span>
+                    <span>Access your personalized dashboard</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
 
-          <TabsContent value="users" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Users</CardTitle>
-                <CardDescription>
-                  Search, roles, and quick actions
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <input
-                    className="w-full rounded border border-border/50 bg-background px-3 py-2 text-sm"
-                    placeholder="Search by name or username"
-                    value={searchQ}
-                    onChange={(e) => setSearchQ(e.target.value)}
-                  />
-                  <Button onClick={loadUsers} variant="outline">
-                    Search
-                  </Button>
-                </div>
-                <div className="rounded border border-border/50">
-                  {users.length === 0 ? (
-                    <p className="p-3 text-sm text-muted-foreground">
-                      No users found.
-                    </p>
-                  ) : (
-                    <div className="divide-y divide-border/50">
-                      {users.map((u) => (
-                        <div
-                          key={u.id}
-                          className="flex items-center justify-between p-3"
-                        >
-                          <div>
-                            <div className="text-sm font-medium">
-                              {u.full_name || u.username || u.id}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              {u.username}
-                            </div>
-                          </div>
-                          <Badge variant="outline" className="capitalize">
-                            {u.user_type || "unknown"}
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+          {/* Footer CTA */}
+          <div className="container mx-auto px-4 py-12 text-center border-t border-purple-500/20">
+            <p className="text-purple-300 mb-6">
+              Not a staff member? Visit the public platform.
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/")}
+              className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10"
+            >
+              Back to Main Site
+            </Button>
+          </div>
+        </div>
       </div>
     </Layout>
   );
