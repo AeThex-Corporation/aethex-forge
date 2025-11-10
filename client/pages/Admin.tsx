@@ -523,6 +523,91 @@ export default function Admin() {
                 <AdminRoadmap />
               </TabsContent>
 
+              <TabsContent value="staff" className="space-y-6">
+                <Card className="bg-card/60 border-border/40 backdrop-blur">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Users className="h-5 w-5 text-purple-300" />
+                      <CardTitle>Staff Management</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Manage AeThex staff, employees, and contractors
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/admin/staff/directory")}
+                      className="justify-start h-auto py-3"
+                    >
+                      <Users className="h-4 w-4 mr-2" />
+                      <div className="text-left">
+                        <div className="font-medium">Directory</div>
+                        <div className="text-xs text-muted-foreground">
+                          View team members
+                        </div>
+                      </div>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/admin/staff/achievements")}
+                      className="justify-start h-auto py-3"
+                    >
+                      <Award className="h-4 w-4 mr-2" />
+                      <div className="text-left">
+                        <div className="font-medium">Achievements</div>
+                        <div className="text-xs text-muted-foreground">
+                          Track progress
+                        </div>
+                      </div>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/admin/staff/chat")}
+                      className="justify-start h-auto py-3"
+                    >
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      <div className="text-left">
+                        <div className="font-medium">Chat</div>
+                        <div className="text-xs text-muted-foreground">
+                          Team collaboration
+                        </div>
+                      </div>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/admin/staff/docs")}
+                      className="justify-start h-auto py-3"
+                    >
+                      <FileText className="h-4 w-4 mr-2" />
+                      <div className="text-left">
+                        <div className="font-medium">Documentation</div>
+                        <div className="text-xs text-muted-foreground">
+                          Internal resources
+                        </div>
+                      </div>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/admin/staff/admin")}
+                      className="justify-start h-auto py-3"
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      <div className="text-left">
+                        <div className="font-medium">Settings</div>
+                        <div className="text-xs text-muted-foreground">
+                          Staff configuration
+                        </div>
+                      </div>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
               <TabsContent value="content" className="space-y-6">
                 <Card className="bg-card/60 border-border/40 backdrop-blur">
                   <CardHeader>
