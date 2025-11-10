@@ -314,6 +314,7 @@ export default function Onboarding() {
           (userTypeMap[data.userType || "member"] as any) || "game_developer",
         experience_level: (data.experience.level as any) || "beginner",
         bio: data.experience.previousProjects?.trim() || undefined,
+        onboarded: true,
       } as any;
 
       // Ensure profile via server (uses service role)
