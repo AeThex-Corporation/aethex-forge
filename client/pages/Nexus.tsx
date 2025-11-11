@@ -10,6 +10,7 @@ import {
   Network,
   Sparkles,
   ArrowRight,
+  Music,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
