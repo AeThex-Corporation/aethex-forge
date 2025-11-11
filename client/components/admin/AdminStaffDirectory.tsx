@@ -197,6 +197,107 @@ export default function AdminStaffDirectory() {
           </p>
         </Card>
       )}
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Edit Team Member</DialogTitle>
+            <DialogDescription>
+              Update member information and save changes
+            </DialogDescription>
+          </DialogHeader>
+
+          {formData && (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Name</label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => handleFormChange("name", e.target.value)}
+                  placeholder="Full name"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Email</label>
+                <Input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleFormChange("email", e.target.value)}
+                  placeholder="email@example.com"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Position</label>
+                <Input
+                  value={formData.position}
+                  onChange={(e) => handleFormChange("position", e.target.value)}
+                  placeholder="Job title"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Department</label>
+                <Input
+                  value={formData.department}
+                  onChange={(e) => handleFormChange("department", e.target.value)}
+                  placeholder="Department name"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Phone</label>
+                <Input
+                  value={formData.phone}
+                  onChange={(e) => handleFormChange("phone", e.target.value)}
+                  placeholder="Phone number"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Location</label>
+                <Input
+                  value={formData.location}
+                  onChange={(e) => handleFormChange("location", e.target.value)}
+                  placeholder="City, State"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Role</label>
+                <select
+                  value={formData.role}
+                  onChange={(e) =>
+                    handleFormChange("role", e.target.value as TeamMember["role"])
+                  }
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
+                >
+                  <option value="owner">Owner</option>
+                  <option value="admin">Admin</option>
+                  <option value="founder">Founder</option>
+                  <option value="staff">Staff</option>
+                  <option value="employee">Employee</option>
+                </select>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditDialogOpen(false)}
+            >
+              <X className="w-4 h-4 mr-2" />
+              Cancel
+            </Button>
+            <Button onClick={handleSaveEdit} className="bg-blue-600 hover:bg-blue-700">
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
