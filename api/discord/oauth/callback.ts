@@ -282,22 +282,24 @@ export default async function handler(req: any, res: any) {
       await notifyAccountLinked(userId, "Discord");
     }
 
-    // Generate session token
-    const { data: sessionData, error: sessionError } =
-      await supabase.auth.admin.createSession({
-        user_id: userId,
+    // Generate a magic link to establish session
+    const { data: linkData, error: linkError } =
+      await supabase.auth.admin.generateLink({
+        type: "magiclink",
+        email: discordUser.email,
+        options: {
+          redirectTo: redirectTo,
+        },
       });
 
-    if (sessionError || !sessionData.session) {
-      console.error("[Discord OAuth] Session creation failed:", sessionError);
+    if (linkError || !linkData?.properties?.magic_link) {
+      console.error("[Discord OAuth] Magic link generation failed:", linkError);
       return res.redirect("/login?error=session_create");
     }
 
-    // Set session cookies
-    const accessTokenCookie = `sb-access-token=${sessionData.session.access_token}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=3600`;
-    const refreshTokenCookie = `sb-refresh-token=${sessionData.session.refresh_token}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=604800`;
-
-    res.setHeader("Set-Cookie", [accessTokenCookie, refreshTokenCookie]);
+    // Redirect to magic link to establish session
+    // The magic link contains the session token and will set cookies automatically
+    res.redirect(linkData.properties.magic_link);
 
     // Redirect to dashboard (we only log in existing users here)
     const nextPath = "/dashboard";
