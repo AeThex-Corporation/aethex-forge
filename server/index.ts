@@ -4869,6 +4869,97 @@ export function createServer() {
       }
     });
 
+    app.post("/api/staff/members/seed", async (_req, res) => {
+      try {
+        const mockMembers = [
+          {
+            email: "alex@aethex.dev",
+            full_name: "Alex Chen",
+            position: "Founder & CEO",
+            department: "Executive",
+            phone: "+1 (555) 000-0001",
+            role: "owner",
+          },
+          {
+            email: "jordan@aethex.dev",
+            full_name: "Jordan Martinez",
+            position: "CTO",
+            department: "Engineering",
+            phone: "+1 (555) 000-0002",
+            role: "admin",
+          },
+          {
+            email: "sam@aethex.dev",
+            full_name: "Sam Patel",
+            position: "Community Manager",
+            department: "Community",
+            phone: "+1 (555) 000-0003",
+            role: "staff",
+          },
+          {
+            email: "taylor@aethex.dev",
+            full_name: "Taylor Kim",
+            position: "Operations Lead",
+            department: "Operations",
+            phone: "+1 (555) 000-0004",
+            role: "staff",
+          },
+          {
+            email: "casey@aethex.dev",
+            full_name: "Casey Zhang",
+            position: "Software Engineer",
+            department: "Engineering",
+            phone: "+1 (555) 000-0005",
+            role: "employee",
+          },
+          {
+            email: "morgan@aethex.dev",
+            full_name: "Morgan Lee",
+            position: "Designer",
+            department: "Design",
+            phone: "+1 (555) 000-0006",
+            role: "employee",
+          },
+          {
+            email: "alex.kim@aethex.dev",
+            full_name: "Alex Kim",
+            position: "Marketing Manager",
+            department: "Marketing",
+            phone: "+1 (555) 000-0007",
+            role: "staff",
+          },
+          {
+            email: "jordan.lee@aethex.dev",
+            full_name: "Jordan Lee",
+            position: "Data Analyst",
+            department: "Analytics",
+            phone: "+1 (555) 000-0008",
+            role: "employee",
+          },
+        ];
+
+        const { data, error } = await adminSupabase
+          .from("staff_members")
+          .insert(mockMembers)
+          .select();
+
+        if (error) {
+          return res.status(500).json({
+            error: "Failed to seed staff members",
+            details: error.message,
+          });
+        }
+
+        return res.status(201).json({
+          success: true,
+          count: data?.length || 0,
+          members: data,
+        });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     app.post("/api/staff/members", async (req, res) => {
       try {
         const {
