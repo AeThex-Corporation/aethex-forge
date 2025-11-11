@@ -165,6 +165,7 @@ export default function AdminStaffDirectory() {
             position: formData.position,
             department: formData.department,
             phone: formData.phone,
+            location: formData.location,
             role: formData.role,
           }),
         },
