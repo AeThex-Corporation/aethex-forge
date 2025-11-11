@@ -13,7 +13,7 @@ import TrackMetadataForm from "@/components/ethos/TrackMetadataForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
-import { Upload, Music, Settings } from "lucide-react";
+import { Upload, Music, Settings, CheckCircle, Clock } from "lucide-react";
 
 const SKILLS = [
   "Synthwave",
