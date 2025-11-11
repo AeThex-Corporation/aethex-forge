@@ -4869,7 +4869,7 @@ export function createServer() {
       }
     });
 
-    app.post("/api/staff/members/seed", async (req, res) => {
+    app.get("/api/staff/members/seed", async (req, res) => {
       try {
         // Ensure response headers are set correctly
         res.setHeader("Content-Type", "application/json");
