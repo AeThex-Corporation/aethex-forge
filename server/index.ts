@@ -4850,6 +4850,159 @@ export function createServer() {
       }
     });
 
+    // Staff Members API
+    app.get("/api/staff/members", async (_req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("staff_members")
+          .select("*")
+          .order("full_name", { ascending: true });
+
+        if (error) {
+          if (isTableMissing(error)) return res.json([]);
+          return res.status(500).json({ error: error.message });
+        }
+
+        return res.json(data || []);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/staff/members", async (req, res) => {
+      try {
+        const {
+          user_id,
+          email,
+          full_name,
+          position,
+          department,
+          phone,
+          avatar_url,
+          role,
+          hired_date,
+        } = req.body || {};
+
+        if (!email || !full_name) {
+          return res.status(400).json({
+            error: "Missing required fields: email, full_name",
+          });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("staff_members")
+          .insert([
+            {
+              user_id: user_id || null,
+              email,
+              full_name,
+              position: position || null,
+              department: department || null,
+              phone: phone || null,
+              avatar_url: avatar_url || null,
+              role: role || "employee",
+              hired_date: hired_date || null,
+            },
+          ])
+          .select();
+
+        if (error) {
+          return res.status(500).json({
+            error: "Failed to create staff member",
+            details: error.message,
+          });
+        }
+
+        return res.status(201).json(data?.[0] || {});
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.get("/api/staff/members-detail", async (req, res) => {
+      try {
+        const id = String(req.query.id || "");
+        if (!id) {
+          return res.status(400).json({ error: "Missing staff member ID" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("staff_members")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (error || !data) {
+          return res.status(404).json({ error: "Staff member not found" });
+        }
+
+        return res.json(data);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.put("/api/staff/members-detail", async (req, res) => {
+      try {
+        const id = String(req.query.id || "");
+        if (!id) {
+          return res.status(400).json({ error: "Missing staff member ID" });
+        }
+
+        const updates = req.body || {};
+
+        const { data, error } = await adminSupabase
+          .from("staff_members")
+          .update({
+            ...updates,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id)
+          .select()
+          .single();
+
+        if (error) {
+          return res.status(500).json({
+            error: "Failed to update staff member",
+            details: error.message,
+          });
+        }
+
+        if (!data) {
+          return res.status(404).json({ error: "Staff member not found" });
+        }
+
+        return res.json(data);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.delete("/api/staff/members-detail", async (req, res) => {
+      try {
+        const id = String(req.query.id || "");
+        if (!id) {
+          return res.status(400).json({ error: "Missing staff member ID" });
+        }
+
+        const { error } = await adminSupabase
+          .from("staff_members")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          return res.status(500).json({
+            error: "Failed to delete staff member",
+            details: error.message,
+          });
+        }
+
+        return res.json({ success: true, id });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     // Track device login and send security alert
     app.post("/api/auth/login-device", async (req, res) => {
       try {
