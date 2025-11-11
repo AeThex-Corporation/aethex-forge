@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
+import DocsLayout from "@/components/docs/DocsLayout";
 import {
   Play,
   Clock,
@@ -223,6 +224,7 @@ export default function DocsTutorials() {
   });
 
   return (
+    <DocsLayout title="Tutorials" description="Step-by-step guides">
     <div>
       {/* Header */}
       <div className="mb-8 hidden">
@@ -409,5 +411,6 @@ export default function DocsTutorials() {
         </div>
       </div>
     </div>
+    </DocsLayout>
   );
 }
