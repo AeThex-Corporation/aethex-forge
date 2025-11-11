@@ -160,4 +160,102 @@ export const notificationTriggers = {
       console.warn("Failed to create custom notification:", error);
     }
   },
+
+  async taskAssigned(userId: string, taskTitle: string, assignerName: string): Promise<void> {
+    try {
+      await aethexNotificationService.createNotification(
+        userId,
+        "info",
+        "📋 Task assigned to you",
+        `${assignerName} assigned you a task: "${taskTitle}"`,
+      );
+    } catch (error) {
+      console.warn("Failed to create task notification:", error);
+    }
+  },
+
+  async postLiked(userId: string, likerName: string): Promise<void> {
+    try {
+      await aethexNotificationService.createNotification(
+        userId,
+        "info",
+        "❤️ Your post was liked",
+        `${likerName} liked your post.`,
+      );
+    } catch (error) {
+      console.warn("Failed to create like notification:", error);
+    }
+  },
+
+  async postCommented(userId: string, commenterName: string, preview: string): Promise<void> {
+    try {
+      await aethexNotificationService.createNotification(
+        userId,
+        "info",
+        "💬 New comment on your post",
+        `${commenterName} commented: "${preview}"`,
+      );
+    } catch (error) {
+      console.warn("Failed to create comment notification:", error);
+    }
+  },
+
+  async applicationReceived(userId: string, creatorName: string, opportunityTitle: string): Promise<void> {
+    try {
+      await aethexNotificationService.createNotification(
+        userId,
+        "info",
+        `📋 New Application: ${opportunityTitle}`,
+        `${creatorName} applied for your opportunity.`,
+      );
+    } catch (error) {
+      console.warn("Failed to create application notification:", error);
+    }
+  },
+
+  async applicationStatusChanged(
+    userId: string,
+    status: "accepted" | "rejected" | "reviewed",
+    message?: string,
+  ): Promise<void> {
+    const statusEmoji = status === "accepted" ? "✅" : status === "rejected" ? "❌" : "📝";
+    const statusMessage = status === "accepted" ? "accepted" : status === "rejected" ? "rejected" : "reviewed";
+
+    try {
+      await aethexNotificationService.createNotification(
+        userId,
+        status === "accepted" ? "success" : status === "rejected" ? "error" : "info",
+        `${statusEmoji} Application ${statusMessage}`,
+        message || `Your application has been ${statusMessage}.`,
+      );
+    } catch (error) {
+      console.warn("Failed to create application status notification:", error);
+    }
+  },
+
+  async newDeviceLogin(userId: string, deviceName: string, location?: string): Promise<void> {
+    try {
+      await aethexNotificationService.createNotification(
+        userId,
+        "warning",
+        "🔐 New device login detected",
+        `New login from ${deviceName}${location ? ` at ${location}` : ""}. If this wasn't you, please secure your account.`,
+      );
+    } catch (error) {
+      console.warn("Failed to create security notification:", error);
+    }
+  },
+
+  async moderationReportSubmitted(userId: string, reportType: string): Promise<void> {
+    try {
+      await aethexNotificationService.createNotification(
+        userId,
+        "warning",
+        "🚨 New moderation report",
+        `A ${reportType} report has been submitted. Please review.`,
+      );
+    } catch (error) {
+      console.warn("Failed to create moderation notification:", error);
+    }
+  },
 };
