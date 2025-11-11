@@ -259,47 +259,15 @@ export default function AdminBlogManager() {
                           >
                             <ExternalLink className="h-4 w-4" />
                           </Button>
-                          <AlertDialog>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                document.dispatchEvent(
-                                  new CustomEvent("openDeleteDialog", { detail: post.slug }),
-                                );
-                              }}
-                              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 w-9 hover:bg-destructive/10 hover:text-destructive disabled:opacity-50"
-                              disabled={deleting === post.slug}
-                              title="Delete post"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                            {deleting === post.slug && (
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete blog post?</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Are you sure you want to delete "{post.title}"? This action cannot be
-                                    undone.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <div className="flex gap-2 justify-end">
-                                  <AlertDialogCancel
-                                    onClick={() => setDeleting(null)}
-                                  >
-                                    Cancel
-                                  </AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() => {
-                                      handleDeleteBlogPost(post.slug);
-                                    }}
-                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                  >
-                                    Delete
-                                  </AlertDialogAction>
-                                </div>
-                              </AlertDialogContent>
-                            )}
-                          </AlertDialog>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setDeleteConfirm(post)}
+                            disabled={deleting === post.slug}
+                            title="Delete post"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
