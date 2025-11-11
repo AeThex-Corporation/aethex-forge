@@ -49,4 +49,3 @@ CREATE POLICY "Only admins can delete blog posts" ON public.blog_posts
 
 -- Add grant for service role (backend API access)
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.blog_posts TO service_role;
-GRANT USAGE, SELECT ON SEQUENCE public.blog_posts_id_seq TO service_role;
