@@ -231,7 +231,7 @@ export default function DocsGettingStarted() {
                   Google / GitHub: click the provider button on <Link to="/login" className="text-aethex-400 underline">/login</Link>. The first time you sign in we'll create your account automatically using the provider email.
                 </li>
                 <li>
-                  Discord: use "Continue with Discord" on the login page. Existing accounts with the same email will be linked, otherwise a new account is created. For linking flows for existing staff, see the Dashboard > Connections.
+                  Discord: use "Continue with Discord" on the login page. Existing accounts with the same email will be linked, otherwise a new account is created. For linking flows for existing staff, see the Dashboard → Connections.
                 </li>
                 <li>
                   Web3 (optional): sign-in with Ethereum wallet via MetaMask — used only for wallet verification and account linking (no custody).
