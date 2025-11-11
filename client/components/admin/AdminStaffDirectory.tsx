@@ -2,8 +2,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, Search, Edit2, X } from "lucide-react";
-import { useState, useMemo } from "react";
+import { Mail, Phone, MapPin, Search, Edit2, X, Trash2 } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { aethexToast } from "@/lib/aethex-toast";
 import {
   Dialog,
   DialogContent,
@@ -15,73 +16,68 @@ import {
 
 interface TeamMember {
   id: string;
-  name: string;
-  position: string;
-  department: string;
+  user_id?: string;
   email: string;
-  phone: string;
-  location: string;
+  full_name: string;
+  position?: string;
+  department?: string;
+  phone?: string;
+  avatar_url?: string;
   role: "owner" | "admin" | "founder" | "staff" | "employee";
-  avatar?: string;
+  is_active?: boolean;
+  hired_date?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export default function AdminStaffDirectory() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [formData, setFormData] = useState<TeamMember | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const teamMembers: TeamMember[] = [
-    {
-      id: "1",
-      name: "Alex Chen",
-      position: "CEO & Founder",
-      department: "Executive",
-      email: "alex@aethex.dev",
-      phone: "+1 (555) 123-4567",
-      location: "San Francisco, CA",
-      role: "owner",
-    },
-    {
-      id: "2",
-      name: "Jordan Martinez",
-      position: "CTO",
-      department: "Engineering",
-      email: "jordan@aethex.dev",
-      phone: "+1 (555) 234-5678",
-      location: "Austin, TX",
-      role: "admin",
-    },
-    {
-      id: "3",
-      name: "Sam Patel",
-      position: "Community Manager",
-      department: "Community",
-      email: "sam@aethex.dev",
-      phone: "+1 (555) 345-6789",
-      location: "Remote",
-      role: "staff",
-    },
-    {
-      id: "4",
-      name: "Taylor Kim",
-      position: "Operations Lead",
-      department: "Operations",
-      email: "taylor@aethex.dev",
-      phone: "+1 (555) 456-7890",
-      location: "New York, NY",
-      role: "staff",
-    },
-  ];
+  // Fetch staff members from API
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/staff/members");
+        if (!response.ok) throw new Error("Failed to fetch staff members");
+        const data = await response.json();
+        setTeamMembers(data || []);
+      } catch (error) {
+        console.error("Error fetching staff members:", error);
+        aethexToast.error({
+          title: "Failed to load staff members",
+          description:
+            error instanceof Error ? error.message : "Unknown error",
+        });
+        setTeamMembers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   const filteredMembers = useMemo(() => {
     return teamMembers.filter(
       (member) =>
-        member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        member.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        member.department.toLowerCase().includes(searchQuery.toLowerCase())
+        member.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (member.position &&
+          member.position.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (member.department &&
+          member.department
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())) ||
+        member.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [searchQuery]);
+  }, [searchQuery, teamMembers]);
 
   const getRoleBadgeColor = (role: TeamMember["role"]) => {
     const colors: Record<TeamMember["role"], string> = {
@@ -100,100 +96,211 @@ export default function AdminStaffDirectory() {
     setIsEditDialogOpen(true);
   };
 
-  const handleSaveEdit = () => {
-    if (!formData) return;
-    // In a real app, this would POST to /api/staff/members/:id
-    console.log("Saving member:", formData);
-    // Update the local team members list
-    const updatedMembers = teamMembers.map((m) =>
-      m.id === formData.id ? formData : m
-    );
-    setIsEditDialogOpen(false);
-    setEditingMember(null);
-    setFormData(null);
+  const handleSaveEdit = async () => {
+    if (!formData || !editingMember) return;
+
+    try {
+      setIsSaving(true);
+      const response = await fetch(
+        `/api/staff/members-detail?id=${editingMember.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            full_name: formData.full_name,
+            email: formData.email,
+            position: formData.position,
+            department: formData.department,
+            phone: formData.phone,
+            role: formData.role,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || error.error);
+      }
+
+      const updatedMember = await response.json();
+      setTeamMembers(
+        teamMembers.map((m) => (m.id === updatedMember.id ? updatedMember : m))
+      );
+
+      aethexToast.success({
+        title: "Member updated",
+        description: `${formData.full_name} has been saved.`,
+      });
+
+      setIsEditDialogOpen(false);
+      setEditingMember(null);
+      setFormData(null);
+    } catch (error) {
+      console.error("Error saving staff member:", error);
+      aethexToast.error({
+        title: "Failed to save",
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleFormChange = (field: keyof TeamMember, value: string) => {
+  const handleDelete = async (memberId: string, memberName: string) => {
+    if (
+      !confirm(
+        `Are you sure you want to delete ${memberName}? This action cannot be undone.`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+      const response = await fetch(`/api/staff/members-detail?id=${memberId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || error.error);
+      }
+
+      setTeamMembers(teamMembers.filter((m) => m.id !== memberId));
+
+      aethexToast.success({
+        title: "Member deleted",
+        description: `${memberName} has been removed.`,
+      });
+
+      if (isEditDialogOpen && editingMember?.id === memberId) {
+        setIsEditDialogOpen(false);
+        setEditingMember(null);
+      }
+    } catch (error) {
+      console.error("Error deleting staff member:", error);
+      aethexToast.error({
+        title: "Failed to delete",
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleFormChange = (
+    field: keyof TeamMember,
+    value: string
+  ) => {
     if (formData) {
       setFormData({ ...formData, [field]: value });
     }
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold mb-2">Team Directory</h2>
+          <p className="text-muted-foreground">Loading staff members...</p>
+        </div>
+        <Card>
+          <CardContent className="py-8 text-center">
+            <p className="text-muted-foreground">Loading...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold mb-2">Team Directory</h2>
         <p className="text-muted-foreground">
-          AeThex staff members and contractors
+          {teamMembers.length} staff members · Manage team information
         </p>
       </div>
 
       <div className="relative">
         <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
         <Input
-          placeholder="Search by name, position, or department..."
+          placeholder="Search by name, position, department, or email..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10"
         />
       </div>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {filteredMembers.map((member) => (
-          <Card key={member.id} className="hover:shadow-lg transition">
-            <CardHeader>
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <CardTitle className="text-lg">{member.name}</CardTitle>
-                  <CardDescription className="font-medium mt-1">
-                    {member.position}
-                  </CardDescription>
+      {filteredMembers.length > 0 ? (
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {filteredMembers.map((member) => (
+            <Card
+              key={member.id}
+              className="hover:shadow-lg transition flex flex-col"
+            >
+              <CardHeader>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <CardTitle className="text-lg">
+                      {member.full_name}
+                    </CardTitle>
+                    <CardDescription className="font-medium mt-1">
+                      {member.position || "Position not set"}
+                    </CardDescription>
+                  </div>
+                  <div className="flex gap-1">
+                    <Badge className={getRoleBadgeColor(member.role)}>
+                      {member.role}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={() => handleEditClick(member)}
+                      title="Edit member"
+                    >
+                      <Edit2 className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-1">
-                  <Badge className={getRoleBadgeColor(member.role)}>
-                    {member.role}
-                  </Badge>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={() => handleEditClick(member)}
-                    title="Edit member"
+                <div className="text-sm text-muted-foreground mt-2">
+                  {member.department || "Department not set"}
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3 flex-1">
+                <div className="flex items-center gap-3 text-sm">
+                  <Mail className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="hover:underline break-all"
                   >
-                    <Edit2 className="w-3 h-3" />
-                  </Button>
+                    {member.email}
+                  </a>
                 </div>
-              </div>
-              <div className="text-sm text-muted-foreground mt-2">
-                {member.department}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-3 text-sm">
-                <Mail className="w-4 h-4 text-blue-500" />
-                <a href={`mailto:${member.email}`} className="hover:underline break-all">
-                  {member.email}
-                </a>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Phone className="w-4 h-4 text-green-500" />
-                <a href={`tel:${member.phone}`} className="hover:underline">
-                  {member.phone}
-                </a>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <MapPin className="w-4 h-4 text-red-500" />
-                <span>{member.location}</span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {filteredMembers.length === 0 && (
+                {member.phone && (
+                  <div className="flex items-center gap-3 text-sm">
+                    <Phone className="w-4 h-4 text-green-500 flex-shrink-0" />
+                    <a href={`tel:${member.phone}`} className="hover:underline">
+                      {member.phone}
+                    </a>
+                  </div>
+                )}
+                {member.hired_date && (
+                  <div className="text-xs text-muted-foreground">
+                    Hired: {new Date(member.hired_date).toLocaleDateString()}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
         <Card className="text-center py-8">
           <p className="text-muted-foreground">
-            No team members match your search
+            {teamMembers.length === 0
+              ? "No staff members yet. Create one to get started."
+              : "No team members match your search"}
           </p>
         </Card>
       )}
@@ -211,10 +318,10 @@ export default function AdminStaffDirectory() {
           {formData && (
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Name</label>
+                <label className="text-sm font-medium">Full Name</label>
                 <Input
-                  value={formData.name}
-                  onChange={(e) => handleFormChange("name", e.target.value)}
+                  value={formData.full_name}
+                  onChange={(e) => handleFormChange("full_name", e.target.value)}
                   placeholder="Full name"
                 />
               </div>
@@ -232,7 +339,7 @@ export default function AdminStaffDirectory() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Position</label>
                 <Input
-                  value={formData.position}
+                  value={formData.position || ""}
                   onChange={(e) => handleFormChange("position", e.target.value)}
                   placeholder="Job title"
                 />
@@ -241,7 +348,7 @@ export default function AdminStaffDirectory() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Department</label>
                 <Input
-                  value={formData.department}
+                  value={formData.department || ""}
                   onChange={(e) => handleFormChange("department", e.target.value)}
                   placeholder="Department name"
                 />
@@ -250,18 +357,9 @@ export default function AdminStaffDirectory() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Phone</label>
                 <Input
-                  value={formData.phone}
+                  value={formData.phone || ""}
                   onChange={(e) => handleFormChange("phone", e.target.value)}
                   placeholder="Phone number"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Location</label>
-                <Input
-                  value={formData.location}
-                  onChange={(e) => handleFormChange("location", e.target.value)}
-                  placeholder="City, State"
                 />
               </div>
 
@@ -270,7 +368,10 @@ export default function AdminStaffDirectory() {
                 <select
                   value={formData.role}
                   onChange={(e) =>
-                    handleFormChange("role", e.target.value as TeamMember["role"])
+                    handleFormChange(
+                      "role",
+                      e.target.value as TeamMember["role"]
+                    )
                   }
                   className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
                 >
@@ -284,16 +385,35 @@ export default function AdminStaffDirectory() {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="gap-2">
+            <Button
+              variant="destructive"
+              onClick={() => {
+                if (editingMember) {
+                  handleDelete(editingMember.id, editingMember.full_name);
+                }
+              }}
+              disabled={isSaving || isDeleting}
+              className="mr-auto"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              {isDeleting ? "Deleting..." : "Delete"}
+            </Button>
+
             <Button
               variant="outline"
               onClick={() => setIsEditDialogOpen(false)}
+              disabled={isSaving}
             >
               <X className="w-4 h-4 mr-2" />
               Cancel
             </Button>
-            <Button onClick={handleSaveEdit} className="bg-blue-600 hover:bg-blue-700">
-              Save Changes
+            <Button
+              onClick={handleSaveEdit}
+              disabled={isSaving}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              {isSaving ? "Saving..." : "Save Changes"}
             </Button>
           </DialogFooter>
         </DialogContent>
