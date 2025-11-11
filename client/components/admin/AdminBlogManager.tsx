@@ -278,6 +278,33 @@ export default function AdminBlogManager() {
           )}
         </CardContent>
       </Card>
+
+      {deleteConfirm && (
+        <AlertDialog open={!!deleteConfirm} onOpenChange={(open) => !open && setDeleteConfirm(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete blog post?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete "{deleteConfirm.title}"? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <div className="flex gap-2 justify-end">
+              <AlertDialogCancel onClick={() => setDeleteConfirm(null)}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  handleDeleteBlogPost(deleteConfirm.slug);
+                  setDeleteConfirm(null);
+                }}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   );
 }
