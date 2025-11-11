@@ -768,6 +768,12 @@ export function createServer() {
         }
 
         const redirectUri = `${apiBase}/api/discord/oauth/callback`;
+        console.log(
+          "[Discord OAuth Start] Using redirect URI:",
+          redirectUri,
+          "from API base:",
+          apiBase,
+        );
 
         // Get the state from query params (can be a JSON string with action and redirectTo)
         let state = req.query.state || "/dashboard";
@@ -784,6 +790,7 @@ export function createServer() {
         });
 
         const discordOAuthUrl = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
+        console.log("[Discord OAuth Start] Redirecting to:", discordOAuthUrl);
         return res.redirect(302, discordOAuthUrl);
       } catch (e: any) {
         return res.status(500).json({ error: e?.message || String(e) });
