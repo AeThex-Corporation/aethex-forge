@@ -29,32 +29,40 @@ export default function BlogPost() {
         let data: any = null;
 
         try {
-          // Attempt to parse JSON response from server route
-          if (res.ok) data = await res.json();
-        } catch (e) {
-          // If server returned HTML (dev server) or invalid JSON, fall back to Supabase REST
-          try {
-            const sbUrl = import.meta.env.VITE_SUPABASE_URL;
-            const sbKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-            if (sbUrl && sbKey) {
-              const url = `${sbUrl.replace(/\/$/, "")}/rest/v1/blog_posts?slug=eq.${encodeURIComponent(
-                String(slug),
-              )}&select=id,slug,title,excerpt,author,date,read_time,category,image,body_html,published_at`;
-              const sbRes = await fetch(url, {
-                headers: {
-                  apikey: sbKey as string,
-                  Authorization: `Bearer ${sbKey}`,
-                },
-              });
-              if (sbRes.ok) {
-                const arr = await sbRes.json();
-                data = Array.isArray(arr) && arr.length ? arr[0] : null;
-              }
+        // Attempt to parse JSON response from server route
+        if (res.ok) data = await res.json();
+      } catch (e) {
+        // If server returned HTML (dev server) or invalid JSON, fall back to Supabase REST
+        try {
+          const sbUrl = import.meta.env.VITE_SUPABASE_URL;
+          const sbKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+          if (sbUrl && sbKey) {
+            const url = `${sbUrl.replace(/\/$/, "")}/rest/v1/blog_posts?slug=eq.${encodeURIComponent(
+              String(slug),
+            )}&select=id,slug,title,excerpt,author,date,read_time,category,image,body_html,published_at`;
+            const sbRes = await fetch(url, {
+              headers: {
+                apikey: sbKey as string,
+                Authorization: `Bearer ${sbKey}`,
+              },
+            });
+            if (sbRes.ok) {
+              const arr = await sbRes.json();
+              data = Array.isArray(arr) && arr.length ? arr[0] : null;
             }
-          } catch (err) {
-            console.warn("Supabase fallback fetch failed:", err);
           }
+        } catch (err) {
+          console.warn("Supabase fallback fetch failed:", err);
         }
+      }
+
+      // If API and Supabase both fail, try seed data
+      if (!data) {
+        const seedPost = blogSeedPosts.find((p) => p.slug === slug);
+        if (seedPost) {
+          data = seedPost;
+        }
+      }
 
         if (!cancelled) setPost(data);
       } catch (e) {
