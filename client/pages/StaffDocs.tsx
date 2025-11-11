@@ -2,12 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -110,8 +105,8 @@ export default function StaffDocs() {
           <Alert className="border-red-500/30 bg-red-500/10">
             <AlertTriangle className="h-4 w-4 text-red-600" />
             <AlertDescription className="ml-2 text-red-600">
-              This section contains sensitive information. Do not share credentials
-              or secrets outside of this portal.
+              This section contains sensitive information. Do not share
+              credentials or secrets outside of this portal.
             </AlertDescription>
           </Alert>
 
@@ -148,7 +143,8 @@ export default function StaffDocs() {
                 API Credentials
               </CardTitle>
               <p className="text-gray-400 text-sm mt-2">
-                Sensitive credentials are hidden. Click copy to reveal temporarily.
+                Sensitive credentials are hidden. Click copy to reveal
+                temporarily.
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -160,14 +156,14 @@ export default function StaffDocs() {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h4 className="text-white font-medium">{cred.name}</h4>
-                      <p className="text-gray-400 text-sm">{cred.description}</p>
+                      <p className="text-gray-400 text-sm">
+                        {cred.description}
+                      </p>
                     </div>
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() =>
-                        handleCopy(cred.id, cred.value)
-                      }
+                      onClick={() => handleCopy(cred.id, cred.value)}
                       className="text-purple-400 hover:text-purple-300"
                     >
                       {copiedId === cred.id ? (
@@ -179,7 +175,9 @@ export default function StaffDocs() {
                       )}
                     </Button>
                   </div>
-                  <p className="text-gray-500 text-sm font-mono">{cred.value}</p>
+                  <p className="text-gray-500 text-sm font-mono">
+                    {cred.value}
+                  </p>
                 </div>
               ))}
             </CardContent>

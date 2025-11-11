@@ -2,12 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Trophy, Star, Target, ExternalLink } from "lucide-react";
@@ -89,7 +84,7 @@ const MILESTONES = [
 export default function StaffAchievements() {
   const navigate = useNavigate();
   const [expandedAchievement, setExpandedAchievement] = useState<string | null>(
-    null
+    null,
   );
 
   const unlockedCount = ACHIEVEMENTS.filter((a) => a.unlocked).length;
@@ -102,7 +97,9 @@ export default function StaffAchievements() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2">Achievements</h1>
+              <h1 className="text-4xl font-bold text-white mb-2">
+                Achievements
+              </h1>
               <p className="text-gray-300 flex items-center gap-2">
                 <Trophy className="w-4 h-4" />
                 Track your progress and accomplishments
@@ -176,7 +173,7 @@ export default function StaffAchievements() {
                     setExpandedAchievement(
                       expandedAchievement === achievement.id
                         ? null
-                        : achievement.id
+                        : achievement.id,
                     )
                   }
                 >

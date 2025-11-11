@@ -3,12 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Send, ExternalLink, Hash, Lock } from "lucide-react";
 
@@ -60,9 +55,7 @@ export default function StaffChat() {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2">
-                Staff Chat
-              </h1>
+              <h1 className="text-4xl font-bold text-white mb-2">Staff Chat</h1>
               <p className="text-gray-300 flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 Internal team communication
@@ -102,7 +95,9 @@ export default function StaffChat() {
                         <Hash className="w-4 h-4 text-gray-400" />
                       )}
                       <div className="flex-1">
-                        <p className="text-white font-medium">#{channel.name}</p>
+                        <p className="text-white font-medium">
+                          #{channel.name}
+                        </p>
                         <p className="text-gray-400 text-xs">
                           {channel.members} members
                         </p>
@@ -167,9 +162,7 @@ export default function StaffChat() {
                     placeholder="Type a message..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    onKeyPress={(e) =>
-                      e.key === "Enter" && handleSend()
-                    }
+                    onKeyPress={(e) => e.key === "Enter" && handleSend()}
                     className="bg-slate-800/50 border-purple-500/20 text-white placeholder:text-gray-500"
                   />
                   <Button

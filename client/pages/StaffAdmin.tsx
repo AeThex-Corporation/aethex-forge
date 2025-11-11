@@ -170,7 +170,9 @@ export default function StaffAdmin() {
                     <div className="flex justify-between items-center">
                       <div>
                         <p className="text-white font-medium">Owner</p>
-                        <p className="text-gray-400 text-sm">Full system access</p>
+                        <p className="text-gray-400 text-sm">
+                          Full system access
+                        </p>
                       </div>
                       <Badge className="bg-red-500/20 text-red-300">
                         2 members
@@ -208,7 +210,9 @@ export default function StaffAdmin() {
                   <div className="space-y-4">
                     <Card className="bg-slate-800/50 border-purple-500/20">
                       <CardHeader>
-                        <CardTitle className="text-lg">System Settings</CardTitle>
+                        <CardTitle className="text-lg">
+                          System Settings
+                        </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div>
@@ -252,7 +256,9 @@ export default function StaffAdmin() {
                     </div>
 
                     <div className="mt-6">
-                      <h4 className="text-white font-medium mb-4">Active Keys</h4>
+                      <h4 className="text-white font-medium mb-4">
+                        Active Keys
+                      </h4>
                       <div className="space-y-3">
                         {apiKeys.map((key) => (
                           <div

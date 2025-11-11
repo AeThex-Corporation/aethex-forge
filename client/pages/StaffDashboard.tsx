@@ -176,7 +176,9 @@ export default function StaffDashboard() {
                     <div className="bg-slate-800/50 rounded-lg p-6 border border-purple-500/20">
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-300">API Response Time</span>
+                          <span className="text-gray-300">
+                            API Response Time
+                          </span>
                           <Badge className="bg-green-500/20 text-green-300">
                             95ms
                           </Badge>
@@ -224,13 +226,15 @@ export default function StaffDashboard() {
                   <div className="bg-slate-800/50 rounded-lg p-6 border border-purple-500/20">
                     <div className="space-y-4">
                       <div>
-                        <p className="text-gray-400 text-sm">Active Mentorships</p>
-                        <p className="text-2xl font-bold text-purple-400">
-                          24
+                        <p className="text-gray-400 text-sm">
+                          Active Mentorships
                         </p>
+                        <p className="text-2xl font-bold text-purple-400">24</p>
                       </div>
                       <div>
-                        <p className="text-gray-400 text-sm">Pending Requests</p>
+                        <p className="text-gray-400 text-sm">
+                          Pending Requests
+                        </p>
                         <p className="text-2xl font-bold text-yellow-400">6</p>
                       </div>
                     </div>
