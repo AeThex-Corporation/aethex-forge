@@ -120,6 +120,52 @@ export default function ArtistSettings() {
     fetchProfile();
   }, [user, navigate]);
 
+  const handleSubmitVerification = async () => {
+    if (!user) return;
+
+    setIsSubmittingVerification(true);
+    try {
+      const response = await fetch("/api/ethos/verification", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": user.id,
+        },
+        body: JSON.stringify({
+          action: "submit",
+          submission_notes: submissionNotes,
+          portfolio_links: portfolioLinks
+            .split("\n")
+            .filter((link) => link.trim()),
+        }),
+      });
+
+      if (response.ok) {
+        const { data } = await response.json();
+        setVerificationStatus({
+          status: "pending",
+          submitted_at: data.submitted_at,
+        });
+        setSubmissionNotes("");
+        setPortfolioLinks("");
+        toast.success({
+          title: "Verification request submitted",
+          description:
+            "Your application has been sent to the Ethos Guild team for review. You'll be notified via email of any updates.",
+        });
+      } else {
+        throw new Error("Failed to submit verification request");
+      }
+    } catch (error) {
+      toast.error({
+        title: "Error",
+        description: String(error),
+      });
+    } finally {
+      setIsSubmittingVerification(false);
+    }
+  };
+
   const toggleSkill = (skill: string) => {
     setProfile((prev) => ({
       ...prev,
