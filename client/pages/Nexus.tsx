@@ -284,13 +284,14 @@ export default function Nexus() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-4">
                 {[
                   { name: "Labs", emoji: "🔬", color: "yellow" },
                   { name: "GameForge", emoji: "🎮", color: "green" },
                   { name: "Corp", emoji: "💼", color: "blue" },
                   { name: "Foundation", emoji: "🎓", color: "red" },
                   { name: "DevConnect", emoji: "🌐", color: "purple" },
+                  { name: "Ethos Audio", emoji: "🎵", color: "pink" },
                 ].map((arm) => (
                   <div
                     key={arm.name}
