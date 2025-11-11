@@ -352,7 +352,7 @@ export default function Admin() {
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="w-full justify-start gap-2 overflow-x-auto border border-border/40 bg-background/40 px-1 py-1 backdrop-blur flex-wrap h-auto">
+              <TabsList className="w-full justify-start gap-2 overflow-x-auto border border-border/40 bg-background/40 px-1 py-1 backdrop-blur flex-wrap h-auto lg:hidden">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="system-map">System Map</TabsTrigger>
                 <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
