@@ -90,7 +90,25 @@ export default function ArtistSettings() {
             sample_price_sfx: data.sample_price_sfx,
             sample_price_score: data.sample_price_score,
             turnaround_days: data.turnaround_days,
+            verified: data.verified,
           });
+        }
+
+        // Fetch verification status
+        const verRes = await fetch(`/api/ethos/verification?status=pending`, {
+          headers: { "x-user-id": user.id },
+        });
+
+        if (verRes.ok) {
+          const { data: requests } = await verRes.json();
+          const userRequest = requests?.find((r: any) => r.user_id === user.id);
+          if (userRequest) {
+            setVerificationStatus({
+              status: userRequest.status,
+              submitted_at: userRequest.submitted_at,
+              rejection_reason: userRequest.rejection_reason,
+            });
+          }
         }
       } catch (error) {
         console.error("Failed to fetch profile:", error);
