@@ -362,8 +362,14 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link to="/admin" className="cursor-pointer">
-                              <Settings className="mr-2 h-4 w-4" />
-                              Admin Panel
+                              <Shield className="mr-2 h-4 w-4" />
+                              Admin Control Center
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link to="/internal-docs" className="cursor-pointer">
+                              <BookOpen className="mr-2 h-4 w-4" />
+                              Internal Docs
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
