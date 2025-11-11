@@ -18,13 +18,13 @@ interface Arm {
 const ARMS: Arm[] = [
   {
     id: "staff",
-    label: "Admin",
+    label: "Staff",
     color: "#7c3aed",
     bgGradient: "from-purple-600 to-purple-400",
     textColor: "text-purple-400",
-    href: "/admin",
+    href: "/staff",
     icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc0414efd7af54ef4b821a05d469150d0?format=webp&width=800",
-    tip: "Admin panel & staff management",
+    tip: "Staff operations & internal portal",
     shadowColor: "shadow-purple-500/50",
     glowColor: "rgba(168, 85, 247, 0.3)",
   },
