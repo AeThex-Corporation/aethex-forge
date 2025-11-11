@@ -1,8 +1,17 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Phone, MapPin, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Mail, Phone, MapPin, Search, Edit2, X } from "lucide-react";
 import { useState, useMemo } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface TeamMember {
   id: string;
@@ -18,6 +27,9 @@ interface TeamMember {
 
 export default function AdminStaffDirectory() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [formData, setFormData] = useState<TeamMember | null>(null);
 
   const teamMembers: TeamMember[] = [
     {
