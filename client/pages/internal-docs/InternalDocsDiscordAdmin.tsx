@@ -27,7 +27,7 @@ export default function InternalDocsDiscordAdmin() {
         </section>
 
         <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4 text-sm text-slate-300">
-          <strong>Reminder:</strong> Do not copy operational steps to public docs. Use the Builder -> PR process for any partner-facing content and consult Security before publishing sensitive integration details.
+          <strong>Reminder:</strong> Do not copy operational steps to public docs. Use the Builder → PR process for any partner-facing content and consult Security before publishing sensitive integration details.
         </div>
       </div>
     </InternalDocsLayout>
