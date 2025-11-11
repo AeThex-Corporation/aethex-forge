@@ -49,11 +49,7 @@ const curriculumModules: CurriculumModule[] = [
       "Master the core sound design and production techniques that define AeThex audio.",
     level: "foundation",
     duration: "4 hrs",
-    focus: [
-      "Synthwave aesthetics",
-      "Synthesis basics",
-      "Drum programming",
-    ],
+    focus: ["Synthwave aesthetics", "Synthesis basics", "Drum programming"],
     lessons: [
       {
         title: "The Synthwave Sound: History & Vibes",
@@ -121,8 +117,7 @@ const curriculumModules: CurriculumModule[] = [
       },
       {
         title: "Spatial Audio & 3D Sound Panning",
-        summary:
-          "Position sounds in 3D space for immersive game environments.",
+        summary: "Position sounds in 3D space for immersive game environments.",
         status: "coming_soon",
       },
       {
@@ -174,8 +169,7 @@ const curriculumModules: CurriculumModule[] = [
       },
       {
         title: "Adaptive Music for Games",
-        summary:
-          "Create stems and variations that respond to gameplay states.",
+        summary: "Create stems and variations that respond to gameplay states.",
         status: "coming_soon",
       },
       {
@@ -250,7 +244,8 @@ export default function DocsCurriculumEthos() {
   const highlights = [
     {
       title: "Synthwave-focused",
-      description: "All lessons aligned to AeThex sound and the '80s aesthetic.",
+      description:
+        "All lessons aligned to AeThex sound and the '80s aesthetic.",
       icon: Music,
     },
     {
@@ -321,8 +316,8 @@ export default function DocsCurriculumEthos() {
             </CardTitle>
             <CardDescription className="text-gray-300">
               Four progressive modules from foundational synthwave to advanced
-              composition and licensing. Content coming soon—led by the community
-              under AeThex Foundation.
+              composition and licensing. Content coming soon—led by the
+              community under AeThex Foundation.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

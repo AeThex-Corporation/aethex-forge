@@ -22,6 +22,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
 **Technical Scope:**
 
 - **File Upload Component**
+
   - Location: `code/client/components/ethos/TrackUploadModal.tsx`
   - Features:
     - Support MP3, WAV file formats
@@ -31,6 +32,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
   - Storage: Supabase Storage (`ethos-tracks/{user_id}/{track_id}.{ext}`)
 
 - **Track Metadata Form**
+
   - Location: `code/client/components/ethos/TrackMetadataForm.tsx`
   - Fields:
     - `title` (required, text)
@@ -41,6 +43,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
     - `is_published` (optional, toggle)
 
 - **Track Library Page**
+
   - Location: `code/client/pages/ethos/TrackLibrary.tsx`
   - Features:
     - Grid view of all published tracks
@@ -67,6 +70,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
 **Technical Scope:**
 
 - **Artist Profile Page**
+
   - Location: `code/client/pages/ethos/ArtistProfile.tsx`
   - Route: `/ethos/artists/:userId` or `/passport/:username/ethos`
   - Displays:
@@ -80,6 +84,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
     - CTA: "Contact Artist", "Hire for Project"
 
 - **Artist Settings Page**
+
   - Location: `code/client/pages/ethos/ArtistSettings.tsx`
   - Route: `/ethos/settings` (authenticated)
   - Features:
@@ -105,6 +110,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
 **Technical Scope:**
 
 - **NEXUS Audio Category**
+
   - New service category on `/nexus`
   - Display: Audio Production (alongside existing categories)
   - Filter options:
@@ -114,6 +120,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
     - By rating: sort by downloads, artist rating
 
 - **Ethos Service Card** (in NEXUS grid)
+
   - Artist name, avatar, verified badge
   - Sample pricing preview: "Custom Track $500 • SFX Pack $150"
   - Skills tags: [Synthwave] [SFX Design] [Electronic]
@@ -122,6 +129,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
   - CTA: "View Portfolio" → `/ethos/artists/:userId`
 
 - **Integration Points**
+
   - Location: `code/client/pages/Nexus.tsx`
   - Modify:
     - Add "Audio Production" filter/category button
@@ -144,6 +152,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
 **Technical Scope:**
 
 - **Contact Artist Flow**
+
   - Location: `code/client/components/ethos/ContactArtistModal.tsx`
   - When user clicks "Contact Artist" on a track or profile:
     - Modal asks: "What's your project about?"
@@ -154,6 +163,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
   - Email: Notify artist that someone wants to license their track
 
 - **Artist Licensing Dashboard**
+
   - Location: `code/client/pages/ethos/LicensingDashboard.tsx`
   - Tab 1: "Pending Agreements" (awaiting response)
     - Card per agreement: licensee name, track, project desc, created date
@@ -165,6 +175,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
     - Archive of declined agreements
 
 - **Approval Flow**
+
   - Artist clicks "Review & Approve"
   - Modal shows:
     - Licensee info, project description
@@ -185,11 +196,13 @@ This document outlines the Phase 2 technical implementation plan for integrating
 ## UI/UX Design Principles
 
 ### Color Palette
+
 - Primary: Neon pink (#ec4899), purple (#a855f7), cyan (#06b6d4)
 - Synthwave aesthetic: dark backgrounds, glowing accents
 - Consistent with NEXUS (purple) and existing AeThex arms
 
 ### Components
+
 - Reuse existing UI components (Button, Card, Badge, Input, Textarea)
 - Create new Ethos-specific components:
   - `TrackUploadModal.tsx`
@@ -200,6 +213,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
   - `LicensingAgreementCard.tsx`
 
 ### Navigation
+
 - Add Ethos link to main nav: "Ethos Guild"
 - Link to: `/ethos` or `/community/groups/ethos` (Phase 1 page)
 - From Ethos Guild page, link to:
@@ -212,6 +226,7 @@ This document outlines the Phase 2 technical implementation plan for integrating
 ## Database Queries & Indexing
 
 ### Optimized Queries
+
 ```sql
 -- Get all published tracks (with artist info)
 SELECT t.*, p.full_name as artist_name, p.avatar_url
@@ -241,6 +256,7 @@ ORDER BY la.created_at DESC;
 ```
 
 ### Index Strategy
+
 - `ethos_tracks`: index on (is_published, created_at), (user_id), (genre)
 - `ethos_artist_profiles`: index on (for_hire, verified)
 - `ethos_licensing_agreements`: index on (track_id, approved), (licensee_id)
@@ -252,6 +268,7 @@ ORDER BY la.created_at DESC;
 ### Tracks API
 
 **POST /api/ethos/tracks**
+
 ```
 Headers: Authorization: Bearer <token>
 Body: FormData {
@@ -267,12 +284,14 @@ Response: { id, user_id, title, file_url, ... }
 ```
 
 **GET /api/ethos/tracks**
+
 ```
 Query: ?genre=Synthwave&license_type=ecosystem&page=1&limit=20&sort=downloads
 Response: { tracks: [...], total, page, limit }
 ```
 
 **PUT /api/ethos/tracks/:id**
+
 ```
 Headers: Authorization: Bearer <token>
 Body: Partial track update (title, description, genre, license_type, is_published)
@@ -280,6 +299,7 @@ Response: Updated track
 ```
 
 **DELETE /api/ethos/tracks/:id**
+
 ```
 Headers: Authorization: Bearer <token>
 Response: { success: true }
@@ -288,17 +308,20 @@ Response: { success: true }
 ### Artists API
 
 **GET /api/ethos/artists**
+
 ```
 Query: ?for_hire=true&verified=true&page=1&limit=20&skills=Synthwave
 Response: { artists: [...], total }
 ```
 
 **GET /api/ethos/artists/:userId**
+
 ```
 Response: { id, user_id, full_name, avatar_url, bio, skills, for_hire, pricing, stats }
 ```
 
 **PUT /api/ethos/artists/:userId**
+
 ```
 Headers: Authorization: Bearer <token>
 Body: { bio, skills, for_hire, portfolio_url, sample_price_track, ... }
@@ -308,6 +331,7 @@ Response: Updated artist profile
 ### Licensing API
 
 **POST /api/ethos/licensing-agreements**
+
 ```
 Headers: Authorization: Bearer <token>
 Body: { track_id, project_description }
@@ -315,6 +339,7 @@ Response: { id, track_id, licensee_id, status: 'pending', ... }
 ```
 
 **PUT /api/ethos/licensing-agreements/:id**
+
 ```
 Headers: Authorization: Bearer <token> (artist only)
 Body: { approved: boolean, message?: string }
@@ -403,4 +428,3 @@ Once Phase 2 MVP is live:
 - `code/supabase/migrations/20250206_add_ethos_guild.sql` - Database schema
 - `/community/groups/ethos` - Community group landing page
 - `/docs/curriculum/ethos` - Curriculum skeleton
-

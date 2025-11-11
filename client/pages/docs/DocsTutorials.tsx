@@ -225,192 +225,194 @@ export default function DocsTutorials() {
 
   return (
     <DocsLayout title="Tutorials" description="Step-by-step guides">
-    <div>
-      {/* Header */}
-      <div className="mb-8 hidden">
-        <h2 className="text-2xl font-bold text-white mb-4">
-          Documentation Tutorials
-        </h2>
-        <p className="text-gray-300 mb-6">
-          Step-by-step guides and interactive tutorials to help you master
-          AeThex
-        </p>
+      <div>
+        {/* Header */}
+        <div className="mb-8 hidden">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Documentation Tutorials
+          </h2>
+          <p className="text-gray-300 mb-6">
+            Step-by-step guides and interactive tutorials to help you master
+            AeThex
+          </p>
 
-        {/* Filters */}
-        <div className="flex flex-col lg:flex-row gap-4 mb-6">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                placeholder="Search tutorials..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-slate-800/50 border-slate-600 text-white"
-              />
+          {/* Filters */}
+          <div className="flex flex-col lg:flex-row gap-4 mb-6">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search tutorials..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 bg-slate-800/50 border-slate-600 text-white"
+                />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <select
+                value={selectedDifficulty}
+                onChange={(e) => setSelectedDifficulty(e.target.value)}
+                className="bg-slate-800/50 border-slate-600 text-white rounded-md px-3 py-2"
+              >
+                <option value="all">All Levels</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="bg-slate-800/50 border-slate-600 text-white rounded-md px-3 py-2"
+              >
+                <option value="all">All Types</option>
+                <option value="video">Video</option>
+                <option value="article">Article</option>
+                <option value="interactive">Interactive</option>
+              </select>
             </div>
           </div>
-          <div className="flex gap-2">
-            <select
-              value={selectedDifficulty}
-              onChange={(e) => setSelectedDifficulty(e.target.value)}
-              className="bg-slate-800/50 border-slate-600 text-white rounded-md px-3 py-2"
-            >
-              <option value="all">All Levels</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="bg-slate-800/50 border-slate-600 text-white rounded-md px-3 py-2"
-            >
-              <option value="all">All Types</option>
-              <option value="video">Video</option>
-              <option value="article">Article</option>
-              <option value="interactive">Interactive</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Categories Sidebar */}
-        <div className="lg:col-span-1">
-          <Card className="bg-slate-800/50 border-slate-700">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center">
-                <Filter className="h-5 w-5 mr-2" />
-                Categories
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {categories.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-all ${
-                      selectedCategory === category.id
-                        ? "bg-purple-600 text-white"
-                        : "bg-slate-900/50 text-gray-300 hover:bg-slate-700/50"
-                    }`}
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span className="text-sm font-medium">{category.name}</span>
-                  </button>
-                );
-              })}
-            </CardContent>
-          </Card>
         </div>
 
-        {/* Tutorials Grid */}
-        <div className="lg:col-span-3">
-          <div className="mb-4">
-            <p className="text-gray-400">
-              Showing {filteredTutorials.length} tutorials
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {filteredTutorials.map((tutorial) => {
-              const TypeIcon = getTypeIcon(tutorial.type);
-              return (
-                <Card
-                  key={tutorial.id}
-                  className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group"
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-3">
-                          <TypeIcon
-                            className={`h-5 w-5 ${getTypeColor(tutorial.type)}`}
-                          />
-                          <Badge variant="outline" className="text-xs">
-                            {tutorial.category}
-                          </Badge>
-                          <Badge
-                            className={`${getDifficultyColor(tutorial.difficulty)} text-white text-xs`}
-                          >
-                            {tutorial.difficulty}
-                          </Badge>
-                          {tutorial.isNew && (
-                            <Badge className="bg-green-600 text-white text-xs">
-                              New
-                            </Badge>
-                          )}
-                        </div>
-
-                        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
-                          {tutorial.title}
-                        </h3>
-
-                        <p className="text-gray-400 mb-4">
-                          {tutorial.description}
-                        </p>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4 text-sm text-gray-500">
-                            <div className="flex items-center">
-                              <Clock className="h-4 w-4 mr-1" />
-                              {tutorial.duration}
-                            </div>
-                            <div className="flex items-center">
-                              <User className="h-4 w-4 mr-1" />
-                              {tutorial.author}
-                            </div>
-                            <div className="flex items-center">
-                              <Star className="h-4 w-4 mr-1 text-yellow-400" />
-                              {tutorial.rating}
-                            </div>
-                            <div className="flex items-center">
-                              <Eye className="h-4 w-4 mr-1" />
-                              {tutorial.views}
-                            </div>
-                            <div className="flex items-center">
-                              <Heart className="h-4 w-4 mr-1" />
-                              {tutorial.likes}
-                            </div>
-                          </div>
-
-                          <Button
-                            asChild
-                            className="bg-purple-600 hover:bg-purple-700"
-                          >
-                            <Link to={tutorial.path}>
-                              Start Tutorial
-                              <ChevronRight className="h-4 w-4 ml-2" />
-                            </Link>
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          {filteredTutorials.length === 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Categories Sidebar */}
+          <div className="lg:col-span-1">
             <Card className="bg-slate-800/50 border-slate-700">
-              <CardContent className="p-8 text-center">
-                <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  No tutorials found
-                </h3>
-                <p className="text-gray-400">
-                  Try adjusting your search terms or filters to find what you're
-                  looking for.
-                </p>
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <Filter className="h-5 w-5 mr-2" />
+                  Categories
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {categories.map((category) => {
+                  const Icon = category.icon;
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category.id)}
+                      className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-all ${
+                        selectedCategory === category.id
+                          ? "bg-purple-600 text-white"
+                          : "bg-slate-900/50 text-gray-300 hover:bg-slate-700/50"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span className="text-sm font-medium">
+                        {category.name}
+                      </span>
+                    </button>
+                  );
+                })}
               </CardContent>
             </Card>
-          )}
+          </div>
+
+          {/* Tutorials Grid */}
+          <div className="lg:col-span-3">
+            <div className="mb-4">
+              <p className="text-gray-400">
+                Showing {filteredTutorials.length} tutorials
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {filteredTutorials.map((tutorial) => {
+                const TypeIcon = getTypeIcon(tutorial.type);
+                return (
+                  <Card
+                    key={tutorial.id}
+                    className="bg-slate-800/50 border-slate-700 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group"
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-3">
+                            <TypeIcon
+                              className={`h-5 w-5 ${getTypeColor(tutorial.type)}`}
+                            />
+                            <Badge variant="outline" className="text-xs">
+                              {tutorial.category}
+                            </Badge>
+                            <Badge
+                              className={`${getDifficultyColor(tutorial.difficulty)} text-white text-xs`}
+                            >
+                              {tutorial.difficulty}
+                            </Badge>
+                            {tutorial.isNew && (
+                              <Badge className="bg-green-600 text-white text-xs">
+                                New
+                              </Badge>
+                            )}
+                          </div>
+
+                          <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                            {tutorial.title}
+                          </h3>
+
+                          <p className="text-gray-400 mb-4">
+                            {tutorial.description}
+                          </p>
+
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                              <div className="flex items-center">
+                                <Clock className="h-4 w-4 mr-1" />
+                                {tutorial.duration}
+                              </div>
+                              <div className="flex items-center">
+                                <User className="h-4 w-4 mr-1" />
+                                {tutorial.author}
+                              </div>
+                              <div className="flex items-center">
+                                <Star className="h-4 w-4 mr-1 text-yellow-400" />
+                                {tutorial.rating}
+                              </div>
+                              <div className="flex items-center">
+                                <Eye className="h-4 w-4 mr-1" />
+                                {tutorial.views}
+                              </div>
+                              <div className="flex items-center">
+                                <Heart className="h-4 w-4 mr-1" />
+                                {tutorial.likes}
+                              </div>
+                            </div>
+
+                            <Button
+                              asChild
+                              className="bg-purple-600 hover:bg-purple-700"
+                            >
+                              <Link to={tutorial.path}>
+                                Start Tutorial
+                                <ChevronRight className="h-4 w-4 ml-2" />
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {filteredTutorials.length === 0 && (
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="p-8 text-center">
+                  <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    No tutorials found
+                  </h3>
+                  <p className="text-gray-400">
+                    Try adjusting your search terms or filters to find what
+                    you're looking for.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </DocsLayout>
   );
 }

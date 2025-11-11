@@ -235,7 +235,11 @@ export default function EthosGuild() {
 
         {/* Tabs: Overview, Features, Curriculum, etc */}
         <section>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-3 bg-black/50 border border-pink-500/30">
               <TabsTrigger
                 value="overview"

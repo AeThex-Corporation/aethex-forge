@@ -1,4 +1,5 @@
 <!-- INTERNAL: Operational doc - DO NOT PUBLISH TO PUBLIC DOCS -->
+
 # Discord OAuth Setup Verification Checklist
 
 ## 🔴 CRITICAL: OAuth Redirect URI Registration

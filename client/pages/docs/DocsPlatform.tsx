@@ -365,23 +365,47 @@ export default function DocsPlatform() {
       <section id="architecture" className="space-y-6">
         <div className="flex items-center gap-3">
           <Globe className="h-6 w-6 text-cyan-300" />
-          <h3 className="text-2xl font-semibold text-white">Architecture overview</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Architecture overview
+          </h3>
         </div>
         <Card className="bg-slate-900/60 border-slate-700">
           <CardContent>
             <p className="text-gray-300 text-sm leading-relaxed">
-              AeThex is composed of a lightweight React + Vite frontend, a Node.js backend that
-              exposes API endpoints (under <code>/api/*</code>), and a Supabase-backed PostgreSQL
-              database. The system integrates several services:
+              AeThex is composed of a lightweight React + Vite frontend, a
+              Node.js backend that exposes API endpoints (under{" "}
+              <code>/api/*</code>), and a Supabase-backed PostgreSQL database.
+              The system integrates several services:
             </p>
             <ul className="list-disc pl-6 mt-3 text-gray-300 text-sm space-y-2">
-              <li><strong>Frontend:</strong> React + TypeScript, Docs and Internal hubs use a separate layout and access control.</li>
-              <li><strong>Backend:</strong> Node/Express handlers for public APIs, Discord webhooks, and OAuth flows.</li>
-              <li><strong>Database:</strong> Supabase (Postgres) stores user profiles, creator data, and operational tables. Migrations live under <code>code/supabase/migrations</code>.</li>
-              <li><strong>Integrations:</strong> OAuth providers (Google, GitHub, Discord, Roblox), Discord bot for role mapping & verification, and optional Web3 wallet linking.</li>
-              <li><strong>Docs & CMS:</strong> Public docs are rendered with DocsLayout and editable in Builder CMS (MCP). Internal docs live under <code>/internal-docs</code> and require authentication.</li>
+              <li>
+                <strong>Frontend:</strong> React + TypeScript, Docs and Internal
+                hubs use a separate layout and access control.
+              </li>
+              <li>
+                <strong>Backend:</strong> Node/Express handlers for public APIs,
+                Discord webhooks, and OAuth flows.
+              </li>
+              <li>
+                <strong>Database:</strong> Supabase (Postgres) stores user
+                profiles, creator data, and operational tables. Migrations live
+                under <code>code/supabase/migrations</code>.
+              </li>
+              <li>
+                <strong>Integrations:</strong> OAuth providers (Google, GitHub,
+                Discord, Roblox), Discord bot for role mapping & verification,
+                and optional Web3 wallet linking.
+              </li>
+              <li>
+                <strong>Docs & CMS:</strong> Public docs are rendered with
+                DocsLayout and editable in Builder CMS (MCP). Internal docs live
+                under <code>/internal-docs</code> and require authentication.
+              </li>
             </ul>
-            <p className="mt-3 text-gray-300 text-sm">This arrangement lets staff operate private operational processes while exposing curated platform docs publicly.</p>
+            <p className="mt-3 text-gray-300 text-sm">
+              This arrangement lets staff operate private operational processes
+              while exposing curated platform docs publicly.
+            </p>
           </CardContent>
         </Card>
       </section>
@@ -390,16 +414,42 @@ export default function DocsPlatform() {
       <section id="troubleshooting" className="space-y-6">
         <div className="flex items-center gap-3">
           <ShieldCheck className="h-6 w-6 text-cyan-300" />
-          <h3 className="text-2xl font-semibold text-white">Common troubleshooting</h3>
+          <h3 className="text-2xl font-semibold text-white">
+            Common troubleshooting
+          </h3>
         </div>
         <Card className="bg-slate-900/60 border-slate-700">
           <CardContent>
-            <h4 className="text-white font-semibold mb-2">OAuth redirect issues</h4>
-            <p className="text-gray-300 text-sm">If an OAuth provider returns an <code>invalid_redirect_uri</code> error, verify that the callback URL configured in the provider matches the deployed app's API base (e.g. <code>https://aethex.dev/api/discord/oauth/callback</code> for Discord). For local development use the configured VITE_API_BASE when available.</p>
-            <h4 className="text-white font-semibold mt-4 mb-2">Session/linking problems</h4>
-            <p className="text-gray-300 text-sm">If a linking flow (e.g. linking Discord) redirects to login or loses session, check cookie SameSite settings and ensure the redirect URI domain matches where cookies are set. Staff can consult internal docs under <code>/internal-docs/onboarding</code> for detailed diagnostic steps.</p>
-            <h4 className="text-white font-semibold mt-4 mb-2">Missing emails</h4>
-            <p className="text-gray-300 text-sm">Verification and notification emails are sent from <code>support@aethex.tech</code>. If emails are not arriving, check spam filters and outbound SMTP logs (Hostinger) for delivery failures.</p>
+            <h4 className="text-white font-semibold mb-2">
+              OAuth redirect issues
+            </h4>
+            <p className="text-gray-300 text-sm">
+              If an OAuth provider returns an <code>invalid_redirect_uri</code>{" "}
+              error, verify that the callback URL configured in the provider
+              matches the deployed app's API base (e.g.{" "}
+              <code>https://aethex.dev/api/discord/oauth/callback</code> for
+              Discord). For local development use the configured VITE_API_BASE
+              when available.
+            </p>
+            <h4 className="text-white font-semibold mt-4 mb-2">
+              Session/linking problems
+            </h4>
+            <p className="text-gray-300 text-sm">
+              If a linking flow (e.g. linking Discord) redirects to login or
+              loses session, check cookie SameSite settings and ensure the
+              redirect URI domain matches where cookies are set. Staff can
+              consult internal docs under <code>/internal-docs/onboarding</code>{" "}
+              for detailed diagnostic steps.
+            </p>
+            <h4 className="text-white font-semibold mt-4 mb-2">
+              Missing emails
+            </h4>
+            <p className="text-gray-300 text-sm">
+              Verification and notification emails are sent from{" "}
+              <code>support@aethex.tech</code>. If emails are not arriving,
+              check spam filters and outbound SMTP logs (Hostinger) for delivery
+              failures.
+            </p>
           </CardContent>
         </Card>
       </section>
