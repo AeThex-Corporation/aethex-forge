@@ -4904,6 +4904,7 @@ export function createServer() {
             department: "Executive",
             phone: "+1 (555) 000-0001",
             role: "owner",
+            location: "San Francisco, CA",
           },
           {
             email: "jordan@aethex.dev",
@@ -4912,6 +4913,7 @@ export function createServer() {
             department: "Engineering",
             phone: "+1 (555) 000-0002",
             role: "admin",
+            location: "New York, NY",
           },
           {
             email: "sam@aethex.dev",
@@ -4920,6 +4922,7 @@ export function createServer() {
             department: "Community",
             phone: "+1 (555) 000-0003",
             role: "staff",
+            location: "Austin, TX",
           },
           {
             email: "taylor@aethex.dev",
@@ -4928,6 +4931,7 @@ export function createServer() {
             department: "Operations",
             phone: "+1 (555) 000-0004",
             role: "staff",
+            location: "Seattle, WA",
           },
           {
             email: "casey@aethex.dev",
@@ -4936,6 +4940,7 @@ export function createServer() {
             department: "Engineering",
             phone: "+1 (555) 000-0005",
             role: "employee",
+            location: "San Francisco, CA",
           },
           {
             email: "morgan@aethex.dev",
@@ -4944,6 +4949,7 @@ export function createServer() {
             department: "Design",
             phone: "+1 (555) 000-0006",
             role: "employee",
+            location: "Los Angeles, CA",
           },
           {
             email: "alex.kim@aethex.dev",
@@ -4952,6 +4958,7 @@ export function createServer() {
             department: "Marketing",
             phone: "+1 (555) 000-0007",
             role: "staff",
+            location: "Boston, MA",
           },
           {
             email: "jordan.lee@aethex.dev",
