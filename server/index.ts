@@ -163,7 +163,7 @@ const handleDiscordInteractions = async (
           return res.json({
             type: 4,
             data: {
-              content: "❌ An error occurred. Please try again later.",
+              content: "�� An error occurred. Please try again later.",
               flags: 64,
             },
           });
@@ -4949,16 +4949,27 @@ export function createServer() {
           },
         ];
 
-        const { data, error } = await adminSupabase
-          .from("staff_members")
-          .insert(mockMembers)
-          .select();
+        try {
+          const { data, error } = await adminSupabase
+            .from("staff_members")
+            .insert(mockMembers)
+            .select();
 
-        if (error) {
-          console.error("[Staff Seed Error] Full error:", JSON.stringify(error));
+          if (error) {
+            console.error("[Staff Seed Error] Supabase error:", error);
+            return res.status(500).json({
+              error: "Failed to seed staff members",
+              supabaseError: error,
+              mockMembersCount: mockMembers.length,
+            });
+          }
+
+          console.log("[Staff Seed Success] Inserted", data?.length || 0, "members");
+        } catch (insertError: any) {
+          console.error("[Staff Seed Insert Error]", insertError);
           return res.status(500).json({
-            error: "Failed to seed staff members",
-            fullError: error,
+            error: "Exception during insert",
+            message: insertError?.message || String(insertError),
           });
         }
 
