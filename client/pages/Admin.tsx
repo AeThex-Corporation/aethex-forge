@@ -695,6 +695,10 @@ export default function Admin() {
                   </div>
                 </TabsContent>
 
+                <TabsContent value="ethos" className="space-y-6">
+                  <AdminEthosVerification />
+                </TabsContent>
+
                 <TabsContent value="discord" className="space-y-6">
                   <AdminDiscordManagement />
                   <AdminDiscordDiagnostic />
