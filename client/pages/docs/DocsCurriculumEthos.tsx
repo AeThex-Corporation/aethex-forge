@@ -529,7 +529,7 @@ const curriculumModules: CurriculumModule[] = [
           "Distribute your music to Spotify, Apple Music, Bandcamp",
           "Balance platform presence (streaming, Ethos, indie sites)",
         ],
-        content: "Diversify income: streaming (Spotify, Apple Music) generates passive royalties (~$0.003-0.005/stream). Direct sales (Bandcamp, Gumroad) capture 85%+ of revenue. Licensing (NEXUS, Ethos) is highest income. Upload to all—Distrokid, CD Baby, or directly to platforms. Prioritize Ethos and NEXUS for community and licensing. Use Bandcamp for fans who want to support you. This multi-platform approach maximizes reach and income.",
+        content: "Diversify income: streaming (Spotify, Apple Music) generates passive royalties (~$0.003-0.005/stream). Direct sales (Bandcamp, Gumroad) capture 85%+ of revenue. Licensing (NEXUS, Ethos) is highest income. Upload to all��Distrokid, CD Baby, or directly to platforms. Prioritize Ethos and NEXUS for community and licensing. Use Bandcamp for fans who want to support you. This multi-platform approach maximizes reach and income.",
         exercises: [
           "Set up DistroKid or CD Baby account and upload a track",
           "Create a Bandcamp profile and set pricing",
@@ -816,22 +816,32 @@ export default function DocsCurriculumEthos() {
           <Card className="border-pink-500/30 bg-black/50 backdrop-blur">
             <CardHeader>
               <CardTitle className="text-xl text-white">
-                Development Status
+                🎉 Phase 3: Content Live
               </CardTitle>
               <CardDescription className="text-gray-300">
-                Phase 1: Foundation complete. Content coming in Phase 3.
+                All 23 lessons across 4 modules are now live and ready to learn!
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-start gap-3">
+                <CheckCircle className="mt-1 h-5 w-5 text-emerald-400" />
+                <div>
+                  <p className="text-sm font-semibold text-white">
+                    Full Curriculum Live
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    23 complete lessons with objectives, content, exercises, and resources.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
                 <Zap className="mt-1 h-5 w-5 text-pink-400" />
                 <div>
                   <p className="text-sm font-semibold text-white">
-                    Database & Structure Ready
+                    Database & Marketplace Ready
                   </p>
                   <p className="text-sm text-gray-400">
-                    Ethos tracks table, artist profiles, and licensing
-                    agreements are built and tested.
+                    Ethos tracks, artist profiles, and licensing agreements integrated with NEXUS marketplace.
                   </p>
                 </div>
               </div>
