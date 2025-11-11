@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, Search, Edit2, X, Trash2 } from "lucide-react";
+import { Mail, Phone, MapPin, Search, Edit2, X, Trash2, Sparkles } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import { aethexToast } from "@/lib/aethex-toast";
 import {
