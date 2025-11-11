@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Calendar } from "lucide-react";
+import { blogSeedPosts } from "@/data/blogSeed";
 import FourOhFourPage from "./404";
 
 export default function BlogPost() {
