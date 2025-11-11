@@ -68,7 +68,8 @@ export default async function handler(req: any, res: any) {
       }
 
       // Query database for the temporary linking session
-      const { data: session, error: sessionError } = await adminSupabase
+      const adminClient = getAdminClient();
+      const { data: session, error: sessionError } = await adminClient
         .from("discord_linking_sessions")
         .select("user_id")
         .eq("session_token", sessionToken)
@@ -92,7 +93,8 @@ export default async function handler(req: any, res: any) {
       );
 
       // Clean up: delete the temporary session
-      await adminSupabase
+      const adminClient2 = getAdminClient();
+      await adminClient2
         .from("discord_linking_sessions")
         .delete()
         .eq("session_token", sessionToken);
@@ -170,7 +172,7 @@ export default async function handler(req: any, res: any) {
     }
 
     // Initialize Supabase client with service role
-    const supabase = createClient(supabaseUrl, supabaseServiceRole);
+    const supabase = getAdminClient();
 
     // LINKING FLOW: Link Discord to authenticated user
     if (isLinkingFlow && authenticatedUserId) {
