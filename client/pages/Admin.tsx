@@ -331,8 +331,10 @@ export default function Admin() {
         }
       />
       <Layout>
-        <div className="min-h-screen bg-aethex-gradient py-8">
-          <div className="container mx-auto px-4 max-w-7xl">
+        <div className="min-h-screen bg-aethex-gradient flex">
+          <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="flex-1 overflow-y-auto py-8">
+            <div className="container mx-auto px-4 max-w-7xl">
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-aethex-200 mb-2">
                 Control Center
@@ -737,7 +739,8 @@ export default function Admin() {
                   </CardContent>
                 </Card>
               </TabsContent>
-            </Tabs>
+              </Tabs>
+            </div>
           </div>
         </div>
       </Layout>
