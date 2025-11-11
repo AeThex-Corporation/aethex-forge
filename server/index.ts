@@ -4882,6 +4882,22 @@ export function createServer() {
           });
         }
 
+        // First, check if table exists and is accessible
+        const { data: existingData, error: existingError } = await adminSupabase
+          .from("staff_members")
+          .select("count")
+          .limit(1);
+
+        if (existingError) {
+          console.error("[Staff Seed] Table check error:", existingError);
+          return res.status(500).json({
+            error: "Cannot access staff_members table",
+            tableError: existingError,
+          });
+        }
+
+        console.log("[Staff Seed] Table exists and is accessible");
+
         const mockMembers = [
           {
             email: "alex@aethex.dev",
