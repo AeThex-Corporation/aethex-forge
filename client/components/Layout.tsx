@@ -176,7 +176,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
           </div>
 
           {/* Auth Section */}
-          <div className="flex items-center gap-2 md:gap-4 animate-slide-left shrink-0">
+          <div className="flex items-center gap-1 md:gap-3 animate-slide-left shrink-0 overflow-hidden">
             <div className="md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
