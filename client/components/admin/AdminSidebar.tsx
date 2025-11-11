@@ -157,6 +157,12 @@ export default function AdminSidebar({
           onClick: () => onTabChange("arm-metrics"),
         },
         {
+          id: "ethos",
+          label: "Ethos Verification",
+          icon: <Music className="h-4 w-4" />,
+          onClick: () => onTabChange("ethos"),
+        },
+        {
           id: "discord",
           label: "Discord Management",
           icon: <Command className="h-4 w-4" />,
