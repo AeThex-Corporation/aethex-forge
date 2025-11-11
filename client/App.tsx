@@ -546,6 +546,16 @@ const App = () => (
                       element={<Space5Finance />}
                     />
 
+                    {/* Staff Pages Routes */}
+                    <Route path="/staff/announcements" element={<StaffAnnouncements />} />
+                    <Route path="/staff/expense-reports" element={<StaffExpenseReports />} />
+                    <Route path="/staff/marketplace" element={<StaffInternalMarketplace />} />
+                    <Route path="/staff/knowledge-base" element={<StaffKnowledgeBase />} />
+                    <Route path="/staff/learning-portal" element={<StaffLearningPortal />} />
+                    <Route path="/staff/performance-reviews" element={<StaffPerformanceReviews />} />
+                    <Route path="/staff/project-tracking" element={<StaffProjectTracking />} />
+                    <Route path="/staff/team-handbook" element={<StaffTeamHandbook />} />
+
                     {/* Explicit 404 route for static hosting fallbacks */}
                     <Route path="/404" element={<FourOhFourPage />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
