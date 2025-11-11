@@ -372,50 +372,6 @@ const App = () => (
                     />
                     <Route path="/community/:tabId" element={<Community />} />
 
-                    {/* Admin & Staff Routes - Unified */}
-                    <Route
-                      path="/admin/staff/directory"
-                      element={<StaffDirectory />}
-                    />
-                    <Route path="/admin/staff/admin" element={<StaffAdmin />} />
-                    <Route path="/admin/staff/docs" element={<StaffDocs />} />
-                    <Route
-                      path="/admin/staff/achievements"
-                      element={<StaffAchievements />}
-                    />
-                    <Route path="/admin/staff/chat" element={<StaffChat />} />
-                    <Route
-                      path="/admin/staff/knowledge-base"
-                      element={<StaffKnowledgeBase />}
-                    />
-                    <Route
-                      path="/admin/staff/team-handbook"
-                      element={<StaffTeamHandbook />}
-                    />
-                    <Route
-                      path="/admin/staff/project-tracking"
-                      element={<StaffProjectTracking />}
-                    />
-                    <Route
-                      path="/admin/staff/learning-portal"
-                      element={<StaffLearningPortal />}
-                    />
-                    <Route
-                      path="/admin/staff/marketplace"
-                      element={<StaffInternalMarketplace />}
-                    />
-                    <Route
-                      path="/admin/staff/announcements"
-                      element={<StaffAnnouncements />}
-                    />
-                    <Route
-                      path="/admin/staff/performance-reviews"
-                      element={<StaffPerformanceReviews />}
-                    />
-                    <Route
-                      path="/admin/staff/expenses"
-                      element={<StaffExpenseReports />}
-                    />
 
                     <Route path="/support" element={<Support />} />
                     <Route path="/status" element={<Status />} />
