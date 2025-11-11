@@ -201,7 +201,7 @@ export default function Staff() {
             {/* CTA Button */}
             <div className="flex justify-center mb-16 animate-fade-in animation-delay-300">
               <Button
-                onClick={() => navigate("/staff/announcements")}
+                onClick={() => navigate("/staff/dashboard")}
                 className="bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white font-semibold px-8 py-3 text-lg group hover-lift"
               >
                 Access Portal
