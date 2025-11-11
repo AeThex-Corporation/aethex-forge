@@ -335,6 +335,7 @@ const App = () => (
                     <Route path="/staff/admin" element={<StaffAdmin />} />
                     <Route path="/staff/chat" element={<StaffChat />} />
                     <Route path="/staff/docs" element={<StaffDocs />} />
+                    <Route path="/staff/achievements" element={<StaffAchievements />} />
 
                     {/* Dev-Link routes */}
                     <Route path="/dev-link" element={<DevLink />} />
