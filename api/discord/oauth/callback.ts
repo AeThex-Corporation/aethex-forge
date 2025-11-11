@@ -68,8 +68,8 @@ export default async function handler(req: any, res: any) {
       }
 
       // Query database for the temporary linking session
-      const adminClient = getAdminClient();
-      const { data: session, error: sessionError } = await adminClient
+      const tempAdminClient = getAdminClient();
+      const { data: session, error: sessionError } = await tempAdminClient
         .from("discord_linking_sessions")
         .select("user_id")
         .eq("session_token", sessionToken)
@@ -93,8 +93,7 @@ export default async function handler(req: any, res: any) {
       );
 
       // Clean up: delete the temporary session
-      const adminClient2 = getAdminClient();
-      await adminClient2
+      await tempAdminClient
         .from("discord_linking_sessions")
         .delete()
         .eq("session_token", sessionToken);
