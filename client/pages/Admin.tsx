@@ -532,40 +532,40 @@ export default function Admin() {
               </TabsContent>
 
               <TabsContent value="staff" className="space-y-6">
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Users className="h-5 w-5 text-purple-300" />
-                      <CardTitle>Staff Management</CardTitle>
-                    </div>
-                    <CardDescription>
-                      Manage AeThex staff, employees, and contractors
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      Staff management and team collaboration tools are consolidated within the Admin Control Center. Use the tabs above to access team metrics, member management, and community features.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setActiveTab("community")}
-                      >
-                        <Users className="h-4 w-4 mr-2" />
-                        Member Management
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setActiveTab("arm-metrics")}
-                      >
-                        <BarChart3 className="h-4 w-4 mr-2" />
-                        Team Metrics
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Tabs defaultValue="operations" className="space-y-4">
+                  <TabsList className="w-full justify-start gap-2 border border-border/40 bg-background/40 px-1 py-1 backdrop-blur flex-wrap h-auto">
+                    <TabsTrigger value="operations">Operations</TabsTrigger>
+                    <TabsTrigger value="directory">Directory</TabsTrigger>
+                    <TabsTrigger value="chat">Chat</TabsTrigger>
+                    <TabsTrigger value="admin">Admin</TabsTrigger>
+                    <TabsTrigger value="docs">Docs</TabsTrigger>
+                    <TabsTrigger value="achievements">Achievements</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="operations" className="space-y-6">
+                    <AdminStaffOperations />
+                  </TabsContent>
+
+                  <TabsContent value="directory" className="space-y-6">
+                    <AdminStaffDirectory />
+                  </TabsContent>
+
+                  <TabsContent value="chat" className="space-y-6">
+                    <AdminStaffChat />
+                  </TabsContent>
+
+                  <TabsContent value="admin" className="space-y-6">
+                    <AdminStaffAdmin />
+                  </TabsContent>
+
+                  <TabsContent value="docs" className="space-y-6">
+                    <AdminStaffDocs />
+                  </TabsContent>
+
+                  <TabsContent value="achievements" className="space-y-6">
+                    <AdminStaffAchievements />
+                  </TabsContent>
+                </Tabs>
               </TabsContent>
 
               <TabsContent value="content" className="space-y-6">
