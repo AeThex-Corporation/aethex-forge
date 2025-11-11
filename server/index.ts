@@ -751,12 +751,21 @@ export function createServer() {
             .json({ error: "Discord client ID not configured" });
         }
 
-        // Get the current API base from the request origin
-        const protocol =
-          req.headers["x-forwarded-proto"] || req.protocol || "https";
-        const host =
-          req.headers["x-forwarded-host"] || req.hostname || req.get("host");
-        const apiBase = `${protocol}://${host}`;
+        // Use the API base URL (should match Discord Dev Portal redirect URI)
+        let apiBase =
+          process.env.VITE_API_BASE ||
+          process.env.API_BASE ||
+          process.env.PUBLIC_BASE_URL ||
+          process.env.SITE_URL;
+
+        if (!apiBase) {
+          // Fallback to request origin if no env var is set
+          const protocol =
+            req.headers["x-forwarded-proto"] || req.protocol || "https";
+          const host =
+            req.headers["x-forwarded-host"] || req.hostname || req.get("host");
+          apiBase = `${protocol}://${host}`;
+        }
 
         const redirectUri = `${apiBase}/api/discord/oauth/callback`;
 
