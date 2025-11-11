@@ -37,6 +37,13 @@ interface ArtistProfile {
   sample_price_sfx?: number;
   sample_price_score?: number;
   turnaround_days?: number;
+  verified?: boolean;
+}
+
+interface VerificationStatus {
+  status: "pending" | "approved" | "rejected" | "none";
+  submitted_at?: string;
+  rejection_reason?: string;
 }
 
 export default function ArtistSettings() {
