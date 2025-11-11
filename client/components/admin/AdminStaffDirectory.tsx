@@ -361,6 +361,12 @@ export default function AdminStaffDirectory() {
                     </a>
                   </div>
                 )}
+                {member.location && (
+                  <div className="flex items-center gap-3 text-sm">
+                    <MapPin className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                    <span>{member.location}</span>
+                  </div>
+                )}
                 {member.hired_date && (
                   <div className="text-xs text-muted-foreground">
                     Hired: {new Date(member.hired_date).toLocaleDateString()}
