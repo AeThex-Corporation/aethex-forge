@@ -66,7 +66,7 @@ export default function Login() {
   const [resetEmail, setResetEmail] = useState("");
   const [errorFromUrl, setErrorFromUrl] = useState<string | null>(null);
   const [discordLinkedEmail, setDiscordLinkedEmail] = useState<string | null>(
-    null
+    null,
   );
   const navigate = useNavigate();
   const location = useLocation();

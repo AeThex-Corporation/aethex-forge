@@ -284,9 +284,11 @@ export default async function handler(req: any, res: any) {
 
     // Discord is now linked! Redirect to login for user to sign in
     // The email is passed so they can see which account was linked
-    console.log("[Discord OAuth] Discord linked successfully, redirecting to login");
+    console.log(
+      "[Discord OAuth] Discord linked successfully, redirecting to login",
+    );
     return res.redirect(
-      `/login?discord_linked=true&email=${encodeURIComponent(discordUser.email)}`
+      `/login?discord_linked=true&email=${encodeURIComponent(discordUser.email)}`,
     );
   } catch (error) {
     console.error("[Discord OAuth] Callback error:", error);
