@@ -9,6 +9,7 @@ The email linking system allows users to authenticate with multiple email addres
 ### Database Tables
 
 #### `user_email_links`
+
 Links multiple email addresses to a single user account.
 
 ```sql
@@ -23,6 +24,7 @@ Links multiple email addresses to a single user account.
 ```
 
 #### `user_profiles` (additions)
+
 ```sql
 - primary_email: TEXT (the primary email for the account)
 - is_dev_account: BOOLEAN (marks if this is a developer account)
@@ -72,6 +74,7 @@ UI shows: "Also logged in as mrpiglr@gmail.com"
 Resolve a linked email to its primary email address.
 
 **Request:**
+
 ```json
 {
   "email": "mrpiglr@gmail.com"
@@ -79,6 +82,7 @@ Resolve a linked email to its primary email address.
 ```
 
 **Response (linked email):**
+
 ```json
 {
   "primaryEmail": "mrpiglr@aethex.dev",
@@ -88,6 +92,7 @@ Resolve a linked email to its primary email address.
 ```
 
 **Response (non-linked email):**
+
 ```json
 {
   "primaryEmail": "some@email.com"
@@ -99,6 +104,7 @@ Resolve a linked email to its primary email address.
 Link two existing user accounts by merging one into the other.
 
 **Request:**
+
 ```json
 {
   "primaryEmail": "mrpiglr@aethex.dev",
@@ -107,6 +113,7 @@ Link two existing user accounts by merging one into the other.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -121,6 +128,7 @@ Link two existing user accounts by merging one into the other.
 Special endpoint to link the mrpiglr accounts.
 
 **Request:**
+
 ```bash
 curl -X POST https://aethex.dev/api/user/link-mrpiglr-accounts \
   -H "Authorization: Bearer mrpiglr-admin-token" \
@@ -128,6 +136,7 @@ curl -X POST https://aethex.dev/api/user/link-mrpiglr-accounts \
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -168,6 +177,7 @@ When two accounts are merged:
 ### For Developers (Dev Accounts)
 
 Developer accounts with `@aethex.dev` email:
+
 - `is_dev_account = true`
 - `primary_email = "@aethex.dev email"`
 - Public profile shows work email
@@ -209,6 +219,7 @@ curl -X POST https://aethex.dev/api/user/resolve-linked-email \
 Applied via: `code/supabase/migrations/20250206_add_email_linking.sql`
 
 Includes:
+
 - `user_email_links` table with RLS policies
 - `get_primary_user_by_email()` function
 - Columns on `user_profiles` for dev accounts and primary email

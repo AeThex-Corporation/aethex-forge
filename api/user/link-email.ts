@@ -15,7 +15,7 @@ export default async (req: Request) => {
     if (!primaryEmail || !linkedEmail) {
       return new Response(
         JSON.stringify({ error: "Missing primaryEmail or linkedEmail" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -32,7 +32,7 @@ export default async (req: Request) => {
           error: "Primary email not found",
           details: primaryError?.message,
         }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -49,7 +49,7 @@ export default async (req: Request) => {
           error: "Linked email not found",
           details: linkedError?.message,
         }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -138,7 +138,7 @@ export default async (req: Request) => {
 
     // Insert or update primary email
     const primaryEmailExists = existingLinks?.some(
-      (l) => l.email === primaryEmail
+      (l) => l.email === primaryEmail,
     );
     if (!primaryEmailExists) {
       await supabase.from("user_email_links").insert({
@@ -151,7 +151,7 @@ export default async (req: Request) => {
 
     // Insert or update linked email
     const linkedEmailExists = existingLinks?.some(
-      (l) => l.email === linkedEmail
+      (l) => l.email === linkedEmail,
     );
     if (!linkedEmailExists) {
       await supabase.from("user_email_links").insert({
@@ -193,7 +193,7 @@ export default async (req: Request) => {
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error: any) {
     console.error("[Email Linking Error]", error);
@@ -205,7 +205,7 @@ export default async (req: Request) => {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 };

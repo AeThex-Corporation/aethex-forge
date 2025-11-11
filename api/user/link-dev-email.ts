@@ -38,7 +38,7 @@ export default async (req: Request) => {
     if (mainError || !mainUser) {
       return new Response(
         JSON.stringify({ error: `User ${mainEmail} not found` }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -57,17 +57,19 @@ export default async (req: Request) => {
           email: devEmail,
           user_id: mainUser.user_id,
         }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
+        { status: 200, headers: { "Content-Type": "application/json" } },
       );
     }
 
     // Link .dev email to main user
-    const { error: linkError } = await supabase.from("user_email_links").insert({
-      user_id: mainUser.user_id,
-      email: devEmail,
-      is_primary: false,
-      verified_at: new Date().toISOString(),
-    });
+    const { error: linkError } = await supabase
+      .from("user_email_links")
+      .insert({
+        user_id: mainUser.user_id,
+        email: devEmail,
+        is_primary: false,
+        verified_at: new Date().toISOString(),
+      });
 
     if (linkError) {
       throw linkError;
@@ -81,7 +83,7 @@ export default async (req: Request) => {
         mainEmail,
         userId: mainUser.user_id,
       }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+      { status: 200, headers: { "Content-Type": "application/json" } },
     );
   } catch (error: any) {
     console.error("[Link Dev Email Error]", error);
@@ -90,7 +92,7 @@ export default async (req: Request) => {
         error: "Failed to link email",
         details: error.message,
       }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 };

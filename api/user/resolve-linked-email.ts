@@ -12,10 +12,10 @@ export default async (req: Request) => {
     const { email } = await req.json();
 
     if (!email) {
-      return new Response(
-        JSON.stringify({ error: "Email is required" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Email is required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const supabase = getAdminClient();
@@ -34,10 +34,10 @@ export default async (req: Request) => {
 
     if (!emailLink) {
       // Email is not linked, return the email as-is
-      return new Response(
-        JSON.stringify({ primaryEmail: email }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ primaryEmail: email }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Get the primary email for this user
@@ -50,10 +50,10 @@ export default async (req: Request) => {
     if (profileError) {
       console.error("Profile lookup error:", profileError);
       // If we can't find the profile, return original email
-      return new Response(
-        JSON.stringify({ primaryEmail: email }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ primaryEmail: email }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     return new Response(
@@ -62,7 +62,7 @@ export default async (req: Request) => {
         linkedFrom: email,
         userId: emailLink.user_id,
       }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+      { status: 200, headers: { "Content-Type": "application/json" } },
     );
   } catch (error: any) {
     console.error("[Resolve Linked Email Error]", error);
@@ -74,7 +74,7 @@ export default async (req: Request) => {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 };

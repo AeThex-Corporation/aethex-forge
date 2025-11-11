@@ -47,7 +47,7 @@ export default async (req: Request) => {
           email: primaryEmail,
           details: primaryError?.message,
         }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -65,7 +65,7 @@ export default async (req: Request) => {
           email: linkedEmail,
           details: linkedError?.message,
         }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -119,7 +119,7 @@ export default async (req: Request) => {
 
     if (discordLinks && discordLinks.length > 0) {
       console.log(
-        `[Email Linking] Found ${discordLinks.length} discord links, transferring...`
+        `[Email Linking] Found ${discordLinks.length} discord links, transferring...`,
       );
       for (const link of discordLinks) {
         const { data: existing } = await supabase
@@ -145,7 +145,7 @@ export default async (req: Request) => {
 
     if (web3Links && web3Links.length > 0) {
       console.log(
-        `[Email Linking] Found ${web3Links.length} web3 wallets, transferring...`
+        `[Email Linking] Found ${web3Links.length} web3 wallets, transferring...`,
       );
       for (const wallet of web3Links) {
         const { data: existing } = await supabase
@@ -172,7 +172,7 @@ export default async (req: Request) => {
 
     // Insert primary email
     const primaryEmailExists = existingLinks?.some(
-      (l) => l.email === primaryEmail
+      (l) => l.email === primaryEmail,
     );
     if (!primaryEmailExists) {
       await supabase.from("user_email_links").insert({
@@ -185,7 +185,7 @@ export default async (req: Request) => {
 
     // Insert linked email
     const linkedEmailExists = existingLinks?.some(
-      (l) => l.email === linkedEmail
+      (l) => l.email === linkedEmail,
     );
     if (!linkedEmailExists) {
       await supabase.from("user_email_links").insert({
@@ -230,7 +230,7 @@ export default async (req: Request) => {
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error: any) {
     console.error("[Email Linking Error]", error);
@@ -242,7 +242,7 @@ export default async (req: Request) => {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 };
