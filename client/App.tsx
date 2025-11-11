@@ -329,23 +329,128 @@ const App = () => (
                       element={<FoundationGetInvolved />}
                     />
 
-                    {/* Staff routes */}
+                    {/* Staff Arm Routes */}
                     <Route path="/staff" element={<Staff />} />
                     <Route path="/staff/login" element={<StaffLogin />} />
+
+                    {/* Staff Dashboard Routes */}
                     <Route
                       path="/staff/dashboard"
-                      element={<StaffDashboard />}
+                      element={
+                        <RequireAccess>
+                          <StaffDashboard />
+                        </RequireAccess>
+                      }
                     />
+
+                    {/* Staff Management Routes */}
                     <Route
                       path="/staff/directory"
-                      element={<StaffDirectory />}
+                      element={
+                        <RequireAccess>
+                          <StaffDirectory />
+                        </RequireAccess>
+                      }
                     />
-                    <Route path="/staff/admin" element={<StaffAdmin />} />
-                    <Route path="/staff/chat" element={<StaffChat />} />
-                    <Route path="/staff/docs" element={<StaffDocs />} />
+                    <Route
+                      path="/staff/admin"
+                      element={
+                        <RequireAccess>
+                          <StaffAdmin />
+                        </RequireAccess>
+                      }
+                    />
+
+                    {/* Staff Tools & Resources */}
+                    <Route
+                      path="/staff/chat"
+                      element={
+                        <RequireAccess>
+                          <StaffChat />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/docs"
+                      element={
+                        <RequireAccess>
+                          <StaffDocs />
+                        </RequireAccess>
+                      }
+                    />
                     <Route
                       path="/staff/achievements"
-                      element={<StaffAchievements />}
+                      element={
+                        <RequireAccess>
+                          <StaffAchievements />
+                        </RequireAccess>
+                      }
+                    />
+
+                    {/* Staff Admin Pages */}
+                    <Route
+                      path="/staff/announcements"
+                      element={
+                        <RequireAccess>
+                          <StaffAnnouncements />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/expense-reports"
+                      element={
+                        <RequireAccess>
+                          <StaffExpenseReports />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/marketplace"
+                      element={
+                        <RequireAccess>
+                          <StaffInternalMarketplace />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/knowledge-base"
+                      element={
+                        <RequireAccess>
+                          <StaffKnowledgeBase />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/learning-portal"
+                      element={
+                        <RequireAccess>
+                          <StaffLearningPortal />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/performance-reviews"
+                      element={
+                        <RequireAccess>
+                          <StaffPerformanceReviews />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/project-tracking"
+                      element={
+                        <RequireAccess>
+                          <StaffProjectTracking />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/team-handbook"
+                      element={
+                        <RequireAccess>
+                          <StaffTeamHandbook />
+                        </RequireAccess>
+                      }
                     />
 
                     {/* Dev-Link routes */}
