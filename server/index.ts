@@ -2766,6 +2766,13 @@ export function createServer() {
       if (!postId || !user_id)
         return res.status(400).json({ error: "post id and user_id required" });
       try {
+        // Get post author info before liking
+        const { data: post } = await adminSupabase
+          .from("community_posts")
+          .select("user_id")
+          .eq("id", postId)
+          .single();
+
         const { error: likeErr } = await adminSupabase
           .from("community_post_likes")
           .upsert({ post_id: postId, user_id } as any, {
@@ -2785,6 +2792,28 @@ export function createServer() {
             .update({ likes_count: count })
             .eq("id", postId);
         }
+
+        // Notify post author of like (only if different user)
+        if (post?.user_id && post.user_id !== user_id) {
+          try {
+            const { data: liker } = await adminSupabase
+              .from("user_profiles")
+              .select("full_name, username")
+              .eq("id", user_id)
+              .single();
+
+            const likerName = (liker as any)?.full_name || (liker as any)?.username || "Someone";
+            await adminSupabase.from("notifications").insert({
+              user_id: post.user_id,
+              type: "info",
+              title: "❤️ Your post was liked",
+              message: `${likerName} liked your post.`,
+            });
+          } catch (notifError) {
+            console.warn("Failed to create like notification:", notifError);
+          }
+        }
+
         return res.json({
           ok: true,
           likes: typeof count === "number" ? count : undefined,
