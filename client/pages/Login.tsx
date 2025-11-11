@@ -77,6 +77,7 @@ export default function Login() {
     requestPasswordReset,
   } = useAuth();
   const { info: toastInfo, error: toastError } = useAethexToast();
+  const { isActivity } = useDiscordActivity();
 
   // Check for error messages from URL query parameters (e.g., from OAuth callbacks)
   useEffect(() => {
