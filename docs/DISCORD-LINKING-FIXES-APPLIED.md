@@ -1,3 +1,4 @@
+<!-- INTERNAL: Operational doc - DO NOT PUBLISH TO PUBLIC DOCS -->
 # Discord Linking Fixes - Summary of Changes
 
 ## Overview
