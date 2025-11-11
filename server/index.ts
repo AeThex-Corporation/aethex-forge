@@ -4642,6 +4642,214 @@ export function createServer() {
           .json({ error: "Failed to unlink DevConnect account" });
       }
     });
+
+    // Task assignment with notification
+    app.post("/api/tasks", async (req, res) => {
+      try {
+        const { project_id, title, description, assignee_id, due_date, user_id } = req.body;
+
+        if (!project_id || !title || !user_id) {
+          return res.status(400).json({ error: "project_id, title, and user_id required" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("project_tasks")
+          .insert({
+            project_id,
+            title,
+            description: description || null,
+            assignee_id: assignee_id || null,
+            due_date: due_date || null,
+            status: "open",
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        // Notify assignee if assigned
+        if (assignee_id && assignee_id !== user_id) {
+          try {
+            const { data: assigner } = await adminSupabase
+              .from("user_profiles")
+              .select("full_name, username")
+              .eq("id", user_id)
+              .single();
+
+            const assignerName = (assigner as any)?.full_name || (assigner as any)?.username || "Someone";
+            await adminSupabase.from("notifications").insert({
+              user_id: assignee_id,
+              type: "info",
+              title: "📋 Task assigned to you",
+              message: `${assignerName} assigned you a task: "${title}"`,
+            });
+          } catch (notifError) {
+            console.warn("Failed to create task notification:", notifError);
+          }
+        }
+
+        return res.status(201).json(data);
+      } catch (e: any) {
+        console.error("[Tasks API] Error creating task:", e?.message);
+        return res.status(500).json({ error: "Failed to create task" });
+      }
+    });
+
+    // Assign task with notification
+    app.put("/api/tasks/:id/assign", async (req, res) => {
+      try {
+        const taskId = String(req.params.id || "").trim();
+        const { assignee_id, user_id } = req.body;
+
+        if (!taskId || !assignee_id || !user_id) {
+          return res.status(400).json({ error: "task id, assignee_id, and user_id required" });
+        }
+
+        const { data: task } = await adminSupabase
+          .from("project_tasks")
+          .select("title")
+          .eq("id", taskId)
+          .single();
+
+        if (!task) {
+          return res.status(404).json({ error: "Task not found" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("project_tasks")
+          .update({ assignee_id })
+          .eq("id", taskId)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        // Notify assignee
+        try {
+          const { data: assigner } = await adminSupabase
+            .from("user_profiles")
+            .select("full_name, username")
+            .eq("id", user_id)
+            .single();
+
+          const assignerName = (assigner as any)?.full_name || (assigner as any)?.username || "Someone";
+          await adminSupabase.from("notifications").insert({
+            user_id: assignee_id,
+            type: "info",
+            title: "📋 Task assigned to you",
+            message: `${assignerName} assigned you: "${task.title}"`,
+          });
+        } catch (notifError) {
+          console.warn("Failed to create assignment notification:", notifError);
+        }
+
+        return res.json(data);
+      } catch (e: any) {
+        console.error("[Tasks API] Error assigning task:", e?.message);
+        return res.status(500).json({ error: "Failed to assign task" });
+      }
+    });
+
+    // Moderation report with staff notification
+    app.post("/api/moderation/reports", async (req, res) => {
+      try {
+        const { reported_user_id, report_type, description, reporter_id } = req.body;
+
+        if (!reported_user_id || !report_type || !reporter_id) {
+          return res.status(400).json({ error: "reported_user_id, report_type, and reporter_id required" });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("moderation_reports")
+          .insert({
+            reported_user_id,
+            report_type,
+            description: description || null,
+            reporter_id,
+            status: "pending",
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        // Notify staff members
+        try {
+          const { data: staffUsers } = await adminSupabase
+            .from("user_roles")
+            .select("user_id")
+            .in("role", ["owner", "admin", "moderator"]);
+
+          if (staffUsers && staffUsers.length > 0) {
+            const notifications = staffUsers.map((staff: any) => ({
+              user_id: staff.user_id,
+              type: "warning",
+              title: "🚨 New moderation report",
+              message: `A ${report_type} report has been submitted. Please review.`,
+            }));
+
+            await adminSupabase.from("notifications").insert(notifications);
+          }
+        } catch (notifError) {
+          console.warn("Failed to notify staff:", notifError);
+        }
+
+        return res.status(201).json(data);
+      } catch (e: any) {
+        console.error("[Moderation API] Error creating report:", e?.message);
+        return res.status(500).json({ error: "Failed to create report" });
+      }
+    });
+
+    // Track device login and send security alert
+    app.post("/api/auth/login-device", async (req, res) => {
+      try {
+        const { user_id, device_name, ip_address, user_agent } = req.body;
+
+        if (!user_id) {
+          return res.status(400).json({ error: "user_id required" });
+        }
+
+        // Store device login
+        const { data: sessionData } = await adminSupabase
+          .from("game_sessions")
+          .insert({
+            user_id,
+            device_id: device_name || "Unknown Device",
+            ip_address: ip_address || null,
+            user_agent: user_agent || null,
+            session_token: randomUUID(),
+          })
+          .select()
+          .single();
+
+        // Check if this is a new device (security alert)
+        const { data: previousSessions } = await adminSupabase
+          .from("game_sessions")
+          .select("device_id")
+          .eq("user_id", user_id)
+          .neq("device_id", device_name || "Unknown Device");
+
+        // If new device, send security notification
+        if (!previousSessions || previousSessions.length === 0) {
+          try {
+            await adminSupabase.from("notifications").insert({
+              user_id,
+              type: "warning",
+              title: "🔐 New device login detected",
+              message: `New login from ${device_name || "Unknown device"} at ${ip_address || "Unknown location"}. If this wasn't you, please secure your account.`,
+            });
+          } catch (notifError) {
+            console.warn("Failed to create security notification:", notifError);
+          }
+        }
+
+        return res.status(201).json(sessionData);
+      } catch (e: any) {
+        console.error("[Auth API] Error tracking login:", e?.message);
+        return res.status(500).json({ error: "Failed to track login" });
+      }
+    });
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
