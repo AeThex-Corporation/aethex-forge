@@ -449,31 +449,93 @@ const curriculumModules: CurriculumModule[] = [
         title: "The Ethos Ecosystem License",
         summary:
           "Grant free use of your tracks for non-commercial AeThex projects.",
-        status: "coming_soon",
+        status: "live",
+        duration: "45 min",
+        objectives: [
+          "Understand the Ethos Ecosystem License (free, non-commercial)",
+          "Know what rights you retain and what you grant",
+          "Learn benefits of ecosystem participation for your brand",
+        ],
+        content: "The Ethos Ecosystem License allows free use of your music in non-commercial AeThex projects (Labs research, GameForge game prototypes, Foundation educational content). You retain ownership and can license commercially elsewhere. This builds your reputation, gets your music heard, and aligns you with AeThex's mission. The license is simple: free use, no commercial exploitation, credit to you.",
+        exercises: [
+          "Draft an Ethos Ecosystem License for one of your tracks",
+          "Identify 3 AeThex projects that could use your music",
+          "Upload a track under ecosystem license to Ethos",
+        ],
       },
       {
         title: "Commercial Licensing Basics",
         summary:
           "When a CORP client wants your track, how to negotiate and sign a contract.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Understand types of commercial licenses (sync, master, exclusivity)",
+          "Learn to negotiate rates based on usage (game, film, advertisement)",
+          "Know what to include in a licensing agreement",
+        ],
+        content: "Commercial licensing means someone pays to use your music. Licenses vary: sync rights (use in video), master rights (use your recording), mechanical rights (use for CDs/streams). A $500 game license is different from $5,000 for a film trailer or $10,000+ for exclusive advertising. Negotiate based on usage scope (how big is the audience?), territory (global vs regional), and duration (1 year vs perpetual). Get a written contract specifying all terms.",
+        exercises: [
+          "Create a pricing tier (small game: $300, medium game: $800, film: $2,500)",
+          "Draft a simple licensing agreement template",
+          "Negotiate a fake commercial license scenario with a partner",
+        ],
       },
       {
         title: "Rights Management & Royalties",
         summary:
           "Understand PROs, sync rights, and how to track your music usage.",
-        status: "coming_soon",
+        status: "live",
+        duration: "45 min",
+        objectives: [
+          "Understand PROs (Performing Rights Organizations) like ASCAP, BMI, SESAC",
+          "Learn sync vs master vs mechanical rights",
+          "Track music usage and royalties from streaming/licensing",
+        ],
+        content: "PROs collect royalties when your music plays on radio, streaming, or in film/TV. Join ASCAP, BMI, or SESAC to register compositions and earn performance royalties. Sync rights (music in video) are separate from performance royalties. Mechanical rights apply when your music is reproduced (CD, vinyl, download). Understand these distinctions to maximize income. Use platforms like TuneCore or DistroKid to track everything.",
+        exercises: [
+          "Register with a PRO (simulate registration with real info)",
+          "Register your compositions with your PRO",
+          "Set up royalty tracking via DistroKid or TuneCore",
+        ],
       },
       {
         title: "Building Your Artist Brand",
         summary:
           "Create a portfolio, set your rates, and market yourself on NEXUS.",
-        status: "coming_soon",
+        status: "live",
+        duration: "45 min",
+        objectives: [
+          "Build a professional artist portfolio",
+          "Set your rates and services on NEXUS",
+          "Market yourself effectively to game developers and studios",
+        ],
+        content: "Your brand is how clients find and value you. Curate your best 3-5 tracks for your portfolio. Create a professional bio (50-100 words) highlighting your style and experience. Set clear rates: custom track $X, SFX pack $Y, full score $Z. Feature 2-3 case studies (where your music was used). On NEXUS, your verified badge and ratings build trust. Engage with the community and respond quickly to inquiries.",
+        exercises: [
+          "Create a professional artist profile with bio and samples",
+          "Set your service rates and turnaround times",
+          "Write a case study of your best work",
+          "Optimize your NEXUS profile with all details",
+        ],
       },
       {
         title: "Multi-Platform Distribution",
         summary:
           "Sell your music on Spotify, Bandcamp, and streaming platforms while building your Ethos presence.",
-        status: "coming_soon",
+        status: "live",
+        duration: "45 min",
+        objectives: [
+          "Understand streaming revenue vs direct sales vs licensing",
+          "Distribute your music to Spotify, Apple Music, Bandcamp",
+          "Balance platform presence (streaming, Ethos, indie sites)",
+        ],
+        content: "Diversify income: streaming (Spotify, Apple Music) generates passive royalties (~$0.003-0.005/stream). Direct sales (Bandcamp, Gumroad) capture 85%+ of revenue. Licensing (NEXUS, Ethos) is highest income. Upload to all—Distrokid, CD Baby, or directly to platforms. Prioritize Ethos and NEXUS for community and licensing. Use Bandcamp for fans who want to support you. This multi-platform approach maximizes reach and income.",
+        exercises: [
+          "Set up DistroKid or CD Baby account and upload a track",
+          "Create a Bandcamp profile and set pricing",
+          "Register 5 tracks on multiple streaming platforms",
+          "Track income from each platform for 1 month",
+        ],
       },
     ],
   },
