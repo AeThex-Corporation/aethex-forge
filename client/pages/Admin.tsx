@@ -569,45 +569,8 @@ export default function Admin() {
                 </Tabs>
               </TabsContent>
 
-              <TabsContent value="content" className="space-y-6">
-                <Card className="bg-card/60 border-border/40 backdrop-blur">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <PenTool className="h-5 w-5 text-aethex-300" />
-                      <CardTitle>Blog Management</CardTitle>
-                    </div>
-                    <CardDescription>
-                      {publishedPosts} published{" "}
-                      {publishedPosts === 1 ? "post" : "posts"} ·{" "}
-                      {loadingPosts
-                        ? "refreshing content…"
-                        : "latest Supabase sync"}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      Drafts and announcements appear instantly on the public
-                      blog after saving.
-                    </p>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={loadingPosts}
-                      onClick={async () => {
-                        try {
-                          setLoadingPosts(true);
-                          const res = await fetch("/api/blog?limit=100");
-                          const data = res.ok ? await res.json() : [];
-                          if (Array.isArray(data)) setBlogPosts(data);
-                        } finally {
-                          setLoadingPosts(false);
-                        }
-                      }}
-                    >
-                      {loadingPosts ? "Refreshing…" : "Refresh Blog Posts"}
-                    </Button>
-                  </CardContent>
-                </Card>
+              <TabsContent value="blogs" className="space-y-6">
+                <AdminBlogManager />
               </TabsContent>
 
               <TabsContent value="community" className="space-y-6">
