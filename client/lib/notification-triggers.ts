@@ -31,7 +31,11 @@ export const notificationTriggers = {
     }
   },
 
-  async addedToTeam(userId: string, teamName: string, role: string): Promise<void> {
+  async addedToTeam(
+    userId: string,
+    teamName: string,
+    role: string,
+  ): Promise<void> {
     try {
       await aethexNotificationService.createNotification(
         userId,
@@ -57,7 +61,11 @@ export const notificationTriggers = {
     }
   },
 
-  async addedToProject(userId: string, projectName: string, role: string): Promise<void> {
+  async addedToProject(
+    userId: string,
+    projectName: string,
+    role: string,
+  ): Promise<void> {
     try {
       await aethexNotificationService.createNotification(
         userId,
@@ -155,13 +163,22 @@ export const notificationTriggers = {
     message: string,
   ): Promise<void> {
     try {
-      await aethexNotificationService.createNotification(userId, type, title, message);
+      await aethexNotificationService.createNotification(
+        userId,
+        type,
+        title,
+        message,
+      );
     } catch (error) {
       console.warn("Failed to create custom notification:", error);
     }
   },
 
-  async taskAssigned(userId: string, taskTitle: string, assignerName: string): Promise<void> {
+  async taskAssigned(
+    userId: string,
+    taskTitle: string,
+    assignerName: string,
+  ): Promise<void> {
     try {
       await aethexNotificationService.createNotification(
         userId,
@@ -187,7 +204,11 @@ export const notificationTriggers = {
     }
   },
 
-  async postCommented(userId: string, commenterName: string, preview: string): Promise<void> {
+  async postCommented(
+    userId: string,
+    commenterName: string,
+    preview: string,
+  ): Promise<void> {
     try {
       await aethexNotificationService.createNotification(
         userId,
@@ -200,7 +221,11 @@ export const notificationTriggers = {
     }
   },
 
-  async applicationReceived(userId: string, creatorName: string, opportunityTitle: string): Promise<void> {
+  async applicationReceived(
+    userId: string,
+    creatorName: string,
+    opportunityTitle: string,
+  ): Promise<void> {
     try {
       await aethexNotificationService.createNotification(
         userId,
@@ -218,13 +243,23 @@ export const notificationTriggers = {
     status: "accepted" | "rejected" | "reviewed",
     message?: string,
   ): Promise<void> {
-    const statusEmoji = status === "accepted" ? "✅" : status === "rejected" ? "❌" : "📝";
-    const statusMessage = status === "accepted" ? "accepted" : status === "rejected" ? "rejected" : "reviewed";
+    const statusEmoji =
+      status === "accepted" ? "✅" : status === "rejected" ? "❌" : "📝";
+    const statusMessage =
+      status === "accepted"
+        ? "accepted"
+        : status === "rejected"
+          ? "rejected"
+          : "reviewed";
 
     try {
       await aethexNotificationService.createNotification(
         userId,
-        status === "accepted" ? "success" : status === "rejected" ? "error" : "info",
+        status === "accepted"
+          ? "success"
+          : status === "rejected"
+            ? "error"
+            : "info",
         `${statusEmoji} Application ${statusMessage}`,
         message || `Your application has been ${statusMessage}.`,
       );
@@ -233,7 +268,11 @@ export const notificationTriggers = {
     }
   },
 
-  async newDeviceLogin(userId: string, deviceName: string, location?: string): Promise<void> {
+  async newDeviceLogin(
+    userId: string,
+    deviceName: string,
+    location?: string,
+  ): Promise<void> {
     try {
       await aethexNotificationService.createNotification(
         userId,
@@ -246,7 +285,10 @@ export const notificationTriggers = {
     }
   },
 
-  async moderationReportSubmitted(userId: string, reportType: string): Promise<void> {
+  async moderationReportSubmitted(
+    userId: string,
+    reportType: string,
+  ): Promise<void> {
     try {
       await aethexNotificationService.createNotification(
         userId,

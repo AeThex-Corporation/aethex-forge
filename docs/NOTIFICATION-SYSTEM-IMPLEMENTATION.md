@@ -14,51 +14,61 @@ The notification system has been comprehensively implemented to provide real-tim
 ### Client-Side Services
 
 #### 1. `code/client/lib/aethex-database-adapter.ts`
+
 **Achievement Notifications**
+
 - Modified `aethexAchievementService.awardAchievement()`:
   - Sends notification: `🏆 Achievement Unlocked: {name}` with XP reward
   - Type: "success"
 
 **Profile Update Notifications**
+
 - Modified `aethexUserService.updateProfile()`:
   - Sends notification when `onboarded: true`
   - Message: `🎉 Welcome to AeThex! You've completed your profile setup. Let's get started!`
   - Type: "success"
 
 **Level Up Notifications**
+
 - Modified `aethexAchievementService.updateUserXPAndLevel()`:
   - Sends notification when level increases
   - Message: `⬆️ Level Up! You've reached level {newLevel}!`
   - Type: "success"
 
 **Project Notifications**
+
 - Modified `aethexProjectService.createProject()`:
   - Sends notification: `🚀 Project Created: {name}`
   - Type: "success"
-  
 - Modified `aethexProjectService.updateProject()`:
   - Sends notification on completion: `✅ Project Completed: {name}`
   - Sends notification on start: `⏱️ Project Started: {name}`
   - Type: "success" or "info"
 
 #### 2. `code/client/lib/aethex-collab-service.ts`
+
 **Team Notifications**
+
 - Modified `aethexCollabService.createTeam()`:
   - Sends notification: `🎯 Team Created: {name}`
   - Type: "success"
 
 **Team Member Notifications**
+
 - Modified `aethexCollabService.addTeamMember()`:
   - Sends notification: `👥 Added to Team: {name}`
   - Type: "info"
 
 **Project Member Notifications**
+
 - Modified `aethexCollabService.addProjectMember()`:
   - Sends notification: `📌 Added to Project: {name}`
   - Type: "info"
 
 #### 3. `code/client/pages/Onboarding.tsx`
+
 **Onboarding Notifications**
+
 - Added notification on onboarding completion
 - Message: `🎉 Welcome to AeThex! You've completed your profile setup. Let's get started!`
 - Type: "success"
@@ -66,13 +76,17 @@ The notification system has been comprehensively implemented to provide real-tim
 ### Backend API Endpoints
 
 #### 1. `code/api/_notifications.ts` (NEW)
+
 Central notification utility for backend processes:
+
 - `createNotification(userId, type, title, message)` - Generic notification creator
 - `notifyAccountLinked(userId, provider)` - For OAuth linking
 - `notifyOnboardingComplete(userId)` - For onboarding completion
 
 #### 2. `code/api/discord/oauth/callback.ts`
+
 **Discord Account Linking**
+
 - Added import: `notifyAccountLinked` from `_notifications`
 - Sends notification when Discord is linked (both linking and login flows)
 - Message: `🔗 Account Linked: Discord`
@@ -81,26 +95,28 @@ Central notification utility for backend processes:
 ### Utility Module
 
 #### `code/client/lib/notification-triggers.ts` (NEW)
+
 Centralized notification trigger utilities for consistent notification handling across the app:
 
 ```typescript
-notificationTriggers.achievementUnlocked(userId, name, xp)
-notificationTriggers.teamCreated(userId, teamName)
-notificationTriggers.addedToTeam(userId, teamName, role)
-notificationTriggers.projectCreated(userId, projectName)
-notificationTriggers.addedToProject(userId, projectName, role)
-notificationTriggers.projectCompleted(userId, projectName)
-notificationTriggers.projectStarted(userId, projectName)
-notificationTriggers.levelUp(userId, newLevel)
-notificationTriggers.onboardingComplete(userId)
-notificationTriggers.accountLinked(userId, provider)
-notificationTriggers.emailVerified(userId)
-notificationTriggers.customNotification(userId, type, title, message)
+notificationTriggers.achievementUnlocked(userId, name, xp);
+notificationTriggers.teamCreated(userId, teamName);
+notificationTriggers.addedToTeam(userId, teamName, role);
+notificationTriggers.projectCreated(userId, projectName);
+notificationTriggers.addedToProject(userId, projectName, role);
+notificationTriggers.projectCompleted(userId, projectName);
+notificationTriggers.projectStarted(userId, projectName);
+notificationTriggers.levelUp(userId, newLevel);
+notificationTriggers.onboardingComplete(userId);
+notificationTriggers.accountLinked(userId, provider);
+notificationTriggers.emailVerified(userId);
+notificationTriggers.customNotification(userId, type, title, message);
 ```
 
 ## Notification Types
 
 ### Success (Green) 🟢
+
 - Achievement unlocked
 - Team/project created
 - Project completed
@@ -110,18 +126,22 @@ notificationTriggers.customNotification(userId, type, title, message)
 - Email verified
 
 ### Info (Blue) 🔵
+
 - Added to team/project
 - Project started
 
 ### Warning (Yellow) 🟡
+
 - (Available for future use)
 
 ### Error (Red) 🔴
+
 - (Available for future use)
 
 ## Real-Time Features
 
 All notifications are:
+
 1. **Real-time** - Delivered via Supabase realtime subscription (in NotificationBell component)
 2. **Persistent** - Stored in `notifications` table with timestamps
 3. **Readable** - Users can mark notifications as read
@@ -130,7 +150,9 @@ All notifications are:
 ## Notification Display
 
 Notifications appear in:
+
 1. **NotificationBell Component** (`code/client/components/notifications/NotificationBell.tsx`)
+
    - Dropdown with all notifications
    - Shows unread count badge
    - Real-time updates via subscription
@@ -146,23 +168,24 @@ Notifications appear in:
 
 ### When Notifications Are Created
 
-| Event | Service | Method | Type |
-|-------|---------|--------|------|
-| Achievement earned | AethexAchievementService | awardAchievement() | success |
-| Team created | AethexCollabService | createTeam() | success |
-| User added to team | AethexCollabService | addTeamMember() | info |
-| Project created | AethexProjectService | createProject() | success |
-| User added to project | AethexCollabService | addProjectMember() | info |
-| Project status: completed | AethexProjectService | updateProject() | success |
-| Project status: in_progress | AethexProjectService | updateProject() | info |
-| Level increased | AethexAchievementService | updateUserXPAndLevel() | success |
-| Onboarding completed | Onboarding page | finishOnboarding() | success |
-| Discord linked | Discord OAuth | callback.ts | success |
-| Profile updated (onboarded) | AethexUserService | updateProfile() | success |
+| Event                       | Service                  | Method                 | Type    |
+| --------------------------- | ------------------------ | ---------------------- | ------- |
+| Achievement earned          | AethexAchievementService | awardAchievement()     | success |
+| Team created                | AethexCollabService      | createTeam()           | success |
+| User added to team          | AethexCollabService      | addTeamMember()        | info    |
+| Project created             | AethexProjectService     | createProject()        | success |
+| User added to project       | AethexCollabService      | addProjectMember()     | info    |
+| Project status: completed   | AethexProjectService     | updateProject()        | success |
+| Project status: in_progress | AethexProjectService     | updateProject()        | info    |
+| Level increased             | AethexAchievementService | updateUserXPAndLevel() | success |
+| Onboarding completed        | Onboarding page          | finishOnboarding()     | success |
+| Discord linked              | Discord OAuth            | callback.ts            | success |
+| Profile updated (onboarded) | AethexUserService        | updateProfile()        | success |
 
 ## Error Handling
 
 All notification creation is **non-blocking**:
+
 - Wrapped in try-catch blocks
 - Logged to console if failures occur
 - Does not prevent main operation from completing
@@ -173,16 +196,19 @@ All notification creation is **non-blocking**:
 Potential notification triggers for future implementation:
 
 1. **Social Features**
+
    - New follower
    - Post liked/commented
    - Mentioned in post
 
 2. **Collaboration**
+
    - Task assigned
    - Comment on project
    - Team invitation
 
 3. **Notifications**
+
    - Email verification needed
    - Session expiration warning
    - Security alerts
@@ -197,20 +223,24 @@ Potential notification triggers for future implementation:
 ### Manual Testing Steps
 
 1. **Achievement Notification**
+
    - Go to Dashboard
    - Trigger an achievement (e.g., create first project for "Portfolio Creator")
    - Check NotificationBell for 🏆 icon
 
 2. **Team Notification**
+
    - Create a new team
    - Check NotificationBell for 🎯 icon
 
 3. **Discord Linking**
+
    - Go to Dashboard > Connections
    - Link Discord account
    - Check NotificationBell for 🔗 icon
 
 4. **Onboarding Notification**
+
    - Sign up new account
    - Complete onboarding
    - Should see 🎉 notification after finishing
@@ -223,6 +253,7 @@ Potential notification triggers for future implementation:
 ### Monitoring
 
 Check Supabase dashboard:
+
 - Navigate to `notifications` table
 - Filter by user_id to see all notifications for a user
 - Verify type, title, message fields are populated correctly
@@ -276,6 +307,7 @@ CREATE INDEX notifications_user_created_idx ON notifications(user_id, created_at
 ## Support
 
 For issues or questions about the notification system:
+
 1. Check NotificationBell component for display issues
 2. Check Supabase console for database errors
 3. Check browser console for JavaScript errors

@@ -20,7 +20,10 @@ export async function createNotification(
   }
 }
 
-export async function notifyAccountLinked(userId: string, provider: string): Promise<void> {
+export async function notifyAccountLinked(
+  userId: string,
+  provider: string,
+): Promise<void> {
   await createNotification(
     userId,
     "success",

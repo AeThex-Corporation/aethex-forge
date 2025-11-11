@@ -2802,7 +2802,10 @@ export function createServer() {
               .eq("id", user_id)
               .single();
 
-            const likerName = (liker as any)?.full_name || (liker as any)?.username || "Someone";
+            const likerName =
+              (liker as any)?.full_name ||
+              (liker as any)?.username ||
+              "Someone";
             await adminSupabase.from("notifications").insert({
               user_id: post.user_id,
               type: "info",
@@ -2917,8 +2920,12 @@ export function createServer() {
               .eq("id", user_id)
               .single();
 
-            const commenterName = (commenter as any)?.full_name || (commenter as any)?.username || "Someone";
-            const preview = content.substring(0, 50) + (content.length > 50 ? "..." : "");
+            const commenterName =
+              (commenter as any)?.full_name ||
+              (commenter as any)?.username ||
+              "Someone";
+            const preview =
+              content.substring(0, 50) + (content.length > 50 ? "..." : "");
             await adminSupabase.from("notifications").insert({
               user_id: post.user_id,
               type: "info",
@@ -4334,7 +4341,10 @@ export function createServer() {
               message: `${creatorProfile?.full_name || "A creator"} applied for your opportunity.`,
             });
           } catch (notifError) {
-            console.warn("Failed to create application notification:", notifError);
+            console.warn(
+              "Failed to create application notification:",
+              notifError,
+            );
           }
         }
 
@@ -4409,14 +4419,31 @@ export function createServer() {
               .single();
 
             if (applicantProfile?.user_id) {
-              const statusEmoji = status === "accepted" ? "✅" : status === "rejected" ? "❌" : "📝";
-              const statusMessage = status === "accepted" ? "accepted" : status === "rejected" ? "rejected" : "updated";
+              const statusEmoji =
+                status === "accepted"
+                  ? "✅"
+                  : status === "rejected"
+                    ? "❌"
+                    : "📝";
+              const statusMessage =
+                status === "accepted"
+                  ? "accepted"
+                  : status === "rejected"
+                    ? "rejected"
+                    : "updated";
 
               await adminSupabase.from("notifications").insert({
                 user_id: applicantProfile.user_id,
-                type: status === "accepted" ? "success" : status === "rejected" ? "error" : "info",
+                type:
+                  status === "accepted"
+                    ? "success"
+                    : status === "rejected"
+                      ? "error"
+                      : "info",
                 title: `${statusEmoji} Application ${statusMessage}`,
-                message: response_message || `Your application has been ${statusMessage}.`,
+                message:
+                  response_message ||
+                  `Your application has been ${statusMessage}.`,
               });
             }
           } catch (notifError) {
@@ -4646,10 +4673,19 @@ export function createServer() {
     // Task assignment with notification
     app.post("/api/tasks", async (req, res) => {
       try {
-        const { project_id, title, description, assignee_id, due_date, user_id } = req.body;
+        const {
+          project_id,
+          title,
+          description,
+          assignee_id,
+          due_date,
+          user_id,
+        } = req.body;
 
         if (!project_id || !title || !user_id) {
-          return res.status(400).json({ error: "project_id, title, and user_id required" });
+          return res
+            .status(400)
+            .json({ error: "project_id, title, and user_id required" });
         }
 
         const { data, error } = await adminSupabase
@@ -4676,7 +4712,10 @@ export function createServer() {
               .eq("id", user_id)
               .single();
 
-            const assignerName = (assigner as any)?.full_name || (assigner as any)?.username || "Someone";
+            const assignerName =
+              (assigner as any)?.full_name ||
+              (assigner as any)?.username ||
+              "Someone";
             await adminSupabase.from("notifications").insert({
               user_id: assignee_id,
               type: "info",
@@ -4702,7 +4741,9 @@ export function createServer() {
         const { assignee_id, user_id } = req.body;
 
         if (!taskId || !assignee_id || !user_id) {
-          return res.status(400).json({ error: "task id, assignee_id, and user_id required" });
+          return res
+            .status(400)
+            .json({ error: "task id, assignee_id, and user_id required" });
         }
 
         const { data: task } = await adminSupabase
@@ -4732,7 +4773,10 @@ export function createServer() {
             .eq("id", user_id)
             .single();
 
-          const assignerName = (assigner as any)?.full_name || (assigner as any)?.username || "Someone";
+          const assignerName =
+            (assigner as any)?.full_name ||
+            (assigner as any)?.username ||
+            "Someone";
           await adminSupabase.from("notifications").insert({
             user_id: assignee_id,
             type: "info",
@@ -4753,10 +4797,15 @@ export function createServer() {
     // Moderation report with staff notification
     app.post("/api/moderation/reports", async (req, res) => {
       try {
-        const { reported_user_id, report_type, description, reporter_id } = req.body;
+        const { reported_user_id, report_type, description, reporter_id } =
+          req.body;
 
         if (!reported_user_id || !report_type || !reporter_id) {
-          return res.status(400).json({ error: "reported_user_id, report_type, and reporter_id required" });
+          return res
+            .status(400)
+            .json({
+              error: "reported_user_id, report_type, and reporter_id required",
+            });
         }
 
         const { data, error } = await adminSupabase

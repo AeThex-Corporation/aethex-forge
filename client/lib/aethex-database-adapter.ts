@@ -141,11 +141,18 @@ const ensureDailyStreakForProfile = async (
   };
 };
 
-export function checkProfileComplete(p?: AethexUserProfile | null, roles?: string[]): boolean {
+export function checkProfileComplete(
+  p?: AethexUserProfile | null,
+  roles?: string[],
+): boolean {
   if (!p) return false;
 
   // Admins/owners are always considered complete
-  if (roles?.some((r) => ["owner", "admin", "founder", "staff"].includes(r.toLowerCase()))) {
+  if (
+    roles?.some((r) =>
+      ["owner", "admin", "founder", "staff"].includes(r.toLowerCase()),
+    )
+  ) {
     return true;
   }
 
@@ -542,7 +549,10 @@ export const aethexUserService = {
               "You've completed your profile setup. Let's get started!",
             );
           } catch (notifError) {
-            console.warn("Failed to create onboarding notification:", notifError);
+            console.warn(
+              "Failed to create onboarding notification:",
+              notifError,
+            );
           }
         }
 
@@ -757,7 +767,10 @@ export const aethexProjectService = {
           );
         }
       } catch (notifError) {
-        console.warn("Failed to create project status notification:", notifError);
+        console.warn(
+          "Failed to create project status notification:",
+          notifError,
+        );
       }
     }
 
