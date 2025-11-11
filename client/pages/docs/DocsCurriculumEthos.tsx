@@ -27,6 +27,17 @@ import {
   CheckCircle,
 } from "lucide-react";
 
+interface Lesson {
+  title: string;
+  summary: string;
+  status: "coming_soon" | "draft" | "live";
+  duration: string;
+  objectives?: string[];
+  content?: string;
+  exercises?: string[];
+  resources?: { title: string; type: "video" | "article" | "tool" }[];
+}
+
 interface CurriculumModule {
   id: string;
   title: string;
@@ -34,11 +45,7 @@ interface CurriculumModule {
   level: "foundation" | "builder" | "advanced";
   duration: string;
   focus: string[];
-  lessons: {
-    title: string;
-    summary: string;
-    status: "coming_soon" | "draft" | "live";
-  }[];
+  lessons: Lesson[];
 }
 
 const curriculumModules: CurriculumModule[] = [
