@@ -4874,6 +4874,14 @@ export function createServer() {
         // Ensure response headers are set correctly
         res.setHeader("Content-Type", "application/json");
 
+        if (!adminSupabase) {
+          console.error("[Staff Seed] adminSupabase is not initialized");
+          return res.status(500).json({
+            error: "Supabase client not initialized",
+            message: "SUPABASE_URL or SUPABASE_SERVICE_ROLE not set",
+          });
+        }
+
         const mockMembers = [
           {
             email: "alex@aethex.dev",
