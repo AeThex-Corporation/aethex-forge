@@ -809,12 +809,30 @@ export function createServer() {
       }
 
       try {
-        const clientId =
-          process.env.VITE_DISCORD_CLIENT_ID || "578971245454950421";
+        const clientId = process.env.DISCORD_CLIENT_ID;
         const clientSecret = process.env.DISCORD_CLIENT_SECRET;
-        const redirectUri =
-          process.env.DISCORD_REDIRECT_URI ||
-          `${process.env.PUBLIC_BASE_URL || process.env.SITE_URL || "http://localhost:5173"}/discord/callback`;
+
+        // Use the same redirect URI as the start endpoint
+        let apiBase =
+          process.env.VITE_API_BASE ||
+          process.env.API_BASE ||
+          process.env.PUBLIC_BASE_URL ||
+          process.env.SITE_URL;
+
+        if (!apiBase) {
+          // Fallback to request origin if no env var is set
+          const protocol =
+            req.headers["x-forwarded-proto"] || req.protocol || "https";
+          const host =
+            req.headers["x-forwarded-host"] || req.hostname || req.get("host");
+          apiBase = `${protocol}://${host}`;
+        }
+
+        const redirectUri = `${apiBase}/api/discord/oauth/callback`;
+        console.log(
+          "[Discord OAuth Callback] Received callback, redirect URI:",
+          redirectUri,
+        );
 
         if (!clientSecret) {
           console.warn(
