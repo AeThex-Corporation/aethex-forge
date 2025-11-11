@@ -149,12 +149,12 @@ export default function AdminStaffDirectory() {
         }
       );
 
+      const updatedMember = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.details || error.error);
+        throw new Error(updatedMember.details || updatedMember.error || "Failed to save");
       }
 
-      const updatedMember = await response.json();
       setTeamMembers(
         teamMembers.map((m) => (m.id === updatedMember.id ? updatedMember : m))
       );
