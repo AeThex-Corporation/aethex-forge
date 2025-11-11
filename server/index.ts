@@ -4340,6 +4340,31 @@ export function createServer() {
 
         if (error) throw error;
 
+        // Notify applicant of status change
+        if (data) {
+          try {
+            const { data: applicantProfile } = await adminSupabase
+              .from("aethex_creators")
+              .select("user_id")
+              .eq("id", data.creator_id)
+              .single();
+
+            if (applicantProfile?.user_id) {
+              const statusEmoji = status === "accepted" ? "✅" : status === "rejected" ? "❌" : "📝";
+              const statusMessage = status === "accepted" ? "accepted" : status === "rejected" ? "rejected" : "updated";
+
+              await adminSupabase.from("notifications").insert({
+                user_id: applicantProfile.user_id,
+                type: status === "accepted" ? "success" : status === "rejected" ? "error" : "info",
+                title: `${statusEmoji} Application ${statusMessage}`,
+                message: response_message || `Your application has been ${statusMessage}.`,
+              });
+            }
+          } catch (notifError) {
+            console.warn("Failed to create status notification:", notifError);
+          }
+        }
+
         return res.json(data);
       } catch (e: any) {
         console.error(
