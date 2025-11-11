@@ -94,6 +94,59 @@ export default function AdminSidebar({
       ],
     },
     {
+      label: "Staff Resources",
+      items: [
+        {
+          id: "announcements",
+          label: "Announcements",
+          icon: <MessageSquare className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/announcements"),
+        },
+        {
+          id: "knowledge-base",
+          label: "Knowledge Base",
+          icon: <BookOpen className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/knowledge-base"),
+        },
+        {
+          id: "team-handbook",
+          label: "Team Handbook",
+          icon: <FileText className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/team-handbook"),
+        },
+        {
+          id: "learning-portal",
+          label: "Learning Portal",
+          icon: <BookOpen className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/learning-portal"),
+        },
+        {
+          id: "project-tracking",
+          label: "Project Tracking",
+          icon: <ClipboardList className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/project-tracking"),
+        },
+        {
+          id: "performance-reviews",
+          label: "Performance Reviews",
+          icon: <Award className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/performance-reviews"),
+        },
+        {
+          id: "expense-reports",
+          label: "Expense Reports",
+          icon: <FileText className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/expense-reports"),
+        },
+        {
+          id: "marketplace",
+          label: "Internal Marketplace",
+          icon: <Grid3x3 className="h-4 w-4" />,
+          onClick: () => (window.location.href = "/staff/marketplace"),
+        },
+      ],
+    },
+    {
       label: "Platform",
       items: [
         {
