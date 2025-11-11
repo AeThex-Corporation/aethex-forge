@@ -490,10 +490,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw new Error("Please provide both email and password.");
       }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // First attempt: try signing in with the provided email
+      let { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
+      // If invalid credentials and it might be a linked email, try to resolve it
+      if (
+        error &&
+        (error.message?.includes("Invalid login credentials") ||
+          error.message?.includes("invalid email"))
+      ) {
+        try {
+          // Check if this email is linked to another account
+          const response = await fetch("/api/user/resolve-linked-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+
+          if (response.ok) {
+            const { primaryEmail } = await response.json();
+            if (primaryEmail && primaryEmail !== email) {
+              // Try signing in with the primary email
+              const retryResult = await supabase.auth.signInWithPassword({
+                email: primaryEmail,
+                password,
+              });
+
+              if (!retryResult.error) {
+                data = retryResult.data;
+                error = null;
+              }
+            }
+          }
+        } catch (e) {
+          // If email resolution fails, continue with original error
+          console.error("Email resolution failed:", e);
+        }
+      }
 
       if (error) throw error;
 
