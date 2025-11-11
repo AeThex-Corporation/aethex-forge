@@ -4947,12 +4947,10 @@ export function createServer() {
           .select();
 
         if (error) {
-          console.error("[Staff Seed Error] Code:", error.code, "Message:", error.message, "Details:", error.details, "Hint:", error.hint);
+          console.error("[Staff Seed Error] Full error:", JSON.stringify(error));
           return res.status(500).json({
             error: "Failed to seed staff members",
-            code: error.code,
-            details: error.details || error.message || "Unknown error",
-            hint: error.hint,
+            fullError: error,
           });
         }
 
