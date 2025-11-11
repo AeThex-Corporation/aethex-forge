@@ -320,6 +320,9 @@ const App = () => (
                       element={<FoundationGetInvolved />}
                     />
 
+                    {/* Staff routes */}
+                    <Route path="/staff" element={<Staff />} />
+
                     {/* Dev-Link routes */}
                     <Route path="/dev-link" element={<DevLink />} />
                     <Route
