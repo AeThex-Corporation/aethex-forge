@@ -2907,6 +2907,29 @@ export function createServer() {
             .update({ comments_count: count })
             .eq("id", postId);
         }
+
+        // Notify post author of comment (only if different user)
+        if (post?.user_id && post.user_id !== user_id) {
+          try {
+            const { data: commenter } = await adminSupabase
+              .from("user_profiles")
+              .select("full_name, username")
+              .eq("id", user_id)
+              .single();
+
+            const commenterName = (commenter as any)?.full_name || (commenter as any)?.username || "Someone";
+            const preview = content.substring(0, 50) + (content.length > 50 ? "..." : "");
+            await adminSupabase.from("notifications").insert({
+              user_id: post.user_id,
+              type: "info",
+              title: "💬 New comment on your post",
+              message: `${commenterName} commented: "${preview}"`,
+            });
+          } catch (notifError) {
+            console.warn("Failed to create comment notification:", notifError);
+          }
+        }
+
         res.json(data);
       } catch (e: any) {
         res.status(500).json({ error: e?.message || String(e) });
