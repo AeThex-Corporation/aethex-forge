@@ -440,6 +440,94 @@ export default function ArtistSettings() {
                 </CardContent>
               </Card>
 
+              {/* Verification Section */}
+              <Card className="bg-slate-900/50 border-slate-800">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5" />
+                    Ethos Guild Verification
+                  </CardTitle>
+                  <CardDescription>
+                    Get verified to unlock commercial licensing opportunities
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {profile.verified ? (
+                    <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-green-400">Verified Artist</p>
+                        <p className="text-sm text-green-300 mt-1">
+                          You are a verified Ethos Guild artist. You can upload tracks and accept
+                          commercial licensing requests.
+                        </p>
+                      </div>
+                    </div>
+                  ) : verificationStatus.status === "pending" ? (
+                    <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg flex items-start gap-3">
+                      <Clock className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-yellow-400">Pending Review</p>
+                        <p className="text-sm text-yellow-300 mt-1">
+                          Your verification request is under review. We'll email you when there's an
+                          update.
+                        </p>
+                        {verificationStatus.submitted_at && (
+                          <p className="text-xs text-yellow-300/70 mt-2">
+                            Submitted:{" "}
+                            {new Date(verificationStatus.submitted_at).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ) : verificationStatus.status === "rejected" ? (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                      <p className="font-semibold text-red-400">Application Rejected</p>
+                      {verificationStatus.rejection_reason && (
+                        <p className="text-sm text-red-300 mt-2">
+                          {verificationStatus.rejection_reason}
+                        </p>
+                      )}
+                      <p className="text-sm text-red-300 mt-2">
+                        You can resubmit with updates to your portfolio or qualifications.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="space-y-2">
+                        <Label className="text-white">Application Notes (optional)</Label>
+                        <Textarea
+                          value={submissionNotes}
+                          onChange={(e) => setSubmissionNotes(e.target.value)}
+                          placeholder="Tell us about your experience, achievements, and why you'd like to join the Ethos Guild..."
+                          className="bg-slate-800 border-slate-700 h-24"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-white">Portfolio Links (one per line)</Label>
+                        <Textarea
+                          value={portfolioLinks}
+                          onChange={(e) => setPortfolioLinks(e.target.value)}
+                          placeholder="https://yourportfolio.com&#10;https://soundcloud.com/yourprofile&#10;https://example.com"
+                          className="bg-slate-800 border-slate-700 h-24"
+                        />
+                      </div>
+
+                      <Button
+                        onClick={handleSubmitVerification}
+                        disabled={isSubmittingVerification}
+                        className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
+                      >
+                        {isSubmittingVerification
+                          ? "Submitting..."
+                          : "Submit for Verification"}
+                      </Button>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+
               {/* Save Button */}
               <div className="flex gap-3">
                 <Button
