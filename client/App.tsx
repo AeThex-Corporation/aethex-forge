@@ -511,6 +511,14 @@ const App = () => (
                         </DocsLayout>
                       }
                     />
+                    <Route
+                      path="/docs/curriculum/ethos"
+                      element={
+                        <DocsLayout>
+                          <DocsCurriculumEthos />
+                        </DocsLayout>
+                      }
+                    />
 
                     {/* Internal Docs Hub Routes */}
                     <Route path="/internal-docs" element={<Space1Welcome />} />
