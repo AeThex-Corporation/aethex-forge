@@ -263,7 +263,26 @@ export default function AdminStaffDirectory() {
         />
       </div>
 
-      {filteredMembers.length > 0 ? (
+      {teamMembers.length === 0 && !loading ? (
+        <Card className="text-center py-12">
+          <CardContent className="space-y-4">
+            <p className="text-muted-foreground">
+              No staff members yet. Start with sample data to get started.
+            </p>
+            <Button
+              onClick={handleSeedData}
+              disabled={isSeeding}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              {isSeeding ? "Creating sample data..." : "Initialize with Sample Data"}
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              This creates 8 sample team members that you can edit to match your actual team.
+            </p>
+          </CardContent>
+        </Card>
+      ) : filteredMembers.length > 0 ? (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredMembers.map((member) => (
             <Card
