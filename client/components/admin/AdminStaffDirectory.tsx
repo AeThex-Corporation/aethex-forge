@@ -345,15 +345,13 @@ export default function AdminStaffDirectory() {
             </Card>
           ))}
         </div>
-      ) : (
+      ) : teamMembers.length > 0 ? (
         <Card className="text-center py-8">
           <p className="text-muted-foreground">
-            {teamMembers.length === 0
-              ? "No staff members yet. Create one to get started."
-              : "No team members match your search"}
+            No team members match your search
           </p>
         </Card>
-      )}
+      ) : null}
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
