@@ -135,6 +135,7 @@ import StaffDirectory from "./pages/StaffDirectory";
 import StaffAdmin from "./pages/StaffAdmin";
 import StaffChat from "./pages/StaffChat";
 import StaffDocs from "./pages/StaffDocs";
+import StaffAchievements from "./pages/StaffAchievements";
 import StaffAnnouncements from "./pages/staff/StaffAnnouncements";
 import StaffExpenseReports from "./pages/staff/StaffExpenseReports";
 import StaffInternalMarketplace from "./pages/staff/StaffInternalMarketplace";
