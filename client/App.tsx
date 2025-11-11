@@ -332,6 +332,8 @@ const App = () => (
                     <Route path="/staff/dashboard" element={<StaffDashboard />} />
                     <Route path="/staff/directory" element={<StaffDirectory />} />
                     <Route path="/staff/admin" element={<StaffAdmin />} />
+                    <Route path="/staff/chat" element={<StaffChat />} />
+                    <Route path="/staff/docs" element={<StaffDocs />} />
 
                     {/* Dev-Link routes */}
                     <Route path="/dev-link" element={<DevLink />} />
