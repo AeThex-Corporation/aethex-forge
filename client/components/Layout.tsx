@@ -132,8 +132,8 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-aethex-gradient">
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down overflow-visible">
-        <div className="container mx-auto max-w-7xl flex min-h-16 h-auto items-center justify-between px-4 py-2 gap-1 md:gap-2 min-w-0 overflow-x-auto">
+      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down overflow-hidden">
+        <div className="container mx-auto max-w-7xl flex min-h-16 h-auto items-center justify-between px-3 md:px-4 py-2 gap-1 md:gap-3 lg:gap-4 min-w-0 overflow-hidden">
           {/* Logo */}
           <div className="flex items-center shrink-0 relative">
             {/* Desktop - Regular Link */}
