@@ -38,6 +38,7 @@ import AdminStaffAdmin from "@/components/admin/AdminStaffAdmin";
 import AdminStaffDocs from "@/components/admin/AdminStaffDocs";
 import AdminStaffAchievements from "@/components/admin/AdminStaffAchievements";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminEthosVerification from "@/pages/admin/AdminEthosVerification";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
