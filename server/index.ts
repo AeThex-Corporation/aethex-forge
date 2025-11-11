@@ -4801,11 +4801,9 @@ export function createServer() {
           req.body;
 
         if (!reported_user_id || !report_type || !reporter_id) {
-          return res
-            .status(400)
-            .json({
-              error: "reported_user_id, report_type, and reporter_id required",
-            });
+          return res.status(400).json({
+            error: "reported_user_id, report_type, and reporter_id required",
+          });
         }
 
         const { data, error } = await adminSupabase
@@ -4980,7 +4978,11 @@ export function createServer() {
             });
           }
 
-          console.log("[Staff Seed Success] Inserted", data?.length || 0, "members");
+          console.log(
+            "[Staff Seed Success] Inserted",
+            data?.length || 0,
+            "members",
+          );
 
           const response = {
             success: true,

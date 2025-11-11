@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -57,7 +63,8 @@ export default function AdminStaffChat() {
       {
         id: "1",
         author: "Alex Chen",
-        content: "Good morning everyone! Starting weekly standup in 10 minutes.",
+        content:
+          "Good morning everyone! Starting weekly standup in 10 minutes.",
         timestamp: "09:50",
       },
       {
@@ -178,14 +185,19 @@ export default function AdminStaffChat() {
         {/* Messages */}
         <CardContent className="flex-1 overflow-y-auto p-4 space-y-3">
           {currentMessages.map((msg) => (
-            <div key={msg.id} className="flex gap-3 hover:bg-slate-50 dark:hover:bg-slate-900/50 p-2 rounded">
+            <div
+              key={msg.id}
+              className="flex gap-3 hover:bg-slate-50 dark:hover:bg-slate-900/50 p-2 rounded"
+            >
               <div className="w-8 h-8 bg-blue-200 dark:bg-blue-900 rounded-full flex items-center justify-center text-sm font-bold text-blue-900 dark:text-blue-200 flex-shrink-0">
                 {msg.author[0]}
               </div>
               <div className="flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="font-medium text-sm">{msg.author}</span>
-                  <span className="text-xs text-muted-foreground">{msg.timestamp}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {msg.timestamp}
+                  </span>
                 </div>
                 <p className="text-sm mt-1">{msg.content}</p>
               </div>

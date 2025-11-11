@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,11 +61,11 @@ export default function AdminStaffAdmin() {
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      active: "bg-green-100 text-green-900 dark:bg-green-900/30 dark:text-green-200",
+      active:
+        "bg-green-100 text-green-900 dark:bg-green-900/30 dark:text-green-200",
       inactive:
         "bg-gray-100 text-gray-900 dark:bg-gray-900/30 dark:text-gray-200",
-      suspended:
-        "bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-200",
+      suspended: "bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-200",
     };
     return colors[status] || colors.inactive;
   };
@@ -106,7 +112,9 @@ export default function AdminStaffAdmin() {
           <Card>
             <CardHeader>
               <CardTitle>User Management</CardTitle>
-              <CardDescription>Manage staff accounts and access</CardDescription>
+              <CardDescription>
+                Manage staff accounts and access
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -117,7 +125,9 @@ export default function AdminStaffAdmin() {
                   >
                     <div className="flex-1">
                       <p className="font-medium">{user.name}</p>
-                      <p className="text-sm text-muted-foreground">{user.email}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {user.email}
+                      </p>
                       <div className="flex gap-2 mt-2">
                         <Badge variant="outline">{user.role}</Badge>
                         <Badge className={getStatusColor(user.status)}>
@@ -140,7 +150,9 @@ export default function AdminStaffAdmin() {
           <Card>
             <CardHeader>
               <CardTitle>Role Permissions</CardTitle>
-              <CardDescription>Define what each role can access</CardDescription>
+              <CardDescription>
+                Define what each role can access
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
@@ -155,7 +167,10 @@ export default function AdminStaffAdmin() {
                   </thead>
                   <tbody>
                     {permissions.map((perm) => (
-                      <tr key={perm.feature} className="border-b hover:bg-slate-50 dark:hover:bg-slate-900/50">
+                      <tr
+                        key={perm.feature}
+                        className="border-b hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                      >
                         <td className="p-2 font-medium">{perm.feature}</td>
                         <td className="text-center p-2">
                           {perm.owner ? (
@@ -198,11 +213,15 @@ export default function AdminStaffAdmin() {
           <Card>
             <CardHeader>
               <CardTitle>System Settings</CardTitle>
-              <CardDescription>Configure global system parameters</CardDescription>
+              <CardDescription>
+                Configure global system parameters
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="p-3 border border-border/40 rounded-lg bg-background/40">
-                <label className="block font-medium mb-2">Session Timeout</label>
+                <label className="block font-medium mb-2">
+                  Session Timeout
+                </label>
                 <select className="w-full border border-input rounded p-2 bg-background">
                   <option>12 hours</option>
                   <option selected>24 hours</option>
@@ -217,9 +236,7 @@ export default function AdminStaffAdmin() {
                 <input type="checkbox" defaultChecked /> Enabled
               </div>
               <div className="p-3 border border-border/40 rounded-lg bg-background/40">
-                <label className="block font-medium mb-2">
-                  Audit Logging
-                </label>
+                <label className="block font-medium mb-2">Audit Logging</label>
                 <input type="checkbox" defaultChecked /> Enabled
               </div>
             </CardContent>
@@ -247,7 +264,9 @@ export default function AdminStaffAdmin() {
           <Card>
             <CardHeader>
               <CardTitle>Audit Log</CardTitle>
-              <CardDescription>Track all administrative actions</CardDescription>
+              <CardDescription>
+                Track all administrative actions
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-sm">
@@ -273,7 +292,9 @@ export default function AdminStaffAdmin() {
           <Card>
             <CardHeader>
               <CardTitle>System Maintenance</CardTitle>
-              <CardDescription>Administrative tools and utilities</CardDescription>
+              <CardDescription>
+                Administrative tools and utilities
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button variant="outline" className="w-full">
@@ -285,11 +306,7 @@ export default function AdminStaffAdmin() {
               <Button variant="outline" className="w-full">
                 Generate Report
               </Button>
-              <Button
-                variant="destructive"
-                className="w-full mt-4"
-                disabled
-              >
+              <Button variant="destructive" className="w-full mt-4" disabled>
                 Emergency Shutdown (Disabled)
               </Button>
             </CardContent>

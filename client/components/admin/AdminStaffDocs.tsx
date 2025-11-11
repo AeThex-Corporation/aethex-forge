@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lock, Copy } from "lucide-react";
 import { useState } from "react";
@@ -21,12 +27,14 @@ export default function AdminStaffDocs() {
     {
       title: "Security Protocols",
       description: "Internal security guidelines and best practices",
-      content: "Two-factor authentication required\nSession timeout: 24 hours\nAudit logging enabled",
+      content:
+        "Two-factor authentication required\nSession timeout: 24 hours\nAudit logging enabled",
     },
     {
       title: "Operational Procedures",
       description: "Day-to-day operational workflows",
-      content: "Daily standup: 10 AM UTC\nWeekly review: Friday 2 PM UTC\nIncident response: 15 min SLA",
+      content:
+        "Daily standup: 10 AM UTC\nWeekly review: Friday 2 PM UTC\nIncident response: 15 min SLA",
     },
   ];
 
@@ -78,7 +86,9 @@ export default function AdminStaffDocs() {
             <Lock className="w-5 h-5 text-red-600" />
             <CardTitle className="text-lg">API Keys & Credentials</CardTitle>
           </div>
-          <CardDescription>Manage sensitive credentials with caution</CardDescription>
+          <CardDescription>
+            Manage sensitive credentials with caution
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">

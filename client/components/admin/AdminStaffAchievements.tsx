@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Trophy, TrendingUp, Star } from "lucide-react";
@@ -163,7 +169,9 @@ export default function AdminStaffAchievements() {
                 achievements.length
               ).toFixed(1)}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">members per achievement</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              members per achievement
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -201,7 +209,9 @@ export default function AdminStaffAchievements() {
           <Card
             key={achievement.id}
             className={
-              achievement.completed ? "border-green-200 dark:border-green-900" : ""
+              achievement.completed
+                ? "border-green-200 dark:border-green-900"
+                : ""
             }
           >
             <CardHeader className="pb-3">
@@ -212,9 +222,7 @@ export default function AdminStaffAchievements() {
                     <CardTitle className="text-lg">
                       {achievement.name}
                     </CardTitle>
-                    <CardDescription>
-                      {achievement.description}
-                    </CardDescription>
+                    <CardDescription>{achievement.description}</CardDescription>
                   </div>
                 </div>
                 <Badge className={getRarityColor(achievement.rarity)}>

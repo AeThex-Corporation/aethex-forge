@@ -80,7 +80,11 @@ export default function NotificationBell({
       .getUserNotifications(user.id)
       .then((data) => {
         if (!isActive) return;
-        console.debug("[Notifications] Loaded", Array.isArray(data) ? data.length : 0, "notifications");
+        console.debug(
+          "[Notifications] Loaded",
+          Array.isArray(data) ? data.length : 0,
+          "notifications",
+        );
         setNotifications(
           Array.isArray(data) ? (data as AethexNotification[]) : [],
         );

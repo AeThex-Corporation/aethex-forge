@@ -1,8 +1,23 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, Search, Edit2, X, Trash2, Sparkles } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Search,
+  Edit2,
+  X,
+  Trash2,
+  Sparkles,
+} from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import { aethexToast } from "@/lib/aethex-toast";
 import {
@@ -54,8 +69,7 @@ export default function AdminStaffDirectory() {
         console.error("Error fetching staff members:", error);
         aethexToast.error({
           title: "Failed to load staff members",
-          description:
-            error instanceof Error ? error.message : "Unknown error",
+          description: error instanceof Error ? error.message : "Unknown error",
         });
         setTeamMembers([]);
       } finally {
@@ -110,17 +124,21 @@ export default function AdminStaffDirectory() {
           member.department
             .toLowerCase()
             .includes(searchQuery.toLowerCase())) ||
-        member.email.toLowerCase().includes(searchQuery.toLowerCase())
+        member.email.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [searchQuery, teamMembers]);
 
   const getRoleBadgeColor = (role: TeamMember["role"]) => {
     const colors: Record<TeamMember["role"], string> = {
-      owner: "bg-purple-100 text-purple-900 dark:bg-purple-900/30 dark:text-purple-200",
+      owner:
+        "bg-purple-100 text-purple-900 dark:bg-purple-900/30 dark:text-purple-200",
       admin: "bg-blue-100 text-blue-900 dark:bg-blue-900/30 dark:text-blue-200",
-      founder: "bg-pink-100 text-pink-900 dark:bg-pink-900/30 dark:text-pink-200",
-      staff: "bg-green-100 text-green-900 dark:bg-green-900/30 dark:text-green-200",
-      employee: "bg-gray-100 text-gray-900 dark:bg-gray-900/30 dark:text-gray-200",
+      founder:
+        "bg-pink-100 text-pink-900 dark:bg-pink-900/30 dark:text-pink-200",
+      staff:
+        "bg-green-100 text-green-900 dark:bg-green-900/30 dark:text-green-200",
+      employee:
+        "bg-gray-100 text-gray-900 dark:bg-gray-900/30 dark:text-gray-200",
     };
     return colors[role];
   };
@@ -149,17 +167,19 @@ export default function AdminStaffDirectory() {
             phone: formData.phone,
             role: formData.role,
           }),
-        }
+        },
       );
 
       const updatedMember = await response.json();
 
       if (!response.ok) {
-        throw new Error(updatedMember.details || updatedMember.error || "Failed to save");
+        throw new Error(
+          updatedMember.details || updatedMember.error || "Failed to save",
+        );
       }
 
       setTeamMembers(
-        teamMembers.map((m) => (m.id === updatedMember.id ? updatedMember : m))
+        teamMembers.map((m) => (m.id === updatedMember.id ? updatedMember : m)),
       );
 
       aethexToast.success({
@@ -184,7 +204,7 @@ export default function AdminStaffDirectory() {
   const handleDelete = async (memberId: string, memberName: string) => {
     if (
       !confirm(
-        `Are you sure you want to delete ${memberName}? This action cannot be undone.`
+        `Are you sure you want to delete ${memberName}? This action cannot be undone.`,
       )
     ) {
       return;
@@ -224,10 +244,7 @@ export default function AdminStaffDirectory() {
     }
   };
 
-  const handleFormChange = (
-    field: keyof TeamMember,
-    value: string
-  ) => {
+  const handleFormChange = (field: keyof TeamMember, value: string) => {
     if (formData) {
       setFormData({ ...formData, [field]: value });
     }
@@ -280,10 +297,13 @@ export default function AdminStaffDirectory() {
               className="bg-blue-600 hover:bg-blue-700"
             >
               <Sparkles className="w-4 h-4 mr-2" />
-              {isSeeding ? "Creating sample data..." : "Initialize with Sample Data"}
+              {isSeeding
+                ? "Creating sample data..."
+                : "Initialize with Sample Data"}
             </Button>
             <p className="text-xs text-muted-foreground">
-              This creates 8 sample team members that you can edit to match your actual team.
+              This creates 8 sample team members that you can edit to match your
+              actual team.
             </p>
           </CardContent>
         </Card>
@@ -374,7 +394,9 @@ export default function AdminStaffDirectory() {
                 <label className="text-sm font-medium">Full Name</label>
                 <Input
                   value={formData.full_name}
-                  onChange={(e) => handleFormChange("full_name", e.target.value)}
+                  onChange={(e) =>
+                    handleFormChange("full_name", e.target.value)
+                  }
                   placeholder="Full name"
                 />
               </div>
@@ -402,7 +424,9 @@ export default function AdminStaffDirectory() {
                 <label className="text-sm font-medium">Department</label>
                 <Input
                   value={formData.department || ""}
-                  onChange={(e) => handleFormChange("department", e.target.value)}
+                  onChange={(e) =>
+                    handleFormChange("department", e.target.value)
+                  }
                   placeholder="Department name"
                 />
               </div>
@@ -423,7 +447,7 @@ export default function AdminStaffDirectory() {
                   onChange={(e) =>
                     handleFormChange(
                       "role",
-                      e.target.value as TeamMember["role"]
+                      e.target.value as TeamMember["role"],
                     )
                   }
                   className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"

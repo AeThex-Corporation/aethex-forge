@@ -1,7 +1,19 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, CheckCircle2, Clock, Users, TrendingUp } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  Users,
+  TrendingUp,
+} from "lucide-react";
 import { useState } from "react";
 
 interface Report {
@@ -139,12 +151,12 @@ export default function AdminStaffOperations() {
 
   const getStatusIcon = (status: string) => {
     const icons: Record<string, React.ReactNode> = {
-      "open": <AlertCircle className="w-4 h-4 text-red-500" />,
+      open: <AlertCircle className="w-4 h-4 text-red-500" />,
       "in-review": <Clock className="w-4 h-4 text-yellow-500" />,
-      "resolved": <CheckCircle2 className="w-4 h-4 text-green-500" />,
-      "pending": <Clock className="w-4 h-4 text-yellow-500" />,
-      "accepted": <CheckCircle2 className="w-4 h-4 text-green-500" />,
-      "completed": <CheckCircle2 className="w-4 h-4 text-green-500" />,
+      resolved: <CheckCircle2 className="w-4 h-4 text-green-500" />,
+      pending: <Clock className="w-4 h-4 text-yellow-500" />,
+      accepted: <CheckCircle2 className="w-4 h-4 text-green-500" />,
+      completed: <CheckCircle2 className="w-4 h-4 text-green-500" />,
     };
     return icons[status];
   };
@@ -183,7 +195,11 @@ export default function AdminStaffOperations() {
       </div>
 
       {/* Tabs */}
-      <Tabs value={operationTab} onValueChange={setOperationTab} className="space-y-4">
+      <Tabs
+        value={operationTab}
+        onValueChange={setOperationTab}
+        className="space-y-4"
+      >
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="moderation">Moderation</TabsTrigger>
@@ -195,7 +211,9 @@ export default function AdminStaffOperations() {
           <Card>
             <CardHeader>
               <CardTitle>System Status</CardTitle>
-              <CardDescription>Overall platform health and activity</CardDescription>
+              <CardDescription>
+                Overall platform health and activity
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="p-3 border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/10 rounded-lg">
@@ -225,7 +243,9 @@ export default function AdminStaffOperations() {
           <Card>
             <CardHeader>
               <CardTitle>Reports & Moderation</CardTitle>
-              <CardDescription>Community reports and moderation actions</CardDescription>
+              <CardDescription>
+                Community reports and moderation actions
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {reports.map((report) => (
@@ -263,7 +283,9 @@ export default function AdminStaffOperations() {
           <Card>
             <CardHeader>
               <CardTitle>Mentorship Program</CardTitle>
-              <CardDescription>Track mentorship requests and matches</CardDescription>
+              <CardDescription>
+                Track mentorship requests and matches
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {mentorshipRequests.map((req) => (
@@ -293,7 +315,9 @@ export default function AdminStaffOperations() {
           <Card>
             <CardHeader>
               <CardTitle>User Management</CardTitle>
-              <CardDescription>Current user status and activity</CardDescription>
+              <CardDescription>
+                Current user status and activity
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">

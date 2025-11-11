@@ -372,7 +372,6 @@ const App = () => (
                     />
                     <Route path="/community/:tabId" element={<Community />} />
 
-
                     <Route path="/support" element={<Support />} />
                     <Route path="/status" element={<Status />} />
                     <Route path="/changelog" element={<Changelog />} />
