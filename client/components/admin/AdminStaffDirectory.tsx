@@ -39,6 +39,7 @@ export default function AdminStaffDirectory() {
   const [formData, setFormData] = useState<TeamMember | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSeeding, setIsSeeding] = useState(false);
 
   // Fetch staff members from API
   useEffect(() => {
@@ -64,6 +65,36 @@ export default function AdminStaffDirectory() {
 
     fetchMembers();
   }, []);
+
+  const handleSeedData = async () => {
+    try {
+      setIsSeeding(true);
+      const response = await fetch("/api/staff/members/seed", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || error.error);
+      }
+
+      const result = await response.json();
+      setTeamMembers(result.members || []);
+
+      aethexToast.success({
+        title: "Sample data created",
+        description: `Added ${result.count} staff members. You can now edit them with your actual data.`,
+      });
+    } catch (error) {
+      console.error("Error seeding data:", error);
+      aethexToast.error({
+        title: "Failed to seed data",
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    } finally {
+      setIsSeeding(false);
+    }
+  };
 
   const filteredMembers = useMemo(() => {
     return teamMembers.filter(
