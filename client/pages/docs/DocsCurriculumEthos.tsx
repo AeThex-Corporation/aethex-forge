@@ -197,36 +197,110 @@ const curriculumModules: CurriculumModule[] = [
         title: "SFX Categories for Games",
         summary:
           "Master UI clicks, impact hits, ambience layers, and foley for game interactions.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Understand the four main SFX categories: UI, impacts, ambience, foley",
+          "Learn design principles for each category",
+          "Create spot-on SFX that enhance gameplay without overwhelming",
+        ],
+        content: "Game SFX fall into distinct categories: (1) UI sounds provide feedback for menus, buttons, and selections; (2) Impact sounds (explosions, weapon fire, collisions) punctuate action; (3) Ambience creates mood and world atmosphere; (4) Foley (footsteps, object interactions) adds realism. Each requires different design approaches, processing, and implementation strategies.",
+        exercises: [
+          "Create 3 different UI click sounds (menu, confirm, cancel)",
+          "Design an explosion impact with layers (boom, crack, rumble)",
+          "Record or synthesize 2 foley sounds (footsteps, object scrape)",
+        ],
       },
       {
         title: "Layering & Processing Techniques",
         summary:
           "Learn compression, EQ, reverb, and delay to polish SFX and make them punchy.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1.5 hrs",
+        objectives: [
+          "Master EQ for clarity and presence in SFX",
+          "Use compression to add punch and control dynamics",
+          "Apply reverb/delay for depth and space",
+          "Create the 'professional' sound through post-processing",
+        ],
+        content: "Raw recordings or synth sounds often lack polish. EQ shapes tone; boost midrange for presence, cut rumble below 100Hz. Compression makes transients punchy by controlling peak levels. Short reverb adds space; longer reverb creates distance. These tools transform amateur SFX into production-quality sounds. Learn to layer: a bright click + a sub-rumble + reverb tail = professional explosion.",
+        exercises: [
+          "EQ a snare sample: boost 2-4kHz for presence, cut 200Hz for clarity",
+          "Compress an impact sound (4:1 ratio, fast attack) for tightness",
+          "Layer 2-3 samples with different EQ to create depth",
+        ],
       },
       {
         title: "Procedural Audio with SFX Tools",
         summary:
           "Use synthesizers and samplers to generate infinite variations of sounds.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Use synth-based SFX tools (Serum, Wavetable, Cymatics) for generation",
+          "Create procedurally-generated SFX for game interactions",
+          "Generate variations of the same sound (randomization)",
+        ],
+        content: "Procedural audio uses synthesis and modulation to create SFX without samples. Tools like Serum, Wavetable, and MOTU Volta let you build SFX from scratch. This is powerful for generating endless variations (randomized beeps, glitches, sci-fi elements). Learn to modulate oscillators, filters, and effects to create evolving, dynamic SFX.",
+        exercises: [
+          "Generate a laser beam sound using a sawtooth + filter sweep",
+          "Create a 'coin pickup' sound with noise + fast envelope",
+          "Build a sci-fi beep with randomized pitch variations",
+        ],
       },
       {
         title: "Spatial Audio & 3D Sound Panning",
         summary: "Position sounds in 3D space for immersive game environments.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Understand 2D stereo panning and 3D spatial audio",
+          "Use panning to create width and movement",
+          "Implement HRTF (head-related transfer function) for 3D immersion",
+        ],
+        content: "Panning stereo creates width. In 3D games, use distance modeling: closer sounds are louder and drier; distant sounds are quieter and reverberated. HRTF algorithms create convincing '3D' perception with just headphones. Game engines (Unity, Unreal) have built-in spatial audio APIs. Learn to pan and distance-model your SFX for immersive gameplay.",
+        exercises: [
+          "Pan an explosion hard left, then hard right to test stereo width",
+          "Add reverb to a distant footstep vs close footstep",
+          "Use game engine spatial audio API to test 3D positioning",
+        ],
       },
       {
         title: "Audio Implementation in Game Engines",
         summary:
           "Integrate your SFX into Unity, Unreal, and Godot with proper metadata.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Understand game engine audio requirements (format, sample rate, naming)",
+          "Implement SFX in Unity's AudioManager and Unreal's MetaHuman Audio",
+          "Use audio metadata (layers, priority, volume) in game engines",
+        ],
+        content: "Game engines require specific audio formats (WAV, MP3, FMOD) and sample rates. You'll learn to prepare SFX correctly: consistent loudness (-12dB LUFS), standardized naming (UI_Click_01.wav), and metadata (loop points, file type). Then integrate into engines using AudioManagers, SoundCues, or event systems. This ensures your SFX sound perfect in-game.",
+        exercises: [
+          "Prepare 5 SFX files to game-ready specs (44.1kHz WAV, -12dB)",
+          "Create an AudioManager script in Unity that plays SFX by name",
+          "Implement spatial audio in UE5's sound event system",
+        ],
       },
       {
         title: "Capstone: Design an SFX Pack",
         summary:
           "Create 12 high-quality SFX (UI, impact, ambience) ready for a game.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1.5 hrs",
+        objectives: [
+          "Combine all SFX skills into a polished, deliverable pack",
+          "Create diverse, game-ready sounds",
+          "Organize and document your pack professionally",
+        ],
+        content: "Your capstone project: design a complete SFX pack for a game scenario (e.g., space shooter, puzzle game, adventure). Include UI sounds (menu, select, confirm), impact sounds (weapon fire, hits, explosions), ambience (background hum, wind), and foley. All 12 SFX must be production-quality, consistent in level, and properly named. This is a deliverable you can share with game developers.",
+        exercises: [
+          "Design 12 unique SFX for your chosen game scenario",
+          "Process and mix each SFX to professional standards",
+          "Package with metadata (cue sheet, format specs, usage rights)",
+          "Share with the community for feedback",
+        ],
       },
     ],
   },
