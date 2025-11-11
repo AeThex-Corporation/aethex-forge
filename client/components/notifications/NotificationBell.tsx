@@ -221,19 +221,20 @@ export default function NotificationBell({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn("relative hover-lift", className)}
-          style={{ overflow: "visible" }}
-        >
-          <Bell className="h-4 w-4" />
+        <div className="relative inline-block">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn("hover-lift", className)}
+          >
+            <Bell className="h-4 w-4" />
+          </Button>
           {unreadCount > 0 ? (
-            <span className="absolute -right-1.5 -top-1.5 z-10 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-aethex-500 px-1.5 text-[11px] font-bold text-white shadow-lg border border-background">
+            <span className="absolute -right-2 -top-2 z-50 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-aethex-500 px-1.5 text-[11px] font-bold text-white shadow-lg border-2 border-background">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           ) : null}
-        </Button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
