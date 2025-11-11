@@ -1,3 +1,4 @@
+<!-- INTERNAL: Operational doc - DO NOT PUBLISH TO PUBLIC DOCS -->
 # Discord Commands Registration - Admin Panel
 
 ## Overview
