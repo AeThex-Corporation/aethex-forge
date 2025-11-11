@@ -1,3 +1,4 @@
+<!-- INTERNAL: Operational doc - DO NOT PUBLISH TO PUBLIC DOCS -->
 # Discord Linking Flow - Complete Issue Analysis & Fix
 
 ## Current Broken Flows
