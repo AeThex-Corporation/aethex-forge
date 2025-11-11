@@ -782,11 +782,9 @@ export function createServer() {
     });
 
     // Discord OAuth: callback handler
-    app.post("/api/discord/oauth/callback", async (req, res) => {
-      const { code, state } = (req.body || {}) as {
-        code?: string;
-        state?: string;
-      };
+    app.get("/api/discord/oauth/callback", async (req, res) => {
+      const code = req.query.code as string;
+      const state = req.query.state as string;
 
       if (!code) {
         return res
@@ -1875,7 +1873,7 @@ export function createServer() {
             "�� DISCORD_CLIENT_ID not set. Set it to your application's ID.",
           );
         } else {
-          diagnostics.recommendations.push("✅ DISCORD_CLIENT_ID is set");
+          diagnostics.recommendations.push("�� DISCORD_CLIENT_ID is set");
         }
 
         if (!publicKey) {
