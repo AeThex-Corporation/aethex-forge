@@ -4851,18 +4851,34 @@ export function createServer() {
     // Staff Members API
     app.get("/api/staff/members", async (_req, res) => {
       try {
+        console.log("[Staff] GET /api/staff/members - adminSupabase initialized:", !!adminSupabase);
+
+        if (!adminSupabase) {
+          console.error("[Staff] adminSupabase is not initialized");
+          return res.status(500).json({
+            error: "Supabase client not initialized",
+            message: "SUPABASE_URL or SUPABASE_SERVICE_ROLE not set",
+          });
+        }
+
         const { data, error } = await adminSupabase
           .from("staff_members")
           .select("*")
           .order("full_name", { ascending: true });
 
         if (error) {
-          if (isTableMissing(error)) return res.json([]);
+          console.error("[Staff] Error fetching staff members:", error);
+          if (isTableMissing(error)) {
+            console.log("[Staff] Table not found, returning empty array");
+            return res.json([]);
+          }
           return res.status(500).json({ error: error.message });
         }
 
+        console.log("[Staff] Successfully fetched", (data || []).length, "staff members");
         return res.json(data || []);
       } catch (e: any) {
+        console.error("[Staff] Unexpected error:", e);
         return res.status(500).json({ error: e?.message || String(e) });
       }
     });
