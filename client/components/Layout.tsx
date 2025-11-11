@@ -279,7 +279,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       <Button
                         asChild
                         size="sm"
-                        className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift glow-blue"
+                        className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 hover-lift glow-blue hidden sm:inline-flex"
                       >
                         <Link to="/onboarding">Complete Setup</Link>
                       </Button>
