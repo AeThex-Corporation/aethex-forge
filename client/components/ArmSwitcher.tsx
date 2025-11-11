@@ -102,12 +102,12 @@ export default function ArmSwitcher() {
   return (
     <>
       {/* Desktop Version - Horizontal Layout (lg+) */}
-      <div className="hidden lg:flex items-center gap-6 sm:gap-10 lg:gap-12">
+      <div className="hidden lg:flex items-center gap-8 xl:gap-12">
         {ARMS.map((arm) => (
           <button
             key={arm.id}
             onClick={handleArmClick}
-            className="group relative h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
+            className="group relative h-12 w-12 flex items-center justify-center rounded-lg hover:scale-120 transition-transform duration-200 flex-shrink-0"
             title={arm.name}
           >
             <div
@@ -117,7 +117,7 @@ export default function ArmSwitcher() {
             <img
               src={LOGO_URLS[arm.id]}
               alt={arm.label}
-              className="relative h-10 w-10 sm:h-12 sm:w-12 object-contain transition-all duration-200"
+              className="relative h-10 w-10 object-contain transition-all duration-200"
             />
 
             {/* Tooltip */}
@@ -129,18 +129,18 @@ export default function ArmSwitcher() {
       </div>
 
       {/* Tablet Version - Spaced Horizontal Layout (md to lg) */}
-      <div className="hidden md:flex lg:hidden items-center gap-6 sm:gap-10">
+      <div className="hidden md:flex lg:hidden items-center gap-4">
         {ARMS.map((arm) => (
           <button
             key={arm.id}
             onClick={handleArmClick}
-            className="group relative h-12 w-12 flex items-center justify-center rounded-lg hover:scale-125 transition-transform duration-200"
+            className="group relative h-11 w-11 flex items-center justify-center rounded-lg hover:scale-110 transition-transform duration-200 flex-shrink-0"
             title={arm.name}
           >
             <img
               src={LOGO_URLS[arm.id]}
               alt={arm.label}
-              className="relative h-8 w-8 object-contain transition-all duration-200"
+              className="relative h-7 w-7 object-contain transition-all duration-200"
             />
 
             {/* Tooltip */}
