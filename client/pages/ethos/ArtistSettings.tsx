@@ -60,6 +60,12 @@ export default function ArtistSettings() {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [showMetadataForm, setShowMetadataForm] = useState(false);
+  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>({
+    status: "none",
+  });
+  const [isSubmittingVerification, setIsSubmittingVerification] = useState(false);
+  const [submissionNotes, setSubmissionNotes] = useState("");
+  const [portfolioLinks, setPortfolioLinks] = useState("");
 
   useEffect(() => {
     if (!user) {
