@@ -62,31 +62,120 @@ const curriculumModules: CurriculumModule[] = [
         title: "The Synthwave Sound: History & Vibes",
         summary:
           "Understand the '80s-inspired, retro-futuristic sound that defines Ethos and AeThex.",
-        status: "coming_soon",
+        status: "live",
+        duration: "45 min",
+        objectives: [
+          "Understand synthwave's historical roots (80s synth-pop, electronic music)",
+          "Identify key sonic characteristics: analog warmth, neon aesthetics, retro-futurism",
+          "Learn why synthwave fits AeThex's brand and game development",
+          "Discover iconic synthwave artists and their influence",
+        ],
+        content: "Synthwave is a genre rooted in the sounds of 1980s analog synthesizers, film scores, and electronic music. It combines nostalgic retro-futurism with modern production techniques. Key elements include warm analog synths, driving basslines, crisp drums, and atmospheric reverb. In game development, synthwave creates immersive, energetic soundscapes perfect for action, racing, and exploration games. This module teaches you to craft tracks that evoke that iconic 80s vibe while sounding professional and modern.",
+        exercises: [
+          "Listen to 5 iconic synthwave tracks and identify sonic elements",
+          "Create a mood board of synthwave aesthetics (visuals + sounds)",
+          "Write a brief description of how synthwave could enhance a game you love",
+        ],
+        resources: [
+          { title: "Synthwave Origins - Film Score Evolution", type: "video" },
+          { title: "The Synthwave Revival in Game Design", type: "article" },
+        ],
       },
       {
         title: "DAW Setup & Workflow",
         summary:
           "Configure your digital audio workstation (Ableton, FL Studio, Logic) for Ethos production.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Set up your DAW for optimal synthwave production",
+          "Understand session organization and naming conventions",
+          "Configure audio inputs/outputs and monitoring",
+          "Establish a repeatable workflow",
+        ],
+        content: "A proper DAW setup is foundational to efficient production. You'll learn to organize projects, configure buffer sizes for low-latency monitoring, set up templates for synthwave tracks, and establish color-coding systems for tracks. We'll cover Ableton Live, FL Studio, and Logic Pro, with special focus on synthesizer routing and effects chains common in synthwave production.",
+        exercises: [
+          "Create a custom DAW template with your preferred track types",
+          "Set up a folder structure for sample libraries and presets",
+          "Record a test track with proper levels and latency compensation",
+        ],
+        resources: [
+          { title: "Ableton Live 12 - Initial Setup Guide", type: "article" },
+          { title: "FL Studio - Producer Preset Configuration", type: "video" },
+          { title: "Logic Pro - Latency & Buffer Settings", type: "article" },
+        ],
       },
       {
         title: "Synth Basics: Oscillators & Filters",
         summary:
           "Learn subtractive synthesis to create classic synthwave leads and pads.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1.5 hrs",
+        objectives: [
+          "Understand oscillator waveforms (sawtooth, square, pulse, sine)",
+          "Master low-pass filtering and resonance",
+          "Learn ADSR envelopes and how they shape sound",
+          "Create your first synthwave pad and lead sound",
+        ],
+        content: "Subtractive synthesis is the foundation of synthwave sound design. Start with oscillators - sawtooth waves are the workhorse of synthwave, producing bright, buzzing tones. Pass them through a low-pass filter to shape tone. Control the filter's resonance (Q) to create classic 'squelchy' synthwave timbres. Use ADSR envelopes to control how the sound evolves over time. A long attack on a pad creates that dreamy introduction; a fast attack + decay on a lead creates punchy melodic elements.",
+        exercises: [
+          "Create a basic pad: sawtooth osc → low-pass filter → long ADSR",
+          "Create a lead: square wave → filter + resonance → punchy envelope",
+          "Experiment with multiple oscillators detuned for richness",
+        ],
+        resources: [
+          { title: "Subtractive Synthesis Explained", type: "video" },
+          { title: "Serum Wavetables - Creating Synthwave Tones", type: "video" },
+          { title: "ADSR Envelopes in Practice", type: "article" },
+        ],
       },
       {
         title: "Drum Programming in Synthwave",
         summary:
           "Program punchy 808s, snares, and hi-hats that sit in the mix.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Program classic synthwave drum patterns",
+          "Use 808s as melodic elements, not just bass",
+          "Create crisp snares and hi-hat patterns",
+          "Understand timing, swing, and groove",
+        ],
+        content: "Synthwave drums are characterized by punchy, analog-sounding kicks (808s), crisp snares, and fast hi-hat patterns. The kick drives the energy; 808s are often melodic (with pitch slides). Snares are bright and hit hard. Hi-hats are rapid-fire, often with swing applied. This creates the driving, energetic groove that makes synthwave compelling for games and dancefloors alike.",
+        exercises: [
+          "Program a 4-on-the-floor kick + snare pattern in your DAW",
+          "Add hi-hat patterns with varying note lengths for groove",
+          "Experiment with 808 pitch slides on the kick drum",
+          "Apply swing/humanization to remove rigid timing",
+        ],
+        resources: [
+          { title: "808 Drum Programming - Synthwave Style", type: "video" },
+          { title: "Creating Groove with Swing and Timing", type: "article" },
+        ],
       },
       {
         title: "Your First Synthwave Track",
         summary:
           "Build a 16-bar synthwave loop from scratch. This is your capstone.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1.5 hrs",
+        objectives: [
+          "Combine all foundation skills into one cohesive track",
+          "Create a repeating loop structure",
+          "Balance multiple synth and drum layers",
+          "Add polish with effects and mixing",
+        ],
+        content: "Now you'll bring together oscillators, filters, drums, and arrangement. Start with a simple 16-bar drum pattern. Layer a pad underneath. Add a bass line with an 808 or sub-synth. Add a lead melody on top. Use effects like reverb and delay to create space and atmosphere. This capstone gets you to 'song idea' - the foundation of any music production project.",
+        exercises: [
+          "Create a complete 16-bar loop with kick, bass, pad, and lead",
+          "Add reverb/delay to at least one synth",
+          "Adjust levels so each element is audible and balanced",
+          "Export your track for feedback from the community",
+        ],
+        resources: [
+          { title: "Song Structure Basics", type: "article" },
+          { title: "Mixing Basics - Levels & Panning", type: "video" },
+        ],
       },
     ],
   },
