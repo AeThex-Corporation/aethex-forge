@@ -17,6 +17,7 @@ import {
   BookOpen,
   Home,
   ArrowRight,
+  Music,
 } from "lucide-react";
 
 interface SidebarSection {
