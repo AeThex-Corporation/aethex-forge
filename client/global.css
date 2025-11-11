@@ -91,6 +91,22 @@
 
   html {
     scroll-behavior: smooth;
+    /* Hide scrollbar while keeping functionality */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  /* Hide horizontal scrollbar on all elements */
+  * {
+    scrollbar-width: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
   }
 
   .container {
