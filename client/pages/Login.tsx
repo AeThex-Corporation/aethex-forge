@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { aethexUserService } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
