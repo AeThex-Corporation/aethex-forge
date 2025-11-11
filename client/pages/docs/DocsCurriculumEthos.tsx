@@ -544,8 +544,8 @@ const curriculumModules: CurriculumModule[] = [
 export default function DocsCurriculumEthos() {
   const curriculumStats = [
     { label: "Total modules", value: "4", icon: Layers },
-    { label: "Lessons (planned)", value: "20+", icon: BookOpenCheck },
-    { label: "Certifications", value: "2", icon: CheckCircle },
+    { label: "Lessons (live)", value: "23", icon: BookOpenCheck },
+    { label: "Estimated hours", value: "18+", icon: Sparkles },
   ];
 
   const highlights = [
