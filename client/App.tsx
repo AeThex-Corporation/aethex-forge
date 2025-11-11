@@ -326,6 +326,10 @@ const App = () => (
 
                     {/* Staff routes */}
                     <Route path="/staff" element={<Staff />} />
+                    <Route path="/staff/login" element={<StaffLogin />} />
+                    <Route path="/staff/dashboard" element={<StaffDashboard />} />
+                    <Route path="/staff/directory" element={<StaffDirectory />} />
+                    <Route path="/staff/admin" element={<StaffAdmin />} />
 
                     {/* Dev-Link routes */}
                     <Route path="/dev-link" element={<DevLink />} />
