@@ -73,12 +73,13 @@ export default function AdminStaffDirectory() {
         method: "POST",
       });
 
+      // Read response body once
+      const result = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.details || error.error);
+        throw new Error(result.details || result.error || "Failed to seed data");
       }
 
-      const result = await response.json();
       setTeamMembers(result.members || []);
 
       aethexToast.success({
