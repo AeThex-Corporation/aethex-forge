@@ -18,13 +18,23 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
 
 export default function Staff() {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
+
+  // Redirect unauthenticated users to login
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/staff/login", { replace: true });
+      return;
+    }
+  }, [user, loading, navigate]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
