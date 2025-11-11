@@ -19,6 +19,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+// No additional imports needed - all icons are already imported
+
 interface SidebarSection {
   label: string;
   items: {
