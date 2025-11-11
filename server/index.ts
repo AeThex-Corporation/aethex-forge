@@ -4967,6 +4967,7 @@ export function createServer() {
             department: "Analytics",
             phone: "+1 (555) 000-0008",
             role: "employee",
+            location: "Denver, CO",
           },
         ];
 
