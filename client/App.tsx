@@ -23,6 +23,7 @@ import Labs from "./pages/Labs";
 import GameForge from "./pages/GameForge";
 import Corp from "./pages/Corp";
 import Foundation from "./pages/Foundation";
+import Staff from "./pages/Staff";
 import DevLink from "./pages/DevLink";
 import DevLinkProfiles from "./pages/DevLinkProfiles";
 import Nexus from "./pages/Nexus";
