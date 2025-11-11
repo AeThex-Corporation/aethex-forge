@@ -13,6 +13,15 @@ interface Arm {
 
 const ARMS: Arm[] = [
   {
+    id: "staff",
+    name: "AeThex | Staff",
+    label: "Staff",
+    color: "#7c3aed",
+    bgColor: "bg-purple-500/20",
+    textColor: "text-purple-400",
+    href: "/staff",
+  },
+  {
     id: "labs",
     name: "AeThex | Labs",
     label: "Labs",
