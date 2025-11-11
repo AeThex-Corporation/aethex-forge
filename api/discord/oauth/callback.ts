@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { notifyAccountLinked } from "../../_notifications";
+import { getAdminClient } from "../../_supabase";
 
 export const config = {
   runtime: "nodejs",
