@@ -741,6 +741,46 @@ export function createServer() {
       }
     });
 
+    // Discord OAuth: start authorization flow
+    app.get("/api/discord/oauth/start", (req, res) => {
+      try {
+        const clientId = process.env.DISCORD_CLIENT_ID;
+        if (!clientId) {
+          return res
+            .status(500)
+            .json({ error: "Discord client ID not configured" });
+        }
+
+        // Get the current API base from the request origin
+        const protocol =
+          req.headers["x-forwarded-proto"] || req.protocol || "https";
+        const host =
+          req.headers["x-forwarded-host"] || req.hostname || req.get("host");
+        const apiBase = `${protocol}://${host}`;
+
+        const redirectUri = `${apiBase}/api/discord/oauth/callback`;
+
+        // Get the state from query params (can be a JSON string with action and redirectTo)
+        let state = req.query.state || "/dashboard";
+        if (typeof state !== "string") {
+          state = "/dashboard";
+        }
+
+        const params = new URLSearchParams({
+          client_id: clientId,
+          redirect_uri: redirectUri,
+          response_type: "code",
+          scope: "identify email",
+          state: state,
+        });
+
+        const discordOAuthUrl = `https://discord.com/api/oauth2/authorize?${params.toString()}`;
+        return res.redirect(302, discordOAuthUrl);
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     // Discord OAuth: callback handler
     app.post("/api/discord/oauth/callback", async (req, res) => {
       const { code, state } = (req.body || {}) as {
