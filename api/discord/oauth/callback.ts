@@ -282,24 +282,12 @@ export default async function handler(req: any, res: any) {
       await notifyAccountLinked(userId, "Discord");
     }
 
-    // Generate a magic link to establish session
-    const { data: linkData, error: linkError } =
-      await supabase.auth.admin.generateLink({
-        type: "magiclink",
-        email: discordUser.email,
-        options: {
-          redirectTo: redirectTo,
-        },
-      });
-
-    if (linkError || !linkData?.properties?.magic_link) {
-      console.error("[Discord OAuth] Magic link generation failed:", linkError);
-      return res.redirect("/login?error=session_create");
-    }
-
-    // Redirect to magic link to establish session
-    // The magic link contains the session token and will set cookies automatically
-    res.redirect(linkData.properties.magic_link);
+    // Discord is now linked! Redirect to login for user to sign in
+    // The email is passed so they can see which account was linked
+    console.log("[Discord OAuth] Discord linked successfully, redirecting to login");
+    return res.redirect(
+      `/login?discord_linked=true&email=${encodeURIComponent(discordUser.email)}`
+    );
   } catch (error) {
     console.error("[Discord OAuth] Callback error:", error);
     res.redirect("/login?error=unknown");
