@@ -404,7 +404,7 @@ export default function DocsGettingStarted() {
           <p>This public documentation is the platform-facing view. Internal operational documents remain private under <code>/internal-docs</code>.</p>
           <p className="mt-2">Editors (staff) can edit public docs using Builder CMS. After changes are reviewed in Builder, create a GitHub PR to push finalized content into the repository so it can be deployed with site updates.</p>
           <ul className="list-disc pl-6 mt-2 space-y-1">
-            <li><strong>Edit in Builder:</strong> Open the MCP popover and select <strong>Builder.io</strong> to edit live doc components and page content. (Staff only)</li>
+            <li><strong>Edit in Builder:</strong> <a href="#open-mcp-popover" className="text-aethex-400 underline">Open MCP popover</a> and select <strong>Builder.io</strong> to edit live doc components and page content. (Staff only)</li>
             <li><strong>Publish workflow:</strong> Use the Builder preview to validate changes, then export or commit the markdown/content and open a GitHub PR for review. CI runs will deploy the updated public docs.</li>
             <li><strong>Security:</strong> Internal API references are intentionally not included in public docs. If you need to publish API guides for partners, request a gated partner docs area.</li>
           </ul>
