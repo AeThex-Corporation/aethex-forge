@@ -30,6 +30,8 @@ import {
   Sparkles,
   UserCircle,
   Menu,
+  BookOpen,
+  Shield,
 } from "lucide-react";
 
 interface LayoutProps {
