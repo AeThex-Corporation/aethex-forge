@@ -4869,8 +4869,11 @@ export function createServer() {
       }
     });
 
-    app.post("/api/staff/members/seed", async (_req, res) => {
+    app.post("/api/staff/members/seed", async (req, res) => {
       try {
+        // Ensure response headers are set correctly
+        res.setHeader("Content-Type", "application/json");
+
         const mockMembers = [
           {
             email: "alex@aethex.dev",
@@ -4944,19 +4947,23 @@ export function createServer() {
           .select();
 
         if (error) {
+          console.error("[Staff Seed Error]", error);
           return res.status(500).json({
             error: "Failed to seed staff members",
             details: error.message,
           });
         }
 
-        return res.status(201).json({
+        const response = {
           success: true,
           count: data?.length || 0,
-          members: data,
-        });
+          members: data || [],
+        };
+
+        res.status(201).json(response);
       } catch (e: any) {
-        return res.status(500).json({ error: e?.message || String(e) });
+        console.error("[Staff Seed Exception]", e);
+        res.status(500).json({ error: e?.message || String(e) });
       }
     });
 
