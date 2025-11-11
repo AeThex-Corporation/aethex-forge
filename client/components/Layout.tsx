@@ -271,7 +271,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="hover-lift"
+                      className="hover-lift hidden sm:inline-flex"
                     >
                       <Link to="/dashboard">Dashboard</Link>
                     </Button>
