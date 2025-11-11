@@ -4974,7 +4974,7 @@ export function createServer() {
         try {
           const { data, error } = await adminSupabase
             .from("staff_members")
-            .insert(mockMembers)
+            .upsert(mockMembers, { onConflict: "email" })
             .select();
 
           if (error) {
