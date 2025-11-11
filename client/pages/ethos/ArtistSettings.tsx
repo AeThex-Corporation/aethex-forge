@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import TrackUploadModal from "@/components/ethos/TrackUploadModal";
 import TrackMetadataForm from "@/components/ethos/TrackMetadataForm";
+import { ethosStorage, getAudioDuration } from "@/lib/ethos-storage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
