@@ -128,6 +128,14 @@ import Space4ClientOps from "./pages/internal-docs/Space4ClientOps";
 import Space4PlatformStrategy from "./pages/internal-docs/Space4PlatformStrategy";
 import Space5Onboarding from "./pages/internal-docs/Space5Onboarding";
 import Space5Finance from "./pages/internal-docs/Space5Finance";
+import StaffAnnouncements from "./pages/staff/StaffAnnouncements";
+import StaffExpenseReports from "./pages/staff/StaffExpenseReports";
+import StaffInternalMarketplace from "./pages/staff/StaffInternalMarketplace";
+import StaffKnowledgeBase from "./pages/staff/StaffKnowledgeBase";
+import StaffLearningPortal from "./pages/staff/StaffLearningPortal";
+import StaffPerformanceReviews from "./pages/staff/StaffPerformanceReviews";
+import StaffProjectTracking from "./pages/staff/StaffProjectTracking";
+import StaffTeamHandbook from "./pages/staff/StaffTeamHandbook";
 
 const queryClient = new QueryClient();
 
