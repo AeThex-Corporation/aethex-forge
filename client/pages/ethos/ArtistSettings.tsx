@@ -217,8 +217,24 @@ export default function ArtistSettings() {
     if (!user || !currentFile) return;
 
     try {
-      // TODO: Upload file to Supabase Storage
-      // For now, just create track record with placeholder file_url
+      toast.loading({
+        title: "Uploading track...",
+        description: "Please wait while we upload your file to secure storage",
+      });
+
+      // Get audio duration
+      let durationSeconds = 0;
+      try {
+        durationSeconds = Math.round(await getAudioDuration(currentFile));
+      } catch (error) {
+        console.warn("Could not determine audio duration:", error);
+        durationSeconds = Math.floor(currentFile.size / 16000); // Fallback estimate
+      }
+
+      // Upload file to Supabase Storage
+      const fileUrl = await ethosStorage.uploadTrackFile(currentFile, user.id);
+
+      // Create track record in database
       const res = await fetch(`/api/ethos/tracks`, {
         method: "POST",
         headers: {
@@ -227,24 +243,25 @@ export default function ArtistSettings() {
         },
         body: JSON.stringify({
           ...metadata,
-          file_url: `ethos-tracks/${user.id}/${currentFile.name}`,
-          duration_seconds: Math.floor(currentFile.size / 16000), // Rough estimate
+          file_url: fileUrl,
+          duration_seconds: durationSeconds,
         }),
       });
 
       if (res.ok) {
         toast.success({
-          title: "Track uploaded",
-          description: "Your track has been added to your portfolio",
+          title: "Track uploaded successfully! 🎵",
+          description: "Your track has been added to your portfolio and is ready to share",
         });
         setShowMetadataForm(false);
         setCurrentFile(null);
       } else {
-        throw new Error("Failed to upload track");
+        throw new Error("Failed to create track record");
       }
     } catch (error) {
+      console.error("Upload error:", error);
       toast.error({
-        title: "Error",
+        title: "Upload failed",
         description: String(error),
       });
     }
