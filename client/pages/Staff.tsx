@@ -48,7 +48,8 @@ export default function Staff() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
+  // Show loading screen while checking authentication
+  if (isLoading || loading) {
     return (
       <LoadingScreen
         message="Securing Staff Portal..."
