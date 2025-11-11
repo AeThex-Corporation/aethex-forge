@@ -2355,14 +2355,23 @@ export function createServer() {
         const { data, error } = await query;
         if (error) {
           // If table doesn't exist, return empty array (client will use seed data)
-          if (error.message?.includes("does not exist") || error.code === "42P01") {
-            console.log("[Blog] blog_posts table not found, returning empty array");
+          if (
+            error.message?.includes("does not exist") ||
+            error.code === "42P01"
+          ) {
+            console.log(
+              "[Blog] blog_posts table not found, returning empty array",
+            );
             return res.json([]);
           }
           console.error("[Blog] Error fetching blog posts:", error);
           return res.status(500).json({ error: error.message });
         }
-        console.log("[Blog] Successfully fetched", (data || []).length, "blog posts");
+        console.log(
+          "[Blog] Successfully fetched",
+          (data || []).length,
+          "blog posts",
+        );
         res.json(data || []);
       } catch (e: any) {
         console.error("[Blog] Exception:", e);
@@ -2386,7 +2395,10 @@ export function createServer() {
             // No rows returned - 404
             return res.status(404).json({ error: "Blog post not found" });
           }
-          if (error.message?.includes("does not exist") || error.code === "42P01") {
+          if (
+            error.message?.includes("does not exist") ||
+            error.code === "42P01"
+          ) {
             // Table doesn't exist
             return res.status(404).json({ error: "Blog not configured" });
           }
@@ -4851,7 +4863,10 @@ export function createServer() {
     // Staff Members API
     app.get("/api/staff/members", async (_req, res) => {
       try {
-        console.log("[Staff] GET /api/staff/members - adminSupabase initialized:", !!adminSupabase);
+        console.log(
+          "[Staff] GET /api/staff/members - adminSupabase initialized:",
+          !!adminSupabase,
+        );
 
         if (!adminSupabase) {
           console.error("[Staff] adminSupabase is not initialized");
@@ -4875,7 +4890,11 @@ export function createServer() {
           return res.status(500).json({ error: error.message });
         }
 
-        console.log("[Staff] Successfully fetched", (data || []).length, "staff members");
+        console.log(
+          "[Staff] Successfully fetched",
+          (data || []).length,
+          "staff members",
+        );
         return res.json(data || []);
       } catch (e: any) {
         console.error("[Staff] Unexpected error:", e);

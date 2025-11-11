@@ -213,7 +213,7 @@ export default function AdminSidebar({
                     "w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
                     activeTab === item.id
                       ? "bg-aethex-500/20 text-aethex-200 border border-aethex-400/30"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
                   )}
                 >
                   {item.icon}

@@ -87,46 +87,46 @@ export default function AdminBlogManager() {
     loadBlogPosts();
   }, [loadBlogPosts]);
 
-  const handleDeleteBlogPost = useCallback(
-    async (slug: string) => {
-      setDeleting(slug);
-      try {
-        const res = await fetch(`/api/blog/${slug}`, { method: "DELETE" });
-        if (res.ok) {
-          setBlogPosts((posts) => posts.filter((p) => p.slug !== slug));
-          aethexToast.success({
-            title: "Blog post deleted",
-            description: `Post "${slug}" has been removed`,
-          });
-        } else {
-          aethexToast.error({
-            title: "Failed to delete blog post",
-            description: res.statusText || "Unknown error",
-          });
-        }
-      } catch (error) {
-        console.error("Error deleting blog post:", error);
-        aethexToast.error({
-          title: "Error deleting blog post",
-          description: String(error),
+  const handleDeleteBlogPost = useCallback(async (slug: string) => {
+    setDeleting(slug);
+    try {
+      const res = await fetch(`/api/blog/${slug}`, { method: "DELETE" });
+      if (res.ok) {
+        setBlogPosts((posts) => posts.filter((p) => p.slug !== slug));
+        aethexToast.success({
+          title: "Blog post deleted",
+          description: `Post "${slug}" has been removed`,
         });
-      } finally {
-        setDeleting(null);
+      } else {
+        aethexToast.error({
+          title: "Failed to delete blog post",
+          description: res.statusText || "Unknown error",
+        });
       }
-    },
-    [],
-  );
+    } catch (error) {
+      console.error("Error deleting blog post:", error);
+      aethexToast.error({
+        title: "Error deleting blog post",
+        description: String(error),
+      });
+    } finally {
+      setDeleting(null);
+    }
+  }, []);
 
   const filteredPosts = blogPosts.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (post.author && post.author.toLowerCase().includes(searchQuery.toLowerCase()));
+      (post.author &&
+        post.author.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCategory = !filterCategory || post.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const categories = Array.from(new Set(blogPosts.map((p) => p.category).filter(Boolean)));
+  const categories = Array.from(
+    new Set(blogPosts.map((p) => p.category).filter(Boolean)),
+  );
 
   const formatDate = (dateStr?: string | null) => {
     if (!dateStr) return "—";
@@ -149,7 +149,8 @@ export default function AdminBlogManager() {
             <div>
               <CardTitle>Blog Management</CardTitle>
               <CardDescription>
-                {blogPosts.length} published {blogPosts.length === 1 ? "post" : "posts"}
+                {blogPosts.length} published{" "}
+                {blogPosts.length === 1 ? "post" : "posts"}
               </CardDescription>
             </div>
             <Button
@@ -159,7 +160,11 @@ export default function AdminBlogManager() {
               disabled={loading}
               className="gap-2"
             >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCw className="h-4 w-4" />
+              )}
               {loading ? "Loading..." : "Refresh"}
             </Button>
           </div>
@@ -201,7 +206,9 @@ export default function AdminBlogManager() {
           {filteredPosts.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-muted-foreground">
-                {blogPosts.length === 0 ? "No blog posts found" : "No matching blog posts"}
+                {blogPosts.length === 0
+                  ? "No blog posts found"
+                  : "No matching blog posts"}
               </p>
               {blogPosts.length === 0 && (
                 <Button
@@ -231,7 +238,9 @@ export default function AdminBlogManager() {
                       <TableCell className="font-medium">
                         <div className="max-w-xs">
                           <p className="truncate">{post.title}</p>
-                          <p className="text-xs text-muted-foreground">{post.slug}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {post.slug}
+                          </p>
                         </div>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
@@ -243,7 +252,9 @@ export default function AdminBlogManager() {
                             {post.category}
                           </Badge>
                         ) : (
-                          <span className="text-xs text-muted-foreground">—</span>
+                          <span className="text-xs text-muted-foreground">
+                            —
+                          </span>
                         )}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
@@ -254,7 +265,9 @@ export default function AdminBlogManager() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => window.open(`/blog/${post.slug}`, "_blank")}
+                            onClick={() =>
+                              window.open(`/blog/${post.slug}`, "_blank")
+                            }
                             title="View published post"
                           >
                             <ExternalLink className="h-4 w-4" />
@@ -280,12 +293,16 @@ export default function AdminBlogManager() {
       </Card>
 
       {deleteConfirm && (
-        <AlertDialog open={!!deleteConfirm} onOpenChange={(open) => !open && setDeleteConfirm(null)}>
+        <AlertDialog
+          open={!!deleteConfirm}
+          onOpenChange={(open) => !open && setDeleteConfirm(null)}
+        >
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Delete blog post?</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to delete "{deleteConfirm.title}"? This action cannot be undone.
+                Are you sure you want to delete "{deleteConfirm.title}"? This
+                action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="flex gap-2 justify-end">

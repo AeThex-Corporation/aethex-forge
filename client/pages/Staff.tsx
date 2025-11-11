@@ -140,14 +140,14 @@ export default function Staff() {
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
           <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-violet-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
           <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
-          
+
           {/* Grid background */}
           <div
             className="absolute inset-0 opacity-5"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
-              backgroundSize: '50px 50px',
+                "linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px)",
+              backgroundSize: "50px 50px",
             }}
           />
         </div>
@@ -181,7 +181,10 @@ export default function Staff() {
                 The Staff Command Center
               </h1>
               <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                Unified workspace for internal communications, team collaboration, and operational excellence. Manage projects, track performance, and connect with your team—all in one secure platform.
+                Unified workspace for internal communications, team
+                collaboration, and operational excellence. Manage projects,
+                track performance, and connect with your team—all in one secure
+                platform.
               </p>
             </div>
 
@@ -233,7 +236,8 @@ export default function Staff() {
                   Quick Access Resources
                 </h2>
                 <p className="text-gray-400 text-lg">
-                  Everything you need to manage operations, collaborate with your team, and stay informed
+                  Everything you need to manage operations, collaborate with
+                  your team, and stay informed
                 </p>
               </div>
 
@@ -282,7 +286,9 @@ export default function Staff() {
                   <div className="p-2 rounded-lg bg-purple-500/20">
                     <MessageSquare className="w-6 h-6 text-purple-400" />
                   </div>
-                  <h3 className="text-xl font-bold">Communication & Collaboration</h3>
+                  <h3 className="text-xl font-bold">
+                    Communication & Collaboration
+                  </h3>
                 </div>
                 <ul className="space-y-3">
                   {[
@@ -341,7 +347,10 @@ export default function Staff() {
                     Enterprise Security & Privacy
                   </h3>
                   <p className="text-gray-300 leading-relaxed">
-                    All staff information is protected with enterprise-grade security. Access is restricted to authenticated team members only. Your data is encrypted, audited, and compliant with privacy regulations.
+                    All staff information is protected with enterprise-grade
+                    security. Access is restricted to authenticated team members
+                    only. Your data is encrypted, audited, and compliant with
+                    privacy regulations.
                   </p>
                 </div>
               </div>

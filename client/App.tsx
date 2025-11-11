@@ -551,14 +551,70 @@ const App = () => (
                     />
 
                     {/* Staff Pages Routes - Protected */}
-                    <Route path="/staff/announcements" element={<RequireAccess><StaffAnnouncements /></RequireAccess>} />
-                    <Route path="/staff/expense-reports" element={<RequireAccess><StaffExpenseReports /></RequireAccess>} />
-                    <Route path="/staff/marketplace" element={<RequireAccess><StaffInternalMarketplace /></RequireAccess>} />
-                    <Route path="/staff/knowledge-base" element={<RequireAccess><StaffKnowledgeBase /></RequireAccess>} />
-                    <Route path="/staff/learning-portal" element={<RequireAccess><StaffLearningPortal /></RequireAccess>} />
-                    <Route path="/staff/performance-reviews" element={<RequireAccess><StaffPerformanceReviews /></RequireAccess>} />
-                    <Route path="/staff/project-tracking" element={<RequireAccess><StaffProjectTracking /></RequireAccess>} />
-                    <Route path="/staff/team-handbook" element={<RequireAccess><StaffTeamHandbook /></RequireAccess>} />
+                    <Route
+                      path="/staff/announcements"
+                      element={
+                        <RequireAccess>
+                          <StaffAnnouncements />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/expense-reports"
+                      element={
+                        <RequireAccess>
+                          <StaffExpenseReports />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/marketplace"
+                      element={
+                        <RequireAccess>
+                          <StaffInternalMarketplace />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/knowledge-base"
+                      element={
+                        <RequireAccess>
+                          <StaffKnowledgeBase />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/learning-portal"
+                      element={
+                        <RequireAccess>
+                          <StaffLearningPortal />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/performance-reviews"
+                      element={
+                        <RequireAccess>
+                          <StaffPerformanceReviews />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/project-tracking"
+                      element={
+                        <RequireAccess>
+                          <StaffProjectTracking />
+                        </RequireAccess>
+                      }
+                    />
+                    <Route
+                      path="/staff/team-handbook"
+                      element={
+                        <RequireAccess>
+                          <StaffTeamHandbook />
+                        </RequireAccess>
+                      }
+                    />
 
                     {/* Explicit 404 route for static hosting fallbacks */}
                     <Route path="/404" element={<FourOhFourPage />} />

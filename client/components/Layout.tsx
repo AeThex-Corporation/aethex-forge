@@ -367,7 +367,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link to="/internal-docs" className="cursor-pointer">
+                            <Link
+                              to="/internal-docs"
+                              className="cursor-pointer"
+                            >
                               <BookOpen className="mr-2 h-4 w-4" />
                               Internal Docs
                             </Link>
