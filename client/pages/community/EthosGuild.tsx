@@ -159,6 +159,15 @@ export default function EthosGuild() {
               asChild
               className="gap-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white border-0"
             >
+              <Link to="/ethos/library">
+                Browse Ethos Library <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="gap-2 border-pink-500/50 text-pink-300 hover:bg-pink-500/10"
+            >
               <Link to="/docs/curriculum/ethos">
                 Explore Curriculum <ArrowRight className="h-4 w-4" />
               </Link>
@@ -168,8 +177,8 @@ export default function EthosGuild() {
               variant="outline"
               className="gap-2 border-pink-500/50 text-pink-300 hover:bg-pink-500/10"
             >
-              <Link to="/nexus">
-                Browse NEXUS Marketplace <ArrowRight className="h-4 w-4" />
+              <Link to="/ethos/settings">
+                Artist Settings <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
           </div>
