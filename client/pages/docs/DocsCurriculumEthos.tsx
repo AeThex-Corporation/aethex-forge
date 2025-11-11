@@ -697,7 +697,7 @@ export default function DocsCurriculumEthos() {
                           {module.lessons.map((lesson, index) => (
                             <div
                               key={lesson.title}
-                              className="rounded-xl border border-pink-500/20 bg-black/80 p-4"
+                              className="rounded-xl border border-pink-500/20 bg-black/80 p-4 space-y-3"
                             >
                               <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
@@ -708,25 +708,63 @@ export default function DocsCurriculumEthos() {
                                     {lesson.title}
                                   </h5>
                                 </div>
-                                <Badge
-                                  className={
-                                    lesson.status === "live"
-                                      ? "bg-emerald-600/50 text-emerald-100"
+                                <div className="flex gap-2">
+                                  {lesson.duration && (
+                                    <Badge variant="outline" className="border-pink-500/40 bg-pink-500/10 text-xs text-pink-200">
+                                      {lesson.duration}
+                                    </Badge>
+                                  )}
+                                  <Badge
+                                    className={
+                                      lesson.status === "live"
+                                        ? "bg-emerald-600/50 text-emerald-100"
+                                        : lesson.status === "draft"
+                                          ? "bg-blue-600/50 text-blue-100"
+                                          : "bg-gray-600/50 text-gray-100"
+                                    }
+                                  >
+                                    {lesson.status === "live"
+                                      ? "Live"
                                       : lesson.status === "draft"
-                                        ? "bg-blue-600/50 text-blue-100"
-                                        : "bg-gray-600/50 text-gray-100"
-                                  }
-                                >
-                                  {lesson.status === "live"
-                                    ? "Live"
-                                    : lesson.status === "draft"
-                                      ? "In Progress"
-                                      : "Coming Soon"}
-                                </Badge>
+                                        ? "In Progress"
+                                        : "Coming Soon"}
+                                  </Badge>
+                                </div>
                               </div>
-                              <p className="mt-2 text-sm text-gray-300">
+
+                              <p className="text-sm text-gray-300">
                                 {lesson.summary}
                               </p>
+
+                              {lesson.objectives && lesson.objectives.length > 0 && (
+                                <div className="space-y-1 border-t border-pink-500/10 pt-2">
+                                  <p className="text-xs font-semibold uppercase tracking-wide text-pink-300">
+                                    Learning Objectives
+                                  </p>
+                                  <ul className="space-y-1">
+                                    {lesson.objectives.slice(0, 2).map((obj, i) => (
+                                      <li key={i} className="text-xs text-gray-400 flex gap-2">
+                                        <span className="text-pink-400">✓</span>
+                                        <span>{obj}</span>
+                                      </li>
+                                    ))}
+                                    {lesson.objectives.length > 2 && (
+                                      <li className="text-xs text-pink-300">
+                                        +{lesson.objectives.length - 2} more objectives
+                                      </li>
+                                    )}
+                                  </ul>
+                                </div>
+                              )}
+
+                              {lesson.exercises && lesson.exercises.length > 0 && (
+                                <div className="space-y-1 border-t border-pink-500/10 pt-2">
+                                  <p className="text-xs font-semibold uppercase tracking-wide text-pink-300">
+                                    Practical Exercises
+                                  </p>
+                                  <p className="text-xs text-gray-400">{lesson.exercises.length} hands-on exercises included</p>
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
