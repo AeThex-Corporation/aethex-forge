@@ -181,23 +181,44 @@ export default async function handler(req: any, res: any) {
           .eq("id", request.user_id)
           .single();
 
-        if (userData?.email) {
-          await sendEmail({
-            to: userData.email,
-            subject: "Your Ethos Guild Artist Verification - Approved! 🎵",
-            html: `
-              <h2>Welcome to the Ethos Guild, ${userData.full_name}!</h2>
-              <p>Congratulations! Your artist verification has been approved.</p>
-              <p>You can now:</p>
-              <ul>
-                <li>Upload and publish tracks with the Ethos license</li>
-                <li>Appear in the verified artists directory</li>
-                <li>Receive commission requests from AeThex teams</li>
-                <li>Access commercial licensing opportunities</li>
-              </ul>
-              <p><a href="https://aethex.dev/ethos/settings">Go to your artist settings</a> to start uploading.</p>
-            `,
-          });
+        if (userData?.email && emailService.isConfigured) {
+          try {
+            // Send verification approval email using nodemailer
+            const nodemailer = require("nodemailer");
+            const transporter = nodemailer.createTransport({
+              host: process.env.SMTP_HOST,
+              port: parseInt(process.env.SMTP_PORT || "465"),
+              secure: parseInt(process.env.SMTP_PORT || "465") === 465,
+              auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASSWORD,
+              },
+            });
+
+            await transporter.sendMail({
+              from: process.env.SMTP_FROM_EMAIL || "no-reply@aethex.tech",
+              to: userData.email,
+              subject: "Your Ethos Guild Artist Verification - Approved! 🎵",
+              html: `
+                <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #0f172a;">
+                  <h2 style="color: #db2777;">Welcome to the Ethos Guild, ${userData.full_name}!</h2>
+                  <p>Congratulations! Your artist verification has been approved.</p>
+                  <p>You can now:</p>
+                  <ul>
+                    <li>Upload and publish tracks with the Ethos license</li>
+                    <li>Appear in the verified artists directory</li>
+                    <li>Receive commission requests from AeThex teams</li>
+                    <li>Access commercial licensing opportunities</li>
+                  </ul>
+                  <p style="margin: 24px 0;">
+                    <a href="https://aethex.dev/ethos/settings" style="background: linear-gradient(135deg, #db2777, #9333ea); color: #fff; padding: 12px 20px; border-radius: 999px; text-decoration: none; font-weight: 600; display: inline-block;">Go to artist settings</a>
+                  </p>
+                </div>
+              `,
+            });
+          } catch (emailError) {
+            console.error("Failed to send verification email:", emailError);
+          }
         }
 
         return res.status(200).json({ data: request });
