@@ -71,6 +71,10 @@ export default function AdminStaffDirectory() {
       setIsSeeding(true);
       const response = await fetch("/api/staff/members/seed", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
       });
 
       // Read response body once
