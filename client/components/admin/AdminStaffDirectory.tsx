@@ -447,6 +447,15 @@ export default function AdminStaffDirectory() {
               </div>
 
               <div className="space-y-2">
+                <label className="text-sm font-medium">Location</label>
+                <Input
+                  value={formData.location || ""}
+                  onChange={(e) => handleFormChange("location", e.target.value)}
+                  placeholder="City, State or office location"
+                />
+              </div>
+
+              <div className="space-y-2">
                 <label className="text-sm font-medium">Role</label>
                 <select
                   value={formData.role}
