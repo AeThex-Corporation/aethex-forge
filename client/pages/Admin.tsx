@@ -453,14 +453,14 @@ export default function Admin() {
 
                     <Button
                       variant="outline"
-                      onClick={() => setActiveTab("content")}
+                      onClick={() => setActiveTab("blogs")}
                       className="justify-start h-auto py-3"
                     >
                       <PenTool className="h-4 w-4 mr-2" />
                       <div className="text-left">
-                        <div className="font-medium">Content</div>
+                        <div className="font-medium">Blogs</div>
                         <div className="text-xs text-muted-foreground">
-                          Manage blog
+                          Manage posts
                         </div>
                       </div>
                     </Button>
