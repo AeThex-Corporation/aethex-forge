@@ -26,6 +26,7 @@ import AdminStatusOverview from "@/components/admin/AdminStatusOverview";
 import AdminChangelogDigest from "@/components/admin/AdminChangelogDigest";
 import AdminSystemMap from "@/components/admin/AdminSystemMap";
 import AdminMentorshipManager from "@/components/admin/AdminMentorshipManager";
+import AdminBlogManager from "@/components/admin/AdminBlogManager";
 import AdminRoadmap from "@/components/admin/AdminRoadmap";
 import { AdminDiscordManagement } from "@/components/admin/AdminDiscordManagement";
 import AdminDiscordDiagnostic from "@/components/admin/AdminDiscordDiagnostic";
