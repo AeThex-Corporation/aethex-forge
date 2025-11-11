@@ -30,6 +30,12 @@ import AdminRoadmap from "@/components/admin/AdminRoadmap";
 import { AdminDiscordManagement } from "@/components/admin/AdminDiscordManagement";
 import AdminDiscordDiagnostic from "@/components/admin/AdminDiscordDiagnostic";
 import BannerSettings from "@/components/admin/BannerSettings";
+import AdminStaffOperations from "@/components/admin/AdminStaffOperations";
+import AdminStaffDirectory from "@/components/admin/AdminStaffDirectory";
+import AdminStaffChat from "@/components/admin/AdminStaffChat";
+import AdminStaffAdmin from "@/components/admin/AdminStaffAdmin";
+import AdminStaffDocs from "@/components/admin/AdminStaffDocs";
+import AdminStaffAchievements from "@/components/admin/AdminStaffAchievements";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
