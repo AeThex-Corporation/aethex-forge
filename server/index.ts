@@ -2883,6 +2883,13 @@ export function createServer() {
       if (!user_id || !content)
         return res.status(400).json({ error: "user_id and content required" });
       try {
+        // Get post author info
+        const { data: post } = await adminSupabase
+          .from("community_posts")
+          .select("user_id")
+          .eq("id", postId)
+          .single();
+
         const { data, error } = await adminSupabase
           .from("community_comments")
           .insert({ post_id: postId, user_id, content } as any)
