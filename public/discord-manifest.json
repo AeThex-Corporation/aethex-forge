@@ -3,5 +3,5 @@
   "version": "1",
   "name": "AeThex Activity",
   "description": "AeThex Creator Network & Talent Platform - Discord Activity",
-  "rpc_origins": ["https://578971245454950421.discordsays.com"]
+  "rpc_origins": ["https:aethex.dev/activity"]
 }
