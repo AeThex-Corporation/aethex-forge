@@ -82,11 +82,22 @@ export default function Login() {
   const { info: toastInfo, error: toastError } = useAethexToast();
   const { isActivity } = useDiscordActivity();
 
-  // Check for error messages from URL query parameters (e.g., from OAuth callbacks)
+  // Check for error messages and success messages from URL query parameters (e.g., from OAuth callbacks)
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const errorType = params.get("error");
     const errorMessage = params.get("message");
+    const discordLinked = params.get("discord_linked");
+    const discordEmail = params.get("email");
+
+    // Handle Discord linking success
+    if (discordLinked === "true" && discordEmail) {
+      setDiscordLinkedEmail(decodeURIComponent(discordEmail));
+      toastInfo({
+        title: "Discord Linked!",
+        description: `Discord account linked to ${decodeURIComponent(discordEmail)}. Please sign in to continue.`,
+      });
+    }
 
     if (errorType && errorMessage) {
       setErrorFromUrl(decodeURIComponent(errorMessage));
@@ -110,7 +121,7 @@ export default function Login() {
         });
       }
     }
-  }, [location.search, toastError]);
+  }, [location.search, toastError, toastInfo]);
 
   // After auth resolves and a user exists, navigate to next path or dashboard
   useEffect(() => {
