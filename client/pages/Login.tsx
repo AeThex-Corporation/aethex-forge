@@ -147,6 +147,13 @@ export default function Login() {
     }
   }, [user, loading, profileComplete, navigate, location.search]);
 
+  // Pre-fill email if Discord was just linked
+  useEffect(() => {
+    if (discordLinkedEmail) {
+      setEmail(discordLinkedEmail);
+    }
+  }, [discordLinkedEmail]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
