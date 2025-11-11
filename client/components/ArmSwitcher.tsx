@@ -158,14 +158,28 @@ export default function ArmSwitcher() {
         </button>
       </div>
 
-      {/* Mobile Version - Compact */}
-      <div className="md:hidden">
+      {/* Mobile Version - Show first 3 arms + view all */}
+      <div className="md:hidden flex items-center gap-2">
+        {ARMS.slice(0, 3).map((arm) => (
+          <button
+            key={arm.id}
+            onClick={handleArmClick}
+            className="group relative h-10 w-10 flex items-center justify-center rounded-lg hover:scale-110 transition-transform duration-200 flex-shrink-0"
+            title={arm.name}
+          >
+            <img
+              src={LOGO_URLS[arm.id]}
+              alt={arm.label}
+              className="relative h-6 w-6 object-contain transition-all duration-200"
+            />
+          </button>
+        ))}
         <button
           onClick={handleArmClick}
           className="h-10 w-10 flex items-center justify-center rounded-lg border border-border/60 bg-background/60 hover:bg-background/80 transition-colors flex-shrink-0"
           title="View all arms"
         >
-          <span className="text-xs font-semibold text-gray-400">≡</span>
+          <span className="text-xs font-semibold text-gray-400">+4</span>
         </button>
       </div>
     </>
