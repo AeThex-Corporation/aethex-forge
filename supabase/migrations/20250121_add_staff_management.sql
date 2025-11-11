@@ -3,7 +3,7 @@
 -- Staff members table
 CREATE TABLE IF NOT EXISTS staff_members (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
+  user_id UUID UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT NOT NULL UNIQUE,
   full_name TEXT NOT NULL,
   position TEXT,
