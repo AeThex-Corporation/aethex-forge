@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS staff_members (
   position TEXT,
   department TEXT,
   phone TEXT,
+  location TEXT,
   avatar_url TEXT,
   role TEXT DEFAULT 'employee' CHECK (role IN ('owner', 'admin', 'founder', 'staff', 'employee')),
   is_active BOOLEAN DEFAULT true,
