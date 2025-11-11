@@ -2341,21 +2341,31 @@ export function createServer() {
 
     // Blog endpoints (Supabase-backed)
     app.get("/api/blog", async (req, res) => {
-      const limit = Math.max(1, Math.min(50, Number(req.query.limit) || 12));
+      const limit = Math.max(1, Math.min(200, Number(req.query.limit) || 50));
       const category = String(req.query.category || "").trim();
       try {
         let query = adminSupabase
           .from("blog_posts")
           .select(
-            "id, slug, title, excerpt, author, date, read_time, category, image, likes, comments, published_at",
+            "id, slug, title, excerpt, author, date, read_time, category, image, likes, comments, published_at, body_html",
           )
           .order("published_at", { ascending: false, nullsLast: true } as any)
           .limit(limit);
         if (category) query = query.eq("category", category);
         const { data, error } = await query;
-        if (error) return res.status(500).json({ error: error.message });
+        if (error) {
+          // If table doesn't exist, return empty array (client will use seed data)
+          if (error.message?.includes("does not exist") || error.code === "42P01") {
+            console.log("[Blog] blog_posts table not found, returning empty array");
+            return res.json([]);
+          }
+          console.error("[Blog] Error fetching blog posts:", error);
+          return res.status(500).json({ error: error.message });
+        }
+        console.log("[Blog] Successfully fetched", (data || []).length, "blog posts");
         res.json(data || []);
       } catch (e: any) {
+        console.error("[Blog] Exception:", e);
         res.status(500).json({ error: e?.message || String(e) });
       }
     });
@@ -2371,30 +2381,20 @@ export function createServer() {
           )
           .eq("slug", slug)
           .single();
-        if (error) return res.status(404).json({ error: error.message });
-        res.json(data || null);
-      } catch (e: any) {
-        res.status(500).json({ error: e?.message || String(e) });
-      }
-    });
-
-    app.get("/api/blog", async (req, res) => {
-      const limit = Math.min(Number(req.query.limit) || 50, 200);
-      try {
-        const { data, error } = await adminSupabase
-          .from("blog_posts")
-          .select("*")
-          .order("published_at", { ascending: false })
-          .limit(limit);
         if (error) {
-          // Table might not exist yet, return empty array
-          if (error.message?.includes("does not exist")) {
-            return res.json([]);
+          if (error.code === "PGRST116") {
+            // No rows returned - 404
+            return res.status(404).json({ error: "Blog post not found" });
+          }
+          if (error.message?.includes("does not exist") || error.code === "42P01") {
+            // Table doesn't exist
+            return res.status(404).json({ error: "Blog not configured" });
           }
           return res.status(500).json({ error: error.message });
         }
-        res.json(data || []);
+        res.json(data || null);
       } catch (e: any) {
+        console.error("[Blog] Error fetching blog post:", e);
         res.status(500).json({ error: e?.message || String(e) });
       }
     });
