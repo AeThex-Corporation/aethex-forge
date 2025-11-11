@@ -193,9 +193,10 @@ export default function AdminStaffDirectory() {
         method: "DELETE",
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.details || error.error);
+        throw new Error(result.details || result.error || "Failed to delete");
       }
 
       setTeamMembers(teamMembers.filter((m) => m.id !== memberId));
