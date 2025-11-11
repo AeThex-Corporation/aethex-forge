@@ -21,7 +21,7 @@ import {
   Music,
   Sparkles,
   Target,
-  Waveform,
+  Waves,
   Zap,
   Layers,
   CheckCircle,
