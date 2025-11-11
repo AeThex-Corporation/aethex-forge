@@ -407,6 +407,10 @@ const App = () => (
                       path="/community/mentor/:username"
                       element={<MentorProfile />}
                     />
+                    <Route
+                      path="/community/groups/ethos"
+                      element={<EthosGuild />}
+                    />
                     <Route path="/community/:tabId" element={<Community />} />
 
                     <Route path="/support" element={<Support />} />
