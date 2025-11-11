@@ -317,7 +317,7 @@ export default function DocsCurriculumEthos() {
         <Card className="border-pink-500/30 bg-black/50 backdrop-blur">
           <CardHeader className="space-y-4">
             <CardTitle className="flex items-center gap-3 text-2xl text-white">
-              <Waveform className="h-6 w-6 text-pink-400" /> Curriculum Roadmap
+              <Waves className="h-6 w-6 text-pink-400" /> Curriculum Roadmap
             </CardTitle>
             <CardDescription className="text-gray-300">
               Four progressive modules from foundational synthwave to advanced
