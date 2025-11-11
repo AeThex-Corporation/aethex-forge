@@ -63,11 +63,13 @@ CREATE TRIGGER update_user_email_links_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_user_email_links_timestamp();
 
--- Add flag to user_profiles to mark dev accounts
+-- Add flag to user_profiles to mark dev accounts and track merged accounts
 ALTER TABLE user_profiles
 ADD COLUMN IF NOT EXISTS is_dev_account BOOLEAN DEFAULT FALSE,
-ADD COLUMN IF NOT EXISTS primary_email TEXT;
+ADD COLUMN IF NOT EXISTS primary_email TEXT,
+ADD COLUMN IF NOT EXISTS merged_to_user_id UUID REFERENCES user_profiles(user_id) ON DELETE SET NULL;
 
 -- Create index for dev account lookup
 CREATE INDEX IF NOT EXISTS idx_user_profiles_is_dev_account ON user_profiles(is_dev_account);
 CREATE INDEX IF NOT EXISTS idx_user_profiles_primary_email ON user_profiles(primary_email);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_merged_to ON user_profiles(merged_to_user_id);
