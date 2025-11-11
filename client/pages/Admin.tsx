@@ -536,76 +536,28 @@ export default function Admin() {
                       Manage AeThex staff, employees, and contractors
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate("/admin/staff/directory")}
-                      className="justify-start h-auto py-3"
-                    >
-                      <Users className="h-4 w-4 mr-2" />
-                      <div className="text-left">
-                        <div className="font-medium">Directory</div>
-                        <div className="text-xs text-muted-foreground">
-                          View team members
-                        </div>
-                      </div>
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate("/admin/staff/achievements")}
-                      className="justify-start h-auto py-3"
-                    >
-                      <Award className="h-4 w-4 mr-2" />
-                      <div className="text-left">
-                        <div className="font-medium">Achievements</div>
-                        <div className="text-xs text-muted-foreground">
-                          Track progress
-                        </div>
-                      </div>
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate("/admin/staff/chat")}
-                      className="justify-start h-auto py-3"
-                    >
-                      <MessageSquare className="h-4 w-4 mr-2" />
-                      <div className="text-left">
-                        <div className="font-medium">Chat</div>
-                        <div className="text-xs text-muted-foreground">
-                          Team collaboration
-                        </div>
-                      </div>
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate("/admin/staff/docs")}
-                      className="justify-start h-auto py-3"
-                    >
-                      <FileText className="h-4 w-4 mr-2" />
-                      <div className="text-left">
-                        <div className="font-medium">Documentation</div>
-                        <div className="text-xs text-muted-foreground">
-                          Internal resources
-                        </div>
-                      </div>
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate("/admin/staff/admin")}
-                      className="justify-start h-auto py-3"
-                    >
-                      <Settings className="h-4 w-4 mr-2" />
-                      <div className="text-left">
-                        <div className="font-medium">Settings</div>
-                        <div className="text-xs text-muted-foreground">
-                          Staff configuration
-                        </div>
-                      </div>
-                    </Button>
+                  <CardContent className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      Staff management and team collaboration tools are consolidated within the Admin Control Center. Use the tabs above to access team metrics, member management, and community features.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setActiveTab("community")}
+                      >
+                        <Users className="h-4 w-4 mr-2" />
+                        Member Management
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setActiveTab("arm-metrics")}
+                      >
+                        <BarChart3 className="h-4 w-4 mr-2" />
+                        Team Metrics
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
