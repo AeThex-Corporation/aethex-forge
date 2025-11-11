@@ -25,23 +25,23 @@ interface ThemeColors {
 
 const professionalTheme: ThemeColors = {
   background: "bg-white",
-  foreground: "text-black",
-  sidebar: "bg-gradient-to-b from-slate-100 to-slate-50",
-  sidebarText: "text-black",
-  sidebarHover: "hover:bg-slate-200/60",
+  foreground: "text-gray-900",
+  sidebar: "bg-gradient-to-b from-gray-50 to-white",
+  sidebarText: "text-gray-700",
+  sidebarHover: "hover:bg-gray-200",
   sidebarActive: "text-black",
-  sidebarActiveBg: "bg-slate-300/60",
-  accent: "text-black",
-  accentHover: "hover:text-gray-800",
-  border: "border-gray-300",
+  sidebarActiveBg: "bg-blue-100",
+  accent: "text-blue-600",
+  accentHover: "hover:text-blue-700",
+  border: "border-gray-200",
   cardBg: "bg-gray-50",
   cardBorder: "border-gray-300",
   buttonBg: "bg-black",
   buttonText: "text-white",
   inputBg: "bg-white border border-gray-300",
   inputBorder: "border-gray-300",
-  headingColor: "text-black",
-  textMuted: "text-black",
+  headingColor: "text-gray-900",
+  textMuted: "text-gray-600",
 };
 
 const brandTheme: ThemeColors = {
