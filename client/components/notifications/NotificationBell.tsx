@@ -80,12 +80,14 @@ export default function NotificationBell({
       .getUserNotifications(user.id)
       .then((data) => {
         if (!isActive) return;
+        console.debug("[Notifications] Loaded", Array.isArray(data) ? data.length : 0, "notifications");
         setNotifications(
           Array.isArray(data) ? (data as AethexNotification[]) : [],
         );
       })
-      .catch(() => {
+      .catch((err) => {
         if (!isActive) return;
+        console.warn("[Notifications] Failed to load:", err);
         setNotifications([]);
       })
       .finally(() => {
@@ -103,10 +105,12 @@ export default function NotificationBell({
         if (!next?.id) return;
 
         setNotifications((prev) => {
-          if (prev.some((item) => item.id === next.id)) {
-            return prev;
-          }
-          return [next, ...prev].slice(0, 20);
+          // Check if notification already exists
+          const exists = prev.some((item) => item.id === next.id);
+          if (exists) return prev;
+
+          // Add new notification to the top and keep up to 50 in the list
+          return [next, ...prev].slice(0, 50);
         });
 
         aethexToast.aethex({
@@ -220,11 +224,12 @@ export default function NotificationBell({
         <Button
           variant="ghost"
           size="sm"
-          className={cn("relative overflow-visible hover-lift", className)}
+          className={cn("relative hover-lift", className)}
+          style={{ overflow: "visible" }}
         >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 ? (
-            <span className="absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-aethex-500 px-1 text-[10px] font-semibold text-white shadow-lg">
+            <span className="absolute -right-1.5 -top-1.5 z-10 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-aethex-500 px-1.5 text-[11px] font-bold text-white shadow-lg border border-background">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           ) : null}
