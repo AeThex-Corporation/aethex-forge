@@ -291,9 +291,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                         size="sm"
                         className="hover-lift"
                         onClick={() => signOut()}
+                        title="Sign out"
                       >
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Sign out
+                        <LogOut className="h-4 w-4 sm:mr-2" />
+                        <span className="hidden sm:inline">Sign out</span>
                       </Button>
                     )}
                     {profile && (
