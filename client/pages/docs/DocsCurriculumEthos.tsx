@@ -323,36 +323,111 @@ const curriculumModules: CurriculumModule[] = [
         title: "Music Theory Essentials",
         summary:
           "Understand chords, progressions, and scales. Apply them to synthwave.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1.5 hrs",
+        objectives: [
+          "Master major/minor scales and modes",
+          "Learn common chord progressions (I-IV-V-I, vi-IV-I-V, etc.)",
+          "Understand tension and resolution",
+          "Apply theory to synthwave composition",
+        ],
+        content: "Music theory is the language of composition. Learn that C major contains C-D-E-F-G-A-B, and common synthwave progressions use major chords (bright) or minor chords (dark). The I-IV-V-I progression is classic; vi-IV-I-V is emotional and modern. Understand tritones (tension), perfect 5ths (consonance), and how theory guides your melodic and harmonic choices. Synthwave uses simple, catchy progressions repeated for hypnotic effect.",
+        exercises: [
+          "Play the C major scale on a synth, then c minor scale",
+          "Compose a 4-bar progression using I-IV-V-I chords",
+          "Analyze 3 synthwave songs and identify their chord progressions",
+        ],
       },
       {
         title: "Writing Memorable Melodies",
         summary:
           "Craft hooks and themes that stick with players and audiences.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1.5 hrs",
+        objectives: [
+          "Understand melody shape and contour",
+          "Create memorable hooks and themes",
+          "Use repetition and variation effectively",
+        ],
+        content: "A great melody is singable, memorable, and emotionally resonant. Think of iconic video game themes—they're simple, catchy, and repeatable. Build melodies with clear shapes: start high, resolve down (or vice versa). Use repetition for memorability, then variation to keep it fresh. A hook is a 2-4 bar melody that defines the song. Themes are longer, more developed melodies. Both are crucial for game music and film scores.",
+        exercises: [
+          "Compose a 4-bar hook for a synthwave track",
+          "Develop a theme with repetition + variation (8 bars)",
+          "Sing your melodies to test memorability",
+        ],
       },
       {
         title: "Arranging & Orchestration",
         summary:
           "Layer synths, basses, drums, and strings to create depth and emotion.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1.5 hrs",
+        objectives: [
+          "Understand voice leading and layering",
+          "Arrange tracks with multiple synths, basses, drums",
+          "Use strings and orchestral elements in synthwave",
+          "Create dynamic arrangements that build and release tension",
+        ],
+        content: "Arrangement is how you layer instruments to create a complete production. Start sparse (pad + kick), add elements gradually (bass, drums, lead, strings). Each layer occupies a frequency range and role. Strings add emotion; risers create tension; breaks provide contrast. Dynamic arrangement keeps listeners engaged. In synthwave, layer analog synths for richness; use reverb/delay for space.",
+        exercises: [
+          "Arrange a 16-bar loop: pad → kick/bass → lead → strings",
+          "Create a 'buildup' section with rising energy",
+          "Experiment with a break (silent drop) for impact",
+        ],
       },
       {
         title: "Adaptive Music for Games",
         summary: "Create stems and variations that respond to gameplay states.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Understand adaptive/interactive music in games",
+          "Create music stems (separate track layers)",
+          "Design transitions between game states (exploration → combat)",
+        ],
+        content: "Modern games use adaptive music that changes based on gameplay. You'll create music stems: a base layer (calm pad), a mid layer (adds drums when action starts), and a high layer (intense synths during combat). Game engines blend these layers based on in-game events. This makes music feel responsive and immersive. You'll learn FMOD or Wwise for advanced implementation.",
+        exercises: [
+          "Create 3 stems for a track (calm, medium, intense)",
+          "Design a smooth transition from exploration to combat music",
+          "Use game engine tools to layer stems dynamically",
+        ],
       },
       {
         title: "Mastering & Final Delivery",
         summary:
           "Polish your track for streaming, games, and commercial licensing.",
-        status: "coming_soon",
+        status: "live",
+        duration: "1 hr",
+        objectives: [
+          "Understand loudness standards (LUFS) for different platforms",
+          "Master tracks for streaming, games, and film",
+          "Deliver metadata and stems for licensing",
+        ],
+        content: "Mastering is the final step: optimize loudness, balance frequencies across all platforms, and prepare deliverables. Different platforms have different standards: Spotify uses -14 LUFS, video games use -12 to -18 LUFS. You'll use linear-phase EQ, multiband compression, and limiting to achieve professional loudness and clarity. Then deliver stems, metadata, and a final stereo master ready for licensing.",
+        exercises: [
+          "Master a track to -14 LUFS for Spotify compatibility",
+          "Create a stereo master that translates on all speakers/headphones",
+          "Export stems and metadata for game engine integration",
+        ],
       },
       {
         title: "Capstone: Compose a 2-Minute Original Score",
         summary:
           "Write, arrange, and master a complete track for a game or film scenario.",
-        status: "coming_soon",
+        status: "live",
+        duration: "2 hrs",
+        objectives: [
+          "Compose a complete, original 2-minute score",
+          "Apply all composition, arrangement, and mastering skills",
+          "Deliver a professional, licensable track",
+        ],
+        content: "Your capstone: compose, arrange, and master a complete 2-minute original score for a game scenario (e.g., boss fight, exploration theme, ending credits). Apply melody writing, chord progressions, orchestration, and mastering. The result should sound professional, be emotionally compelling, and be ready for licensing or portfolio submission. This is your proof of advanced composition skill.",
+        exercises: [
+          "Compose & arrange a 2-minute original synthwave score",
+          "Create adaptive stems (calm, action, intense)",
+          "Master for multiple platforms (Spotify, game engines, streaming)",
+          "Prepare metadata and licensing information",
+        ],
       },
     ],
   },
