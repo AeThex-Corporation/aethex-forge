@@ -128,9 +128,9 @@ export default function ArmSwitcher() {
         ))}
       </div>
 
-      {/* Tablet Version - Spaced Horizontal Layout (md to lg) */}
-      <div className="hidden md:flex lg:hidden items-center gap-4">
-        {ARMS.slice(0, 5).map((arm) => (
+      {/* Tablet Version - Show all arms (md to lg) */}
+      <div className="hidden md:flex lg:hidden items-center gap-3">
+        {ARMS.map((arm) => (
           <button
             key={arm.id}
             onClick={handleArmClick}
@@ -149,13 +149,6 @@ export default function ArmSwitcher() {
             </div>
           </button>
         ))}
-        <button
-          onClick={handleArmClick}
-          className="h-11 w-11 flex items-center justify-center rounded-lg border border-border/60 bg-background/60 hover:bg-background/80 transition-colors flex-shrink-0"
-          title="View all arms"
-        >
-          <span className="text-sm font-semibold text-gray-400">+2</span>
-        </button>
       </div>
 
       {/* Mobile Version - Use main logo button for arm selection */}
