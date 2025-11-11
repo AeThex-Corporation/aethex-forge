@@ -94,6 +94,31 @@ export default function AdminStaffDirectory() {
     return colors[role];
   };
 
+  const handleEditClick = (member: TeamMember) => {
+    setEditingMember(member);
+    setFormData({ ...member });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!formData) return;
+    // In a real app, this would POST to /api/staff/members/:id
+    console.log("Saving member:", formData);
+    // Update the local team members list
+    const updatedMembers = teamMembers.map((m) =>
+      m.id === formData.id ? formData : m
+    );
+    setIsEditDialogOpen(false);
+    setEditingMember(null);
+    setFormData(null);
+  };
+
+  const handleFormChange = (field: keyof TeamMember, value: string) => {
+    if (formData) {
+      setFormData({ ...formData, [field]: value });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div>
