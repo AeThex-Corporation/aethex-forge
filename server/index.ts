@@ -4259,6 +4259,26 @@ export function createServer() {
 
         if (error) throw error;
 
+        // Notify opportunity poster of new application
+        if (opportunity?.posted_by_id) {
+          try {
+            const { data: creatorProfile } = await adminSupabase
+              .from("aethex_creators")
+              .select("user_id, full_name")
+              .eq("id", creator.id)
+              .single();
+
+            await adminSupabase.from("notifications").insert({
+              user_id: opportunity.posted_by_id,
+              type: "info",
+              title: `📋 New Application: ${opportunity.title}`,
+              message: `${creatorProfile?.full_name || "A creator"} applied for your opportunity.`,
+            });
+          } catch (notifError) {
+            console.warn("Failed to create application notification:", notifError);
+          }
+        }
+
         return res.status(201).json(data);
       } catch (e: any) {
         console.error(
