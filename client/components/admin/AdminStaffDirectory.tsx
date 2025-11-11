@@ -142,16 +142,27 @@ export default function AdminStaffDirectory() {
         {filteredMembers.map((member) => (
           <Card key={member.id} className="hover:shadow-lg transition">
             <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
                   <CardTitle className="text-lg">{member.name}</CardTitle>
                   <CardDescription className="font-medium mt-1">
                     {member.position}
                   </CardDescription>
                 </div>
-                <Badge className={getRoleBadgeColor(member.role)}>
-                  {member.role}
-                </Badge>
+                <div className="flex gap-1">
+                  <Badge className={getRoleBadgeColor(member.role)}>
+                    {member.role}
+                  </Badge>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => handleEditClick(member)}
+                    title="Edit member"
+                  >
+                    <Edit2 className="w-3 h-3" />
+                  </Button>
+                </div>
               </div>
               <div className="text-sm text-muted-foreground mt-2">
                 {member.department}
