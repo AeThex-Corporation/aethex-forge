@@ -69,20 +69,19 @@ export default function AdminStaffDirectory() {
   const handleSeedData = async () => {
     try {
       setIsSeeding(true);
-      const response = await fetch("/api/staff/members/seed", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      });
-
-      // Read response body once
-      const result = await response.json();
+      const response = await fetch("/api/staff/members/seed");
 
       if (!response.ok) {
-        throw new Error(result.details || result.error || "Failed to seed data");
+        throw new Error("Failed to seed data: " + response.statusText);
       }
+
+      // Read response body as text first to avoid stream issues
+      const text = await response.text();
+      if (!text) {
+        throw new Error("No response from server");
+      }
+
+      const result = JSON.parse(text);
 
       setTeamMembers(result.members || []);
 
