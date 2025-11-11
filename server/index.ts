@@ -4965,6 +4965,14 @@ export function createServer() {
           }
 
           console.log("[Staff Seed Success] Inserted", data?.length || 0, "members");
+
+          const response = {
+            success: true,
+            count: data?.length || 0,
+            members: data || [],
+          };
+
+          return res.status(201).json(response);
         } catch (insertError: any) {
           console.error("[Staff Seed Insert Error]", insertError);
           return res.status(500).json({
@@ -4972,14 +4980,6 @@ export function createServer() {
             message: insertError?.message || String(insertError),
           });
         }
-
-        const response = {
-          success: true,
-          count: data?.length || 0,
-          members: data || [],
-        };
-
-        res.status(201).json(response);
       } catch (e: any) {
         console.error("[Staff Seed Exception]", e);
         res.status(500).json({ error: e?.message || String(e) });
