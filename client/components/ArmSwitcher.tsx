@@ -130,7 +130,7 @@ export default function ArmSwitcher() {
 
       {/* Tablet Version - Spaced Horizontal Layout (md to lg) */}
       <div className="hidden md:flex lg:hidden items-center gap-4">
-        {ARMS.map((arm) => (
+        {ARMS.slice(0, 5).map((arm) => (
           <button
             key={arm.id}
             onClick={handleArmClick}
@@ -149,6 +149,24 @@ export default function ArmSwitcher() {
             </div>
           </button>
         ))}
+        <button
+          onClick={handleArmClick}
+          className="h-11 w-11 flex items-center justify-center rounded-lg border border-border/60 bg-background/60 hover:bg-background/80 transition-colors flex-shrink-0"
+          title="View all arms"
+        >
+          <span className="text-sm font-semibold text-gray-400">+2</span>
+        </button>
+      </div>
+
+      {/* Mobile Version - Compact */}
+      <div className="md:hidden">
+        <button
+          onClick={handleArmClick}
+          className="h-10 w-10 flex items-center justify-center rounded-lg border border-border/60 bg-background/60 hover:bg-background/80 transition-colors flex-shrink-0"
+          title="View all arms"
+        >
+          <span className="text-xs font-semibold text-gray-400">≡</span>
+        </button>
       </div>
     </>
   );
