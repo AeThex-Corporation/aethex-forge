@@ -300,26 +300,6 @@ export default async function handler(req: any, res: any) {
     // Redirect to magic link to establish session
     // The magic link contains the session token and will set cookies automatically
     res.redirect(linkData.properties.magic_link);
-
-    // Redirect to dashboard (we only log in existing users here)
-    const nextPath = "/dashboard";
-
-    // Determine the base URL from environment or request origin
-    let baseUrl = process.env.VITE_API_BASE || process.env.API_BASE;
-
-    if (!baseUrl && req.headers.referer) {
-      // Extract base URL from referer header as fallback
-      const refererUrl = new URL(req.headers.referer);
-      baseUrl = refererUrl.origin;
-    }
-
-    // Final fallback - should not be needed if env vars are set
-    if (!baseUrl) {
-      baseUrl = "https://aethex.dev";
-    }
-
-    const redirectUrl = new URL(nextPath, baseUrl);
-    res.redirect(redirectUrl.toString());
   } catch (error) {
     console.error("[Discord OAuth] Callback error:", error);
     res.redirect("/login?error=unknown");
