@@ -208,6 +208,68 @@ export default function Nexus() {
             </div>
           </section>
 
+          {/* Ethos Audio Production Section */}
+          <section className="border-t border-purple-400/10 bg-purple-950/10 py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="text-center mb-12">
+                <Badge className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white mb-4">
+                  <Sparkles className="h-3 w-3" />
+                  New: Audio Production
+                </Badge>
+                <h2 className="text-3xl font-bold text-purple-300 mb-4">
+                  Ethos Guild - Audio & SFX Artists
+                </h2>
+                <p className="text-purple-200/70 max-w-2xl mx-auto">
+                  Discover original music, sound effects, and audio composition services from Ethos Guild artists. Perfect for games, films, and commercial projects.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                <Card className="bg-purple-950/20 border-purple-400/30 hover:border-purple-400/60 transition-colors">
+                  <CardHeader>
+                    <Music className="h-8 w-8 text-pink-400 mb-2" />
+                    <CardTitle className="text-purple-300">
+                      Browse Track Library
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-sm text-purple-200/70">
+                      Access thousands of original tracks, SFX, and compositions available under ecosystem (free) or commercial licenses.
+                    </p>
+                    <Button
+                      onClick={() => navigate("/ethos/library")}
+                      className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
+                    >
+                      Explore Library
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-purple-950/20 border-purple-400/30 hover:border-purple-400/60 transition-colors">
+                  <CardHeader>
+                    <Users className="h-8 w-8 text-pink-400 mb-2" />
+                    <CardTitle className="text-purple-300">
+                      Hire Ethos Artists
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-sm text-purple-200/70">
+                      Work with verified Ethos artists for custom compositions, game audio, and SFX design with transparent pricing and fast turnaround.
+                    </p>
+                    <Button
+                      onClick={() => navigate("/community/groups/ethos")}
+                      className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
+                    >
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </section>
+
           {/* Arms Integration Section */}
           <section className="border-t border-purple-400/10 bg-purple-950/10 py-16">
             <div className="container mx-auto max-w-6xl px-4">
