@@ -76,6 +76,7 @@ const ProfilePassport = () => {
   const [notFound, setNotFound] = useState(false);
   const [ethosTracks, setEthosTracks] = useState<any[]>([]);
   const [ethosProfile, setEthosProfile] = useState<any>(null);
+  const [creatorProfile, setCreatorProfile] = useState<any>(null);
   const lastLoadedKeyRef = useRef<string | null>(null);
   const activationAttemptedRef = useRef(false);
 
