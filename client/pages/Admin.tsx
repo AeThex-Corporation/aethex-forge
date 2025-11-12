@@ -39,6 +39,7 @@ import AdminStaffDocs from "@/components/admin/AdminStaffDocs";
 import AdminStaffAchievements from "@/components/admin/AdminStaffAchievements";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminEthosVerification from "@/pages/admin/AdminEthosVerification";
+import AdminGameForgeStudio from "@/components/admin/AdminGameForgeStudio";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
