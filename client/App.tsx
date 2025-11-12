@@ -479,8 +479,28 @@ const App = () => (
                     {/* Client Hub routes */}
                     <Route path="/hub/client" element={<ClientHub />} />
                     <Route
+                      path="/hub/client/dashboard"
+                      element={<ClientDashboard />}
+                    />
+                    <Route
                       path="/hub/client/projects"
                       element={<ClientProjects />}
+                    />
+                    <Route
+                      path="/hub/client/invoices"
+                      element={<ClientInvoices />}
+                    />
+                    <Route
+                      path="/hub/client/contracts"
+                      element={<ClientContracts />}
+                    />
+                    <Route
+                      path="/hub/client/reports"
+                      element={<ClientReports />}
+                    />
+                    <Route
+                      path="/hub/client/settings"
+                      element={<ClientSettings />}
                     />
 
                     {/* Nexus routes */}
