@@ -87,6 +87,7 @@ export async function getCreatorByUsername(username: string) {
         experience_level,
         arm_affiliations,
         primary_arm,
+        spotify_profile_url,
         created_at,
         updated_at,
         aethex_projects(id, title, description, url, image_url, tags, is_featured),
