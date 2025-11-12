@@ -387,6 +387,103 @@ const ProfilePassport = () => {
             linkedProviders={isSelf ? linkedProviders : undefined}
           />
 
+          {ethosProfile && (
+            <section className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-semibold text-white">
+                    Ethos Guild
+                  </h2>
+                  <p className="text-sm text-slate-300">
+                    Audio production portfolio & services.
+                  </p>
+                </div>
+                {isSelf && (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-slate-700/70 text-slate-100"
+                  >
+                    <Link to="/ethos/settings">Manage portfolio</Link>
+                  </Button>
+                )}
+              </div>
+              <div className="grid gap-4">
+                {/* Artist Info */}
+                <Card className="border border-slate-800 bg-slate-900/70">
+                  <CardContent className="pt-6 space-y-4">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        {ethosProfile.verified && (
+                          <Badge className="bg-green-500/20 text-green-400 mb-2">
+                            ✓ Verified Artist
+                          </Badge>
+                        )}
+                        {ethosProfile.for_hire && (
+                          <Badge className="bg-pink-500/20 text-pink-400 ml-2">
+                            Available for hire
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    {ethosProfile.skills && ethosProfile.skills.length > 0 && (
+                      <div>
+                        <p className="text-xs font-medium text-slate-400 mb-2">Skills</p>
+                        <div className="flex flex-wrap gap-2">
+                          {ethosProfile.skills.slice(0, 5).map((skill: string) => (
+                            <Badge key={skill} variant="secondary" className="text-xs">
+                              {skill}
+                            </Badge>
+                          ))}
+                          {ethosProfile.skills.length > 5 && (
+                            <Badge variant="secondary" className="text-xs">
+                              +{ethosProfile.skills.length - 5} more
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Tracks */}
+                {ethosTracks.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-white mb-3">
+                      Published Tracks ({ethosTracks.length})
+                    </h3>
+                    <div className="grid gap-2">
+                      {ethosTracks.slice(0, 5).map((track: any) => (
+                        <Card key={track.id} className="border border-slate-800 bg-slate-900/50">
+                          <CardContent className="py-3 px-4 flex items-center justify-between">
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-white">{track.title}</p>
+                              <div className="flex gap-2 mt-1">
+                                {track.genre && track.genre.slice(0, 2).map((g: string) => (
+                                  <Badge key={g} variant="secondary" className="text-xs">
+                                    {g}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                            <Button
+                              asChild
+                              variant="ghost"
+                              size="sm"
+                              className="text-xs"
+                            >
+                              <Link to={`/ethos/library`}>View</Link>
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           {projects.length > 0 && (
             <section className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
