@@ -218,56 +218,88 @@ export default function Nexus() {
               <div className="text-center mb-12">
                 <Badge className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white mb-4">
                   <Sparkles className="h-3 w-3" />
-                  New: Audio Production
+                  Audio Production Marketplace
                 </Badge>
                 <h2 className="text-3xl font-bold text-purple-300 mb-4">
-                  Ethos Guild - Audio & SFX Artists
+                  Ethos Guild - Music & Audio Services
                 </h2>
                 <p className="text-purple-200/70 max-w-2xl mx-auto">
-                  Discover original music, sound effects, and audio composition services from Ethos Guild artists. Perfect for games, films, and commercial projects.
+                  Discover original tracks and hire verified audio artists for composition, SFX design, and sound engineering. Support independent creators and get high-quality audio for your projects.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <Card className="bg-purple-950/20 border-purple-400/30 hover:border-purple-400/60 transition-colors">
+              {/* Tabs for Tracks & Services */}
+              <Tabs defaultValue="tracks" className="w-full">
+                <TabsList className="mb-8 bg-slate-800/50 border border-slate-700">
+                  <TabsTrigger value="tracks" className="flex items-center gap-2">
+                    <Music className="h-4 w-4" />
+                    Tracks for Sale
+                  </TabsTrigger>
+                  <TabsTrigger value="artists" className="flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Hire Artists
+                  </TabsTrigger>
+                </TabsList>
+
+                {/* Tracks Tab */}
+                <TabsContent value="tracks" className="space-y-6">
+                  <div className="bg-slate-900/30 border border-slate-700 rounded-lg p-6 mb-6">
+                    <h3 className="font-semibold text-purple-300 mb-2">
+                      Browse Pre-made Music
+                    </h3>
+                    <p className="text-slate-400 text-sm">
+                      Find original tracks available under ecosystem licenses (free for non-commercial use) or commercial licenses (for games, films, content).
+                    </p>
+                  </div>
+                  <AudioTracksForSale />
+                </TabsContent>
+
+                {/* Artists Tab */}
+                <TabsContent value="artists" className="space-y-6">
+                  <div className="bg-slate-900/30 border border-slate-700 rounded-lg p-6 mb-6">
+                    <h3 className="font-semibold text-purple-300 mb-2">
+                      Hire Verified Artists
+                    </h3>
+                    <p className="text-slate-400 text-sm">
+                      Work directly with Ethos Guild artists for custom compositions, SFX packs, game scores, and audio production services. Artists set their own prices and maintain full creative control.
+                    </p>
+                  </div>
+                  <AudioServicesForHire />
+                </TabsContent>
+              </Tabs>
+
+              {/* Info Cards */}
+              <div className="grid md:grid-cols-3 gap-6 mt-12 pt-12 border-t border-purple-400/10">
+                <Card className="bg-purple-950/20 border-purple-400/30">
                   <CardHeader>
-                    <Music className="h-8 w-8 text-pink-400 mb-2" />
-                    <CardTitle className="text-purple-300">
-                      Browse Track Library
+                    <CardTitle className="text-purple-300 text-sm">
+                      Artist-First Model
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-purple-200/70">
-                      Access thousands of original tracks, SFX, and compositions available under ecosystem (free) or commercial licenses.
-                    </p>
-                    <Button
-                      onClick={() => navigate("/ethos/library")}
-                      className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
-                    >
-                      Explore Library
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                  <CardContent className="text-sm text-purple-200/70">
+                    Artists keep 80% of licensing revenue. AeThex takes 20% to support the platform and help artists grow.
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-950/20 border-purple-400/30 hover:border-purple-400/60 transition-colors">
+                <Card className="bg-purple-950/20 border-purple-400/30">
                   <CardHeader>
-                    <Users className="h-8 w-8 text-pink-400 mb-2" />
-                    <CardTitle className="text-purple-300">
-                      Hire Ethos Artists
+                    <CardTitle className="text-purple-300 text-sm">
+                      Full Ownership
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-purple-200/70">
-                      Work with verified Ethos artists for custom compositions, game audio, and SFX design with transparent pricing and fast turnaround.
-                    </p>
-                    <Button
-                      onClick={() => navigate("/community/groups/ethos")}
-                      className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
-                    >
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                  <CardContent className="text-sm text-purple-200/70">
+                    Artists retain 100% ownership of their music. License on NEXUS, elsewhere, or both. You decide.
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-purple-950/20 border-purple-400/30">
+                  <CardHeader>
+                    <CardTitle className="text-purple-300 text-sm">
+                      Community First
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-purple-200/70">
+                    Build your portfolio in the FOUNDATION community before launching on NEXUS. Get mentorship and feedback from peers.
                   </CardContent>
                 </Card>
               </div>
