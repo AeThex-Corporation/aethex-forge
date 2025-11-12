@@ -253,10 +253,10 @@ const ProfilePassport = () => {
             aethexProjectService
               .getUserProjects(resolvedId)
               .catch(() => [] as ProjectPreview[]),
-            fetch(`/api/ethos/artists?id=${resolvedId}`)
+            fetch(`${API_BASE}/api/ethos/artists?id=${resolvedId}`)
               .then((res) => (res.ok ? res.json() : { tracks: [] }))
               .catch(() => ({ tracks: [] })),
-            fetch(`/api/creators/user/${resolvedId}`)
+            fetch(`${API_BASE}/api/creators/user/${resolvedId}`)
               .then((res) => (res.ok ? res.json() : null))
               .catch(() => null),
           ]);
