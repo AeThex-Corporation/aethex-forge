@@ -25,6 +25,7 @@ export async function getCreators(req: Request) {
         experience_level,
         arm_affiliations,
         primary_arm,
+        spotify_profile_url,
         created_at,
         aethex_projects(count)
       `,
