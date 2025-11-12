@@ -22,7 +22,7 @@ import {
 } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
 import FourOhFourPage from "@/pages/404";
-import { Clock, Rocket, Target, ExternalLink, Award } from "lucide-react";
+import { Clock, Rocket, Target, ExternalLink, Award, Music } from "lucide-react";
 import { aethexSocialService } from "@/lib/aethex-social-service";
 
 interface ProjectPreview {
