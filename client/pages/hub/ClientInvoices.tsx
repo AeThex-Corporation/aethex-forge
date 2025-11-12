@@ -39,7 +39,10 @@ export default function ClientInvoices() {
                   <p className="text-slate-400 mb-6">
                     Invoice tracking coming soon
                   </p>
-                  <Button variant="outline" onClick={() => navigate("/hub/client")}>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/hub/client")}
+                  >
                     Back to Portal
                   </Button>
                 </CardContent>

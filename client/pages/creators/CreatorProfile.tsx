@@ -174,9 +174,10 @@ export default function CreatorProfile() {
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {creator.skills.map((skill) => {
-                      const endorsement = creator.aethex_skill_endorsements?.find(
-                        (e) => e.skill === skill
-                      );
+                      const endorsement =
+                        creator.aethex_skill_endorsements?.find(
+                          (e) => e.skill === skill,
+                        );
                       return (
                         <Badge
                           key={skill}
@@ -214,7 +215,7 @@ export default function CreatorProfile() {
                           <span className="text-sm font-medium text-amber-300">
                             {creator.aethex_skill_endorsements.reduce(
                               (sum, e) => sum + e.count,
-                              0
+                              0,
                             )}{" "}
                             total endorsements
                           </span>

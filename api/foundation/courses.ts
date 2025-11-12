@@ -68,9 +68,9 @@ export async function getCourses(req: Request) {
     });
   } catch (error: any) {
     console.error("Error fetching courses:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch courses" }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
-    );
+    return new Response(JSON.stringify({ error: "Failed to fetch courses" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

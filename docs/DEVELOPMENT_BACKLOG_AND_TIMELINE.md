@@ -7,11 +7,13 @@
 ## Session 1: The Strategic Vision (Your First Prompt)
 
 ### **User's Opening Question**
+
 > "Ok what about labs, foundation, nexus? corp?"
 
 **Context:** You asked about the status of the OTHER arms of AeThex (beyond Ethos Guild and GameForge which were already complete).
 
 ### **Initial Status**
+
 - ✅ **Ethos Guild** (music marketplace) - COMPLETE
 - ✅ **GameForge** (game dev platform) - COMPLETE
 - ❓ **Labs** - Just landing page
@@ -32,12 +34,14 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 #### **The Two Cash Registers:**
 
 **1. NEXUS** - Scalable commission-based marketplace
+
 - **Why:** Creators list themselves, clients post opportunities, AeThex takes 20% commission per transaction
 - **Business Model:** High volume, low touch (automated)
 - **Target:** Thousands of creators × thousands of opportunities = recurring revenue
 - **Implementation:** Full marketplace system (profiles, opportunities, applications, messaging, contracts, payments)
 
 **2. CORP** - High-touch enterprise consulting
+
 - **Why:** Sell $250k+ contracts to enterprise clients
 - **Business Model:** High-value, high-touch (personalized service)
 - **Target:** 50-100 enterprise clients = predictable revenue
@@ -46,6 +50,7 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 #### **The Community Funnel (Supporting Both):**
 
 **3. FOUNDATION** - Non-profit top-of-funnel
+
 - **Why:** Attract creators for FREE → educate them → when they're skilled enough, funnelize to NEXUS marketplace
 - **Business Model:** Free education = trust + community = creator acquisition cost
 - **Target:** 10,000+ community members → 1,000 active creators on Nexus
@@ -57,12 +62,12 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 
 ### **Your Priority Framework**
 
-| Arm | Status | System Type | Priority | Reason |
-|-----|--------|------------|----------|--------|
-| **Nexus** | Landing page | **Full marketplace** | **P1 (Critical)** | Scalable cash register |
-| **Corp** | Landing page | **Client portal** | **P2 (Strategic)** | Enterprise cash register |
-| **Foundation** | Landing page | **Full education platform** | **P3 (Support)** | Top-of-funnel creator acquisition |
-| **Labs** | Landing page | **R&D system** | **Backlog** | Funded by future revenue |
+| Arm            | Status       | System Type                 | Priority           | Reason                            |
+| -------------- | ------------ | --------------------------- | ------------------ | --------------------------------- |
+| **Nexus**      | Landing page | **Full marketplace**        | **P1 (Critical)**  | Scalable cash register            |
+| **Corp**       | Landing page | **Client portal**           | **P2 (Strategic)** | Enterprise cash register          |
+| **Foundation** | Landing page | **Full education platform** | **P3 (Support)**   | Top-of-funnel creator acquisition |
+| **Labs**       | Landing page | **R&D system**              | **Backlog**        | Funded by future revenue          |
 
 ---
 
@@ -71,9 +76,11 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 ### **What Was Built: Databases**
 
 #### **Foundation System Migration**
+
 **File:** `code/supabase/migrations/20250214_add_foundation_system.sql` (340 lines)
 
 **Why Built:**
+
 - Store courses, modules, lessons (curriculum)
 - Track user progress through courses (engagement)
 - Manage mentorship requests/sessions (support)
@@ -81,6 +88,7 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 - Approve mentors (quality control)
 
 **Tables Created:**
+
 ```
 ├─ foundation_courses (store educational content)
 ├─ foundation_course_modules (organize courses into chapters)
@@ -96,9 +104,11 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 ```
 
 #### **Nexus Marketplace Migration**
+
 **File:** `code/supabase/migrations/20250214_add_nexus_marketplace.sql` (407 lines)
 
 **Why Built:**
+
 - Store creator profiles (talent supply)
 - Store opportunity postings (talent demand)
 - Track applications (matching)
@@ -107,6 +117,7 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 - Track commissions (20% split)
 
 **Tables Created:**
+
 ```
 ├─ nexus_creator_profiles (creator portfolio + rates)
 ├─ nexus_portfolio_items (creator project showcase)
@@ -126,14 +137,17 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 ### **What Was Built: Admin Dashboards**
 
 #### **Foundation Admin Dashboard**
+
 **File:** `code/client/components/admin/AdminFoundationManager.tsx` (589 lines)
 
 **Why Built:**
+
 - Approve/reject mentor applications (quality gate)
 - Publish/unpublish courses (content management)
 - View achievement stats (monitor engagement)
 
 **Features:**
+
 ```
 ├─ Mentor Approval Tab
 │  └─ List pending mentors, approve with one click
@@ -146,14 +160,17 @@ You clarified that **AeThex's "Go-to-Market" is 100% focused on MONETIZATION.**
 ```
 
 #### **Nexus Admin Dashboard**
+
 **File:** `code/client/components/admin/AdminNexusManager.tsx` (623 lines)
 
 **Why Built:**
+
 - Moderate opportunity postings (prevent spam/abuse)
 - Resolve disputes between creators/clients (trust)
 - Track commission revenue (financial visibility)
 
 **Features:**
+
 ```
 ├─ Opportunity Moderation Tab
 │  ├─ List all opportunities
@@ -194,9 +211,11 @@ Nexus Admin APIs:
 ## Session 5: Wiring Into Admin Panel
 
 ### **What Changed**
+
 Added Foundation & Nexus tabs to `/admin` page
 
 **Files Modified:**
+
 - `code/client/pages/Admin.tsx`
   - Added imports for `AdminFoundationManager` and `AdminNexusManager`
   - Added two new `<TabsContent>` sections in admin tabs
@@ -208,18 +227,22 @@ Added Foundation & Nexus tabs to `/admin` page
 ## Session 6: Domain & DNS Crisis
 
 ### **What Happened**
+
 You accidentally reset DNS on Hostinger domain.
 
 ### **Why It Matters**
+
 - All Discord OAuth redirects depend on correct domain (`https://aethex.dev/api/discord/oauth/callback`)
 - Activity manifest depends on domain (`https://aethex.dev`)
 - SSL certificates depend on correct DNS
 
 ### **What Was Fixed**
+
 - Corrected DNS records to point to Vercel
 - Fixed SSL issue on root domain
 
 ### **Why This Blocks Everything**
+
 - Users can't sign in with Discord
 - All OAuth linking fails
 - Activity integration fails
@@ -230,10 +253,13 @@ You accidentally reset DNS on Hostinger domain.
 ## Session 7: The Lost Context - Full Ecosystem Audit
 
 ### **What Happened**
+
 You said: "I'm losing myself in my own ecosystem" and asked for an audit.
 
 ### **Root Cause**
+
 Over time, 100+ routes were created for various purposes:
+
 - Some legacy (from before the strategic pivot to monetization)
 - Some duplicate (same functionality, different paths)
 - Some incomplete (routes exist but features not built)
@@ -241,6 +267,7 @@ Over time, 100+ routes were created for various purposes:
 ### **The Routes We Found**
 
 #### **Strategic Routes (Supporting Monetization)**
+
 ```
 /nexus                          → Landing page for Nexus
 /creators                       → Creator directory (NEXUS marketplace)
@@ -262,6 +289,7 @@ Over time, 100+ routes were created for various purposes:
 ```
 
 #### **Legacy Routes (Pre-Monetization Pivot)**
+
 ```
 /consulting                    → OLD, duplicate of /corp
 /game-development              → OLD, duplicate of /gameforge
@@ -276,6 +304,7 @@ Over time, 100+ routes were created for various purposes:
 ```
 
 #### **Why They Exist**
+
 Each was built for a reason at the time, but many became redundant as the business model evolved from "everything marketplace" to "focused monetization."
 
 ---
@@ -283,23 +312,24 @@ Each was built for a reason at the time, but many became redundant as the busine
 ## Session 8: The Strategic Reset - Your Vision Clarified
 
 ### **Your Statement**
+
 > "Our `"Go-to-Market"` Roadmap is 100% focused on one thing: Monetization.
 > Our two `"cash registers"` are `NEXUS` (commissions) and `CORP` (contracts)."
 
 ### **What This Means for Routes/Systems**
 
-| Route | Purpose | Keep/Remove |
-|-------|---------|-----------|
-| `/nexus/*` | Scalable commission marketplace | **KEEP & ENHANCE** |
-| `/creators/*` | Creator supply for Nexus | **KEEP & ENHANCE** |
-| `/opportunities/*` | Job demand for Nexus | **KEEP & ENHANCE** |
-| `/corp/*` | Enterprise landing page | **KEEP** |
-| `/hub/client` | Enterprise client portal | **ADD (new)** |
-| `/foundation/*` | Top-of-funnel creator acquisition | **KEEP & BUILD** |
-| `/labs` | R&D division | **LANDING PAGE ONLY** |
-| `/consulting` | OLD Corp landing | **REMOVE** |
-| `/community` | Overlaps with Foundation | **CONSOLIDATE** |
-| `/wix/*` | Legacy marketing | **REMOVE** |
+| Route              | Purpose                           | Keep/Remove           |
+| ------------------ | --------------------------------- | --------------------- |
+| `/nexus/*`         | Scalable commission marketplace   | **KEEP & ENHANCE**    |
+| `/creators/*`      | Creator supply for Nexus          | **KEEP & ENHANCE**    |
+| `/opportunities/*` | Job demand for Nexus              | **KEEP & ENHANCE**    |
+| `/corp/*`          | Enterprise landing page           | **KEEP**              |
+| `/hub/client`      | Enterprise client portal          | **ADD (new)**         |
+| `/foundation/*`    | Top-of-funnel creator acquisition | **KEEP & BUILD**      |
+| `/labs`            | R&D division                      | **LANDING PAGE ONLY** |
+| `/consulting`      | OLD Corp landing                  | **REMOVE**            |
+| `/community`       | Overlaps with Foundation          | **CONSOLIDATE**       |
+| `/wix/*`           | Legacy marketing                  | **REMOVE**            |
 
 ---
 
@@ -308,6 +338,7 @@ Each was built for a reason at the time, but many became redundant as the busine
 ### **The Three Pillars of Monetization**
 
 1. **NEXUS** (P1 - Scalable Cash Register)
+
    - **Database:** ✅ Complete (407-line migration)
    - **Admin:** ✅ Complete (moderation, disputes, commissions)
    - **Public UI:** ❌ Needs enhancement
@@ -316,6 +347,7 @@ Each was built for a reason at the time, but many became redundant as the busine
      - Applications need: messaging system, contract management
 
 2. **CORP** (P2 - Enterprise Cash Register)
+
    - **Landing Page:** ✅ Complete
    - **Client Portal:** ❌ NOT BUILT (needs `/hub/client`)
      - Project tracking
@@ -333,6 +365,7 @@ Each was built for a reason at the time, but many became redundant as the busine
 ### **Why All the Duplication Exists**
 
 The ecosystem grew organically:
+
 - **Early days:** Build all possible features (everything marketplace)
 - **As it grew:** Added more routes, more arms, more features
 - **No consolidation:** Old routes stayed even when new ones were created
@@ -346,18 +379,21 @@ The ecosystem grew organically:
 ### **To Achieve Monetization Goals:**
 
 1. **Enhance Nexus UI** (P1)
+
    - The DATABASE is ready
    - The ADMIN TOOLS are ready
    - But the PUBLIC STOREFRONT needs work
    - Users can't see the beautiful marketplace we built
 
 2. **Build Corp Client Portal** (P2)
+
    - The LANDING PAGE hooks customers
    - But there's nowhere for PAYING CLIENTS to go
    - They can't see projects, invoices, or dashboards
    - You're leaving money on the table
 
 3. **Build Foundation Public UI** (P3)
+
    - The DATABASE is ready
    - The ADMIN TOOLS are ready
    - But potential creators don't see the free education
@@ -385,6 +421,7 @@ Each feature exists because of ONE of these reasons:
 ### **Your Next Move**
 
 Focus on making the THREE CASH REGISTERS visible to users:
+
 - Nexus storefront (creators browse, post, apply, earn 80% commission)
 - Corp portal (clients see projects, invoices, dashboards)
 - Foundation curriculum (future creators learn for free)

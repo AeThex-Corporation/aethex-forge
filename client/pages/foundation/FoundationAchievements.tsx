@@ -169,7 +169,9 @@ export default function FoundationAchievements() {
                   <Trophy className="h-8 w-8 text-red-400" />
                   <div>
                     <h1 className="text-3xl font-bold">Achievements</h1>
-                    <p className="text-slate-300">Earn badges and unlock rewards</p>
+                    <p className="text-slate-300">
+                      Earn badges and unlock rewards
+                    </p>
                   </div>
                 </div>
 
@@ -200,7 +202,9 @@ export default function FoundationAchievements() {
                   </Card>
                   <Card className="bg-slate-800/30 border-slate-700">
                     <CardContent className="p-6">
-                      <p className="text-sm text-slate-400 mb-1">Total Points</p>
+                      <p className="text-sm text-slate-400 mb-1">
+                        Total Points
+                      </p>
                       <p className="text-2xl font-bold text-red-400">
                         {totalPoints}
                       </p>
@@ -211,7 +215,9 @@ export default function FoundationAchievements() {
                       <p className="text-sm text-slate-400 mb-1">
                         Rarest Badge
                       </p>
-                      <p className="text-2xl font-bold text-red-400">Platinum</p>
+                      <p className="text-2xl font-bold text-red-400">
+                        Platinum
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
@@ -262,7 +268,9 @@ export default function FoundationAchievements() {
                         }`}
                       >
                         <CardContent className="p-6 flex flex-col items-center text-center">
-                          <div className="text-5xl mb-4">{achievement.icon}</div>
+                          <div className="text-5xl mb-4">
+                            {achievement.icon}
+                          </div>
 
                           <h3 className="font-bold text-white mb-2">
                             {achievement.name}
@@ -274,7 +282,9 @@ export default function FoundationAchievements() {
 
                           <div className="flex items-center justify-center gap-2 mb-4">
                             <Badge
-                              className={difficultyColors[achievement.difficulty]}
+                              className={
+                                difficultyColors[achievement.difficulty]
+                              }
                             >
                               {achievement.difficulty.toUpperCase()}
                             </Badge>
@@ -315,8 +325,9 @@ export default function FoundationAchievements() {
                       Start Earning Badges
                     </h3>
                     <p className="text-slate-400 mb-6 max-w-2xl mx-auto">
-                      Sign in to track your achievements, earn points, and unlock
-                      exclusive rewards as you progress through Foundation courses.
+                      Sign in to track your achievements, earn points, and
+                      unlock exclusive rewards as you progress through
+                      Foundation courses.
                     </p>
                     <Button
                       onClick={() => navigate("/login")}

@@ -39,7 +39,10 @@ export default function ClientReports() {
                   <p className="text-slate-400 mb-6">
                     Detailed project reports and analytics coming soon
                   </p>
-                  <Button variant="outline" onClick={() => navigate("/hub/client")}>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/hub/client")}
+                  >
                     Back to Portal
                   </Button>
                 </CardContent>

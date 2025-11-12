@@ -58,7 +58,7 @@ export default function OpportunityDetail() {
           limit: 3,
         });
         setRelatedOpportunities(
-          relatedResult.data.filter((opp) => opp.id !== id)
+          relatedResult.data.filter((opp) => opp.id !== id),
         );
       } catch (error) {
         console.error("Failed to fetch opportunity:", error);

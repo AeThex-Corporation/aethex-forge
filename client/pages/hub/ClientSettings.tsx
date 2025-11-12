@@ -39,7 +39,10 @@ export default function ClientSettings() {
                   <p className="text-slate-400 mb-6">
                     Account settings and preferences coming soon
                   </p>
-                  <Button variant="outline" onClick={() => navigate("/hub/client")}>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/hub/client")}
+                  >
                     Back to Portal
                   </Button>
                 </CardContent>

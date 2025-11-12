@@ -139,9 +139,7 @@ export default function OpportunityPostForm() {
       toast({
         title: "Error",
         description:
-          error instanceof Error
-            ? error.message
-            : "Failed to post opportunity",
+          error instanceof Error ? error.message : "Failed to post opportunity",
         variant: "destructive",
       });
     } finally {

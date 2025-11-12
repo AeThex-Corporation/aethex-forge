@@ -338,7 +338,9 @@ export default function ClientHub() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => navigate(`/hub/client/projects/${project.id}`)}
+                          onClick={() =>
+                            navigate(`/hub/client/projects/${project.id}`)
+                          }
                         >
                           View Details →
                         </Button>

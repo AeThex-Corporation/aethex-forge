@@ -222,9 +222,7 @@ export default function FoundationCurriculum() {
                       key={diff.value}
                       onClick={() => {
                         setSelectedDifficulty(
-                          selectedDifficulty === diff.value
-                            ? null
-                            : diff.value,
+                          selectedDifficulty === diff.value ? null : diff.value,
                         );
                       }}
                       className={`px-4 py-2 rounded-lg transition ${
@@ -264,9 +262,7 @@ export default function FoundationCurriculum() {
                       key={course.id}
                       className="bg-slate-800/30 border-slate-700 hover:border-red-500/50 transition overflow-hidden cursor-pointer"
                       onClick={() =>
-                        navigate(
-                          `/foundation/curriculum/${course.slug}`,
-                        )
+                        navigate(`/foundation/curriculum/${course.slug}`)
                       }
                     >
                       {course.cover_image_url && (
@@ -289,7 +285,9 @@ export default function FoundationCurriculum() {
                         </div>
 
                         <div className="flex gap-2 mb-4">
-                          <Badge className={difficultyColors[course.difficulty]}>
+                          <Badge
+                            className={difficultyColors[course.difficulty]}
+                          >
                             {course.difficulty.charAt(0).toUpperCase() +
                               course.difficulty.slice(1)}
                           </Badge>

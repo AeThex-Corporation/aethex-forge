@@ -20,11 +20,13 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Current Ecosystem Structure (By Business Division)
 
 ### **🟡 LABS** (Yellow) - Research & Development
+
 **Landing Page:** `/labs`  
 **Sub-pages:** `/labs/explore-research`, `/labs/join-team`, `/labs/get-involved`  
 **Status:** ✅ Landing pages complete | ❌ Full system NOT built
 
 **Legacy/Duplicate:**
+
 - `/research` → ResearchLabs (OLD legacy page, same as `/labs`)
 
 **Decision:** REMOVE `/research` route, consolidate to `/labs/*`
@@ -32,9 +34,11 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ---
 
 ### **🟢 GAMEFORGE** (Green) - Game Development Platform
+
 **Landing Page:** `/gameforge`  
 **Sub-pages:** `/gameforge/start-building`, `/gameforge/view-portfolio`, `/gameforge/join-gameforge`  
 **System Pages:**
+
 - `/projects` - Project management
 - `/projects/new` - Create project
 - `/projects/:projectId/board` - Kanban board
@@ -43,6 +47,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 **Status:** ✅ Full system COMPLETE
 
 **Legacy/Duplicate:**
+
 - `/game-development` (OLD, same as `/gameforge`)
 
 **Decision:** REMOVE `/game-development` route
@@ -50,10 +55,12 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ---
 
 ### **🔴 FOUNDATION** (Red) - Education & Community
+
 **Landing Page:** `/foundation`  
 **Sub-pages:** `/foundation/contribute`, `/foundation/learn-more`, `/foundation/get-involved`
 
 **Community Section (overlapping):**
+
 - `/community` - Main community/social feed
 - `/community/teams` - FoundationTeams
 - `/community/about` - FoundationAbout
@@ -67,7 +74,8 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 
 **CRITICAL ISSUE:** `/foundation/*` and `/community/*` are DUPLICATING the same content!
 
-**Decision:** 
+**Decision:**
+
 - `/community` should BECOME `/foundation`
 - `/community/mentorship` → `/foundation/mentorship`
 - `/community/mentor/:username` → `/foundation/mentors/:username`
@@ -76,7 +84,9 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ---
 
 ### **🟠 ETHOS GUILD** (Orange/Red) - Music & Audio Marketplace
+
 **Routes:**
+
 - `/community/groups/ethos` - Guild landing
 - `/ethos/library` - Track library
 - `/ethos/artists/:userId` - Artist profile
@@ -86,16 +96,19 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 **Status:** ✅ Full system COMPLETE (Supabase tables: ethos_tracks, ethos_artist_profiles)
 
 **Decision:** CLEAN UP - Move Ethos Guild pages to organized `/ethos/*` path
+
 - `/community/groups/ethos` → `/ethos` (landing)
 - Rest are fine
 
 ---
 
 ### **🔵 CORP** (Blue) - Enterprise Consulting
+
 **Landing Page:** `/corp`  
 **Sub-pages:** `/corp/schedule-consultation`, `/corp/view-case-studies`, `/corp/contact-us`
 
 **Legacy/Duplicate:**
+
 - `/consulting` (OLD DevelopmentConsulting page)
 - `/services` - Services page (overlapping with Corp)
 - `/engage` (Pricing, navigates to `/pricing`)
@@ -105,6 +118,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 **Status:** ✅ Landing pages complete | ❌ Client portal `/hub/client` NOT built
 
 **Decision:**
+
 - REMOVE `/consulting`, `/services` (consolidate to `/corp`)
 - REMOVE `/wix` and `/wix/*` routes (legacy)
 - REMOVE `/engage` and `/pricing` (consolidate, decide on one pricing page)
@@ -113,9 +127,11 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ---
 
 ### **🟣 NEXUS** (Purple) - Talent Marketplace
+
 **Landing Page:** `/nexus`
 
 **Creator Network Routes (ALREADY EXIST):**
+
 - `/creators` - CreatorDirectory
 - `/creators/:username` - CreatorProfile
 - `/opportunities` - OpportunitiesHub
@@ -124,7 +140,8 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 
 **Status:** ✅ Database complete | ⏳ UI partially built (basic directory exists, needs enhancement)
 
-**Decision:** 
+**Decision:**
+
 - These routes are ALREADY WIRED correctly
 - Need to ENHANCE with Nexus features (messaging, contracts, payments, 20% commission)
 - NO changes to routes needed
@@ -132,9 +149,11 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ---
 
 ### **💜 STAFF** (Purple/Internal) - Employee Portal
+
 **Landing Page:** `/staff`  
 **Auth:** `/staff/login`  
 **Dashboard:**
+
 - `/staff/dashboard` - Operations dashboard
 - `/staff/directory` - Team directory
 - `/staff/admin` - Admin tools
@@ -157,7 +176,9 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ---
 
 ### **🔷 DEV-LINK** (Cyan) - External Roblox Platform
+
 **Routes:**
+
 - `/dev-link` - Landing page
 - `/dev-link/waitlist` - Embedded iframe to dev-link.me
 
@@ -170,6 +191,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Documentation & Learning
 
 **Routes:**
+
 - `/docs` (nested) - Main docs hub with sub-routes
   - `/docs/getting-started`
   - `/docs/platform`
@@ -181,6 +203,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
   - `/docs/integrations`
 
 **Legacy/Duplicate:**
+
 - `/tutorials` (separate Tutorials page, overlaps with `/docs/tutorials`)
 
 **Status:** ✅ Docs complete with nested routing
@@ -192,6 +215,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## User Profiles & Passport
 
 **Routes:**
+
 - `/profile` - User profile/settings
 - `/profile/me` - User profile (same as `/profile`)
 - `/profile/applications` - Job applications
@@ -200,6 +224,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 - `/passport/:username` - Other user passport
 
 **Legacy/Duplicate:**
+
 - `/developers` - DevelopersDirectory (overlaps with `/creators`)
 - `/developers/:id` (redirects to LegacyPassportRedirect)
 - `/profiles` (redirects to `/developers`)
@@ -207,7 +232,8 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 
 **Status:** ✅ Wired correctly but with legacy redirects
 
-**Decision:** 
+**Decision:**
+
 - REMOVE legacy `/developers` and `/profiles` routes
 - KEEP `/passport/*` for public profiles
 - KEEP `/profile` for personal settings
@@ -218,6 +244,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Community & Social
 
 **Routes:**
+
 - `/community` - Main social feed
 - `/community/:tabId` - Dynamic tabs (legacy pattern)
 - `/feed` - Alternative feed
@@ -229,6 +256,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 **Status:** ⏳ Partially built
 
 **Decision:**
+
 - CONSOLIDATE `/teams` → `/squads` (keep only `/squads`)
 - KEEP `/mentee-hub` (will become `/foundation/mentorship` per FOUNDATION consolidation)
 - CLEAN UP `/community/:tabId` (use explicit routes instead)
@@ -238,12 +266,14 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Discord Integration
 
 **Routes:**
+
 - `/login` - Login page (has Discord OAuth button)
 - `/profile/link-discord` - Discord linking
 - `/discord-verify` - Discord verification code
 - `/activity` - Discord Activity SPA
 
 **API Endpoints (NOT routes, but important):**
+
 - `/api/discord/oauth/start`
 - `/api/discord/oauth/callback`
 - `/api/discord/activity-auth`
@@ -259,6 +289,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Admin & Internal
 
 **Routes:**
+
 - `/admin` - Main admin dashboard
 - `/admin/docs-sync` - Gitbook sync tool
 - `/staff/*` - Staff portal (see STAFF section above)
@@ -272,6 +303,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Informational & Legal
 
 **Routes:**
+
 - `/about` - About page
 - `/contact` - Contact page
 - `/get-started` - Getting started
@@ -288,6 +320,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 - `/terms` - Terms of service
 
 **Legacy/Duplicate:**
+
 - `/wix/*` pages (legacy, overlaps with Corp info)
 
 **Status:** ✅ Complete
@@ -299,6 +332,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Internal Docs (Notion-based)
 
 **Routes:**
+
 - `/internal-docs/*` - 18 pages for internal governance, ops, finance, etc.
 
 **Status:** ✅ Complete
@@ -310,6 +344,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## Onboarding & Auth
 
 **Routes:**
+
 - `/onboarding` - Signup flow
 - `/login` - Login
 - `/signup` - Signup redirect
@@ -326,6 +361,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 ## CONSOLIDATION SUMMARY
 
 ### 🗑️ **Routes to REMOVE** (15 routes):
+
 1. `/research` → Merge into `/labs`
 2. `/game-development` → Merge into `/gameforge`
 3. `/consulting` → Merge into `/corp`
@@ -343,6 +379,7 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 15. `/teams` → Merge into `/squads`
 
 ### 🔄 **Routes to RENAME/REORGANIZE** (8 changes):
+
 1. `/community` → `/foundation`
 2. `/community/teams` → `/foundation/teams`
 3. `/community/about` → `/foundation/about`
@@ -353,11 +390,13 @@ You have **100+ routes** spanning 6 "arms" (business divisions), multiple system
 8. `/community/:tabId` → Remove (use explicit routes)
 
 ### ✅ **Routes to ADD** (3 new):
+
 1. `/hub/client` - Corp client portal (new system)
 2. `/foundation/curriculum` - Public courses (Foundation system)
 3. `/opportunities/new` - Post opportunity form (Nexus system)
 
 ### 🟢 **Routes to KEEP** (100+ routes):
+
 All properly structured routes remain as-is
 
 ---
@@ -406,22 +445,26 @@ All properly structured routes remain as-is
 ## Implementation Priority
 
 ### **Phase 1: Quick Wins (1-2 hours)**
+
 1. Remove legacy routes (Wix, consulting, game-development, research)
 2. Add 301 redirects where needed
 3. Update navigation links
 
 ### **Phase 2: Consolidation (4-6 hours)**
+
 1. Rename `/community` → `/foundation`
 2. Update all internal links
 3. Verify all child routes work
 
 ### **Phase 3: New Systems (P1 Priority)**
+
 1. Add `/hub/client` (Corp portal)
 2. Add `/foundation/curriculum` (Foundation courses)
 3. Add `/opportunities/new` (Nexus job posting)
 4. Enhance Nexus UI with messaging, contracts, payments
 
 ### **Phase 4: Documentation**
+
 1. Update docs with new route structure
 2. Update internal reference docs
 

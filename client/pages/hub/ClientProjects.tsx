@@ -56,7 +56,8 @@ const mockProjects: ClientProject[] = [
   {
     id: 2,
     name: "AI Integration Project",
-    description: "Integration of AI-powered features into existing game platform",
+    description:
+      "Integration of AI-powered features into existing game platform",
     status: "In Progress",
     progress: 45,
     startDate: "2025-01-15",
@@ -113,8 +114,7 @@ export default function ClientProjects() {
     const matchesSearch =
       project.name.toLowerCase().includes(search.toLowerCase()) ||
       project.description.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus =
-      !selectedStatus || project.status === selectedStatus;
+    const matchesStatus = !selectedStatus || project.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
 
@@ -188,7 +188,7 @@ export default function ClientProjects() {
                       key={status}
                       onClick={() =>
                         setSelectedStatus(
-                          selectedStatus === status ? null : status
+                          selectedStatus === status ? null : status,
                         )
                       }
                       className={`px-4 py-2 rounded-lg transition ${
@@ -276,8 +276,8 @@ export default function ClientProjects() {
                               <div className="flex items-center gap-2 text-slate-300">
                                 <TrendingUp className="h-4 w-4 text-slate-500" />
                                 <span>
-                                  ${project.spent.toLocaleString()} /
-                                  ${project.budget.toLocaleString()}
+                                  ${project.spent.toLocaleString()} / $
+                                  {project.budget.toLocaleString()}
                                 </span>
                               </div>
                             </div>

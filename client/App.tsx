@@ -573,9 +573,18 @@ const App = () => (
 
                     {/* Ethos Guild Routes */}
                     <Route path="/ethos/library" element={<TrackLibrary />} />
-                    <Route path="/ethos/artists/:userId" element={<ArtistProfile />} />
-                    <Route path="/ethos/settings" element={<ArtistSettings />} />
-                    <Route path="/ethos/licensing" element={<LicensingDashboard />} />
+                    <Route
+                      path="/ethos/artists/:userId"
+                      element={<ArtistProfile />}
+                    />
+                    <Route
+                      path="/ethos/settings"
+                      element={<ArtistSettings />}
+                    />
+                    <Route
+                      path="/ethos/licensing"
+                      element={<LicensingDashboard />}
+                    />
 
                     <Route path="/support" element={<Support />} />
                     <Route path="/status" element={<Status />} />
