@@ -130,7 +130,14 @@ export default function CreatorProfile() {
                           .map((arm) => <ArmBadge key={arm} arm={arm} />)}
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button
+                        onClick={() => navigate("/opportunities/post")}
+                        className="bg-purple-500 text-white hover:bg-purple-600"
+                      >
+                        <Briefcase className="h-4 w-4 mr-2" />
+                        Hire This Creator
+                      </Button>
                       {creator.devconnect_link && (
                         <Button asChild>
                           <a
