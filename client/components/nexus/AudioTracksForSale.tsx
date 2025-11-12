@@ -117,14 +117,14 @@ export default function AudioTracksForSale() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           <Select
-            value={selectedGenre || ""}
-            onValueChange={(val) => setSelectedGenre(val || null)}
+            value={selectedGenre || "all-genres"}
+            onValueChange={(val) => setSelectedGenre(val === "all-genres" ? null : val)}
           >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Genres</SelectItem>
+              <SelectItem value="all-genres">All Genres</SelectItem>
               {GENRE_OPTIONS.map((genre) => (
                 <SelectItem key={genre} value={genre}>
                   {genre}
@@ -134,14 +134,14 @@ export default function AudioTracksForSale() {
           </Select>
 
           <Select
-            value={selectedLicense || ""}
-            onValueChange={(val) => setSelectedLicense(val || null)}
+            value={selectedLicense || "all-licenses"}
+            onValueChange={(val) => setSelectedLicense(val === "all-licenses" ? null : val)}
           >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="License Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Types</SelectItem>
+              <SelectItem value="all-licenses">All Types</SelectItem>
               {LICENSE_OPTIONS.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
