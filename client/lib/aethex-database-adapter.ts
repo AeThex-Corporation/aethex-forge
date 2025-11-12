@@ -961,7 +961,7 @@ export const aethexAchievementService = {
     ensureSupabase();
 
     try {
-      const resp = await fetch(`/api/achievements/award`, {
+      const resp = await fetch(`${API_BASE}/api/achievements/award`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
