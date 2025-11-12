@@ -5,7 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, ArrowLeft, ExternalLink, MessageSquare } from "lucide-react";
+import {
+  Loader2,
+  ArrowLeft,
+  ExternalLink,
+  MessageSquare,
+  Award,
+  Briefcase,
+  Code,
+} from "lucide-react";
 import { getCreatorByUsername } from "@/api/creators";
 import { ArmBadge } from "@/components/creator-network/ArmBadge";
 import type { Creator } from "@/api/creators";
