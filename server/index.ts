@@ -1904,7 +1904,7 @@ export function createServer() {
 
         if (!clientId) {
           diagnostics.recommendations.push(
-            "�� DISCORD_CLIENT_ID not set. Set it to your application's ID.",
+            "��� DISCORD_CLIENT_ID not set. Set it to your application's ID.",
           );
         } else {
           diagnostics.recommendations.push("�� DISCORD_CLIENT_ID is set");
@@ -4751,6 +4751,135 @@ export function createServer() {
         return res
           .status(500)
           .json({ error: "Failed to unlink DevConnect account" });
+      }
+    });
+
+    // Ethos Tracks API
+    app.get("/api/ethos/tracks", async (req, res) => {
+      try {
+        const {
+          limit = 50,
+          offset = 0,
+          genre,
+          licenseType,
+          search,
+        } = req.query;
+
+        let dbQuery = adminSupabase
+          .from("ethos_tracks")
+          .select(
+            `
+            id,
+            user_id,
+            title,
+            description,
+            file_url,
+            duration_seconds,
+            genre,
+            license_type,
+            bpm,
+            is_published,
+            download_count,
+            rating,
+            price,
+            created_at,
+            updated_at,
+            user_profiles(id, full_name, avatar_url)
+          `,
+            { count: "exact" },
+          )
+          .eq("is_published", true)
+          .order("created_at", { ascending: false });
+
+        if (genre) dbQuery = dbQuery.contains("genre", [genre]);
+        if (licenseType) dbQuery = dbQuery.eq("license_type", licenseType);
+        if (search) {
+          dbQuery = dbQuery.or(
+            `title.ilike.%${search}%,description.ilike.%${search}%`,
+          );
+        }
+
+        const { data, error, count } = await dbQuery.range(
+          Number(offset),
+          Number(offset) + Number(limit) - 1,
+        );
+
+        if (error) throw error;
+
+        res.json({
+          data: data || [],
+          total: count,
+          limit: Number(limit),
+          offset: Number(offset),
+        });
+      } catch (e: any) {
+        console.error("[Ethos Tracks API] Error fetching tracks:", e?.message);
+        res.status(500).json({ error: e?.message || "Failed to fetch tracks" });
+      }
+    });
+
+    app.post("/api/ethos/tracks", async (req, res) => {
+      try {
+        const userId = req.headers["x-user-id"] || req.body?.user_id;
+        if (!userId) {
+          return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        const {
+          title,
+          description,
+          file_url,
+          duration_seconds,
+          genre,
+          license_type,
+          bpm,
+          is_published,
+          price,
+        } = req.body;
+
+        if (!title || !file_url || !license_type) {
+          return res.status(400).json({
+            error: "Missing required fields: title, file_url, license_type",
+          });
+        }
+
+        const { data, error } = await adminSupabase
+          .from("ethos_tracks")
+          .insert([
+            {
+              user_id: userId,
+              title,
+              description,
+              file_url,
+              duration_seconds,
+              genre: genre || [],
+              license_type,
+              bpm,
+              is_published: is_published !== false,
+              price,
+            },
+          ])
+          .select();
+
+        if (error) throw error;
+
+        if (license_type === "ecosystem" && data && data[0]) {
+          const trackId = data[0].id;
+          await adminSupabase.from("ethos_ecosystem_licenses").insert([
+            {
+              track_id: trackId,
+              artist_id: userId,
+              accepted_at: new Date().toISOString(),
+            },
+          ]);
+        }
+
+        res.status(201).json(data[0]);
+      } catch (e: any) {
+        console.error("[Ethos Tracks API] Error creating track:", e?.message);
+        res
+          .status(500)
+          .json({ error: e?.message || "Failed to create track" });
       }
     });
 
