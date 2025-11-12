@@ -144,14 +144,14 @@ export default function AudioServicesForHire() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           <Select
-            value={selectedSkill || ""}
-            onValueChange={(val) => setSelectedSkill(val || null)}
+            value={selectedSkill || "all-skills"}
+            onValueChange={(val) => setSelectedSkill(val === "all-skills" ? null : val)}
           >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Skill" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Skills</SelectItem>
+              <SelectItem value="all-skills">All Skills</SelectItem>
               {allSkills.map((skill) => (
                 <SelectItem key={skill} value={skill}>
                   {skill}
@@ -161,14 +161,14 @@ export default function AudioServicesForHire() {
           </Select>
 
           <Select
-            value={selectedService || ""}
-            onValueChange={(val) => setSelectedService(val || null)}
+            value={selectedService || "all-services"}
+            onValueChange={(val) => setSelectedService(val === "all-services" ? null : val)}
           >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Service" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Services</SelectItem>
+              <SelectItem value="all-services">All Services</SelectItem>
               {SERVICE_TYPES.map((service) => (
                 <SelectItem key={service.value} value={service.value}>
                   {service.label}
