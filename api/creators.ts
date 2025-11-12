@@ -128,6 +128,7 @@ export async function createCreatorProfile(req: Request, userId: string) {
       experience_level,
       primary_arm,
       arm_affiliations,
+      spotify_profile_url,
     } = body;
 
     const { data, error } = await supabase
@@ -141,6 +142,7 @@ export async function createCreatorProfile(req: Request, userId: string) {
         experience_level,
         primary_arm,
         arm_affiliations: arm_affiliations || [],
+        spotify_profile_url,
       })
       .select()
       .single();
