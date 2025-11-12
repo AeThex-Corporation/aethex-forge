@@ -602,6 +602,14 @@ export default function Admin() {
                   <AdminMentorshipManager />
                 </TabsContent>
 
+                <TabsContent value="foundation" className="space-y-6">
+                  <AdminFoundationManager />
+                </TabsContent>
+
+                <TabsContent value="nexus" className="space-y-6">
+                  <AdminNexusManager />
+                </TabsContent>
+
                 <TabsContent value="arm-metrics" className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                     <Card className="bg-card/60 border-border/40 backdrop-blur">
