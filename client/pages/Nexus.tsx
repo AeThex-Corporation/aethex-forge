@@ -16,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import { aethexToast } from "@/lib/aethex-toast";
+import AudioTracksForSale from "@/components/nexus/AudioTracksForSale";
+import AudioServicesForHire from "@/components/nexus/AudioServicesForHire";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Nexus() {
   const navigate = useNavigate();
