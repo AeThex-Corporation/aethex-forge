@@ -363,6 +363,7 @@ export default function Admin() {
                   <TabsTrigger value="community">Community</TabsTrigger>
                   <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
                   <TabsTrigger value="arm-metrics">Arm Metrics</TabsTrigger>
+                  <TabsTrigger value="gameforge">GameForge</TabsTrigger>
                   <TabsTrigger value="ethos">Ethos</TabsTrigger>
                   <TabsTrigger value="discord">Discord</TabsTrigger>
                   <TabsTrigger value="operations">Operations</TabsTrigger>
