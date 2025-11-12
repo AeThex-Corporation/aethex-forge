@@ -339,6 +339,10 @@ const App = () => (
                       element={<FoundationCurriculum />}
                     />
                     <Route
+                      path="/foundation/achievements"
+                      element={<FoundationAchievements />}
+                    />
+                    <Route
                       path="/foundation/contribute"
                       element={<FoundationContribute />}
                     />
