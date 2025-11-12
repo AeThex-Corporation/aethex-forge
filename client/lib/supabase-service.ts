@@ -7,6 +7,9 @@ import type {
   CommunityPost,
 } from "./database.types";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 // User Profile Services
 export const userProfileService = {
   async getProfile(userId: string): Promise<UserProfile | null> {
