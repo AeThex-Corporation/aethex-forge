@@ -82,10 +82,19 @@ export default function OpportunitiesHub() {
                     Opportunities
                   </h1>
                 </div>
-                <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+                <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6">
                   Find jobs, collaborations, and research opportunities across
                   all AeThex arms.
                 </p>
+                <div className="flex justify-center gap-3">
+                  <Button
+                    onClick={() => navigate("/opportunities/post")}
+                    className="bg-cyan-500 text-black hover:bg-cyan-400"
+                  >
+                    <Briefcase className="h-4 w-4 mr-2" />
+                    Post Opportunity
+                  </Button>
+                </div>
               </div>
 
               {/* Search Bar */}
