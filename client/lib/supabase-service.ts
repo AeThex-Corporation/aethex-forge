@@ -401,7 +401,7 @@ export const communityService = {
     >,
   ): Promise<CommunityPost> {
     try {
-      const resp = await fetch(`/api/posts`, {
+      const resp = await fetch(`${API_BASE}/api/posts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(post),
