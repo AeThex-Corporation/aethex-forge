@@ -40,6 +40,14 @@ interface ArtistProfile {
   sample_price_score?: number;
   turnaround_days?: number;
   verified?: boolean;
+  ecosystem_license_accepted?: boolean;
+  price_list?: {
+    track_custom?: number;
+    sfx_pack?: number;
+    full_score?: number;
+    day_rate?: number;
+    contact_for_quote?: boolean;
+  };
 }
 
 interface VerificationStatus {
