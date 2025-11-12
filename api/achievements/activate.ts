@@ -149,6 +149,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const awardedAchievementIds: string[] = [];
     let godModeAwarded = false;
 
+    // Create map of achievement string IDs to UUIDs
+    const achievementIdMap = new Map(
+      CORE_ACHIEVEMENTS.map((ach) => [
+        ach.id,
+        generateDeterministicUUID(ach.id),
+      ]),
+    );
+
     if (targetUserId) {
       const progressStats = {
         level: 100,
@@ -182,7 +190,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       );
 
       for (const achievement of CORE_ACHIEVEMENTS) {
-        if (existingIds.has(achievement.id)) {
+        const achievementUuid = achievementIdMap.get(achievement.id)!;
+
+        if (existingIds.has(achievementUuid)) {
           if (achievement.id === "god-mode") {
             godModeAwarded = true;
           }
@@ -194,7 +204,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .insert({
             id: randomUUID(),
             user_id: targetUserId,
-            achievement_id: achievement.id,
+            achievement_id: achievementUuid,
             earned_at: nowIso,
           });
 
@@ -208,7 +218,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       }
 
-      if (!godModeAwarded && existingIds.has("god-mode")) {
+      if (!godModeAwarded && existingIds.has(achievementIdMap.get("god-mode")!)) {
         godModeAwarded = true;
       }
     }
