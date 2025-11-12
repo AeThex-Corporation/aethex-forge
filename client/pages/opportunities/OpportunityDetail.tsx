@@ -257,6 +257,24 @@ export default function OpportunityDetail() {
                 )}
               </CardContent>
             </Card>
+
+            {/* Related Opportunities */}
+            {relatedOpportunities.length > 0 && (
+              <div className="mt-12">
+                <h2 className="text-2xl font-bold mb-6">
+                  Similar Opportunities in {opportunity.arm_affiliation}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {relatedOpportunities.map((opp) => (
+                    <OpportunityCard
+                      key={opp.id}
+                      opportunity={opp}
+                      onClick={() => navigate(`/opportunities/${opp.id}`)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </main>
 
