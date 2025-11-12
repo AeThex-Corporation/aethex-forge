@@ -267,6 +267,18 @@ const ProfilePassport = () => {
             created_at: project.created_at,
           })),
         );
+
+        // Set Ethos Guild data if user is an artist
+        if (ethos && ethos.tracks) {
+          setEthosTracks(ethos.tracks || []);
+          setEthosProfile({
+            verified: ethos.verified,
+            skills: ethos.skills,
+            bio: ethos.bio,
+            for_hire: ethos.for_hire,
+          });
+        }
+
         setNotFound(false);
 
         try {
