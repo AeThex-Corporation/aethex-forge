@@ -239,7 +239,7 @@ const ProfilePassport = () => {
             authProfile.username.toLowerCase() ===
               resolvedProfile.username.toLowerCase());
 
-        const [achievementList, interestList, projectList, ethos] =
+        const [achievementList, interestList, projectList, ethos, creator] =
           await Promise.all([
             aethexAchievementService
               .getUserAchievements(resolvedId)
@@ -253,6 +253,9 @@ const ProfilePassport = () => {
             fetch(`/api/ethos/artists?id=${resolvedId}`)
               .then((res) => (res.ok ? res.json() : { tracks: [] }))
               .catch(() => ({ tracks: [] })),
+            fetch(`/api/creators/user/${resolvedId}`)
+              .then((res) => (res.ok ? res.json() : null))
+              .catch(() => null),
           ]);
 
         if (cancelled) {
