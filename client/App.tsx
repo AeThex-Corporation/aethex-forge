@@ -256,6 +256,10 @@ const App = () => (
                       element={<OpportunitiesHub />}
                     />
                     <Route
+                      path="/opportunities/post"
+                      element={<OpportunityPostForm />}
+                    />
+                    <Route
                       path="/opportunities/:id"
                       element={<OpportunityDetail />}
                     />
