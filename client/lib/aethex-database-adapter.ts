@@ -6,6 +6,9 @@ import type { Database } from "./database.types";
 // Use the existing database user profile type directly
 import type { UserProfile } from "./database.types";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 // Extended type that matches the existing shared database
 export interface AethexUserProfile extends UserProfile {
   email?: string;
