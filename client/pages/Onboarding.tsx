@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { SkeletonOnboardingStep } from "@/components/Skeleton";
+
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import UserTypeSelection from "@/components/onboarding/UserTypeSelection";
 import PersonalInfo from "@/components/onboarding/PersonalInfo";
 import Experience from "@/components/onboarding/Experience";
