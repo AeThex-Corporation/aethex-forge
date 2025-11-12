@@ -364,6 +364,8 @@ export default function Admin() {
                   <TabsTrigger value="blogs">Blogs</TabsTrigger>
                   <TabsTrigger value="community">Community</TabsTrigger>
                   <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
+                  <TabsTrigger value="foundation">Foundation</TabsTrigger>
+                  <TabsTrigger value="nexus">Nexus</TabsTrigger>
                   <TabsTrigger value="arm-metrics">Arm Metrics</TabsTrigger>
                   <TabsTrigger value="gameforge">GameForge</TabsTrigger>
                   <TabsTrigger value="ethos">Ethos</TabsTrigger>
