@@ -162,23 +162,65 @@ export default function CreatorProfile() {
               </CardContent>
             </Card>
 
-            {/* Skills Section */}
+            {/* Skills & Endorsements Section */}
             {creator.skills && creator.skills.length > 0 && (
               <Card className="bg-slate-800/50 border-slate-700 mb-8">
                 <CardHeader>
-                  <CardTitle>Skills & Expertise</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <Code className="h-5 w-5" />
+                    Skills & Expertise
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {creator.skills.map((skill) => (
-                      <Badge
-                        key={skill}
-                        className="bg-slate-700/50 text-gray-300 border-0 px-3 py-1.5 text-sm"
-                      >
-                        {skill}
-                      </Badge>
-                    ))}
+                    {creator.skills.map((skill) => {
+                      const endorsement = creator.aethex_skill_endorsements?.find(
+                        (e) => e.skill === skill
+                      );
+                      return (
+                        <Badge
+                          key={skill}
+                          className="bg-slate-700/50 text-gray-300 border-0 px-3 py-1.5 text-sm hover:bg-slate-700 transition"
+                          title={
+                            endorsement
+                              ? `Endorsed by ${endorsement.count} creator${endorsement.count !== 1 ? "s" : ""}`
+                              : undefined
+                          }
+                        >
+                          {skill}
+                          {endorsement && (
+                            <>
+                              {" "}
+                              <Award className="h-3 w-3 ml-1 inline" />
+                              {endorsement.count > 0 && (
+                                <span className="ml-1 text-xs">
+                                  +{endorsement.count}
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </Badge>
+                      );
+                    })}
                   </div>
+                  {creator.aethex_skill_endorsements &&
+                    creator.aethex_skill_endorsements.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-slate-700">
+                        <p className="text-sm text-gray-400 mb-2">
+                          Skills validated by community
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Award className="h-4 w-4 text-amber-500" />
+                          <span className="text-sm font-medium text-amber-300">
+                            {creator.aethex_skill_endorsements.reduce(
+                              (sum, e) => sum + e.count,
+                              0
+                            )}{" "}
+                            total endorsements
+                          </span>
+                        </div>
+                      </div>
+                    )}
                 </CardContent>
               </Card>
             )}
