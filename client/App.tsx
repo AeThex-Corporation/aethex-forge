@@ -126,6 +126,7 @@ import ClientInvoices from "./pages/hub/ClientInvoices";
 import ClientContracts from "./pages/hub/ClientContracts";
 import ClientReports from "./pages/hub/ClientReports";
 import ClientSettings from "./pages/hub/ClientSettings";
+import FoundationCurriculum from "./pages/foundation/FoundationCurriculum";
 import Space1Welcome from "./pages/internal-docs/Space1Welcome";
 import Space1AxiomModel from "./pages/internal-docs/Space1AxiomModel";
 import Space1FindYourRole from "./pages/internal-docs/Space1FindYourRole";
