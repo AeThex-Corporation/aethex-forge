@@ -3923,6 +3923,58 @@ export function createServer() {
       }
     });
 
+    // Get creator by user_id
+    app.get("/api/creators/user/:userId", async (req, res) => {
+      try {
+        const userId = String(req.params.userId || "").trim();
+        if (!userId) {
+          return res.status(400).json({ error: "userId required" });
+        }
+
+        const { data: creator, error } = await adminSupabase
+          .from("aethex_creators")
+          .select(
+            `
+            id,
+            user_id,
+            username,
+            bio,
+            skills,
+            avatar_url,
+            experience_level,
+            arm_affiliations,
+            primary_arm,
+            spotify_profile_url,
+            created_at,
+            updated_at
+            `,
+          )
+          .eq("user_id", userId)
+          .eq("is_discoverable", true)
+          .maybeSingle();
+
+        if (!creator) {
+          return res.status(404).json({ error: "Creator not found" });
+        }
+
+        if (error) throw error;
+
+        const { data: devConnectLink } = await adminSupabase
+          .from("aethex_devconnect_links")
+          .select("devconnect_username, devconnect_profile_url")
+          .eq("aethex_creator_id", creator.id)
+          .maybeSingle();
+
+        return res.json({
+          ...creator,
+          devconnect_link: devConnectLink,
+        });
+      } catch (e: any) {
+        console.error("[Creator API] Error fetching creator by user_id:", e?.message);
+        return res.status(500).json({ error: "Failed to fetch creator" });
+      }
+    });
+
     // Create creator profile
     app.post("/api/creators", async (req, res) => {
       try {
