@@ -35,6 +35,9 @@ export default function OpportunityDetail() {
   const { user } = useAuth();
   const { toast } = useAethexToast();
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
+  const [relatedOpportunities, setRelatedOpportunities] = useState<
+    Opportunity[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isApplying, setIsApplying] = useState(false);
   const [showApplyDialog, setShowApplyDialog] = useState(false);
