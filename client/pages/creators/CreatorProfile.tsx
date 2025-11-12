@@ -153,6 +153,18 @@ export default function CreatorProfile() {
                           </a>
                         </Button>
                       )}
+                      {creator.spotify_profile_url && (
+                        <Button asChild variant="outline">
+                          <a
+                            href={creator.spotify_profile_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Music className="h-4 w-4 mr-2" />
+                            Listen on Spotify
+                          </a>
+                        </Button>
+                      )}
                       <Button variant="outline">
                         <MessageSquare className="h-4 w-4 mr-2" />
                         Message
