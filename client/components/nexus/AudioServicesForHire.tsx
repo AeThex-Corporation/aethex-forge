@@ -10,7 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Star, Clock, DollarSign, CheckCircle, Music } from "lucide-react";
+import {
+  Search,
+  Star,
+  Clock,
+  DollarSign,
+  CheckCircle,
+  Music,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface ArtistService {
@@ -54,7 +61,9 @@ export default function AudioServicesForHire() {
       try {
         setLoading(true);
         // Fetch artists who are for_hire
-        const response = await fetch(`/api/ethos/artists?forHire=true&limit=50`);
+        const response = await fetch(
+          `/api/ethos/artists?forHire=true&limit=50`,
+        );
         if (response.ok) {
           const result = await response.json();
           const artistsData = result.data || result || [];
@@ -102,7 +111,7 @@ export default function AudioServicesForHire() {
     const matchesSkill =
       !selectedSkill ||
       artist.skills.some((skill) =>
-        skill.toLowerCase().includes(selectedSkill.toLowerCase())
+        skill.toLowerCase().includes(selectedSkill.toLowerCase()),
       );
 
     const matchesService =
@@ -116,7 +125,7 @@ export default function AudioServicesForHire() {
 
   // Get all unique skills from artists
   const allSkills = Array.from(
-    new Set(artists.flatMap((artist) => artist.skills))
+    new Set(artists.flatMap((artist) => artist.skills)),
   ).sort();
 
   return (
@@ -134,7 +143,10 @@ export default function AudioServicesForHire() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-          <Select value={selectedSkill || ""} onValueChange={(val) => setSelectedSkill(val || null)}>
+          <Select
+            value={selectedSkill || ""}
+            onValueChange={(val) => setSelectedSkill(val || null)}
+          >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Skill" />
             </SelectTrigger>
@@ -148,7 +160,10 @@ export default function AudioServicesForHire() {
             </SelectContent>
           </Select>
 
-          <Select value={selectedService || ""} onValueChange={(val) => setSelectedService(val || null)}>
+          <Select
+            value={selectedService || ""}
+            onValueChange={(val) => setSelectedService(val || null)}
+          >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Service" />
             </SelectTrigger>
@@ -162,7 +177,10 @@ export default function AudioServicesForHire() {
             </SelectContent>
           </Select>
 
-          <Select value={minRating.toString()} onValueChange={(val) => setMinRating(Number(val))}>
+          <Select
+            value={minRating.toString()}
+            onValueChange={(val) => setMinRating(Number(val))}
+          >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Min Rating" />
             </SelectTrigger>
@@ -191,12 +209,16 @@ export default function AudioServicesForHire() {
 
       {/* Results Count */}
       <div className="text-sm text-slate-400">
-        {loading ? "Loading..." : `${filteredArtists.length} artist${filteredArtists.length !== 1 ? "s" : ""} available`}
+        {loading
+          ? "Loading..."
+          : `${filteredArtists.length} artist${filteredArtists.length !== 1 ? "s" : ""} available`}
       </div>
 
       {/* Artists Grid */}
       {loading ? (
-        <div className="text-center py-12 text-slate-400">Loading artists...</div>
+        <div className="text-center py-12 text-slate-400">
+          Loading artists...
+        </div>
       ) : filteredArtists.length === 0 ? (
         <div className="text-center py-12 text-slate-400">
           No artists found matching your criteria. Try adjusting your filters.
@@ -226,7 +248,9 @@ export default function AudioServicesForHire() {
                     </CardTitle>
                     <div className="flex items-center gap-1 mt-1">
                       <Star className="h-4 w-4 text-yellow-500" />
-                      <span className="text-sm text-slate-300">{artist.rating.toFixed(1)}</span>
+                      <span className="text-sm text-slate-300">
+                        {artist.rating.toFixed(1)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -234,7 +258,9 @@ export default function AudioServicesForHire() {
               <CardContent className="space-y-4">
                 {/* Bio */}
                 {artist.bio && (
-                  <p className="text-sm text-slate-300 line-clamp-2">{artist.bio}</p>
+                  <p className="text-sm text-slate-300 line-clamp-2">
+                    {artist.bio}
+                  </p>
                 )}
 
                 {/* Skills */}
@@ -242,7 +268,11 @@ export default function AudioServicesForHire() {
                   <p className="text-xs font-medium text-slate-400">Skills</p>
                   <div className="flex flex-wrap gap-2">
                     {artist.skills.slice(0, 3).map((skill) => (
-                      <Badge key={skill} variant="secondary" className="text-xs">
+                      <Badge
+                        key={skill}
+                        variant="secondary"
+                        className="text-xs"
+                      >
                         {skill}
                       </Badge>
                     ))}

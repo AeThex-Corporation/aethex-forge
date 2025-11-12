@@ -224,18 +224,27 @@ export default function Nexus() {
                   Ethos Guild - Music & Audio Services
                 </h2>
                 <p className="text-purple-200/70 max-w-2xl mx-auto">
-                  Discover original tracks and hire verified audio artists for composition, SFX design, and sound engineering. Support independent creators and get high-quality audio for your projects.
+                  Discover original tracks and hire verified audio artists for
+                  composition, SFX design, and sound engineering. Support
+                  independent creators and get high-quality audio for your
+                  projects.
                 </p>
               </div>
 
               {/* Tabs for Tracks & Services */}
               <Tabs defaultValue="tracks" className="w-full">
                 <TabsList className="mb-8 bg-slate-800/50 border border-slate-700">
-                  <TabsTrigger value="tracks" className="flex items-center gap-2">
+                  <TabsTrigger
+                    value="tracks"
+                    className="flex items-center gap-2"
+                  >
                     <Music className="h-4 w-4" />
                     Tracks for Sale
                   </TabsTrigger>
-                  <TabsTrigger value="artists" className="flex items-center gap-2">
+                  <TabsTrigger
+                    value="artists"
+                    className="flex items-center gap-2"
+                  >
                     <Users className="h-4 w-4" />
                     Hire Artists
                   </TabsTrigger>
@@ -248,7 +257,9 @@ export default function Nexus() {
                       Browse Pre-made Music
                     </h3>
                     <p className="text-slate-400 text-sm">
-                      Find original tracks available under ecosystem licenses (free for non-commercial use) or commercial licenses (for games, films, content).
+                      Find original tracks available under ecosystem licenses
+                      (free for non-commercial use) or commercial licenses (for
+                      games, films, content).
                     </p>
                   </div>
                   <AudioTracksForSale />
@@ -261,7 +272,10 @@ export default function Nexus() {
                       Hire Verified Artists
                     </h3>
                     <p className="text-slate-400 text-sm">
-                      Work directly with Ethos Guild artists for custom compositions, SFX packs, game scores, and audio production services. Artists set their own prices and maintain full creative control.
+                      Work directly with Ethos Guild artists for custom
+                      compositions, SFX packs, game scores, and audio production
+                      services. Artists set their own prices and maintain full
+                      creative control.
                     </p>
                   </div>
                   <AudioServicesForHire />
@@ -277,7 +291,8 @@ export default function Nexus() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-purple-200/70">
-                    Artists keep 80% of licensing revenue. AeThex takes 20% to support the platform and help artists grow.
+                    Artists keep 80% of licensing revenue. AeThex takes 20% to
+                    support the platform and help artists grow.
                   </CardContent>
                 </Card>
 
@@ -288,7 +303,8 @@ export default function Nexus() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-purple-200/70">
-                    Artists retain 100% ownership of their music. License on NEXUS, elsewhere, or both. You decide.
+                    Artists retain 100% ownership of their music. License on
+                    NEXUS, elsewhere, or both. You decide.
                   </CardContent>
                 </Card>
 
@@ -299,7 +315,8 @@ export default function Nexus() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-sm text-purple-200/70">
-                    Build your portfolio in the FOUNDATION community before launching on NEXUS. Get mentorship and feedback from peers.
+                    Build your portfolio in the FOUNDATION community before
+                    launching on NEXUS. Get mentorship and feedback from peers.
                   </CardContent>
                 </Card>
               </div>

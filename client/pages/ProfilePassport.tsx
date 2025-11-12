@@ -22,7 +22,14 @@ import {
 } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
 import FourOhFourPage from "@/pages/404";
-import { Clock, Rocket, Target, ExternalLink, Award, Music } from "lucide-react";
+import {
+  Clock,
+  Rocket,
+  Target,
+  ExternalLink,
+  Award,
+  Music,
+} from "lucide-react";
 import { aethexSocialService } from "@/lib/aethex-social-service";
 
 interface ProjectPreview {
@@ -231,20 +238,21 @@ const ProfilePassport = () => {
             authProfile.username.toLowerCase() ===
               resolvedProfile.username.toLowerCase());
 
-        const [achievementList, interestList, projectList, ethos] = await Promise.all([
-          aethexAchievementService
-            .getUserAchievements(resolvedId)
-            .catch(() => [] as AethexAchievement[]),
-          aethexUserService
-            .getUserInterests(resolvedId)
-            .catch(() => [] as string[]),
-          aethexProjectService
-            .getUserProjects(resolvedId)
-            .catch(() => [] as ProjectPreview[]),
-          fetch(`/api/ethos/artists?id=${resolvedId}`)
-            .then(res => res.ok ? res.json() : { tracks: [] })
-            .catch(() => ({ tracks: [] })),
-        ]);
+        const [achievementList, interestList, projectList, ethos] =
+          await Promise.all([
+            aethexAchievementService
+              .getUserAchievements(resolvedId)
+              .catch(() => [] as AethexAchievement[]),
+            aethexUserService
+              .getUserInterests(resolvedId)
+              .catch(() => [] as string[]),
+            aethexProjectService
+              .getUserProjects(resolvedId)
+              .catch(() => [] as ProjectPreview[]),
+            fetch(`/api/ethos/artists?id=${resolvedId}`)
+              .then((res) => (res.ok ? res.json() : { tracks: [] }))
+              .catch(() => ({ tracks: [] })),
+          ]);
 
         if (cancelled) {
           return;
@@ -428,13 +436,21 @@ const ProfilePassport = () => {
                     </div>
                     {ethosProfile.skills && ethosProfile.skills.length > 0 && (
                       <div>
-                        <p className="text-xs font-medium text-slate-400 mb-2">Skills</p>
+                        <p className="text-xs font-medium text-slate-400 mb-2">
+                          Skills
+                        </p>
                         <div className="flex flex-wrap gap-2">
-                          {ethosProfile.skills.slice(0, 5).map((skill: string) => (
-                            <Badge key={skill} variant="secondary" className="text-xs">
-                              {skill}
-                            </Badge>
-                          ))}
+                          {ethosProfile.skills
+                            .slice(0, 5)
+                            .map((skill: string) => (
+                              <Badge
+                                key={skill}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
                           {ethosProfile.skills.length > 5 && (
                             <Badge variant="secondary" className="text-xs">
                               +{ethosProfile.skills.length - 5} more
@@ -454,16 +470,26 @@ const ProfilePassport = () => {
                     </h3>
                     <div className="grid gap-2">
                       {ethosTracks.slice(0, 5).map((track: any) => (
-                        <Card key={track.id} className="border border-slate-800 bg-slate-900/50">
+                        <Card
+                          key={track.id}
+                          className="border border-slate-800 bg-slate-900/50"
+                        >
                           <CardContent className="py-3 px-4 flex items-center justify-between">
                             <div className="flex-1">
-                              <p className="text-sm font-medium text-white">{track.title}</p>
+                              <p className="text-sm font-medium text-white">
+                                {track.title}
+                              </p>
                               <div className="flex gap-2 mt-1">
-                                {track.genre && track.genre.slice(0, 2).map((g: string) => (
-                                  <Badge key={g} variant="secondary" className="text-xs">
-                                    {g}
-                                  </Badge>
-                                ))}
+                                {track.genre &&
+                                  track.genre.slice(0, 2).map((g: string) => (
+                                    <Badge
+                                      key={g}
+                                      variant="secondary"
+                                      className="text-xs"
+                                    >
+                                      {g}
+                                    </Badge>
+                                  ))}
                               </div>
                             </div>
                             <Button

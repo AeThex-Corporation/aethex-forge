@@ -66,7 +66,7 @@ export default function AudioTracksForSale() {
         if (selectedLicense) params.append("licenseType", selectedLicense);
 
         const response = await fetch(
-          `/api/ethos/tracks?${params.toString()}&limit=20`
+          `/api/ethos/tracks?${params.toString()}&limit=20`,
         );
         if (response.ok) {
           const { data } = await response.json();
@@ -116,7 +116,10 @@ export default function AudioTracksForSale() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-          <Select value={selectedGenre || ""} onValueChange={(val) => setSelectedGenre(val || null)}>
+          <Select
+            value={selectedGenre || ""}
+            onValueChange={(val) => setSelectedGenre(val || null)}
+          >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
@@ -130,7 +133,10 @@ export default function AudioTracksForSale() {
             </SelectContent>
           </Select>
 
-          <Select value={selectedLicense || ""} onValueChange={(val) => setSelectedLicense(val || null)}>
+          <Select
+            value={selectedLicense || ""}
+            onValueChange={(val) => setSelectedLicense(val || null)}
+          >
             <SelectTrigger className="bg-slate-800 border-slate-700">
               <SelectValue placeholder="License Type" />
             </SelectTrigger>
@@ -178,7 +184,9 @@ export default function AudioTracksForSale() {
 
       {/* Tracks Grid */}
       {loading ? (
-        <div className="text-center py-12 text-slate-400">Loading tracks...</div>
+        <div className="text-center py-12 text-slate-400">
+          Loading tracks...
+        </div>
       ) : sortedTracks.length === 0 ? (
         <div className="text-center py-12 text-slate-400">
           No tracks found. Try adjusting your filters.
@@ -239,7 +247,9 @@ export default function AudioTracksForSale() {
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 text-yellow-500" />
-                    <span className="text-slate-300">{track.rating || 5.0}</span>
+                    <span className="text-slate-300">
+                      {track.rating || 5.0}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1 text-slate-400">
                     <Download className="h-4 w-4" />

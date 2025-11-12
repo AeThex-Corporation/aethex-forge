@@ -29,7 +29,8 @@ export default async function handler(req: any, res: any) {
 
       if (!artist_id || !service_type || !description) {
         return res.status(400).json({
-          error: "Missing required fields: artist_id, service_type, description",
+          error:
+            "Missing required fields: artist_id, service_type, description",
         });
       }
 
@@ -41,7 +42,9 @@ export default async function handler(req: any, res: any) {
         .single();
 
       if (artistError || !artist || !artist.for_hire) {
-        return res.status(404).json({ error: "Artist not found or not available for hire" });
+        return res
+          .status(404)
+          .json({ error: "Artist not found or not available for hire" });
       }
 
       // Create service request
@@ -96,7 +99,9 @@ export default async function handler(req: any, res: any) {
       if (requester_id) dbQuery = dbQuery.eq("requester_id", requester_id);
       if (status) dbQuery = dbQuery.eq("status", status);
 
-      const { data, error } = await dbQuery.order("created_at", { ascending: false });
+      const { data, error } = await dbQuery.order("created_at", {
+        ascending: false,
+      });
 
       if (error) throw error;
       return res.json({ data });
@@ -109,7 +114,9 @@ export default async function handler(req: any, res: any) {
       const { status, notes } = body;
 
       if (!id || !status) {
-        return res.status(400).json({ error: "Missing required fields: id, status" });
+        return res
+          .status(400)
+          .json({ error: "Missing required fields: id, status" });
       }
 
       const { data, error } = await supabase

@@ -7,6 +7,7 @@ Ethos Guild is a music production and licensing ecosystem within AeThex. Artists
 ## Completed Features
 
 ### Phase 1: Artist Verification Workflow ✅
+
 - **Admin Dashboard**: `/admin` → "Ethos Verification" tab
 - **Artist Submission**: `/ethos/settings` → Verification form
 - **Verification Process**: Manual review by admins with approval/rejection
@@ -14,6 +15,7 @@ Ethos Guild is a music production and licensing ecosystem within AeThex. Artists
 - **Database**: `ethos_verification_requests` and `ethos_verification_audit_log` tables
 
 ### Phase 2: Supabase Storage Integration ✅
+
 - **Track Upload**: Audio files stored in `ethos-tracks` bucket
 - **Public Access**: Tracks are publicly readable for streaming
 - **User Isolation**: Each user can only upload to their own folder
@@ -21,18 +23,21 @@ Ethos Guild is a music production and licensing ecosystem within AeThex. Artists
 - **File Management**: Upload, download, delete operations supported
 
 ### Phase 3: Email Notifications ✅
+
 - **SMTP Configuration**: Hostinger SMTP (smtp.hostinger.com:465)
 - **Templates**: Verification, licensing, and status notifications
 - **Delivery**: Reliable email delivery via Nodemailer
 - **Async Processing**: Non-blocking email sending
 
 ### Phase 4: Ecosystem License Agreement ✅
+
 - **Modal Interface**: Click-wrap agreement on first track upload
 - **License Tracking**: `ethos_ecosystem_licenses` table
 - **Track Linking**: Accepted licenses linked to specific tracks
 - **Re-acceptance**: Artists can accept license once
 
 ### Phase 5: Artist Services & Pricing ✅
+
 - **Flexible Pricing**: JSON-based `price_list` structure
 - **Service Types**: Custom tracks, SFX packs, full scores, day rates
 - **For Hire Status**: Boolean flag to show in marketplace
@@ -40,6 +45,7 @@ Ethos Guild is a music production and licensing ecosystem within AeThex. Artists
 - **Contact System**: Service request form with commission tracking
 
 ### Phase 6: NEXUS Marketplace Integration ✅
+
 - **Two Components**: AudioTracksForSale and AudioServicesForHire
 - **Artist Directory**: Filter by skills, ratings, services
 - **Track Library**: Filter by genre, license type, price
@@ -47,6 +53,7 @@ Ethos Guild is a music production and licensing ecosystem within AeThex. Artists
 - **Profile Integration**: Links to artist profiles and portfolio
 
 ### Phase 7: Artist Portfolio ✅
+
 - **Route**: `/passport/me` (personal) and `/passport/:username` (public)
 - **Sections**: Ethos Guild info, tracks, skills, verification status
 - **Self View**: Edit link to settings for own profile
@@ -56,6 +63,7 @@ Ethos Guild is a music production and licensing ecosystem within AeThex. Artists
 ## API Endpoints
 
 ### Artist Management
+
 ```
 GET /api/ethos/artists?id=<id> - Get single artist
 GET /api/ethos/artists?for_hire=true - List artists available for hire
@@ -64,11 +72,13 @@ PUT /api/ethos/artists - Update artist profile
 ```
 
 ### Artist Services
+
 ```
 GET /api/ethos/artist-services/:artist_id - Get artist's service pricing
 ```
 
 ### Service Requests
+
 ```
 POST /api/ethos/service-requests - Create service request
 GET /api/ethos/service-requests?artist_id=<id> - List requests for artist
@@ -76,18 +86,21 @@ PUT /api/ethos/service-requests/:id - Update request status
 ```
 
 ### Tracks
+
 ```
 GET /api/ethos/tracks - List published tracks
 POST /api/ethos/tracks - Upload new track (with auto-license linking)
 ```
 
 ### Verification
+
 ```
 GET /api/ethos/verification - List verification requests (admin)
 POST /api/ethos/verification - Submit or manage verification
 ```
 
 ### Licensing
+
 ```
 GET /api/ethos/licensing-agreements - List agreements
 POST /api/ethos/licensing-notifications - Send notifications
@@ -98,6 +111,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 ### Main Tables
 
 **ethos_artist_profiles**
+
 - `user_id` (PK): References user_profiles
 - `for_hire`: Boolean flag for marketplace visibility
 - `verified`: Verification status
@@ -107,6 +121,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 - RLS: Users see all, own updates only
 
 **ethos_tracks**
+
 - `id` (PK): UUID
 - `user_id`: Artist who uploaded
 - `title`, `description`: Track info
@@ -118,6 +133,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 - RLS: Public read, user write/delete own
 
 **ethos_ecosystem_licenses**
+
 - `id` (PK): UUID
 - `track_id`: Which track accepted license
 - `artist_id`: Which artist accepted
@@ -125,6 +141,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 - RLS: User sees own, admins see all
 
 **ethos_verification_requests**
+
 - `id` (PK): UUID
 - `user_id`: Artist requesting verification
 - `status`: "pending", "approved", "rejected"
@@ -133,6 +150,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 - RLS: Artists see own, admins see all
 
 **ethos_service_requests**
+
 - `id` (PK): UUID
 - `artist_id`: Requested artist
 - `requester_id`: Client requesting service
@@ -142,7 +160,9 @@ POST /api/ethos/licensing-notifications - Send notifications
 - RLS: Both parties can view, artist updates
 
 ### Storage Bucket
+
 **ethos-tracks** (Public)
+
 - Path: `/{user_id}/{track_id}/audio.mp3`
 - RLS: Authenticated users can upload to own folder, public read, user delete own
 - Policy: Users isolated to their own folder, public streaming access
@@ -150,6 +170,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 ## User Flows
 
 ### Artist Upload Flow
+
 1. Artist goes to `/ethos/settings`
 2. Clicks "Upload Track" button
 3. Selects audio file
@@ -164,6 +185,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 12. Success toast shown, track appears in library
 
 ### Verification Flow
+
 1. Artist goes to `/ethos/settings` → "Request Verification"
 2. Fills form: bio, skills, portfolio links, submission notes
 3. POST to `/api/ethos/verification` with action: "submit"
@@ -177,6 +199,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 11. Artist can see status on settings page
 
 ### Marketplace Discovery Flow
+
 1. User goes to `/nexus`
 2. Clicks "Services for Hire" tab
 3. Component fetches: `GET /api/ethos/artists?forHire=true&limit=50`
@@ -196,6 +219,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 12. Artist can accept/decline in dashboard
 
 ### Artist Portfolio View
+
 1. Artist goes to `/passport/me` (personal portfolio)
 2. **Ethos Guild Section Shows**:
    - Verified Artist badge (if applicable)
@@ -214,6 +238,7 @@ POST /api/ethos/licensing-notifications - Send notifications
 ## Deployment Checklist
 
 ### Database
+
 - [ ] Apply migration: `20250206_add_ethos_guild.sql`
 - [ ] Apply migration: `20250210_add_ethos_artist_verification.sql`
 - [ ] Apply migration: `20250210_setup_ethos_storage.sql` (read-only in SQL)
@@ -221,12 +246,14 @@ POST /api/ethos/licensing-notifications - Send notifications
 - [ ] Apply migration: `20250212_add_ethos_service_requests.sql`
 
 ### Storage Setup
+
 - [ ] Create Supabase Storage bucket: "ethos-tracks"
 - [ ] Make bucket PUBLIC
 - [ ] Apply RLS policies (see migration comments)
 - [ ] Test upload from browser
 
 ### Environment Variables
+
 ```
 VITE_SUPABASE_URL=https://kmdeisowhtsalsekkzqd.supabase.co
 VITE_SUPABASE_ANON_KEY=<your-anon-key>
@@ -239,6 +266,7 @@ SMTP_FROM_EMAIL=no-reply@aethex.tech
 ```
 
 ### Testing Steps
+
 1. [ ] Create user account
 2. [ ] Go to `/ethos/settings`
 3. [ ] Upload track → Accept license → Fill metadata → Upload to storage
@@ -257,24 +285,29 @@ SMTP_FROM_EMAIL=no-reply@aethex.tech
 ## Technical Details
 
 ### License Linking Logic
+
 When a track is uploaded with `license_type: "ecosystem"`:
+
 1. Track record created in `ethos_tracks`
 2. Immediately after insert, code creates record in `ethos_ecosystem_licenses`
 3. Links: track_id, artist_id, accepted_at (current timestamp)
 4. This establishes the relationship between license agreement and track
 
 ### Storage Path Format
+
 ```
 ethos-tracks/
   {user_id}/
     {track_id}/
       audio.mp3
 ```
+
 - User ID isolates folders for RLS
 - Track ID groups related files
 - Flat structure easy to manage
 
 ### Service Pricing Structure
+
 ```json
 {
   "price_list": {
@@ -286,11 +319,13 @@ ethos-tracks/
   }
 }
 ```
+
 - Flexible JSON for future service types
 - `null` values mean service not available
 - Boolean flag for custom quotes
 
 ### Verification Workflow
+
 ```
 pending → admin review → approved/rejected
           ↓                    ↓
@@ -314,6 +349,7 @@ pending → admin review → approved/rejected
 ## Support
 
 For issues or questions about Ethos Guild:
+
 1. Check `/docs` section for tutorials
 2. Review `/ethos/library` for example tracks
 3. See `/admin` → "Ethos Verification" for status

@@ -53,10 +53,15 @@ export default async function handler(req: any, res: any) {
 
       if (genre) dbQuery = dbQuery.contains("genre", [genre]);
       if (licenseType) dbQuery = dbQuery.eq("license_type", licenseType);
-      if (search) dbQuery = dbQuery.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+      if (search)
+        dbQuery = dbQuery.or(
+          `title.ilike.%${search}%,description.ilike.%${search}%`,
+        );
 
-      const { data, error, count } = await dbQuery
-        .range(Number(offset), Number(offset) + Number(limit) - 1);
+      const { data, error, count } = await dbQuery.range(
+        Number(offset),
+        Number(offset) + Number(limit) - 1,
+      );
 
       if (error) throw error;
 

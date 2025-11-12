@@ -11,7 +11,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import TrackUploadModal from "@/components/ethos/TrackUploadModal";
 import TrackMetadataForm from "@/components/ethos/TrackMetadataForm";
 import { ethosStorage, getAudioDuration } from "@/lib/ethos-storage";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { Upload, Music, Settings, CheckCircle, Clock } from "lucide-react";
@@ -70,10 +76,12 @@ export default function ArtistSettings() {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [showMetadataForm, setShowMetadataForm] = useState(false);
-  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>({
-    status: "none",
-  });
-  const [isSubmittingVerification, setIsSubmittingVerification] = useState(false);
+  const [verificationStatus, setVerificationStatus] =
+    useState<VerificationStatus>({
+      status: "none",
+    });
+  const [isSubmittingVerification, setIsSubmittingVerification] =
+    useState(false);
   const [submissionNotes, setSubmissionNotes] = useState("");
   const [portfolioLinks, setPortfolioLinks] = useState("");
   const [showLicenseModal, setShowLicenseModal] = useState(false);
@@ -323,7 +331,8 @@ export default function ArtistSettings() {
       if (res.ok) {
         toast.success({
           title: "Track uploaded successfully! 🎵",
-          description: "Your track has been added to your portfolio and is ready to share",
+          description:
+            "Your track has been added to your portfolio and is ready to share",
         });
         setShowMetadataForm(false);
         setCurrentFile(null);
@@ -340,7 +349,11 @@ export default function ArtistSettings() {
   };
 
   if (loading) {
-    return <Layout><div className="py-20 text-center">Loading settings...</div></Layout>;
+    return (
+      <Layout>
+        <div className="py-20 text-center">Loading settings...</div>
+      </Layout>
+    );
   }
 
   return (
@@ -364,7 +377,9 @@ export default function ArtistSettings() {
               {/* Profile Section */}
               <Card className="bg-slate-900/50 border-slate-800">
                 <CardHeader>
-                  <CardTitle className="text-white">Profile Information</CardTitle>
+                  <CardTitle className="text-white">
+                    Profile Information
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -384,7 +399,10 @@ export default function ArtistSettings() {
                     <Input
                       value={profile.portfolio_url || ""}
                       onChange={(e) =>
-                        setProfile({ ...profile, portfolio_url: e.target.value })
+                        setProfile({
+                          ...profile,
+                          portfolio_url: e.target.value,
+                        })
                       }
                       placeholder="https://yourportfolio.com"
                       type="url"
@@ -411,7 +429,9 @@ export default function ArtistSettings() {
               <Card className="bg-slate-900/50 border-slate-800">
                 <CardHeader>
                   <CardTitle className="text-white">Skills</CardTitle>
-                  <CardDescription>Select the skills you specialize in</CardDescription>
+                  <CardDescription>
+                    Select the skills you specialize in
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -436,9 +456,12 @@ export default function ArtistSettings() {
               {profile.for_hire && (
                 <Card className="bg-slate-900/50 border-slate-800">
                   <CardHeader>
-                    <CardTitle className="text-white">Services & Pricing</CardTitle>
+                    <CardTitle className="text-white">
+                      Services & Pricing
+                    </CardTitle>
                     <CardDescription>
-                      Set your prices for custom services. Leave blank if you prefer "Contact for Quote"
+                      Set your prices for custom services. Leave blank if you
+                      prefer "Contact for Quote"
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -461,7 +484,9 @@ export default function ArtistSettings() {
                           className="bg-slate-800 border-slate-700"
                           min="0"
                         />
-                        <p className="text-xs text-slate-400">Original music composition</p>
+                        <p className="text-xs text-slate-400">
+                          Original music composition
+                        </p>
                       </div>
 
                       <div className="space-y-2">
@@ -482,7 +507,9 @@ export default function ArtistSettings() {
                           className="bg-slate-800 border-slate-700"
                           min="0"
                         />
-                        <p className="text-xs text-slate-400">Sound effects collection</p>
+                        <p className="text-xs text-slate-400">
+                          Sound effects collection
+                        </p>
                       </div>
 
                       <div className="space-y-2">
@@ -503,7 +530,9 @@ export default function ArtistSettings() {
                           className="bg-slate-800 border-slate-700"
                           min="0"
                         />
-                        <p className="text-xs text-slate-400">Complete game/film score</p>
+                        <p className="text-xs text-slate-400">
+                          Complete game/film score
+                        </p>
                       </div>
 
                       <div className="space-y-2">
@@ -524,26 +553,33 @@ export default function ArtistSettings() {
                           className="bg-slate-800 border-slate-700"
                           min="0"
                         />
-                        <p className="text-xs text-slate-400">Hourly or daily rate for consulting</p>
+                        <p className="text-xs text-slate-400">
+                          Hourly or daily rate for consulting
+                        </p>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-white">Turnaround Time (days)</Label>
+                      <Label className="text-white">
+                        Turnaround Time (days)
+                      </Label>
                       <Input
                         type="number"
                         value={profile.turnaround_days || ""}
                         onChange={(e) =>
                           setProfile({
                             ...profile,
-                            turnaround_days: Number(e.target.value) || undefined,
+                            turnaround_days:
+                              Number(e.target.value) || undefined,
                           })
                         }
                         placeholder="5"
                         className="bg-slate-800 border-slate-700"
                         min="1"
                       />
-                      <p className="text-xs text-slate-400">Typical delivery time for custom work</p>
+                      <p className="text-xs text-slate-400">
+                        Typical delivery time for custom work
+                      </p>
                     </div>
 
                     <label className="flex items-center gap-2 p-3 rounded-lg bg-slate-800/50 border border-slate-700 cursor-pointer">
@@ -561,7 +597,8 @@ export default function ArtistSettings() {
                         className="border-slate-600"
                       />
                       <span className="text-sm text-slate-300">
-                        High-value projects (Enterprise clients): "Contact for Quote"
+                        High-value projects (Enterprise clients): "Contact for
+                        Quote"
                       </span>
                     </label>
                   </CardContent>
@@ -575,7 +612,9 @@ export default function ArtistSettings() {
                     <Music className="h-5 w-5" />
                     Upload Track
                   </CardTitle>
-                  <CardDescription>Add a new track to your portfolio</CardDescription>
+                  <CardDescription>
+                    Add a new track to your portfolio
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button
@@ -604,10 +643,12 @@ export default function ArtistSettings() {
                     <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="font-semibold text-green-400">Verified Artist</p>
+                        <p className="font-semibold text-green-400">
+                          Verified Artist
+                        </p>
                         <p className="text-sm text-green-300 mt-1">
-                          You are a verified Ethos Guild artist. You can upload tracks and accept
-                          commercial licensing requests.
+                          You are a verified Ethos Guild artist. You can upload
+                          tracks and accept commercial licensing requests.
                         </p>
                       </div>
                     </div>
@@ -615,35 +656,44 @@ export default function ArtistSettings() {
                     <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg flex items-start gap-3">
                       <Clock className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="font-semibold text-yellow-400">Pending Review</p>
+                        <p className="font-semibold text-yellow-400">
+                          Pending Review
+                        </p>
                         <p className="text-sm text-yellow-300 mt-1">
-                          Your verification request is under review. We'll email you when there's an
-                          update.
+                          Your verification request is under review. We'll email
+                          you when there's an update.
                         </p>
                         {verificationStatus.submitted_at && (
                           <p className="text-xs text-yellow-300/70 mt-2">
                             Submitted:{" "}
-                            {new Date(verificationStatus.submitted_at).toLocaleDateString()}
+                            {new Date(
+                              verificationStatus.submitted_at,
+                            ).toLocaleDateString()}
                           </p>
                         )}
                       </div>
                     </div>
                   ) : verificationStatus.status === "rejected" ? (
                     <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                      <p className="font-semibold text-red-400">Application Rejected</p>
+                      <p className="font-semibold text-red-400">
+                        Application Rejected
+                      </p>
                       {verificationStatus.rejection_reason && (
                         <p className="text-sm text-red-300 mt-2">
                           {verificationStatus.rejection_reason}
                         </p>
                       )}
                       <p className="text-sm text-red-300 mt-2">
-                        You can resubmit with updates to your portfolio or qualifications.
+                        You can resubmit with updates to your portfolio or
+                        qualifications.
                       </p>
                     </div>
                   ) : (
                     <>
                       <div className="space-y-2">
-                        <Label className="text-white">Application Notes (optional)</Label>
+                        <Label className="text-white">
+                          Application Notes (optional)
+                        </Label>
                         <Textarea
                           value={submissionNotes}
                           onChange={(e) => setSubmissionNotes(e.target.value)}
@@ -653,7 +703,9 @@ export default function ArtistSettings() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label className="text-white">Portfolio Links (one per line)</Label>
+                        <Label className="text-white">
+                          Portfolio Links (one per line)
+                        </Label>
                         <Textarea
                           value={portfolioLinks}
                           onChange={(e) => setPortfolioLinks(e.target.value)}

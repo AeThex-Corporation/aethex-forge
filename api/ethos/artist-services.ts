@@ -13,7 +13,9 @@ export default async function handler(req: any, res: any) {
       const artistId = query.artist_id;
 
       if (!artistId) {
-        return res.status(400).json({ error: "artist_id query parameter is required" });
+        return res
+          .status(400)
+          .json({ error: "artist_id query parameter is required" });
       }
 
       const { data: artist, error: artistError } = await supabase
@@ -39,7 +41,9 @@ export default async function handler(req: any, res: any) {
       if (artistError && artistError.code !== "PGRST116") throw artistError;
 
       if (!artist || !artist.for_hire) {
-        return res.status(404).json({ error: "Artist not found or not available for hire" });
+        return res
+          .status(404)
+          .json({ error: "Artist not found or not available for hire" });
       }
 
       return res.json({
