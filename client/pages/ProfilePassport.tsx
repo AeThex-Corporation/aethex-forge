@@ -784,6 +784,23 @@ const ProfilePassport = () => {
                   </a>
                 </Button>
               )}
+              {creatorProfile?.spotify_profile_url && (
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-8 px-2 text-xs text-slate-200"
+                >
+                  <a
+                    href={creatorProfile.spotify_profile_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Music className="h-3.5 w-3.5 mr-1" />
+                    Spotify
+                    <ExternalLink className="ml-1 h-3.5 w-3.5" />
+                  </a>
+                </Button>
+              )}
               {profile.bio && (
                 <Badge
                   variant="outline"
