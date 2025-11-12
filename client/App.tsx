@@ -119,6 +119,8 @@ import OpportunitiesHub from "./pages/opportunities/OpportunitiesHub";
 import OpportunityDetail from "./pages/opportunities/OpportunityDetail";
 import OpportunityPostForm from "./pages/opportunities/OpportunityPostForm";
 import MyApplications from "./pages/profile/MyApplications";
+import ClientHub from "./pages/hub/ClientHub";
+import ClientProjects from "./pages/hub/ClientProjects";
 import Space1Welcome from "./pages/internal-docs/Space1Welcome";
 import Space1AxiomModel from "./pages/internal-docs/Space1AxiomModel";
 import Space1FindYourRole from "./pages/internal-docs/Space1FindYourRole";
