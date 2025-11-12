@@ -4899,6 +4899,7 @@ export function createServer() {
               for_hire,
               bio,
               portfolio_url,
+              spotify_profile_url,
               sample_price_track,
               sample_price_sfx,
               sample_price_score,
