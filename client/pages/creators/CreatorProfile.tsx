@@ -13,6 +13,7 @@ import {
   Award,
   Briefcase,
   Code,
+  Music,
 } from "lucide-react";
 import { getCreatorByUsername } from "@/api/creators";
 import { ArmBadge } from "@/components/creator-network/ArmBadge";
