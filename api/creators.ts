@@ -175,6 +175,7 @@ export async function updateCreatorProfile(req: Request, userId: string) {
       arm_affiliations,
       is_discoverable,
       allow_recommendations,
+      spotify_profile_url,
     } = body;
 
     const { data, error } = await supabase
@@ -189,6 +190,7 @@ export async function updateCreatorProfile(req: Request, userId: string) {
         arm_affiliations,
         is_discoverable,
         allow_recommendations,
+        spotify_profile_url,
         updated_at: new Date().toISOString(),
       })
       .eq("user_id", userId)
