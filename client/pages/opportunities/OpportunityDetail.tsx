@@ -51,6 +51,15 @@ export default function OpportunityDetail() {
       try {
         const data = await getOpportunityById(id);
         setOpportunity(data);
+
+        // Fetch related opportunities (same arm, different from current)
+        const relatedResult = await getOpportunities({
+          arm: data.arm_affiliation,
+          limit: 3,
+        });
+        setRelatedOpportunities(
+          relatedResult.data.filter((opp) => opp.id !== id)
+        );
       } catch (error) {
         console.error("Failed to fetch opportunity:", error);
         setOpportunity(null);
