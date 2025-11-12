@@ -40,6 +40,8 @@ import AdminStaffAchievements from "@/components/admin/AdminStaffAchievements";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminEthosVerification from "@/pages/admin/AdminEthosVerification";
 import AdminGameForgeStudio from "@/components/admin/AdminGameForgeStudio";
+import AdminFoundationManager from "@/components/admin/AdminFoundationManager";
+import AdminNexusManager from "@/components/admin/AdminNexusManager";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
