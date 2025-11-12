@@ -291,6 +291,11 @@ const ProfilePassport = () => {
           });
         }
 
+        // Set creator profile data
+        if (creator) {
+          setCreatorProfile(creator);
+        }
+
         setNotFound(false);
 
         try {
