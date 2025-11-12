@@ -105,6 +105,20 @@ export default async function handler(req: any, res: any) {
         .select();
 
       if (error) throw error;
+
+      // If ecosystem license type, create ecosystem license record
+      if (license_type === "ecosystem" && data && data[0]) {
+        const trackId = data[0].id;
+
+        await supabase.from("ethos_ecosystem_licenses").insert([
+          {
+            track_id: trackId,
+            artist_id: userId,
+            accepted_at: new Date().toISOString(),
+          },
+        ]);
+      }
+
       res.status(201).json(data[0]);
     }
   } catch (err: any) {
