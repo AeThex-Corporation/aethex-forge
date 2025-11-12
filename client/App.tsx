@@ -117,6 +117,7 @@ import CreatorDirectory from "./pages/creators/CreatorDirectory";
 import CreatorProfile from "./pages/creators/CreatorProfile";
 import OpportunitiesHub from "./pages/opportunities/OpportunitiesHub";
 import OpportunityDetail from "./pages/opportunities/OpportunityDetail";
+import OpportunityPostForm from "./pages/opportunities/OpportunityPostForm";
 import MyApplications from "./pages/profile/MyApplications";
 import Space1Welcome from "./pages/internal-docs/Space1Welcome";
 import Space1AxiomModel from "./pages/internal-docs/Space1AxiomModel";
