@@ -11,13 +11,7 @@ export default async function handler(req: any, res: any) {
 
   try {
     if (method === "GET") {
-      const {
-        id,
-        project_id,
-        build_type,
-        limit = 50,
-        offset = 0,
-      } = query;
+      const { id, project_id, build_type, limit = 50, offset = 0 } = query;
 
       if (id) {
         // Get single build

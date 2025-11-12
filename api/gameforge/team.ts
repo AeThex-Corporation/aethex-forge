@@ -13,15 +13,13 @@ export default async function handler(req: any, res: any) {
     if (method === "GET") {
       const { user_id, project_id, role, limit = 50, offset = 0 } = query;
 
-      let dbQuery = supabase
-        .from("gameforge_team_members")
-        .select(
-          `
+      let dbQuery = supabase.from("gameforge_team_members").select(
+        `
           *,
           user_profiles(id, full_name, avatar_url, email)
         `,
-          { count: "exact" },
-        );
+        { count: "exact" },
+      );
 
       if (user_id) dbQuery = dbQuery.eq("user_id", user_id).single();
       if (project_id) dbQuery = dbQuery.contains("project_ids", [project_id]);

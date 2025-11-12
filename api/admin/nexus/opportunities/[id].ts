@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE!
+  process.env.SUPABASE_SERVICE_ROLE!,
 );
 
 export default async function handler(req: any, res: any) {
@@ -14,7 +14,11 @@ export default async function handler(req: any, res: any) {
       const updateData: any = {};
 
       if (status) {
-        if (!["open", "in_progress", "filled", "closed", "cancelled"].includes(status)) {
+        if (
+          !["open", "in_progress", "filled", "closed", "cancelled"].includes(
+            status,
+          )
+        ) {
           return res.status(400).json({ error: "Invalid status" });
         }
         updateData.status = status;
@@ -37,11 +41,9 @@ export default async function handler(req: any, res: any) {
 
       res.status(200).json(data);
     } catch (error: any) {
-      res
-        .status(500)
-        .json({
-          error: error.message || "Failed to update opportunity",
-        });
+      res.status(500).json({
+        error: error.message || "Failed to update opportunity",
+      });
     }
   } else {
     res.status(405).json({ error: "Method not allowed" });

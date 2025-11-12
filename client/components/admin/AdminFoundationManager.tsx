@@ -82,7 +82,7 @@ export default function AdminFoundationManager() {
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
   const [approvalDialogOpen, setApprovalDialogOpen] = useState(false);
   const [approvalAction, setApprovalAction] = useState<"approve" | "reject">(
-    "approve"
+    "approve",
   );
 
   useEffect(() => {
@@ -146,12 +146,12 @@ export default function AdminFoundationManager() {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ approval_status: approvalAction }),
-        }
+        },
       );
 
       if (!response.ok) throw new Error("Failed to update mentor");
       aethexToast.success(
-        `Mentor ${approvalAction === "approve" ? "approved" : "rejected"}`
+        `Mentor ${approvalAction === "approve" ? "approved" : "rejected"}`,
       );
       setApprovalDialogOpen(false);
       setSelectedMentor(null);
@@ -164,16 +164,17 @@ export default function AdminFoundationManager() {
 
   const handlePublishCourse = async (courseId: string, publish: boolean) => {
     try {
-      const response = await fetch(`/api/admin/foundation/courses/${courseId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ is_published: publish }),
-      });
+      const response = await fetch(
+        `/api/admin/foundation/courses/${courseId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ is_published: publish }),
+        },
+      );
 
       if (!response.ok) throw new Error("Failed to update course");
-      aethexToast.success(
-        `Course ${publish ? "published" : "unpublished"}`
-      );
+      aethexToast.success(`Course ${publish ? "published" : "unpublished"}`);
       fetchCourses();
     } catch (error) {
       aethexToast.error("Failed to update course");
@@ -183,9 +184,12 @@ export default function AdminFoundationManager() {
 
   const handleDeleteCourse = async (courseId: string) => {
     try {
-      const response = await fetch(`/api/admin/foundation/courses/${courseId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `/api/admin/foundation/courses/${courseId}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       if (!response.ok) throw new Error("Failed to delete course");
       aethexToast.success("Course deleted");
@@ -197,20 +201,18 @@ export default function AdminFoundationManager() {
   };
 
   const filteredMentors = mentors.filter((m) =>
-    (m.user_name || "")
-      .toLowerCase()
-      .includes(searchMentor.toLowerCase())
+    (m.user_name || "").toLowerCase().includes(searchMentor.toLowerCase()),
   );
 
   const filteredCourses = courses.filter((c) =>
-    c.title.toLowerCase().includes(searchCourse.toLowerCase())
+    c.title.toLowerCase().includes(searchCourse.toLowerCase()),
   );
 
   const pendingMentors = filteredMentors.filter(
-    (m) => m.approval_status === "pending"
+    (m) => m.approval_status === "pending",
   );
   const approvedMentors = filteredMentors.filter(
-    (m) => m.approval_status === "approved"
+    (m) => m.approval_status === "approved",
   );
 
   const publishedCourses = courses.filter((c) => c.is_published).length;
@@ -484,7 +486,7 @@ export default function AdminFoundationManager() {
                             onClick={() =>
                               handlePublishCourse(
                                 course.id,
-                                !course.is_published
+                                !course.is_published,
                               )
                             }
                           >
@@ -534,10 +536,7 @@ export default function AdminFoundationManager() {
                           {achievement.description}
                         </p>
                         <div className="flex gap-2 mt-3">
-                          <Badge
-                            variant="secondary"
-                            className="text-xs"
-                          >
+                          <Badge variant="secondary" className="text-xs">
                             {achievement.requirement_type}
                           </Badge>
                           <Badge variant="outline" className="text-xs">
@@ -555,10 +554,15 @@ export default function AdminFoundationManager() {
       </Tabs>
 
       {/* Approval Dialog */}
-      <AlertDialog open={approvalDialogOpen} onOpenChange={setApprovalDialogOpen}>
+      <AlertDialog
+        open={approvalDialogOpen}
+        onOpenChange={setApprovalDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogTitle>
-            {approvalAction === "approve" ? "Approve Mentor?" : "Reject Mentor?"}
+            {approvalAction === "approve"
+              ? "Approve Mentor?"
+              : "Reject Mentor?"}
           </AlertDialogTitle>
           <AlertDialogDescription>
             {approvalAction === "approve" ? (

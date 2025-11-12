@@ -79,12 +79,14 @@ export default function AdminNexusManager() {
   const [loadingDisputes, setLoadingDisputes] = useState(true);
   const [loadingCommissions, setLoadingCommissions] = useState(true);
   const [searchOpp, setSearchOpp] = useState("");
-  const [disputeFilter, setDisputeFilter] = useState<"all" | "open" | "resolved">("all");
+  const [disputeFilter, setDisputeFilter] = useState<
+    "all" | "open" | "resolved"
+  >("all");
   const [selectedDispute, setSelectedDispute] = useState<Dispute | null>(null);
   const [disputeDialogOpen, setDisputeDialogOpen] = useState(false);
   const [disputeResolution, setDisputeResolution] = useState("");
   const [disputeAction, setDisputeAction] = useState<"resolve" | "escalate">(
-    "resolve"
+    "resolve",
   );
 
   useEffect(() => {
@@ -140,7 +142,7 @@ export default function AdminNexusManager() {
 
   const handleModerateOpportunity = async (
     opportunityId: string,
-    status: "open" | "filled" | "closed" | "cancelled"
+    status: "open" | "filled" | "closed" | "cancelled",
   ) => {
     try {
       const response = await fetch(
@@ -149,7 +151,7 @@ export default function AdminNexusManager() {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ status }),
-        }
+        },
       );
 
       if (!response.ok) throw new Error("Failed to update opportunity");
@@ -163,7 +165,7 @@ export default function AdminNexusManager() {
 
   const handleFeatureOpportunity = async (
     opportunityId: string,
-    featured: boolean
+    featured: boolean,
   ) => {
     try {
       const response = await fetch(
@@ -172,12 +174,12 @@ export default function AdminNexusManager() {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ is_featured: featured }),
-        }
+        },
       );
 
       if (!response.ok) throw new Error("Failed to update opportunity");
       aethexToast.success(
-        `Opportunity ${featured ? "featured" : "unfeatured"}`
+        `Opportunity ${featured ? "featured" : "unfeatured"}`,
       );
       fetchOpportunities();
     } catch (error) {
@@ -199,12 +201,12 @@ export default function AdminNexusManager() {
             status: disputeAction === "resolve" ? "resolved" : "escalated",
             resolution_notes: disputeResolution,
           }),
-        }
+        },
       );
 
       if (!response.ok) throw new Error("Failed to update dispute");
       aethexToast.success(
-        `Dispute ${disputeAction === "resolve" ? "resolved" : "escalated"}`
+        `Dispute ${disputeAction === "resolve" ? "resolved" : "escalated"}`,
       );
       setDisputeDialogOpen(false);
       setSelectedDispute(null);
@@ -217,7 +219,7 @@ export default function AdminNexusManager() {
   };
 
   const filteredOpportunities = opportunities.filter((o) =>
-    o.title.toLowerCase().includes(searchOpp.toLowerCase())
+    o.title.toLowerCase().includes(searchOpp.toLowerCase()),
   );
 
   const filteredDisputes = disputes.filter((d) => {
@@ -228,12 +230,12 @@ export default function AdminNexusManager() {
   });
 
   const openOpportunities = opportunities.filter(
-    (o) => o.status === "open"
+    (o) => o.status === "open",
   ).length;
   const openDisputes = disputes.filter((d) => d.status === "open").length;
   const totalCommissionsRevenue = commissions.reduce(
     (sum, c) => sum + c.aethex_revenue,
-    0
+    0,
   );
 
   return (
@@ -261,7 +263,9 @@ export default function AdminNexusManager() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">{openDisputes}</div>
+            <div className="text-2xl font-bold text-red-500">
+              {openDisputes}
+            </div>
             <p className="text-xs text-muted-foreground mt-1">
               Requires attention
             </p>
@@ -302,7 +306,10 @@ export default function AdminNexusManager() {
       {/* Tabs */}
       <Tabs defaultValue="opportunities" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="opportunities" className="flex items-center gap-2">
+          <TabsTrigger
+            value="opportunities"
+            className="flex items-center gap-2"
+          >
             <Briefcase className="h-4 w-4" />
             Opportunities
           </TabsTrigger>
@@ -333,7 +340,9 @@ export default function AdminNexusManager() {
           {loadingOpp ? (
             <Card>
               <CardContent className="pt-6">
-                <p className="text-muted-foreground">Loading opportunities...</p>
+                <p className="text-muted-foreground">
+                  Loading opportunities...
+                </p>
               </CardContent>
             </Card>
           ) : filteredOpportunities.length === 0 ? (
@@ -360,8 +369,8 @@ export default function AdminNexusManager() {
                               opp.status === "open"
                                 ? "bg-green-50"
                                 : opp.status === "filled"
-                                ? "bg-blue-50"
-                                : "bg-gray-50"
+                                  ? "bg-blue-50"
+                                  : "bg-gray-50"
                             }
                           >
                             {opp.status}
@@ -386,7 +395,7 @@ export default function AdminNexusManager() {
                               onClick={() =>
                                 handleFeatureOpportunity(
                                   opp.id,
-                                  !opp.is_featured
+                                  !opp.is_featured,
                                 )
                               }
                             >
@@ -408,10 +417,7 @@ export default function AdminNexusManager() {
                             size="sm"
                             variant="destructive"
                             onClick={() =>
-                              handleModerateOpportunity(
-                                opp.id,
-                                "cancelled"
-                              )
+                              handleModerateOpportunity(opp.id, "cancelled")
                             }
                           >
                             <XCircle className="h-4 w-4" />
@@ -429,7 +435,10 @@ export default function AdminNexusManager() {
         {/* DISPUTES TAB */}
         <TabsContent value="disputes" className="space-y-4">
           <div className="flex gap-2">
-            <Select value={disputeFilter} onValueChange={(v: any) => setDisputeFilter(v)}>
+            <Select
+              value={disputeFilter}
+              onValueChange={(v: any) => setDisputeFilter(v)}
+            >
               <SelectTrigger className="w-40">
                 <SelectValue />
               </SelectTrigger>
@@ -458,9 +467,7 @@ export default function AdminNexusManager() {
               {filteredDisputes.map((dispute) => (
                 <Card
                   key={dispute.id}
-                  className={
-                    dispute.status === "open" ? "border-red-300" : ""
-                  }
+                  className={dispute.status === "open" ? "border-red-300" : ""}
                 >
                   <CardContent className="pt-6">
                     <div className="flex items-start justify-between">
@@ -474,8 +481,8 @@ export default function AdminNexusManager() {
                               dispute.status === "open"
                                 ? "bg-red-50"
                                 : dispute.status === "escalated"
-                                ? "bg-orange-50"
-                                : "bg-green-50"
+                                  ? "bg-orange-50"
+                                  : "bg-green-50"
                             }
                           >
                             {dispute.status}
@@ -536,7 +543,7 @@ export default function AdminNexusManager() {
                         <p className="text-xs text-muted-foreground">Period</p>
                         <p className="font-medium text-sm">
                           {new Date(
-                            commission.period_start
+                            commission.period_start,
                           ).toLocaleDateString()}{" "}
                           -{" "}
                           {new Date(commission.period_end).toLocaleDateString()}
@@ -566,8 +573,8 @@ export default function AdminNexusManager() {
                             commission.status === "settled"
                               ? "bg-green-50"
                               : commission.status === "disputed"
-                              ? "bg-red-50"
-                              : "bg-yellow-50"
+                                ? "bg-red-50"
+                                : "bg-yellow-50"
                           }
                         >
                           {commission.status}
@@ -598,13 +605,18 @@ export default function AdminNexusManager() {
             </div>
             <div>
               <label className="text-sm font-medium">Action</label>
-              <Select value={disputeAction} onValueChange={(v: any) => setDisputeAction(v)}>
+              <Select
+                value={disputeAction}
+                onValueChange={(v: any) => setDisputeAction(v)}
+              >
                 <SelectTrigger className="mt-2">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="resolve">Resolve & Close</SelectItem>
-                  <SelectItem value="escalate">Escalate to Senior Team</SelectItem>
+                  <SelectItem value="escalate">
+                    Escalate to Senior Team
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>

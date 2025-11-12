@@ -34,10 +34,8 @@ export default async function handler(req: any, res: any) {
       }
 
       // List all projects with filters
-      let dbQuery = supabase
-        .from("gameforge_projects")
-        .select(
-          `
+      let dbQuery = supabase.from("gameforge_projects").select(
+        `
           id,
           name,
           description,
@@ -52,8 +50,8 @@ export default async function handler(req: any, res: any) {
           created_at,
           user_profiles!lead_id(id, full_name, avatar_url)
         `,
-          { count: "exact" },
-        );
+        { count: "exact" },
+      );
 
       if (status) dbQuery = dbQuery.eq("status", status);
       if (platform) dbQuery = dbQuery.eq("platform", platform);
@@ -140,9 +138,7 @@ export default async function handler(req: any, res: any) {
         .single();
 
       if (project?.lead_id !== userId) {
-        return res
-          .status(403)
-          .json({ error: "Only project lead can update" });
+        return res.status(403).json({ error: "Only project lead can update" });
       }
 
       const updateData: any = {};
@@ -157,7 +153,8 @@ export default async function handler(req: any, res: any) {
         updateData.actual_release_date = actual_release_date;
       if (budget !== undefined) updateData.budget = budget;
       if (current_spend !== undefined) updateData.current_spend = current_spend;
-      if (repository_url !== undefined) updateData.repository_url = repository_url;
+      if (repository_url !== undefined)
+        updateData.repository_url = repository_url;
       if (documentation_url !== undefined)
         updateData.documentation_url = documentation_url;
 

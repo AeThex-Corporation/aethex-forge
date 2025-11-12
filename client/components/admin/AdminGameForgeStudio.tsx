@@ -116,7 +116,7 @@ export default function AdminGameForgeStudio() {
       // Fetch builds and metrics if project selected
       if (selectedProject) {
         const buildsRes = await fetch(
-          `/api/gameforge/builds?project_id=${selectedProject}`
+          `/api/gameforge/builds?project_id=${selectedProject}`,
         );
         if (buildsRes.ok) {
           const { data } = await buildsRes.json();
@@ -124,7 +124,7 @@ export default function AdminGameForgeStudio() {
         }
 
         const metricsRes = await fetch(
-          `/api/gameforge/metrics?project_id=${selectedProject}`
+          `/api/gameforge/metrics?project_id=${selectedProject}`,
         );
         if (metricsRes.ok) {
           const { data } = await metricsRes.json();
@@ -142,8 +142,9 @@ export default function AdminGameForgeStudio() {
 
   // Calculate KPIs
   const totalTeamSize = teamMembers.filter((m) => m.is_active).length;
-  const activeProjects = projects.filter((p) => p.status === "in_development")
-    .length;
+  const activeProjects = projects.filter(
+    (p) => p.status === "in_development",
+  ).length;
   const totalBudget = projects.reduce((sum, p) => sum + (p.budget || 0), 0);
   const totalSpent = projects.reduce(
     (sum, p) => sum + (p.current_spend || 0),
@@ -194,7 +195,9 @@ export default function AdminGameForgeStudio() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-white">{activeProjects}</div>
+            <div className="text-3xl font-bold text-white">
+              {activeProjects}
+            </div>
             <p className="text-sm text-slate-400 mt-1">in development</p>
           </CardContent>
         </Card>
@@ -302,16 +305,16 @@ export default function AdminGameForgeStudio() {
                   return (
                     <div key={project.id} className="flex items-center gap-3">
                       <div className="flex-1">
-                        <p className="text-white font-medium">
-                          {project.name}
-                        </p>
+                        <p className="text-white font-medium">{project.name}</p>
                         <p className="text-xs text-slate-400">
                           {project.status}
                         </p>
                       </div>
                       <Badge
                         className={
-                          isOnSchedule ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+                          isOnSchedule
+                            ? "bg-green-500/20 text-green-400"
+                            : "bg-red-500/20 text-red-400"
                         }
                       >
                         {isOnSchedule ? "On Time" : "Delayed"}

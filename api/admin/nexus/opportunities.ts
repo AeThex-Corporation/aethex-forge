@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE!
+  process.env.SUPABASE_SERVICE_ROLE!,
 );
 
 export default async function handler(req: any, res: any) {
@@ -25,7 +25,7 @@ export default async function handler(req: any, res: any) {
           id,
           email
         )
-      `
+      `,
         )
         .order("created_at", { ascending: false });
 
@@ -46,11 +46,9 @@ export default async function handler(req: any, res: any) {
 
       res.status(200).json(formattedOpp);
     } catch (error: any) {
-      res
-        .status(500)
-        .json({
-          error: error.message || "Failed to fetch opportunities",
-        });
+      res.status(500).json({
+        error: error.message || "Failed to fetch opportunities",
+      });
     }
   } else {
     res.status(405).json({ error: "Method not allowed" });
