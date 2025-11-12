@@ -220,8 +220,69 @@ export default function ArtistSettings() {
   };
 
   const handleFileSelected = (file: File) => {
-    setCurrentFile(file);
-    setShowMetadataForm(true);
+    // Show ecosystem license modal on first upload if not already accepted
+    if (!profile.ecosystem_license_accepted) {
+      setCurrentFile(file);
+      setShowLicenseModal(true);
+    } else {
+      setCurrentFile(file);
+      setShowMetadataForm(true);
+    }
+  };
+
+  const handleAcceptEcosystemLicense = async () => {
+    if (!user) return;
+
+    setIsAcceptingLicense(true);
+    try {
+      // Update profile to accept ecosystem license
+      const res = await fetch(`/api/ethos/artists`, {
+        method: "PUT",
+        headers: {
+          "x-user-id": user.id,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...profile,
+          ecosystem_license_accepted: true,
+        }),
+      });
+
+      if (res.ok) {
+        setProfile((prev) => ({
+          ...prev,
+          ecosystem_license_accepted: true,
+        }));
+        toast.success({
+          title: "License accepted",
+          description: "You can now upload tracks to the Ethos Library",
+        });
+
+        // Continue with metadata form
+        setShowLicenseModal(false);
+        setShowMetadataForm(true);
+      } else {
+        throw new Error("Failed to accept license");
+      }
+    } catch (error) {
+      console.error("License acceptance error:", error);
+      toast.error({
+        title: "Error",
+        description: "Failed to accept ecosystem license",
+      });
+    } finally {
+      setIsAcceptingLicense(false);
+    }
+  };
+
+  const handleRejectLicense = () => {
+    setShowLicenseModal(false);
+    setCurrentFile(null);
+    toast.info({
+      title: "Upload cancelled",
+      description:
+        "You must accept the Ecosystem License to upload tracks. You can still license commercially outside of AeThex.",
+    });
   };
 
   const handleMetadataSubmit = async (metadata: any) => {
