@@ -1912,7 +1912,7 @@ export function createServer() {
 
         if (!publicKey) {
           diagnostics.recommendations.push(
-            "❌ DISCORD_PUBLIC_KEY not set. Needed for signature verification.",
+            "��� DISCORD_PUBLIC_KEY not set. Needed for signature verification.",
           );
         } else {
           diagnostics.recommendations.push("✅ DISCORD_PUBLIC_KEY is set");
@@ -2383,9 +2383,34 @@ export function createServer() {
 
         const achievementResults = await Promise.all(
           CORE_ACHIEVEMENTS.map(async (achievement) => {
+            const { createHash } = await import("crypto");
+            const generateDeterministicUUID = (str: string): string => {
+              const hash = createHash("sha256").update(str).digest("hex");
+              return [
+                hash.slice(0, 8),
+                hash.slice(8, 12),
+                "5" + hash.slice(13, 16),
+                ((parseInt(hash.slice(16, 18), 16) & 0x3f) | 0x80)
+                  .toString(16)
+                  .padStart(2, "0") + hash.slice(18, 20),
+                hash.slice(20, 32),
+              ].join("-");
+            };
+
+            const uuidId = generateDeterministicUUID(achievement.id);
             const { error } = await adminSupabase
               .from("achievements")
-              .upsert(achievement, { onConflict: "id" });
+              .upsert(
+                {
+                  id: uuidId,
+                  name: achievement.name,
+                  description: achievement.description,
+                  icon: achievement.icon,
+                  badge_color: achievement.badge_color,
+                  xp_reward: achievement.xp_reward,
+                },
+                { onConflict: "id" }
+              );
 
             if (error) {
               console.error(
