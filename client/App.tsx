@@ -471,6 +471,13 @@ const App = () => (
                       element={<DevLinkProfiles />}
                     />
 
+                    {/* Client Hub routes */}
+                    <Route path="/hub/client" element={<ClientHub />} />
+                    <Route
+                      path="/hub/client/projects"
+                      element={<ClientProjects />}
+                    />
+
                     {/* Nexus routes */}
                     <Route path="/nexus" element={<Nexus />} />
 
