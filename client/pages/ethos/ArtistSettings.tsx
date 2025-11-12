@@ -438,55 +438,93 @@ export default function ArtistSettings() {
                   <CardHeader>
                     <CardTitle className="text-white">Services & Pricing</CardTitle>
                     <CardDescription>
-                      Set your sample pricing for common services
+                      Set your prices for custom services. Leave blank if you prefer "Contact for Quote"
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label className="text-white">Custom Track</Label>
+                        <Label className="text-white">Custom Track ($)</Label>
                         <Input
                           type="number"
-                          value={profile.sample_price_track || ""}
+                          value={profile.price_list?.track_custom || ""}
                           onChange={(e) =>
                             setProfile({
                               ...profile,
-                              sample_price_track: Number(e.target.value) || undefined,
+                              price_list: {
+                                ...profile.price_list,
+                                track_custom: Number(e.target.value) || null,
+                              },
                             })
                           }
                           placeholder="500"
                           className="bg-slate-800 border-slate-700"
+                          min="0"
                         />
+                        <p className="text-xs text-slate-400">Original music composition</p>
                       </div>
+
                       <div className="space-y-2">
-                        <Label className="text-white">SFX Pack</Label>
+                        <Label className="text-white">SFX Pack ($)</Label>
                         <Input
                           type="number"
-                          value={profile.sample_price_sfx || ""}
+                          value={profile.price_list?.sfx_pack || ""}
                           onChange={(e) =>
                             setProfile({
                               ...profile,
-                              sample_price_sfx: Number(e.target.value) || undefined,
+                              price_list: {
+                                ...profile.price_list,
+                                sfx_pack: Number(e.target.value) || null,
+                              },
                             })
                           }
                           placeholder="150"
                           className="bg-slate-800 border-slate-700"
+                          min="0"
                         />
+                        <p className="text-xs text-slate-400">Sound effects collection</p>
                       </div>
+
                       <div className="space-y-2">
-                        <Label className="text-white">Full Score</Label>
+                        <Label className="text-white">Full Score ($)</Label>
                         <Input
                           type="number"
-                          value={profile.sample_price_score || ""}
+                          value={profile.price_list?.full_score || ""}
                           onChange={(e) =>
                             setProfile({
                               ...profile,
-                              sample_price_score: Number(e.target.value) || undefined,
+                              price_list: {
+                                ...profile.price_list,
+                                full_score: Number(e.target.value) || null,
+                              },
                             })
                           }
                           placeholder="2000"
                           className="bg-slate-800 border-slate-700"
+                          min="0"
                         />
+                        <p className="text-xs text-slate-400">Complete game/film score</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-white">Day Rate ($)</Label>
+                        <Input
+                          type="number"
+                          value={profile.price_list?.day_rate || ""}
+                          onChange={(e) =>
+                            setProfile({
+                              ...profile,
+                              price_list: {
+                                ...profile.price_list,
+                                day_rate: Number(e.target.value) || null,
+                              },
+                            })
+                          }
+                          placeholder="1500"
+                          className="bg-slate-800 border-slate-700"
+                          min="0"
+                        />
+                        <p className="text-xs text-slate-400">Hourly or daily rate for consulting</p>
                       </div>
                     </div>
 
@@ -505,7 +543,27 @@ export default function ArtistSettings() {
                         className="bg-slate-800 border-slate-700"
                         min="1"
                       />
+                      <p className="text-xs text-slate-400">Typical delivery time for custom work</p>
                     </div>
+
+                    <label className="flex items-center gap-2 p-3 rounded-lg bg-slate-800/50 border border-slate-700 cursor-pointer">
+                      <Checkbox
+                        checked={profile.price_list?.contact_for_quote || false}
+                        onCheckedChange={(checked) =>
+                          setProfile({
+                            ...profile,
+                            price_list: {
+                              ...profile.price_list,
+                              contact_for_quote: checked as boolean,
+                            },
+                          })
+                        }
+                        className="border-slate-600"
+                      />
+                      <span className="text-sm text-slate-300">
+                        High-value projects (Enterprise clients): "Contact for Quote"
+                      </span>
+                    </label>
                   </CardContent>
                 </Card>
               )}
