@@ -701,6 +701,10 @@ export default function Admin() {
                   <AdminEthosVerification />
                 </TabsContent>
 
+                <TabsContent value="gameforge" className="space-y-6">
+                  <AdminGameForgeStudio />
+                </TabsContent>
+
                 <TabsContent value="discord" className="space-y-6">
                   <AdminDiscordManagement />
                   <AdminDiscordDiagnostic />
