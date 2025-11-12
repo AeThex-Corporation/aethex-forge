@@ -7,6 +7,7 @@ export interface Creator {
   experience_level: string;
   arm_affiliations: string[];
   primary_arm: string;
+  spotify_profile_url?: string;
   created_at: string;
   is_discoverable: boolean;
   allow_recommendations: boolean;
