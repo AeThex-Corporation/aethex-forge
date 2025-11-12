@@ -222,7 +222,7 @@ const handleDiscordInteractions = async (
         return res.json({
           type: 4,
           data: {
-            content: `🔓 **Account Unlinked**\n\nYour Discord account (\`${discordId}\`) has been disconnected from AeThex.\n\nTo link again, use \`/verify\``,
+            content: `��� **Account Unlinked**\n\nYour Discord account (\`${discordId}\`) has been disconnected from AeThex.\n\nTo link again, use \`/verify\``,
             flags: 0,
           },
         });
@@ -1904,7 +1904,7 @@ export function createServer() {
 
         if (!clientId) {
           diagnostics.recommendations.push(
-            "��� DISCORD_CLIENT_ID not set. Set it to your application's ID.",
+            "�� DISCORD_CLIENT_ID not set. Set it to your application's ID.",
           );
         } else {
           diagnostics.recommendations.push("�� DISCORD_CLIENT_ID is set");
@@ -4880,6 +4880,144 @@ export function createServer() {
         res
           .status(500)
           .json({ error: e?.message || "Failed to create track" });
+      }
+    });
+
+    // Ethos Artists API
+    app.get("/api/ethos/artists", async (req, res) => {
+      try {
+        const { id, limit = 50, offset = 0, verified, forHire } = req.query;
+
+        if (id) {
+          // Get single artist by ID
+          const { data: artist, error: artistError } = await adminSupabase
+            .from("ethos_artist_profiles")
+            .select(
+              `
+              user_id,
+              skills,
+              for_hire,
+              bio,
+              portfolio_url,
+              sample_price_track,
+              sample_price_sfx,
+              sample_price_score,
+              turnaround_days,
+              verified,
+              total_downloads,
+              created_at,
+              user_profiles(id, full_name, avatar_url, email)
+            `,
+            )
+            .eq("user_id", id)
+            .single();
+
+          if (artistError && artistError.code !== "PGRST116") throw artistError;
+
+          if (!artist) {
+            return res.status(404).json({ error: "Artist not found" });
+          }
+
+          const { data: tracks } = await adminSupabase
+            .from("ethos_tracks")
+            .select("*")
+            .eq("user_id", id)
+            .eq("is_published", true)
+            .order("created_at", { ascending: false });
+
+          return res.json({
+            ...artist,
+            tracks: tracks || [],
+          });
+        }
+
+        // Get list of artists
+        let dbQuery = adminSupabase.from("ethos_artist_profiles").select(
+          `
+          user_id,
+          skills,
+          for_hire,
+          bio,
+          portfolio_url,
+          sample_price_track,
+          sample_price_sfx,
+          sample_price_score,
+          turnaround_days,
+          verified,
+          total_downloads,
+          created_at,
+          user_profiles(id, full_name, avatar_url)
+        `,
+          { count: "exact" },
+        );
+
+        if (verified === "true") dbQuery = dbQuery.eq("verified", true);
+        if (forHire === "true") dbQuery = dbQuery.eq("for_hire", true);
+
+        const { data, error, count } = await dbQuery
+          .order("verified", { ascending: false })
+          .order("total_downloads", { ascending: false })
+          .range(Number(offset), Number(offset) + Number(limit) - 1);
+
+        if (error) throw error;
+
+        res.json({
+          data: data || [],
+          total: count,
+          limit: Number(limit),
+          offset: Number(offset),
+        });
+      } catch (e: any) {
+        console.error("[Ethos Artists API] Error fetching artists:", e?.message);
+        res
+          .status(500)
+          .json({ error: e?.message || "Failed to fetch artists" });
+      }
+    });
+
+    app.put("/api/ethos/artists", async (req, res) => {
+      try {
+        const userId = req.headers["x-user-id"] || req.body?.user_id;
+        if (!userId) {
+          return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        const {
+          skills,
+          for_hire,
+          bio,
+          portfolio_url,
+          sample_price_track,
+          sample_price_sfx,
+          sample_price_score,
+          turnaround_days,
+        } = req.body;
+
+        const { data, error } = await adminSupabase
+          .from("ethos_artist_profiles")
+          .upsert(
+            {
+              user_id: userId,
+              skills: skills || [],
+              for_hire: for_hire !== false,
+              bio,
+              portfolio_url,
+              sample_price_track,
+              sample_price_sfx,
+              sample_price_score,
+              turnaround_days,
+            },
+            { onConflict: "user_id" },
+          )
+          .select();
+
+        if (error) throw error;
+        res.json(data[0]);
+      } catch (e: any) {
+        console.error("[Ethos Artists API] Error updating artist:", e?.message);
+        res
+          .status(500)
+          .json({ error: e?.message || "Failed to update artist profile" });
       }
     });
 
