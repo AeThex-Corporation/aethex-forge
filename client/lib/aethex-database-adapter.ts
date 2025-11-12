@@ -1033,7 +1033,7 @@ export const aethexAchievementService = {
         targetEmail: target?.email,
         targetUsername: target?.username,
       };
-      const response = await fetch("/api/achievements/activate", {
+      const response = await fetch(`${API_BASE}/api/achievements/activate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
