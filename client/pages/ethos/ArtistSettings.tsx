@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { Upload, Music, Settings, CheckCircle, Clock } from "lucide-react";
+import EcosystemLicenseModal from "@/components/ethos/EcosystemLicenseModal";
 
 const SKILLS = [
   "Synthwave",
