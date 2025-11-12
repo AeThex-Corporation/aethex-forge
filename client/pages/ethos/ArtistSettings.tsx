@@ -695,6 +695,14 @@ export default function ArtistSettings() {
             onFileSelected={handleFileSelected}
           />
 
+          {/* Ecosystem License Modal (First Upload) */}
+          <EcosystemLicenseModal
+            open={showLicenseModal}
+            onAccept={handleAcceptEcosystemLicense}
+            onReject={handleRejectLicense}
+            isLoading={isAcceptingLicense}
+          />
+
           {/* Metadata Form Modal */}
           {showMetadataForm && currentFile && (
             <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
