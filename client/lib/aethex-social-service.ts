@@ -270,7 +270,7 @@ export const aethexSocialService = {
     status: "accepted" | "rejected" | "cancelled",
   ) {
     const resp = await fetch(
-      `/api/mentorship/requests/${encodeURIComponent(id)}/status`,
+      `${API_BASE}/api/mentorship/requests/${encodeURIComponent(id)}/status`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
