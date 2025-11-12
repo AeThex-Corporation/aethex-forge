@@ -1,4 +1,8 @@
 import { supabase } from "@/lib/supabase";
+
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 export const aethexSocialService = {
   async listRecommended(userId: string, limit = 10) {
     try {
