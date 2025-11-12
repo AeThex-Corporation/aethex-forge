@@ -54,13 +54,35 @@ export default function AudioServicesForHire() {
       try {
         setLoading(true);
         // Fetch artists who are for_hire
-        const response = await fetch(`/api/ethos/artists?for_hire=true&limit=20`);
+        const response = await fetch(`/api/ethos/artists?forHire=true&limit=50`);
         if (response.ok) {
-          const data = await response.json();
-          setArtists(Array.isArray(data) ? data : []);
+          const result = await response.json();
+          const artistsData = result.data || result || [];
+
+          // Map the response to expected format
+          const mappedArtists = artistsData.map((artist: any) => ({
+            id: artist.user_id,
+            user_id: artist.user_id,
+            full_name: artist.user_profiles?.full_name || "Unknown Artist",
+            avatar_url: artist.user_profiles?.avatar_url,
+            bio: artist.bio,
+            skills: artist.skills || [],
+            verified: artist.verified || false,
+            rating: 5.0, // Default rating - could be fetched from a ratings table
+            for_hire: artist.for_hire,
+            price_list: artist.price_list || {
+              track_custom: artist.sample_price_track,
+              sfx_pack: artist.sample_price_sfx,
+              full_score: artist.sample_price_score,
+            },
+            turnaround_days: artist.turnaround_days,
+          }));
+
+          setArtists(mappedArtists);
         }
       } catch (error) {
         console.error("Failed to fetch artists:", error);
+        setArtists([]);
       } finally {
         setLoading(false);
       }
