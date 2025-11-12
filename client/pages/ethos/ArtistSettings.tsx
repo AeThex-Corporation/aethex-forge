@@ -76,6 +76,8 @@ export default function ArtistSettings() {
   const [isSubmittingVerification, setIsSubmittingVerification] = useState(false);
   const [submissionNotes, setSubmissionNotes] = useState("");
   const [portfolioLinks, setPortfolioLinks] = useState("");
+  const [showLicenseModal, setShowLicenseModal] = useState(false);
+  const [isAcceptingLicense, setIsAcceptingLicense] = useState(false);
 
   useEffect(() => {
     if (!user) {
