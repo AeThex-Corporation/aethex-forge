@@ -3,6 +3,9 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LoadingScreen from "@/components/LoadingScreen";
 import PassportSummary from "@/components/passport/PassportSummary";
+
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   Card,
   CardContent,
