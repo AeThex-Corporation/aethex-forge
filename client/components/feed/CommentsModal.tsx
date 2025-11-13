@@ -59,7 +59,7 @@ export default function CommentsModal({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${API_BASE}/api/community/post-comments?post_id=${postId}&limit=50`
+        `${API_BASE}/api/community/post-comments?post_id=${postId}&limit=50`,
       );
       if (response.ok) {
         const data = await response.json();
@@ -144,23 +144,20 @@ export default function CommentsModal({
   const handleDeleteComment = async (commentId: string) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch(
-        `${API_BASE}/api/community/post-comments`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            comment_id: commentId,
-            user_id: currentUserId,
-          }),
-        }
-      );
+      const response = await fetch(`${API_BASE}/api/community/post-comments`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment_id: commentId,
+          user_id: currentUserId,
+        }),
+      });
 
       if (response.ok) {
         setComments((prev) =>
-          prev.filter((comment) => comment.id !== commentId)
+          prev.filter((comment) => comment.id !== commentId),
         );
         aethexToast.success({
           title: "Comment deleted",

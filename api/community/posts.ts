@@ -13,17 +13,27 @@ if (!supabaseUrl || !supabaseServiceRole) {
 
 const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
-const VALID_ARMS = ["labs", "gameforge", "corp", "foundation", "devlink", "nexus", "staff"];
+const VALID_ARMS = [
+  "labs",
+  "gameforge",
+  "corp",
+  "foundation",
+  "devlink",
+  "nexus",
+  "staff",
+];
 
 export default async function handler(req: any, res: any) {
   if (req.method === "POST") {
     try {
-      const { title, content, arm_affiliation, author_id, tags, category } = req.body;
+      const { title, content, arm_affiliation, author_id, tags, category } =
+        req.body;
 
       // Validate required fields
       if (!title || !content || !arm_affiliation || !author_id) {
         return res.status(400).json({
-          error: "Missing required fields: title, content, arm_affiliation, author_id",
+          error:
+            "Missing required fields: title, content, arm_affiliation, author_id",
         });
       }
 
@@ -92,7 +102,7 @@ export default async function handler(req: any, res: any) {
             full_name,
             avatar_url
           )
-        `
+        `,
         );
 
       if (error) {
@@ -118,7 +128,9 @@ export default async function handler(req: any, res: any) {
               title: title.substring(0, 100),
             },
           }),
-        }).catch((err) => console.error("[Posts API] Activity publish error:", err));
+        }).catch((err) =>
+          console.error("[Posts API] Activity publish error:", err),
+        );
       } catch (error) {
         console.error("[Posts API] Failed to publish activity:", error);
       }
@@ -134,7 +146,9 @@ export default async function handler(req: any, res: any) {
             action: "post_created",
             amount: 25,
           }),
-        }).catch((err) => console.error("[Posts API] Rewards apply error:", err));
+        }).catch((err) =>
+          console.error("[Posts API] Rewards apply error:", err),
+        );
       } catch (error) {
         console.error("[Posts API] Failed to apply rewards:", error);
       }
@@ -152,7 +166,8 @@ export default async function handler(req: any, res: any) {
 
   if (req.method === "PUT") {
     try {
-      const { id, title, content, arm_affiliation, category, tags, user_id } = req.body;
+      const { id, title, content, arm_affiliation, category, tags, user_id } =
+        req.body;
 
       if (!id || !user_id) {
         return res.status(400).json({ error: "Missing id or user_id" });
@@ -190,11 +205,9 @@ export default async function handler(req: any, res: any) {
       }
 
       if (arm_affiliation && !VALID_ARMS.includes(arm_affiliation)) {
-        return res
-          .status(400)
-          .json({
-            error: `Invalid arm_affiliation. Must be one of: ${VALID_ARMS.join(", ")}`,
-          });
+        return res.status(400).json({
+          error: `Invalid arm_affiliation. Must be one of: ${VALID_ARMS.join(", ")}`,
+        });
       }
 
       // Build update object
@@ -229,7 +242,7 @@ export default async function handler(req: any, res: any) {
             full_name,
             avatar_url
           )
-        `
+        `,
         );
 
       if (error) {

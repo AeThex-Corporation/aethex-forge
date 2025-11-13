@@ -19,9 +19,7 @@ export default async function handler(req: any, res: any) {
       const { post_id, user_id } = req.body;
 
       if (!post_id || !user_id) {
-        return res
-          .status(400)
-          .json({ error: "Missing post_id or user_id" });
+        return res.status(400).json({ error: "Missing post_id or user_id" });
       }
 
       // Check if user has already liked this post

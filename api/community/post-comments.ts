@@ -38,7 +38,7 @@ export default async function handler(req: any, res: any) {
             avatar_url
           )
         `,
-          { count: "exact" }
+          { count: "exact" },
         )
         .eq("post_id", post_id)
         .order("created_at", { ascending: false })
@@ -74,7 +74,9 @@ export default async function handler(req: any, res: any) {
       }
 
       if (content.trim().length === 0) {
-        return res.status(400).json({ error: "Comment content cannot be empty" });
+        return res
+          .status(400)
+          .json({ error: "Comment content cannot be empty" });
       }
 
       if (content.length > 1000) {
@@ -103,7 +105,7 @@ export default async function handler(req: any, res: any) {
             full_name,
             avatar_url
           )
-        `
+        `,
         );
 
       if (error) {
@@ -139,9 +141,7 @@ export default async function handler(req: any, res: any) {
       const { comment_id, user_id } = req.body;
 
       if (!comment_id || !user_id) {
-        return res
-          .status(400)
-          .json({ error: "Missing comment_id or user_id" });
+        return res.status(400).json({ error: "Missing comment_id or user_id" });
       }
 
       // Get comment to verify ownership
@@ -153,9 +153,7 @@ export default async function handler(req: any, res: any) {
 
       if (fetchError) {
         console.error("[Comments API] Fetch error:", fetchError);
-        return res
-          .status(404)
-          .json({ error: "Comment not found" });
+        return res.status(404).json({ error: "Comment not found" });
       }
 
       if (comment.user_id !== user_id) {

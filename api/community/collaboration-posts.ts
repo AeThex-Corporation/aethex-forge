@@ -13,18 +13,34 @@ if (!supabaseUrl || !supabaseServiceRole) {
 
 const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
-const VALID_ARMS = ["labs", "gameforge", "corp", "foundation", "devlink", "nexus", "staff"];
+const VALID_ARMS = [
+  "labs",
+  "gameforge",
+  "corp",
+  "foundation",
+  "devlink",
+  "nexus",
+  "staff",
+];
 
 export default async function handler(req: any, res: any) {
   if (req.method === "POST") {
     try {
-      const { title, content, arm_affiliation, creator_id, collaborator_ids, tags, category } =
-        req.body;
+      const {
+        title,
+        content,
+        arm_affiliation,
+        creator_id,
+        collaborator_ids,
+        tags,
+        category,
+      } = req.body;
 
       // Validate required fields
       if (!title || !content || !arm_affiliation || !creator_id) {
         return res.status(400).json({
-          error: "Missing required fields: title, content, arm_affiliation, creator_id",
+          error:
+            "Missing required fields: title, content, arm_affiliation, creator_id",
         });
       }
 
@@ -93,7 +109,11 @@ export default async function handler(req: any, res: any) {
       });
 
       // Add collaborators if provided
-      if (collaborator_ids && Array.isArray(collaborator_ids) && collaborator_ids.length > 0) {
+      if (
+        collaborator_ids &&
+        Array.isArray(collaborator_ids) &&
+        collaborator_ids.length > 0
+      ) {
         const collaboratorInserts = collaborator_ids
           .filter((id: string) => id !== creator_id) // Exclude creator from collaborators
           .map((id: string) => ({
@@ -103,7 +123,9 @@ export default async function handler(req: any, res: any) {
           }));
 
         if (collaboratorInserts.length > 0) {
-          await supabase.from("collaboration_posts_authors").insert(collaboratorInserts);
+          await supabase
+            .from("collaboration_posts_authors")
+            .insert(collaboratorInserts);
         }
       }
 
@@ -140,7 +162,7 @@ export default async function handler(req: any, res: any) {
               avatar_url
             )
           )
-        `
+        `,
         )
         .eq("id", postId)
         .single();
@@ -199,7 +221,7 @@ export default async function handler(req: any, res: any) {
             )
           )
         `,
-          { count: "exact" }
+          { count: "exact" },
         )
         .eq("is_published", true)
         .order("created_at", { ascending: false });
@@ -211,7 +233,10 @@ export default async function handler(req: any, res: any) {
       }
 
       // Apply pagination
-      query = query.range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
+      query = query.range(
+        parseInt(offset),
+        parseInt(offset) + parseInt(limit) - 1,
+      );
 
       const { data, error, count } = await query;
 
@@ -236,7 +261,8 @@ export default async function handler(req: any, res: any) {
 
   if (req.method === "PUT") {
     try {
-      const { id, title, content, arm_affiliation, category, tags, user_id } = req.body;
+      const { id, title, content, arm_affiliation, category, tags, user_id } =
+        req.body;
 
       if (!id || !user_id) {
         return res.status(400).json({ error: "Missing id or user_id" });
@@ -274,11 +300,9 @@ export default async function handler(req: any, res: any) {
       }
 
       if (arm_affiliation && !VALID_ARMS.includes(arm_affiliation)) {
-        return res
-          .status(400)
-          .json({
-            error: `Invalid arm_affiliation. Must be one of: ${VALID_ARMS.join(", ")}`,
-          });
+        return res.status(400).json({
+          error: `Invalid arm_affiliation. Must be one of: ${VALID_ARMS.join(", ")}`,
+        });
       }
 
       // Build update object
@@ -323,7 +347,7 @@ export default async function handler(req: any, res: any) {
               avatar_url
             )
           )
-        `
+        `,
         );
 
       if (error) {
@@ -384,7 +408,10 @@ export default async function handler(req: any, res: any) {
         message: "Post deleted successfully",
       });
     } catch (error: any) {
-      console.error("[Collaboration Posts API DELETE] Unexpected error:", error);
+      console.error(
+        "[Collaboration Posts API DELETE] Unexpected error:",
+        error,
+      );
       return res
         .status(500)
         .json({ error: error.message || "Internal server error" });

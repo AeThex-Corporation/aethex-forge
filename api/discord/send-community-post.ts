@@ -51,11 +51,20 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { post_id, title, content, arm_affiliation, author_id, tags, category } = req.body;
+    const {
+      post_id,
+      title,
+      content,
+      arm_affiliation,
+      author_id,
+      tags,
+      category,
+    } = req.body;
 
     if (!post_id || !title || !content || !arm_affiliation || !author_id) {
       return res.status(400).json({
-        error: "Missing required fields: post_id, title, content, arm_affiliation, author_id",
+        error:
+          "Missing required fields: post_id, title, content, arm_affiliation, author_id",
       });
     }
 
@@ -94,7 +103,8 @@ export default async function handler(req: any, res: any) {
     }
 
     // Build Discord embed
-    const contentPreview = content.substring(0, 500) + (content.length > 500 ? "..." : "");
+    const contentPreview =
+      content.substring(0, 500) + (content.length > 500 ? "..." : "");
     const color = ARM_COLORS[arm_affiliation] || 0x6366f1;
 
     const embedPayload: WebhookPayload = {
@@ -152,7 +162,7 @@ export default async function handler(req: any, res: any) {
             console.error(
               `[Discord Post API] Webhook failed:`,
               response.status,
-              error
+              error,
             );
             throw new Error(`Discord webhook error: ${response.status}`);
           }
@@ -161,7 +171,7 @@ export default async function handler(req: any, res: any) {
         } catch (error: any) {
           console.error(
             `[Discord Post API] Error sending to webhook:`,
-            error.message
+            error.message,
           );
           return {
             success: false,
@@ -169,10 +179,12 @@ export default async function handler(req: any, res: any) {
             error: error.message,
           };
         }
-      })
+      }),
     );
 
-    const successful = webhookResults.filter((r) => r.status === "fulfilled" && r.value.success).length;
+    const successful = webhookResults.filter(
+      (r) => r.status === "fulfilled" && r.value.success,
+    ).length;
 
     return res.status(200).json({
       success: true,

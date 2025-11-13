@@ -3,7 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 
-export type ArmType = "labs" | "gameforge" | "corp" | "foundation" | "devlink" | "nexus" | "staff";
+export type ArmType =
+  | "labs"
+  | "gameforge"
+  | "corp"
+  | "foundation"
+  | "devlink"
+  | "nexus"
+  | "staff";
 
 const ARM_CONFIG: Record<ArmType, any> = {
   labs: {
@@ -120,7 +127,9 @@ export default function ArmPostCard({
                 [ {config.label} ]
               </Badge>
             </div>
-            <CardTitle className="text-xl leading-tight">{post.title}</CardTitle>
+            <CardTitle className="text-xl leading-tight">
+              {post.title}
+            </CardTitle>
           </div>
         </div>
       </CardHeader>

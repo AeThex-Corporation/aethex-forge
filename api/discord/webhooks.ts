@@ -24,7 +24,9 @@ export default async function handler(req: any, res: any) {
 
       const { data, error } = await supabase
         .from("discord_post_webhooks")
-        .select("id, guild_id, channel_id, webhook_id, arm_affiliation, auto_post, created_at")
+        .select(
+          "id, guild_id, channel_id, webhook_id, arm_affiliation, auto_post, created_at",
+        )
         .eq("user_id", user_id)
         .order("created_at", { ascending: false });
 
@@ -46,17 +48,40 @@ export default async function handler(req: any, res: any) {
 
   if (req.method === "POST") {
     try {
-      const { user_id, guild_id, channel_id, webhook_url, webhook_id, arm_affiliation, auto_post } =
-        req.body;
+      const {
+        user_id,
+        guild_id,
+        channel_id,
+        webhook_url,
+        webhook_id,
+        arm_affiliation,
+        auto_post,
+      } = req.body;
 
-      if (!user_id || !guild_id || !channel_id || !webhook_url || !webhook_id || !arm_affiliation) {
+      if (
+        !user_id ||
+        !guild_id ||
+        !channel_id ||
+        !webhook_url ||
+        !webhook_id ||
+        !arm_affiliation
+      ) {
         return res.status(400).json({
-          error: "Missing required fields: user_id, guild_id, channel_id, webhook_url, webhook_id, arm_affiliation",
+          error:
+            "Missing required fields: user_id, guild_id, channel_id, webhook_url, webhook_id, arm_affiliation",
         });
       }
 
       // Validate arm_affiliation
-      const validArms = ["labs", "gameforge", "corp", "foundation", "devlink", "nexus", "staff"];
+      const validArms = [
+        "labs",
+        "gameforge",
+        "corp",
+        "foundation",
+        "devlink",
+        "nexus",
+        "staff",
+      ];
       if (!validArms.includes(arm_affiliation)) {
         return res.status(400).json({
           error: `Invalid arm_affiliation. Must be one of: ${validArms.join(", ")}`,
@@ -67,7 +92,8 @@ export default async function handler(req: any, res: any) {
       try {
         const testPayload = {
           username: "AeThex Community Feed",
-          content: "✅ Webhook successfully configured for AeThex Community Posts!",
+          content:
+            "✅ Webhook successfully configured for AeThex Community Posts!",
         };
 
         const testResponse = await fetch(webhook_url, {
@@ -101,7 +127,9 @@ export default async function handler(req: any, res: any) {
           arm_affiliation,
           auto_post: auto_post !== false, // Default to true
         })
-        .select("id, guild_id, channel_id, webhook_id, arm_affiliation, auto_post, created_at");
+        .select(
+          "id, guild_id, channel_id, webhook_id, arm_affiliation, auto_post, created_at",
+        );
 
       if (error) {
         console.error("[Webhooks API] Insert error:", error);
@@ -154,7 +182,9 @@ export default async function handler(req: any, res: any) {
         .from("discord_post_webhooks")
         .update({ auto_post })
         .eq("id", id)
-        .select("id, guild_id, channel_id, webhook_id, arm_affiliation, auto_post, created_at");
+        .select(
+          "id, guild_id, channel_id, webhook_id, arm_affiliation, auto_post, created_at",
+        );
 
       if (error) {
         console.error("[Webhooks API] Update error:", error);

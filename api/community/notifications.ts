@@ -44,7 +44,7 @@ export default async function handler(req: any, res: any) {
             avatar_url
           )
         `,
-          { count: "exact" }
+          { count: "exact" },
         )
         .eq("user_id", user_id);
 
@@ -93,7 +93,8 @@ export default async function handler(req: any, res: any) {
 
       if (!user_id || !actor_id || !notification_type || !title) {
         return res.status(400).json({
-          error: "Missing required fields: user_id, actor_id, notification_type, title",
+          error:
+            "Missing required fields: user_id, actor_id, notification_type, title",
         });
       }
 
@@ -141,7 +142,7 @@ export default async function handler(req: any, res: any) {
             full_name,
             avatar_url
           )
-        `
+        `,
         );
 
       if (error) {
@@ -208,7 +209,7 @@ export default async function handler(req: any, res: any) {
             full_name,
             avatar_url
           )
-        `
+        `,
         );
 
       if (error) {

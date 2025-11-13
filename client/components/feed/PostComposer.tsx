@@ -221,7 +221,9 @@ export default function PostComposer({
       } else {
         const error = await response.json();
         aethexToast.error({
-          title: editingPost ? "Failed to update post" : "Failed to create post",
+          title: editingPost
+            ? "Failed to update post"
+            : "Failed to create post",
           description: error.error || "Please try again",
         });
       }
@@ -301,7 +303,10 @@ export default function PostComposer({
               <Label htmlFor="arm" className="text-sm font-semibold">
                 Arm Affiliation *
               </Label>
-              <Select value={armAffiliation} onValueChange={(value) => setArmAffiliation(value as ArmType)}>
+              <Select
+                value={armAffiliation}
+                onValueChange={(value) => setArmAffiliation(value as ArmType)}
+              >
                 <SelectTrigger id="arm" disabled={isSubmitting}>
                   <SelectValue />
                 </SelectTrigger>
@@ -376,7 +381,9 @@ export default function PostComposer({
               disabled={isSubmitting || !title.trim() || !content.trim()}
               className="w-full bg-gradient-to-r from-aethex-600 to-neon-blue hover:from-aethex-700 hover:to-neon-blue/90 text-white font-semibold"
             >
-              {isSubmitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              {isSubmitting && (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              )}
               {editingPost ? "Update Post" : "Publish Post"}
             </Button>
           </form>
