@@ -11,6 +11,8 @@ import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { UserProfile } from "@/lib/database.types";
 import { aethexToast } from "@/lib/aethex-toast";
+
+const API_BASE = (globalThis as any).import?.meta?.env?.VITE_API_BASE || "";
 import {
   aethexUserService,
   aethexRoleService,
@@ -504,7 +506,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       ) {
         try {
           // Check if this email is linked to another account
-          const response = await fetch("/api/user/resolve-linked-email", {
+          const response = await fetch(`${API_BASE}/api/user/resolve-linked-email`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email }),
