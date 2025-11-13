@@ -38,6 +38,63 @@ export default function Space2CodeOfConduct() {
 
         <div className="space-y-6">
           <section>
+            <h3 className="text-2xl font-bold text-white mb-4">The Four Core Rules</h3>
+            <div className="space-y-4">
+              <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
+                <h4 className="font-semibold text-blue-400 mb-2">Rule #1: Professionalism</h4>
+                <p className="text-sm text-slate-300 mb-2">
+                  In CORP channels and with clients, professional conduct is mandatory.
+                </p>
+                <ul className="text-sm text-slate-300 space-y-1 pl-4">
+                  <li>• Treat clients with absolute respect</li>
+                  <li>• Use professional language in work contexts</li>
+                  <li>• Meet deadlines and honor commitments</li>
+                  <li>• Represent AeThex positively in public</li>
+                </ul>
+              </div>
+
+              <div className="bg-orange-900/20 border border-orange-500/30 rounded-lg p-4">
+                <h4 className="font-semibold text-orange-400 mb-2">Rule #2: The Data Firewall</h4>
+                <p className="text-sm text-slate-300 mb-2">
+                  <strong>CRITICAL:</strong> Posting Private/Confidential CORP data in Public FOUNDATION channels is grounds for immediate termination.
+                </p>
+                <ul className="text-sm text-slate-300 space-y-1 pl-4">
+                  <li>• Never share client names, contracts, or code publicly</li>
+                  <li>• Never leak financial data or internal metrics</li>
+                  <li>• Never disclose employee salaries or personal info</li>
+                  <li>• Honor all NDAs and confidentiality agreements</li>
+                </ul>
+              </div>
+
+              <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
+                <h4 className="font-semibold text-green-400 mb-2">Rule #3: Respect Community Space</h4>
+                <p className="text-sm text-slate-300 mb-2">
+                  The Foundation community is inclusive, supportive, and neutral.
+                </p>
+                <ul className="text-sm text-slate-300 space-y-1 pl-4">
+                  <li>• Support community members with knowledge and mentorship</li>
+                  <li>• Welcome all experience levels with patience</li>
+                  <li>• Don't use community spaces for corporate promotion</li>
+                  <li>• Contribute fairly to open-source projects</li>
+                </ul>
+              </div>
+
+              <div className="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4">
+                <h4 className="font-semibold text-purple-400 mb-2">Rule #4: Transparency & Accountability</h4>
+                <p className="text-sm text-slate-300 mb-2">
+                  We value honesty and take responsibility for our mistakes.
+                </p>
+                <ul className="text-sm text-slate-300 space-y-1 pl-4">
+                  <li>• Admit mistakes early and often</li>
+                  <li>• Don't hide problems—escalate them</li>
+                  <li>• Be honest about capabilities and limitations</li>
+                  <li>• Document decisions and reasoning</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
             <h3 className="text-2xl font-bold text-white mb-4">Core Values</h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
