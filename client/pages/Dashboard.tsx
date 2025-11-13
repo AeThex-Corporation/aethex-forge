@@ -1007,7 +1007,7 @@ export default function Dashboard() {
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => navigate("/consulting")}
+                      onClick={() => navigate("/corp")}
                     >
                       Consulting Overview
                     </Button>
