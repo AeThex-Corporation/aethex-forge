@@ -175,7 +175,8 @@ const App = () => (
               <Toaster />
               <Analytics />
               <BrowserRouter>
-                <SkipAgentController />
+                <ArmThemeProvider>
+                  <SkipAgentController />
                 <PageTransition>
                   <Routes>
                     <Route path="/" element={<Index />} />
@@ -801,6 +802,7 @@ const App = () => (
                     <Route path="*" element={<FourOhFourPage />} />
                   </Routes>
                 </PageTransition>
+                </ArmThemeProvider>
               </BrowserRouter>
             </TooltipProvider>
           </DiscordProvider>
