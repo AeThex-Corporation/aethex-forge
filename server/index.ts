@@ -958,8 +958,7 @@ export function createServer() {
           return res.status(401).json({ error: "Invalid auth token" });
         }
 
-        const crypto = require("crypto");
-        const sessionToken = crypto.randomBytes(32).toString("hex");
+        const sessionToken = randomBytes(32).toString("hex");
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
 
         const { error: insertError } = await adminSupabase
