@@ -109,6 +109,8 @@ import DocsSync from "./pages/DocsSync";
 import { DiscordProvider } from "./contexts/DiscordContext";
 import { DiscordActivityProvider } from "./contexts/DiscordActivityContext";
 import Activity from "./pages/Activity";
+import DiscordActivity from "./pages/DiscordActivity";
+import DiscordOAuthCallback from "./pages/DiscordOAuthCallback";
 import RobloxCallback from "./pages/RobloxCallback";
 import Web3Callback from "./pages/Web3Callback";
 import DiscordVerify from "./pages/DiscordVerify";
@@ -253,6 +255,8 @@ const App = () => (
                     />
                     <Route path="/web3-callback" element={<Web3Callback />} />
                     <Route path="/discord-verify" element={<DiscordVerify />} />
+                    <Route path="/discord" element={<DiscordActivity />} />
+                    <Route path="/discord/callback" element={<DiscordOAuthCallback />} />
 
                     {/* Creator Network routes */}
                     <Route path="/creators" element={<CreatorDirectory />} />
