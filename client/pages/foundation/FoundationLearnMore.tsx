@@ -343,6 +343,7 @@ export default function FoundationLearnMore() {
                           variant="ghost"
                           size="sm"
                           className="text-red-300 hover:bg-red-500/10"
+                          onClick={() => navigate("/foundation/curriculum")}
                         >
                           Start →
                         </Button>
