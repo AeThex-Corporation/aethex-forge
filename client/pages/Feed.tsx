@@ -109,6 +109,7 @@ export default function Feed() {
   const [activeFilter, setActiveFilter] = useState<
     "all" | "following" | "trending"
   >("all");
+  const [selectedArms, setSelectedArms] = useState<ArmType[]>([]);
   const [showPostComposer, setShowPostComposer] = useState(false);
 
   const mapPostsToFeedItems = useCallback(
