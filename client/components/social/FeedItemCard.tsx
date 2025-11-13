@@ -126,7 +126,7 @@ export function FeedItemCard({
       </CardHeader>
       <CardContent className="space-y-5">
         {hasMedia && (
-          <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-black/70">
+          <div className="relative w-full overflow-hidden rounded-2xl border border-border/40 bg-black/70 aspect-video max-h-96">
             {item.mediaType === "video" ? (
               <>
                 <video
@@ -135,7 +135,7 @@ export function FeedItemCard({
                   loop
                   playsInline
                   controls={!muted}
-                  className="h-full w-full object-cover"
+                  className="w-full h-full object-cover"
                 />
                 <Button
                   size="icon"
@@ -154,7 +154,7 @@ export function FeedItemCard({
               <img
                 src={item.mediaUrl ?? undefined}
                 alt={item.caption || item.authorName}
-                className="h-full w-full object-cover"
+                className="w-full h-full object-cover"
               />
             )}
           </div>
