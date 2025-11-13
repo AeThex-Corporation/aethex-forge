@@ -15,11 +15,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
-import { aethexToast } from "@/lib/aethex-toast";
+import { useArmToast } from "@/hooks/use-arm-toast";
 
 export default function Foundation() {
   const navigate = useNavigate();
   const { theme } = useArmTheme();
+  const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
 
@@ -27,13 +28,13 @@ export default function Foundation() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       if (!toastShownRef.current) {
-        aethexToast.system("Foundation network connected");
+        armToast.system("Foundation network connected");
         toastShownRef.current = true;
       }
     }, 900);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [armToast]);
 
   if (isLoading) {
     return (
