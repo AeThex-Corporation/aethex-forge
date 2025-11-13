@@ -1285,7 +1285,9 @@ export function createServer() {
               client_secret: clientSecret,
               grant_type: "authorization_code",
               code,
-              redirect_uri: "https://127.0.0.1", // Placeholder for Activity
+              redirect_uri:
+                process.env.DISCORD_ACTIVITY_REDIRECT_URI ||
+                "https://aethex.dev/activity",
             }).toString(),
           },
         );
