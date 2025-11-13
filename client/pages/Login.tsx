@@ -380,70 +380,85 @@ export default function Login() {
                 ) : null}
                 {/* Social Login Buttons */}
                 <div className="space-y-3">
-                  <Button
-                    variant="outline"
-                    className="w-full hover-lift interactive-scale"
-                    onClick={() => handleSocialLogin("github")}
-                  >
-                    <Github className="h-4 w-4 mr-2" />
-                    Continue with GitHub
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full hover-lift interactive-scale"
-                    onClick={() => handleSocialLogin("google")}
-                  >
-                    <Mail className="h-4 w-4 mr-2" />
-                    Continue with Google
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full hover-lift interactive-scale"
-                    onClick={handleWeb3Login}
-                  >
-                    <Wallet className="h-4 w-4 mr-2" />
-                    Connect Ethereum Wallet
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full hover-lift interactive-scale"
-                    onClick={() => {
-                      const apiBase =
-                        (import.meta as any)?.env?.VITE_API_BASE ||
-                        window.location.origin;
-                      const u = new URL("/api/roblox/oauth/start", apiBase);
-                      const next = new URLSearchParams(
-                        window.location.search,
-                      ).get("next");
-                      if (next && next.startsWith("/"))
-                        u.searchParams.set("state", next);
-                      window.location.href = u.toString();
-                    }}
-                  >
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    Continue with Roblox
-                  </Button>
-                  {!isActivity && (
-                    <Button
-                      variant="outline"
-                      className="w-full hover-lift interactive-scale"
-                      onClick={() => {
-                        const apiBase =
-                          (import.meta as any)?.env?.VITE_API_BASE ||
-                          window.location.origin;
-                        const u = new URL("/api/discord/oauth/start", apiBase);
-                        const next = new URLSearchParams(
-                          window.location.search,
-                        ).get("next");
-                        if (next && next.startsWith("/"))
-                          u.searchParams.set("state", next);
-                        window.location.href = u.toString();
-                      }}
-                    >
-                      <DiscordIcon />
-                      <span className="ml-2">Continue with Discord</span>
-                    </Button>
-                  )}
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Quick Sign In
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline"
+                        className="w-full hover-lift interactive-scale border-border/50 hover:border-aethex-400/50 hover:bg-aethex-500/10 transition-all duration-200"
+                        onClick={() => handleSocialLogin("github")}
+                      >
+                        <Github className="h-4 w-4" />
+                        <span className="hidden sm:inline ml-1">GitHub</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="w-full hover-lift interactive-scale border-border/50 hover:border-neon-blue/50 hover:bg-neon-blue/10 transition-all duration-200"
+                        onClick={() => handleSocialLogin("google")}
+                      >
+                        <Mail className="h-4 w-4" />
+                        <span className="hidden sm:inline ml-1">Google</span>
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Connect with
+                    </p>
+                    <div className="space-y-2">
+                      <Button
+                        variant="outline"
+                        className="w-full hover-lift interactive-scale border-border/50 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-200"
+                        onClick={() => {
+                          const apiBase =
+                            (import.meta as any)?.env?.VITE_API_BASE ||
+                            window.location.origin;
+                          const u = new URL("/api/roblox/oauth/start", apiBase);
+                          const next = new URLSearchParams(
+                            window.location.search,
+                          ).get("next");
+                          if (next && next.startsWith("/"))
+                            u.searchParams.set("state", next);
+                          window.location.href = u.toString();
+                        }}
+                      >
+                        <Sparkles className="h-4 w-4 mr-2" />
+                        Roblox Account
+                      </Button>
+                      {!isActivity && (
+                        <Button
+                          variant="outline"
+                          className="w-full hover-lift interactive-scale border-border/50 hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all duration-200"
+                          onClick={() => {
+                            const apiBase =
+                              (import.meta as any)?.env?.VITE_API_BASE ||
+                              window.location.origin;
+                            const u = new URL("/api/discord/oauth/start", apiBase);
+                            const next = new URLSearchParams(
+                              window.location.search,
+                            ).get("next");
+                            if (next && next.startsWith("/"))
+                              u.searchParams.set("state", next);
+                            window.location.href = u.toString();
+                          }}
+                        >
+                          <DiscordIcon />
+                          <span className="ml-2">Discord</span>
+                        </Button>
+                      )}
+                      <Button
+                        variant="outline"
+                        className="w-full hover-lift interactive-scale border-border/50 hover:border-amber-500/50 hover:bg-amber-500/10 transition-all duration-200"
+                        onClick={handleWeb3Login}
+                      >
+                        <Wallet className="h-4 w-4 mr-2" />
+                        Ethereum Wallet
+                      </Button>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Email/Password Form */}
