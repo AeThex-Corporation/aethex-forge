@@ -299,19 +299,21 @@ export default function Feed() {
   }, [fetchFeed]);
 
   const filteredItems = useMemo(() => {
+    let filtered = items.filter((item) => selectedArms.includes(item.arm || "labs"));
+
     if (activeFilter === "following") {
-      return items.filter(
+      filtered = filtered.filter(
         (item) =>
           isFollowingAuthor(item.authorId) || item.authorId === user?.id,
       );
     }
     if (activeFilter === "trending") {
-      return [...items].sort(
+      filtered = [...filtered].sort(
         (a, b) => b.likes + b.comments - (a.likes + a.comments),
       );
     }
-    return items;
-  }, [activeFilter, isFollowingAuthor, items, user?.id]);
+    return filtered;
+  }, [activeFilter, isFollowingAuthor, items, selectedArms, user?.id]);
 
   const trendingTopics = useMemo<TrendingTopic[]>(() => {
     const counts = new Map<string, number>();
