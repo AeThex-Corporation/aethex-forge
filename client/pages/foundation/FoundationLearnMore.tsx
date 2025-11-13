@@ -401,6 +401,7 @@ export default function FoundationLearnMore() {
                           <Button
                             className="w-full bg-red-400 text-black hover:bg-red-300"
                             size="sm"
+                            onClick={() => navigate("/foundation/curriculum")}
                           >
                             Register
                           </Button>
