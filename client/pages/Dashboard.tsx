@@ -833,52 +833,57 @@ export default function Dashboard() {
             {/* Left Sidebar - User Profile */}
             <div className="lg:col-span-3 space-y-6">
               {/* Profile Card */}
-              <Card className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all duration-300 animate-scale-in">
+              <Card className="bg-gradient-to-br from-card/60 to-card/30 border border-aethex-400/30 hover:border-aethex-400/60 transition-all duration-300 animate-scale-in shadow-lg">
                 <CardContent className="p-6">
-                  <div className="text-center space-y-4">
+                  <div className="text-center space-y-5">
                     <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-aethex-500/30 to-neon-blue/30 blur-lg animate-pulse"></div>
                       <img
                         src={
                           profile?.avatar_url ||
                           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
                         }
                         alt="User Avatar"
-                        className="w-20 h-20 rounded-full mx-auto ring-4 ring-aethex-400/20 hover:ring-aethex-400/50 transition-all duration-300"
+                        className="w-24 h-24 rounded-full mx-auto ring-4 ring-aethex-400/40 hover:ring-aethex-400/70 transition-all duration-300 relative"
                       />
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-background animate-pulse" />
+                      <div className="absolute -bottom-1 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full border-2 border-background animate-pulse shadow-lg shadow-green-500/50" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gradient">
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-xl bg-gradient-to-r from-aethex-300 to-neon-blue bg-clip-text text-transparent">
                         {profile?.full_name || user.email?.split("@")[0]}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {profile?.role || "Member"}
+                      <p className="text-sm text-muted-foreground capitalize">
+                        {profile?.role || "Creator"}
                       </p>
-                      <Badge
-                        variant="outline"
-                        className="mt-2 border-aethex-400/50 text-aethex-400"
-                      >
-                        Level {profile?.level || 1}
-                      </Badge>
-                      {profileComplete && (
-                        <Badge className="mt-2 ml-2 bg-green-600 text-white border-green-500">
-                          Profile Complete
+                      <div className="flex justify-center gap-2 flex-wrap pt-1">
+                        <Badge
+                          variant="outline"
+                          className="border-aethex-400/50 text-aethex-300 bg-aethex-500/10"
+                        >
+                          <Star className="h-3 w-3 mr-1" />
+                          Level {profile?.level || 1}
                         </Badge>
-                      )}
+                        {profileComplete && (
+                          <Badge className="bg-gradient-to-r from-green-600 to-green-500 text-white border-green-500/50">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Complete
+                          </Badge>
+                        )}
+                      </div>
                     </div>
 
                     {/* XP Progress */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>XP Progress</span>
+                    <div className="space-y-3 pt-2">
+                      <div className="flex justify-between text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        <span>Experience</span>
                         <span>
                           {profile?.total_xp || 0} /{" "}
                           {(profile?.level || 1) * 1000}
                         </span>
                       </div>
-                      <div className="w-full bg-muted rounded-full h-2">
+                      <div className="w-full bg-muted/40 rounded-full h-3 overflow-hidden border border-border/40">
                         <div
-                          className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-500 glow-blue"
+                          className="bg-gradient-to-r from-aethex-500 via-neon-blue to-aethex-400 h-3 rounded-full transition-all duration-700 glow-blue shadow-lg shadow-aethex-500/50"
                           style={{
                             width: `${Math.min(100, ((profile?.total_xp || 0) % 1000) / 10)}%`,
                           }}
