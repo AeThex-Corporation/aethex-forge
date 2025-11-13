@@ -519,11 +519,23 @@ export default function Onboarding() {
           </div>
 
           {/* Step Content */}
-          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-500 animate-scale-in motion-reduce:animate-none">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-foreground mb-2 animate-slide-right">
-                {steps[currentStep].title}
-              </h2>
+          <div className="bg-gradient-to-br from-card/60 to-card/30 backdrop-blur-sm border border-aethex-400/30 rounded-2xl p-8 md:p-10 shadow-2xl hover:shadow-3xl hover:border-aethex-400/50 transition-all duration-500 animate-scale-in motion-reduce:animate-none">
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-1 h-8 rounded bg-gradient-to-b from-aethex-500 to-neon-blue"></div>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-aethex-300 to-neon-blue bg-clip-text text-transparent animate-slide-right">
+                  {steps[currentStep].title}
+                </h2>
+              </div>
+              <p className="text-muted-foreground text-sm pl-4">
+                {currentStep === 0 && "Choose your path and let's begin your journey"}
+                {currentStep === 1 && "Help us know you better"}
+                {currentStep === 2 && "Tell us about your experience"}
+                {currentStep === 3 && "What are your interests?"}
+                {currentStep === 4 && "Select your primary focus area"}
+                {currentStep === 5 && "Set up your creator profile"}
+                {currentStep === 6 && "You're ready to go!"}
+              </p>
             </div>
 
             {isTransitioning ? (
