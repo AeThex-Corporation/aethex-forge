@@ -142,26 +142,49 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
               className="hover-glow group inline-block hidden sm:block"
             >
               <svg
-                className="h-10 w-10 transition-all duration-300 group-hover:scale-110 animate-pulse"
-                viewBox="0 0 40 40"
+                className="h-10 w-10 transition-all duration-300 group-hover:scale-110"
+                viewBox="0 0 64 64"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <defs>
-                  <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient id="osGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#a78bfa" />
                     <stop offset="100%" stopColor="#60a5fa" />
                   </linearGradient>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
                 </defs>
-                <circle cx="20" cy="10" r="2" fill="url(#headerGradient)" />
-                <circle cx="30" cy="20" r="2" fill="url(#headerGradient)" />
-                <circle cx="20" cy="30" r="2" fill="url(#headerGradient)" />
-                <circle cx="10" cy="20" r="2" fill="url(#headerGradient)" />
-                <circle cx="20" cy="20" r="2" fill="#c4b5fd" />
-                <line x1="20" y1="10" x2="20" y2="20" stroke="url(#headerGradient)" strokeWidth="1" opacity="0.7" />
-                <line x1="20" y1="20" x2="30" y2="20" stroke="url(#headerGradient)" strokeWidth="1" opacity="0.7" />
-                <line x1="20" y1="20" x2="20" y2="30" stroke="url(#headerGradient)" strokeWidth="1" opacity="0.7" />
-                <line x1="20" y1="20" x2="10" y2="20" stroke="url(#headerGradient)" strokeWidth="1" opacity="0.7" />
+
+                {/* OS Window Frame */}
+                <rect x="6" y="6" width="52" height="52" rx="6" fill="none" stroke="url(#osGradient)" strokeWidth="2" opacity="0.8" />
+
+                {/* Title Bar */}
+                <rect x="6" y="6" width="52" height="12" rx="6" fill="url(#osGradient)" opacity="0.15" />
+                <line x1="6" y1="18" x2="58" y2="18" stroke="url(#osGradient)" strokeWidth="1" opacity="0.3" />
+
+                {/* System Dots (Traffic Light Style) */}
+                <circle cx="12" cy="12" r="1.5" fill="#a78bfa" opacity="0.7" />
+                <circle cx="18" cy="12" r="1.5" fill="#60a5fa" opacity="0.7" />
+                <circle cx="24" cy="12" r="1.5" fill="#c4b5fd" opacity="0.7" />
+
+                {/* Central OS Symbol - Abstract "A" */}
+                <g transform="translate(32, 35)">
+                  {/* Left diagonal */}
+                  <line x1="-6" y1="6" x2="0" y2="-8" stroke="url(#osGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glow)" />
+                  {/* Right diagonal */}
+                  <line x1="6" y1="6" x2="0" y2="-8" stroke="url(#osGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glow)" />
+                  {/* Crossbar */}
+                  <line x1="-3" y1="0" x2="3" y2="0" stroke="url(#osGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glow)" />
+                  {/* Bottom connecting */}
+                  <circle cx="-6" cy="6" r="1.5" fill="#a78bfa" opacity="0.9" />
+                  <circle cx="6" cy="6" r="1.5" fill="#60a5fa" opacity="0.9" />
+                </g>
               </svg>
             </Link>
 
