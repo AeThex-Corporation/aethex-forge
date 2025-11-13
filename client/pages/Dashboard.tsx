@@ -319,11 +319,13 @@ export default function Dashboard() {
       loadDashboardData();
     } else if (user && !profile) {
       console.log(
-        "User exists but no profile, showing message (not redirecting)",
+        "User exists but no profile, redirecting to onboarding",
       );
+      // Auto-redirect to onboarding instead of showing a message
+      navigate("/onboarding", { replace: true });
       setIsLoading(false);
     }
-  }, [user, profile, authLoading]);
+  }, [user, profile, authLoading, navigate]);
 
   // Sync local settings form with profile
   useEffect(() => {
