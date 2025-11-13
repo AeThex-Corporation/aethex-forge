@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface Course {
   id: string;
   slug: string;
@@ -69,7 +72,7 @@ export default function FoundationCurriculum() {
         if (selectedCategory) params.set("category", selectedCategory);
         if (selectedDifficulty) params.set("difficulty", selectedDifficulty);
 
-        const response = await fetch(`/api/foundation/courses?${params}`);
+        const response = await fetch(`${API_BASE}/api/foundation/courses?${params}`);
         if (!response.ok) throw new Error("Failed to fetch courses");
 
         let data = await response.json();

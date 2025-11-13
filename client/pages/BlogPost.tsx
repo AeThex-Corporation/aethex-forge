@@ -14,6 +14,9 @@ import { User, Calendar } from "lucide-react";
 import { blogSeedPosts } from "@/data/blogSeed";
 import FourOhFourPage from "./404";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const [post, setPost] = useState<any | null>(null);
@@ -25,7 +28,7 @@ export default function BlogPost() {
       try {
         if (!slug) return;
         // Primary: try server API
-        let res = await fetch(`/api/blog/${encodeURIComponent(slug)}`);
+        let res = await fetch(`${API_BASE}/api/blog/${encodeURIComponent(slug)}`);
         let data: any = null;
 
         try {

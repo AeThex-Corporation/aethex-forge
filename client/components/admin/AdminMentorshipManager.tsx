@@ -20,6 +20,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { aethexToast } from "@/lib/aethex-toast";
 import { cn } from "@/lib/utils";
 import {
@@ -105,7 +108,7 @@ export default function AdminMentorshipManager() {
       params.set("available", String(availableOnly));
       if (expertiseQueryParam) params.set("expertise", expertiseQueryParam);
       if (mentorQ.trim()) params.set("q", mentorQ.trim());
-      const resp = await fetch(`/api/mentors?${params.toString()}`);
+      const resp = await fetch(`${API_BASE}/api/mentors?${params.toString()}`);
       if (!resp.ok) throw new Error(await resp.text().catch(() => "Failed"));
       const data = await resp.json();
       setMentors(Array.isArray(data) ? data : []);
@@ -127,7 +130,7 @@ export default function AdminMentorshipManager() {
       params.set("limit", "100");
       if (statusFilter !== "all") params.set("status", statusFilter);
       const resp = await fetch(
-        `/api/mentorship/requests/all?${params.toString()}`,
+        `${API_BASE}/api/mentorship/requests/all?${params.toString()}`,
       );
       if (!resp.ok) throw new Error(await resp.text().catch(() => "Failed"));
       const data = await resp.json();
@@ -179,7 +182,7 @@ export default function AdminMentorshipManager() {
         hourly_rate:
           typeof merged.hourly_rate === "number" ? merged.hourly_rate : null,
       };
-      const resp = await fetch("/api/mentors/apply", {
+      const resp = await fetch(`${API_BASE}/api/mentors/apply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

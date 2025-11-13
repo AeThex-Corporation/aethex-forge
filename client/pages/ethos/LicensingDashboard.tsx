@@ -21,6 +21,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { CheckCircle2, Clock, FileText, AlertCircle } from "lucide-react";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface LicensingAgreement {
   id: string;
   track_id: string;
@@ -59,7 +62,7 @@ export default function LicensingDashboard() {
       try {
         const status = activeTab === "all" ? "all" : activeTab;
         const res = await fetch(
-          `/api/ethos/licensing-agreements?status=${status}`,
+          `${API_BASE}/api/ethos/licensing-agreements?status=${status}`,
           {
             headers: { "x-user-id": user.id },
           },
@@ -81,7 +84,7 @@ export default function LicensingDashboard() {
 
   const handleApprove = async (id: string) => {
     try {
-      const res = await fetch(`/api/ethos/licensing-agreements?id=${id}`, {
+      const res = await fetch(`${API_BASE}/api/ethos/licensing-agreements?id=${id}`, {
         method: "PUT",
         headers: {
           "x-user-id": user!.id,
@@ -113,7 +116,7 @@ export default function LicensingDashboard() {
     if (!confirm("Delete this agreement?")) return;
 
     try {
-      await fetch(`/api/ethos/licensing-agreements?id=${id}`, {
+      await fetch(`${API_BASE}/api/ethos/licensing-agreements?id=${id}`, {
         method: "DELETE",
         headers: { "x-user-id": user!.id },
       });

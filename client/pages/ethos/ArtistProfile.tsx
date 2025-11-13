@@ -12,6 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { Star, Mail, Music, Zap, Clock } from "lucide-react";
 
 interface Artist {
@@ -51,7 +54,7 @@ export default function ArtistProfile() {
       if (!userId) return;
 
       try {
-        const res = await fetch(`/api/ethos/artists?id=${userId}`);
+        const res = await fetch(`${API_BASE}/api/ethos/artists?id=${userId}`);
         const data = await res.json();
         setArtist(data);
       } catch (error) {

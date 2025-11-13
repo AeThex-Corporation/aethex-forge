@@ -322,7 +322,7 @@ export default function Onboarding() {
       } as any;
 
       // Ensure profile via server (uses service role)
-      const ensureResp = await fetch(`/api/profile/ensure`, {
+      const ensureResp = await fetch(`${API_BASE}/api/profile/ensure`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: user.id, profile: payload }),
@@ -361,7 +361,7 @@ export default function Onboarding() {
 
       // Create creator profile if they provided primary arm
       const creatorProfilePromise = data.creatorProfile.primaryArm
-        ? fetch(`/api/creators`, {
+        ? fetch(`${API_BASE}/api/creators`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -380,7 +380,7 @@ export default function Onboarding() {
 
       Promise.allSettled([
         interests.length
-          ? fetch(`/api/interests`, {
+          ? fetch(`${API_BASE}/api/interests`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ user_id: user.id, interests }),

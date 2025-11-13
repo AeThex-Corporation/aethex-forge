@@ -21,6 +21,9 @@ import {
 } from "@/components/ui/select";
 import { Music, Download, Radio, Search, Filter } from "lucide-react";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface Track {
   id: string;
   user_id: string;
@@ -69,7 +72,7 @@ export default function TrackLibrary() {
         if (selectedGenre !== "All Genres") params.append("genre", selectedGenre);
         if (licenseFilter !== "all") params.append("licenseType", licenseFilter);
 
-        const res = await fetch(`/api/ethos/tracks?${params}`);
+        const res = await fetch(`${API_BASE}/api/ethos/tracks?${params}`);
         const { data } = await res.json();
 
         let sorted = [...data];
