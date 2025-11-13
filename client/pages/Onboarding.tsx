@@ -167,6 +167,7 @@ export default function Onboarding() {
           preferredServices:
             storedPreferred.length > 0 ? storedPreferred : normalizedInterests,
         },
+        followedArms: [],
       };
     },
     [user?.email],
