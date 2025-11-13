@@ -510,23 +510,22 @@ export default function Feed() {
               <div
                 ref={composerRef}
                 id="feed-composer"
-                className="space-y-4 rounded-3xl border border-border/40 bg-background/70 p-4 shadow-xl backdrop-blur-lg lg:sticky lg:top-6"
+                className="space-y-3 sm:space-y-4 rounded-3xl border border-border/40 bg-background/70 p-3 sm:p-4 shadow-xl backdrop-blur-lg lg:sticky lg:top-6"
               >
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start justify-between gap-2 sm:gap-3">
                   <div>
-                    <h2 className="text-lg font-semibold text-foreground">
+                    <h2 className="text-base sm:text-lg font-semibold text-foreground">
                       Share something new
                     </h2>
-                    <p className="text-sm text-muted-foreground">
-                      Post updates, showcase progress, or spark a conversation
-                      with the community.
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      Post updates or spark a conversation
                     </p>
                   </div>
                   <Button
                     variant="secondary"
                     size="sm"
-                    onClick={handleScrollToComposer}
-                    className="rounded-full bg-aethex-500/20 text-aethex-100 hover:bg-aethex-500/30"
+                    onClick={() => setShowPostComposer(true)}
+                    className="rounded-full bg-aethex-500/20 text-aethex-100 hover:bg-aethex-500/30 text-xs sm:text-sm"
                   >
                     Compose
                   </Button>
