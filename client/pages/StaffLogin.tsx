@@ -17,18 +17,27 @@ export default function StaffLogin() {
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Redirect if already authenticated and has @aethex.dev email
+  // Redirect if already authenticated and has @aethex.dev email (primary or linked)
   useEffect(() => {
     if (!loading && user && profile) {
       const email = user.email || profile.email || "";
-      if (email.endsWith("@aethex.dev")) {
+      const hasDevEmail =
+        email.endsWith("@aethex.dev") ||
+        (profile as any)?.is_dev_account ||
+        user.identities?.some((identity: any) =>
+          identity.identity_data?.email?.endsWith("@aethex.dev"),
+        );
+
+      if (hasDevEmail) {
         toastInfo({
           title: "Already logged in",
           description: "Redirecting to staff dashboard...",
         });
         navigate("/staff/dashboard", { replace: true });
       } else {
-        setError("Only @aethex.dev email addresses are allowed");
+        setError(
+          "Only @aethex.dev email addresses (or linked accounts) are allowed",
+        );
       }
     }
   }, [user, profile, loading, navigate, toastInfo]);
