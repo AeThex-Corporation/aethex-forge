@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
@@ -39,7 +41,7 @@ export default function DiscordOAuthCallback() {
         setMessage("Processing authentication...");
 
         // Call backend to handle OAuth exchange
-        const response = await fetch("/api/discord/oauth/callback", {
+        const response = await fetch(`${API_BASE}/api/discord/oauth/callback`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

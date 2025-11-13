@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,7 +36,7 @@ export default function DocsSync() {
     setError(null);
 
     try {
-      const response = await fetch("/api/sync-docs-gitbook", {
+      const response = await fetch(`${API_BASE}/api/sync-docs-gitbook`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

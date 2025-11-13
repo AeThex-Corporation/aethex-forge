@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
@@ -74,7 +76,7 @@ export default function DiscordVerify() {
     setDiscordUser(null);
 
     try {
-      const response = await fetch("/api/discord/verify-code", {
+      const response = await fetch(`${API_BASE}/api/discord/verify-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
