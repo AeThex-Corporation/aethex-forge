@@ -1,4 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
