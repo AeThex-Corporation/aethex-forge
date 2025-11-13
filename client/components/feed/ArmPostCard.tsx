@@ -88,6 +88,7 @@ interface ArmPostCardProps {
   onLike?: () => void;
   onComment?: () => void;
   onShare?: () => void;
+  isLiked?: boolean;
 }
 
 export default function ArmPostCard({
@@ -95,6 +96,7 @@ export default function ArmPostCard({
   onLike,
   onComment,
   onShare,
+  isLiked,
 }: ArmPostCardProps) {
   const config = ARM_CONFIG[post.arm_affiliation];
   const author = post.user_profiles;
