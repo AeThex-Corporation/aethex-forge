@@ -83,7 +83,6 @@ const LOGO_URLS: Record<string, string> = {
   labs: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fd93f7113d34347469e74421c3a3412e5?format=webp&width=800",
   gameforge:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
-  corp: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800",
   foundation:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
   devlink:
@@ -91,6 +90,29 @@ const LOGO_URLS: Record<string, string> = {
   nexus:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F6df123b87a144b1fb99894d94198d97b?format=webp&width=800",
 };
+
+const CorpGeometricPattern = () => (
+  <svg
+    className="relative h-10 w-10 object-contain transition-all duration-200"
+    viewBox="0 0 40 40"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g className="animate-pulse">
+      <circle cx="20" cy="10" r="2" fill="currentColor" className="text-blue-400" />
+      <circle cx="30" cy="20" r="2" fill="currentColor" className="text-blue-400" />
+      <circle cx="20" cy="30" r="2" fill="currentColor" className="text-blue-400" />
+      <circle cx="10" cy="20" r="2" fill="currentColor" className="text-blue-400" />
+      <circle cx="20" cy="20" r="1.5" fill="currentColor" className="text-cyan-400" />
+    </g>
+    <g stroke="currentColor" strokeWidth="0.5" opacity="0.6" className="text-blue-300">
+      <line x1="20" y1="10" x2="20" y2="20" />
+      <line x1="20" y1="20" x2="30" y2="20" />
+      <line x1="20" y1="20" x2="20" y2="30" />
+      <line x1="20" y1="20" x2="10" y2="20" />
+    </g>
+  </svg>
+);
 
 export default function ArmSwitcher() {
   const navigate = useNavigate();
