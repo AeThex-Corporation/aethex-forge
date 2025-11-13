@@ -231,6 +231,97 @@ export default function Feed() {
     }
   };
 
+  const handleLike = async (postId: string) => {
+    if (!user?.id) {
+      aethexToast.error({
+        title: "Not signed in",
+        description: "Please sign in to like posts",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE}/api/community/post-likes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          post_id: postId,
+          user_id: user.id,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.liked) {
+          setUserLikedPosts((prev) => new Set([...prev, postId]));
+        } else {
+          setUserLikedPosts((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(postId);
+            return newSet;
+          });
+        }
+
+        // Update post likes count
+        setPosts((prev) =>
+          prev.map((p) =>
+            p.id === postId ? { ...p, likes_count: data.likes_count } : p
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
+      aethexToast.error({
+        title: "Error",
+        description: "Failed to like post",
+      });
+    }
+  };
+
+  const handleCommentClick = (postId: string) => {
+    setSelectedPostForComments(postId);
+  };
+
+  const handleCommentAdded = () => {
+    // Reload posts to get updated comment count
+    const loadPosts = async () => {
+      try {
+        const armFilter =
+          activeTab === "all" && selectedArms.length > 0
+            ? selectedArms
+            : activeTab !== "all"
+              ? [activeTab]
+              : [];
+
+        const params = new URLSearchParams({
+          limit: "50",
+          offset: "0",
+        });
+
+        if (armFilter.length > 0) {
+          armFilter.forEach((arm) => {
+            params.append("arm_filter", arm);
+          });
+        }
+
+        if (user?.id) {
+          params.append("user_id", user.id);
+        }
+
+        const response = await fetch(`${API_BASE}/api/feed?${params.toString()}`);
+
+        if (response.ok) {
+          const data = await response.json();
+          setPosts(data.posts || []);
+        }
+      } catch (error) {
+        console.error("Error loading feed:", error);
+      }
+    };
+
+    loadPosts();
+  };
+
   const filteredPosts = useMemo(() => {
     if (activeTab === "all") {
       return posts.filter((post) => selectedArms.includes(post.arm_affiliation));
