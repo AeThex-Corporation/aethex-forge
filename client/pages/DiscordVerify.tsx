@@ -142,67 +142,72 @@ export default function DiscordVerify() {
               </CardTitle>
             </CardHeader>
 
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 p-6">
               {success && discordUser ? (
                 // Success State
-                <div className="space-y-4">
-                  <Alert className="border-green-500/30 bg-green-500/10">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <AlertTitle>Successfully Linked!</AlertTitle>
-                    <AlertDescription>
-                      Your Discord account ({discordUser.username}) has been
-                      linked to your AeThex profile.
+                <div className="space-y-5 animate-fade-in">
+                  <Alert className="border-green-500/50 bg-gradient-to-r from-green-600/10 to-emerald-600/10 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-green-400" />
+                    <AlertTitle className="text-green-300 font-semibold">Successfully Linked!</AlertTitle>
+                    <AlertDescription className="text-green-200/80">
+                      Your Discord account has been connected to your AeThex profile.
                     </AlertDescription>
                   </Alert>
 
-                  <div className="p-4 rounded-lg bg-secondary/30 space-y-2">
-                    <p className="text-sm font-semibold text-foreground">
-                      Discord User
+                  <div className="p-5 rounded-lg bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 space-y-3">
+                    <p className="text-xs font-semibold text-indigo-300 uppercase tracking-widest">
+                      Discord Account
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      {discordUser.username}#
-                      {discordUser.discriminator || "0000"}
+                    <p className="text-lg font-bold text-indigo-100">
+                      {discordUser.username}
+                      <span className="text-indigo-400/60">#{discordUser.discriminator || "0000"}</span>
                     </p>
                   </div>
 
-                  <p className="text-sm text-center text-muted-foreground">
+                  <p className="text-sm text-center text-muted-foreground animate-pulse">
                     Redirecting to your profile settings...
                   </p>
 
                   <Button
                     onClick={() => navigate("/dashboard?tab=connections")}
-                    className="w-full"
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold hover-lift transition-all duration-200"
                   >
                     View Connections
                   </Button>
                 </div>
               ) : (
                 // Input State
-                <div className="space-y-4">
-                  <div className="p-4 rounded-lg bg-secondary/30 space-y-2">
-                    <p className="text-sm font-semibold text-foreground">
+                <div className="space-y-5">
+                  <div className="p-5 rounded-lg bg-gradient-to-br from-indigo-500/10 to-blue-500/10 border border-indigo-500/30 space-y-3">
+                    <p className="text-sm font-bold text-indigo-300 flex items-center gap-2">
+                      <span className="text-lg">📋</span>
                       How to get your code:
                     </p>
-                    <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-                      <li>Open Discord</li>
-                      <li>
-                        Go to any server where the AeThex bot is installed
+                    <ol className="text-sm text-muted-foreground space-y-2 list-inside">
+                      <li className="flex gap-2">
+                        <span className="text-indigo-400 font-bold">1.</span>
+                        <span>Open Discord</span>
                       </li>
-                      <li>
-                        Type{" "}
-                        <code className="bg-background/50 px-2 py-1 rounded">
-                          /verify
-                        </code>
+                      <li className="flex gap-2">
+                        <span className="text-indigo-400 font-bold">2.</span>
+                        <span>Go to any server where the AeThex bot is installed</span>
                       </li>
-                      <li>Copy the 6-digit code from the bot's response</li>
+                      <li className="flex gap-2">
+                        <span className="text-indigo-400 font-bold">3.</span>
+                        <span>Type <code className="bg-background/60 px-2 py-1 rounded text-indigo-300 font-mono text-xs">/verify</code></span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-indigo-400 font-bold">4.</span>
+                        <span>Copy the 6-digit code from the bot's response</span>
+                      </li>
                     </ol>
                   </div>
 
                   {error && (
-                    <Alert className="border-red-500/30 bg-red-500/10">
-                      <AlertTriangle className="h-4 w-4 text-red-600" />
-                      <AlertTitle>Verification Failed</AlertTitle>
-                      <AlertDescription>{error}</AlertDescription>
+                    <Alert className="border-red-500/50 bg-gradient-to-r from-red-600/10 to-rose-600/10 rounded-lg">
+                      <AlertTriangle className="h-5 w-5 text-red-400" />
+                      <AlertTitle className="text-red-300 font-semibold">Verification Failed</AlertTitle>
+                      <AlertDescription className="text-red-200/80">{error}</AlertDescription>
                     </Alert>
                   )}
 
