@@ -341,16 +341,32 @@ export default function Admin() {
           <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
           <div className="flex-1 overflow-y-auto py-8">
             <div className="container mx-auto px-4 max-w-7xl">
-              <div className="mb-8">
-                <h1 className="text-4xl font-bold text-aethex-200 mb-2">
-                  Control Center
-                </h1>
-                <p className="text-muted-foreground">
-                  Manage platform, users, content, and integrations · Roles:{" "}
-                  <span className="text-aethex-300 font-medium">
-                    {roles.join(", ") || "none"}
-                  </span>
-                </p>
+              <div className="mb-8 animate-slide-down">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                  <div className="space-y-3 flex-1">
+                    <h1 className="text-5xl font-bold bg-gradient-to-r from-aethex-300 via-neon-blue to-aethex-400 bg-clip-text text-transparent">
+                      Control Center
+                    </h1>
+                    <p className="text-muted-foreground text-base max-w-2xl">
+                      Manage platform operations, users, content, and integrations across all AeThex systems
+                    </p>
+                  </div>
+                  <div className="px-4 py-3 rounded-lg bg-aethex-500/10 border border-aethex-400/40 backdrop-blur-sm">
+                    <p className="text-xs font-semibold text-aethex-300 uppercase tracking-widest mb-2">
+                      Access Level
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {roles.map((role) => (
+                        <Badge
+                          key={role}
+                          className="bg-gradient-to-r from-aethex-600 to-aethex-500 text-white border-aethex-400/50 capitalize"
+                        >
+                          {role}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <Tabs
