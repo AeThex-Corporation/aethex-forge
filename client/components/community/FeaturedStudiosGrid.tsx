@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   Card,
   CardContent,
@@ -25,7 +27,7 @@ export default function FeaturedStudiosGrid() {
     (async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/featured-studios");
+        const res = await fetch(`${API_BASE}/api/featured-studios`);
         const data = res.ok ? await res.json() : [];
         setStudios(Array.isArray(data) ? data : []);
       } catch {

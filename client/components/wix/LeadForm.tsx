@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -55,7 +57,7 @@ export default function LeadForm() {
     }
     setLoading(true);
     try {
-      const r = await fetch("/api/leads", {
+      const r = await fetch(`${API_BASE}/api/leads`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(form),
