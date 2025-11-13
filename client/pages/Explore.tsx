@@ -19,8 +19,18 @@ import {
   Terminal,
   Shield,
   Compass,
+  Zap,
+  Gamepad2,
+  Briefcase,
+  Network,
+  TrendingUp,
+  Heart,
+  MessageSquare,
+  Avatar,
 } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Avatar as AvatarComponent, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { communityService } from "@/lib/supabase-service";
 
 export default function Explore() {
   const achievements = useMemo(
