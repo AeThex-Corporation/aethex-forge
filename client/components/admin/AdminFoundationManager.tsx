@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   Card,
   CardContent,
@@ -94,7 +96,7 @@ export default function AdminFoundationManager() {
   const fetchMentors = async () => {
     try {
       setLoadingMentors(true);
-      const response = await fetch("/api/admin/foundation/mentors");
+      const response = await fetch(`${API_BASE}/api/admin/foundation/mentors`);
       if (!response.ok) throw new Error("Failed to fetch mentors");
       const data = await response.json();
       setMentors(data || []);
@@ -109,7 +111,7 @@ export default function AdminFoundationManager() {
   const fetchCourses = async () => {
     try {
       setLoadingCourses(true);
-      const response = await fetch("/api/admin/foundation/courses");
+      const response = await fetch(`${API_BASE}/api/admin/foundation/courses`);
       if (!response.ok) throw new Error("Failed to fetch courses");
       const data = await response.json();
       setCourses(data || []);
@@ -124,7 +126,7 @@ export default function AdminFoundationManager() {
   const fetchAchievements = async () => {
     try {
       setLoadingAchievements(true);
-      const response = await fetch("/api/admin/foundation/achievements");
+      const response = await fetch(`${API_BASE}/api/admin/foundation/achievements`);
       if (!response.ok) throw new Error("Failed to fetch achievements");
       const data = await response.json();
       setAchievements(data || []);
