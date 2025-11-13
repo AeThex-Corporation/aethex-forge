@@ -11,6 +11,7 @@ import PersonalInfo from "@/components/onboarding/PersonalInfo";
 import Experience from "@/components/onboarding/Experience";
 import Interests from "@/components/onboarding/Interests";
 import RealmSelection from "@/components/onboarding/RealmSelection";
+import FollowArms from "@/components/onboarding/FollowArms";
 import CreatorProfile from "@/components/onboarding/CreatorProfile";
 import Welcome from "@/components/onboarding/Welcome";
 import { useAuth } from "@/contexts/AuthContext";
