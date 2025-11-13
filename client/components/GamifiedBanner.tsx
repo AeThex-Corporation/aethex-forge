@@ -116,9 +116,9 @@ export function GamifiedBanner({ text, enabled, style }: Props) {
         <div className="mt-2 mx-auto h-1 w-full max-w-xl rounded-full bg-white/10 overflow-hidden">
           <div
             className={cn(
-              "h-full rounded-full bg-gradient-to-r from-emerald-400 via-aethex-400 to-neon-blue transition-all duration-[1200ms]",
+              "h-full rounded-full bg-gradient-to-r from-emerald-400 via-aethex-400 to-neon-blue transition-all",
             )}
-            style={{ width: `${progress}%` }}
+            style={{ width: `${progress}%`, transitionDuration: "1200ms" }}
           />
         </div>
       </div>
