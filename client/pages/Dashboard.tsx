@@ -937,21 +937,22 @@ export default function Dashboard() {
                   return (
                     <Card
                       key={index}
-                      className="bg-card/50 border-border/50 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in"
+                      className="bg-gradient-to-br from-card/60 to-card/30 border border-border/40 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in shadow-lg overflow-hidden group"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-muted-foreground">
+                      <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-300" style={{background: `linear-gradient(135deg, var(--color-${stat.color.split('-')[1]}), transparent)`}} />
+                      <CardContent className="p-6 relative">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                               {stat.label}
                             </p>
-                            <p className="text-2xl font-bold text-gradient">
+                            <p className="text-3xl font-bold bg-gradient-to-r from-aethex-300 to-neon-blue bg-clip-text text-transparent mt-2">
                               {stat.value}
                             </p>
                           </div>
                           <div
-                            className={`p-3 rounded-lg bg-gradient-to-r ${stat.color}`}
+                            className={`p-3 rounded-xl bg-gradient-to-r ${stat.color} shadow-lg shadow-${stat.color.split('-')[1]}-500/20 group-hover:shadow-xl transition-all duration-300`}
                           >
                             <Icon className="h-6 w-6 text-white" />
                           </div>
