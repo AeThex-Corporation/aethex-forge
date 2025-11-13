@@ -533,6 +533,27 @@ export default function Feed() {
           onCommentAdded={handleCommentAdded}
         />
       )}
+
+      {/* Post Composer Modal */}
+      <PostComposer
+        open={showPostComposer}
+        onOpenChange={setShowPostComposer}
+        currentUserId={user?.id}
+        currentUserProfile={
+          user
+            ? {
+                id: user.id,
+                username: user.user_metadata?.username,
+                full_name: user.user_metadata?.full_name,
+                avatar_url: user.user_metadata?.avatar_url,
+              }
+            : undefined
+        }
+        onSuccess={() => {
+          setShowPostComposer(false);
+          handleCommentAdded(); // Reload feed
+        }}
+      />
     </Layout>
   );
 }
