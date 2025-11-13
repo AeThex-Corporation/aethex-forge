@@ -43,9 +43,14 @@ if (!token || token.length < 20) {
 
 console.log("[Token] Bot token loaded (length: " + token.length + " chars)");
 
-// Initialize Discord client
+// Initialize Discord client with message intents for feed sync
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
 // Initialize Supabase
@@ -69,6 +74,25 @@ for (const file of commandFiles) {
   if ("data" in command && "execute" in command) {
     client.commands.set(command.data.name, command);
     console.log(`✅ Loaded command: ${command.data.name}`);
+  }
+}
+
+// Load event handlers from events directory
+const eventsPath = path.join(__dirname, "events");
+if (fs.existsSync(eventsPath)) {
+  const eventFiles = fs
+    .readdirSync(eventsPath)
+    .filter((file) => file.endsWith(".js"));
+
+  for (const file of eventFiles) {
+    const filePath = path.join(eventsPath, file);
+    const event = require(filePath);
+    if ("name" in event && "execute" in event) {
+      client.on(event.name, (...args) =>
+        event.execute(...args, client, supabase),
+      );
+      console.log(`✅ Loaded event listener: ${event.name}`);
+    }
   }
 }
 
