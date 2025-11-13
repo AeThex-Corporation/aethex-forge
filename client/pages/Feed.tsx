@@ -546,20 +546,42 @@ export default function Feed() {
                   }
                   onSuccess={handlePostSuccess}
                 />
-                <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/30 bg-background/60 p-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-aethex-300" />
-                    Your post is shared instantly with followers and the broader
-                    community.
+                <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 rounded-2xl border border-border/30 bg-background/60 p-3 sm:p-4 text-xs sm:text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <Sparkles className="h-3.5 sm:h-4 w-3.5 sm:w-4 text-aethex-300" />
+                    <span className="hidden sm:inline">Your post is shared instantly with followers and the broader community.</span>
+                    <span className="sm:hidden">Posts shared instantly</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setActiveFilter("trending")}
-                    className="flex items-center gap-2 text-xs font-medium text-aethex-200 hover:text-aethex-100"
+                    className="flex items-center gap-1 text-xs font-medium text-aethex-200 hover:text-aethex-100 whitespace-nowrap"
                   >
-                    Trending spotlight <ArrowUpRight className="h-3.5 w-3.5" />
+                    Trending <ArrowUpRight className="h-3 w-3" />
                   </button>
                 </div>
+              </div>
+
+              {/* Mobile Stats Card - Only visible on mobile */}
+              <div className="lg:hidden">
+                <Card className="rounded-2xl border-border/40 bg-background/60 shadow-lg backdrop-blur">
+                  <CardContent className="p-4 space-y-3">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="text-center">
+                        <p className="text-xs uppercase text-muted-foreground">Stories</p>
+                        <p className="mt-1 text-xl font-semibold text-foreground">
+                          {items.length}
+                        </p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs uppercase text-muted-foreground">Following</p>
+                        <p className="mt-1 text-xl font-semibold text-foreground">
+                          {following.length}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
 
               {filteredItems.length === 0 ? (
