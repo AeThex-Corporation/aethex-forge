@@ -358,7 +358,7 @@ export const communityService = {
       const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
 
       const resp = await fetch(
-        `/api/posts?limit=${encodeURIComponent(String(limit))}`,
+        `${API_BASE}/api/posts?limit=${encodeURIComponent(String(limit))}`,
         { signal: controller.signal },
       );
       clearTimeout(timeoutId);
