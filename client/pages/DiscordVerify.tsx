@@ -211,26 +211,29 @@ export default function DiscordVerify() {
                     </Alert>
                   )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="code" className="text-sm font-medium">
+                  <div className="space-y-3">
+                    <Label htmlFor="code" className="text-sm font-bold text-foreground">
                       Verification Code
                     </Label>
                     <Input
                       id="code"
                       type="text"
-                      placeholder="Enter 6-digit code"
+                      placeholder="000000"
                       value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value)}
+                      onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                       maxLength={6}
                       disabled={isLoading}
-                      className="text-center text-lg tracking-widest"
+                      className="text-center text-3xl font-bold tracking-[0.5em] border-2 border-indigo-500/50 focus:border-indigo-500 bg-background/60 hover:bg-background/80 transition-colors"
                     />
+                    <p className="text-xs text-muted-foreground text-center">
+                      Enter the 6-digit code from Discord
+                    </p>
                   </div>
 
                   <Button
                     onClick={() => handleVerify(verificationCode)}
                     disabled={isLoading || !verificationCode.trim()}
-                    className="w-full"
+                    className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed hover-lift transition-all duration-200"
                   >
                     {isLoading ? (
                       <>
@@ -238,14 +241,14 @@ export default function DiscordVerify() {
                         Verifying...
                       </>
                     ) : (
-                      "Verify Code"
+                      "Verify & Link Account"
                     )}
                   </Button>
 
                   <Button
                     onClick={() => navigate("/dashboard")}
                     variant="outline"
-                    className="w-full"
+                    className="w-full h-11 border-border/50 hover:border-indigo-400/50 hover:bg-indigo-500/5 transition-all duration-200"
                   >
                     Cancel
                   </Button>
@@ -255,10 +258,13 @@ export default function DiscordVerify() {
           </Card>
 
           {/* Info Box */}
-          <div className="mt-6 p-4 rounded-lg bg-secondary/20 border border-border/50">
-            <p className="text-xs text-muted-foreground">
-              💡 <strong>Tip:</strong> You can also sign in directly with
-              Discord on the login page if you're creating a new account.
+          <div className="mt-8 p-5 rounded-lg bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/30 backdrop-blur-sm animate-fade-in">
+            <p className="text-sm text-muted-foreground flex items-start gap-3">
+              <span className="text-lg">💡</span>
+              <span>
+                <strong className="text-indigo-300">Tip:</strong> You can also sign in directly with
+                Discord on the login page if you're creating a new account.
+              </span>
             </p>
           </div>
         </div>
