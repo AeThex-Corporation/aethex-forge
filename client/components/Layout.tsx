@@ -499,7 +499,14 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
       <main className="flex-1 w-full overflow-x-hidden">{children}</main>
 
       {!hideFooter && (
-        <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-up">
+        <footer
+          className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-up transition-all duration-200"
+          style={{
+            borderTopColor: theme.accentHex,
+            borderTopWidth: "1px",
+            boxShadow: `inset 0 1px 0 ${theme.accentHex}20`,
+          }}
+        >
           <div className="container mx-auto max-w-7xl px-4 py-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {/* Company Info */}
