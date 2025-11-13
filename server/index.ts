@@ -1094,7 +1094,7 @@ export function createServer() {
           });
           return res.status(500).json({
             error: insertError.message,
-            details: insertError.details
+            details: insertError.details,
           });
         }
 
@@ -2523,19 +2523,17 @@ export function createServer() {
             };
 
             const uuidId = generateDeterministicUUID(achievement.id);
-            const { error } = await adminSupabase
-              .from("achievements")
-              .upsert(
-                {
-                  id: uuidId,
-                  name: achievement.name,
-                  description: achievement.description,
-                  icon: achievement.icon,
-                  badge_color: achievement.badge_color,
-                  xp_reward: achievement.xp_reward,
-                },
-                { onConflict: "id" }
-              );
+            const { error } = await adminSupabase.from("achievements").upsert(
+              {
+                id: uuidId,
+                name: achievement.name,
+                description: achievement.description,
+                icon: achievement.icon,
+                badge_color: achievement.badge_color,
+                xp_reward: achievement.xp_reward,
+              },
+              { onConflict: "id" },
+            );
 
             if (error) {
               console.error(
@@ -4120,7 +4118,10 @@ export function createServer() {
           devconnect_link: devConnectLink,
         });
       } catch (e: any) {
-        console.error("[Creator API] Error fetching creator by user_id:", e?.message);
+        console.error(
+          "[Creator API] Error fetching creator by user_id:",
+          e?.message,
+        );
         return res.status(500).json({ error: "Failed to fetch creator" });
       }
     });
@@ -5079,9 +5080,7 @@ export function createServer() {
         res.status(201).json(data[0]);
       } catch (e: any) {
         console.error("[Ethos Tracks API] Error creating track:", e?.message);
-        res
-          .status(500)
-          .json({ error: e?.message || "Failed to create track" });
+        res.status(500).json({ error: e?.message || "Failed to create track" });
       }
     });
 
@@ -5170,7 +5169,10 @@ export function createServer() {
           offset: Number(offset),
         });
       } catch (e: any) {
-        console.error("[Ethos Artists API] Error fetching artists:", e?.message);
+        console.error(
+          "[Ethos Artists API] Error fetching artists:",
+          e?.message,
+        );
         res
           .status(500)
           .json({ error: e?.message || "Failed to fetch artists" });
@@ -5810,25 +5812,16 @@ export function createServer() {
           .delete()
           .eq("user_id", userId);
 
-        await adminSupabase
-          .from("applications")
-          .delete()
-          .eq("user_id", userId);
+        await adminSupabase.from("applications").delete().eq("user_id", userId);
 
         await adminSupabase
           .from("creator_profiles")
           .delete()
           .eq("user_id", userId);
 
-        await adminSupabase
-          .from("projects")
-          .delete()
-          .eq("user_id", userId);
+        await adminSupabase.from("projects").delete().eq("user_id", userId);
 
-        await adminSupabase
-          .from("social_posts")
-          .delete()
-          .eq("user_id", userId);
+        await adminSupabase.from("social_posts").delete().eq("user_id", userId);
 
         await adminSupabase
           .from("user_email_links")
@@ -5840,10 +5833,7 @@ export function createServer() {
           .delete()
           .eq("user_id", userId);
 
-        await adminSupabase
-          .from("web3_wallets")
-          .delete()
-          .eq("user_id", userId);
+        await adminSupabase.from("web3_wallets").delete().eq("user_id", userId);
 
         // Delete user profile
         const { error: profileDeleteError } = await adminSupabase

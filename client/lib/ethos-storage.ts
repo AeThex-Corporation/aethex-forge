@@ -68,9 +68,7 @@ export const ethosStorage = {
    * @returns The public URL for the file
    */
   getPublicUrl(filePath: string): string {
-    const { data } = supabase.storage
-      .from(BUCKET_NAME)
-      .getPublicUrl(filePath);
+    const { data } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
 
     return data.publicUrl;
   },
@@ -116,9 +114,7 @@ export const ethosStorage = {
    */
   async getFileMetadata(filePath: string) {
     try {
-      const { data, error } = await supabase.storage
-        .from(BUCKET_NAME)
-        .info();
+      const { data, error } = await supabase.storage.from(BUCKET_NAME).info();
 
       if (error) {
         throw error;
@@ -139,7 +135,8 @@ export const ethosStorage = {
  */
 export async function getAudioDuration(file: File): Promise<number> {
   return new Promise((resolve, reject) => {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const audioContext = new (window.AudioContext ||
+      (window as any).webkitAudioContext)();
     const fileReader = new FileReader();
 
     fileReader.onload = async (e) => {
