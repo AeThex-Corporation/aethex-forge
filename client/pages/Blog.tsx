@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
@@ -38,7 +40,7 @@ const Blog = () => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/blog?limit=50");
+        const res = await fetch(`${API_BASE}/api/blog?limit=50`);
         let data: any = [];
         try {
           if (res.ok) {
