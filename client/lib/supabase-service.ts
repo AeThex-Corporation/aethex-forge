@@ -447,7 +447,7 @@ export const communityService = {
   async likePost(postId: string, userId: string): Promise<number | null> {
     try {
       const resp = await fetch(
-        `/api/community/posts/${encodeURIComponent(postId)}/like`,
+        `${API_BASE}/api/community/posts/${encodeURIComponent(postId)}/like`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -465,7 +465,7 @@ export const communityService = {
   async unlikePost(postId: string, userId: string): Promise<number | null> {
     try {
       const resp = await fetch(
-        `/api/community/posts/${encodeURIComponent(postId)}/unlike`,
+        `${API_BASE}/api/community/posts/${encodeURIComponent(postId)}/unlike`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -483,7 +483,7 @@ export const communityService = {
   async listComments(postId: string): Promise<any[]> {
     try {
       const resp = await fetch(
-        `/api/community/posts/${encodeURIComponent(postId)}/comments`,
+        `${API_BASE}/api/community/posts/${encodeURIComponent(postId)}/comments`,
       );
       if (!resp.ok) return [];
       return await resp.json();
@@ -498,7 +498,7 @@ export const communityService = {
     content: string,
   ): Promise<any | null> {
     const resp = await fetch(
-      `/api/community/posts/${encodeURIComponent(postId)}/comments`,
+      `${API_BASE}/api/community/posts/${encodeURIComponent(postId)}/comments`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
