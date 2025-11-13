@@ -151,7 +151,7 @@ export default function Corp() {
             <div className="container mx-auto max-w-6xl px-4">
               <div className="mb-8 flex justify-center">
                 <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800"
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800"
                   alt="Corp Logo"
                   className="h-24 w-24 object-contain drop-shadow-lg"
                 />
