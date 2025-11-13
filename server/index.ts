@@ -1086,8 +1086,16 @@ export function createServer() {
           });
 
         if (insertError) {
-          console.error("[Discord] Session insert error:", insertError);
-          return res.status(500).json({ error: insertError.message });
+          console.error("[Discord] Session insert error:", {
+            code: insertError.code,
+            message: insertError.message,
+            details: insertError.details,
+            hint: insertError.hint,
+          });
+          return res.status(500).json({
+            error: insertError.message,
+            details: insertError.details
+          });
         }
 
         res.json({ token: sessionToken });
