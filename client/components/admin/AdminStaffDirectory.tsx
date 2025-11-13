@@ -29,6 +29,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface TeamMember {
   id: string;
   user_id?: string;
@@ -61,7 +64,7 @@ export default function AdminStaffDirectory() {
     const fetchMembers = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/staff/members");
+        const response = await fetch(`${API_BASE}/api/staff/members`);
         if (!response.ok) throw new Error("Failed to fetch staff members");
         const data = await response.json();
         setTeamMembers(data || []);
@@ -83,7 +86,7 @@ export default function AdminStaffDirectory() {
   const handleSeedData = async () => {
     try {
       setIsSeeding(true);
-      const response = await fetch("/api/staff/members/seed");
+      const response = await fetch(`${API_BASE}/api/staff/members/seed`);
 
       if (!response.ok) {
         throw new Error("Failed to seed data: " + response.statusText);
@@ -155,7 +158,7 @@ export default function AdminStaffDirectory() {
     try {
       setIsSaving(true);
       const response = await fetch(
-        `/api/staff/members-detail?id=${editingMember.id}`,
+        `${API_BASE}/api/staff/members-detail?id=${editingMember.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -213,7 +216,7 @@ export default function AdminStaffDirectory() {
 
     try {
       setIsDeleting(true);
-      const response = await fetch(`/api/staff/members-detail?id=${memberId}`, {
+      const response = await fetch(`${API_BASE}/api/staff/members-detail?id=${memberId}`, {
         method: "DELETE",
       });
 
