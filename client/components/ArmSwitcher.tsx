@@ -95,8 +95,8 @@ const LOGO_URLS: Record<string, string> = {
 export default function ArmSwitcher() {
   const navigate = useNavigate();
 
-  const handleArmClick = () => {
-    navigate("/arms");
+  const handleArmClick = (href: string) => {
+    navigate(href);
   };
 
   return (
@@ -106,7 +106,7 @@ export default function ArmSwitcher() {
         {ARMS.map((arm) => (
           <button
             key={arm.id}
-            onClick={handleArmClick}
+            onClick={() => handleArmClick(arm.href)}
             className="group relative h-12 w-12 flex items-center justify-center rounded-lg hover:scale-120 transition-transform duration-200 flex-shrink-0"
             title={arm.name}
           >
@@ -133,7 +133,7 @@ export default function ArmSwitcher() {
         {ARMS.map((arm) => (
           <button
             key={arm.id}
-            onClick={handleArmClick}
+            onClick={() => handleArmClick(arm.href)}
             className="group relative h-11 w-11 flex items-center justify-center rounded-lg hover:scale-110 transition-transform duration-200 flex-shrink-0"
             title={arm.name}
           >
