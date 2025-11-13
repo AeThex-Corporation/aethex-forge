@@ -636,7 +636,8 @@ const App = () => (
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/get-started" element={<GetStarted />} />
                     <Route path="/explore" element={<Explore />} />
-                    <Route path="/services" element={<Services />} />
+                    {/* Legacy /services redirect to /corp */}
+                    <Route path="/services" element={<Navigate to="/corp" replace />} />
                     <Route path="/careers" element={<Careers />} />
 
                     {/* Legal routes */}
