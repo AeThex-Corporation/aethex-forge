@@ -178,24 +178,42 @@ export default function LoadingScreen({
 
           {/* Progress Bar */}
           {showProgress && (
-            <div className="space-y-2">
-              <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+            <div className="space-y-3">
+              <div className="w-full bg-muted rounded-full h-3 overflow-hidden shadow-lg">
                 <div
                   className={`h-full bg-gradient-to-r ${accentColor} transition-all duration-300 ease-out`}
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <div className="text-xs text-muted-foreground">
-                {Math.round(progress)}%
+              <div className="text-sm font-mono text-muted-foreground">
+                {Math.round(progress)}% Complete
               </div>
             </div>
           )}
 
-          {/* Loading Message */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gradient animate-pulse">
-              {currentMessage}
-            </h3>
+          {/* Loading Message - ENLARGED */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gradient animate-pulse mb-2">
+                AeThex OS
+              </h2>
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground animate-pulse">
+                {currentMessage}
+              </h3>
+            </div>
+
+            {/* System Status Info */}
+            <div className="grid grid-cols-2 gap-4 text-sm font-mono text-muted-foreground bg-background/30 rounded-lg p-4 border border-border/50">
+              <div className="flex flex-col items-start">
+                <span className="text-xs opacity-70">KERNEL</span>
+                <span className="text-foreground font-semibold">AeThex v2.0</span>
+              </div>
+              <div className="flex flex-col items-start">
+                <span className="text-xs opacity-70">STATUS</span>
+                <span className="text-foreground font-semibold animate-pulse">BOOTING...</span>
+              </div>
+            </div>
+
             <div className="text-sm text-muted-foreground loading-dots">
               Please wait while we prepare your experience
             </div>
