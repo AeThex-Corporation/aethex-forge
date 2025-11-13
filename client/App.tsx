@@ -255,6 +255,7 @@ const App = () => (
                     />
                     <Route path="/web3-callback" element={<Web3Callback />} />
                     <Route path="/discord-verify" element={<DiscordVerify />} />
+                    <Route path="/activity" element={<Activity />} />
                     <Route path="/discord" element={<DiscordActivity />} />
                     <Route
                       path="/discord/callback"
