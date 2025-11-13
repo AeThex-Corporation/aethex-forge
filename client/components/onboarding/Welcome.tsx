@@ -1,5 +1,7 @@
 import { OnboardingData } from "@/pages/Onboarding";
 import { Button } from "@/components/ui/button";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   Card,
   CardContent,
@@ -105,7 +107,7 @@ export default function Welcome({
 
       if (isSessionMissing && emailAddress) {
         try {
-          const resp = await fetch("/api/auth/check-verification", {
+          const resp = await fetch(`${API_BASE}/api/auth/check-verification`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: emailAddress }),
