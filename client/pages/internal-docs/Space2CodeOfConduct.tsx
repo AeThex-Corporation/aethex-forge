@@ -242,19 +242,32 @@ export default function Space2CodeOfConduct() {
           </section>
 
           <section>
-            <h3 className="text-2xl font-bold text-white mb-4">Consequences</h3>
-            <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
-              <p className="text-sm text-slate-300 mb-4">
-                Violations of this Code of Conduct will be addressed promptly
-                and fairly. Consequences depend on severity and intent, and may
-                include:
-              </p>
-              <ul className="text-sm text-slate-300 space-y-2 pl-4">
-                <li>1. Verbal warning and coaching</li>
-                <li>2. Written warning and improvement plan</li>
-                <li>3. Suspension or temporary leave</li>
-                <li>4. Termination of employment or contract</li>
-              </ul>
+            <h3 className="text-2xl font-bold text-white mb-4">Enforcement</h3>
+            <div className="space-y-4">
+              <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4">
+                <h4 className="font-semibold text-yellow-400 mb-2">Minor Violation</h4>
+                <p className="text-sm text-slate-300 mb-2">Examples: Minor rudeness, unprofessional tone, accidental confidentiality slip</p>
+                <ul className="text-sm text-slate-300 space-y-1 pl-4">
+                  <li>• <strong>First:</strong> Warning</li>
+                  <li>• <strong>Second:</strong> 24-hour timeout/suspension</li>
+                </ul>
+              </div>
+
+              <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                <h4 className="font-semibold text-red-400 mb-2">Major Violation</h4>
+                <p className="text-sm text-slate-300 mb-2">Examples: Hate speech, harassment, doxxing, legal violations, deliberate confidentiality breach</p>
+                <ul className="text-sm text-slate-300 space-y-1 pl-4">
+                  <li>• <strong>Immediate:</strong> Ban from platform</li>
+                  <li>• <strong>Immediate:</strong> Report to authorities if illegal</li>
+                  <li>• <strong>If Employee:</strong> Termination</li>
+                </ul>
+              </div>
+
+              <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 mt-4">
+                <p className="text-sm text-slate-300">
+                  <strong>Note:</strong> All violations are documented and may affect future employment, references, or eligibility for programs. Appeals can be submitted to HR within 30 days.
+                </p>
+              </div>
             </div>
           </section>
         </div>
