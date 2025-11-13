@@ -12,7 +12,7 @@ import { supabase } from "@/lib/supabase";
 import { UserProfile } from "@/lib/database.types";
 import { aethexToast } from "@/lib/aethex-toast";
 
-const API_BASE = (globalThis as any).import?.meta?.env?.VITE_API_BASE || "";
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   aethexUserService,
   aethexRoleService,

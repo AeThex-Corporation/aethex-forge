@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-const API_BASE = (globalThis as any).import?.meta?.env?.VITE_API_BASE || "";
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 interface DiscordUser {
   id: string;
