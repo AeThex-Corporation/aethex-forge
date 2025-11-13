@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
 import ArmPostCard, { ArmType } from "@/components/feed/ArmPostCard";
 import CommentsModal from "@/components/feed/CommentsModal";
+import PostComposer from "@/components/feed/PostComposer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
