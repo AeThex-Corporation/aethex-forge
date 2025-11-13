@@ -8,10 +8,10 @@ interface AeThexOSLogoProps {
 }
 
 const GRADIENTS = {
-  default: { id: "osGradient", stops: [{ offset: "0%", color: "#a78bfa" }, { offset: "100%", color: "#60a5fa" }] },
-  light: { id: "osGradientLight", stops: [{ offset: "0%", color: "#e9d5ff" }, { offset: "100%", color: "#bfdbfe" }] },
-  header: { id: "osGradientHeader", stops: [{ offset: "0%", color: "#a78bfa" }, { offset: "100%", color: "#60a5fa" }] },
-  footer: { id: "osGradientFooter", stops: [{ offset: "0%", color: "#818cf8" }, { offset: "100%", color: "#a78bfa" }] },
+  default: { id: "osGradient_default", stops: [{ offset: "0%", color: "#a78bfa" }, { offset: "100%", color: "#60a5fa" }] },
+  light: { id: "osGradient_light", stops: [{ offset: "0%", color: "#e9d5ff" }, { offset: "100%", color: "#bfdbfe" }] },
+  header: { id: "osGradient_header", stops: [{ offset: "0%", color: "#a78bfa" }, { offset: "100%", color: "#60a5fa" }] },
+  footer: { id: "osGradient_footer", stops: [{ offset: "0%", color: "#818cf8" }, { offset: "100%", color: "#a78bfa" }] },
 };
 
 const SIZES = {
