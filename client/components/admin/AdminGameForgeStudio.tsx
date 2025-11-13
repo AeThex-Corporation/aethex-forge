@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   Card,
   CardContent,
@@ -97,7 +99,7 @@ export default function AdminGameForgeStudio() {
       setLoading(true);
 
       // Fetch projects
-      const projectsRes = await fetch("/api/gameforge/projects");
+      const projectsRes = await fetch(`${API_BASE}/api/gameforge/projects`);
       if (projectsRes.ok) {
         const { data } = await projectsRes.json();
         setProjects(data || []);
@@ -107,7 +109,7 @@ export default function AdminGameForgeStudio() {
       }
 
       // Fetch team members
-      const teamRes = await fetch("/api/gameforge/team");
+      const teamRes = await fetch(`${API_BASE}/api/gameforge/team`);
       if (teamRes.ok) {
         const { data } = await teamRes.json();
         setTeamMembers(data || []);
