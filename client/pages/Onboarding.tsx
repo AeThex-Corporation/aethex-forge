@@ -552,8 +552,9 @@ export default function Onboarding() {
                 {currentStep === 2 && "Tell us about your experience"}
                 {currentStep === 3 && "What are your interests?"}
                 {currentStep === 4 && "Select your primary focus area"}
-                {currentStep === 5 && "Set up your creator profile"}
-                {currentStep === 6 && "You're ready to go!"}
+                {currentStep === 5 && "Follow the arms you want to see in your feed"}
+                {currentStep === 6 && "Set up your creator profile"}
+                {currentStep === 7 && "You're ready to go!"}
               </p>
             </div>
 
