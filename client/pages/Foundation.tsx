@@ -174,7 +174,7 @@ export default function Foundation() {
               </Badge>
 
               <div className="space-y-6 mb-12">
-                <h1 className="text-5xl lg:text-7xl font-black text-red-300 leading-tight">
+                <h1 className={`text-5xl lg:text-7xl font-black text-red-300 leading-tight ${theme.fontClass}`}>
                   Community Impact & Talent Pipeline
                 </h1>
                 <p className="text-xl text-red-100/70 max-w-3xl">
