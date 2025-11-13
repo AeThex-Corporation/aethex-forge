@@ -100,8 +100,45 @@ export default async function handler(req: any, res: any) {
         return res.status(500).json({ error: error.message });
       }
 
+      const createdPost = data?.[0];
+
+      // Publish activity event for post creation
+      try {
+        await fetch("http://localhost:3000/api/activity/publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            actor_id: author_id,
+            verb: "created",
+            object_type: "post",
+            object_id: createdPost?.id,
+            metadata: {
+              summary: `Posted to ${arm_affiliation}`,
+              title: title.substring(0, 100),
+            },
+          }),
+        }).catch((err) => console.error("Activity publish error:", err));
+      } catch (error) {
+        console.error("Failed to publish activity:", error);
+      }
+
+      // Apply rewards for post creation
+      try {
+        await fetch("http://localhost:3000/api/rewards/apply", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: author_id,
+            action: "post_created",
+            amount: 25,
+          }),
+        }).catch((err) => console.error("Rewards apply error:", err));
+      } catch (error) {
+        console.error("Failed to apply rewards:", error);
+      }
+
       return res.status(201).json({
-        post: data?.[0],
+        post: createdPost,
       });
     } catch (error: any) {
       console.error("[Community Posts API POST] Unexpected error:", error);
