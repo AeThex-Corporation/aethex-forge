@@ -154,6 +154,11 @@ export default function Feed() {
         if (response.ok) {
           const data = await response.json();
           setPosts(data.posts || []);
+          // Load user's likes for these posts
+          const postIds = data.posts?.map((p: Post) => p.id) || [];
+          if (postIds.length > 0) {
+            loadUserLikes(postIds);
+          }
         } else {
           console.error("Failed to load feed");
           aethexToast.error({
