@@ -13,18 +13,20 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }: any) {
-        const isArmVariant = props.variant === "arm" && props.accentColor;
+      {toasts.map(function (toast: any) {
+        const { id, title, description, action, variant, accentColor, ...props } = toast;
+        const isArmVariant = variant === "arm" && accentColor;
 
         return (
           <Toast
             key={id}
+            variant={variant}
             {...props}
             style={isArmVariant ? {
-              borderColor: `${props.accentColor}80`,
-              backgroundColor: `${props.accentColor}1A`,
-              color: props.accentColor,
-              boxShadow: `0 25px 50px -12px ${props.accentColor}33`,
+              borderColor: `${accentColor}80`,
+              backgroundColor: `${accentColor}1A`,
+              color: accentColor,
+              boxShadow: `0 25px 50px -12px ${accentColor}33`,
             } : undefined}
           >
             <div className="grid gap-1">
