@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import Layout from "@/components/Layout";
 import {
   Card,
@@ -66,7 +68,7 @@ export default function Status() {
 
   const fetchStatus = async () => {
     try {
-      const resp = await fetch("/api/status");
+      const resp = await fetch(`${API_BASE}/api/status`);
       if (!resp.ok) throw new Error("Status API failed");
       const data = await resp.json();
       const mappedMetrics: SystemMetric[] = (

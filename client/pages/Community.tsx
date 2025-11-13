@@ -1,5 +1,7 @@
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -1813,7 +1815,7 @@ export default function Community() {
       }
 
       try {
-        const resp = await fetch("/api/moderation/reports", {
+        const resp = await fetch(`${API_BASE}/api/moderation/reports`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

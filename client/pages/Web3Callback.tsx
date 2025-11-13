@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { useNavigate } from "react-router-dom";
 import { useWeb3 } from "@/contexts/Web3Context";
 import { useAuth } from "@/contexts/AuthContext";
@@ -19,7 +21,7 @@ export default function Web3Callback() {
       setIsProcessing(true);
       try {
         // Generate a nonce from the backend
-        const nonceResponse = await fetch("/api/web3/nonce", {
+        const nonceResponse = await fetch(`${API_BASE}/api/web3/nonce`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ wallet_address: account }),
@@ -38,7 +40,7 @@ export default function Web3Callback() {
         const signature = await signMessage(message);
 
         // Verify signature on backend and create/link account
-        const verifyResponse = await fetch("/api/web3/verify", {
+        const verifyResponse = await fetch(`${API_BASE}/api/web3/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
