@@ -68,8 +68,8 @@ export default async function handler(req: any, res: any) {
           return res.status(404).json({ error: "Agreement not found" });
         }
 
-        const artist = agreement.ethos_tracks?.user_profiles;
-        const licensee = agreement.user_profiles;
+        const artist = agreement.ethos_tracks?.user_profiles?.[0];
+        const licensee = agreement.user_profiles?.[0];
         const trackTitle = agreement.ethos_tracks?.title;
 
         if (!artist?.email) {
