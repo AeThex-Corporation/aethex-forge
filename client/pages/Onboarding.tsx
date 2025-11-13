@@ -45,6 +45,7 @@ export interface OnboardingData {
     primaryGoals: string[];
     preferredServices: string[];
   };
+  followedArms: string[];
   creatorProfile: {
     bio?: string;
     skills: string[];
