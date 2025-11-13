@@ -97,6 +97,31 @@ export default function Feed() {
     loadFollowedArms();
   }, [user?.id]);
 
+  // Load user's liked posts
+  const loadUserLikes = async (postIds: string[]) => {
+    if (!user?.id || postIds.length === 0) return;
+
+    try {
+      const likedPosts = new Set<string>();
+      await Promise.allSettled(
+        postIds.map(async (postId) => {
+          const response = await fetch(
+            `${API_BASE}/api/community/post-likes?post_id=${postId}&user_id=${user.id}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            if (data.userLiked) {
+              likedPosts.add(postId);
+            }
+          }
+        })
+      );
+      setUserLikedPosts(likedPosts);
+    } catch (error) {
+      console.error("Failed to load user likes:", error);
+    }
+  };
+
   // Load feed posts
   useEffect(() => {
     const loadPosts = async () => {
