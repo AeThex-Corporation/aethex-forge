@@ -202,21 +202,45 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 }}
               />
               <svg
-                className="relative h-8 w-8 z-10 animate-spin"
-                style={{ animationDuration: "3s" }}
-                viewBox="0 0 40 40"
+                className="relative h-8 w-8 z-10"
+                viewBox="0 0 64 64"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <circle cx="20" cy="10" r="2" fill="#e5e7eb" opacity="0.8" />
-                <circle cx="30" cy="20" r="2" fill="#e5e7eb" opacity="0.8" />
-                <circle cx="20" cy="30" r="2" fill="#e5e7eb" opacity="0.8" />
-                <circle cx="10" cy="20" r="2" fill="#e5e7eb" opacity="0.8" />
-                <circle cx="20" cy="20" r="1.5" fill="#f3f4f6" />
-                <line x1="20" y1="10" x2="20" y2="20" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
-                <line x1="20" y1="20" x2="30" y2="20" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
-                <line x1="20" y1="20" x2="20" y2="30" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
-                <line x1="20" y1="20" x2="10" y2="20" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
+                <defs>
+                  <linearGradient id="mobileOSGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#c7d2fe" />
+                    <stop offset="100%" stopColor="#dbeafe" />
+                  </linearGradient>
+                  <filter id="glowMobile">
+                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                {/* OS Window Frame */}
+                <rect x="6" y="6" width="52" height="52" rx="6" fill="none" stroke="url(#mobileOSGradient)" strokeWidth="2" opacity="0.9" />
+
+                {/* Title Bar */}
+                <rect x="6" y="6" width="52" height="12" rx="6" fill="url(#mobileOSGradient)" opacity="0.2" />
+                <line x1="6" y1="18" x2="58" y2="18" stroke="url(#mobileOSGradient)" strokeWidth="1" opacity="0.4" />
+
+                {/* System Dots */}
+                <circle cx="12" cy="12" r="1.5" fill="#c7d2fe" opacity="0.8" />
+                <circle cx="18" cy="12" r="1.5" fill="#dbeafe" opacity="0.8" />
+                <circle cx="24" cy="12" r="1.5" fill="#e0e7ff" opacity="0.8" />
+
+                {/* Central OS Symbol */}
+                <g transform="translate(32, 35)">
+                  <line x1="-6" y1="6" x2="0" y2="-8" stroke="url(#mobileOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowMobile)" />
+                  <line x1="6" y1="6" x2="0" y2="-8" stroke="url(#mobileOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowMobile)" />
+                  <line x1="-3" y1="0" x2="3" y2="0" stroke="url(#mobileOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowMobile)" />
+                  <circle cx="-6" cy="6" r="1.5" fill="#c7d2fe" opacity="1" />
+                  <circle cx="6" cy="6" r="1.5" fill="#dbeafe" opacity="1" />
+                </g>
               </svg>
             </button>
           </div>
