@@ -27,6 +27,12 @@ import {
   Sparkles,
   TrendingUp,
   Users,
+  Zap,
+  Gamepad2,
+  Briefcase,
+  BookOpen,
+  Network,
+  Shield,
 } from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
