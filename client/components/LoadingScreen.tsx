@@ -87,23 +87,23 @@ export default function LoadingScreen({
   return (
     <div className={containerClasses}>
       <div className="flex items-center justify-center min-h-full">
-        <div className="text-center space-y-8 max-w-md mx-auto p-8">
-          {/* OS Logo with Arm Logo Overlay */}
+        <div className="text-center space-y-12 max-w-2xl mx-auto p-8">
+          {/* Large OS Logo with Arm Logo Overlay */}
           <div className="flex justify-center">
             <div className="relative">
-              {/* OS Frame Background */}
+              {/* Large OS Frame Background */}
               {showOSLogo && (
-                <div className="absolute -inset-4 animate-pulse-glow">
+                <div className="absolute -inset-8 animate-pulse-glow">
                   <AeThexOSLogo
                     size="xl"
                     variant="default"
-                    className="opacity-30"
+                    className="opacity-20"
                   />
                 </div>
               )}
 
-              {/* Arm Logo or Default */}
-              <div className={`relative h-16 w-16 rounded-lg bg-gradient-to-br ${
+              {/* Arm Logo or Default - ENLARGED */}
+              <div className={`relative h-32 w-32 rounded-xl bg-gradient-to-br ${
                 accentColor.includes("yellow")
                   ? "from-yellow-400 to-yellow-500"
                   : accentColor.includes("green")
@@ -114,8 +114,12 @@ export default function LoadingScreen({
                   ? "from-red-400 to-red-500"
                   : accentColor.includes("cyan")
                   ? "from-cyan-400 to-cyan-500"
+                  : accentColor.includes("purple")
+                  ? "from-purple-400 to-purple-500"
+                  : accentColor.includes("pink")
+                  ? "from-pink-400 to-pink-500"
                   : "from-aethex-400 to-neon-blue"
-              } flex items-center justify-center animate-pulse-glow p-2`}>
+              } flex items-center justify-center animate-pulse-glow p-4 shadow-2xl border-2 border-current border-opacity-30`}>
                 {armLogo ? (
                   <img
                     src={armLogo}
@@ -124,19 +128,27 @@ export default function LoadingScreen({
                   />
                 ) : (
                   <AeThexOSLogo
-                    size="md"
+                    size="lg"
                     variant="default"
                     className="opacity-100"
                   />
                 )}
               </div>
-              <div className={`absolute -inset-2 rounded-lg bg-gradient-to-r ${accentColor} opacity-30 blur animate-pulse`}></div>
+              <div className={`absolute -inset-4 rounded-xl bg-gradient-to-r ${accentColor} opacity-30 blur-lg animate-pulse`}></div>
+
+              {/* Orbiting Decorative Elements */}
+              <div className="absolute -inset-20 pointer-events-none">
+                <div className={`absolute top-0 left-1/4 w-3 h-3 rounded-full bg-gradient-to-r ${accentColor} animate-pulse`} style={{ animationDelay: "0s" }} />
+                <div className={`absolute top-1/4 right-0 w-3 h-3 rounded-full bg-gradient-to-r ${accentColor} animate-pulse`} style={{ animationDelay: "0.3s" }} />
+                <div className={`absolute bottom-1/4 right-1/4 w-3 h-3 rounded-full bg-gradient-to-r ${accentColor} animate-pulse`} style={{ animationDelay: "0.6s" }} />
+                <div className={`absolute bottom-0 left-1/3 w-3 h-3 rounded-full bg-gradient-to-r ${accentColor} animate-pulse`} style={{ animationDelay: "0.9s" }} />
+              </div>
             </div>
           </div>
 
-          {/* Animated Loading Bars */}
-          <div className="space-y-2">
-            <div className="flex justify-center space-x-1">
+          {/* Animated Loading Bars - LARGER */}
+          <div className="space-y-4">
+            <div className="flex justify-center gap-2">
               {[...Array(5)].map((_, i) => {
                 const colorMap: Record<string, string> = {
                   "from-yellow-500 to-yellow-400": "bg-yellow-400",
