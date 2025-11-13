@@ -105,7 +105,19 @@ export const aethexToast = {
     });
   },
 
-  system: (message: string) => {
+  system: (message: string, accentColor?: string) => {
+    // If accentColor is provided, use arm variant
+    if (accentColor) {
+      return toast({
+        title: "🔧 AeThex OS",
+        description: message,
+        duration: 4000,
+        variant: "arm" as any,
+        accentColor: accentColor,
+      });
+    }
+
+    // Otherwise use default aethex variant
     return toast({
       title: "🔧 AeThex OS",
       description: message,
