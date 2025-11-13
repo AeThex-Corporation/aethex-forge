@@ -161,25 +161,11 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                   animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
                 }}
               />
-              <svg
-                className="relative h-8 w-8 z-10 animate-spin"
-                style={{ animationDuration: "3s" }}
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="20" cy="10" r="2" fill="currentColor" className="text-aethex-200" />
-                <circle cx="30" cy="20" r="2" fill="currentColor" className="text-aethex-200" />
-                <circle cx="20" cy="30" r="2" fill="currentColor" className="text-aethex-200" />
-                <circle cx="10" cy="20" r="2" fill="currentColor" className="text-aethex-200" />
-                <circle cx="20" cy="20" r="1.5" fill="currentColor" className="text-aethex-300" />
-                <g stroke="currentColor" strokeWidth="0.75" opacity="0.7" className="text-aethex-200">
-                  <line x1="20" y1="10" x2="20" y2="20" />
-                  <line x1="20" y1="20" x2="30" y2="20" />
-                  <line x1="20" y1="20" x2="20" y2="30" />
-                  <line x1="20" y1="20" x2="10" y2="20" />
-                </g>
-              </svg>
+              <img
+                src="https://docs.aethex.tech/~gitbook/image?url=https%3A%2F%2F1143808467-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FDhUg3jal6kdpG645FzIl%252Fsites%252Fsite_HeOmR%252Flogo%252FqxDYz8Oj2SnwUTa8t3UB%252FAeThex%2520Origin%2520logo.png%3Falt%3Dmedia%26token%3D200e8ea2-0129-4cbe-b516-4a53f60c512b&width=256&dpr=1&quality=100&sign=6c7576ce&sv=2"
+                alt="AeThex Logo"
+                className="relative h-8 w-8 transition-all duration-300 z-10"
+              />
             </button>
           </div>
 
