@@ -177,6 +177,13 @@ export default function Feed() {
   }, [mapPostsToFeedItems, toast, user?.id]);
 
   useEffect(() => {
+    // Initialize with all arms if none selected
+    if (selectedArms.length === 0) {
+      setSelectedArms(ARMS.map((a) => a.id));
+    }
+  }, []);
+
+  useEffect(() => {
     fetchFeed();
 
     let cleanup: (() => void) | undefined;
