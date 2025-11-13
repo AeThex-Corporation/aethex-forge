@@ -112,6 +112,33 @@ export default async function handler(req: any, res: any) {
 
       const createdPost = data?.[0];
 
+      // Sync post to Discord feed webhook
+      try {
+        const apiBase = process.env.API_BASE || "/api";
+        await fetch(`${apiBase}/discord/feed-sync`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: createdPost?.id,
+            title: createdPost?.title,
+            content: createdPost?.content,
+            author_name:
+              createdPost?.user_profiles?.full_name ||
+              createdPost?.user_profiles?.username ||
+              "Community member",
+            author_avatar: createdPost?.user_profiles?.avatar_url,
+            arm_affiliation: createdPost?.arm_affiliation,
+            likes_count: createdPost?.likes_count,
+            comments_count: createdPost?.comments_count,
+            created_at: createdPost?.created_at,
+          }),
+        }).catch((err) =>
+          console.error("[Posts API] Discord sync error:", err),
+        );
+      } catch (error) {
+        console.error("[Posts API] Failed to sync to Discord:", error);
+      }
+
       // Publish activity event for post creation
       try {
         const apiBase = process.env.API_BASE || "/api";
