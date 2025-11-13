@@ -356,7 +356,10 @@ export default function Feed() {
                     The AeThex Town Square • See what all arms are building
                   </p>
                 </div>
-                <Button className="h-12 bg-gradient-to-r from-aethex-600 to-neon-blue hover:from-aethex-700 hover:to-neon-blue/90 text-white font-semibold hover-lift">
+                <Button
+                  onClick={() => setShowPostComposer(true)}
+                  className="h-12 bg-gradient-to-r from-aethex-600 to-neon-blue hover:from-aethex-700 hover:to-neon-blue/90 text-white font-semibold hover-lift"
+                >
                   <Plus className="h-5 w-5 mr-2" />
                   Create Post
                 </Button>
