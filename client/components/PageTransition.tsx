@@ -27,7 +27,7 @@ const getArmConfig = (
     return {
       message: "Engaging Corp Systems...",
       accentColor: "from-blue-500 to-blue-400",
-      armLogo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800",
+      armLogo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800",
     };
   }
   if (pathname.includes("/foundation")) {

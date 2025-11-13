@@ -59,7 +59,7 @@ const ARMS: Arm[] = [
     bgGradient: "from-blue-600 to-blue-400",
     textColor: "text-blue-400",
     href: "/corp",
-    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fae654ecc18b241bdab273893e8231970?format=webp&width=800",
+    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800",
     tip: "Enterprise solutions for scale",
     shadowColor: "shadow-blue-500/50",
     glowColor: "rgba(59, 130, 246, 0.3)",
