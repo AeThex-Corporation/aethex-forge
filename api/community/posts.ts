@@ -104,7 +104,8 @@ export default async function handler(req: any, res: any) {
 
       // Publish activity event for post creation
       try {
-        await fetch("http://localhost:3000/api/activity/publish", {
+        const apiBase = process.env.API_BASE || "/api";
+        await fetch(`${apiBase}/activity/publish`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -117,14 +118,15 @@ export default async function handler(req: any, res: any) {
               title: title.substring(0, 100),
             },
           }),
-        }).catch((err) => console.error("Activity publish error:", err));
+        }).catch((err) => console.error("[Posts API] Activity publish error:", err));
       } catch (error) {
-        console.error("Failed to publish activity:", error);
+        console.error("[Posts API] Failed to publish activity:", error);
       }
 
       // Apply rewards for post creation
       try {
-        await fetch("http://localhost:3000/api/rewards/apply", {
+        const apiBase = process.env.API_BASE || "/api";
+        await fetch(`${apiBase}/rewards/apply`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -132,9 +134,9 @@ export default async function handler(req: any, res: any) {
             action: "post_created",
             amount: 25,
           }),
-        }).catch((err) => console.error("Rewards apply error:", err));
+        }).catch((err) => console.error("[Posts API] Rewards apply error:", err));
       } catch (error) {
-        console.error("Failed to apply rewards:", error);
+        console.error("[Posts API] Failed to apply rewards:", error);
       }
 
       return res.status(201).json({
