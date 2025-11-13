@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   AlertCircle,
   CheckCircle,
@@ -43,7 +45,7 @@ export default function AdminDiscordDiagnostic() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/discord/diagnostic");
+      const response = await fetch(`${API_BASE}/api/discord/diagnostic`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
