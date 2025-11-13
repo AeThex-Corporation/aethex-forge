@@ -127,6 +127,7 @@ export default function Feed() {
           mediaType: meta.mediaType,
           likes: p.likes_count ?? 0,
           comments: p.comments_count ?? 0,
+          arm: p.arm_affiliation || "labs",
         };
       }),
     [],
