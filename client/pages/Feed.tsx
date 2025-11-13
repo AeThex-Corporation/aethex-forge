@@ -37,6 +37,18 @@ import {
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
+export type ArmType = "labs" | "gameforge" | "corp" | "foundation" | "devlink" | "nexus" | "staff";
+
+const ARMS: { id: ArmType; label: string; icon: any; color: string }[] = [
+  { id: "labs", label: "Labs", icon: Zap, color: "text-yellow-400" },
+  { id: "gameforge", label: "GameForge", icon: Gamepad2, color: "text-green-400" },
+  { id: "corp", label: "Corp", icon: Briefcase, color: "text-blue-400" },
+  { id: "foundation", label: "Foundation", icon: BookOpen, color: "text-red-400" },
+  { id: "devlink", label: "Dev-Link", icon: Network, color: "text-cyan-400" },
+  { id: "nexus", label: "Nexus", icon: Sparkles, color: "text-purple-400" },
+  { id: "staff", label: "Staff", icon: Shield, color: "text-indigo-400" },
+];
+
 export interface FeedItem {
   id: string;
   authorId: string;
@@ -47,6 +59,7 @@ export interface FeedItem {
   mediaType: "video" | "image" | "none";
   likes: number;
   comments: number;
+  arm?: ArmType;
 }
 
 interface TrendingTopic {
