@@ -307,29 +307,37 @@ export default function Login() {
             </div>
 
             <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl animate-scale-in relative z-10">
-              <CardHeader className="text-center space-y-4">
-                <div className="flex justify-center">
-                  <div className="p-4 rounded-full bg-gradient-to-r from-aethex-500/20 to-neon-blue/20 border border-aethex-400/20">
-                    <Shield className="h-8 w-8 text-aethex-400 animate-pulse-glow" />
+              <CardHeader className="text-center space-y-4 pb-6">
+                <div className="flex justify-center animate-bounce-slow">
+                  <div className="p-4 rounded-full bg-gradient-to-br from-aethex-500/30 to-neon-blue/30 border border-aethex-400/40 shadow-lg shadow-aethex-400/20">
+                    <Shield className="h-8 w-8 text-aethex-300 animate-pulse-glow" />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <CardTitle className="text-2xl text-gradient-purple">
+                <div className="space-y-3">
+                  <CardTitle className="text-3xl font-bold bg-gradient-to-r from-aethex-300 via-neon-blue to-aethex-400 bg-clip-text text-transparent">
                     {isSignUp ? "Create Account" : "Welcome Back"}
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-base">
                     {isSignUp
-                      ? "Create your AeThex account to get started"
-                      : "Sign in to your AeThex account to access the dashboard"}
+                      ? "Join AeThex and unlock your creative potential"
+                      : "Access your dashboard and continue your journey"}
                   </CardDescription>
                 </div>
-                <Badge
-                  variant="outline"
-                  className="border-aethex-400/50 text-aethex-400"
-                >
-                  <Sparkles className="h-3 w-3 mr-1" />
-                  Secure Login
-                </Badge>
+                <div className="flex justify-center gap-2 pt-2">
+                  <Badge
+                    variant="outline"
+                    className="border-aethex-400/50 text-aethex-300 bg-aethex-500/10"
+                  >
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Secure Login
+                  </Badge>
+                  <Badge
+                    variant="outline"
+                    className="border-neon-blue/50 text-neon-blue bg-neon-blue/10"
+                  >
+                    End-to-End Encrypted
+                  </Badge>
+                </div>
               </CardHeader>
 
               <CardContent className="space-y-6">
