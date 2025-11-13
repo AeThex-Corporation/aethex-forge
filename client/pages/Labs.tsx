@@ -137,7 +137,7 @@ export default function Labs() {
                 </Badge>
 
                 <div>
-                  <h1 className="text-5xl lg:text-7xl font-black text-yellow-300 leading-tight mb-4">
+                  <h1 className={`text-5xl lg:text-7xl font-black text-yellow-300 leading-tight mb-4 ${theme.fontClass}`}>
                     The Innovation Engine
                   </h1>
                   <p className="text-lg text-yellow-100/90 mb-4">
