@@ -69,7 +69,7 @@ export default function CorpPricing() {
           <section className="relative overflow-hidden py-12 lg:py-16">
             <div className="container mx-auto max-w-6xl px-4">
               <Button
-                onClick={() => navigate("/consulting")}
+                onClick={() => navigate("/corp")}
                 variant="ghost"
                 className="text-blue-300 hover:bg-blue-500/10 mb-8"
               >
