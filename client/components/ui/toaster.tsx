@@ -14,15 +14,18 @@ export function Toaster() {
   return (
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }: any) {
+        const isArmVariant = props.variant === "arm" && props.accentColor;
+
         return (
           <Toast
             key={id}
             {...props}
-            style={{
-              ...(props.accentColor && {
-                '--toast-arm-color': props.accentColor,
-              }),
-            } as React.CSSProperties}
+            style={isArmVariant ? {
+              borderColor: `${props.accentColor}80`,
+              backgroundColor: `${props.accentColor}1A`,
+              color: props.accentColor,
+              boxShadow: `0 25px 50px -12px ${props.accentColor}33`,
+            } : undefined}
           >
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
