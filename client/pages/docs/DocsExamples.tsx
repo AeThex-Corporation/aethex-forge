@@ -285,7 +285,7 @@ export default function DocsExamples() {
             size="lg"
             className="border-emerald-300/60 text-emerald-100"
           >
-            <Link to="/consulting">
+            <Link to="/corp">
               <Globe className="mr-2 h-5 w-5" />
               Talk to AeThex consultants
             </Link>
