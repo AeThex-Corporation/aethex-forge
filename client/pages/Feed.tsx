@@ -431,46 +431,74 @@ export default function Feed() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                {[
-                  {
-                    key: "all" as const,
-                    label: "All stories",
-                    icon: Sparkles,
-                    description: "Latest community activity",
-                  },
-                  {
-                    key: "following" as const,
-                    label: "Following",
-                    icon: Users,
-                    description: "People you follow",
-                  },
-                  {
-                    key: "trending" as const,
-                    label: "Trending",
-                    icon: Flame,
-                    description: "Most engagement",
-                  },
-                ].map(({ key, label, icon: Icon, description }) => (
-                  <Button
-                    key={key}
-                    variant={activeFilter === key ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setActiveFilter(key)}
-                    className={cn(
-                      "flex items-center gap-2 rounded-full border-border/50 px-4",
-                      activeFilter === key
-                        ? "bg-gradient-to-r from-aethex-500 to-neon-blue text-white shadow-lg"
-                        : "bg-background/80 text-muted-foreground backdrop-blur",
-                    )}
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span className="font-medium">{label}</span>
-                    <span className="hidden text-xs sm:inline">
-                      {description}
-                    </span>
-                  </Button>
-                ))}
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  {[
+                    {
+                      key: "all" as const,
+                      label: "All stories",
+                      icon: Sparkles,
+                      description: "Latest community activity",
+                    },
+                    {
+                      key: "following" as const,
+                      label: "Following",
+                      icon: Users,
+                      description: "People you follow",
+                    },
+                    {
+                      key: "trending" as const,
+                      label: "Trending",
+                      icon: Flame,
+                      description: "Most engagement",
+                    },
+                  ].map(({ key, label, icon: Icon, description }) => (
+                    <Button
+                      key={key}
+                      variant={activeFilter === key ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setActiveFilter(key)}
+                      className={cn(
+                        "flex items-center gap-2 rounded-full border-border/50 px-4",
+                        activeFilter === key
+                          ? "bg-gradient-to-r from-aethex-500 to-neon-blue text-white shadow-lg"
+                          : "bg-background/80 text-muted-foreground backdrop-blur",
+                      )}
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span className="font-medium">{label}</span>
+                      <span className="hidden text-xs sm:inline">
+                        {description}
+                      </span>
+                    </Button>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {ARMS.map((arm) => (
+                    <Button
+                      key={arm.id}
+                      variant={selectedArms.includes(arm.id) ? "default" : "outline"}
+                      size="sm"
+                      onClick={() =>
+                        setSelectedArms((prev) =>
+                          prev.includes(arm.id)
+                            ? prev.filter((a) => a !== arm.id)
+                            : [...prev, arm.id],
+                        )
+                      }
+                      className={cn(
+                        "flex items-center gap-2 rounded-full border-border/50 px-3 py-1.5 text-xs sm:text-sm",
+                        selectedArms.includes(arm.id)
+                          ? "bg-gradient-to-r from-aethex-600 to-neon-blue text-white shadow-md"
+                          : "bg-background/60 text-muted-foreground backdrop-blur hover:border-border",
+                      )}
+                    >
+                      <arm.icon className={cn("h-3.5 w-3.5", arm.color)} />
+                      <span className="font-medium">{arm.label}</span>
+                    </Button>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
