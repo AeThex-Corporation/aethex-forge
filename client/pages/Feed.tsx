@@ -69,6 +69,7 @@ export default function Feed() {
   const [activeTab, setActiveTab] = useState<"all" | ArmType>("all");
   const [selectedPostForComments, setSelectedPostForComments] = useState<string | null>(null);
   const [userLikedPosts, setUserLikedPosts] = useState<Set<string>>(new Set());
+  const [showPostComposer, setShowPostComposer] = useState(false);
 
   // Load user's followed arms
   useEffect(() => {
