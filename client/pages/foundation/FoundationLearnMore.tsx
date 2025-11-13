@@ -301,6 +301,7 @@ export default function FoundationLearnMore() {
                         <Button
                           className="w-full bg-red-400 text-black hover:bg-red-300"
                           size="sm"
+                          onClick={() => navigate("/foundation/curriculum")}
                         >
                           <Download className="h-4 w-4 mr-2" />
                           Get Resource
