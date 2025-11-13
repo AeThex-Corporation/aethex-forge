@@ -598,7 +598,7 @@ export default function Feed() {
               )}
             </div>
 
-            <aside className="space-y-6">
+            <aside className="space-y-6 hidden lg:block">
               <Card className="rounded-3xl border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
                 <CardHeader>
                   <CardTitle className="text-lg">
