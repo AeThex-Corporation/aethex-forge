@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { aethexUserService } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
@@ -212,7 +214,7 @@ export default function Login() {
 
   const handleWeb3Login = async () => {
     try {
-      const nonce = await fetch("/api/web3/nonce", {
+      const nonce = await fetch(`${API_BASE}/api/web3/nonce`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -247,7 +249,7 @@ export default function Login() {
         params: [message, address],
       });
 
-      const result = await fetch("/api/web3/verify", {
+      const result = await fetch(`${API_BASE}/api/web3/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
