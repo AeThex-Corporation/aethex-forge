@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+const API_BASE = (globalThis as any).import?.meta?.env?.VITE_API_BASE || "";
+
 interface DiscordUser {
   id: string;
   discord_id: string;
@@ -134,7 +136,7 @@ export const DiscordActivityProvider: React.FC<
             );
 
             // Exchange code for access token via our backend
-            const tokenResponse = await fetch("/api/discord/token", {
+            const tokenResponse = await fetch(`${API_BASE}/api/discord/token`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
