@@ -131,7 +131,7 @@ export default function GameForge() {
               </Badge>
 
               <div className="space-y-6 mb-12">
-                <h1 className="text-5xl lg:text-7xl font-black text-green-300 leading-tight">
+                <h1 className={`text-4xl lg:text-6xl font-black text-green-300 leading-tight ${theme.fontClass}`}>
                   Shipping Games Monthly
                 </h1>
                 <p className="text-xl text-green-100/70 max-w-3xl">
