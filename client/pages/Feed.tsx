@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-aethex-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { aethexSocialService } from "@/lib/aethex-social-service";
 import { cn } from "@/lib/utils";
