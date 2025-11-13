@@ -434,6 +434,214 @@ export default function Explore() {
         </div>
       </section>
 
+      {/* Arms Directory */}
+      <section id="arms" className="py-16 sm:py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
+              The 7 Arms of AeThex
+            </h2>
+            <p className="text-muted-foreground mt-2">
+              Explore each specialized division shaping the future
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
+            {ARMS.map((arm, idx) => {
+              const Icon = arm.icon;
+              return (
+                <Card
+                  key={arm.id}
+                  className="relative overflow-hidden bg-card/40 border-border/50 hover:border-aethex-400/50 transition-all duration-500 hover-lift group h-full"
+                  style={{ animationDelay: `${idx * 0.06}s` }}
+                >
+                  <CardContent className="p-4 space-y-3 flex flex-col h-full">
+                    <div
+                      className={`w-10 h-10 rounded-lg bg-gradient-to-r ${arm.color} grid place-items-center`}
+                    >
+                      <Icon className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground text-sm">
+                        {arm.label}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {arm.description}
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-2">
+                      <p className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">
+                        Focus:
+                      </p>
+                      <p className="text-xs text-foreground/80 mt-1">
+                        {arm.focus}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Posts Section */}
+      {!isLoadingFeed && featuredPosts.length > 0 && (
+        <section id="featured-posts" className="py-16 sm:py-20 bg-background/50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
+                Community Highlights
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                Top posts from the AeThex community
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredPosts.map((post: any, idx: number) => {
+                const author = post.user_profiles;
+                return (
+                  <Card
+                    key={post.id}
+                    className="relative overflow-hidden bg-card/60 border-border/50 hover:border-aethex-400/50 transition-all duration-500 hover-lift group"
+                    style={{ animationDelay: `${idx * 0.08}s` }}
+                  >
+                    <CardContent className="p-6 space-y-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3 flex-1">
+                          <AvatarComponent className="h-10 w-10">
+                            <AvatarImage
+                              src={author?.avatar_url}
+                              alt={author?.full_name}
+                            />
+                            <AvatarFallback>
+                              {author?.full_name?.[0]?.toUpperCase() || "C"}
+                            </AvatarFallback>
+                          </AvatarComponent>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-sm text-foreground truncate">
+                              {author?.full_name || "Community member"}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(post.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-sm text-foreground line-clamp-3">
+                          {post.title}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-4 pt-2 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Heart className="h-3.5 w-3.5" />
+                          <span>{post.likes_count || 0}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MessageSquare className="h-3.5 w-3.5" />
+                          <span>{post.comments_count || 0}</span>
+                        </div>
+                      </div>
+
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="w-full"
+                      >
+                        <Link to="/feed">View Post</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            <div className="text-center mt-8">
+              <Button asChild size="lg" variant="outline">
+                <Link to="/feed">Explore Full Feed</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Creator Spotlights Section */}
+      {!isLoadingFeed && topCreators.length > 0 && (
+        <section id="creators" className="py-16 sm:py-20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
+                Top Creators
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                Meet the most engaged members of our community
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {topCreators.map((creator: any, idx: number) => (
+                <Card
+                  key={creator.id}
+                  className="relative overflow-hidden bg-card/60 border-border/50 hover:border-aethex-400/50 transition-all duration-500 hover-lift group"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  <CardContent className="p-6 space-y-4 text-center">
+                    <div className="flex justify-center">
+                      <AvatarComponent className="h-16 w-16">
+                        <AvatarImage
+                          src={creator.avatar_url}
+                          alt={creator.full_name}
+                        />
+                        <AvatarFallback>
+                          {creator.full_name?.[0]?.toUpperCase() || "C"}
+                        </AvatarFallback>
+                      </AvatarComponent>
+                    </div>
+
+                    <div>
+                      <p className="font-semibold text-foreground">
+                        {creator.full_name || creator.username}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {creator.username}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-center">
+                      <div>
+                        <p className="text-lg font-bold text-gradient-purple">
+                          {creator.posts}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Posts</p>
+                      </div>
+                      <div>
+                        <p className="text-lg font-bold text-gradient-purple">
+                          {creator.likes}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Likes</p>
+                      </div>
+                    </div>
+
+                    <Button
+                      asChild
+                      size="sm"
+                      className="w-full bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+                    >
+                      <Link to="/feed">Follow</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Labs Spotlight */}
       <section id="labs" className="py-16 sm:py-20">
         <div className="container mx-auto px-4">
