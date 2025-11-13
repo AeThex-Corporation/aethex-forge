@@ -28,6 +28,7 @@ export default function AeThexOSLogo({
   variant = "default",
 }: AeThexOSLogoProps) {
   const gradient = GRADIENTS[variant];
+  const glowId = `glow_${variant}_${Math.random().toString(36).substr(2, 9)}`;
 
   return (
     <svg
@@ -52,7 +53,7 @@ export default function AeThexOSLogo({
             <stop key={idx} offset={stop.offset} stopColor={stop.color} />
           ))}
         </linearGradient>
-        <filter id="glow">
+        <filter id={glowId}>
           <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
           <feMerge>
             <feMergeNode in="coloredBlur" />
@@ -109,7 +110,7 @@ export default function AeThexOSLogo({
           stroke={`url(#${gradient.id})`}
           strokeWidth="2"
           strokeLinecap="round"
-          filter="url(#glow)"
+          filter={`url(#${glowId})`}
         />
         <line
           x1="6"
@@ -119,7 +120,7 @@ export default function AeThexOSLogo({
           stroke={`url(#${gradient.id})`}
           strokeWidth="2"
           strokeLinecap="round"
-          filter="url(#glow)"
+          filter={`url(#${glowId})`}
         />
         <line
           x1="-3"
@@ -129,7 +130,7 @@ export default function AeThexOSLogo({
           stroke={`url(#${gradient.id})`}
           strokeWidth="2"
           strokeLinecap="round"
-          filter="url(#glow)"
+          filter={`url(#${glowId})`}
         />
         <circle cx="-6" cy="6" r="1.5" fill="#a78bfa" opacity="0.9" />
         <circle cx="6" cy="6" r="1.5" fill="#60a5fa" opacity="0.9" />
