@@ -149,7 +149,7 @@ export default function LoadingScreen({
           {/* Animated Loading Bars - LARGER */}
           <div className="space-y-4">
             <div className="flex justify-center gap-2">
-              {[...Array(5)].map((_, i) => {
+              {[...Array(8)].map((_, i) => {
                 const colorMap: Record<string, string> = {
                   "from-yellow-500 to-yellow-400": "bg-yellow-400",
                   "from-green-500 to-green-400": "bg-green-400",
@@ -164,11 +164,11 @@ export default function LoadingScreen({
                 return (
                   <div
                     key={i}
-                    className={`w-1 ${barColor} rounded-full animate-pulse`}
+                    className={`w-2 ${barColor} rounded-full animate-pulse`}
                     style={{
-                      height: `${20 + i * 10}px`,
-                      animationDelay: `${i * 0.2}s`,
-                      animationDuration: "1s",
+                      height: `${16 + i * 8}px`,
+                      animationDelay: `${i * 0.15}s`,
+                      animationDuration: "1.2s",
                     }}
                   />
                 );
