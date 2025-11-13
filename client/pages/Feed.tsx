@@ -499,7 +499,11 @@ export default function Feed() {
                       style={{ animationDelay: `${index * 50}ms` }}
                       className="animate-fade-in"
                     >
-                      <ArmPostCard post={post} />
+                      <ArmPostCard
+                        post={post}
+                        onLike={() => handleLike(post.id)}
+                        onComment={() => handleCommentClick(post.id)}
+                      />
                     </div>
                   ))
                 )}
@@ -508,6 +512,21 @@ export default function Feed() {
           </div>
         </div>
       </div>
+
+      {/* Comments Modal */}
+      {selectedPostForComments && (
+        <CommentsModal
+          open={!!selectedPostForComments}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedPostForComments(null);
+            }
+          }}
+          postId={selectedPostForComments}
+          currentUserId={user?.id}
+          onCommentAdded={handleCommentAdded}
+        />
+      )}
     </Layout>
   );
 }
