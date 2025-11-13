@@ -192,6 +192,7 @@ const App = () => (
                     <Route path="/projects/admin" element={<ProjectsAdmin />} />
                     <Route path="/directory" element={<Directory />} />
                     <Route path="/admin" element={<Admin />} />
+                    <Route path="/admin/feed" element={<AdminFeed />} />
                     <Route path="/admin/docs-sync" element={<DocsSync />} />
                     <Route path="/arms" element={<Arms />} />
                     <Route path="/feed" element={<Feed />} />
