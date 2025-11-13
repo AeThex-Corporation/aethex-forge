@@ -37,13 +37,30 @@ import {
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
-export type ArmType = "labs" | "gameforge" | "corp" | "foundation" | "devlink" | "nexus" | "staff";
+export type ArmType =
+  | "labs"
+  | "gameforge"
+  | "corp"
+  | "foundation"
+  | "devlink"
+  | "nexus"
+  | "staff";
 
 const ARMS: { id: ArmType; label: string; icon: any; color: string }[] = [
   { id: "labs", label: "Labs", icon: Zap, color: "text-yellow-400" },
-  { id: "gameforge", label: "GameForge", icon: Gamepad2, color: "text-green-400" },
+  {
+    id: "gameforge",
+    label: "GameForge",
+    icon: Gamepad2,
+    color: "text-green-400",
+  },
   { id: "corp", label: "Corp", icon: Briefcase, color: "text-blue-400" },
-  { id: "foundation", label: "Foundation", icon: BookOpen, color: "text-red-400" },
+  {
+    id: "foundation",
+    label: "Foundation",
+    icon: BookOpen,
+    color: "text-red-400",
+  },
   { id: "devlink", label: "Dev-Link", icon: Network, color: "text-cyan-400" },
   { id: "nexus", label: "Nexus", icon: Sparkles, color: "text-purple-400" },
   { id: "staff", label: "Staff", icon: Shield, color: "text-indigo-400" },
@@ -299,7 +316,9 @@ export default function Feed() {
   }, [fetchFeed]);
 
   const filteredItems = useMemo(() => {
-    let filtered = items.filter((item) => selectedArms.includes(item.arm || "labs"));
+    let filtered = items.filter((item) =>
+      selectedArms.includes(item.arm || "labs"),
+    );
 
     if (activeFilter === "following") {
       filtered = filtered.filter(
@@ -479,7 +498,9 @@ export default function Feed() {
                     {ARMS.map((arm) => (
                       <Button
                         key={arm.id}
-                        variant={selectedArms.includes(arm.id) ? "default" : "outline"}
+                        variant={
+                          selectedArms.includes(arm.id) ? "default" : "outline"
+                        }
                         size="sm"
                         onClick={() =>
                           setSelectedArms((prev) =>
@@ -495,8 +516,12 @@ export default function Feed() {
                             : "bg-background/60 text-muted-foreground backdrop-blur hover:border-border",
                         )}
                       >
-                        <arm.icon className={cn("h-3 sm:h-3.5 w-3 sm:w-3.5", arm.color)} />
-                        <span className="font-medium hidden sm:inline">{arm.label}</span>
+                        <arm.icon
+                          className={cn("h-3 sm:h-3.5 w-3 sm:w-3.5", arm.color)}
+                        />
+                        <span className="font-medium hidden sm:inline">
+                          {arm.label}
+                        </span>
                       </Button>
                     ))}
                   </div>
@@ -549,7 +574,10 @@ export default function Feed() {
                 <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 rounded-2xl border border-border/30 bg-background/60 p-3 sm:p-4 text-xs sm:text-sm text-muted-foreground">
                   <div className="flex items-center gap-1 sm:gap-2">
                     <Sparkles className="h-3.5 sm:h-4 w-3.5 sm:w-4 text-aethex-300" />
-                    <span className="hidden sm:inline">Your post is shared instantly with followers and the broader community.</span>
+                    <span className="hidden sm:inline">
+                      Your post is shared instantly with followers and the
+                      broader community.
+                    </span>
                     <span className="sm:hidden">Posts shared instantly</span>
                   </div>
                   <button
@@ -568,13 +596,17 @@ export default function Feed() {
                   <CardContent className="p-4 space-y-3">
                     <div className="grid grid-cols-2 gap-2">
                       <div className="text-center">
-                        <p className="text-xs uppercase text-muted-foreground">Stories</p>
+                        <p className="text-xs uppercase text-muted-foreground">
+                          Stories
+                        </p>
                         <p className="mt-1 text-xl font-semibold text-foreground">
                           {items.length}
                         </p>
                       </div>
                       <div className="text-center">
-                        <p className="text-xs uppercase text-muted-foreground">Following</p>
+                        <p className="text-xs uppercase text-muted-foreground">
+                          Following
+                        </p>
                         <p className="mt-1 text-xl font-semibold text-foreground">
                           {following.length}
                         </p>

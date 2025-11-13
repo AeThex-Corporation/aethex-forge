@@ -22,7 +22,10 @@ function getEmailTransporter() {
 const fromEmail = process.env.SMTP_FROM_EMAIL || "no-reply@aethex.tech";
 
 interface LicensingNotification {
-  type: "agreement_created" | "agreement_approved" | "agreement_pending_approval";
+  type:
+    | "agreement_created"
+    | "agreement_approved"
+    | "agreement_pending_approval";
   track_id: string;
   artist_id: string;
   licensee_id: string;

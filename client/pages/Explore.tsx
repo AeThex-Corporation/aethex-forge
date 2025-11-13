@@ -29,7 +29,11 @@ import {
   Avatar,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Avatar as AvatarComponent, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar as AvatarComponent,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import { communityService } from "@/lib/supabase-service";
 
 const ARMS = [
@@ -487,7 +491,10 @@ export default function Explore() {
 
       {/* Featured Posts Section */}
       {!isLoadingFeed && featuredPosts.length > 0 && (
-        <section id="featured-posts" className="py-16 sm:py-20 bg-background/50">
+        <section
+          id="featured-posts"
+          className="py-16 sm:py-20 bg-background/50"
+        >
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold text-gradient">
