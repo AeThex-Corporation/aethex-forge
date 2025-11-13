@@ -20,6 +20,7 @@ import { aethexToast } from "@/lib/aethex-toast";
 
 export default function Labs() {
   const navigate = useNavigate();
+  const { theme } = useArmTheme();
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
 
