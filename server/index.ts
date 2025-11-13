@@ -801,11 +801,60 @@ export function createServer() {
     app.get("/api/discord/oauth/callback", async (req, res) => {
       const code = req.query.code as string;
       const state = req.query.state as string;
+      const error = req.query.error as string;
+
+      if (error) {
+        return res.redirect(`/login?error=${error}`);
+      }
 
       if (!code) {
-        return res
-          .status(400)
-          .json({ error: "Authorization code is required" });
+        return res.redirect("/login?error=no_code");
+      }
+
+      // Parse state to determine if this is a linking or login flow
+      let isLinkingFlow = false;
+      let redirectTo = "/dashboard";
+      let authenticatedUserId: string | null = null;
+
+      if (state) {
+        try {
+          const stateData = JSON.parse(decodeURIComponent(state));
+          isLinkingFlow = stateData.action === "link";
+          redirectTo = stateData.redirectTo || redirectTo;
+
+          if (isLinkingFlow && stateData.sessionToken) {
+            // Look up the linking session to get the user ID
+            const { data: session, error: sessionError } = await adminSupabase
+              .from("discord_linking_sessions")
+              .select("user_id")
+              .eq("session_token", stateData.sessionToken)
+              .gt("expires_at", new Date().toISOString())
+              .single();
+
+            if (sessionError || !session) {
+              console.error(
+                "[Discord OAuth] Linking session not found or expired",
+              );
+              return res.redirect(
+                "/login?error=session_lost&message=Session%20expired.%20Please%20try%20linking%20Discord%20again.",
+              );
+            }
+
+            authenticatedUserId = session.user_id;
+            console.log(
+              "[Discord OAuth] Linking session found, user_id:",
+              authenticatedUserId,
+            );
+
+            // Clean up the temporary session
+            await adminSupabase
+              .from("discord_linking_sessions")
+              .delete()
+              .eq("session_token", stateData.sessionToken);
+          }
+        } catch (e) {
+          console.log("[Discord OAuth] Could not parse state:", e);
+        }
       }
 
       try {
@@ -834,15 +883,9 @@ export function createServer() {
           redirectUri,
         );
 
-        if (!clientSecret) {
-          console.warn(
-            "[Discord OAuth] DISCORD_CLIENT_SECRET not configured, skipping token exchange",
-          );
-          return res.json({
-            ok: true,
-            access_token: null,
-            message: "Discord auth configured for Activity context only",
-          });
+        if (!clientId || !clientSecret) {
+          console.error("[Discord OAuth] Missing client credentials");
+          return res.redirect("/login?error=config");
         }
 
         // Exchange authorization code for access token
@@ -859,84 +902,157 @@ export function createServer() {
               code,
               grant_type: "authorization_code",
               redirect_uri: redirectUri,
-            }),
+            }).toString(),
           },
         );
 
         if (!tokenResponse.ok) {
-          const errorData = await tokenResponse.text();
-          console.error("[Discord OAuth] Token exchange failed:", {
-            status: tokenResponse.status,
-            error: errorData,
-          });
-          return res.status(400).json({
-            error: "Failed to exchange authorization code",
-          });
+          const errorData = await tokenResponse.json();
+          console.error("[Discord OAuth] Token exchange failed:", errorData);
+          return res.redirect("/login?error=token_exchange");
         }
 
         const tokenData = await tokenResponse.json();
 
         // Get Discord user information
-        const userResponse = await fetch("https://discord.com/api/users/@me", {
-          headers: {
-            Authorization: `Bearer ${tokenData.access_token}`,
+        const userResponse = await fetch(
+          "https://discord.com/api/v10/users/@me",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenData.access_token}`,
+            },
           },
-        });
+        );
 
         if (!userResponse.ok) {
-          return res.status(400).json({
-            error: "Failed to retrieve Discord user information",
-          });
+          console.error(
+            "[Discord OAuth] User fetch failed:",
+            userResponse.status,
+          );
+          return res.redirect("/login?error=user_fetch");
         }
 
         const discordUser = await userResponse.json();
 
-        // Optionally: create or update Supabase user linked to Discord account
-        if (adminSupabase && discordUser.id) {
-          try {
-            // Check if user with Discord ID exists
-            const { data: existingUser } = await adminSupabase
-              .from("user_profiles")
-              .select("id")
-              .eq("discord_id", discordUser.id)
-              .maybeSingle();
+        if (!discordUser.email) {
+          console.error("[Discord OAuth] Discord user has no email");
+          return res.redirect(
+            "/login?error=no_email&message=Please+enable+email+on+your+Discord+account",
+          );
+        }
 
-            if (!existingUser && discordUser.email) {
-              // Attempt to find by email
-              const { data: userByEmail } = await adminSupabase
-                .from("user_profiles")
-                .select("id")
-                .eq("email", discordUser.email)
-                .maybeSingle();
+        // LINKING FLOW: Link Discord to authenticated user
+        if (isLinkingFlow && authenticatedUserId) {
+          console.log(
+            "[Discord OAuth] Linking Discord to user:",
+            authenticatedUserId,
+          );
 
-              if (userByEmail) {
-                // Update existing user with Discord ID
-                await adminSupabase
-                  .from("user_profiles")
-                  .update({ discord_id: discordUser.id })
-                  .eq("id", userByEmail.id);
-              }
-            }
-          } catch (err) {
-            console.warn("[Discord OAuth] Failed to link Discord ID:", err);
+          // Check if Discord ID is already linked to someone else
+          const { data: existingLink } = await adminSupabase
+            .from("discord_links")
+            .select("user_id")
+            .eq("discord_id", discordUser.id)
+            .single();
+
+          if (existingLink && existingLink.user_id !== authenticatedUserId) {
+            console.error(
+              "[Discord OAuth] Discord ID already linked to different user",
+            );
+            return res.redirect(
+              `/dashboard?error=already_linked&message=${encodeURIComponent("This Discord account is already linked to another AeThex account")}`,
+            );
+          }
+
+          // Create or update Discord link
+          const { error: linkError } = await adminSupabase
+            .from("discord_links")
+            .upsert({
+              discord_id: discordUser.id,
+              user_id: authenticatedUserId,
+              linked_at: new Date().toISOString(),
+            });
+
+          if (linkError) {
+            console.error("[Discord OAuth] Link creation failed:", linkError);
+            return res.redirect(
+              `/dashboard?error=link_failed&message=${encodeURIComponent("Failed to link Discord account")}`,
+            );
+          }
+
+          console.log(
+            "[Discord OAuth] Successfully linked Discord:",
+            discordUser.id,
+          );
+          return res.redirect(redirectTo);
+        }
+
+        // LOGIN FLOW: Check if Discord user already exists
+        const { data: existingLink } = await adminSupabase
+          .from("discord_links")
+          .select("user_id")
+          .eq("discord_id", discordUser.id)
+          .single();
+
+        let userId: string;
+
+        if (existingLink) {
+          // Discord ID already linked - use existing user
+          userId = existingLink.user_id;
+          console.log(
+            "[Discord OAuth] Discord ID already linked to user:",
+            userId,
+          );
+        } else {
+          // Check if email matches existing account
+          const { data: existingUserProfile } = await adminSupabase
+            .from("user_profiles")
+            .select("id")
+            .eq("email", discordUser.email)
+            .single();
+
+          if (existingUserProfile) {
+            // Discord email matches existing user profile - link it
+            userId = existingUserProfile.id;
+            console.log(
+              "[Discord OAuth] Discord email matches existing user profile, linking Discord",
+            );
+          } else {
+            // Discord email doesn't match any existing account
+            // Don't auto-create - ask user to sign in with email first
+            console.log(
+              "[Discord OAuth] Discord email not found in existing accounts, redirecting to sign in",
+            );
+            return res.redirect(
+              `/login?error=discord_no_match&message=${encodeURIComponent(`Discord email (${discordUser.email}) not found. Please sign in with your email account first, then link Discord from settings.`)}`,
+            );
           }
         }
 
-        return res.json({
-          ok: true,
-          access_token: tokenData.access_token,
-          discord_user: {
-            id: discordUser.id,
-            username: discordUser.username,
-            avatar: discordUser.avatar,
-            email: discordUser.email,
-          },
-        });
+        // Create Discord link
+        const { error: linkError } = await adminSupabase
+          .from("discord_links")
+          .upsert({
+            discord_id: discordUser.id,
+            user_id: userId,
+            linked_at: new Date().toISOString(),
+          });
+
+        if (linkError) {
+          console.error("[Discord OAuth] Link creation failed:", linkError);
+          return res.redirect("/login?error=link_create");
+        }
+
+        // Discord is now linked! Redirect to login for user to sign in
+        console.log(
+          "[Discord OAuth] Discord linked successfully, redirecting to login",
+        );
+        return res.redirect(
+          `/login?discord_linked=true&email=${encodeURIComponent(discordUser.email)}`,
+        );
       } catch (e: any) {
-        console.error("[Discord OAuth] Error:", e);
-        return res.status(500).json({
-          error: e?.message || "Internal server error during Discord OAuth",
-        });
+        console.error("[Discord OAuth] Callback error:", e);
+        return res.redirect("/login?error=unknown");
       }
     });
 
