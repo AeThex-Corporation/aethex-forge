@@ -98,6 +98,7 @@ export default function Onboarding() {
     { title: "Experience Level", component: Experience },
     { title: "Interests & Goals", component: Interests },
     { title: "Choose Your Realm", component: RealmSelection },
+    { title: "Follow Arms", component: FollowArms },
     { title: "Creator Profile Setup", component: CreatorProfile },
     { title: "Welcome to AeThex", component: Welcome },
   ];
