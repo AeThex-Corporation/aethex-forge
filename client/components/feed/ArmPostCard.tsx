@@ -181,10 +181,15 @@ export default function ArmPostCard({
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 w-8 p-0 hover:bg-foreground/5"
+              className={`h-8 w-8 p-0 hover:bg-foreground/5 transition-colors ${
+                isLiked ? "text-red-500 hover:text-red-600" : ""
+              }`}
               onClick={onLike}
             >
-              <Heart className="h-4 w-4" />
+              <Heart
+                className="h-4 w-4"
+                fill={isLiked ? "currentColor" : "none"}
+              />
             </Button>
             <Button
               size="sm"
