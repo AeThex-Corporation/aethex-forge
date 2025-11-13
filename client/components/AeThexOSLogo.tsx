@@ -102,38 +102,46 @@ export default function AeThexOSLogo({
 
       {/* Central OS Symbol */}
       <g transform="translate(32, 35)">
+        {/* Bright white glow background for the symbol */}
+        <circle cx="0" cy="-2" r="8" fill="#ffffff" opacity="0.15" />
+
+        {/* Main symbol lines - using white for visibility */}
         <line
           x1="-6"
           y1="6"
           x2="0"
           y2="-8"
-          stroke={`url(#${gradient.id})`}
-          strokeWidth="2"
+          stroke="#ffffff"
+          strokeWidth="2.5"
           strokeLinecap="round"
           filter={`url(#${glowId})`}
+          opacity="0.95"
         />
         <line
           x1="6"
           y1="6"
           x2="0"
           y2="-8"
-          stroke={`url(#${gradient.id})`}
-          strokeWidth="2"
+          stroke="#ffffff"
+          strokeWidth="2.5"
           strokeLinecap="round"
           filter={`url(#${glowId})`}
+          opacity="0.95"
         />
         <line
           x1="-3"
           y1="0"
           x2="3"
           y2="0"
-          stroke={`url(#${gradient.id})`}
-          strokeWidth="2"
+          stroke="#ffffff"
+          strokeWidth="2.5"
           strokeLinecap="round"
           filter={`url(#${glowId})`}
+          opacity="0.95"
         />
-        <circle cx="-6" cy="6" r="1.5" fill="#a78bfa" opacity="0.9" />
-        <circle cx="6" cy="6" r="1.5" fill="#60a5fa" opacity="0.9" />
+        {/* Accent circles with bright colors */}
+        <circle cx="-6" cy="6" r="2" fill="#fbbf24" opacity="1" />
+        <circle cx="6" cy="6" r="2" fill="#06b6d4" opacity="1" />
       </g>
     </svg>
   );
