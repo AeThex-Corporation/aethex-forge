@@ -1,5 +1,7 @@
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -163,7 +165,7 @@ export default function Admin() {
   }, [loadProfiles]);
 
   useEffect(() => {
-    fetch("/api/featured-studios")
+    fetch(`${API_BASE}/api/featured-studios`)
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => {
         if (Array.isArray(data) && data.length) setStudios(data);
@@ -242,7 +244,7 @@ export default function Admin() {
     (async () => {
       try {
         setLoadingPosts(true);
-        const res = await fetch("/api/blog?limit=100");
+        const res = await fetch(`${API_BASE}/api/blog?limit=100`);
         const data = res.ok ? await res.json() : [];
         if (Array.isArray(data)) setBlogPosts(data);
       } catch (e) {
