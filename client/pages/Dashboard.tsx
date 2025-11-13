@@ -896,9 +896,12 @@ export default function Dashboard() {
               </Card>
 
               {/* Quick Actions */}
-              <Card className="bg-card/50 border-border/50 animate-slide-left">
-                <CardHeader>
-                  <CardTitle className="text-lg">Quick Actions</CardTitle>
+              <Card className="bg-gradient-to-br from-card/60 to-card/30 border border-border/40 animate-slide-left hover:border-aethex-400/40 transition-all duration-300 shadow-lg">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg bg-gradient-to-r from-aethex-300 to-neon-blue bg-clip-text text-transparent flex items-center gap-2">
+                    <Zap className="h-5 w-5 text-aethex-400" />
+                    Quick Actions
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {quickActions.map((action, index) => {
@@ -907,16 +910,17 @@ export default function Dashboard() {
                       <Button
                         key={index}
                         variant="outline"
-                        className="w-full justify-start hover-lift interactive-scale"
+                        className="w-full justify-start hover-lift interactive-scale border-border/40 hover:border-aethex-400/40 hover:bg-aethex-500/5 transition-all duration-200 group"
                         style={{ animationDelay: `${index * 0.1}s` }}
                         onClick={() => handleQuickAction(action.title)}
                       >
                         <div
-                          className={`p-1 rounded bg-gradient-to-r ${action.color} mr-3`}
+                          className={`p-2 rounded-md bg-gradient-to-r ${action.color} mr-3 group-hover:shadow-lg transition-all duration-200`}
                         >
                           <Icon className="h-4 w-4 text-white" />
                         </div>
-                        {action.title}
+                        <span className="font-medium">{action.title}</span>
+                        <ChevronRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                       </Button>
                     );
                   })}
