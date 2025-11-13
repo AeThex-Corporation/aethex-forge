@@ -147,14 +147,20 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
+                <defs>
+                  <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#a78bfa" />
+                    <stop offset="100%" stopColor="#60a5fa" />
+                  </linearGradient>
+                </defs>
                 <g className="animate-pulse">
-                  <circle cx="20" cy="10" r="2" fill="currentColor" className="text-aethex-400" />
-                  <circle cx="30" cy="20" r="2" fill="currentColor" className="text-aethex-400" />
-                  <circle cx="20" cy="30" r="2" fill="currentColor" className="text-aethex-400" />
-                  <circle cx="10" cy="20" r="2" fill="currentColor" className="text-aethex-400" />
-                  <circle cx="20" cy="20" r="1.5" fill="currentColor" className="text-aethex-300" />
+                  <circle cx="20" cy="10" r="2" fill="url(#headerGradient)" />
+                  <circle cx="30" cy="20" r="2" fill="url(#headerGradient)" />
+                  <circle cx="20" cy="30" r="2" fill="url(#headerGradient)" />
+                  <circle cx="10" cy="20" r="2" fill="url(#headerGradient)" />
+                  <circle cx="20" cy="20" r="2" fill="#c4b5fd" />
                 </g>
-                <g stroke="currentColor" strokeWidth="0.75" opacity="0.6" className="text-aethex-300">
+                <g stroke="url(#headerGradient)" strokeWidth="1" opacity="0.7">
                   <line x1="20" y1="10" x2="20" y2="20" />
                   <line x1="20" y1="20" x2="30" y2="20" />
                   <line x1="20" y1="20" x2="20" y2="30" />
