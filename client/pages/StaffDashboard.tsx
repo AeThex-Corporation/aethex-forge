@@ -34,10 +34,17 @@ export default function StaffDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
-    // Check if user is @aethex.dev
+    // Check if user is @aethex.dev (primary or linked email)
     if (!loading && user) {
       const email = user.email || profile?.email || "";
-      if (!email.endsWith("@aethex.dev")) {
+      const hasDevEmail =
+        email.endsWith("@aethex.dev") ||
+        (profile as any)?.is_dev_account ||
+        user.identities?.some((identity: any) =>
+          identity.identity_data?.email?.endsWith("@aethex.dev"),
+        );
+
+      if (!hasDevEmail) {
         navigate("/staff/login", { replace: true });
         return;
       }
