@@ -582,6 +582,13 @@ export default function Onboarding() {
                     }
                     onNext={nextStep}
                   />
+                ) : steps[currentStep].title === "Follow Arms" ? (
+                  <FollowArms
+                    selectedArms={data.followedArms || []}
+                    onUpdate={(arms) => updateData({ followedArms: arms })}
+                    nextStep={nextStep}
+                    prevStep={prevStep}
+                  />
                 ) : (
                   <CurrentStepComponent
                     data={data}
