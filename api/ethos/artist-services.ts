@@ -48,9 +48,9 @@ export default async function handler(req: any, res: any) {
 
       return res.json({
         user_id: artist.user_id,
-        name: artist.user_profiles?.full_name,
-        avatar_url: artist.user_profiles?.avatar_url,
-        email: artist.user_profiles?.email,
+        name: artist.user_profiles?.[0]?.full_name,
+        avatar_url: artist.user_profiles?.[0]?.avatar_url,
+        email: artist.user_profiles?.[0]?.email,
         bio: artist.bio,
         verified: artist.verified,
         skills: artist.skills,
