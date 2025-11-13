@@ -20,11 +20,12 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import LoadingScreen from "@/components/LoadingScreen";
-import { aethexToast } from "@/lib/aethex-toast";
+import { useArmToast } from "@/hooks/use-arm-toast";
 
 export default function Staff() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+  const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
 
@@ -40,13 +41,13 @@ export default function Staff() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       if (!toastShownRef.current) {
-        aethexToast.system("Staff operations portal initialized");
+        armToast.system("Staff operations portal initialized");
         toastShownRef.current = true;
       }
     }, 900);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [armToast]);
 
   // Show loading screen while checking authentication
   if (isLoading || loading) {
