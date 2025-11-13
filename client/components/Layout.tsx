@@ -454,7 +454,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
               <div className="space-y-4 animate-fade-in">
                 <div className="flex items-center space-x-3 group">
                   <svg
-                    className="h-6 w-6 transition-all duration-300 group-hover:scale-110"
+                    className="h-6 w-6 transition-all duration-300 group-hover:scale-110 animate-pulse"
                     viewBox="0 0 40 40"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -465,19 +465,15 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                         <stop offset="100%" stopColor="#a78bfa" />
                       </linearGradient>
                     </defs>
-                    <g className="animate-pulse">
-                      <circle cx="20" cy="10" r="2" fill="url(#footerGradient)" />
-                      <circle cx="30" cy="20" r="2" fill="url(#footerGradient)" />
-                      <circle cx="20" cy="30" r="2" fill="url(#footerGradient)" />
-                      <circle cx="10" cy="20" r="2" fill="url(#footerGradient)" />
-                      <circle cx="20" cy="20" r="2" fill="#c4b5fd" />
-                    </g>
-                    <g stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7">
-                      <line x1="20" y1="10" x2="20" y2="20" />
-                      <line x1="20" y1="20" x2="30" y2="20" />
-                      <line x1="20" y1="20" x2="20" y2="30" />
-                      <line x1="20" y1="20" x2="10" y2="20" />
-                    </g>
+                    <circle cx="20" cy="10" r="2" fill="url(#footerGradient)" />
+                    <circle cx="30" cy="20" r="2" fill="url(#footerGradient)" />
+                    <circle cx="20" cy="30" r="2" fill="url(#footerGradient)" />
+                    <circle cx="10" cy="20" r="2" fill="url(#footerGradient)" />
+                    <circle cx="20" cy="20" r="2" fill="#c4b5fd" />
+                    <line x1="20" y1="10" x2="20" y2="20" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
+                    <line x1="20" y1="20" x2="30" y2="20" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
+                    <line x1="20" y1="20" x2="20" y2="30" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
+                    <line x1="20" y1="20" x2="10" y2="20" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
                   </svg>
                   <span className="font-bold text-gradient group-hover:animate-pulse">
                     AeThex
