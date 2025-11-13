@@ -37,7 +37,7 @@ const toastVariants = cva(
         info: "border-aethex-400/50 bg-aethex-500/10 text-aethex-300 shadow-2xl shadow-aethex-500/20 glow-blue",
         aethex:
           "border-aethex-400/50 bg-gradient-to-r from-aethex-500/20 via-neon-blue/20 to-aethex-600/20 text-aethex-300 shadow-2xl shadow-aethex-500/30 glow-purple",
-        arm: "border-[var(--toast-arm-color,#a78bfa)]/50 bg-[var(--toast-arm-color,#a78bfa)]/10 text-[var(--toast-arm-color,#a78bfa)] shadow-2xl transition-all duration-200",
+        arm: "shadow-2xl transition-all duration-200 backdrop-blur-sm",
       },
     },
     defaultVariants: {
