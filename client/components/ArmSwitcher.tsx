@@ -163,11 +163,17 @@ export default function ArmSwitcher() {
             className="group relative h-11 w-11 flex items-center justify-center rounded-lg hover:scale-110 transition-transform duration-200 flex-shrink-0"
             title={arm.name}
           >
-            <img
-              src={LOGO_URLS[arm.id]}
-              alt={arm.label}
-              className="relative h-7 w-7 object-contain transition-all duration-200"
-            />
+            {arm.id === "corp" ? (
+              <div className="relative h-7 w-7">
+                <CorpGeometricPattern />
+              </div>
+            ) : (
+              <img
+                src={LOGO_URLS[arm.id]}
+                alt={arm.label}
+                className="relative h-7 w-7 object-contain transition-all duration-200"
+              />
+            )}
 
             {/* Tooltip */}
             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-2 py-1 bg-gray-900 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-50">
