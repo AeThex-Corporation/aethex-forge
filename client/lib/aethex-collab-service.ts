@@ -221,7 +221,7 @@ export const aethexCollabService = {
     target_project_id?: string | null;
     metadata?: any;
   }) {
-    const resp = await fetch("/api/activity/publish", {
+    const resp = await fetch(`${API_BASE}/api/activity/publish`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(params),
