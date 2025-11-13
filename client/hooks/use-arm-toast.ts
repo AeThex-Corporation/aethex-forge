@@ -46,15 +46,22 @@ export function useArmToast() {
     },
 
     /**
-     * Show a warning toast with the current arm's accent color
-     */
-    warning: (options: ArmToastOptions) => {
-      return aethexToast.arm({
-        title: options.title || "Warning",
-        description: options.description,
-        duration: options.duration || 5000,
-        accentColor: theme.accentHex,
-      });
-    },
-  };
+   * Show a warning toast with the current arm's accent color
+   */
+  warning: (options: ArmToastOptions) => {
+    return aethexToast.arm({
+      title: options.title || "Warning",
+      description: options.description,
+      duration: options.duration || 5000,
+      accentColor: theme.accentHex,
+    });
+  },
+
+  /**
+   * Show an AeThex OS system toast with the current arm's accent color
+   */
+  system: (message: string) => {
+    return aethexToast.system(message, theme.accentHex);
+  },
+};
 }
