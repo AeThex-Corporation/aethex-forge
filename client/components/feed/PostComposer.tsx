@@ -182,6 +182,33 @@ export default function PostComposer({
 
       if (response.ok) {
         const data = await response.json();
+
+        // Send to Discord if it's a new post
+        if (!editingPost && data.post?.id) {
+          try {
+            await fetch(`${API_BASE}/api/discord/send-community-post`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                post_id: data.post.id,
+                title: title.trim(),
+                content: content.trim(),
+                arm_affiliation: armAffiliation,
+                author_id: currentUserId,
+                tags: tags,
+                category: category || null,
+              }),
+            }).catch((error) => {
+              console.error("Error sending to Discord:", error);
+              // Don't fail the post creation if Discord sends fails
+            });
+          } catch (error) {
+            console.error("Error calling Discord endpoint:", error);
+          }
+        }
+
         aethexToast.success({
           title: editingPost ? "Post updated" : "Post created",
           description: editingPost
