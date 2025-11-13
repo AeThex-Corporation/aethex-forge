@@ -182,15 +182,114 @@ export default function Corp() {
           {/* Hero Section */}
           <section className="py-20 lg:py-32">
             <div className="container mx-auto max-w-6xl px-4">
-              {/* Logo */}
+              {/* Geometric Pattern */}
               <div className="mb-12 flex justify-center">
-                <div className="relative">
+                <div className="relative w-32 h-32 flex items-center justify-center">
                   <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl" />
-                  <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800"
-                    alt="Corp Logo"
-                    className="relative h-32 w-32 object-contain drop-shadow-2xl"
-                  />
+                  <svg
+                    className="relative w-32 h-32"
+                    viewBox="0 0 120 120"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    {/* Outer geometric frame */}
+                    <g className="animate-spin" style={{ animationDuration: "20s" }}>
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="55"
+                        stroke="url(#gradientStroke)"
+                        strokeWidth="2"
+                        opacity="0.6"
+                      />
+                      <rect
+                        x="15"
+                        y="15"
+                        width="90"
+                        height="90"
+                        stroke="url(#gradientStroke)"
+                        strokeWidth="1.5"
+                        opacity="0.4"
+                      />
+                    </g>
+
+                    {/* Inner geometric elements */}
+                    <g className="animate-pulse" style={{ animationDuration: "3s" }}>
+                      <circle
+                        cx="60"
+                        cy="30"
+                        r="6"
+                        fill="currentColor"
+                        className="text-blue-400"
+                      />
+                      <circle
+                        cx="90"
+                        cy="60"
+                        r="6"
+                        fill="currentColor"
+                        className="text-blue-400"
+                      />
+                      <circle
+                        cx="60"
+                        cy="90"
+                        r="6"
+                        fill="currentColor"
+                        className="text-blue-400"
+                      />
+                      <circle
+                        cx="30"
+                        cy="60"
+                        r="6"
+                        fill="currentColor"
+                        className="text-blue-400"
+                      />
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="5"
+                        fill="currentColor"
+                        className="text-cyan-400"
+                      />
+                    </g>
+
+                    {/* Connecting lines */}
+                    <g
+                      stroke="url(#gradientLine)"
+                      strokeWidth="1"
+                      opacity="0.5"
+                      className="animate-pulse"
+                      style={{ animationDuration: "4s" }}
+                    >
+                      <line x1="60" y1="30" x2="60" y2="60" />
+                      <line x1="60" y1="60" x2="90" y2="60" />
+                      <line x1="60" y1="60" x2="60" y2="90" />
+                      <line x1="60" y1="60" x2="30" y2="60" />
+                    </g>
+
+                    {/* Gradients */}
+                    <defs>
+                      <linearGradient
+                        id="gradientStroke"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%"
+                      >
+                        <stop offset="0%" stopColor="#3B82F6" />
+                        <stop offset="100%" stopColor="#06B6D4" />
+                      </linearGradient>
+                      <linearGradient
+                        id="gradientLine"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%"
+                      >
+                        <stop offset="0%" stopColor="#60A5FA" />
+                        <stop offset="100%" stopColor="#22D3EE" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
                 </div>
               </div>
 
