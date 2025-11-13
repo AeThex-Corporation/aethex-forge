@@ -213,17 +213,52 @@ const App = () => (
                       element={<DiscordVerify />}
                     />
 
+                    {/* Foundation Community Hub - Consolidated from /developers and /community */}
                     <Route
-                      path="/developers"
+                      path="/foundation/community"
+                      element={<Community />}
+                    />
+                    <Route
+                      path="/foundation/community/developers"
                       element={<DevelopersDirectory />}
                     />
                     <Route
+                      path="/foundation/community/teams"
+                      element={<FoundationTeams />}
+                    />
+                    <Route
+                      path="/foundation/community/about"
+                      element={<FoundationAbout />}
+                    />
+                    <Route
+                      path="/foundation/community/mentorship"
+                      element={<MentorshipRequest />}
+                    />
+                    <Route
+                      path="/foundation/community/mentorship/apply"
+                      element={<MentorApply />}
+                    />
+                    <Route
+                      path="/foundation/community/mentor/:username"
+                      element={<MentorProfile />}
+                    />
+                    <Route
+                      path="/foundation/community/groups/ethos"
+                      element={<EthosGuild />}
+                    />
+
+                    {/* Legacy redirects for backwards compatibility */}
+                    <Route
+                      path="/developers"
+                      element={<Navigate to="/foundation/community/developers" replace />}
+                    />
+                    <Route
                       path="/developers/me"
-                      element={<LegacyPassportRedirect />}
+                      element={<Navigate to="/foundation/community/developers" replace />}
                     />
                     <Route
                       path="/developers/:id"
-                      element={<LegacyPassportRedirect />}
+                      element={<Navigate to="/foundation/community/developers" replace />}
                     />
                     <Route
                       path="/profiles"
@@ -557,32 +592,16 @@ const App = () => (
                     <Route path="/tutorials" element={<Tutorials />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/:slug" element={<BlogPost />} />
-                    <Route path="/community" element={<Community />} />
+
+                    {/* Legacy /community redirect to /foundation/community */}
                     <Route
-                      path="/community/teams"
-                      element={<FoundationTeams />}
+                      path="/community"
+                      element={<Navigate to="/foundation/community" replace />}
                     />
                     <Route
-                      path="/community/about"
-                      element={<FoundationAbout />}
+                      path="/community/:tabId"
+                      element={<Navigate to="/foundation/community" replace />}
                     />
-                    <Route
-                      path="/community/mentorship"
-                      element={<MentorshipRequest />}
-                    />
-                    <Route
-                      path="/community/mentorship/apply"
-                      element={<MentorApply />}
-                    />
-                    <Route
-                      path="/community/mentor/:username"
-                      element={<MentorProfile />}
-                    />
-                    <Route
-                      path="/community/groups/ethos"
-                      element={<EthosGuild />}
-                    />
-                    <Route path="/community/:tabId" element={<Community />} />
 
                     {/* Ethos Guild Routes */}
                     <Route path="/ethos/library" element={<TrackLibrary />} />
