@@ -206,7 +206,7 @@ export default function Corp() {
 
               {/* Main Headline */}
               <div className="text-center space-y-6 mb-12">
-                <h1 className="text-6xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-200 to-cyan-300 leading-tight">
+                <h1 className={`text-6xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-200 to-cyan-300 leading-tight ${theme.fontClass}`}>
                   Enterprise Engineering
                 </h1>
                 <p className="text-xl lg:text-2xl text-blue-100/80 max-w-4xl mx-auto leading-relaxed">
