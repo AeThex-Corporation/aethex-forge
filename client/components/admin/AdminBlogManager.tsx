@@ -30,6 +30,9 @@ import {
 import { Loader2, Trash2, ExternalLink, RefreshCw } from "lucide-react";
 import { aethexToast } from "@/lib/aethex-toast";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface BlogPost {
   id?: string;
   slug: string;
@@ -54,7 +57,7 @@ export default function AdminBlogManager() {
   const loadBlogPosts = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/blog?limit=100");
+      const res = await fetch(`${API_BASE}/api/blog?limit=100`);
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -90,7 +93,7 @@ export default function AdminBlogManager() {
   const handleDeleteBlogPost = useCallback(async (slug: string) => {
     setDeleting(slug);
     try {
-      const res = await fetch(`/api/blog/${slug}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE}/api/blog/${slug}`, { method: "DELETE" });
       if (res.ok) {
         setBlogPosts((posts) => posts.filter((p) => p.slug !== slug));
         aethexToast.success({
