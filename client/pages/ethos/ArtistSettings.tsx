@@ -23,6 +23,9 @@ import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { Upload, Music, Settings, CheckCircle, Clock } from "lucide-react";
 import EcosystemLicenseModal from "@/components/ethos/EcosystemLicenseModal";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 const SKILLS = [
   "Synthwave",
   "Orchestral",
@@ -95,7 +98,7 @@ export default function ArtistSettings() {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`/api/ethos/artists?id=${user.id}`, {
+        const res = await fetch(`${API_BASE}/api/ethos/artists?id=${user.id}`, {
           headers: { "x-user-id": user.id },
         });
 
@@ -115,7 +118,7 @@ export default function ArtistSettings() {
         }
 
         // Fetch verification status
-        const verRes = await fetch(`/api/ethos/verification?status=pending`, {
+        const verRes = await fetch(`${API_BASE}/api/ethos/verification?status=pending`, {
           headers: { "x-user-id": user.id },
         });
 
@@ -145,7 +148,7 @@ export default function ArtistSettings() {
 
     setIsSubmittingVerification(true);
     try {
-      const response = await fetch("/api/ethos/verification", {
+      const response = await fetch(`${API_BASE}/api/ethos/verification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -200,7 +203,7 @@ export default function ArtistSettings() {
 
     setSaving(true);
     try {
-      const res = await fetch(`/api/ethos/artists`, {
+      const res = await fetch(`${API_BASE}/api/ethos/artists`, {
         method: "PUT",
         headers: {
           "x-user-id": user.id,
@@ -244,7 +247,7 @@ export default function ArtistSettings() {
     setIsAcceptingLicense(true);
     try {
       // Update profile to accept ecosystem license
-      const res = await fetch(`/api/ethos/artists`, {
+      const res = await fetch(`${API_BASE}/api/ethos/artists`, {
         method: "PUT",
         headers: {
           "x-user-id": user.id,
@@ -315,7 +318,7 @@ export default function ArtistSettings() {
       const fileUrl = await ethosStorage.uploadTrackFile(currentFile, user.id);
 
       // Create track record in database
-      const res = await fetch(`/api/ethos/tracks`, {
+      const res = await fetch(`${API_BASE}/api/ethos/tracks`, {
         method: "POST",
         headers: {
           "x-user-id": user.id,
