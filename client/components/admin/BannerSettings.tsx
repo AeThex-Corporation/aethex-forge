@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 export default function BannerSettings() {
   const [text, setText] = useState("ROBLOX AUTH SOON");
   const [enabled, setEnabled] = useState(true);
@@ -9,7 +11,7 @@ export default function BannerSettings() {
   const [style, setStyle] = useState<string>("quest");
 
   useEffect(() => {
-    fetch("/api/site-settings?key=home_banner")
+    fetch(`${API_BASE}/api/site-settings?key=home_banner`)
       .then((r) => (r.ok ? r.json() : null))
       .then((v) => {
         if (v && typeof v === "object") {
@@ -24,7 +26,7 @@ export default function BannerSettings() {
   const save = async () => {
     setSaving(true);
     try {
-      const resp = await fetch("/api/site-settings", {
+      const resp = await fetch(`${API_BASE}/api/site-settings`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
