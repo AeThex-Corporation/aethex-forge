@@ -563,20 +563,34 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 </p>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <p className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                    <span
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: `${theme.accentHex}B3` }}
+                    />
                     Queen Creek, Arizona
                   </p>
                   <p className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                    <span
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: `${theme.accentHex}B3` }}
+                    />
                     <a
                       href="mailto:info@aethex.biz"
-                      className="hover:text-aethex-400 transition-colors"
+                      className="transition-colors"
+                      style={{
+                        color: "var(--muted-foreground)",
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "var(--muted-foreground)"}
                     >
                       info@aethex.biz
                     </a>
                   </p>
                   <p className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-aethex-400/70" />
+                    <span
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: `${theme.accentHex}B3` }}
+                    />
                     (346) 556-7100
                   </p>
                 </div>
