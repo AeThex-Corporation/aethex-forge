@@ -363,6 +363,10 @@ const App = () => (
                       path="/foundation/get-involved"
                       element={<FoundationGetInvolved />}
                     />
+                    <Route
+                      path="/foundation/downloads"
+                      element={<FoundationDownloadCenter />}
+                    />
 
                     {/* Staff Arm Routes */}
                     <Route path="/staff" element={<Staff />} />
