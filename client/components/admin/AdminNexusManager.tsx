@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 import {
   Card,
   CardContent,
@@ -98,7 +100,7 @@ export default function AdminNexusManager() {
   const fetchOpportunities = async () => {
     try {
       setLoadingOpp(true);
-      const response = await fetch("/api/admin/nexus/opportunities");
+      const response = await fetch(`${API_BASE}/api/admin/nexus/opportunities`);
       if (!response.ok) throw new Error("Failed to fetch opportunities");
       const data = await response.json();
       setOpportunities(data || []);
@@ -113,7 +115,7 @@ export default function AdminNexusManager() {
   const fetchDisputes = async () => {
     try {
       setLoadingDisputes(true);
-      const response = await fetch("/api/admin/nexus/disputes");
+      const response = await fetch(`${API_BASE}/api/admin/nexus/disputes`);
       if (!response.ok) throw new Error("Failed to fetch disputes");
       const data = await response.json();
       setDisputes(data || []);
@@ -128,7 +130,7 @@ export default function AdminNexusManager() {
   const fetchCommissions = async () => {
     try {
       setLoadingCommissions(true);
-      const response = await fetch("/api/admin/nexus/commissions");
+      const response = await fetch(`${API_BASE}/api/admin/nexus/commissions`);
       if (!response.ok) throw new Error("Failed to fetch commissions");
       const data = await response.json();
       setCommissions(data || []);
