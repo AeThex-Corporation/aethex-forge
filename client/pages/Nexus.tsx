@@ -15,13 +15,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
-import { aethexToast } from "@/lib/aethex-toast";
+import { useArmToast } from "@/hooks/use-arm-toast";
 import AudioTracksForSale from "@/components/nexus/AudioTracksForSale";
 import AudioServicesForHire from "@/components/nexus/AudioServicesForHire";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Nexus() {
   const navigate = useNavigate();
+  const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
   const toastShownRef = useRef(false);
 
@@ -29,13 +30,13 @@ export default function Nexus() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       if (!toastShownRef.current) {
-        aethexToast.system("Nexus talent marketplace connected");
+        armToast.system("Nexus talent marketplace connected");
         toastShownRef.current = true;
       }
     }, 900);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [armToast]);
 
   if (isLoading) {
     return (
