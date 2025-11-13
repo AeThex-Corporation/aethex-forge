@@ -834,24 +834,34 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
             </div>
 
             <div
-              className="mt-8 pt-8 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center animate-fade-in"
-              style={{ animationDelay: "0.4s" }}
+              className="mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center animate-fade-in transition-all duration-200"
+              style={{
+                animationDelay: "0.4s",
+                borderTopColor: theme.accentHex,
+                borderTopWidth: "1px",
+              }}
             >
-              <p className="text-xs text-muted-foreground hover:text-aethex-400 transition-colors">
+              <p className="text-xs text-muted-foreground transition-colors">
                 © 2024 AeThex Corporation. All rights reserved.
               </p>
               <div className="flex items-center space-x-4 mt-4 sm:mt-0">
                 <Link
                   to="/privacy"
                   onClick={scrollToTop}
-                  className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105"
+                  className="text-xs text-muted-foreground transition-all duration-300 hover:scale-105"
+                  style={{ color: "inherit" }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                  onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   to="/terms"
                   onClick={scrollToTop}
-                  className="text-xs text-muted-foreground hover:text-aethex-400 transition-all duration-300 hover:scale-105"
+                  className="text-xs text-muted-foreground transition-all duration-300 hover:scale-105"
+                  style={{ color: "inherit" }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                  onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                 >
                   Terms of Service
                 </Link>
