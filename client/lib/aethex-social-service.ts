@@ -81,7 +81,7 @@ export const aethexSocialService = {
   },
 
   async followUser(followerId: string, followingId: string): Promise<void> {
-    const resp = await fetch("/api/social/follow", {
+    const resp = await fetch(`${API_BASE}/api/social/follow`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -93,7 +93,7 @@ export const aethexSocialService = {
   },
 
   async unfollowUser(followerId: string, followingId: string): Promise<void> {
-    const resp = await fetch("/api/social/unfollow", {
+    const resp = await fetch(`${API_BASE}/api/social/unfollow`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -105,7 +105,7 @@ export const aethexSocialService = {
   },
 
   async sendInvite(inviterId: string, email: string, message?: string | null) {
-    const resp = await fetch("/api/invites", {
+    const resp = await fetch(`${API_BASE}/api/invites`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -127,14 +127,14 @@ export const aethexSocialService = {
 
   async listInvites(inviterId: string) {
     const resp = await fetch(
-      `/api/invites?inviter_id=${encodeURIComponent(inviterId)}`,
+      `${API_BASE}/api/invites?inviter_id=${encodeURIComponent(inviterId)}`,
     );
     if (!resp.ok) return [];
     return await resp.json();
   },
 
   async acceptInvite(token: string, acceptorId: string) {
-    const resp = await fetch("/api/invites/accept", {
+    const resp = await fetch(`${API_BASE}/api/invites/accept`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, acceptor_id: acceptorId }),
@@ -147,7 +147,7 @@ export const aethexSocialService = {
   },
 
   async applyReward(userId: string, action: string, amount?: number) {
-    const resp = await fetch("/api/rewards/apply", {
+    const resp = await fetch(`${API_BASE}/api/rewards/apply`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id: userId, action, amount }),
@@ -179,7 +179,7 @@ export const aethexSocialService = {
   },
 
   async endorseSkill(endorserId: string, endorsedId: string, skill: string) {
-    const resp = await fetch("/api/social/endorse", {
+    const resp = await fetch(`${API_BASE}/api/social/endorse`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -206,7 +206,7 @@ export const aethexSocialService = {
       qs.set("available", String(params.available));
     if (params?.limit) qs.set("limit", String(params.limit));
     const resp = await fetch(
-      `/api/mentors${qs.toString() ? `?${qs.toString()}` : ""}`,
+      `${API_BASE}/api/mentors${qs.toString() ? `?${qs.toString()}` : ""}`,
     );
     if (!resp.ok) return [] as any[];
     return (await resp.json()) as any[];
@@ -221,7 +221,7 @@ export const aethexSocialService = {
       available?: boolean;
     },
   ) {
-    const resp = await fetch("/api/mentors/apply", {
+    const resp = await fetch(`${API_BASE}/api/mentors/apply`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -243,7 +243,7 @@ export const aethexSocialService = {
     mentorId: string,
     message?: string,
   ) {
-    const resp = await fetch("/api/mentorship/request", {
+    const resp = await fetch(`${API_BASE}/api/mentorship/request`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
