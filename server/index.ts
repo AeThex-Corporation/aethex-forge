@@ -5763,6 +5763,113 @@ export function createServer() {
         return res.status(500).json({ error: "Failed to track login" });
       }
     });
+
+    // Admin endpoint to delete user account
+    app.delete("/api/admin/users/delete", async (req, res) => {
+      try {
+        const adminToken =
+          req.headers.authorization?.replace("Bearer ", "") || "";
+
+        if (adminToken !== process.env.DISCORD_ADMIN_REGISTER_TOKEN) {
+          return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        const { email } = req.body;
+
+        if (!email) {
+          return res.status(400).json({ error: "Missing email parameter" });
+        }
+
+        // Get the user by email
+        const { data: profile, error: profileError } = await adminSupabase
+          .from("user_profiles")
+          .select("user_id, email")
+          .eq("email", email)
+          .single();
+
+        if (profileError || !profile) {
+          return res.status(404).json({
+            error: "User not found",
+            details: profileError?.message,
+          });
+        }
+
+        const userId = profile.user_id;
+
+        // Delete from various tables in order
+        await adminSupabase
+          .from("achievements_earned")
+          .delete()
+          .eq("user_id", userId);
+
+        await adminSupabase
+          .from("applications")
+          .delete()
+          .eq("user_id", userId);
+
+        await adminSupabase
+          .from("creator_profiles")
+          .delete()
+          .eq("user_id", userId);
+
+        await adminSupabase
+          .from("projects")
+          .delete()
+          .eq("user_id", userId);
+
+        await adminSupabase
+          .from("social_posts")
+          .delete()
+          .eq("user_id", userId);
+
+        await adminSupabase
+          .from("user_email_links")
+          .delete()
+          .eq("user_id", userId);
+
+        await adminSupabase
+          .from("discord_links")
+          .delete()
+          .eq("user_id", userId);
+
+        await adminSupabase
+          .from("web3_wallets")
+          .delete()
+          .eq("user_id", userId);
+
+        // Delete user profile
+        const { error: profileDeleteError } = await adminSupabase
+          .from("user_profiles")
+          .delete()
+          .eq("user_id", userId);
+
+        if (profileDeleteError) {
+          return res.status(500).json({
+            error: "Failed to delete user profile",
+            details: profileDeleteError.message,
+          });
+        }
+
+        // Delete from Supabase auth
+        try {
+          await (adminSupabase.auth.admin as any).deleteUser(userId);
+        } catch (authError: any) {
+          console.warn("Auth deletion warning:", authError?.message);
+        }
+
+        return res.json({
+          success: true,
+          message: `User account ${email} has been successfully deleted`,
+          userId,
+        });
+      } catch (e: any) {
+        console.error("[Admin API] Error deleting user:", e?.message);
+        return res.status(500).json({
+          error: "Internal server error",
+          message: e?.message,
+        });
+      }
+    });
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
