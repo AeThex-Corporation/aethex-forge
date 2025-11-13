@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -182,7 +185,7 @@ export default function GameDevelopment() {
 
   const [studios, setStudios] = useState<Studio[]>([]);
   useEffect(() => {
-    fetch("/api/featured-studios")
+    fetch(`${API_BASE}/api/featured-studios`)
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => (Array.isArray(data) ? setStudios(data) : undefined))
       .catch(() => undefined);

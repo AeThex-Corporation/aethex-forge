@@ -1,4 +1,7 @@
 import Layout from "@/components/Layout";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -51,7 +54,7 @@ export default function Investors() {
     }
     setSubmitting(true);
     try {
-      const resp = await fetch("/api/investors/interest", {
+      const resp = await fetch(`${API_BASE}/api/investors/interest`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, amount, accredited, message }),

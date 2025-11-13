@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 import { useNavigate, useSearchParams } from "react-router-dom";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,7 +40,7 @@ export default function RobloxCallback() {
         }
 
         // Exchange code for Roblox user info via backend
-        const response = await fetch("/api/roblox/oauth/callback", {
+        const response = await fetch(`${API_BASE}/api/roblox/oauth/callback`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code, state }),
@@ -58,7 +61,7 @@ export default function RobloxCallback() {
 
         // If user is already authenticated, link the Roblox account
         if (user && data.roblox_user_id) {
-          await fetch("/api/user/link-roblox", {
+          await fetch(`${API_BASE}/api/user/link-roblox`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
