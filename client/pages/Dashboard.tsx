@@ -579,8 +579,8 @@ export default function Dashboard() {
     }
   };
 
-  // Show loading while auth is resolving
-  if (authLoading || isLoading) {
+  // Show loading while auth is resolving OR profile is loading
+  if (authLoading || isLoading || (user && !profile)) {
     return (
       <Layout hideFooter={true}>
         <LoadingScreen
@@ -609,30 +609,6 @@ export default function Dashboard() {
               className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
             >
               Sign In
-            </button>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
-
-  // If user but no profile, show incomplete profile message
-  if (!profile) {
-    return (
-      <Layout>
-        <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-          <div className="max-w-md text-center">
-            <h1 className="text-3xl font-bold text-white mb-4">
-              Complete Your Profile
-            </h1>
-            <p className="text-gray-400 mb-8">
-              Let's set up your profile to get started with AeThex
-            </p>
-            <button
-              onClick={() => navigate("/onboarding")}
-              className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
-            >
-              Complete Profile
             </button>
           </div>
         </div>
