@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { CheckCircle, XCircle, Clock, ChevronRight, Music } from "lucide-react";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface VerificationRequest {
   id: string;
   user_id: string;
@@ -59,7 +62,7 @@ export default function AdminEthosVerification() {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/ethos/verification?status=${activeTab}`, {
+      const response = await fetch(`${API_BASE}/api/ethos/verification?status=${activeTab}`, {
         headers: {
           "x-user-id": user?.id || "",
         },
@@ -94,7 +97,7 @@ export default function AdminEthosVerification() {
     if (!selectedRequest) return;
 
     try {
-      const response = await fetch("/api/ethos/verification", {
+      const response = await fetch(`${API_BASE}/api/ethos/verification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
