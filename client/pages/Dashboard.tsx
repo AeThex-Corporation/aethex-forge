@@ -60,6 +60,7 @@ import {
   BarChart3,
   Github,
   Globe,
+  CheckCircle,
 } from "lucide-react";
 
 const DiscordIcon = () => (
