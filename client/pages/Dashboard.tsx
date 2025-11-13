@@ -764,44 +764,58 @@ export default function Dashboard() {
 
           {/* Header */}
           <div className="mb-8 animate-slide-down">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-              <div>
-                <h1 className="text-3xl font-bold text-gradient-purple">
-                  {activeRealm === "game_developer" &&
-                    "Game Development Dashboard"}
-                  {activeRealm === "client" && "Consulting Dashboard"}
-                  {activeRealm === "community_member" && "Community Dashboard"}
-                  {activeRealm === "customer" && "Get Started Dashboard"}
-                  {activeRealm === "staff" && "Staff Dashboard"}
-                </h1>
-                <p className="text-muted-foreground">
-                  Welcome back,{" "}
-                  {profile?.full_name || user.email?.split("@")[0]} •{" "}
-                  {streakLabel}
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+              <div className="space-y-3 flex-1">
+                <div className="flex items-center gap-3">
+                  <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-aethex-300 via-neon-blue to-aethex-400 bg-clip-text text-transparent">
+                    {activeRealm === "game_developer" &&
+                      "Game Development"}
+                    {activeRealm === "client" && "Consulting"}
+                    {activeRealm === "community_member" && "Community"}
+                    {activeRealm === "customer" && "Getting Started"}
+                    {activeRealm === "staff" && "Operations"}
+                  </h1>
+                  <div className="px-3 py-1 rounded-full bg-aethex-500/20 border border-aethex-400/40">
+                    <p className="text-xs font-semibold text-aethex-300 uppercase tracking-wider">
+                      Dashboard
+                    </p>
+                  </div>
+                </div>
+                <p className="text-base text-muted-foreground max-w-xl">
+                  Welcome back, <span className="text-aethex-300 font-semibold">{profile?.full_name || user.email?.split("@")[0]}</span> • {streakLabel}
                 </p>
                 {longestStreak > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 pt-2">
                     <Badge
                       variant="outline"
-                      className="border-aethex-400/40 text-aethex-200"
+                      className="border-aethex-400/50 text-aethex-300 bg-aethex-500/10"
                     >
-                      Realm: {activeRealm.replace("_", " ")}
+                      <Activity className="h-3 w-3 mr-1" />
+                      {activeRealm.replace("_", " ")} Realm
+                    </Badge>
+                    <Badge
+                      variant="outline"
+                      className="border-neon-blue/50 text-neon-blue bg-neon-blue/10"
+                    >
+                      <TrendingUp className="h-3 w-3 mr-1" />
+                      {profileCompletion}% Complete
                     </Badge>
                   </div>
                 )}
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="text-sm text-muted-foreground">
-                  Profile {profileCompletion}% complete
-                </div>
-                <Button variant="outline" size="sm" className="hover-lift">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hover-lift border-border/50 hover:border-aethex-400/50 hover:bg-aethex-500/10 transition-all duration-200"
+                >
                   <Bell className="h-4 w-4 mr-2" />
-                  Notifications
+                  <span className="hidden sm:inline">Notifications</span>
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="hover-lift"
+                  className="hover-lift border-border/50 hover:border-neon-blue/50 hover:bg-neon-blue/10 transition-all duration-200"
                   onClick={() =>
                     document
                       .getElementById("settings")
@@ -809,7 +823,7 @@ export default function Dashboard() {
                   }
                 >
                   <Settings className="h-4 w-4 mr-2" />
-                  Settings
+                  <span className="hidden sm:inline">Settings</span>
                 </Button>
               </div>
             </div>
