@@ -1,4 +1,7 @@
 import Layout from "@/components/Layout";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -119,7 +122,7 @@ export default function Directory() {
       let devconnectAvailable = false;
       try {
         const probe = await fetch(
-          "/api/devconnect/rest/profiles?select=id&limit=1",
+          `${API_BASE}/api/devconnect/rest/profiles?select=id&limit=1`,
           { headers: { Accept: "application/json" } },
         );
         devconnectAvailable = probe.ok;
@@ -133,7 +136,7 @@ export default function Directory() {
       try {
         if (devconnectAvailable) {
           const data = await tryFetch(
-            "/api/devconnect/rest/profiles?select=*&limit=200",
+            `${API_BASE}/api/devconnect/rest/profiles?select=*&limit=200`,
           );
           if (!cancelled) setDevs((data || []).map(normalizeDev));
           usedDevConnect = true;
