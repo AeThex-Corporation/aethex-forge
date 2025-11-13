@@ -185,19 +185,15 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g className="animate-pulse">
-                  <circle cx="20" cy="10" r="2" fill="currentColor" className="text-aethex-200" />
-                  <circle cx="30" cy="20" r="2" fill="currentColor" className="text-aethex-200" />
-                  <circle cx="20" cy="30" r="2" fill="currentColor" className="text-aethex-200" />
-                  <circle cx="10" cy="20" r="2" fill="currentColor" className="text-aethex-200" />
-                  <circle cx="20" cy="20" r="1.5" fill="currentColor" className="text-aethex-100" />
-                </g>
-                <g stroke="currentColor" strokeWidth="0.75" opacity="0.7" className="text-aethex-200">
-                  <line x1="20" y1="10" x2="20" y2="20" />
-                  <line x1="20" y1="20" x2="30" y2="20" />
-                  <line x1="20" y1="20" x2="20" y2="30" />
-                  <line x1="20" y1="20" x2="10" y2="20" />
-                </g>
+                <circle cx="20" cy="10" r="2" fill="#e5e7eb" opacity="0.8" />
+                <circle cx="30" cy="20" r="2" fill="#e5e7eb" opacity="0.8" />
+                <circle cx="20" cy="30" r="2" fill="#e5e7eb" opacity="0.8" />
+                <circle cx="10" cy="20" r="2" fill="#e5e7eb" opacity="0.8" />
+                <circle cx="20" cy="20" r="1.5" fill="#f3f4f6" />
+                <line x1="20" y1="10" x2="20" y2="20" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
+                <line x1="20" y1="20" x2="30" y2="20" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
+                <line x1="20" y1="20" x2="20" y2="30" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
+                <line x1="20" y1="20" x2="10" y2="20" stroke="#e5e7eb" strokeWidth="1" opacity="0.7" />
               </svg>
             </button>
           </div>
