@@ -144,6 +144,8 @@ export default function LoadingScreen({
                   "from-blue-500 to-blue-400": "bg-blue-400",
                   "from-red-500 to-red-400": "bg-red-400",
                   "from-cyan-500 to-cyan-400": "bg-cyan-400",
+                  "from-purple-500 to-purple-400": "bg-purple-400",
+                  "from-pink-500 to-pink-400": "bg-pink-400",
                   "from-aethex-500 to-neon-blue": "bg-aethex-400",
                 };
                 const barColor = colorMap[accentColor] || "bg-aethex-400";
