@@ -383,6 +383,19 @@ export default function Onboarding() {
           })
         : Promise.resolve();
 
+      // Save followed arms
+      const followedArmsPromises = (data.followedArms || []).map((armId) =>
+        fetch(`${API_BASE}/api/user/followed-arms`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: user.id,
+            arm_id: armId,
+            action: "follow",
+          }),
+        })
+      );
+
       Promise.allSettled([
         interests.length
           ? fetch(`${API_BASE}/api/interests`, {
@@ -393,6 +406,7 @@ export default function Onboarding() {
           : Promise.resolve(),
         aethexAchievementService.checkAndAwardOnboardingAchievement(user.id),
         creatorProfilePromise,
+        ...followedArmsPromises,
         aethexNotificationService.createNotification(
           user.id,
           "success",
