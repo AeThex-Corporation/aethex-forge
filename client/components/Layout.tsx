@@ -609,7 +609,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/gameforge"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{
+                        color: "inherit",
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Game Development
                     </Link>
@@ -618,7 +623,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/corp"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{
+                        color: "inherit",
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Development Consulting
                     </Link>
@@ -627,7 +637,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/mentorship"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{
+                        color: "inherit",
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Mentorship Programs
                     </Link>
@@ -636,7 +651,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/research"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{
+                        color: "inherit",
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Research & Labs
                     </Link>
