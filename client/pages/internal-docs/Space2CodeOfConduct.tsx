@@ -1,15 +1,39 @@
 import InternalDocsLayout from "./InternalDocsLayout";
+import { AlertTriangle, CheckCircle, Users, Shield } from "lucide-react";
 
 export default function Space2CodeOfConduct() {
   return (
     <InternalDocsLayout title="Code of Conduct" description="How We All Act">
       <div className="space-y-8">
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+          <p className="text-slate-300 leading-relaxed mb-4">
+            <strong>KND-004: Ecosystem Code of Conduct</strong>
+          </p>
           <p className="text-slate-300 leading-relaxed">
             This Code of Conduct applies to every member of AeThex, regardless
             of role, entity, or seniority. It defines the minimum standards of
-            behavior that protect our culture, trust, and mission.
+            behavior that protect our culture, trust, and mission across all AeThex spaces: nexus.aethex.dev, dev-link.me, Discord, and our offices.
           </p>
+        </div>
+
+        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6">
+          <div className="flex items-start gap-4">
+            <AlertTriangle className="h-6 w-6 text-red-400 flex-shrink-0 mt-1" />
+            <div>
+              <h3 className="font-bold text-red-400 mb-2">🔴 ZERO TOLERANCE POLICY</h3>
+              <p className="text-slate-300 mb-3">
+                We have zero tolerance for:
+              </p>
+              <ul className="text-sm text-slate-300 space-y-1 pl-4">
+                <li>• <strong>Hate speech, slurs, or discriminatory language</strong></li>
+                <li>• <strong>Harassment, bullying, or intimidation</strong></li>
+                <li>• <strong>Doxxing (publishing private information)</strong></li>
+                <li>• <strong>Illegal content or activities</strong></li>
+                <li>• <strong>Sexual harassment or unwanted advances</strong></li>
+              </ul>
+              <p className="text-sm text-red-400 font-semibold mt-3">Violators are banned immediately and reported to authorities if necessary.</p>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-6">
