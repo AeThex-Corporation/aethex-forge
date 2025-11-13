@@ -24,6 +24,9 @@ import {
   type BotHealthStatus,
 } from "../../lib/discord-bot-status";
 
+// API Base URL for fetch requests
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface RoleMapping {
   id: string;
   arm: string;
@@ -83,7 +86,7 @@ export function AdminDiscordManagement() {
   const fetchMappings = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/discord/role-mappings");
+      const response = await fetch(`${API_BASE}/api/discord/role-mappings`);
 
       // Read body only once
       let data: any;
@@ -123,7 +126,7 @@ export function AdminDiscordManagement() {
     }
 
     try {
-      const response = await fetch("/api/discord/role-mappings", {
+      const response = await fetch(`${API_BASE}/api/discord/role-mappings`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newMapping),
@@ -154,7 +157,7 @@ export function AdminDiscordManagement() {
 
   const handleDeleteMapping = async (id: string) => {
     try {
-      const response = await fetch(`/api/discord/role-mappings?id=${id}`, {
+      const response = await fetch(`${API_BASE}/api/discord/role-mappings?id=${id}`, {
         method: "DELETE",
       });
 
@@ -190,7 +193,7 @@ export function AdminDiscordManagement() {
 
       console.log("[Discord] Registering commands with token...");
 
-      const response = await fetch("/api/discord/admin-register-commands", {
+      const response = await fetch(`${API_BASE}/api/discord/admin-register-commands`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
