@@ -4,6 +4,8 @@ import {
   aethexNotificationService,
 } from "@/lib/aethex-database-adapter";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 export type TeamVisibility = "public" | "private";
 export type MembershipRole = "owner" | "admin" | "member";
 export type ProjectRole = "owner" | "manager" | "contributor" | "viewer";

@@ -1,3 +1,5 @@
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 export interface BotHealthStatus {
   status: "online" | "offline";
   guilds: number;
@@ -9,7 +11,7 @@ export interface BotHealthStatus {
 
 export async function checkBotHealth(): Promise<BotHealthStatus> {
   try {
-    const response = await fetch("/api/discord/bot-health", {
+    const response = await fetch(`${API_BASE}/api/discord/bot-health`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
