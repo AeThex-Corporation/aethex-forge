@@ -473,26 +473,45 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
               <div className="space-y-4 animate-fade-in">
                 <div className="flex items-center space-x-3 group">
                   <svg
-                    className="h-6 w-6 transition-all duration-300 group-hover:scale-110 animate-pulse"
-                    viewBox="0 0 40 40"
+                    className="h-6 w-6 transition-all duration-300 group-hover:scale-110"
+                    viewBox="0 0 64 64"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <defs>
-                      <linearGradient id="footerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <linearGradient id="footerOSGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#818cf8" />
                         <stop offset="100%" stopColor="#a78bfa" />
                       </linearGradient>
+                      <filter id="glowFooter">
+                        <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                        <feMerge>
+                          <feMergeNode in="coloredBlur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
                     </defs>
-                    <circle cx="20" cy="10" r="2" fill="url(#footerGradient)" />
-                    <circle cx="30" cy="20" r="2" fill="url(#footerGradient)" />
-                    <circle cx="20" cy="30" r="2" fill="url(#footerGradient)" />
-                    <circle cx="10" cy="20" r="2" fill="url(#footerGradient)" />
-                    <circle cx="20" cy="20" r="2" fill="#c4b5fd" />
-                    <line x1="20" y1="10" x2="20" y2="20" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
-                    <line x1="20" y1="20" x2="30" y2="20" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
-                    <line x1="20" y1="20" x2="20" y2="30" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
-                    <line x1="20" y1="20" x2="10" y2="20" stroke="url(#footerGradient)" strokeWidth="1" opacity="0.7" />
+
+                    {/* OS Window Frame */}
+                    <rect x="6" y="6" width="52" height="52" rx="6" fill="none" stroke="url(#footerOSGradient)" strokeWidth="2" opacity="0.6" />
+
+                    {/* Title Bar */}
+                    <rect x="6" y="6" width="52" height="12" rx="6" fill="url(#footerOSGradient)" opacity="0.1" />
+                    <line x1="6" y1="18" x2="58" y2="18" stroke="url(#footerOSGradient)" strokeWidth="1" opacity="0.2" />
+
+                    {/* System Dots */}
+                    <circle cx="12" cy="12" r="1.5" fill="#818cf8" opacity="0.5" />
+                    <circle cx="18" cy="12" r="1.5" fill="#a78bfa" opacity="0.5" />
+                    <circle cx="24" cy="12" r="1.5" fill="#c4b5fd" opacity="0.5" />
+
+                    {/* Central OS Symbol */}
+                    <g transform="translate(32, 35)">
+                      <line x1="-6" y1="6" x2="0" y2="-8" stroke="url(#footerOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowFooter)" />
+                      <line x1="6" y1="6" x2="0" y2="-8" stroke="url(#footerOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowFooter)" />
+                      <line x1="-3" y1="0" x2="3" y2="0" stroke="url(#footerOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowFooter)" />
+                      <circle cx="-6" cy="6" r="1.5" fill="#818cf8" opacity="0.7" />
+                      <circle cx="6" cy="6" r="1.5" fill="#a78bfa" opacity="0.7" />
+                    </g>
                   </svg>
                   <span className="font-bold text-gradient group-hover:animate-pulse">
                     AeThex
