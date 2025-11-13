@@ -466,45 +466,55 @@ export default function Onboarding() {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Progress Bar */}
           <div className="mb-8 animate-slide-down">
-            <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-gradient animate-pulse-glow">
-                Join AeThex
-              </h1>
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-muted-foreground animate-fade-in">
-                  Step {currentStep + 1} of {steps.length}
-                </span>
-                <div className="text-sm text-muted-foreground">
-                  Already have an account?{" "}
-                  <Link
-                    to="/login?next=/onboarding"
-                    className="text-aethex-400 hover:text-aethex-300 underline transition-colors"
-                  >
-                    Sign In
-                  </Link>
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
+              <div className="space-y-2">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-aethex-300 via-neon-blue to-aethex-400 bg-clip-text text-transparent animate-pulse-glow">
+                  Welcome to AeThex
+                </h1>
+                <p className="text-muted-foreground">
+                  Complete your profile setup and unlock your potential
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 text-sm">
+                <div className="px-4 py-2 rounded-full bg-aethex-500/10 border border-aethex-400/40">
+                  <p className="text-aethex-300 font-semibold">
+                    Step <span className="text-lg">{currentStep + 1}</span> of <span className="text-lg">{steps.length}</span>
+                  </p>
                 </div>
+                <Link
+                  to="/login?next=/onboarding"
+                  className="text-aethex-400 hover:text-aethex-300 underline transition-colors font-medium"
+                >
+                  Already have an account? Sign In
+                </Link>
               </div>
             </div>
-            <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-              <div
-                className="bg-gradient-to-r from-aethex-500 to-neon-blue h-2 rounded-full transition-all duration-700 ease-out glow-blue motion-reduce:transition-none"
-                style={{
-                  width: `${((currentStep + 1) / steps.length) * 100}%`,
-                }}
-              />
-            </div>
-            {/* Step Indicators */}
-            <div className="flex justify-between mt-2">
-              {steps.map((_, index) => (
+            <div className="w-full space-y-3">
+              <div className="w-full bg-muted/40 rounded-full h-2 overflow-hidden border border-border/40">
                 <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 motion-reduce:transition-none ${
-                    index <= currentStep
-                      ? "bg-aethex-400 glow-blue animate-pulse motion-reduce:animate-none"
-                      : "bg-muted"
-                  }`}
+                  className="bg-gradient-to-r from-aethex-500 via-neon-blue to-aethex-400 h-2 rounded-full transition-all duration-700 ease-out glow-blue shadow-lg shadow-aethex-500/50 motion-reduce:transition-none"
+                  style={{
+                    width: `${((currentStep + 1) / steps.length) * 100}%`,
+                  }}
                 />
-              ))}
+              </div>
+              {/* Step Indicators */}
+              <div className="flex justify-between gap-1">
+                {steps.map((step, index) => (
+                  <div
+                    key={index}
+                    className="flex-1 h-1 rounded-full transition-all duration-300 motion-reduce:transition-none overflow-hidden"
+                  >
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        index <= currentStep
+                          ? "bg-gradient-to-r from-aethex-500 to-neon-blue glow-blue"
+                          : "bg-border/40"
+                      }`}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
