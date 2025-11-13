@@ -32,7 +32,111 @@ import { useEffect, useMemo, useState } from "react";
 import { Avatar as AvatarComponent, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { communityService } from "@/lib/supabase-service";
 
+const ARMS = [
+  {
+    id: "labs",
+    label: "AeThex Labs",
+    icon: Zap,
+    color: "from-yellow-500 to-orange-600",
+    description: "Experimental interfaces and prototypes",
+    focus: "R&D, Innovation, Emerging tech",
+  },
+  {
+    id: "gameforge",
+    label: "GameForge",
+    icon: Gamepad2,
+    color: "from-green-500 to-emerald-600",
+    description: "Game development studios and tools",
+    focus: "Game Development, Studios, Tools",
+  },
+  {
+    id: "corp",
+    label: "AeThex Corp",
+    icon: Briefcase,
+    color: "from-blue-500 to-indigo-600",
+    description: "Enterprise consulting & architecture",
+    focus: "Consulting, Architecture, Delivery",
+  },
+  {
+    id: "foundation",
+    label: "Foundation",
+    icon: BookOpen,
+    color: "from-red-500 to-rose-600",
+    description: "Education, mentorship & learning",
+    focus: "Education, Mentorship, Guidance",
+  },
+  {
+    id: "devlink",
+    label: "Dev-Link",
+    icon: Network,
+    color: "from-cyan-500 to-blue-600",
+    description: "Developer community & connections",
+    focus: "Community, Networking, Resources",
+  },
+  {
+    id: "nexus",
+    label: "Nexus",
+    icon: Sparkles,
+    color: "from-purple-500 to-pink-600",
+    description: "Opportunities and collaborations",
+    focus: "Opportunities, Collaborations, Growth",
+  },
+  {
+    id: "staff",
+    label: "Staff",
+    icon: Shield,
+    color: "from-indigo-500 to-purple-600",
+    description: "Internal operations and governance",
+    focus: "Operations, Governance, Support",
+  },
+];
+
 export default function Explore() {
+  const [featuredPosts, setFeaturedPosts] = useState<any[]>([]);
+  const [topCreators, setTopCreators] = useState<any[]>([]);
+  const [isLoadingFeed, setIsLoadingFeed] = useState(true);
+
+  useEffect(() => {
+    const loadFeaturedContent = async () => {
+      try {
+        const posts = await communityService.getPosts(12);
+        const sorted = posts
+          .sort((a: any) => (a.likes_count || 0) - (a.comments_count || 0))
+          .slice(0, 6);
+        setFeaturedPosts(sorted);
+
+        const creators = new Map<string, any>();
+        posts.forEach((post: any) => {
+          const author = post.user_profiles;
+          if (author?.id) {
+            if (!creators.has(author.id)) {
+              creators.set(author.id, {
+                ...author,
+                posts: 1,
+                likes: post.likes_count || 0,
+              });
+            } else {
+              const existing = creators.get(author.id);
+              existing.posts += 1;
+              existing.likes += post.likes_count || 0;
+            }
+          }
+        });
+
+        const topCreatorsArray = Array.from(creators.values())
+          .sort((a, b) => b.likes - a.likes)
+          .slice(0, 4);
+        setTopCreators(topCreatorsArray);
+      } catch (error) {
+        console.error("Failed to load featured content:", error);
+      } finally {
+        setIsLoadingFeed(false);
+      }
+    };
+
+    loadFeaturedContent();
+  }, []);
+
   const achievements = useMemo(
     () => [
       { metric: "10K+", label: "Active Creators" },
