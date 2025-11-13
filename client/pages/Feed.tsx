@@ -503,6 +503,7 @@ export default function Feed() {
                         post={post}
                         onLike={() => handleLike(post.id)}
                         onComment={() => handleCommentClick(post.id)}
+                        isLiked={userLikedPosts.has(post.id)}
                       />
                     </div>
                   ))
