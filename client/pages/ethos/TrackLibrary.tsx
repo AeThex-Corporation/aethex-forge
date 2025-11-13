@@ -69,15 +69,21 @@ export default function TrackLibrary() {
         params.append("limit", "100");
 
         if (searchQuery) params.append("search", searchQuery);
-        if (selectedGenre !== "All Genres") params.append("genre", selectedGenre);
-        if (licenseFilter !== "all") params.append("licenseType", licenseFilter);
+        if (selectedGenre !== "All Genres")
+          params.append("genre", selectedGenre);
+        if (licenseFilter !== "all")
+          params.append("licenseType", licenseFilter);
 
         const res = await fetch(`${API_BASE}/api/ethos/tracks?${params}`);
         const { data } = await res.json();
 
         let sorted = [...data];
         if (sortBy === "newest") {
-          sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+          sorted.sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime(),
+          );
         } else if (sortBy === "popular") {
           sorted.sort((a, b) => b.download_count - a.download_count);
         }
@@ -122,8 +128,9 @@ export default function TrackLibrary() {
                     Discover Ethos Music & SFX
                   </h1>
                   <p className="text-lg text-slate-400 max-w-2xl">
-                    Browse original music and sound effects created by Ethos Guild artists.
-                    Use freely in your projects or license commercially.
+                    Browse original music and sound effects created by Ethos
+                    Guild artists. Use freely in your projects or license
+                    commercially.
                   </p>
                 </div>
 
@@ -144,7 +151,10 @@ export default function TrackLibrary() {
                       <label className="text-xs uppercase text-slate-500 mb-2 block">
                         Genre
                       </label>
-                      <Select value={selectedGenre} onValueChange={setSelectedGenre}>
+                      <Select
+                        value={selectedGenre}
+                        onValueChange={setSelectedGenre}
+                      >
                         <SelectTrigger className="bg-slate-800 border-slate-700">
                           <SelectValue />
                         </SelectTrigger>
@@ -162,14 +172,21 @@ export default function TrackLibrary() {
                       <label className="text-xs uppercase text-slate-500 mb-2 block">
                         License Type
                       </label>
-                      <Select value={licenseFilter} onValueChange={setLicenseFilter}>
+                      <Select
+                        value={licenseFilter}
+                        onValueChange={setLicenseFilter}
+                      >
                         <SelectTrigger className="bg-slate-800 border-slate-700">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-slate-800 border-slate-700">
                           <SelectItem value="all">All Licenses</SelectItem>
-                          <SelectItem value="ecosystem">Ecosystem Free</SelectItem>
-                          <SelectItem value="commercial_sample">Commercial Demo</SelectItem>
+                          <SelectItem value="ecosystem">
+                            Ecosystem Free
+                          </SelectItem>
+                          <SelectItem value="commercial_sample">
+                            Commercial Demo
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -207,7 +224,9 @@ export default function TrackLibrary() {
               ) : tracks.length === 0 ? (
                 <div className="text-center py-12">
                   <Music className="h-12 w-12 text-slate-600 mx-auto mb-4" />
-                  <p className="text-slate-400">No tracks found. Try adjusting your filters.</p>
+                  <p className="text-slate-400">
+                    No tracks found. Try adjusting your filters.
+                  </p>
                 </div>
               ) : (
                 <div className="grid gap-4">
@@ -241,7 +260,9 @@ export default function TrackLibrary() {
                                     : "bg-blue-500/10 border-blue-500/30"
                                 }
                               >
-                                {track.license_type === "ecosystem" ? "Free" : "Commercial"}
+                                {track.license_type === "ecosystem"
+                                  ? "Free"
+                                  : "Commercial"}
                               </Badge>
                             </div>
 

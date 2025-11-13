@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -50,10 +56,13 @@ export default function AdminEthosVerification() {
   const [requests, setRequests] = useState<VerificationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("pending");
-  const [selectedRequest, setSelectedRequest] = useState<VerificationRequest | null>(null);
+  const [selectedRequest, setSelectedRequest] =
+    useState<VerificationRequest | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
   const [isConfirming, setIsConfirming] = useState(false);
-  const [confirmAction, setConfirmAction] = useState<"approve" | "reject" | null>(null);
+  const [confirmAction, setConfirmAction] = useState<
+    "approve" | "reject" | null
+  >(null);
 
   useEffect(() => {
     fetchRequests();
@@ -62,11 +71,14 @@ export default function AdminEthosVerification() {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE}/api/ethos/verification?status=${activeTab}`, {
-        headers: {
-          "x-user-id": user?.id || "",
+      const response = await fetch(
+        `${API_BASE}/api/ethos/verification?status=${activeTab}`,
+        {
+          headers: {
+            "x-user-id": user?.id || "",
+          },
         },
-      });
+      );
 
       if (!response.ok) throw new Error("Failed to fetch requests");
 
@@ -152,7 +164,9 @@ export default function AdminEthosVerification() {
           <Music className="w-8 h-8 text-pink-500" />
           Ethos Guild Artist Verification
         </h1>
-        <p className="text-gray-400">Manage artist verification applications and approve verified creators</p>
+        <p className="text-gray-400">
+          Manage artist verification applications and approve verified creators
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -162,8 +176,12 @@ export default function AdminEthosVerification() {
             <CardTitle className="text-lg">Pending</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-yellow-500">{stats.pending}</div>
-            <p className="text-sm text-gray-400">Applications awaiting review</p>
+            <div className="text-3xl font-bold text-yellow-500">
+              {stats.pending}
+            </div>
+            <p className="text-sm text-gray-400">
+              Applications awaiting review
+            </p>
           </CardContent>
         </Card>
 
@@ -172,7 +190,9 @@ export default function AdminEthosVerification() {
             <CardTitle className="text-lg">Approved</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-500">{stats.approved}</div>
+            <div className="text-3xl font-bold text-green-500">
+              {stats.approved}
+            </div>
             <p className="text-sm text-gray-400">Verified artists</p>
           </CardContent>
         </Card>
@@ -182,7 +202,9 @@ export default function AdminEthosVerification() {
             <CardTitle className="text-lg">Rejected</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-red-500">{stats.rejected}</div>
+            <div className="text-3xl font-bold text-red-500">
+              {stats.rejected}
+            </div>
             <p className="text-sm text-gray-400">Declined applications</p>
           </CardContent>
         </Card>
@@ -192,21 +214,33 @@ export default function AdminEthosVerification() {
       <Card>
         <CardHeader>
           <CardTitle>Verification Requests</CardTitle>
-          <CardDescription>Review and approve artist applications</CardDescription>
+          <CardDescription>
+            Review and approve artist applications
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-6">
-              <TabsTrigger value="pending">Pending ({stats.pending})</TabsTrigger>
-              <TabsTrigger value="approved">Approved ({stats.approved})</TabsTrigger>
-              <TabsTrigger value="rejected">Rejected ({stats.rejected})</TabsTrigger>
+              <TabsTrigger value="pending">
+                Pending ({stats.pending})
+              </TabsTrigger>
+              <TabsTrigger value="approved">
+                Approved ({stats.approved})
+              </TabsTrigger>
+              <TabsTrigger value="rejected">
+                Rejected ({stats.rejected})
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value={activeTab} className="space-y-4">
               {loading ? (
-                <div className="text-center py-8 text-gray-400">Loading requests...</div>
+                <div className="text-center py-8 text-gray-400">
+                  Loading requests...
+                </div>
               ) : requests.length === 0 ? (
-                <div className="text-center py-8 text-gray-400">No {activeTab} verification requests</div>
+                <div className="text-center py-8 text-gray-400">
+                  No {activeTab} verification requests
+                </div>
               ) : (
                 requests.map((request) => (
                   <VerificationRequestCard
@@ -237,7 +271,9 @@ export default function AdminEthosVerification() {
 
           {confirmAction === "reject" && (
             <div className="mt-4">
-              <label className="block text-sm font-medium mb-2">Rejection Reason (optional)</label>
+              <label className="block text-sm font-medium mb-2">
+                Rejection Reason (optional)
+              </label>
               <Textarea
                 placeholder="Provide feedback to help them improve their application..."
                 value={rejectionReason}
@@ -301,14 +337,23 @@ function VerificationRequestCard({
           )}
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-semibold">{request.user_profiles?.full_name}</h3>
-              <Badge variant="outline" className="text-xs flex items-center gap-1">
+              <h3 className="font-semibold">
+                {request.user_profiles?.full_name}
+              </h3>
+              <Badge
+                variant="outline"
+                className="text-xs flex items-center gap-1"
+              >
                 {getStatusIcon(request.status)}
                 {request.status}
               </Badge>
             </div>
-            <p className="text-sm text-gray-400">{request.user_profiles?.email}</p>
-            <p className="text-xs text-gray-500 mt-1">Applied: {formattedDate}</p>
+            <p className="text-sm text-gray-400">
+              {request.user_profiles?.email}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Applied: {formattedDate}
+            </p>
           </div>
         </div>
 
@@ -323,7 +368,11 @@ function VerificationRequestCard({
               <XCircle className="w-4 h-4 mr-1" />
               Reject
             </Button>
-            <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => onApprove(request)}>
+            <Button
+              size="sm"
+              className="bg-green-600 hover:bg-green-700"
+              onClick={() => onApprove(request)}
+            >
               <CheckCircle className="w-4 h-4 mr-1" />
               Verify
             </Button>
@@ -335,7 +384,9 @@ function VerificationRequestCard({
         {request.ethos_artist_profiles?.bio && (
           <div>
             <p className="text-xs font-medium text-gray-400 mb-1">Bio</p>
-            <p className="text-sm text-gray-300">{request.ethos_artist_profiles.bio}</p>
+            <p className="text-sm text-gray-300">
+              {request.ethos_artist_profiles.bio}
+            </p>
           </div>
         )}
 
@@ -354,14 +405,18 @@ function VerificationRequestCard({
 
         {request.submission_notes && (
           <div>
-            <p className="text-xs font-medium text-gray-400 mb-1">Application Notes</p>
+            <p className="text-xs font-medium text-gray-400 mb-1">
+              Application Notes
+            </p>
             <p className="text-sm text-gray-300">{request.submission_notes}</p>
           </div>
         )}
 
         {request.portfolio_links && request.portfolio_links.length > 0 && (
           <div>
-            <p className="text-xs font-medium text-gray-400 mb-2">Portfolio Links</p>
+            <p className="text-xs font-medium text-gray-400 mb-2">
+              Portfolio Links
+            </p>
             <div className="flex flex-wrap gap-2">
               {request.portfolio_links.map((link, idx) => (
                 <a
@@ -381,7 +436,9 @@ function VerificationRequestCard({
 
         {request.rejection_reason && request.status === "rejected" && (
           <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded">
-            <p className="text-xs font-medium text-red-400 mb-1">Rejection Reason</p>
+            <p className="text-xs font-medium text-red-400 mb-1">
+              Rejection Reason
+            </p>
             <p className="text-sm text-red-300">{request.rejection_reason}</p>
           </div>
         )}

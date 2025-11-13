@@ -1132,9 +1132,12 @@ export default function Dashboard() {
                             onChange={async (e) => {
                               const ensureBuckets = async () => {
                                 try {
-                                  await fetch(`${API_BASE}/api/storage/ensure-buckets`, {
-                                    method: "POST",
-                                  });
+                                  await fetch(
+                                    `${API_BASE}/api/storage/ensure-buckets`,
+                                    {
+                                      method: "POST",
+                                    },
+                                  );
                                 } catch {}
                               };
                               const file = e.target.files?.[0];
@@ -1210,9 +1213,12 @@ export default function Dashboard() {
                             onChange={async (e) => {
                               const ensureBuckets = async () => {
                                 try {
-                                  await fetch(`${API_BASE}/api/storage/ensure-buckets`, {
-                                    method: "POST",
-                                  });
+                                  await fetch(
+                                    `${API_BASE}/api/storage/ensure-buckets`,
+                                    {
+                                      method: "POST",
+                                    },
+                                  );
                                 } catch {}
                               };
                               const file = e.target.files?.[0];

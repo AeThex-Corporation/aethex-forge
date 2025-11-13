@@ -68,11 +68,19 @@ export default function ArtistProfile() {
   }, [userId]);
 
   if (loading) {
-    return <Layout><div className="py-20 text-center">Loading artist profile...</div></Layout>;
+    return (
+      <Layout>
+        <div className="py-20 text-center">Loading artist profile...</div>
+      </Layout>
+    );
   }
 
   if (!artist) {
-    return <Layout><div className="py-20 text-center">Artist not found</div></Layout>;
+    return (
+      <Layout>
+        <div className="py-20 text-center">Artist not found</div>
+      </Layout>
+    );
   }
 
   const memberSince = new Date(artist.created_at).toLocaleDateString("en-US", {
@@ -130,7 +138,9 @@ export default function ArtistProfile() {
                     </div>
                     <div>
                       <p className="text-slate-500">Member Since</p>
-                      <p className="text-xl font-bold text-white">{memberSince}</p>
+                      <p className="text-xl font-bold text-white">
+                        {memberSince}
+                      </p>
                     </div>
                   </div>
 
@@ -235,7 +245,9 @@ export default function ArtistProfile() {
                     >
                       <CardContent className="p-4 flex items-center justify-between">
                         <div className="flex-1">
-                          <h3 className="text-white font-semibold">{track.title}</h3>
+                          <h3 className="text-white font-semibold">
+                            {track.title}
+                          </h3>
                           <div className="flex gap-2 mt-1">
                             {track.genre.map((g) => (
                               <Badge

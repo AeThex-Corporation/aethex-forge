@@ -506,11 +506,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       ) {
         try {
           // Check if this email is linked to another account
-          const response = await fetch(`${API_BASE}/api/user/resolve-linked-email`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-          });
+          const response = await fetch(
+            `${API_BASE}/api/user/resolve-linked-email`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email }),
+            },
+          );
 
           if (response.ok) {
             const { primaryEmail } = await response.json();

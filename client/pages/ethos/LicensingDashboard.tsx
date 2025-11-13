@@ -11,12 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { CheckCircle2, Clock, FileText, AlertCircle } from "lucide-react";
@@ -84,20 +79,21 @@ export default function LicensingDashboard() {
 
   const handleApprove = async (id: string) => {
     try {
-      const res = await fetch(`${API_BASE}/api/ethos/licensing-agreements?id=${id}`, {
-        method: "PUT",
-        headers: {
-          "x-user-id": user!.id,
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `${API_BASE}/api/ethos/licensing-agreements?id=${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "x-user-id": user!.id,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ approved: true }),
         },
-        body: JSON.stringify({ approved: true }),
-      });
+      );
 
       if (res.ok) {
         setAgreements((prev) =>
-          prev.map((a) =>
-            a.id === id ? { ...a, approved: true } : a,
-          ),
+          prev.map((a) => (a.id === id ? { ...a, approved: true } : a)),
         );
         toast.success({
           title: "Agreement approved",
@@ -134,7 +130,11 @@ export default function LicensingDashboard() {
   };
 
   if (loading) {
-    return <Layout><div className="py-20 text-center">Loading agreements...</div></Layout>;
+    return (
+      <Layout>
+        <div className="py-20 text-center">Loading agreements...</div>
+      </Layout>
+    );
   }
 
   const pendingCount = agreements.filter((a) => !a.approved).length;
@@ -172,7 +172,9 @@ export default function LicensingDashboard() {
 
               <Card className="bg-slate-900/50 border-slate-800">
                 <CardContent className="pt-6">
-                  <p className="text-slate-400 text-xs uppercase mb-2">Pending</p>
+                  <p className="text-slate-400 text-xs uppercase mb-2">
+                    Pending
+                  </p>
                   <p className="text-2xl font-bold text-yellow-400">
                     {pendingCount}
                   </p>
@@ -181,7 +183,9 @@ export default function LicensingDashboard() {
 
               <Card className="bg-slate-900/50 border-slate-800">
                 <CardContent className="pt-6">
-                  <p className="text-slate-400 text-xs uppercase mb-2">Approved</p>
+                  <p className="text-slate-400 text-xs uppercase mb-2">
+                    Approved
+                  </p>
                   <p className="text-2xl font-bold text-green-400">
                     {approvedCount}
                   </p>
@@ -287,11 +291,7 @@ interface AgreementCardProps {
   onDelete: () => void;
 }
 
-function AgreementCard({
-  agreement,
-  onApprove,
-  onDelete,
-}: AgreementCardProps) {
+function AgreementCard({ agreement, onApprove, onDelete }: AgreementCardProps) {
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -300,11 +300,12 @@ function AgreementCard({
     });
   };
 
-  const licenseTypeLabel = {
-    commercial_one_time: "One-time License",
-    commercial_exclusive: "Exclusive License",
-    broadcast: "Broadcast License",
-  }[agreement.license_type] || agreement.license_type;
+  const licenseTypeLabel =
+    {
+      commercial_one_time: "One-time License",
+      commercial_exclusive: "Exclusive License",
+      broadcast: "Broadcast License",
+    }[agreement.license_type] || agreement.license_type;
 
   return (
     <Card className="bg-slate-900/50 border-slate-800">
@@ -347,7 +348,9 @@ function AgreementCard({
               {agreement.expires_at && (
                 <div>
                   <p className="text-slate-500">Expires</p>
-                  <p className="text-white">{formatDate(agreement.expires_at)}</p>
+                  <p className="text-white">
+                    {formatDate(agreement.expires_at)}
+                  </p>
                 </div>
               )}
             </div>
@@ -360,7 +363,11 @@ function AgreementCard({
               asChild
               className="border-slate-700"
             >
-              <a href={agreement.agreement_url} target="_blank" rel="noreferrer">
+              <a
+                href={agreement.agreement_url}
+                target="_blank"
+                rel="noreferrer"
+              >
                 View Contract
               </a>
             </Button>

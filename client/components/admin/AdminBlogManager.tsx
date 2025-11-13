@@ -93,7 +93,9 @@ export default function AdminBlogManager() {
   const handleDeleteBlogPost = useCallback(async (slug: string) => {
     setDeleting(slug);
     try {
-      const res = await fetch(`${API_BASE}/api/blog/${slug}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE}/api/blog/${slug}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setBlogPosts((posts) => posts.filter((p) => p.slug !== slug));
         aethexToast.success({

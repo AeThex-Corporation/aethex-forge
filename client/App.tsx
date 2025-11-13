@@ -256,7 +256,10 @@ const App = () => (
                     <Route path="/web3-callback" element={<Web3Callback />} />
                     <Route path="/discord-verify" element={<DiscordVerify />} />
                     <Route path="/discord" element={<DiscordActivity />} />
-                    <Route path="/discord/callback" element={<DiscordOAuthCallback />} />
+                    <Route
+                      path="/discord/callback"
+                      element={<DiscordOAuthCallback />}
+                    />
 
                     {/* Creator Network routes */}
                     <Route path="/creators" element={<CreatorDirectory />} />

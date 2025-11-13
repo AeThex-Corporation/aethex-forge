@@ -118,9 +118,12 @@ export default function ArtistSettings() {
         }
 
         // Fetch verification status
-        const verRes = await fetch(`${API_BASE}/api/ethos/verification?status=pending`, {
-          headers: { "x-user-id": user.id },
-        });
+        const verRes = await fetch(
+          `${API_BASE}/api/ethos/verification?status=pending`,
+          {
+            headers: { "x-user-id": user.id },
+          },
+        );
 
         if (verRes.ok) {
           const { data: requests } = await verRes.json();

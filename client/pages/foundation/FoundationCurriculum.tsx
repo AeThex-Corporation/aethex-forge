@@ -72,7 +72,9 @@ export default function FoundationCurriculum() {
         if (selectedCategory) params.set("category", selectedCategory);
         if (selectedDifficulty) params.set("difficulty", selectedDifficulty);
 
-        const response = await fetch(`${API_BASE}/api/foundation/courses?${params}`);
+        const response = await fetch(
+          `${API_BASE}/api/foundation/courses?${params}`,
+        );
         if (!response.ok) throw new Error("Failed to fetch courses");
 
         let data = await response.json();

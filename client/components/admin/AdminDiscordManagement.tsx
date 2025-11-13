@@ -157,9 +157,12 @@ export function AdminDiscordManagement() {
 
   const handleDeleteMapping = async (id: string) => {
     try {
-      const response = await fetch(`${API_BASE}/api/discord/role-mappings?id=${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${API_BASE}/api/discord/role-mappings?id=${id}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       if (!response.ok) throw new Error("Failed to delete mapping");
       setMappings(mappings.filter((m) => m.id !== id));
@@ -193,13 +196,16 @@ export function AdminDiscordManagement() {
 
       console.log("[Discord] Registering commands with token...");
 
-      const response = await fetch(`${API_BASE}/api/discord/admin-register-commands`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${adminToken}`,
+      const response = await fetch(
+        `${API_BASE}/api/discord/admin-register-commands`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${adminToken}`,
+          },
         },
-      });
+      );
 
       console.log("[Discord] Response status:", response.status);
 

@@ -216,9 +216,12 @@ export default function AdminStaffDirectory() {
 
     try {
       setIsDeleting(true);
-      const response = await fetch(`${API_BASE}/api/staff/members-detail?id=${memberId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${API_BASE}/api/staff/members-detail?id=${memberId}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       const result = await response.json();
 

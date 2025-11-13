@@ -126,7 +126,9 @@ export default function AdminFoundationManager() {
   const fetchAchievements = async () => {
     try {
       setLoadingAchievements(true);
-      const response = await fetch(`${API_BASE}/api/admin/foundation/achievements`);
+      const response = await fetch(
+        `${API_BASE}/api/admin/foundation/achievements`,
+      );
       if (!response.ok) throw new Error("Failed to fetch achievements");
       const data = await response.json();
       setAchievements(data || []);

@@ -259,7 +259,9 @@ export const aethexSocialService = {
   async listMentorshipRequests(userId: string, role?: "mentor" | "mentee") {
     const qs = new URLSearchParams({ user_id: userId });
     if (role) qs.set("role", role);
-    const resp = await fetch(`${API_BASE}/api/mentorship/requests?${qs.toString()}`);
+    const resp = await fetch(
+      `${API_BASE}/api/mentorship/requests?${qs.toString()}`,
+    );
     if (!resp.ok) return [] as any[];
     return (await resp.json()) as any[];
   },
