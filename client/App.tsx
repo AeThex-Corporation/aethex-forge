@@ -322,10 +322,13 @@ const App = () => (
                       path="/game-development"
                       element={<GameDevelopment />}
                     />
+                    {/* Legacy redirects - consolidated into /corp */}
                     <Route
                       path="/consulting"
-                      element={<DevelopmentConsulting />}
+                      element={<Navigate to="/corp" replace />}
                     />
+                    <Route path="/services" element={<Navigate to="/corp" replace />} />
+
                     <Route
                       path="/mentorship"
                       element={<MentorshipPrograms />}
