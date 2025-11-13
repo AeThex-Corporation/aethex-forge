@@ -78,7 +78,8 @@ export default async function handler(req: any, res: any) {
       fields: [
         {
           name: "Arm",
-          value: post.arm_affiliation.charAt(0).toUpperCase() +
+          value:
+            post.arm_affiliation.charAt(0).toUpperCase() +
             post.arm_affiliation.slice(1),
           inline: true,
         },
@@ -102,8 +103,7 @@ export default async function handler(req: any, res: any) {
       },
       body: JSON.stringify({
         username: "AeThex Community Feed",
-        avatar_url:
-          "https://aethex.dev/logo.png", // Update with your logo URL
+        avatar_url: "https://aethex.dev/logo.png", // Update with your logo URL
         embeds: [embed],
       }),
     });

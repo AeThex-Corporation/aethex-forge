@@ -143,23 +143,21 @@ async function handleSyncProducts(req: any, res: any) {
     const syncResults = [];
 
     for (const product of products) {
-      const { error } = await supabase
-        .from("fourthwall_products")
-        .upsert(
-          {
-            fourthwall_id: product.id,
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            currency: product.currency,
-            image_url: product.image_url,
-            category: product.category,
-            synced_at: new Date().toISOString(),
-          },
-          {
-            onConflict: "fourthwall_id",
-          },
-        );
+      const { error } = await supabase.from("fourthwall_products").upsert(
+        {
+          fourthwall_id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          currency: product.currency,
+          image_url: product.image_url,
+          category: product.category,
+          synced_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "fourthwall_id",
+        },
+      );
 
       syncResults.push({
         product_id: product.id,
@@ -267,16 +265,14 @@ async function handleOrderCreated(data: any) {
     const { order_id, customer_email, items, total_amount } = data;
 
     // Store order in database for later processing
-    const { error } = await supabase
-      .from("fourthwall_orders")
-      .insert({
-        fourthwall_order_id: order_id,
-        customer_email,
-        items: items || [],
-        total_amount,
-        status: "pending",
-        created_at: new Date().toISOString(),
-      });
+    const { error } = await supabase.from("fourthwall_orders").insert({
+      fourthwall_order_id: order_id,
+      customer_email,
+      items: items || [],
+      total_amount,
+      status: "pending",
+      created_at: new Date().toISOString(),
+    });
 
     if (error) {
       console.error("[Fourthwall] Failed to store order:", error);

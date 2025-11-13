@@ -16,10 +16,7 @@ module.exports = {
     if (message.author.bot) return;
 
     // Only listen to messages in the feed channel
-    if (
-      FEED_CHANNEL_ID &&
-      message.channelId !== FEED_CHANNEL_ID
-    ) {
+    if (FEED_CHANNEL_ID && message.channelId !== FEED_CHANNEL_ID) {
       return;
     }
 
@@ -56,7 +53,10 @@ module.exports = {
         .single();
 
       if (profileError || !userProfile) {
-        console.error("[Feed Sync] Could not fetch user profile:", profileError);
+        console.error(
+          "[Feed Sync] Could not fetch user profile:",
+          profileError,
+        );
         return;
       }
 
@@ -81,9 +81,9 @@ module.exports = {
 
           if (imageExtensions.some((ext) => attachmentLower.endsWith(ext))) {
             mediaType = "image";
-          } else if (videoExtensions.some((ext) =>
-            attachmentLower.endsWith(ext),
-          )) {
+          } else if (
+            videoExtensions.some((ext) => attachmentLower.endsWith(ext))
+          ) {
             mediaType = "video";
           }
         }
@@ -106,8 +106,7 @@ module.exports = {
         else if (guildNameLower.includes("corp")) armAffiliation = "corp";
         else if (guildNameLower.includes("foundation"))
           armAffiliation = "foundation";
-        else if (guildNameLower.includes("devlink"))
-          armAffiliation = "devlink";
+        else if (guildNameLower.includes("devlink")) armAffiliation = "devlink";
         else if (guildNameLower.includes("nexus")) armAffiliation = "nexus";
         else if (guildNameLower.includes("staff")) armAffiliation = "staff";
       }
@@ -149,7 +148,10 @@ module.exports = {
       try {
         await message.react("✅");
       } catch (reactionError) {
-        console.warn("[Feed Sync] Could not add success reaction:", reactionError);
+        console.warn(
+          "[Feed Sync] Could not add success reaction:",
+          reactionError,
+        );
       }
 
       // Send confirmation DM
@@ -166,7 +168,10 @@ module.exports = {
       try {
         await message.react("⚠️");
       } catch (reactionError) {
-        console.warn("[Feed Sync] Could not add warning reaction:", reactionError);
+        console.warn(
+          "[Feed Sync] Could not add warning reaction:",
+          reactionError,
+        );
       }
     }
   },
