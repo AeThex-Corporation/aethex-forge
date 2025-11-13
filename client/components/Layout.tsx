@@ -677,7 +677,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/about"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{ color: "inherit" }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       About AeThex
                     </Link>
@@ -686,7 +689,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/opportunities"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{ color: "inherit" }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Opportunities
                     </Link>
@@ -695,7 +701,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/community"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{ color: "inherit" }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Community Hub
                     </Link>
@@ -704,7 +713,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/changelog"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{ color: "inherit" }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Changelog
                     </Link>
@@ -713,7 +725,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/status"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{ color: "inherit" }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       System Status
                     </Link>
@@ -722,7 +737,10 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     <Link
                       to="/investors"
                       onClick={scrollToTop}
-                      className="hover:text-aethex-400 transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="transition-all duration-300 hover:translate-x-1 inline-block"
+                      style={{ color: "inherit" }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
                     >
                       Investors
                     </Link>
