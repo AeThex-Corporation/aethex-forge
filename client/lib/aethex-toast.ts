@@ -4,6 +4,7 @@ interface AethexToastOptions {
   title?: string;
   description?: string;
   duration?: number;
+  accentColor?: string;
 }
 
 export const aethexToast = {
