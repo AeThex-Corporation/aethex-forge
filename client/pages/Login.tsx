@@ -461,8 +461,20 @@ export default function Login() {
                   </div>
                 </div>
 
+                {/* Divider */}
+                <div className="relative my-2">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-border/30"></div>
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="px-2 bg-card/50 text-muted-foreground">
+                      Or continue with email
+                    </span>
+                  </div>
+                </div>
+
                 {/* Email/Password Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 mt-6">
                   {isSignUp && (
                     <div className="space-y-2">
                       <Label htmlFor="fullName" className="text-sm font-medium">
