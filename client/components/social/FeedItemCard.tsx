@@ -118,24 +118,24 @@ export function FeedItemCard({
       armColor.bg,
       "bg-background/70"
     )}>
-      <CardHeader className="pb-0">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-1 items-start gap-3">
-            <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30">
+      <CardHeader className="pb-0 p-3 sm:p-4 lg:p-6">
+        <div className="flex items-start justify-between gap-2 sm:gap-3 lg:gap-4">
+          <div className="flex flex-1 items-start gap-2 sm:gap-3">
+            <Avatar className="h-10 sm:h-12 w-10 sm:w-12 ring-2 ring-aethex-500/30 flex-shrink-0">
               <AvatarImage
                 src={item.authorAvatar || undefined}
                 alt={item.authorName}
               />
-              <AvatarFallback className="bg-aethex-500/10 text-aethex-300">
+              <AvatarFallback className="bg-aethex-500/10 text-aethex-300 text-xs sm:text-sm">
                 {item.authorName?.[0]?.toUpperCase() || "U"}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1 space-y-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <CardTitle className="text-lg font-semibold text-foreground">
+              <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
+                <CardTitle className="text-sm sm:text-base lg:text-lg font-semibold text-foreground truncate">
                   {item.authorName}
                 </CardTitle>
-                <Badge className={cn("text-xs font-bold uppercase", armColor.badge)}>
+                <Badge className={cn("text-xs font-bold uppercase px-2 py-0.5", armColor.badge)}>
                   {armLabel}
                 </Badge>
               </div>
@@ -146,19 +146,20 @@ export function FeedItemCard({
             variant={isFollowing ? "outline" : "default"}
             onClick={() => onToggleFollow(item.authorId)}
             className={cn(
-              "rounded-full border-border/60 flex-shrink-0",
+              "rounded-full border-border/60 flex-shrink-0 text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4",
               isFollowing
                 ? "bg-background/80 text-foreground"
                 : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white",
             )}
           >
-            {isFollowing ? "Following" : "Follow"}
+            <span className="hidden sm:inline">{isFollowing ? "Following" : "Follow"}</span>
+            <span className="sm:hidden">{isFollowing ? "✓" : "+"}</span>
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-3 sm:space-y-4 lg:space-y-5 p-3 sm:p-4 lg:p-6">
         {hasMedia && (
-          <div className="relative w-full overflow-hidden rounded-2xl border border-border/40 bg-black/70 aspect-video max-h-96">
+          <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl border border-border/40 bg-black/70 aspect-video max-h-96">
             {item.mediaType === "video" ? (
               <>
                 <video
@@ -193,22 +194,22 @@ export function FeedItemCard({
         )}
 
         {item.caption && (
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
             {item.caption}
           </p>
         )}
 
-        <div className="rounded-2xl border border-border/40 bg-background/80 p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
-            <div className="flex items-center gap-3">
+        <div className="rounded-xl sm:rounded-2xl border border-border/40 bg-background/80 p-2 sm:p-3 lg:p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
+            <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 pl-2 pr-3"
+                className="gap-1 sm:gap-2 h-8 px-2 sm:px-3"
                 onClick={() => onLike(item.id)}
               >
-                <Heart className="h-4 w-4 text-aethex-400" />
-                <span className="font-medium text-foreground">
+                <Heart className="h-3 sm:h-4 w-3 sm:w-4 text-aethex-400" />
+                <span className="font-medium text-foreground text-xs sm:text-sm">
                   {item.likes.toLocaleString()}
                 </span>
                 <span className="hidden sm:inline">Like</span>
@@ -216,20 +217,20 @@ export function FeedItemCard({
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 pl-2 pr-3"
+                className="gap-1 sm:gap-2 h-8 px-2 sm:px-3"
                 onClick={() => setShowComments((s) => !s)}
               >
-                <MessageCircle className="h-4 w-4 text-aethex-400" />
-                <span className="font-medium text-foreground">
+                <MessageCircle className="h-3 sm:h-4 w-3 sm:w-4 text-aethex-400" />
+                <span className="font-medium text-foreground text-xs sm:text-sm">
                   {item.comments.toLocaleString()}
                 </span>
                 <span className="hidden sm:inline">Comment</span>
               </Button>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Badge
                 variant="outline"
-                className="border-border/60 bg-background/60 text-xs uppercase tracking-wide"
+                className="border-border/60 bg-background/60 text-xs uppercase tracking-wide px-2 py-0.5"
               >
                 {item.mediaType === "video"
                   ? "Video"
@@ -237,22 +238,22 @@ export function FeedItemCard({
                     ? "Image"
                     : "Update"}
               </Badge>
-              <Separator orientation="vertical" className="h-6" />
+              <Separator orientation="vertical" className="h-4 sm:h-5" />
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 pl-2 pr-3"
+                className="gap-1 sm:gap-2 h-8 px-2 sm:px-3"
                 onClick={() => onShare(item.id)}
               >
-                <Share2 className="h-4 w-4" />
-                Share
+                <Share2 className="h-3 sm:h-4 w-3 sm:w-4" />
+                <span className="hidden sm:inline">Share</span>
               </Button>
             </div>
           </div>
         </div>
 
         {showComments && (
-          <div className="rounded-2xl border border-border/40 bg-background/80 p-4 space-y-3">
+          <div className="rounded-xl sm:rounded-2xl border border-border/40 bg-background/80 p-3 sm:p-4 space-y-2 sm:space-y-3">
             <div className="space-y-2 max-h-60 overflow-auto pr-1">
               {loadingComments ? (
                 <p className="text-sm text-muted-foreground">
