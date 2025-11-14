@@ -118,21 +118,21 @@ export function FeedItemCard({
       armColor.bg,
       "bg-background/70"
     )}>
-      <CardHeader className="pb-0 p-3 sm:p-4 lg:p-6">
-        <div className="flex items-start justify-between gap-2 sm:gap-3 lg:gap-4">
-          <div className="flex flex-1 items-start gap-2 sm:gap-3">
-            <Avatar className="h-10 sm:h-12 w-10 sm:w-12 ring-2 ring-aethex-500/30 flex-shrink-0">
+      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6">
+        <div className="flex items-start justify-between gap-3 sm:gap-4">
+          <div className="flex flex-1 items-start gap-3 sm:gap-4">
+            <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30 flex-shrink-0">
               <AvatarImage
                 src={item.authorAvatar || undefined}
                 alt={item.authorName}
               />
-              <AvatarFallback className="bg-aethex-500/10 text-aethex-300 text-xs sm:text-sm">
+              <AvatarFallback className="bg-aethex-500/10 text-aethex-300 text-sm">
                 {item.authorName?.[0]?.toUpperCase() || "U"}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1 space-y-1">
-              <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
-                <CardTitle className="text-sm sm:text-base lg:text-lg font-semibold text-foreground truncate">
+              <div className="flex items-center gap-2 flex-wrap">
+                <CardTitle className="text-base sm:text-lg lg:text-lg font-semibold text-foreground">
                   {item.authorName}
                 </CardTitle>
                 <Badge className={cn("text-xs font-bold uppercase px-2 py-0.5", armColor.badge)}>
@@ -156,7 +156,7 @@ export function FeedItemCard({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3 sm:space-y-4 lg:space-y-5 p-3 sm:p-4 lg:p-6">
+      <CardContent className="space-y-4 sm:space-y-5 lg:space-y-6 p-4 sm:p-5 lg:p-6">
         {hasMedia && (
           <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl border border-border/40 bg-black/70 aspect-video max-h-96">
             {item.mediaType === "video" ? (
@@ -193,22 +193,22 @@ export function FeedItemCard({
         )}
 
         {item.caption && (
-          <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {item.caption}
           </p>
         )}
 
-        <div className="rounded-xl sm:rounded-2xl border border-border/40 bg-background/80 p-2 sm:p-3 lg:p-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
-            <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
+        <div className="rounded-2xl border border-border/40 bg-background/80 p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
+            <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-1 sm:gap-2 h-8 px-2 sm:px-3"
+                className="gap-2 pl-2 pr-3"
                 onClick={() => onLike(item.id)}
               >
-                <Heart className="h-3 sm:h-4 w-3 sm:w-4 text-aethex-400" />
-                <span className="font-medium text-foreground text-xs sm:text-sm">
+                <Heart className="h-4 w-4 text-aethex-400" />
+                <span className="font-medium text-foreground">
                   {item.likes.toLocaleString()}
                 </span>
                 <span className="hidden sm:inline">Like</span>
@@ -216,20 +216,20 @@ export function FeedItemCard({
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-1 sm:gap-2 h-8 px-2 sm:px-3"
+                className="gap-2 pl-2 pr-3"
                 onClick={() => setShowComments((s) => !s)}
               >
-                <MessageCircle className="h-3 sm:h-4 w-3 sm:w-4 text-aethex-400" />
-                <span className="font-medium text-foreground text-xs sm:text-sm">
+                <MessageCircle className="h-4 w-4 text-aethex-400" />
+                <span className="font-medium text-foreground">
                   {item.comments.toLocaleString()}
                 </span>
                 <span className="hidden sm:inline">Comment</span>
               </Button>
             </div>
-            <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex items-center gap-2">
               <Badge
                 variant="outline"
-                className="border-border/60 bg-background/60 text-xs uppercase tracking-wide px-2 py-0.5"
+                className="border-border/60 bg-background/60 text-xs uppercase tracking-wide"
               >
                 {item.mediaType === "video"
                   ? "Video"
@@ -237,51 +237,51 @@ export function FeedItemCard({
                     ? "Image"
                     : "Update"}
               </Badge>
-              <Separator orientation="vertical" className="h-4 sm:h-5" />
+              <Separator orientation="vertical" className="h-6" />
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-1 sm:gap-2 h-8 px-2 sm:px-3"
+                className="gap-2 pl-2 pr-3"
                 onClick={() => onShare(item.id)}
               >
-                <Share2 className="h-3 sm:h-4 w-3 sm:w-4" />
-                <span className="hidden sm:inline">Share</span>
+                <Share2 className="h-4 w-4" />
+                Share
               </Button>
             </div>
           </div>
         </div>
 
         {showComments && (
-          <div className="rounded-xl sm:rounded-2xl border border-border/40 bg-background/80 p-3 sm:p-4 space-y-2 sm:space-y-3">
+          <div className="rounded-2xl border border-border/40 bg-background/80 p-4 space-y-3">
             <div className="space-y-2 max-h-60 overflow-auto pr-1">
               {loadingComments ? (
                 <p className="text-sm text-muted-foreground">
                   Loading comments…
                 </p>
               ) : comments.length === 0 ? (
-                <p className="text-xs sm:text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   Be the first to comment.
                 </p>
               ) : (
                 comments.map((c) => (
-                  <div key={c.id} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm">
-                    <Avatar className="h-6 sm:h-8 w-6 sm:w-8 flex-shrink-0">
+                  <div key={c.id} className="flex items-start gap-3">
+                    <Avatar className="h-8 w-8">
                       <AvatarImage
                         src={c.user_profiles?.avatar_url || undefined}
                       />
-                      <AvatarFallback className="text-xs">
+                      <AvatarFallback>
                         {(c.user_profiles?.full_name ||
                           c.user_profiles?.username ||
                           "U")[0]?.toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="min-w-0 flex-1">
-                      <div className="font-medium text-foreground">
+                    <div>
+                      <div className="text-sm font-medium">
                         {c.user_profiles?.full_name ||
                           c.user_profiles?.username ||
                           "Member"}
                       </div>
-                      <div className="text-foreground/90 whitespace-pre-wrap break-words">
+                      <div className="text-sm text-foreground/90 whitespace-pre-wrap">
                         {c.content}
                       </div>
                     </div>
@@ -289,18 +289,16 @@ export function FeedItemCard({
                 ))
               )}
             </div>
-            <div className="flex flex-col sm:flex-row items-end gap-2 sm:gap-3">
+            <div className="flex items-start gap-3">
               <Textarea
                 placeholder="Write a comment…"
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                className="min-h-[36px] sm:min-h-[44px] text-sm flex-1 resize-none"
+                className="min-h-[44px]"
               />
               <Button
                 onClick={submitComment}
                 disabled={submittingComment || !commentText.trim()}
-                size="sm"
-                className="text-xs sm:text-sm px-3 h-9 sm:h-auto whitespace-nowrap"
               >
                 {submittingComment ? "Posting…" : "Post"}
               </Button>
