@@ -118,9 +118,8 @@ export function FeedItemCard({
       armColor.bg,
       "bg-background/70"
     )}>
-      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-1 items-start gap-3">
+      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6 !flex !flex-row items-start justify-between gap-3 space-y-0">
+        <div className="flex flex-1 items-start gap-3">
             <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30">
               <AvatarImage
                 src={item.authorAvatar || undefined}
@@ -140,8 +139,8 @@ export function FeedItemCard({
                 </Badge>
               </div>
             </div>
-          </div>
-          <Button
+        </div>
+        <Button
             size="sm"
             variant={isFollowing ? "outline" : "default"}
             onClick={() => onToggleFollow(item.authorId)}
@@ -153,8 +152,7 @@ export function FeedItemCard({
             )}
           >
             {isFollowing ? "Following" : "Follow"}
-          </Button>
-        </div>
+        </Button>
       </CardHeader>
       <CardContent className="space-y-4 sm:space-y-5 lg:space-y-6 p-4 sm:p-5 lg:p-6">
         {hasMedia && (
