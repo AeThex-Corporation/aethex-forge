@@ -260,29 +260,29 @@ export function FeedItemCard({
                   Loading comments…
                 </p>
               ) : comments.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Be the first to comment.
                 </p>
               ) : (
                 comments.map((c) => (
-                  <div key={c.id} className="flex items-start gap-3">
-                    <Avatar className="h-8 w-8">
+                  <div key={c.id} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm">
+                    <Avatar className="h-6 sm:h-8 w-6 sm:w-8 flex-shrink-0">
                       <AvatarImage
                         src={c.user_profiles?.avatar_url || undefined}
                       />
-                      <AvatarFallback>
+                      <AvatarFallback className="text-xs">
                         {(c.user_profiles?.full_name ||
                           c.user_profiles?.username ||
                           "U")[0]?.toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
-                    <div>
-                      <div className="text-sm font-medium">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-medium text-foreground">
                         {c.user_profiles?.full_name ||
                           c.user_profiles?.username ||
                           "Member"}
                       </div>
-                      <div className="text-sm text-foreground/90 whitespace-pre-wrap">
+                      <div className="text-foreground/90 whitespace-pre-wrap break-words">
                         {c.content}
                       </div>
                     </div>
@@ -290,16 +290,18 @@ export function FeedItemCard({
                 ))
               )}
             </div>
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col sm:flex-row items-end gap-2 sm:gap-3">
               <Textarea
                 placeholder="Write a comment…"
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                className="min-h-[44px]"
+                className="min-h-[36px] sm:min-h-[44px] text-sm flex-1 resize-none"
               />
               <Button
                 onClick={submitComment}
                 disabled={submittingComment || !commentText.trim()}
+                size="sm"
+                className="text-xs sm:text-sm px-3 h-9 sm:h-auto whitespace-nowrap"
               >
                 {submittingComment ? "Posting…" : "Post"}
               </Button>
