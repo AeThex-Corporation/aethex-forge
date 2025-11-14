@@ -118,8 +118,8 @@ export function FeedItemCard({
       armColor.bg,
       "bg-background/70"
     )}>
-      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6 !flex !flex-row items-start justify-between gap-3 space-y-0">
-        <div className="flex flex-1 items-start gap-3 sm:gap-4 min-w-0">
+      <CardHeader className="pb-0 px-3 py-3 sm:p-5 lg:p-6 !flex !flex-row items-start justify-between gap-2 sm:gap-3 space-y-0">
+        <div className="flex flex-1 items-start gap-2 sm:gap-3 min-w-0">
           <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30 flex-shrink-0">
             <AvatarImage
               src={item.authorAvatar || undefined}
@@ -145,7 +145,7 @@ export function FeedItemCard({
           variant={isFollowing ? "outline" : "default"}
           onClick={() => onToggleFollow(item.authorId)}
           className={cn(
-            "rounded-full border-border/60 flex-shrink-0 text-xs sm:text-sm h-9 px-3 sm:px-5 whitespace-nowrap",
+            "rounded-full border-border/60 flex-shrink-0 text-xs h-8 sm:h-9 px-2.5 sm:px-4 whitespace-nowrap",
             isFollowing
               ? "bg-background/80 text-foreground border-border/60"
               : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white",
