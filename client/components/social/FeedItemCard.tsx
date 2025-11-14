@@ -146,14 +146,13 @@ export function FeedItemCard({
             variant={isFollowing ? "outline" : "default"}
             onClick={() => onToggleFollow(item.authorId)}
             className={cn(
-              "rounded-full border-border/60 flex-shrink-0 text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4",
+              "rounded-full border-border/60 flex-shrink-0 text-xs sm:text-sm h-9 px-3 sm:px-5 whitespace-nowrap",
               isFollowing
-                ? "bg-background/80 text-foreground"
+                ? "bg-background/80 text-foreground border-border/60"
                 : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white",
             )}
           >
-            <span className="hidden sm:inline">{isFollowing ? "Following" : "Follow"}</span>
-            <span className="sm:hidden">{isFollowing ? "✓" : "+"}</span>
+            {isFollowing ? "Following" : "Follow"}
           </Button>
         </div>
       </CardHeader>
