@@ -470,24 +470,24 @@ export default function Feed() {
   return (
     <Layout>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-16 pt-10 lg:px-6">
-          <section className="relative overflow-hidden rounded-3xl border border-border/40 bg-background/80 p-8 shadow-2xl backdrop-blur">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 sm:gap-6 lg:gap-8 px-3 sm:px-4 pb-16 pt-6 sm:pt-10 lg:px-6">
+          <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border/40 bg-background/80 p-4 sm:p-6 lg:p-8 shadow-2xl backdrop-blur">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(96,189,255,0.18),transparent_60%)]" />
             <div className="relative z-10 flex flex-col gap-6">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                <div className="flex-1">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground">
                     Community Pulse
                   </h1>
-                  <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+                  <p className="mt-1 sm:mt-2 max-w-2xl text-xs sm:text-sm lg:text-base text-muted-foreground">
                     Discover new creations, amplify your voice, and engage with
                     the AeThex community in real time.
                   </p>
                 </div>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                   <Badge
                     variant="outline"
-                    className="border-aethex-400/60 bg-aethex-400/10 text-aethex-100"
+                    className="border-aethex-400/60 bg-aethex-400/10 text-aethex-100 text-xs sm:text-sm"
                   >
                     Live updates enabled
                   </Badge>
@@ -495,15 +495,15 @@ export default function Feed() {
                     variant="outline"
                     size="sm"
                     onClick={handleManualRefresh}
-                    className="gap-2 rounded-full border-border/60 bg-background/80 backdrop-blur"
+                    className="gap-1 sm:gap-2 rounded-full border-border/60 bg-background/80 backdrop-blur text-xs sm:text-sm"
                   >
-                    <RotateCcw className="h-4 w-4" /> Refresh
+                    <RotateCcw className="h-3 sm:h-4 w-3 sm:w-4" /> <span className="hidden sm:inline">Refresh</span>
                   </Button>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-center gap-2">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                   {[
                     {
                       key: "all" as const,
@@ -530,13 +530,13 @@ export default function Feed() {
                       size="sm"
                       onClick={() => setActiveFilter(key)}
                       className={cn(
-                        "flex items-center gap-2 rounded-full border-border/50 px-4",
+                        "flex items-center gap-1 sm:gap-2 rounded-full border-border/50 px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm",
                         activeFilter === key
                           ? "bg-gradient-to-r from-aethex-500 to-neon-blue text-white shadow-lg"
                           : "bg-background/80 text-muted-foreground backdrop-blur",
                       )}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-3 sm:h-4 w-3 sm:w-4" />
                       <span className="font-medium">{label}</span>
                       <span className="hidden text-xs sm:inline">
                         {description}
@@ -545,21 +545,21 @@ export default function Feed() {
                   ))}
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs uppercase text-muted-foreground font-semibold">Filter by Arms</span>
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="uppercase text-muted-foreground font-semibold">Filter by Arms</span>
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => setShowArmFollowManager(!showArmFollowManager)}
-                      className="text-xs text-aethex-200 hover:text-aethex-100"
+                      className="text-xs text-aethex-200 hover:text-aethex-100 h-auto p-1"
                     >
-                      {showArmFollowManager ? "Hide" : "Manage Follows"}
+                      {showArmFollowManager ? "Hide" : "Manage"}
                     </Button>
                   </div>
 
                   <div className="overflow-x-auto scrollbar-hide">
-                    <div className="flex items-center gap-2 pb-2 min-w-min">
+                    <div className="flex items-center gap-1.5 sm:gap-2 pb-2 min-w-min">
                       {ARMS.map((arm) => (
                         <Button
                           key={arm.id}
@@ -575,7 +575,7 @@ export default function Feed() {
                             )
                           }
                           className={cn(
-                            "flex items-center gap-1 sm:gap-2 rounded-full border-border/50 px-2.5 sm:px-3 py-1.5 text-xs whitespace-nowrap flex-shrink-0",
+                            "flex items-center gap-0.5 sm:gap-1.5 rounded-full border-border/50 px-2 sm:px-3 py-1.5 text-xs whitespace-nowrap flex-shrink-0",
                             selectedArms.includes(arm.id)
                               ? "bg-gradient-to-r from-aethex-600 to-neon-blue text-white shadow-md"
                               : "bg-background/60 text-muted-foreground backdrop-blur hover:border-border",
@@ -593,11 +593,11 @@ export default function Feed() {
                   </div>
 
                   {showArmFollowManager && user?.id && (
-                    <div className="rounded-2xl border border-border/40 bg-background/60 p-4 space-y-3">
-                      <p className="text-xs text-muted-foreground">
+                    <div className="rounded-xl sm:rounded-2xl border border-border/40 bg-background/60 p-3 sm:p-4 space-y-2 sm:space-y-3">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         ✨ Follow arms to personalize your feed. Only posts from followed arms will appear in your "Following" tab.
                       </p>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
                         {ARMS.map((arm) => (
                           <Button
                             key={arm.id}
@@ -622,19 +622,19 @@ export default function Feed() {
             </div>
           </section>
 
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,2.2fr)_minmax(280px,1fr)]">
-            <div className="space-y-6">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-[minmax(0,2.2fr)_minmax(280px,1fr)]">
+            <div className="space-y-4 sm:space-y-6">
               <div
                 ref={composerRef}
                 id="feed-composer"
-                className="space-y-3 sm:space-y-4 rounded-3xl border border-border/40 bg-background/70 p-3 sm:p-4 shadow-xl backdrop-blur-lg lg:sticky lg:top-6"
+                className="space-y-2 sm:space-y-3 rounded-2xl sm:rounded-3xl border border-border/40 bg-background/70 p-3 sm:p-4 shadow-xl backdrop-blur-lg lg:sticky lg:top-6"
               >
-                <div className="flex items-start justify-between gap-2 sm:gap-3">
-                  <div>
-                    <h2 className="text-base sm:text-lg font-semibold text-foreground">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-3">
+                  <div className="flex-1">
+                    <h2 className="text-sm sm:text-base lg:text-lg font-semibold text-foreground">
                       Share something new
                     </h2>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       Post updates or spark a conversation
                     </p>
                   </div>
@@ -642,7 +642,7 @@ export default function Feed() {
                     variant="secondary"
                     size="sm"
                     onClick={() => setShowPostComposer(true)}
-                    className="rounded-full bg-aethex-500/20 text-aethex-100 hover:bg-aethex-500/30 text-xs sm:text-sm"
+                    className="rounded-full bg-aethex-500/20 text-aethex-100 hover:bg-aethex-500/30 text-xs sm:text-sm whitespace-nowrap"
                   >
                     Compose
                   </Button>
@@ -663,9 +663,9 @@ export default function Feed() {
                   }
                   onSuccess={handlePostSuccess}
                 />
-                <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 rounded-2xl border border-border/30 bg-background/60 p-3 sm:p-4 text-xs sm:text-sm text-muted-foreground">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border border-border/30 bg-background/60 p-2.5 sm:p-3 lg:p-4 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1 sm:gap-2">
-                    <Sparkles className="h-3.5 sm:h-4 w-3.5 sm:w-4 text-aethex-300" />
+                    <Sparkles className="h-3 sm:h-3.5 lg:h-4 w-3 sm:w-3.5 lg:w-4 text-aethex-300 flex-shrink-0" />
                     <span className="hidden sm:inline">
                       Your post is shared instantly with followers and the
                       broader community.
