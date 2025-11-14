@@ -140,16 +140,16 @@ export default function AdminFeed() {
   return (
     <Layout>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 pb-16 pt-10 lg:px-6">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 sm:gap-6 lg:gap-8 px-3 sm:px-4 pb-16 pt-6 sm:pt-10 lg:px-6">
           {/* Header */}
-          <div className="space-y-2">
+          <div className="space-y-1 sm:space-y-2">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-aethex-400" />
-              <h1 className="text-4xl font-bold text-foreground">
+              <Sparkles className="h-5 sm:h-6 w-5 sm:w-6 text-aethex-400" />
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
                 Feed Manager
               </h1>
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Create system announcements and showcase Arm-to-Arm partnerships.
               This is how we prove the Axiom Model in action.
             </p>
@@ -157,14 +157,14 @@ export default function AdminFeed() {
 
           {/* Main Form */}
           <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
-            <CardHeader>
-              <CardTitle>Create a New Post</CardTitle>
+            <CardHeader className="p-3 sm:p-4 lg:p-6">
+              <CardTitle className="text-lg sm:text-xl">Create a New Post</CardTitle>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <CardContent className="p-3 sm:p-4 lg:p-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 lg:space-y-6">
                 {/* Title */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-foreground">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-foreground">
                     Title <span className="text-red-400">*</span>
                   </label>
                   <Input
@@ -172,7 +172,7 @@ export default function AdminFeed() {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     maxLength={500}
-                    className="border-border/40 bg-background/80"
+                    className="border-border/40 bg-background/80 text-sm"
                   />
                   <p className="text-xs text-muted-foreground">
                     {title.length}/500 characters
@@ -180,8 +180,8 @@ export default function AdminFeed() {
                 </div>
 
                 {/* Content */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-foreground">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-foreground">
                     Content <span className="text-red-400">*</span>
                   </label>
                   <Textarea
@@ -189,8 +189,8 @@ export default function AdminFeed() {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     maxLength={5000}
-                    rows={12}
-                    className="border-border/40 bg-background/80 resize-none"
+                    rows={8}
+                    className="border-border/40 bg-background/80 resize-none text-sm"
                   />
                   <p className="text-xs text-muted-foreground">
                     {content.length}/5000 characters
@@ -198,8 +198,8 @@ export default function AdminFeed() {
                 </div>
 
                 {/* Arm Selection */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-foreground">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-foreground">
                     Arm Affiliation <span className="text-red-400">*</span>
                   </label>
                   <Select value={selectedArm} onValueChange={setSelectedArm}>
@@ -226,11 +226,11 @@ export default function AdminFeed() {
                 </div>
 
                 {/* Tags */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-foreground">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-xs sm:text-sm font-medium text-foreground">
                     Tags (Optional)
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-col sm:flex-row">
                     <Input
                       placeholder="Add a tag and press Enter..."
                       value={tagInput}
@@ -241,19 +241,19 @@ export default function AdminFeed() {
                           addTag();
                         }
                       }}
-                      className="border-border/40 bg-background/80 flex-1"
+                      className="border-border/40 bg-background/80 flex-1 text-sm"
                     />
                     <Button
                       type="button"
                       variant="outline"
                       onClick={addTag}
-                      className="border-border/40"
+                      className="border-border/40 text-sm"
                     >
                       Add
                     </Button>
                   </div>
                   {tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
                       {tags.map((tag) => (
                         <Badge
                           key={tag}
@@ -269,14 +269,14 @@ export default function AdminFeed() {
                 </div>
 
                 {/* Submit Buttons */}
-                <div className="flex gap-3 pt-4">
+                <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4">
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 gap-2 rounded-full bg-gradient-to-r from-aethex-500 to-neon-blue text-white hover:shadow-lg disabled:opacity-50"
+                    className="flex-1 gap-2 rounded-full bg-gradient-to-r from-aethex-500 to-neon-blue text-white hover:shadow-lg disabled:opacity-50 text-sm sm:text-base"
                   >
                     {isLoading && (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-3 sm:h-4 w-3 sm:w-4 animate-spin" />
                     )}
                     {isLoading ? "Publishing..." : "Publish Post"}
                   </Button>
@@ -287,18 +287,18 @@ export default function AdminFeed() {
 
           {/* Quick Reference */}
           <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
-            <CardHeader>
-              <CardTitle className="text-lg">Arm Color Guide</CardTitle>
+            <CardHeader className="p-3 sm:p-4 lg:p-6">
+              <CardTitle className="text-base sm:text-lg">Arm Color Guide</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <CardContent className="p-3 sm:p-4 lg:p-6">
+              <div className="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
                 {ARMS.map((arm) => (
                   <div
                     key={arm.id}
-                    className="flex items-center gap-2 rounded-lg border border-border/30 bg-background/60 p-3"
+                    className="flex items-center gap-2 rounded-lg border border-border/30 bg-background/60 p-2 sm:p-3"
                   >
-                    <div className={`h-3 w-3 rounded-full ${arm.color}`} />
-                    <span className="text-sm font-medium text-foreground">
+                    <div className={`h-2 sm:h-3 w-2 sm:w-3 rounded-full ${arm.color}`} />
+                    <span className="text-xs sm:text-sm font-medium text-foreground">
                       {arm.label}
                     </span>
                   </div>
@@ -309,10 +309,10 @@ export default function AdminFeed() {
 
           {/* Guidelines */}
           <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
-            <CardHeader>
-              <CardTitle className="text-lg">Phase 1 Guidelines</CardTitle>
+            <CardHeader className="p-3 sm:p-4 lg:p-6">
+              <CardTitle className="text-base sm:text-lg">Phase 1 Guidelines</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
+            <CardContent className="p-3 sm:p-4 lg:p-6 space-y-2 sm:space-y-3 text-xs sm:text-sm text-muted-foreground">
               <p>
                 ✨ <strong>System Posts Only:</strong> Use this for official
                 announcements, partnerships, and Arm-to-Arm collaborations.
