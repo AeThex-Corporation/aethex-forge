@@ -118,43 +118,41 @@ export function FeedItemCard({
       armColor.bg,
       "bg-background/70"
     )}>
-      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6 flex-row items-start justify-between">
-        <div className="flex flex-1 items-start gap-3 sm:gap-4">
-          <div className="flex flex-1 items-start gap-3 sm:gap-4">
-            <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30 flex-shrink-0">
-              <AvatarImage
-                src={item.authorAvatar || undefined}
-                alt={item.authorName}
-              />
-              <AvatarFallback className="bg-aethex-500/10 text-aethex-300 text-sm">
-                {item.authorName?.[0]?.toUpperCase() || "U"}
-              </AvatarFallback>
-            </Avatar>
-            <div className="min-w-0 flex-1 space-y-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <CardTitle className="text-base sm:text-lg lg:text-lg font-semibold text-foreground">
-                  {item.authorName}
-                </CardTitle>
-                <Badge className={cn("text-xs font-bold uppercase px-2 py-0.5", armColor.badge)}>
-                  {armLabel}
-                </Badge>
-              </div>
+      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6 flex-row items-start justify-between gap-3">
+        <div className="flex flex-1 items-start gap-3 sm:gap-4 min-w-0">
+          <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30 flex-shrink-0">
+            <AvatarImage
+              src={item.authorAvatar || undefined}
+              alt={item.authorName}
+            />
+            <AvatarFallback className="bg-aethex-500/10 text-aethex-300 text-sm">
+              {item.authorName?.[0]?.toUpperCase() || "U"}
+            </AvatarFallback>
+          </Avatar>
+          <div className="min-w-0 flex-1 space-y-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <CardTitle className="text-base sm:text-lg lg:text-lg font-semibold text-foreground">
+                {item.authorName}
+              </CardTitle>
+              <Badge className={cn("text-xs font-bold uppercase px-2 py-0.5", armColor.badge)}>
+                {armLabel}
+              </Badge>
             </div>
           </div>
-          <Button
-            size="sm"
-            variant={isFollowing ? "outline" : "default"}
-            onClick={() => onToggleFollow(item.authorId)}
-            className={cn(
-              "rounded-full border-border/60 flex-shrink-0 text-xs sm:text-sm h-9 px-3 sm:px-5 whitespace-nowrap",
-              isFollowing
-                ? "bg-background/80 text-foreground border-border/60"
-                : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white",
-            )}
-          >
-            {isFollowing ? "Following" : "Follow"}
-          </Button>
         </div>
+        <Button
+          size="sm"
+          variant={isFollowing ? "outline" : "default"}
+          onClick={() => onToggleFollow(item.authorId)}
+          className={cn(
+            "rounded-full border-border/60 flex-shrink-0 text-xs sm:text-sm h-9 px-3 sm:px-5 whitespace-nowrap",
+            isFollowing
+              ? "bg-background/80 text-foreground border-border/60"
+              : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white",
+          )}
+        >
+          {isFollowing ? "Following" : "Follow"}
+        </Button>
       </CardHeader>
       <CardContent className="space-y-4 sm:space-y-5 lg:space-y-6 p-4 sm:p-5 lg:p-6">
         {hasMedia && (
