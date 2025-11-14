@@ -545,38 +545,78 @@ export default function Feed() {
                   ))}
                 </div>
 
-                <div className="overflow-x-auto scrollbar-hide">
-                  <div className="flex items-center gap-2 pb-2 min-w-min">
-                    {ARMS.map((arm) => (
-                      <Button
-                        key={arm.id}
-                        variant={
-                          selectedArms.includes(arm.id) ? "default" : "outline"
-                        }
-                        size="sm"
-                        onClick={() =>
-                          setSelectedArms((prev) =>
-                            prev.includes(arm.id)
-                              ? prev.filter((a) => a !== arm.id)
-                              : [...prev, arm.id],
-                          )
-                        }
-                        className={cn(
-                          "flex items-center gap-1 sm:gap-2 rounded-full border-border/50 px-2.5 sm:px-3 py-1.5 text-xs whitespace-nowrap flex-shrink-0",
-                          selectedArms.includes(arm.id)
-                            ? "bg-gradient-to-r from-aethex-600 to-neon-blue text-white shadow-md"
-                            : "bg-background/60 text-muted-foreground backdrop-blur hover:border-border",
-                        )}
-                      >
-                        <arm.icon
-                          className={cn("h-3 sm:h-3.5 w-3 sm:w-3.5", arm.color)}
-                        />
-                        <span className="font-medium hidden sm:inline">
-                          {arm.label}
-                        </span>
-                      </Button>
-                    ))}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs uppercase text-muted-foreground font-semibold">Filter by Arms</span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setShowArmFollowManager(!showArmFollowManager)}
+                      className="text-xs text-aethex-200 hover:text-aethex-100"
+                    >
+                      {showArmFollowManager ? "Hide" : "Manage Follows"}
+                    </Button>
                   </div>
+
+                  <div className="overflow-x-auto scrollbar-hide">
+                    <div className="flex items-center gap-2 pb-2 min-w-min">
+                      {ARMS.map((arm) => (
+                        <Button
+                          key={arm.id}
+                          variant={
+                            selectedArms.includes(arm.id) ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() =>
+                            setSelectedArms((prev) =>
+                              prev.includes(arm.id)
+                                ? prev.filter((a) => a !== arm.id)
+                                : [...prev, arm.id],
+                            )
+                          }
+                          className={cn(
+                            "flex items-center gap-1 sm:gap-2 rounded-full border-border/50 px-2.5 sm:px-3 py-1.5 text-xs whitespace-nowrap flex-shrink-0",
+                            selectedArms.includes(arm.id)
+                              ? "bg-gradient-to-r from-aethex-600 to-neon-blue text-white shadow-md"
+                              : "bg-background/60 text-muted-foreground backdrop-blur hover:border-border",
+                          )}
+                        >
+                          <arm.icon
+                            className={cn("h-3 sm:h-3.5 w-3 sm:w-3.5", arm.color)}
+                          />
+                          <span className="font-medium hidden sm:inline">
+                            {arm.label}
+                          </span>
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {showArmFollowManager && user?.id && (
+                    <div className="rounded-2xl border border-border/40 bg-background/60 p-4 space-y-3">
+                      <p className="text-xs text-muted-foreground">
+                        ✨ Follow arms to personalize your feed. Only posts from followed arms will appear in your "Following" tab.
+                      </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {ARMS.map((arm) => (
+                          <Button
+                            key={arm.id}
+                            size="sm"
+                            variant={followedArms.includes(arm.id) ? "default" : "outline"}
+                            onClick={() => toggleFollowArm(arm.id)}
+                            className={cn(
+                              "rounded-full text-xs font-medium gap-1",
+                              followedArms.includes(arm.id)
+                                ? "bg-gradient-to-r from-aethex-500 to-neon-blue text-white"
+                                : "bg-background/60 text-muted-foreground hover:border-border",
+                            )}
+                          >
+                            {followedArms.includes(arm.id) ? "✓" : "+"} {arm.label}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
