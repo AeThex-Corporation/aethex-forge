@@ -118,7 +118,7 @@ export function FeedItemCard({
       armColor.bg,
       "bg-background/70"
     )}>
-      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6 flex-row items-start justify-between gap-3">
+      <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6 !flex !flex-row items-start justify-between gap-3 space-y-0">
         <div className="flex flex-1 items-start gap-3 sm:gap-4 min-w-0">
           <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30 flex-shrink-0">
             <AvatarImage
