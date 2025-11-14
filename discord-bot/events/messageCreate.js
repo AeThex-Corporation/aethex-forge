@@ -1,4 +1,5 @@
 const { createClient } = require("@supabase/supabase-js");
+const fetch = require("node-fetch");
 
 // Initialize Supabase
 const supabase = createClient(
@@ -8,6 +9,12 @@ const supabase = createClient(
 
 const FEED_CHANNEL_ID = process.env.DISCORD_FEED_CHANNEL_ID;
 const FEED_GUILD_ID = process.env.DISCORD_FEED_GUILD_ID;
+const API_BASE = process.env.VITE_API_BASE || "https://api.aethex.dev";
+
+// Announcement channels to sync
+const ANNOUNCEMENT_CHANNELS = process.env.DISCORD_ANNOUNCEMENT_CHANNELS
+  ? process.env.DISCORD_ANNOUNCEMENT_CHANNELS.split(",").map((id) => id.trim())
+  : [];
 
 module.exports = {
   name: "messageCreate",
