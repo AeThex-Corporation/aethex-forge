@@ -1,17 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Layout from "@/components/Layout";
-import SEO from "@/components/SEO";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-aethex-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -20,400 +12,327 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { useAuth } from "@/contexts/AuthContext";
-import { aethexToast } from "@/lib/aethex-toast";
-import LoadingScreen from "@/components/LoadingScreen";
-import ArmPostCard, { ArmType } from "@/components/feed/ArmPostCard";
-import { PenTool, Trash2, Eye, Lock } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2, Sparkles } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
-
-const ARM_OPTIONS: { id: ArmType; label: string }[] = [
-  { id: "labs", label: "Labs" },
-  { id: "gameforge", label: "GameForge" },
-  { id: "corp", label: "Corp" },
-  { id: "foundation", label: "Foundation" },
-  { id: "devlink", label: "Dev-Link" },
-  { id: "nexus", label: "Nexus" },
-  { id: "staff", label: "Staff" },
+const ARMS = [
+  { id: "labs", label: "Labs", color: "bg-yellow-500" },
+  { id: "gameforge", label: "GameForge", color: "bg-green-500" },
+  { id: "corp", label: "Corp", color: "bg-blue-500" },
+  { id: "foundation", label: "Foundation", color: "bg-red-500" },
+  { id: "devlink", label: "Dev-Link", color: "bg-cyan-500" },
+  { id: "nexus", label: "Nexus", color: "bg-purple-500" },
+  { id: "staff", label: "Staff", color: "bg-indigo-500" },
 ];
 
-interface AdminPost {
-  id: string;
-  title: string;
-  content: string;
-  arm_affiliation: ArmType;
-  author_id: string;
-  created_at: string;
-  is_published: boolean;
-  tags?: string[];
-  category?: string;
-  user_profiles?: {
-    id: string;
-    username?: string;
-    full_name?: string;
-    avatar_url?: string;
-  };
-}
-
 export default function AdminFeed() {
-  const { user, roles, loading: authLoading } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
 
-  const hasAccess = roles.includes("admin") || roles.includes("staff");
-
-  // Form state
+  const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [armAffiliation, setArmAffiliation] = useState<ArmType>("labs");
-  const [tags, setTags] = useState("");
-  const [category, setCategory] = useState("");
-  const [isPublished, setIsPublished] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedArm, setSelectedArm] = useState("labs");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+  const [isDraft, setIsDraft] = useState(false);
 
-  // Posts list state
-  const [posts, setPosts] = useState<AdminPost[]>([]);
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-
-  // Load all posts
-  const loadPosts = async () => {
-    setIsLoadingPosts(true);
-    try {
-      const response = await fetch(`${API_BASE}/api/admin/feed`);
-      if (response.ok) {
-        const data = await response.json();
-        setPosts(data.posts || []);
-      }
-    } catch (error) {
-      console.error("Failed to load posts:", error);
-      aethexToast.error({
-        title: "Failed to load posts",
-        description: "Please try again",
-      });
-    } finally {
-      setIsLoadingPosts(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!authLoading && (!user || !hasAccess)) {
-      navigate("/login", { replace: true });
-    } else {
-      loadPosts();
-    }
-  }, [user, hasAccess, authLoading, navigate]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!title.trim() || !content.trim()) {
-      aethexToast.error({
-        title: "Validation error",
-        description: "Title and content are required",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      const tagsArray = tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-
-      const response = await fetch(`${API_BASE}/api/admin/feed`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          content,
-          arm_affiliation: armAffiliation,
-          author_id: user?.id,
-          tags: tagsArray,
-          category: category || null,
-          is_published: isPublished,
-        }),
-      });
-
-      if (response.ok) {
-        aethexToast.success({
-          title: "Post created",
-          description: "Your post has been published successfully",
-        });
-
-        // Reset form
-        setTitle("");
-        setContent("");
-        setArmAffiliation("labs");
-        setTags("");
-        setCategory("");
-        setIsPublished(true);
-
-        // Reload posts
-        loadPosts();
-      } else {
-        const error = await response.json();
-        aethexToast.error({
-          title: "Failed to create post",
-          description: error.error || "Please try again",
-        });
-      }
-    } catch (error) {
-      console.error("Error creating post:", error);
-      aethexToast.error({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Unknown error",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (authLoading) {
-    return <LoadingScreen message="Verifying access..." />;
-  }
-
-  if (!user || !hasAccess) {
+  // Check admin access
+  if (!user?.user_metadata?.is_admin) {
     return (
       <Layout>
-        <div className="min-h-screen bg-aethex-gradient py-12">
-          <div className="container mx-auto px-4 max-w-md">
-            <Card className="bg-red-500/10 border-red-500/30">
-              <CardHeader>
-                <CardTitle className="text-red-400">Access Denied</CardTitle>
-                <CardDescription>
-                  This page requires admin or staff access.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button onClick={() => navigate("/dashboard")}>
-                  Go to Dashboard
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+        <div className="min-h-screen flex items-center justify-center">
+          <Card className="w-full max-w-md">
+            <CardHeader>
+              <CardTitle>Access Denied</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Only administrators can access this page.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </Layout>
     );
   }
 
+  const addTag = () => {
+    const trimmed = tagInput.trim();
+    if (trimmed && !tags.includes(trimmed)) {
+      setTags([...tags, trimmed]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tag: string) => {
+    setTags(tags.filter((t) => t !== tag));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!title.trim() || !content.trim()) {
+      toast({
+        description: "Title and content are required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!user?.id) {
+      toast({
+        description: "You must be logged in to create posts",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/community/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: title.trim(),
+          content: content.trim(),
+          arm_affiliation: selectedArm,
+          author_id: user.id,
+          tags: tags,
+          category: "announcement",
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to create post");
+      }
+
+      const { post } = await response.json();
+
+      toast({
+        description: "Post created successfully! 🎉",
+      });
+
+      // Reset form
+      setTitle("");
+      setContent("");
+      setTags([]);
+      setTagInput("");
+      setSelectedArm("labs");
+    } catch (error: any) {
+      console.error("Failed to create post:", error);
+      toast({
+        description: error.message || "Failed to create post",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const selectedArmData = ARMS.find((arm) => arm.id === selectedArm);
+
   return (
     <Layout>
-      <SEO
-        title="Manage Feed | AeThex Admin"
-        description="Create and manage community feed posts"
-      />
-
-      <div className="min-h-screen bg-aethex-gradient py-8">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 pb-16 pt-10 lg:px-6">
           {/* Header */}
-          <div className="mb-8 animate-slide-down">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-aethex-300 via-neon-blue to-aethex-400 bg-clip-text text-transparent">
-              Feed Management
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              Create and manage community feed posts
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-aethex-400" />
+              <h1 className="text-4xl font-bold text-foreground">
+                Feed Manager
+              </h1>
+            </div>
+            <p className="text-muted-foreground">
+              Create system announcements and showcase Arm-to-Arm partnerships.
+              This is how we prove the Axiom Model in action.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Create Post Form */}
-            <div className="lg:col-span-2">
-              <Card className="bg-card/50 border-aethex-400/30 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PenTool className="h-5 w-5 text-aethex-400" />
-                    Create New Post
-                  </CardTitle>
-                  <CardDescription>
-                    Create a post for the community feed with arm affiliation
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Title */}
-                    <div className="space-y-2">
-                      <Label htmlFor="title">Title *</Label>
-                      <Input
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Post title"
-                        className="bg-background/50 border-border/50"
-                        required
-                      />
-                    </div>
-
-                    {/* Content */}
-                    <div className="space-y-2">
-                      <Label htmlFor="content">Content *</Label>
-                      <Textarea
-                        id="content"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="Write your post content here..."
-                        rows={8}
-                        className="bg-background/50 border-border/50 font-mono text-sm"
-                        required
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        Markdown formatting is supported
-                      </p>
-                    </div>
-
-                    {/* Arm Affiliation */}
-                    <div className="space-y-2">
-                      <Label htmlFor="arm">Arm Affiliation *</Label>
-                      <Select value={armAffiliation} onValueChange={(value: any) => setArmAffiliation(value)}>
-                        <SelectTrigger id="arm" className="bg-background/50 border-border/50">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {ARM_OPTIONS.map((arm) => (
-                            <SelectItem key={arm.id} value={arm.id}>
-                              {arm.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Tags */}
-                    <div className="space-y-2">
-                      <Label htmlFor="tags">Tags (comma-separated)</Label>
-                      <Input
-                        id="tags"
-                        value={tags}
-                        onChange={(e) => setTags(e.target.value)}
-                        placeholder="e.g., update, announcement, showcase"
-                        className="bg-background/50 border-border/50"
-                      />
-                    </div>
-
-                    {/* Category */}
-                    <div className="space-y-2">
-                      <Label htmlFor="category">Category</Label>
-                      <Input
-                        id="category"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        placeholder="e.g., announcement, showcase, discussion"
-                        className="bg-background/50 border-border/50"
-                      />
-                    </div>
-
-                    {/* Published Toggle */}
-                    <div className="flex items-center space-x-3 p-3 rounded-lg bg-background/40 border border-border/40">
-                      <Switch
-                        id="published"
-                        checked={isPublished}
-                        onCheckedChange={setIsPublished}
-                      />
-                      <Label htmlFor="published" className="cursor-pointer flex-1 mb-0">
-                        <div className="flex items-center gap-2">
-                          {isPublished ? (
-                            <>
-                              <Eye className="h-4 w-4 text-green-400" />
-                              <span>Publish immediately</span>
-                            </>
-                          ) : (
-                            <>
-                              <Lock className="h-4 w-4 text-yellow-400" />
-                              <span>Save as draft</span>
-                            </>
-                          )}
-                        </div>
-                      </Label>
-                    </div>
-
-                    {/* Submit */}
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-aethex-600 to-neon-blue hover:from-aethex-700 hover:to-neon-blue/90"
-                    >
-                      {isSubmitting ? "Publishing..." : "Publish Post"}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Preview Sidebar */}
-            <div className="lg:col-span-1">
-              {title && content && (
-                <div className="sticky top-24">
-                  <Card className="bg-card/50 border-border/40 mb-4">
-                    <CardHeader>
-                      <CardTitle className="text-sm">Preview</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ArmPostCard
-                        post={{
-                          id: "preview",
-                          title,
-                          content,
-                          arm_affiliation: armAffiliation,
-                          author_id: user?.id || "",
-                          created_at: new Date().toISOString(),
-                          tags: tags
-                            .split(",")
-                            .map((t) => t.trim())
-                            .filter((t) => t.length > 0),
-                          category: category || undefined,
-                          user_profiles: {
-                            id: user?.id || "",
-                            full_name: user?.user_metadata?.full_name || "You",
-                            avatar_url: user?.user_metadata?.avatar_url,
-                          },
-                        }}
-                      />
-                    </CardContent>
-                  </Card>
+          {/* Main Form */}
+          <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
+            <CardHeader>
+              <CardTitle>Create a New Post</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Title */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-foreground">
+                    Title <span className="text-red-400">*</span>
+                  </label>
+                  <Input
+                    placeholder="e.g., Announcing our partnership with GameForge..."
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    maxLength={500}
+                    className="border-border/40 bg-background/80"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {title.length}/500 characters
+                  </p>
                 </div>
-              )}
-            </div>
-          </div>
 
-          {/* Recent Posts */}
-          <div className="mt-12">
-            <Card className="bg-card/50 border-border/40">
-              <CardHeader>
-                <CardTitle className="text-2xl">Recent Posts</CardTitle>
-                <CardDescription>
-                  {posts.length} posts total
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isLoadingPosts ? (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground">Loading posts...</p>
+                {/* Content */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-foreground">
+                    Content <span className="text-red-400">*</span>
+                  </label>
+                  <Textarea
+                    placeholder="Share your announcement, partnership details, or showcase..."
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    maxLength={5000}
+                    rows={12}
+                    className="border-border/40 bg-background/80 resize-none"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {content.length}/5000 characters
+                  </p>
+                </div>
+
+                {/* Arm Selection */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-foreground">
+                    Arm Affiliation <span className="text-red-400">*</span>
+                  </label>
+                  <Select value={selectedArm} onValueChange={setSelectedArm}>
+                    <SelectTrigger className="border-border/40 bg-background/80">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ARMS.map((arm) => (
+                        <SelectItem key={arm.id} value={arm.id}>
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={`h-2 w-2 rounded-full ${arm.color}`}
+                            />
+                            {arm.label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    This determines which section and color badge the post
+                    displays under.
+                  </p>
+                </div>
+
+                {/* Tags */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-foreground">
+                    Tags (Optional)
+                  </label>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Add a tag and press Enter..."
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          addTag();
+                        }
+                      }}
+                      className="border-border/40 bg-background/80 flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={addTag}
+                      className="border-border/40"
+                    >
+                      Add
+                    </Button>
                   </div>
-                ) : posts.length === 0 ? (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground">No posts yet. Create your first post above!</p>
+                  {tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {tags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant="outline"
+                          className="cursor-pointer border-border/40"
+                          onClick={() => removeTag(tag)}
+                        >
+                          {tag} ✕
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Submit Buttons */}
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex-1 gap-2 rounded-full bg-gradient-to-r from-aethex-500 to-neon-blue text-white hover:shadow-lg disabled:opacity-50"
+                  >
+                    {isLoading && (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    )}
+                    {isLoading ? "Publishing..." : "Publish Post"}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Quick Reference */}
+          <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
+            <CardHeader>
+              <CardTitle className="text-lg">Arm Color Guide</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {ARMS.map((arm) => (
+                  <div
+                    key={arm.id}
+                    className="flex items-center gap-2 rounded-lg border border-border/30 bg-background/60 p-3"
+                  >
+                    <div className={`h-3 w-3 rounded-full ${arm.color}`} />
+                    <span className="text-sm font-medium text-foreground">
+                      {arm.label}
+                    </span>
                   </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {posts.map((post) => (
-                      <div key={post.id} className="relative">
-                        <div className="absolute top-2 right-2 z-10 flex gap-2">
-                          {!post.is_published && (
-                            <Badge variant="outline" className="border-yellow-500/50 text-yellow-400">
-                              Draft
-                            </Badge>
-                          )}
-                        </div>
-                        <ArmPostCard post={post as any} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Guidelines */}
+          <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
+            <CardHeader>
+              <CardTitle className="text-lg">Phase 1 Guidelines</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-muted-foreground">
+              <p>
+                ✨ <strong>System Posts Only:</strong> Use this for official
+                announcements, partnerships, and Arm-to-Arm collaborations.
+              </p>
+              <p>
+                🔗 <strong>Firewall in Action:</strong> Every post shows the Arm
+                color badge. This proves our Guardian (Foundation) ↔ Engine
+                (Corp/Labs) separation is real.
+              </p>
+              <p>
+                🤝 <strong>Partnership Showcase:</strong> Use these posts to show
+                how different Arms collaborate. Example: "Corp hired 3 Architects
+                from Foundation via Nexus."
+              </p>
+              <p>
+                🚀 <strong>Phase 2:</strong> User-generated posts coming soon.
+                This Phase 1 proves the system works with curated content first.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Layout>
