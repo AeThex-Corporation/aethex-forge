@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/hooks/use-aethex-toast";
+import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,7 +28,7 @@ const ARMS = [
 
 export default function AdminFeed() {
   const { user } = useAuth();
-  const { toast } = useToast();
+  const { toast } = useAethexToast();
 
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
