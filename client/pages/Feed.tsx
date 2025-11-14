@@ -128,6 +128,8 @@ export default function Feed() {
   >("all");
   const [selectedArms, setSelectedArms] = useState<ArmType[]>([]);
   const [showPostComposer, setShowPostComposer] = useState(false);
+  const [followedArms, setFollowedArms] = useState<ArmType[]>([]);
+  const [showArmFollowManager, setShowArmFollowManager] = useState(false);
 
   const mapPostsToFeedItems = useCallback(
     (source: any[]): FeedItem[] =>
@@ -198,7 +200,57 @@ export default function Feed() {
     if (selectedArms.length === 0) {
       setSelectedArms(ARMS.map((a) => a.id));
     }
-  }, []);
+
+    // Load user's followed arms
+    if (user?.id) {
+      loadFollowedArms();
+    }
+  }, [user?.id]);
+
+  const loadFollowedArms = async () => {
+    if (!user?.id) return;
+    try {
+      const response = await fetch(`/api/user/arm-follows?user_id=${user.id}`);
+      if (response.ok) {
+        const { arms } = await response.json();
+        setFollowedArms(arms || []);
+      }
+    } catch (error) {
+      console.warn("Failed to load followed arms:", error);
+    }
+  };
+
+  const toggleFollowArm = async (arm: ArmType) => {
+    if (!user?.id) {
+      toast({ description: "Please sign in to manage arm follows." });
+      return;
+    }
+
+    try {
+      if (followedArms.includes(arm)) {
+        // Unfollow
+        await fetch(`/api/user/arm-follows?user_id=${user.id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ arm_affiliation: arm }),
+        });
+        setFollowedArms((state) => state.filter((a) => a !== arm));
+        toast({ description: `Unfollowed ${ARMS.find((a) => a.id === arm)?.label}` });
+      } else {
+        // Follow
+        await fetch(`/api/user/arm-follows?user_id=${user.id}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ arm_affiliation: arm }),
+        });
+        setFollowedArms((state) => Array.from(new Set([...state, arm])));
+        toast({ description: `Following ${ARMS.find((a) => a.id === arm)?.label}!` });
+      }
+    } catch (error) {
+      console.error("Failed to update arm follow:", error);
+      toast({ variant: "destructive", description: "Failed to update preference" });
+    }
+  };
 
   useEffect(() => {
     fetchFeed();
