@@ -11,6 +11,7 @@ import BlogTrendingRail from "@/components/blog/BlogTrendingRail";
 import BlogCategoryChips from "@/components/blog/BlogCategoryChips";
 import BlogPostGrid from "@/components/blog/BlogPostGrid";
 import BlogNewsletterSection from "@/components/blog/BlogNewsletterSection";
+import BlogCTASection from "@/components/blog/BlogCTASection";
 import { blogSeedPosts } from "@/data/blogSeed";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
