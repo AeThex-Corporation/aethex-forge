@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { publishPostToGhost, updatePostInGhost } from "@/server/ghost-admin-api";
+import { publishPostToGhost, updatePostInGhost } from "../../server/ghost-admin-api";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE || "";
