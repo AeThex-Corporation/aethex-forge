@@ -319,6 +319,8 @@ const Blog = () => {
 
           <BlogNewsletterSection />
 
+          <BlogCTASection variant="both" />
+
           <section className="bg-background/70 py-16">
             <div className="container mx-auto px-4">
               <div className="rounded-2xl border border-border/40 bg-background/80 p-8">
