@@ -1123,8 +1123,8 @@ export default function Dashboard() {
                       <TabsTrigger value="privacy" className="pointer-events-auto" style={{pointerEvents: 'auto'}}>Privacy</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="profile" className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <TabsContent value="profile" className="space-y-4 pointer-events-auto" style={{pointerEvents: 'auto'}}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pointer-events-auto" style={{pointerEvents: 'auto'}}>
                         <div>
                           <Label htmlFor="displayName">Display Name</Label>
                           <Input
