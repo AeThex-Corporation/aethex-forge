@@ -56,7 +56,7 @@ const OAuthConnections = memo(function OAuthConnections({
   onUnlink,
 }: OAuthConnectionsProps) {
   return (
-    <div className="space-y-4" aria-live="polite">
+    <div className="space-y-4 pointer-events-auto" aria-live="polite">
       {providers.map((providerConfig) => {
         const { provider, name, description, Icon, gradient } = providerConfig;
         const linkedMeta = linkedProviderMap[provider];
