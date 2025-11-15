@@ -3248,6 +3248,58 @@ export function createServer() {
       }
     });
 
+    // Get following list
+    app.get("/api/social/following", async (req, res) => {
+      const userId = req.query.userId as string;
+      if (!userId) {
+        return res.status(400).json({ error: "userId query parameter required" });
+      }
+      try {
+        const { data, error } = await adminSupabase
+          .from("user_follows")
+          .select("following_id")
+          .eq("follower_id", userId);
+
+        if (error) {
+          return res
+            .status(500)
+            .json({ error: "Failed to fetch following list" });
+        }
+
+        return res.json({
+          data: (data || []).map((r: any) => r.following_id),
+        });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Get followers list
+    app.get("/api/social/followers", async (req, res) => {
+      const userId = req.query.userId as string;
+      if (!userId) {
+        return res.status(400).json({ error: "userId query parameter required" });
+      }
+      try {
+        const { data, error } = await adminSupabase
+          .from("user_follows")
+          .select("follower_id")
+          .eq("following_id", userId);
+
+        if (error) {
+          return res
+            .status(500)
+            .json({ error: "Failed to fetch followers list" });
+        }
+
+        return res.json({
+          data: (data || []).map((r: any) => r.follower_id),
+        });
+      } catch (e: any) {
+        return res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
     // Community post likes
     app.post("/api/community/posts/:id/like", async (req, res) => {
       const postId = req.params.id;
