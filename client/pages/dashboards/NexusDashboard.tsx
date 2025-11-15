@@ -410,52 +410,24 @@ export default function NexusDashboard() {
 
                 {/* Contracts Tab */}
                 <TabsContent value="contracts" className="space-y-4 animate-fade-in">
-                  <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                    <CardHeader>
-                      <CardTitle>Active Contracts</CardTitle>
-                      <CardDescription>Manage your ongoing work</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {contracts.length === 0 ? (
-                        <div className="text-center py-12">
-                          <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                          <p className="text-gray-400">No active contracts</p>
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          {contracts.map((contract: any) => (
-                            <div key={contract.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 space-y-4">
-                              <div className="flex items-start justify-between">
-                                <div className="space-y-1">
-                                  <h4 className="font-semibold text-white">{contract.title}</h4>
-                                  <p className="text-sm text-gray-400">Total: ${contract.total_amount?.toLocaleString()}</p>
-                                </div>
-                                <Badge className="bg-green-600/50 text-green-100">{contract.status}</Badge>
-                              </div>
-
-                              {/* Milestones */}
-                              {contract.milestones?.length > 0 && (
-                                <div className="space-y-2">
-                                  <p className="text-xs font-semibold text-gray-300 uppercase">Progress</p>
-                                  <div className="space-y-2">
-                                    {contract.milestones.map((m: any) => (
-                                      <div key={m.id} className="flex items-center gap-2">
-                                        <CheckCircle className="h-4 w-4" style={{
-                                          color: m.status === "paid" ? "#22c55e" : m.status === "approved" ? "#3b82f6" : "#666"
-                                        }} />
-                                        <span className="text-sm text-gray-300">{m.description}</span>
-                                        <span className="text-sm text-gray-500 ml-auto">${m.amount?.toLocaleString()}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                  <ContractsWidget
+                    contracts={contracts.map((c: any) => ({
+                      id: c.id,
+                      title: c.title || "Untitled Contract",
+                      client_name: c.client?.full_name || "Client",
+                      status: c.status || "active",
+                      total_amount: c.total_amount || 0,
+                      paid_amount: c.payments?.reduce((sum: number, p: any) => sum + (p.amount || 0), 0) || 0,
+                      start_date: c.start_date,
+                      end_date: c.end_date,
+                      description: c.description,
+                      milestones: c.milestones || [],
+                    }))}
+                    title="My Active Contracts"
+                    description="Manage your ongoing work and track payments"
+                    type="creator"
+                    accentColor="purple"
+                  />
                 </TabsContent>
 
                 {/* Profile Tab */}
