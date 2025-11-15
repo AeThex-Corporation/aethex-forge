@@ -724,6 +724,78 @@ const ProfilePassport = () => {
                 </Button>
               )}
             </div>
+            {profileUrl && (
+              <div className="flex items-center gap-2 rounded-lg border border-slate-700/70 bg-slate-900/40 px-4 py-3">
+                <span className="text-xs font-medium text-slate-400">
+                  Profile link:
+                </span>
+                <code className="flex-1 text-sm text-slate-200 break-all">
+                  {profileUrl}
+                </code>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={copyProfileLink}
+                  className="h-8 w-8"
+                  title={profileLinkCopied ? "Copied!" : "Copy"}
+                >
+                  {profileLinkCopied ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            )}
+            {(profile.arm_affiliations as string[])?.length > 0 && (
+              <div className="rounded-lg border border-slate-700/70 bg-slate-900/40 p-4">
+                <p className="text-xs font-medium text-slate-400 mb-2">
+                  Arm Affiliations
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {(profile.arm_affiliations as string[]).map((arm: string) => {
+                    const armConfig: Record<
+                      string,
+                      { label: string; color: string }
+                    > = {
+                      foundation: {
+                        label: "Foundation",
+                        color: "bg-red-500/20 text-red-200 border-red-500/40",
+                      },
+                      gameforge: {
+                        label: "GameForge",
+                        color: "bg-green-500/20 text-green-200 border-green-500/40",
+                      },
+                      labs: {
+                        label: "Labs",
+                        color: "bg-yellow-500/20 text-yellow-200 border-yellow-500/40",
+                      },
+                      corp: {
+                        label: "Corp",
+                        color: "bg-blue-500/20 text-blue-200 border-blue-500/40",
+                      },
+                      devlink: {
+                        label: "Dev-Link",
+                        color: "bg-cyan-500/20 text-cyan-200 border-cyan-500/40",
+                      },
+                    };
+                    const config = armConfig[arm] || {
+                      label: arm,
+                      color: "bg-slate-500/20 text-slate-200 border-slate-500/40",
+                    };
+                    return (
+                      <Badge
+                        key={arm}
+                        className={`border ${config.color}`}
+                        variant="outline"
+                      >
+                        {config.label}
+                      </Badge>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
             <div className="flex flex-wrap gap-2 text-sm text-slate-300">
               <Badge
                 variant="outline"
