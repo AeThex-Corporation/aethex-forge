@@ -191,10 +191,10 @@
 
     <!-- Discord SDK is imported in DiscordActivityContext.tsx from @discord/embedded-app-sdk npm package -->
 
-    <!-- Polyfill for crypto.randomUUID for compatibility -->
+    <!-- Polyfill for crypto.randomUUID for compatibility - MUST run before any external scripts -->
     <script>
-      if (!crypto.randomUUID) {
-        crypto.randomUUID = function () {
+      (function () {
+        const randomUUID = function () {
           const array = new Uint8Array(16);
           crypto.getRandomValues(array);
           array[6] = (array[6] & 0x0f) | 0x40;
@@ -210,7 +210,15 @@
             hex.slice(10, 16).join(""),
           ].join("-");
         };
-      }
+
+        if (!crypto.randomUUID) {
+          crypto.randomUUID = randomUUID;
+        }
+        if (!globalThis.crypto?.randomUUID) {
+          if (!globalThis.crypto) globalThis.crypto = {};
+          globalThis.crypto.randomUUID = randomUUID;
+        }
+      })();
     </script>
   </head>
 
