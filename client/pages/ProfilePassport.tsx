@@ -386,6 +386,18 @@ const ProfilePassport = () => {
             profile.username.toLowerCase())),
   );
 
+  const profileUrl = profile?.username
+    ? `https://${profile.username}.aethex.me`
+    : "";
+
+  const copyProfileLink = () => {
+    if (profileUrl) {
+      navigator.clipboard.writeText(profileUrl);
+      setProfileLinkCopied(true);
+      setTimeout(() => setProfileLinkCopied(false), 2000);
+    }
+  };
+
   if (loading) {
     return <LoadingScreen message="Loading AeThex passport..." />;
   }
