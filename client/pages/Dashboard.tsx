@@ -1139,6 +1139,7 @@ export default function Dashboard() {
                           <Input
                             id="location"
                             value={locationInput}
+                            className="pointer-events-auto"
                             onChange={(e) => setLocationInput(e.target.value)}
                           />
                         </div>
