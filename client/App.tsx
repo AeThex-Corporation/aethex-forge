@@ -234,6 +234,7 @@ const App = () => (
                         <Route path="/directory" element={<Directory />} />
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/admin/feed" element={<AdminFeed />} />
+                        <Route path="/admin/blog" element={<AdminBlogManager />} />
                         <Route path="/admin/docs-sync" element={<DocsSync />} />
                         <Route path="/arms" element={<Arms />} />
                         <Route path="/feed" element={<Feed />} />
