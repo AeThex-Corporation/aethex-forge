@@ -1112,26 +1112,25 @@ export default function Dashboard() {
                     Manage your profile, notifications, and privacy
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="pointer-events-auto" style={{pointerEvents: 'auto'}}>
-                  <Tabs value={activeTab} onValueChange={handleTabChange} className="pointer-events-auto" style={{pointerEvents: 'auto'}}>
-                    <TabsList className="mb-4 flex flex-wrap gap-2 pointer-events-auto" style={{pointerEvents: 'auto'}}>
-                      <TabsTrigger value="profile" className="pointer-events-auto" style={{pointerEvents: 'auto'}}>Profile</TabsTrigger>
-                      <TabsTrigger value="connections" className="pointer-events-auto" style={{pointerEvents: 'auto'}}>Connections</TabsTrigger>
-                      <TabsTrigger value="notifications" className="pointer-events-auto" style={{pointerEvents: 'auto'}}>
+                <CardContent>
+                  <Tabs value={activeTab} onValueChange={handleTabChange}>
+                    <TabsList className="mb-4 flex flex-wrap gap-2">
+                      <TabsTrigger value="profile">Profile</TabsTrigger>
+                      <TabsTrigger value="connections">Connections</TabsTrigger>
+                      <TabsTrigger value="notifications">
                         Notifications
                       </TabsTrigger>
-                      <TabsTrigger value="privacy" className="pointer-events-auto" style={{pointerEvents: 'auto'}}>Privacy</TabsTrigger>
+                      <TabsTrigger value="privacy">Privacy</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="profile" className="space-y-4 pointer-events-auto" style={{pointerEvents: 'auto'}}>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pointer-events-auto" style={{pointerEvents: 'auto'}}>
+                    <TabsContent value="profile" className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="displayName">Display Name</Label>
                           <Input
                             id="displayName"
                             value={displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
-                            className="pointer-events-auto"
                           />
                         </div>
                         <div>
@@ -1139,7 +1138,6 @@ export default function Dashboard() {
                           <Input
                             id="location"
                             value={locationInput}
-                            className="pointer-events-auto"
                             onChange={(e) => setLocationInput(e.target.value)}
                           />
                         </div>
@@ -1372,8 +1370,8 @@ export default function Dashboard() {
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="connections" className="space-y-6 pointer-events-auto" style={{pointerEvents: 'auto'}}>
-                      <div className="space-y-2 pointer-events-auto">
+                    <TabsContent value="connections" className="space-y-6">
+                      <div className="space-y-2">
                         <h3 className="text-lg font-semibold text-foreground">
                           Linked accounts
                         </h3>
