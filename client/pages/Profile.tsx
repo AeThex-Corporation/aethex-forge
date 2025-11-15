@@ -356,7 +356,8 @@ const Profile = () => {
               </Card>
 
               {/* SKILLS & LANGUAGES */}
-              {(profile.skills_detailed && profile.skills_detailed.length > 0) ||
+              {(profile.skills_detailed &&
+                profile.skills_detailed.length > 0) ||
               (profile.languages && profile.languages.length > 0) ? (
                 <Card className="border-border/40 bg-background/60 backdrop-blur">
                   <CardHeader>
@@ -369,7 +370,8 @@ const Profile = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {profile.skills_detailed && profile.skills_detailed.length > 0 ? (
+                    {profile.skills_detailed &&
+                    profile.skills_detailed.length > 0 ? (
                       <div>
                         <p className="text-sm font-medium text-foreground/80 mb-2">
                           Technical Skills
@@ -499,7 +501,8 @@ const Profile = () => {
               ) : null}
 
               {/* ARM AFFILIATIONS */}
-              {profile.arm_affiliations && profile.arm_affiliations.length > 0 ? (
+              {profile.arm_affiliations &&
+              profile.arm_affiliations.length > 0 ? (
                 <Card className="border-border/40 bg-background/60 backdrop-blur">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-white">
@@ -520,28 +523,34 @@ const Profile = () => {
                           > = {
                             foundation: {
                               label: "Foundation",
-                              color: "bg-red-500/20 text-red-200 border-red-500/40",
+                              color:
+                                "bg-red-500/20 text-red-200 border-red-500/40",
                             },
                             gameforge: {
                               label: "GameForge",
-                              color: "bg-green-500/20 text-green-200 border-green-500/40",
+                              color:
+                                "bg-green-500/20 text-green-200 border-green-500/40",
                             },
                             labs: {
                               label: "Labs",
-                              color: "bg-yellow-500/20 text-yellow-200 border-yellow-500/40",
+                              color:
+                                "bg-yellow-500/20 text-yellow-200 border-yellow-500/40",
                             },
                             corp: {
                               label: "Corp",
-                              color: "bg-blue-500/20 text-blue-200 border-blue-500/40",
+                              color:
+                                "bg-blue-500/20 text-blue-200 border-blue-500/40",
                             },
                             devlink: {
                               label: "Dev-Link",
-                              color: "bg-cyan-500/20 text-cyan-200 border-cyan-500/40",
+                              color:
+                                "bg-cyan-500/20 text-cyan-200 border-cyan-500/40",
                             },
                           };
                           const config = armConfig[arm] || {
                             label: arm,
-                            color: "bg-slate-500/20 text-slate-200 border-slate-500/40",
+                            color:
+                              "bg-slate-500/20 text-slate-200 border-slate-500/40",
                           };
                           return (
                             <Badge

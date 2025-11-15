@@ -81,7 +81,9 @@ export default function NexusDashboard() {
         availability_status: creatorProfile.availability_status || "available",
         availability_hours_per_week:
           creatorProfile.availability_hours_per_week?.toString() || "",
-        skills: Array.isArray(creatorProfile.skills) ? creatorProfile.skills : [],
+        skills: Array.isArray(creatorProfile.skills)
+          ? creatorProfile.skills
+          : [],
       });
     }
   }, [creatorProfile]);
@@ -208,9 +210,10 @@ export default function NexusDashboard() {
             ? parseFloat(profileFormData.hourly_rate)
             : null,
           availability_status: profileFormData.availability_status,
-          availability_hours_per_week: profileFormData.availability_hours_per_week
-            ? parseFloat(profileFormData.availability_hours_per_week)
-            : null,
+          availability_hours_per_week:
+            profileFormData.availability_hours_per_week
+              ? parseFloat(profileFormData.availability_hours_per_week)
+              : null,
           skills: profileFormData.skills,
         }),
       });
@@ -223,17 +226,20 @@ export default function NexusDashboard() {
       setCreatorProfile(updatedProfile);
 
       // Update user profile to mark Nexus as complete
-      const userProfileRes = await fetch(`${API_BASE}/api/user/profile-update`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const userProfileRes = await fetch(
+        `${API_BASE}/api/user/profile-update`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nexus_profile_complete: true,
+            nexus_headline: profileFormData.headline,
+          }),
         },
-        body: JSON.stringify({
-          nexus_profile_complete: true,
-          nexus_headline: profileFormData.headline,
-        }),
-      });
+      );
 
       if (userProfileRes.ok) {
         aethexToast({

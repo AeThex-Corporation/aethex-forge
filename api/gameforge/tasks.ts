@@ -24,10 +24,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === "GET") {
       const { sprintId, projectId, status, assignedTo } = req.query;
 
-      let query = admin
-        .from("gameforge_tasks")
-        .select(
-          `
+      let query = admin.from("gameforge_tasks").select(
+        `
           id,
           sprint_id,
           project_id,
@@ -46,7 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           user_profiles:assigned_to(id, full_name, avatar_url),
           creator:created_by_id(id, full_name)
         `,
-        );
+      );
 
       if (sprintId) {
         query = query.eq("sprint_id", sprintId);
@@ -97,7 +95,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .from("gameforge_projects")
         .select("id")
         .eq("id", projectId)
-        .or(`lead_id.eq.${user.id},id.in.(select project_id from gameforge_team_members where user_id='${user.id}')`)
+        .or(
+          `lead_id.eq.${user.id},id.in.(select project_id from gameforge_team_members where user_id='${user.id}')`,
+        )
         .single();
 
       if (projectError || !project) {

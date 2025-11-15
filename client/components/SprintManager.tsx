@@ -86,7 +86,7 @@ export default function SprintManager({
         `${API_BASE}/api/gameforge/sprint?projectId=${projectId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       if (res.ok) {
@@ -98,10 +98,10 @@ export default function SprintManager({
           data
             .filter((sprint: Sprint) =>
               sprint.gameforge_sprint_members?.some(
-                (m: any) => m.user_id === session?.user?.id
-              )
+                (m: any) => m.user_id === session?.user?.id,
+              ),
             )
-            .map((s: Sprint) => s.id)
+            .map((s: Sprint) => s.id),
         );
         setUserSprints(userSprintIds);
       }
@@ -336,7 +336,10 @@ export default function SprintManager({
                   type="number"
                   value={formData.plannedVelocity}
                   onChange={(e) =>
-                    setFormData({ ...formData, plannedVelocity: e.target.value })
+                    setFormData({
+                      ...formData,
+                      plannedVelocity: e.target.value,
+                    })
                   }
                   placeholder="Story points or tasks"
                   className="bg-slate-900 border-slate-700"
@@ -418,8 +421,7 @@ export default function SprintManager({
                         )}
                         {sprint.end_date && (
                           <div className="flex items-center gap-1">
-                            →{" "}
-                            {new Date(sprint.end_date).toLocaleDateString()}
+                            → {new Date(sprint.end_date).toLocaleDateString()}
                           </div>
                         )}
                         <div className="flex items-center gap-1">

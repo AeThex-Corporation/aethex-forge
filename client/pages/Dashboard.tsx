@@ -578,7 +578,7 @@ export default function Dashboard() {
                     linkedProviderMap={
                       linkedProviders
                         ? Object.fromEntries(
-                            linkedProviders.map((p) => [p.provider, p])
+                            linkedProviders.map((p) => [p.provider, p]),
                           )
                         : {}
                     }

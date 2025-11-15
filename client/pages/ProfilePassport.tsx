@@ -764,24 +764,29 @@ const ProfilePassport = () => {
                       },
                       gameforge: {
                         label: "GameForge",
-                        color: "bg-green-500/20 text-green-200 border-green-500/40",
+                        color:
+                          "bg-green-500/20 text-green-200 border-green-500/40",
                       },
                       labs: {
                         label: "Labs",
-                        color: "bg-yellow-500/20 text-yellow-200 border-yellow-500/40",
+                        color:
+                          "bg-yellow-500/20 text-yellow-200 border-yellow-500/40",
                       },
                       corp: {
                         label: "Corp",
-                        color: "bg-blue-500/20 text-blue-200 border-blue-500/40",
+                        color:
+                          "bg-blue-500/20 text-blue-200 border-blue-500/40",
                       },
                       devlink: {
                         label: "Dev-Link",
-                        color: "bg-cyan-500/20 text-cyan-200 border-cyan-500/40",
+                        color:
+                          "bg-cyan-500/20 text-cyan-200 border-cyan-500/40",
                       },
                     };
                     const config = armConfig[arm] || {
                       label: arm,
-                      color: "bg-slate-500/20 text-slate-200 border-slate-500/40",
+                      color:
+                        "bg-slate-500/20 text-slate-200 border-slate-500/40",
                     };
                     return (
                       <Badge

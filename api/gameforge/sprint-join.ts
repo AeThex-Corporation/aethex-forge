@@ -44,7 +44,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .from("gameforge_projects")
         .select("id")
         .eq("id", sprint.project_id)
-        .or(`lead_id.eq.${user.id},id.in.(select project_id from gameforge_team_members where user_id='${user.id}')`)
+        .or(
+          `lead_id.eq.${user.id},id.in.(select project_id from gameforge_team_members where user_id='${user.id}')`,
+        )
         .single();
 
       if (!projectAccess) {
@@ -105,9 +107,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .single();
 
       if (memberError || !member) {
-        return res
-          .status(404)
-          .json({ error: "Not a member of this sprint" });
+        return res.status(404).json({ error: "Not a member of this sprint" });
       }
 
       // Don't allow lead to leave if they're the only lead

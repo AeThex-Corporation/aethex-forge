@@ -452,7 +452,10 @@ export default function GameForgeDashboard() {
                 </TabsContent>
 
                 {/* Sprints Tab */}
-                <TabsContent value="sprints" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="sprints"
+                  className="space-y-4 animate-fade-in"
+                >
                   {sprint && sprint.project_id ? (
                     <SprintManager
                       projectId={sprint.project_id}

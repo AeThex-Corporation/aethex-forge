@@ -24,10 +24,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === "GET") {
       const { projectId, status } = req.query;
 
-      let query = admin
-        .from("gameforge_sprints")
-        .select(
-          `
+      let query = admin.from("gameforge_sprints").select(
+        `
           id,
           project_id,
           sprint_number,
@@ -46,7 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           gameforge_projects(name),
           gameforge_sprint_members(user_id)
         `,
-        );
+      );
 
       if (projectId) {
         query = query.eq("project_id", projectId);
