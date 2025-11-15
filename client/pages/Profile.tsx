@@ -27,6 +27,10 @@ import {
   Shield,
   Trophy,
   UserCircle,
+  Briefcase,
+  Code2,
+  Globe,
+  Award,
 } from "lucide-react";
 
 interface ProfileStat {
