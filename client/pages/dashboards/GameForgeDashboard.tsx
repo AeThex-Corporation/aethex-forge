@@ -238,13 +238,14 @@ export default function GameForgeDashboard() {
                 className="w-full"
               >
                 <TabsList
-                  className="grid w-full grid-cols-4 bg-green-950/30 border border-green-500/20 p-1"
+                  className="grid w-full grid-cols-5 bg-green-950/30 border border-green-500/20 p-1"
                   style={{ fontFamily: theme.fontFamily }}
                 >
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="scope">Scope</TabsTrigger>
                   <TabsTrigger value="team">Team</TabsTrigger>
                   <TabsTrigger value="tasks">Tasks</TabsTrigger>
+                  <TabsTrigger value="sprints">Sprints</TabsTrigger>
                 </TabsList>
 
                 {/* Overview Tab */}
