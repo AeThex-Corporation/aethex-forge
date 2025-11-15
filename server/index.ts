@@ -370,7 +370,7 @@ export function createServer() {
       const { data, error } = await adminSupabase
         .from("user_profiles")
         .select(
-          "id, username, full_name, avatar_url, user_type, bio, created_at, email",
+          "id, username, full_name, avatar_url, user_type, bio, created_at",
         )
         .eq("username", username)
         .single();
