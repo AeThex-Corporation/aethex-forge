@@ -146,6 +146,10 @@ export default function BlogPost() {
                 </div>
               </CardContent>
             </Card>
+
+            <div className="mt-12">
+              <BlogCTASection variant="both" />
+            </div>
           </div>
         </div>
       </Layout>
