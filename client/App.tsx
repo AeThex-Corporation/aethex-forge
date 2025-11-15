@@ -100,7 +100,6 @@ import Realms from "./pages/Realms";
 import Investors from "./pages/Investors";
 import NexusDashboard from "./pages/dashboards/NexusDashboard";
 import FoundationDashboard from "./pages/dashboards/FoundationDashboard";
-import ClientHub from "./pages/hub/ClientHub";
 import Roadmap from "./pages/Roadmap";
 import Trust from "./pages/Trust";
 import PressKit from "./pages/PressKit";
