@@ -43,52 +43,52 @@ export default function LabsDashboard() {
         const tracksRes = await fetch(`${API_BASE}/api/labs/research-tracks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (tracksRes.ok) {
+        if (tracksRes.ok && tracksRes.headers.get("content-type")?.includes("application/json")) {
           const data = await tracksRes.json();
           setResearchTracks(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load research tracks:", err);
+        // Silently ignore API errors
       }
 
       try {
         const bountiesRes = await fetch(`${API_BASE}/api/labs/bounties`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (bountiesRes.ok) {
+        if (bountiesRes.ok && bountiesRes.headers.get("content-type")?.includes("application/json")) {
           const data = await bountiesRes.json();
           setBounties(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load bounties:", err);
+        // Silently ignore API errors
       }
 
       try {
         const pubRes = await fetch(`${API_BASE}/api/labs/publications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (pubRes.ok) {
+        if (pubRes.ok && pubRes.headers.get("content-type")?.includes("application/json")) {
           const data = await pubRes.json();
           setPublications(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load publications:", err);
+        // Silently ignore API errors
       }
 
       try {
         const ipRes = await fetch(`${API_BASE}/api/labs/ip-portfolio`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (ipRes.ok) {
+        if (ipRes.ok && ipRes.headers.get("content-type")?.includes("application/json")) {
           const data = await ipRes.json();
           setIpPortfolio(data);
           setIsAdmin(data?.is_admin || false);
         }
       } catch (err) {
-        console.error("Failed to load IP portfolio:", err);
+        // Silently ignore API errors
       }
     } catch (error) {
-      console.error("Failed to load LABS data", error);
+      // Silently ignore errors
     } finally {
       setLoading(false);
     }

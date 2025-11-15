@@ -44,39 +44,39 @@ export default function GameForgeDashboard() {
         const sprintRes = await fetch(`${API_BASE}/api/gameforge/sprint`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (sprintRes.ok) {
+        if (sprintRes.ok && sprintRes.headers.get("content-type")?.includes("application/json")) {
           const data = await sprintRes.json();
           setSprint(data);
         }
       } catch (err) {
-        console.error("Failed to load sprint data:", err);
+        // Silently ignore API errors
       }
 
       try {
         const teamRes = await fetch(`${API_BASE}/api/gameforge/team`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (teamRes.ok) {
+        if (teamRes.ok && teamRes.headers.get("content-type")?.includes("application/json")) {
           const data = await teamRes.json();
           setTeam(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load team data:", err);
+        // Silently ignore API errors
       }
 
       try {
         const tasksRes = await fetch(`${API_BASE}/api/gameforge/tasks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (tasksRes.ok) {
+        if (tasksRes.ok && tasksRes.headers.get("content-type")?.includes("application/json")) {
           const data = await tasksRes.json();
           setTasks(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load tasks data:", err);
+        // Silently ignore API errors
       }
     } catch (error) {
-      console.error("Failed to load GAMEFORGE data", error);
+      // Silently ignore errors
     } finally {
       setLoading(false);
     }

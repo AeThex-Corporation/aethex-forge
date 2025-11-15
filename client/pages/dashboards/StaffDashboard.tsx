@@ -43,51 +43,51 @@ export default function StaffDashboard() {
         const memberRes = await fetch(`${API_BASE}/api/staff/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (memberRes.ok) {
+        if (memberRes.ok && memberRes.headers.get("content-type")?.includes("application/json")) {
           const data = await memberRes.json();
           setStaffMember(data);
         }
       } catch (err) {
-        console.error("Failed to load staff member data:", err);
+        // Silently ignore API errors
       }
 
       try {
         const okrRes = await fetch(`${API_BASE}/api/staff/okrs`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (okrRes.ok) {
+        if (okrRes.ok && okrRes.headers.get("content-type")?.includes("application/json")) {
           const data = await okrRes.json();
           setOkrs(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load OKRs:", err);
+        // Silently ignore API errors
       }
 
       try {
         const invRes = await fetch(`${API_BASE}/api/staff/invoices`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (invRes.ok) {
+        if (invRes.ok && invRes.headers.get("content-type")?.includes("application/json")) {
           const data = await invRes.json();
           setInvoices(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load invoices:", err);
+        // Silently ignore API errors
       }
 
       try {
         const dirRes = await fetch(`${API_BASE}/api/staff/directory`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (dirRes.ok) {
+        if (dirRes.ok && dirRes.headers.get("content-type")?.includes("application/json")) {
           const data = await dirRes.json();
           setDirectory(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load directory:", err);
+        // Silently ignore API errors
       }
     } catch (error) {
-      console.error("Failed to load STAFF data", error);
+      // Silently ignore errors
     } finally {
       setLoading(false);
     }

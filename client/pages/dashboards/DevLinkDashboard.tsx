@@ -42,39 +42,39 @@ export default function DevLinkDashboard() {
         const profileRes = await fetch(`${API_BASE}/api/devlink/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (profileRes.ok) {
+        if (profileRes.ok && profileRes.headers.get("content-type")?.includes("application/json")) {
           const data = await profileRes.json();
           setProfile(data);
         }
       } catch (err) {
-        console.error("Failed to load profile:", err);
+        // Silently ignore API errors
       }
 
       try {
         const oppRes = await fetch(`${API_BASE}/api/devlink/opportunities`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (oppRes.ok) {
+        if (oppRes.ok && oppRes.headers.get("content-type")?.includes("application/json")) {
           const data = await oppRes.json();
           setOpportunities(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load opportunities:", err);
+        // Silently ignore API errors
       }
 
       try {
         const teamsRes = await fetch(`${API_BASE}/api/devlink/teams`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (teamsRes.ok) {
+        if (teamsRes.ok && teamsRes.headers.get("content-type")?.includes("application/json")) {
           const data = await teamsRes.json();
           setTeams(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.error("Failed to load teams:", err);
+        // Silently ignore API errors
       }
     } catch (error) {
-      console.error("Failed to load DEV-LINK data", error);
+      // Silently ignore errors
     } finally {
       setLoading(false);
     }
