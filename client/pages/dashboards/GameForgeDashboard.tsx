@@ -40,20 +40,41 @@ export default function GameForgeDashboard() {
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
-      const sprintRes = await fetch(`${API_BASE}/api/gameforge/sprint`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (sprintRes.ok) setSprint(await sprintRes.json());
+      try {
+        const sprintRes = await fetch(`${API_BASE}/api/gameforge/sprint`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (sprintRes.ok) {
+          const data = await sprintRes.json();
+          setSprint(data);
+        }
+      } catch (err) {
+        console.error("Failed to load sprint data:", err);
+      }
 
-      const teamRes = await fetch(`${API_BASE}/api/gameforge/team`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (teamRes.ok) setTeam(await teamRes.json());
+      try {
+        const teamRes = await fetch(`${API_BASE}/api/gameforge/team`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (teamRes.ok) {
+          const data = await teamRes.json();
+          setTeam(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load team data:", err);
+      }
 
-      const tasksRes = await fetch(`${API_BASE}/api/gameforge/tasks`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (tasksRes.ok) setTasks(await tasksRes.json());
+      try {
+        const tasksRes = await fetch(`${API_BASE}/api/gameforge/tasks`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (tasksRes.ok) {
+          const data = await tasksRes.json();
+          setTasks(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load tasks data:", err);
+      }
     } catch (error) {
       console.error("Failed to load GAMEFORGE data", error);
     } finally {
