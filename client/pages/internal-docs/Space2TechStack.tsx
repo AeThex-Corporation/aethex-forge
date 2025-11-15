@@ -34,7 +34,7 @@ export default function Space2TechStack() {
                   <strong>Database:</strong> Supabase (PostgreSQL)
                 </p>
                 <p>
-                  <strong>Hosting:</strong> Vercel (Frontend), Fly.io (Backend)
+                  <strong>Hosting:</strong> Vercel (Frontend + Serverless API)
                 </p>
                 <p>
                   <strong>Auth:</strong> Supabase Auth (Email, Google, GitHub,
@@ -168,8 +168,8 @@ export default function Space2TechStack() {
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-white mb-3">Deployment</h4>
               <ul className="text-sm text-slate-300 space-y-1">
-                <li>• Vercel (Frontend)</li>
-                <li>• Fly.io (Backend)</li>
+                <li>• Vercel (Frontend + Serverless API)</li>
+                <li>• Railway (Discord Bot)</li>
                 <li>• GitHub Actions (Automation)</li>
               </ul>
             </div>
@@ -220,7 +220,7 @@ export default function Space2TechStack() {
               <li>✓ Email (corporate account)</li>
               <li>✓ Supabase (database access, if needed)</li>
               <li>✓ Vercel (deployment, if needed)</li>
-              <li>✓ Fly.io (backend, if needed)</li>
+              <li>✓ Railway (Discord bot, if needed)</li>
               <li>✓ Sentry (error tracking, if needed)</li>
             </ul>
           </div>

@@ -504,7 +504,7 @@ Redirects to /profile/settings
 ### Development Plan Says... | Actually Have... | Status
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
+┌───────────��─────────────────────────────────────────────────────┐
 │ FRONTEND                                                         │
 ├─────────────────────────────────────────────────────────────────┤
 │ Plan: Next.js App Router + @supabase/ssr                        │
@@ -518,7 +518,7 @@ Redirects to /profile/settings
 │ Plan: Middleware for session refresh                            │
 │ Actual: No middleware (not applicable to Vite+React)            │
 │ Status: ⚠️ SESSION HANDLING - Handled by useAuth hook           │
-├─────────────────────────────────────────────────────────────────┤
+├──────────��──────────────────────────────────────────────────────┤
 │ Plan: Discord Embedded App SDK integration                      │
 │ Actual: Not yet implemented (DiscordActivity.tsx exists)        │
 │ Status: ⏳ IN PROGRESS                                          │
@@ -553,7 +553,7 @@ Redirects to /profile/settings
 │ Plan: Dual auth (Discord SDK + Supabase)                        │
 │ Actual: Single auth implemented (OAuth)                         │
 │ Status: ⏳ Dual auth needed for Activity                        │
-└─────────────────────────────────────────────────────────────────┘
+└───────────────────────────────────────────────────────────────���─┘
 ```
 
 ---
@@ -596,7 +596,7 @@ ROBLOX_OAUTH_REDIRECT_URI=https://aethex.dev/roblox-callback
 ### API Base
 
 ```
-VITE_API_BASE=https://e7c3806a9bfe4bdf9bb8a72a7f0d31cd-324f24a826ec4eb198c1a0eef.fly.dev
+VITE_API_BASE=https://aethex.dev
 ```
 
 ---
