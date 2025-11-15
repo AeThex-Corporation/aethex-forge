@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import PassportSummary from "@/components/passport/PassportSummary";
 import ProjectPassport from "@/components/passport/ProjectPassport";
 import FourOhFourPage from "@/pages/404";
+import Index from "@/pages/Index";
 import type { AethexUserProfile } from "@/lib/aethex-database-adapter";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
