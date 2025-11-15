@@ -197,7 +197,14 @@ const App = () => (
                         <Route path="/dashboard/labs" element={<LabsDashboard />} />
                         <Route path="/dashboard/gameforge" element={<GameForgeDashboard />} />
                         <Route path="/dashboard/dev-link" element={<DevLinkDashboard />} />
-                        <Route path="/hub/client" element={<ClientHub />} />
+                        <Route
+                          path="/hub/client"
+                          element={
+                            <RequireAccess>
+                              <ClientHub />
+                            </RequireAccess>
+                          }
+                        />
                         <Route path="/realms" element={<Realms />} />
                         <Route path="/investors" element={<Investors />} />
                         <Route path="/roadmap" element={<Roadmap />} />
@@ -596,27 +603,51 @@ const App = () => (
                         {/* Client Hub routes */}
                         <Route
                           path="/hub/client/dashboard"
-                          element={<ClientDashboard />}
+                          element={
+                            <RequireAccess>
+                              <ClientDashboard />
+                            </RequireAccess>
+                          }
                         />
                         <Route
                           path="/hub/client/projects"
-                          element={<ClientProjects />}
+                          element={
+                            <RequireAccess>
+                              <ClientProjects />
+                            </RequireAccess>
+                          }
                         />
                         <Route
                           path="/hub/client/invoices"
-                          element={<ClientInvoices />}
+                          element={
+                            <RequireAccess>
+                              <ClientInvoices />
+                            </RequireAccess>
+                          }
                         />
                         <Route
                           path="/hub/client/contracts"
-                          element={<ClientContracts />}
+                          element={
+                            <RequireAccess>
+                              <ClientContracts />
+                            </RequireAccess>
+                          }
                         />
                         <Route
                           path="/hub/client/reports"
-                          element={<ClientReports />}
+                          element={
+                            <RequireAccess>
+                              <ClientReports />
+                            </RequireAccess>
+                          }
                         />
                         <Route
                           path="/hub/client/settings"
-                          element={<ClientSettings />}
+                          element={
+                            <RequireAccess>
+                              <ClientSettings />
+                            </RequireAccess>
+                          }
                         />
 
                         {/* Nexus routes */}
