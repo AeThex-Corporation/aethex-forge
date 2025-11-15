@@ -138,6 +138,7 @@ export default function Dashboard() {
   const [github, setGithub] = useState("");
   const [twitter, setTwitter] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
+  const [profileLinkCopied, setProfileLinkCopied] = useState(false);
 
   useEffect(() => {
     if (profile) {
