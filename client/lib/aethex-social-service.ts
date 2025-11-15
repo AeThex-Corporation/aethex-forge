@@ -60,7 +60,7 @@ export const aethexSocialService = {
   async getFollowers(userId: string): Promise<string[]> {
     try {
       const resp = await fetch(
-        `${API_BASE}/api/user/followers?userId=${encodeURIComponent(userId)}`
+        `${API_BASE}/api/social/followers?userId=${encodeURIComponent(userId)}`
       );
 
       if (!resp.ok) {
