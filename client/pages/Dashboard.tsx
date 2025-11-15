@@ -483,6 +483,51 @@ export default function Dashboard() {
                   </CardContent>
                 </Card>
               </div>
+
+              {/* Profile Link Card */}
+              {profileUrl && (
+                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                  <CardHeader>
+                    <CardTitle>Your Public Profile</CardTitle>
+                    <CardDescription>
+                      Share your unique profile link with others
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex items-center gap-2 bg-purple-950/30 border border-purple-500/20 rounded-lg p-3">
+                      <code className="flex-1 text-sm text-purple-200 break-all">
+                        {profileUrl}
+                      </code>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={copyProfileLink}
+                        className="h-8 w-8 shrink-0"
+                        title={profileLinkCopied ? "Copied!" : "Copy"}
+                      >
+                        {profileLinkCopied ? (
+                          <CheckCircle2 className="h-4 w-4 text-green-400" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <p className="text-xs text-gray-400">
+                      This is your public profile page where others can see your
+                      achievements, portfolio, and connect with you.
+                    </p>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="w-full border-purple-500/30 text-purple-300 hover:bg-purple-500/10"
+                    >
+                      <Link to={`/passport/${profile?.username || "me"}`}>
+                        View Your Profile
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             {/* Connections Tab */}
