@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useArmTheme } from "@/contexts/ArmThemeContext";
 import { aethexToast } from "@/lib/aethex-toast";
 import { supabase } from "@/lib/supabase";
 import {
@@ -37,6 +38,7 @@ const API_BASE = import.meta.env.VITE_API_BASE || "";
 export default function FoundationDashboard() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { theme } = useArmTheme();
   const [activeTab, setActiveTab] = useState("overview");
   const [courses, setCourses] = useState<any[]>([]);
   const [mentorships, setMentorships] = useState<any[]>([]);
@@ -111,13 +113,13 @@ export default function FoundationDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-red-950/20 to-black py-8">
+      <div className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`} style={{ backgroundImage: theme.wallpaperPattern }}>
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-slide-down">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-2">
-                <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-red-300 via-orange-300 to-red-300 bg-clip-text text-transparent">
+                <h1 className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}>
                   FOUNDATION University
                 </h1>
                 <p className="text-gray-400 text-lg">
@@ -128,26 +130,26 @@ export default function FoundationDashboard() {
 
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border-orange-500/20">
+              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs text-gray-400 uppercase tracking-wider">Courses Enrolled</p>
                       <p className="text-2xl font-bold text-white mt-1">{enrolledCourses.length}</p>
                     </div>
-                    <BookOpen className="h-6 w-6 text-orange-500 opacity-50" />
+                    <BookOpen className="h-6 w-6 text-red-500 opacity-50" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
+              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs text-gray-400 uppercase tracking-wider">Completed</p>
                       <p className="text-2xl font-bold text-white mt-1">{completedCourses.length}</p>
                     </div>
-                    <CheckCircle className="h-6 w-6 text-amber-500 opacity-50" />
+                    <CheckCircle className="h-6 w-6 text-red-500 opacity-50" />
                   </div>
                 </CardContent>
               </Card>
@@ -185,7 +187,7 @@ export default function FoundationDashboard() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-red-950/30 border border-red-500/20 p-1">
+            <TabsList className="grid w-full grid-cols-4 bg-red-950/30 border border-red-500/20 p-1" style={{ fontFamily: theme.fontFamily }}>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="courses">Courses</TabsTrigger>
               <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
