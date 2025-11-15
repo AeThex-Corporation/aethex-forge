@@ -1296,7 +1296,7 @@ export default function Community() {
     if (!isValidTab(candidateTab)) {
       navigate(`/community/${defaultTab}`, { replace: true });
     }
-  }, [candidateTab, defaultTab, navigate]);
+  }, [candidateTab, defaultTab]);
 
   const handleTabChange = (value: string) => {
     const nextTab = isValidTab(value) ? value : defaultTab;
