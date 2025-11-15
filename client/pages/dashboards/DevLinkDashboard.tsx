@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useArmTheme } from "@/contexts/ArmThemeContext";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +17,7 @@ const API_BASE = import.meta.env.VITE_API_BASE || "";
 export default function DevLinkDashboard() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { theme } = useArmTheme();
   const [activeTab, setActiveTab] = useState("overview");
   const [profile, setProfile] = useState<any>(null);
   const [opportunities, setOpportunities] = useState<any[]>([]);
@@ -84,11 +86,11 @@ export default function DevLinkDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-cyan-950/20 to-black py-8">
+      <div className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`} style={{ backgroundImage: theme.wallpaperPattern }}>
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-slide-down">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+            <h1 className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}>
               DEV-LINK
             </h1>
             <p className="text-gray-400 text-lg">Roblox Developer Network | Vibrant Cyan</p>
@@ -96,7 +98,7 @@ export default function DevLinkDashboard() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-cyan-950/30 border border-cyan-500/20 p-1">
+            <TabsList className="grid w-full grid-cols-4 bg-cyan-950/30 border border-cyan-500/20 p-1" style={{ fontFamily: theme.fontFamily }}>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="profile">Profile Editor</TabsTrigger>
               <TabsTrigger value="jobs">Roblox Jobs</TabsTrigger>
