@@ -306,6 +306,49 @@ export function createServer() {
     next();
   });
 
+  // Subdomain detection middleware for aethex.me and aethex.space
+  app.use((req, res, next) => {
+    const host = (req.headers.host || "").toLowerCase();
+    const forwarded = ((req.headers["x-forwarded-host"] as string) || "").toLowerCase();
+    const hostname = forwarded || host;
+
+    // Parse subdomain
+    let subdomain = "";
+    let domain = "";
+
+    if (hostname.includes("aethex.me")) {
+      const parts = hostname.split(".");
+      if (parts.length > 2) {
+        subdomain = parts[0];
+        domain = "aethex.me";
+      }
+    } else if (hostname.includes("aethex.space")) {
+      const parts = hostname.split(".");
+      if (parts.length > 2) {
+        subdomain = parts[0];
+        domain = "aethex.space";
+      }
+    }
+
+    // Attach subdomain info to request
+    (req as any).subdomainInfo = {
+      subdomain,
+      domain,
+      isCreatorPassport: domain === "aethex.me",
+      isProjectPassport: domain === "aethex.space",
+    };
+
+    console.log("[Subdomain] Detected:", {
+      hostname,
+      subdomain,
+      domain,
+      isCreatorPassport: domain === "aethex.me",
+      isProjectPassport: domain === "aethex.space",
+    });
+
+    next();
+  });
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";
