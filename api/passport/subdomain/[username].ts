@@ -92,16 +92,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Get user's interests
     const { data: userInterests = [] } = await admin
       .from("user_interests")
-      .select(
-        `
-        interest_id,
-        interests(
-          id,
-          name,
-          category
-        )
-      `,
-      )
+      .select("interest")
       .eq("user_id", user.id);
 
     // Get linked auth providers
