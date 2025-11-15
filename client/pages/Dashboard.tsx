@@ -574,9 +574,17 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <OAuthConnections
-                    linkedProviders={linkedProviders}
-                    linkProvider={linkProvider}
-                    unlinkProvider={unlinkProvider}
+                    providers={OAUTH_PROVIDERS}
+                    linkedProviderMap={
+                      linkedProviders
+                        ? Object.fromEntries(
+                            linkedProviders.map((p) => [p.provider, p])
+                          )
+                        : {}
+                    }
+                    connectionAction={null}
+                    onLink={linkProvider}
+                    onUnlink={unlinkProvider}
                   />
                 </CardContent>
               </Card>
