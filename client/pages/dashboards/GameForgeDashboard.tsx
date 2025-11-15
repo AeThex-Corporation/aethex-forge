@@ -104,6 +104,25 @@ export default function GameForgeDashboard() {
       } catch (err) {
         // Silently ignore API errors
       }
+
+      try {
+        const projectsRes = await fetch(`${API_BASE}/api/gameforge/projects`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (
+          projectsRes.ok &&
+          projectsRes.headers.get("content-type")?.includes("application/json")
+        ) {
+          const data = await projectsRes.json();
+          setProjects(Array.isArray(data) ? data : []);
+          // Check if user is a project lead
+          if (data && data.some((p: any) => p.lead_id === user?.id)) {
+            setIsProjectLead(true);
+          }
+        }
+      } catch (err) {
+        // Silently ignore API errors
+      }
     } catch (error) {
       // Silently ignore errors
     } finally {
