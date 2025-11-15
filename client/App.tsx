@@ -103,7 +103,6 @@ import FoundationDashboard from "./pages/dashboards/FoundationDashboard";
 import LabsDashboard from "./pages/dashboards/LabsDashboard";
 import GameForgeDashboard from "./pages/dashboards/GameForgeDashboard";
 import DevLinkDashboard from "./pages/dashboards/DevLinkDashboard";
-import StaffDashboard from "./pages/dashboards/StaffDashboard";
 import Roadmap from "./pages/Roadmap";
 import Trust from "./pages/Trust";
 import PressKit from "./pages/PressKit";
@@ -157,7 +156,6 @@ import Space4PlatformStrategy from "./pages/internal-docs/Space4PlatformStrategy
 import Space5Onboarding from "./pages/internal-docs/Space5Onboarding";
 import Space5Finance from "./pages/internal-docs/Space5Finance";
 import StaffLogin from "./pages/StaffLogin";
-import StaffDashboard from "./pages/StaffDashboard";
 import StaffDirectory from "./pages/StaffDirectory";
 import StaffAdmin from "./pages/StaffAdmin";
 import StaffChat from "./pages/StaffChat";
@@ -198,7 +196,6 @@ const App = () => (
                         <Route path="/dashboard/labs" element={<LabsDashboard />} />
                         <Route path="/dashboard/gameforge" element={<GameForgeDashboard />} />
                         <Route path="/dashboard/dev-link" element={<DevLinkDashboard />} />
-                        <Route path="/staff/dashboard" element={<StaffDashboard />} />
                         <Route path="/hub/client" element={<ClientHub />} />
                         <Route path="/realms" element={<Realms />} />
                         <Route path="/investors" element={<Investors />} />
