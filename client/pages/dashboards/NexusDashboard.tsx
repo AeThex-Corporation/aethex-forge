@@ -705,56 +705,31 @@ export default function NexusDashboard() {
 
                 {/* Contracts Tab */}
                 <TabsContent value="contracts" className="space-y-4 animate-fade-in">
-                  <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
-                    <CardHeader>
-                      <CardTitle>My Active Contracts & Payment History</CardTitle>
-                      <CardDescription>Track your active work and payments</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {contracts.length === 0 ? (
-                        <div className="text-center py-12">
-                          <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                          <p className="text-gray-400">No contracts yet</p>
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          {contracts.map((contract: any) => (
-                            <div key={contract.id} className="p-4 bg-black/30 rounded-lg border border-blue-500/10 space-y-4">
-                              <div className="flex items-start justify-between">
-                                <div className="space-y-1">
-                                  <h4 className="font-semibold text-white">{contract.title}</h4>
-                                  <p className="text-sm text-gray-400">with {contract.creator?.name}</p>
-                                </div>
-                                <Badge className="bg-blue-600/50 text-blue-100">{contract.status}</Badge>
-                              </div>
-
-                              <div className="grid grid-cols-3 gap-4 text-sm">
-                                <div>
-                                  <p className="text-gray-400">Total Value</p>
-                                  <p className="font-semibold text-white">${contract.total_amount?.toLocaleString()}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-400">Paid</p>
-                                  <p className="font-semibold text-green-400">${(contract.paid_amount || 0).toLocaleString()}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-400">Remaining</p>
-                                  <p className="font-semibold text-orange-400">${((contract.total_amount || 0) - (contract.paid_amount || 0)).toLocaleString()}</p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                  <ContractsWidget
+                    contracts={contracts.map((c: any) => ({
+                      id: c.id,
+                      title: c.title || "Untitled Contract",
+                      creator_name: c.creator?.full_name || "Creator",
+                      status: c.status || "active",
+                      total_amount: c.total_amount || 0,
+                      paid_amount: c.payments?.reduce((sum: number, p: any) => sum + (p.amount || 0), 0) || 0,
+                      start_date: c.start_date,
+                      end_date: c.end_date,
+                      description: c.description,
+                      milestones: c.milestones || [],
+                    }))}
+                    title="My Active Contracts"
+                    description="Track all active contracts with creators"
+                    type="client"
+                    accentColor="blue"
+                  />
 
                   {/* Payment History */}
                   {paymentHistory.length > 0 && (
                     <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                       <CardHeader>
                         <CardTitle>Payment History</CardTitle>
-                        <CardDescription>Recent payments made</CardDescription>
+                        <CardDescription>Recent payments made to creators</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-3">
