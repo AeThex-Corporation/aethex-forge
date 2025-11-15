@@ -28,6 +28,9 @@ import {
   ArrowRight,
   Zap,
 } from "lucide-react";
+import { CoursesWidget } from "@/components/CoursesWidget";
+import { MentorshipWidget } from "@/components/MentorshipWidget";
+import { AchievementsWidget } from "@/components/AchievementsWidget";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
@@ -191,228 +194,111 @@ export default function FoundationDashboard() {
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-6 animate-fade-in">
-              {/* Active Mentorship */}
-              {activeMentor ? (
-                <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/30">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Users className="h-5 w-5 text-green-500" />
-                      Your Mentor
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-start gap-4">
-                      <img
-                        src={activeMentor.mentor?.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop"}
-                        alt={activeMentor.mentor?.full_name}
-                        className="w-16 h-16 rounded-full border-2 border-green-500/40"
-                      />
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-white">{activeMentor.mentor?.full_name}</h3>
-                        <p className="text-sm text-gray-400 mb-4">Connected since {new Date(activeMentor.accepted_at).toLocaleDateString()}</p>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-green-500/30 text-green-300 hover:bg-green-500/10"
-                        >
-                          Schedule Session
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : (
-                <Card className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border-orange-500/30">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <AlertCircle className="h-5 w-5 text-orange-500" />
-                      Find a Mentor
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-gray-300">
-                      Having a mentor accelerates your learning. Browse mentors in your field and request guidance.
-                    </p>
-                    <Button
-                      onClick={() => navigate("/mentors")}
-                      className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
-                    >
-                      Find Mentor
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
+              {/* Mentorship Widget */}
+              <MentorshipWidget
+                mentorships={mentorships.map((m: any) => ({
+                  id: m.id,
+                  mentor: {
+                    id: m.mentor?.id,
+                    name: m.mentor?.full_name,
+                    avatar: m.mentor?.avatar_url,
+                    expertise: m.mentor?.role_title,
+                  },
+                  status: m.status,
+                  connectedSince: m.accepted_at ? new Date(m.accepted_at).toLocaleDateString() : null,
+                  lastSession: m.last_session_date,
+                  nextSession: m.next_session_date,
+                }))}
+                title="Your Mentorship"
+                description="Connect with industry experts"
+                accentColor="red"
+                onFindMentor={() => navigate("/mentors")}
+              />
 
-              {/* Recent Courses */}
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
-                <CardHeader>
-                  <CardTitle>Continue Learning</CardTitle>
-                  <CardDescription>Resume your courses</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {enrolledCourses.length === 0 ? (
-                    <div className="text-center py-8 space-y-4">
-                      <BookOpen className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
-                      <p className="text-gray-400">No courses yet. Browse our curriculum!</p>
-                      <Button
-                        onClick={() => navigate("/foundation/curriculum")}
-                        className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
-                      >
-                        Explore Courses
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {enrolledCourses.slice(0, 4).map((course: any) => (
-                        <div
-                          key={course.id}
-                          className="p-4 bg-black/30 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition cursor-pointer group"
-                          onClick={() => navigate(`/courses/${course.id}`)}
-                        >
-                          <div className="flex items-start justify-between mb-2">
-                            <h4 className="font-semibold text-white group-hover:text-orange-300 transition">{course.title}</h4>
-                            <CheckCircle className="h-5 w-5" style={{
-                              color: course.userEnrollment?.status === "completed" ? "#22c55e" : "#666"
-                            }} />
-                          </div>
-                          <p className="text-xs text-gray-400 mb-3">{course.category}</p>
-                          <div className="w-full bg-black/50 rounded-full h-2">
-                            <div
-                              className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition"
-                              style={{ width: `${course.userEnrollment?.progress_percent || 0}%` }}
-                            />
-                          </div>
-                          <p className="text-xs text-gray-400 mt-2">{course.userEnrollment?.progress_percent || 0}% complete</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              {/* Courses Widget */}
+              <CoursesWidget
+                courses={enrolledCourses.map((c: any) => ({
+                  id: c.id,
+                  title: c.title,
+                  description: c.description,
+                  category: c.category,
+                  progress: c.userEnrollment?.progress_percent || 0,
+                  status: c.userEnrollment?.status || "not_started",
+                  duration: c.duration,
+                  lessons_total: c.lessons_total,
+                  lessons_completed: c.userEnrollment?.lessons_completed || 0,
+                  instructor: c.instructor?.full_name,
+                  thumbnail_url: c.thumbnail_url,
+                }))}
+                title="Continue Learning"
+                description="Resume your courses"
+                accentColor="red"
+                onViewCourse={(courseId) => navigate(`/courses/${courseId}`)}
+              />
             </TabsContent>
 
             {/* Courses Tab */}
             <TabsContent value="courses" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
-                <CardHeader>
-                  <CardTitle>My Courses</CardTitle>
-                  <CardDescription>All your enrollments</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {enrolledCourses.length === 0 ? (
-                    <div className="text-center py-12">
-                      <BookOpen className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                      <p className="text-gray-400 mb-4">Not enrolled in any courses yet</p>
-                      <Button onClick={() => navigate("/foundation/curriculum")}>
-                        Browse Curriculum
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {enrolledCourses.map((course: any) => (
-                        <div key={course.id} className="p-4 bg-black/30 rounded-lg border border-orange-500/10 space-y-3">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-white">{course.title}</h4>
-                              <p className="text-sm text-gray-400">{course.description?.substring(0, 80)}...</p>
-                            </div>
-                            <Badge variant="outline" className={
-                              course.userEnrollment?.status === "completed" 
-                                ? "bg-green-500/20 border-green-500/30 text-green-300"
-                                : ""
-                            }>
-                              {course.userEnrollment?.status}
-                            </Badge>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-gray-400">
-                              <span>Progress</span>
-                              <span>{course.userEnrollment?.progress_percent || 0}%</span>
-                            </div>
-                            <div className="w-full bg-black/50 rounded-full h-2">
-                              <div
-                                className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full"
-                                style={{ width: `${course.userEnrollment?.progress_percent || 0}%` }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <CoursesWidget
+                courses={enrolledCourses.map((c: any) => ({
+                  id: c.id,
+                  title: c.title,
+                  description: c.description,
+                  category: c.category,
+                  progress: c.userEnrollment?.progress_percent || 0,
+                  status: c.userEnrollment?.status || "not_started",
+                  duration: c.duration,
+                  lessons_total: c.lessons_total,
+                  lessons_completed: c.userEnrollment?.lessons_completed || 0,
+                  instructor: c.instructor?.full_name,
+                  thumbnail_url: c.thumbnail_url,
+                }))}
+                title="My Courses"
+                description="All your enrollments"
+                accentColor="red"
+                onViewCourse={(courseId) => navigate(`/courses/${courseId}`)}
+              />
             </TabsContent>
 
             {/* Mentorship Tab */}
             <TabsContent value="mentorship" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
-                <CardHeader>
-                  <CardTitle>Mentorship</CardTitle>
-                  <CardDescription>Your mentor relationships</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {mentorships.length === 0 ? (
-                    <div className="text-center py-12 space-y-4">
-                      <Users className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
-                      <p className="text-gray-400">No mentors yet</p>
-                      <Button onClick={() => navigate("/mentors")}>
-                        Find a Mentor
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {mentorships.map((m: any) => (
-                        <div key={m.id} className="p-4 bg-black/30 rounded-lg border border-orange-500/10 space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 flex-1">
-                              <img
-                                src={m.mentor?.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop"}
-                                alt={m.mentor?.full_name}
-                                className="w-10 h-10 rounded-full"
-                              />
-                              <div>
-                                <p className="font-semibold text-white">{m.mentor?.full_name}</p>
-                                <p className="text-xs text-gray-400">{m.mentor?.email}</p>
-                              </div>
-                            </div>
-                            <Badge>{m.status}</Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <MentorshipWidget
+                mentorships={mentorships.map((m: any) => ({
+                  id: m.id,
+                  mentor: {
+                    id: m.mentor?.id,
+                    name: m.mentor?.full_name,
+                    avatar: m.mentor?.avatar_url,
+                    expertise: m.mentor?.role_title,
+                  },
+                  status: m.status,
+                  connectedSince: m.accepted_at ? new Date(m.accepted_at).toLocaleDateString() : null,
+                  lastSession: m.last_session_date,
+                  nextSession: m.next_session_date,
+                }))}
+                title="Mentorship"
+                description="Your mentor relationships"
+                accentColor="red"
+                onFindMentor={() => navigate("/mentors")}
+              />
             </TabsContent>
 
             {/* Achievements Tab */}
             <TabsContent value="achievements" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
-                <CardHeader>
-                  <CardTitle>Your Achievements</CardTitle>
-                  <CardDescription>Badges earned through learning and growth</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {achievements.length === 0 ? (
-                    <div className="text-center py-12 space-y-4">
-                      <Award className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
-                      <p className="text-gray-400">Complete courses to earn achievements!</p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                      {achievements.map((ach: any) => (
-                        <div key={ach.id} className="text-center p-4 bg-black/30 rounded-lg border border-orange-500/10 hover:border-orange-500/30 transition">
-                          <div className="text-3xl mb-2">{ach.icon}</div>
-                          <p className="font-semibold text-sm text-white">{ach.name}</p>
-                          <p className="text-xs text-gray-400 mt-1">{ach.category}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <AchievementsWidget
+                achievements={achievements.map((a: any) => ({
+                  id: a.id,
+                  name: a.name,
+                  description: a.description,
+                  icon: a.icon,
+                  rarity: a.rarity || "common",
+                  earnedDate: a.earned_date,
+                  category: a.category,
+                }))}
+                title="Your Achievements"
+                description="Badges earned through learning and growth"
+                accentColor="red"
+              />
             </TabsContent>
           </Tabs>
         </div>
