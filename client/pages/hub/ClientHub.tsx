@@ -330,92 +330,19 @@ export default function ClientHub() {
 
             {/* Project Status Tab - Gantt Style */}
             <TabsContent value="project" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
-                <CardHeader>
-                  <CardTitle>Project Status & Milestones</CardTitle>
-                  <CardDescription>Gantt-style timeline of your main engagement</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {!activeContract ? (
-                    <div className="text-center py-12">
-                      <AlertCircle className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                      <p className="text-gray-400">No active project</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-6">
-                      {/* Project Header */}
-                      <div className="border-b border-blue-500/20 pb-4">
-                        <h3 className="text-xl font-bold text-white mb-2">{activeContract.title}</h3>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                          <div>
-                            <p className="text-gray-400">Start Date</p>
-                            <p className="font-semibold text-white">{new Date(activeContract.start_date).toLocaleDateString()}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-400">End Date</p>
-                            <p className="font-semibold text-white">{new Date(activeContract.end_date).toLocaleDateString()}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-400">Total Value</p>
-                            <p className="font-semibold text-white">${activeContract.total_value?.toLocaleString()}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-400">Status</p>
-                            <Badge className="bg-blue-600/50 text-blue-100">{activeContract.status}</Badge>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Milestones */}
-                      <div className="space-y-3">
-                        <h4 className="font-semibold text-white">Phases & Milestones</h4>
-                        {activeContract.milestones?.map((milestone: any, idx: number) => (
-                          <div key={milestone.id} className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-3 flex-1">
-                                {milestone.status === "completed" ? (
-                                  <CheckCircle className="h-5 w-5 text-green-500" />
-                                ) : milestone.status === "in_progress" ? (
-                                  <Clock className="h-5 w-5 text-blue-500" />
-                                ) : (
-                                  <AlertCircle className="h-5 w-5 text-gray-500" />
-                                )}
-                                <div className="flex-1">
-                                  <p className="font-semibold text-white">{milestone.title}</p>
-                                  <p className="text-xs text-gray-400">{milestone.description}</p>
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <p className="text-sm font-semibold text-white">${milestone.value?.toLocaleString()}</p>
-                                <p className="text-xs text-gray-400">{new Date(milestone.due_date).toLocaleDateString()}</p>
-                              </div>
-                            </div>
-                            {/* Progress Bar for Milestone */}
-                            <div className="ml-8 space-y-1">
-                              <div className="flex justify-between text-xs text-gray-400">
-                                <span>Progress</span>
-                                <span>{milestone.progress || 0}%</span>
-                              </div>
-                              <div className="w-full bg-black/50 rounded-full h-2">
-                                <div
-                                  className={`h-2 rounded-full ${
-                                    milestone.status === "completed"
-                                      ? "bg-green-500"
-                                      : milestone.status === "in_progress"
-                                      ? "bg-blue-500"
-                                      : "bg-gray-500"
-                                  }`}
-                                  style={{ width: `${milestone.progress || 0}%` }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <ProjectStatusWidget
+                project={activeContract ? {
+                  id: activeContract.id,
+                  title: activeContract.title,
+                  description: activeContract.description,
+                  status: activeContract.status || "active",
+                  start_date: activeContract.start_date,
+                  end_date: activeContract.end_date,
+                  total_value: activeContract.total_value,
+                  milestones: activeContract.milestones || [],
+                } : null}
+                accentColor="cyan"
+              />
             </TabsContent>
 
             {/* Invoices & Billing Tab */}
