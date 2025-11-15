@@ -104,9 +104,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         achievements: achievements
           .map((a: any) => a.achievements)
           .filter(Boolean),
-        interests: userInterests
-          .map((i: any) => i.interests)
-          .filter(Boolean),
+        interests: userInterests.map((i: any) => i.interests).filter(Boolean),
         linkedProviders,
       },
       domain: req.headers.host || "",
