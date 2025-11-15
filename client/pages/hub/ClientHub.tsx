@@ -1,378 +1,466 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { aethexToast } from "@/lib/aethex-toast";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LoadingScreen from "@/components/LoadingScreen";
 import {
   FileText,
-  Briefcase,
-  Clock,
-  AlertCircle,
+  DollarSign,
   TrendingUp,
+  Users,
+  Calendar,
+  CheckCircle,
+  AlertCircle,
   BarChart3,
-  Settings,
-  LogOut,
+  Clock,
+  ArrowRight,
+  MessageSquare,
+  Phone,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 export default function ClientHub() {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, loading: authLoading } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [contracts, setContracts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!authLoading && user) {
+      loadDashboardData();
+    }
+  }, [user, authLoading]);
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      const token = (await (window as any).supabaseClient.auth.getSession()).data?.session?.access_token;
+      if (!token) throw new Error("No auth token");
+
+      // Load opportunities
+      const oppRes = await fetch(`${API_BASE}/api/nexus/client/opportunities`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (oppRes.ok) {
+        const data = await oppRes.json();
+        setOpportunities(data.opportunities || []);
+      }
+
+      // Load contracts
+      const contractRes = await fetch(`${API_BASE}/api/nexus/client/contracts`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (contractRes.ok) {
+        const data = await contractRes.json();
+        setContracts(data.contracts || []);
+      }
+    } catch (error: any) {
+      console.error("Failed to load hub data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (authLoading || loading) {
+    return <LoadingScreen message="Loading Client Hub..." />;
+  }
 
   if (!user) {
     return (
       <Layout>
-        <div className="min-h-screen bg-black text-white flex items-center justify-center">
-          <Card className="bg-slate-900 border-slate-700 w-full max-w-md">
-            <CardHeader>
-              <CardTitle>Client Portal Access Required</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-slate-300">
-                You must be signed in to access the Client Hub.
-              </p>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => navigate("/login")}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700"
-                >
-                  Sign In
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => navigate("/corp")}
-                  className="flex-1"
-                >
-                  Back to Corp
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="min-h-screen bg-gradient-to-b from-black via-blue-950/30 to-black flex items-center justify-center px-4">
+          <div className="max-w-md text-center space-y-6">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+              Client Hub
+            </h1>
+            <p className="text-gray-400">Enterprise collaboration & hiring</p>
+            <Button
+              onClick={() => navigate("/login")}
+              className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6"
+            >
+              Sign In
+            </Button>
+          </div>
         </div>
       </Layout>
     );
   }
 
-  // Mock data for demonstration
-  const stats = [
-    {
-      label: "Active Projects",
-      value: "3",
-      icon: Briefcase,
-      color: "bg-blue-500/10 text-blue-400",
-    },
-    {
-      label: "Pending Invoices",
-      value: "$24,500",
-      icon: FileText,
-      color: "bg-amber-500/10 text-amber-400",
-    },
-    {
-      label: "Active Contracts",
-      value: "5",
-      icon: FileText,
-      color: "bg-green-500/10 text-green-400",
-    },
-    {
-      label: "Support Tickets",
-      value: "2",
-      icon: AlertCircle,
-      color: "bg-red-500/10 text-red-400",
-    },
-  ];
-
-  const recentProjects = [
-    {
-      id: 1,
-      name: "Roblox Game Development",
-      status: "In Progress",
-      progress: 65,
-      dueDate: "2025-02-28",
-      team: ["Alex Chen", "Jordan Smith"],
-    },
-    {
-      id: 2,
-      name: "AI Integration Project",
-      status: "In Progress",
-      progress: 45,
-      dueDate: "2025-03-15",
-      team: ["Taylor Brown", "Casey Johnson"],
-    },
-    {
-      id: 3,
-      name: "Mobile App Launch",
-      status: "On Hold",
-      progress: 30,
-      dueDate: "2025-04-01",
-      team: ["Morgan Davis"],
-    },
-  ];
-
-  const menuItems = [
-    {
-      icon: BarChart3,
-      label: "Dashboard",
-      path: "/hub/client/dashboard",
-      description: "Overview of all projects",
-    },
-    {
-      icon: Briefcase,
-      label: "Projects",
-      path: "/hub/client/projects",
-      description: "View and manage projects",
-    },
-    {
-      icon: FileText,
-      label: "Invoices",
-      path: "/hub/client/invoices",
-      description: "Track invoices and payments",
-    },
-    {
-      icon: FileText,
-      label: "Contracts",
-      path: "/hub/client/contracts",
-      description: "Review contracts and agreements",
-    },
-    {
-      icon: TrendingUp,
-      label: "Reports",
-      path: "/hub/client/reports",
-      description: "Project reports and analytics",
-    },
-    {
-      icon: Settings,
-      label: "Settings",
-      path: "/hub/client/settings",
-      description: "Manage account preferences",
-    },
-  ];
+  const openOpportunities = opportunities.filter((o: any) => o.status === "open");
+  const totalSpent = contracts.reduce((sum: number, c: any) => sum + (c.total_amount || 0), 0);
+  const activeContracts = contracts.filter((c: any) => c.status === "active");
+  const pendingApplications = openOpportunities.reduce((sum: number, o: any) => sum + (o.application_count || 0), 0);
 
   return (
     <Layout>
-      <div className="relative min-h-screen bg-black text-white overflow-hidden pb-12">
-        {/* Background */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#3b82f6_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(59,130,246,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
-        <div className="pointer-events-none absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-blob" />
-        <div className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 bg-cyan-600/10 rounded-full blur-3xl animate-blob animation-delay-2000" />
-
-        <main className="relative z-10">
+      <div className="min-h-screen bg-gradient-to-b from-black via-blue-950/20 to-black py-8">
+        <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
-          <section className="border-b border-slate-800 py-8">
-            <div className="container mx-auto max-w-7xl px-4">
-              <div className="flex items-center justify-between mb-2">
-                <h1 className="text-4xl font-bold text-blue-300">
-                  Client Portal
+          <div className="space-y-4 animate-slide-down">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="space-y-2">
+                <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-300 bg-clip-text text-transparent">
+                  Client Hub
                 </h1>
+                <p className="text-gray-400 text-lg">
+                  Enterprise hiring & project management
+                </p>
+              </div>
+              <div className="flex gap-2">
                 <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    signOut();
-                    navigate("/");
-                  }}
-                  className="border-slate-600 text-slate-300"
+                  onClick={() => navigate("/nexus/post")}
+                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
+                  Post Opportunity
+                  <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </div>
-              <p className="text-slate-300">
-                Welcome, {user?.email || "Client"}. Manage your projects,
-                invoices, and agreements.
-              </p>
             </div>
-          </section>
 
-          {/* Quick Stats */}
-          <section className="py-12 border-b border-slate-800">
-            <div className="container mx-auto max-w-7xl px-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {stats.map((stat) => {
-                  const Icon = stat.icon;
-                  return (
-                    <Card
-                      key={stat.label}
-                      className="bg-slate-800/30 border-slate-700 hover:border-slate-600 transition"
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <p className="text-sm text-slate-400 mb-1">
-                              {stat.label}
-                            </p>
-                            <p className="text-2xl font-bold text-white">
-                              {stat.value}
-                            </p>
-                          </div>
-                          <div className={`p-3 rounded-lg ${stat.color}`}>
-                            <Icon className="h-5 w-5" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          {/* Main Navigation Grid */}
-          <section className="py-12">
-            <div className="container mx-auto max-w-7xl px-4">
-              <h2 className="text-2xl font-bold mb-6">Quick Access</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {menuItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Card
-                      key={item.label}
-                      className="bg-slate-800/30 border-slate-700 hover:border-blue-500/50 hover:bg-slate-800/50 transition cursor-pointer"
-                      onClick={() => navigate(item.path)}
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <div className="p-3 bg-blue-500/10 rounded-lg">
-                            <Icon className="h-6 w-6 text-blue-400" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-white mb-1">
-                              {item.label}
-                            </h3>
-                            <p className="text-sm text-slate-400">
-                              {item.description}
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          {/* Recent Projects */}
-          <section className="py-12">
-            <div className="container mx-auto max-w-7xl px-4">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold">Recent Projects</h2>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => navigate("/hub/client/projects")}
-                >
-                  View All →
-                </Button>
-              </div>
-              <div className="space-y-4">
-                {recentProjects.map((project) => (
-                  <Card
-                    key={project.id}
-                    className="bg-slate-800/30 border-slate-700 hover:border-slate-600 transition"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-white mb-2">
-                            {project.name}
-                          </h3>
-                          <div className="flex items-center gap-3">
-                            <Badge
-                              className={
-                                project.status === "In Progress"
-                                  ? "bg-blue-500/20 text-blue-300"
-                                  : "bg-amber-500/20 text-amber-300"
-                              }
-                            >
-                              {project.status}
-                            </Badge>
-                            <div className="flex items-center gap-1 text-sm text-slate-400">
-                              <Clock className="h-4 w-4" />
-                              Due {project.dueDate}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Progress Bar */}
-                      <div className="mb-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-slate-400">
-                            Progress
-                          </span>
-                          <span className="text-sm font-semibold text-white">
-                            {project.progress}%
-                          </span>
-                        </div>
-                        <div className="w-full bg-slate-700/50 rounded-full h-2">
-                          <div
-                            className="bg-blue-500 h-2 rounded-full transition-all"
-                            style={{ width: `${project.progress}%` }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Team */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex gap-2">
-                          {project.team.map((member) => (
-                            <div
-                              key={member}
-                              className="text-xs bg-slate-700/50 text-slate-300 px-2 py-1 rounded"
-                            >
-                              {member}
-                            </div>
-                          ))}
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            navigate(`/hub/client/projects/${project.id}`)
-                          }
-                        >
-                          View Details →
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Support Section */}
-          <section className="py-12 border-t border-slate-800">
-            <div className="container mx-auto max-w-7xl px-4">
-              <Card className="bg-slate-800/30 border-slate-700">
-                <CardHeader>
-                  <CardTitle>Need Help?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-300 mb-4">
-                    Contact our support team for assistance with your projects,
-                    invoices, or any questions about your contracts.
-                  </p>
-                  <div className="flex gap-3">
-                    <Button variant="outline">Email Support</Button>
-                    <Button variant="outline">Schedule Call</Button>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                <CardContent className="p-6 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-400">Open Opportunities</p>
+                    <FileText className="h-5 w-5 text-blue-500" />
                   </div>
+                  <p className="text-3xl font-bold text-white">{openOpportunities.length}</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
+                <CardContent className="p-6 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-400">Applications</p>
+                    <Users className="h-5 w-5 text-cyan-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-white">{pendingApplications}</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-teal-950/40 to-teal-900/20 border-teal-500/20">
+                <CardContent className="p-6 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-400">Active Contracts</p>
+                    <CheckCircle className="h-5 w-5 text-teal-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-white">{activeContracts.length}</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                <CardContent className="p-6 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-400">Total Spent</p>
+                    <DollarSign className="h-5 w-5 text-green-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-white">
+                    ${totalSpent.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                  </p>
                 </CardContent>
               </Card>
             </div>
-          </section>
-        </main>
+          </div>
+
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-4 bg-blue-950/30 border border-blue-500/20 p-1">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
+              <TabsTrigger value="contracts">Contracts</TabsTrigger>
+              <TabsTrigger value="support">Support</TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6 animate-fade-in">
+              {/* Account Manager Card */}
+              <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/30">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-blue-500" />
+                    Your AeThex Team
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Account Manager */}
+                    <div className="p-4 bg-black/30 rounded-lg border border-blue-500/10">
+                      <p className="text-xs text-gray-400 uppercase tracking-wider mb-3">Account Manager</p>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                          <span className="text-white font-bold text-sm">AC</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-white">Account Manager</p>
+                          <p className="text-xs text-gray-400">account@aethex.dev</p>
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full mt-3 border-blue-500/30 text-blue-300 hover:bg-blue-500/10"
+                      >
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Message
+                      </Button>
+                    </div>
+
+                    {/* Solutions Architect */}
+                    <div className="p-4 bg-black/30 rounded-lg border border-blue-500/10">
+                      <p className="text-xs text-gray-400 uppercase tracking-wider mb-3">Solutions Architect</p>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center">
+                          <span className="text-white font-bold text-sm">SA</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-white">Solutions Architect</p>
+                          <p className="text-xs text-gray-400">architect@aethex.dev</p>
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full mt-3 border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10"
+                      >
+                        <Phone className="h-4 w-4 mr-2" />
+                        Schedule Call
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Recent Activity */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Recent Opportunities */}
+                <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                  <CardHeader>
+                    <CardTitle>Recent Opportunities</CardTitle>
+                    <CardDescription>Latest job postings</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {openOpportunities.length === 0 ? (
+                      <div className="text-center py-8 space-y-4">
+                        <AlertCircle className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
+                        <p className="text-gray-400">No opportunities posted yet</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {openOpportunities.slice(0, 3).map((opp: any) => (
+                          <div key={opp.id} className="p-3 bg-black/30 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition">
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <p className="font-semibold text-white text-sm">{opp.title}</p>
+                              <Badge variant="outline" className="text-xs">{opp.status}</Badge>
+                            </div>
+                            <p className="text-xs text-gray-400">{opp.application_count} applications</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Recent Contracts */}
+                <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
+                  <CardHeader>
+                    <CardTitle>Active Contracts</CardTitle>
+                    <CardDescription>Your current projects</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {contracts.length === 0 ? (
+                      <div className="text-center py-8 space-y-4">
+                        <AlertCircle className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
+                        <p className="text-gray-400">No active contracts</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {contracts.slice(0, 3).map((contract: any) => (
+                          <div key={contract.id} className="p-3 bg-black/30 rounded-lg border border-cyan-500/10 hover:border-cyan-500/30 transition">
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <p className="font-semibold text-white text-sm">{contract.title}</p>
+                              <Badge className="text-xs bg-green-600/50 text-green-100">{contract.status}</Badge>
+                            </div>
+                            <p className="text-xs text-gray-400">${contract.total_amount?.toLocaleString()}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            {/* Opportunities Tab */}
+            <TabsContent value="opportunities" className="space-y-4 animate-fade-in">
+              <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle>Your Opportunities</CardTitle>
+                      <CardDescription>Job postings and projects</CardDescription>
+                    </div>
+                    <Button
+                      onClick={() => navigate("/nexus/post")}
+                      className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+                    >
+                      Post New
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {opportunities.length === 0 ? (
+                    <div className="text-center py-12 space-y-4">
+                      <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
+                      <p className="text-gray-400">No opportunities posted yet</p>
+                      <Button onClick={() => navigate("/nexus/post")}>
+                        Post First Opportunity
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {opportunities.map((opp: any) => (
+                        <div key={opp.id} className="p-4 bg-black/30 rounded-lg border border-blue-500/10 space-y-3">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-white">{opp.title}</h4>
+                              <p className="text-sm text-gray-400">{opp.description?.substring(0, 100)}...</p>
+                            </div>
+                            <Badge>{opp.status}</Badge>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-400">${opp.budget_min?.toLocaleString()} - ${opp.budget_max?.toLocaleString()}</span>
+                            <span className="text-gray-500">{opp.application_count} applications</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Contracts Tab */}
+            <TabsContent value="contracts" className="space-y-4 animate-fade-in">
+              <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
+                <CardHeader>
+                  <CardTitle>Contracts & Invoices</CardTitle>
+                  <CardDescription>Payment history and status</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {contracts.length === 0 ? (
+                    <div className="text-center py-12">
+                      <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                      <p className="text-gray-400">No contracts yet</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {contracts.map((contract: any) => (
+                        <div key={contract.id} className="p-4 bg-black/30 rounded-lg border border-cyan-500/10 space-y-3">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-white">{contract.title}</h4>
+                              <p className="text-sm text-gray-400">Contract Type: {contract.contract_type}</p>
+                            </div>
+                            <Badge className="bg-green-600/50 text-green-100">{contract.status}</Badge>
+                          </div>
+                          <div className="grid grid-cols-3 gap-2 text-xs">
+                            <div>
+                              <p className="text-gray-400">Total Amount</p>
+                              <p className="font-semibold text-white">${contract.total_amount?.toLocaleString()}</p>
+                            </div>
+                            <div>
+                              <p className="text-gray-400">Your Cost</p>
+                              <p className="font-semibold text-white">${(contract.total_amount - (contract.aethex_commission_amount || 0))?.toLocaleString()}</p>
+                            </div>
+                            <div>
+                              <p className="text-gray-400">Creator Payout</p>
+                              <p className="font-semibold text-white">${contract.creator_payout_amount?.toLocaleString()}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Support Tab */}
+            <TabsContent value="support" className="space-y-4 animate-fade-in">
+              <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                <CardHeader>
+                  <CardTitle>Support & Resources</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start border-blue-500/30 text-blue-300 hover:bg-blue-500/10 h-auto py-3"
+                  >
+                    <MessageSquare className="h-4 w-4 mr-3" />
+                    <div className="text-left">
+                      <div className="font-semibold">Chat Support</div>
+                      <div className="text-xs text-gray-400">Talk to our support team</div>
+                    </div>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start border-blue-500/30 text-blue-300 hover:bg-blue-500/10 h-auto py-3"
+                  >
+                    <Phone className="h-4 w-4 mr-3" />
+                    <div className="text-left">
+                      <div className="font-semibold">Schedule a Call</div>
+                      <div className="text-xs text-gray-400">Book time with your account manager</div>
+                    </div>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start border-blue-500/30 text-blue-300 hover:bg-blue-500/10 h-auto py-3"
+                  >
+                    <FileText className="h-4 w-4 mr-3" />
+                    <div className="text-left">
+                      <div className="font-semibold">Documentation</div>
+                      <div className="text-xs text-gray-400">Learn how to use the platform</div>
+                    </div>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Request New SOW */}
+              <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/30">
+                <CardHeader>
+                  <CardTitle>Request New Scope</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 mb-4">
+                    Need a new Statement of Work (SOW) or to modify an existing contract? Contact your account manager.
+                  </p>
+                  <Button
+                    className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700"
+                  >
+                    Request New SOW
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </Layout>
   );
