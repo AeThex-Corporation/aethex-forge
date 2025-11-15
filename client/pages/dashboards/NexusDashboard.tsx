@@ -351,23 +351,32 @@ export default function NexusDashboard() {
                   </Card>
 
                   {/* CTA Section */}
-                  {applications.length < 3 && (
-                    <Card className="bg-gradient-to-br from-purple-600/20 to-blue-600/20 border-purple-500/40">
-                      <CardContent className="p-8 text-center space-y-4">
-                        <h3 className="text-2xl font-bold text-white">Ready to Earn?</h3>
-                        <p className="text-gray-300 max-w-md mx-auto">
-                          Browse thousands of opportunities from clients looking for talented creators
-                        </p>
-                        <Button
-                          onClick={() => navigate("/nexus")}
-                          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8"
-                        >
-                          Explore Opportunities
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )}
+                  <Card className="bg-gradient-to-br from-purple-600/20 to-blue-600/20 border-purple-500/40">
+                    <CardContent className="p-8">
+                      <div className="space-y-6">
+                        <div className="text-center space-y-2">
+                          <h3 className="text-2xl font-bold text-white">Maximize Your Earnings</h3>
+                          <p className="text-gray-300">Complete your profile and start bidding on opportunities</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <Button
+                            onClick={() => navigate("/ethos")}
+                            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 h-12 text-base"
+                          >
+                            <Star className="h-4 w-4 mr-2" />
+                            Upload Track to ETHOS
+                          </Button>
+                          <Button
+                            onClick={() => navigate("/nexus")}
+                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 h-12 text-base"
+                          >
+                            <Briefcase className="h-4 w-4 mr-2" />
+                            Browse Job Board
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </TabsContent>
 
                 {/* Applications Tab */}
