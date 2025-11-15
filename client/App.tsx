@@ -82,7 +82,6 @@ import Terms from "./pages/Terms";
 import Admin from "./pages/Admin";
 import Feed from "./pages/Feed";
 import AdminFeed from "./pages/AdminFeed";
-import AdminBlogManager from "./pages/admin/AdminBlogManager";
 import ProjectsNew from "./pages/ProjectsNew";
 import Opportunities from "./pages/Opportunities";
 import Explore from "./pages/Explore";
@@ -234,7 +233,6 @@ const App = () => (
                         <Route path="/directory" element={<Directory />} />
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/admin/feed" element={<AdminFeed />} />
-                        <Route path="/admin/blog" element={<AdminBlogManager />} />
                         <Route path="/admin/docs-sync" element={<DocsSync />} />
                         <Route path="/arms" element={<Arms />} />
                         <Route path="/feed" element={<Feed />} />
