@@ -55,6 +55,19 @@ export default function AdminBlogManager() {
   const [deleteConfirm, setDeleteConfirm] = useState<BlogPost | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
+  const [activeTab, setActiveTab] = useState("manage");
+  const [isPublishing, setIsPublishing] = useState(false);
+
+  // Create post state
+  const [title, setTitle] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [html, setHtml] = useState("");
+  const [slug, setSlug] = useState("");
+  const [featureImage, setFeatureImage] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
 
   const loadBlogPosts = useCallback(async () => {
     setLoading(true);
