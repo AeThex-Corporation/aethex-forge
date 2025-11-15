@@ -177,6 +177,17 @@ export default function Dashboard() {
     }
   }, [searchParams, profile?.user_type, updateProfile, setSearchParams]);
 
+  // Prevent infinite loading state - timeout after 10s
+  useEffect(() => {
+    if (isLoading) {
+      const timeout = setTimeout(() => {
+        console.warn("Dashboard loading timeout - forcing completion");
+        setIsLoading(false);
+      }, 10000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoading]);
+
   useEffect(() => {
     if (typeof window === "undefined" || !user) {
       return;
