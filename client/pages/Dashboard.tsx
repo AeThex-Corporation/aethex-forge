@@ -121,6 +121,30 @@ const ARMS = [
   },
 ];
 
+const OAUTH_PROVIDERS: readonly ProviderDescriptor[] = [
+  {
+    provider: "github",
+    name: "GitHub",
+    description: "Connect your GitHub account for project collaboration",
+    Icon: Github,
+    gradient: "from-gray-700 to-black",
+  },
+  {
+    provider: "google",
+    name: "Google",
+    description: "Sign in with your Google account",
+    Icon: Mail,
+    gradient: "from-red-500 to-orange-500",
+  },
+  {
+    provider: "discord",
+    name: "Discord",
+    description: "Link your Discord account for community chat",
+    Icon: MessageCircle,
+    gradient: "from-indigo-500 to-purple-600",
+  },
+];
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const {
