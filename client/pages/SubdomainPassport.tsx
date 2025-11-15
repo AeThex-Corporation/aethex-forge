@@ -131,15 +131,16 @@ const SubdomainPassport = () => {
     data.type === "creator" &&
     "user" in data
   ) {
+    const user = data.user as any;
     return (
       <Layout>
         <div className="container mx-auto px-4 max-w-5xl space-y-10">
           <PassportSummary
-            profile={data.user as any}
-            achievements={[]}
-            interests={[]}
+            profile={user}
+            achievements={user.achievements || []}
+            interests={user.interests || []}
             isSelf={false}
-            linkedProviders={[]}
+            linkedProviders={user.linkedProviders || []}
           />
         </div>
       </Layout>
