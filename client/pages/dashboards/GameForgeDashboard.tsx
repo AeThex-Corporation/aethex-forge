@@ -450,18 +450,53 @@ export default function GameForgeDashboard() {
                     </Card>
                   </div>
                 </TabsContent>
+
+                {/* Sprints Tab */}
+                <TabsContent value="sprints" className="space-y-4 animate-fade-in">
+                  {sprint && sprint.project_id ? (
+                    <SprintManager
+                      projectId={sprint.project_id}
+                      projectName={sprint.gameforge_projects?.name}
+                      isProjectLead={isProjectLead}
+                      onSprintJoined={() => loadDashboardData()}
+                    />
+                  ) : (
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardContent className="p-6 text-center">
+                        <p className="text-gray-400">
+                          Join a sprint to manage sprints
+                        </p>
+                      </CardContent>
+                    </Card>
+                  )}
+                </TabsContent>
               </Tabs>
             </>
           ) : (
             <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
-              <CardContent className="p-12 text-center space-y-4">
+              <CardContent className="p-12 text-center space-y-6">
                 <Gamepad2 className="h-12 w-12 mx-auto text-green-500 opacity-50" />
-                <p className="text-gray-400">
-                  No active sprint. Join one to get started!
-                </p>
-                <Button onClick={() => navigate("/gameforge")}>
-                  Browse GAMEFORGE
-                </Button>
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-bold text-white">
+                    Welcome to GAMEFORGE
+                  </h2>
+                  <p className="text-gray-400">
+                    No active sprint. Join or create one to get started!
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  {projects.length > 0 && (
+                    <SprintManager
+                      projectId={projects[0].id}
+                      projectName={projects[0].name}
+                      isProjectLead={projects[0].lead_id === user?.id}
+                      onSprintJoined={() => loadDashboardData()}
+                    />
+                  )}
+                  <Button onClick={() => navigate("/gameforge")}>
+                    Browse GAMEFORGE
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
