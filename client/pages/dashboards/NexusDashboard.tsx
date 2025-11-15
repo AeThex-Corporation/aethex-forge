@@ -18,6 +18,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ContractsWidget from "@/components/ContractsWidget";
 import ApplicationsWidget from "@/components/ApplicationsWidget";
 import PostedOpportunitiesWidget from "@/components/PostedOpportunitiesWidget";
+import ApplicantTrackerWidget from "@/components/ApplicantTrackerWidget";
 import {
   Briefcase,
   DollarSign,
