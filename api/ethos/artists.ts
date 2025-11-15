@@ -30,7 +30,7 @@ export default async function handler(req: any, res: any) {
             verified,
             total_downloads,
             created_at,
-            user_profiles(id, full_name, avatar_url, email)
+            user_profiles(id, full_name, avatar_url)
           `,
           )
           .eq("user_id", artistId)
