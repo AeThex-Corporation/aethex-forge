@@ -19,14 +19,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     if (!sig || !webhookSecret) {
-      return res.status(400).json({ error: "Missing webhook signature or secret" });
+      return res
+        .status(400)
+        .json({ error: "Missing webhook signature or secret" });
     }
 
-    const body = typeof req.body === "string" ? req.body : JSON.stringify(req.body);
+    const body =
+      typeof req.body === "string" ? req.body : JSON.stringify(req.body);
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
   } catch (error: any) {
     console.error("Webhook signature verification failed:", error.message);
-    return res.status(400).json({ error: "Webhook signature verification failed" });
+    return res
+      .status(400)
+      .json({ error: "Webhook signature verification failed" });
   }
 
   try {
@@ -60,18 +65,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .single();
 
           if (!existingPayment) {
-            await admin
-              .from("nexus_payments")
-              .insert({
-                contract_id: contract.id,
-                amount: contract.total_amount,
-                creator_payout: contract.creator_payout_amount,
-                aethex_commission: contract.aethex_commission_amount,
-                payment_method: "stripe",
-                payment_status: "completed",
-                payment_date: new Date().toISOString(),
-                stripe_payment_intent_id: paymentIntent.id,
-              });
+            await admin.from("nexus_payments").insert({
+              contract_id: contract.id,
+              amount: contract.total_amount,
+              creator_payout: contract.creator_payout_amount,
+              aethex_commission: contract.aethex_commission_amount,
+              payment_method: "stripe",
+              payment_status: "completed",
+              payment_date: new Date().toISOString(),
+              stripe_payment_intent_id: paymentIntent.id,
+            });
           }
 
           // Update creator earnings
@@ -82,7 +85,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .single();
 
           const newEarnings =
-            (creatorProfile?.total_earnings || 0) + contract.creator_payout_amount;
+            (creatorProfile?.total_earnings || 0) +
+            contract.creator_payout_amount;
 
           await admin
             .from("nexus_creator_profiles")
@@ -123,17 +127,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .eq("id", contract.id);
 
           // Create failed payment record
-          await admin
-            .from("nexus_payments")
-            .insert({
-              contract_id: contract.id,
-              amount: contract.total_amount,
-              creator_payout: 0,
-              aethex_commission: 0,
-              payment_method: "stripe",
-              payment_status: "failed",
-              stripe_payment_intent_id: paymentIntent.id,
-            });
+          await admin.from("nexus_payments").insert({
+            contract_id: contract.id,
+            amount: contract.total_amount,
+            creator_payout: 0,
+            aethex_commission: 0,
+            payment_method: "stripe",
+            payment_status: "failed",
+            stripe_payment_intent_id: paymentIntent.id,
+          });
         }
         break;
       }

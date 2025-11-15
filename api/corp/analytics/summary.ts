@@ -55,7 +55,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const overdue = (invoices || [])
       .filter((i: any) => i.status === "overdue")
-      .reduce((sum: number, i: any) => sum + ((i.amount_due || 0) - (i.amount_paid || 0)), 0);
+      .reduce(
+        (sum: number, i: any) =>
+          sum + ((i.amount_due || 0) - (i.amount_paid || 0)),
+        0,
+      );
 
     const activeContracts = (contracts || []).filter(
       (c: any) => c.status === "active",
@@ -120,12 +124,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         pending_invoices: (invoices || []).filter(
           (i: any) => i.status === "pending" || i.status === "sent",
         ).length,
-        overdue_invoices: (invoices || []).filter((i: any) => i.status === "overdue")
-          .length,
+        overdue_invoices: (invoices || []).filter(
+          (i: any) => i.status === "overdue",
+        ).length,
       },
       health: {
         payment_rate: Math.round((totalPaid / totalInvoiced) * 100) || 0,
-        contract_completion_rate: completedContracts / (activeContracts + completedContracts) || 0,
+        contract_completion_rate:
+          completedContracts / (activeContracts + completedContracts) || 0,
         cash_flow_status:
           outstanding > totalInvoiced * 0.5 ? "at_risk" : "healthy",
       },

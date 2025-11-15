@@ -107,7 +107,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .single();
 
       if (verifyError || !member) {
-        return res.status(403).json({ error: "Member not found or unauthorized" });
+        return res
+          .status(403)
+          .json({ error: "Member not found or unauthorized" });
       }
 
       const updateData: any = {};
@@ -155,7 +157,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .single();
 
       if (!member) {
-        return res.status(403).json({ error: "Member not found or unauthorized" });
+        return res
+          .status(403)
+          .json({ error: "Member not found or unauthorized" });
       }
 
       const { error: deleteError } = await admin

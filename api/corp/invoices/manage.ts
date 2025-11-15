@@ -23,14 +23,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method === "POST") {
       // Create new invoice
-      const {
-        description,
-        issue_date,
-        due_date,
-        items,
-        notes,
-        currency,
-      } = req.body;
+      const { description, issue_date, due_date, items, notes, currency } =
+        req.body;
 
       if (!due_date || !items || items.length === 0) {
         return res.status(400).json({
@@ -39,7 +33,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       // Calculate total from items
-      const amountDue = items.reduce((sum: number, item: any) => sum + (item.amount || 0), 0);
+      const amountDue = items.reduce(
+        (sum: number, item: any) => sum + (item.amount || 0),
+        0,
+      );
 
       // Generate invoice number
       const { count } = await admin
@@ -118,7 +115,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .single();
 
       if (verifyError || !invoice) {
-        return res.status(403).json({ error: "Invoice not found or unauthorized" });
+        return res
+          .status(403)
+          .json({ error: "Invoice not found or unauthorized" });
       }
 
       const updateData: any = {};

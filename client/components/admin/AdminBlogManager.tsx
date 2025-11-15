@@ -300,7 +300,10 @@ export default function AdminBlogManager() {
                   />
                 </div>
                 <div className="flex-1">
-                  <Label htmlFor="filter-category" className="text-xs mb-1 block">
+                  <Label
+                    htmlFor="filter-category"
+                    className="text-xs mb-1 block"
+                  >
                     Category
                   </Label>
                   <select
@@ -441,7 +444,9 @@ export default function AdminBlogManager() {
                 {!slug && title && (
                   <p className="text-xs text-muted-foreground">
                     Auto-slug:{" "}
-                    <code className="bg-background/80 px-2 py-1">{autoSlug}</code>
+                    <code className="bg-background/80 px-2 py-1">
+                      {autoSlug}
+                    </code>
                   </p>
                 )}
               </div>

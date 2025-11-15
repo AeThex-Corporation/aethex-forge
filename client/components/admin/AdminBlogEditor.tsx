@@ -2,7 +2,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
 import { Loader2, X } from "lucide-react";
@@ -28,7 +34,9 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || "");
   const [html, setHtml] = useState(initialData?.html || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
-  const [featureImage, setFeatureImage] = useState(initialData?.feature_image || "");
+  const [featureImage, setFeatureImage] = useState(
+    initialData?.feature_image || "",
+  );
   const [tags, setTags] = useState<string[]>(initialData?.tags || []);
   const [tagInput, setTagInput] = useState("");
   const [metaTitle, setMetaTitle] = useState(initialData?.meta_title || "");
@@ -139,7 +147,8 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
             />
             {!slug && title && (
               <p className="text-xs text-muted-foreground">
-                Auto-slug: <code className="bg-background/80 px-2 py-1">{autoSlug}</code>
+                Auto-slug:{" "}
+                <code className="bg-background/80 px-2 py-1">{autoSlug}</code>
               </p>
             )}
           </div>
@@ -173,7 +182,9 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
               <Input
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && (e.preventDefault(), addTag())
+                }
                 placeholder="Add tag and press Enter"
                 className="border-border/50"
               />
@@ -238,7 +249,7 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
           <Textarea
             value={html}
             onChange={(e) => setHtml(e.target.value)}
-            placeholder='<p>Write your post content here...</p>'
+            placeholder="<p>Write your post content here...</p>"
             className="border-border/50 font-mono h-96"
           />
           <div className="text-xs text-muted-foreground">
@@ -255,7 +266,9 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
           </CardHeader>
           <CardContent className="prose prose-invert max-w-none">
             {title && <h1>{title}</h1>}
-            {excerpt && <p className="text-muted-foreground italic">{excerpt}</p>}
+            {excerpt && (
+              <p className="text-muted-foreground italic">{excerpt}</p>
+            )}
             <div dangerouslySetInnerHTML={{ __html: html }} />
           </CardContent>
         </Card>

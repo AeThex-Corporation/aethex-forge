@@ -103,7 +103,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       if (!account.charges_enabled || !account.payouts_enabled) {
         return res.status(400).json({
-          error: "Account setup not complete. Please complete all required steps.",
+          error:
+            "Account setup not complete. Please complete all required steps.",
           chargesEnabled: account.charges_enabled,
           payoutsEnabled: account.payouts_enabled,
         });

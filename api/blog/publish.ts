@@ -1,5 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
-import { publishPostToGhost, updatePostInGhost } from "../../server/ghost-admin-api";
+import {
+  publishPostToGhost,
+  updatePostInGhost,
+} from "../../server/ghost-admin-api";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE || "";
@@ -42,7 +45,9 @@ export default async function handler(req: any, res: any) {
     // Check if user is admin or staff
     const isAuthorized = await isUserAdminOrStaff(userId);
     if (!isAuthorized) {
-      return res.status(403).json({ error: "Forbidden: Admin/Staff access required" });
+      return res
+        .status(403)
+        .json({ error: "Forbidden: Admin/Staff access required" });
     }
 
     const {

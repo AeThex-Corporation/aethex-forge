@@ -148,7 +148,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .single();
 
       if (!contract) {
-        return res.status(403).json({ error: "Contract not found or unauthorized" });
+        return res
+          .status(403)
+          .json({ error: "Contract not found or unauthorized" });
       }
 
       const updateData: any = {};

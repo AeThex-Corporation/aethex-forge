@@ -36,7 +36,8 @@ interface GhostApiResponse {
 
 async function fetchFromGhost(limit: number = 50): Promise<any[]> {
   const ghostUrl = process.env.GHOST_API_URL || process.env.VITE_GHOST_API_URL;
-  const ghostKey = process.env.GHOST_CONTENT_API_KEY || process.env.VITE_GHOST_CONTENT_API_KEY;
+  const ghostKey =
+    process.env.GHOST_CONTENT_API_KEY || process.env.VITE_GHOST_CONTENT_API_KEY;
 
   if (!ghostUrl || !ghostKey) {
     return [];

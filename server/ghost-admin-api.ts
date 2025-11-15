@@ -58,8 +58,12 @@ function generateGhostJWT(): string {
     aud: "/admin/",
   };
 
-  const headerEncoded = Buffer.from(JSON.stringify(header)).toString("base64url");
-  const payloadEncoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const headerEncoded = Buffer.from(JSON.stringify(header)).toString(
+    "base64url",
+  );
+  const payloadEncoded = Buffer.from(JSON.stringify(payload)).toString(
+    "base64url",
+  );
 
   const signatureInput = `${headerEncoded}.${payloadEncoded}`;
   const signature = crypto

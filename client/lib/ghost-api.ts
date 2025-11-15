@@ -41,7 +41,8 @@ export async function fetchGhostPosts(
       limit: String(limit),
       page: String(page),
       include: "authors,tags",
-      fields: "id,title,slug,excerpt,html,feature_image,published_at,reading_time,authors,tags",
+      fields:
+        "id,title,slug,excerpt,html,feature_image,published_at,reading_time,authors,tags",
     });
 
     const url = `${GHOST_API_URL}/ghost/api/content/posts/?${params.toString()}`;
@@ -72,7 +73,8 @@ export async function fetchGhostPostBySlug(
     const params = new URLSearchParams({
       key: GHOST_CONTENT_API_KEY,
       include: "authors,tags",
-      fields: "id,title,slug,excerpt,html,feature_image,published_at,reading_time,authors,tags",
+      fields:
+        "id,title,slug,excerpt,html,feature_image,published_at,reading_time,authors,tags",
     });
 
     const url = `${GHOST_API_URL}/ghost/api/content/posts/slug/${encodeURIComponent(slug)}/?${params.toString()}`;
@@ -110,10 +112,7 @@ export function transformGhostPost(post: GhostPost) {
         })
       : "",
     readTime: post.reading_time || null,
-    category:
-      post.tags && post.tags.length > 0
-        ? post.tags[0].name
-        : "General",
+    category: post.tags && post.tags.length > 0 ? post.tags[0].name : "General",
     image: post.feature_image || null,
     trending: false,
     likes: null,

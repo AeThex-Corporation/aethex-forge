@@ -56,7 +56,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .single();
 
     if (contractError || !contract) {
-      return res.status(403).json({ error: "Contract not found or unauthorized" });
+      return res
+        .status(403)
+        .json({ error: "Contract not found or unauthorized" });
     }
 
     // Update contract status to active
@@ -99,7 +101,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .eq("user_id", contract.creator_id)
       .single();
 
-    const newEarnings = (creatorProfile?.total_earnings || 0) + contract.creator_payout_amount;
+    const newEarnings =
+      (creatorProfile?.total_earnings || 0) + contract.creator_payout_amount;
 
     await admin
       .from("nexus_creator_profiles")
