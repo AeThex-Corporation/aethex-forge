@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Code, Users, Briefcase, ExternalLink, ArrowRight, AlertCircle, Edit, Save } from "lucide-react";
+import { TeamWidget } from "@/components/TeamWidget";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
@@ -246,39 +247,20 @@ export default function DevLinkDashboard() {
 
             {/* Teams Tab */}
             <TabsContent value="teams" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
-                <CardHeader>
-                  <CardTitle>My dev-link Teams</CardTitle>
-                  <CardDescription>Find and manage Roblox development teams</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {teams.length === 0 ? (
-                    <div className="text-center py-12 space-y-4">
-                      <Users className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
-                      <p className="text-gray-400">No teams yet. Browse available teams!</p>
-                      <Button className="bg-cyan-600 hover:bg-cyan-700">
-                        <Users className="h-4 w-4 mr-2" />
-                        Find Teams
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {teams.map((team: any) => (
-                        <div key={team.id} className="p-4 bg-black/30 rounded-lg border border-cyan-500/10 hover:border-cyan-500/30 transition">
-                          <div className="flex items-start justify-between gap-4 mb-2">
-                            <h4 className="font-semibold text-white">{team.name}</h4>
-                            <Badge className="bg-cyan-600/50 text-cyan-100">{team.members_count} members</Badge>
-                          </div>
-                          <p className="text-sm text-gray-400">{team.description}</p>
-                          <Button size="sm" variant="outline" className="mt-3 border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10">
-                            View Team <ArrowRight className="h-3 w-3 ml-2" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <TeamWidget
+                members={teams.flatMap((t: any) => (t.members || []).map((m: any) => ({
+                  id: m.id,
+                  name: m.full_name,
+                  role: m.role || "Member",
+                  type: m.role === "lead" ? "lead" : "member",
+                  avatar: m.avatar_url,
+                  team_name: t.name,
+                })))}
+                title="My dev-link Teams"
+                description="Find and manage Roblox development teams"
+                accentColor="cyan"
+                onMemberClick={() => {}}
+              />
             </TabsContent>
           </Tabs>
         </div>
