@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Gamepad2, Users, Clock, CheckCircle, AlertCircle, Rocket, Send, Home } from "lucide-react";
+import { SprintWidgetComponent } from "@/components/SprintWidget";
+import { TeamWidget } from "@/components/TeamWidget";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
@@ -205,28 +207,24 @@ export default function GameForgeDashboard() {
 
                 {/* Team Tab */}
                 <TabsContent value="team" className="space-y-4 animate-fade-in">
-                  <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
-                    <CardHeader>
-                      <CardTitle>My Sprint Team</CardTitle>
-                      <CardDescription>Forge Master + Mentees</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {team.map((member: any) => (
-                          <div key={member.id} className="p-4 bg-black/30 rounded-lg border border-green-500/10 hover:border-green-500/30 transition cursor-pointer" onClick={() => navigate(`/passport/${member.username}`)}>
-                            <div className="flex items-start gap-3">
-                              <img src={member.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop"} alt={member.full_name} className="w-12 h-12 rounded-full" />
-                              <div className="flex-1">
-                                <p className="font-semibold text-white">{member.full_name}</p>
-                                <Badge className="text-xs mt-1">{member.role === "mentor" ? "🏆 Forge Master" : "Mentee"}</Badge>
-                                <p className="text-xs text-gray-400 mt-1">{member.role_title}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <TeamWidget
+                    members={team.map((m: any) => ({
+                      id: m.id,
+                      name: m.full_name,
+                      role: m.role_title,
+                      type: m.role === "mentor" ? "lead" : "member",
+                      avatar: m.avatar_url,
+                    }))}
+                    title="My Sprint Team"
+                    description="Forge Master + Mentees"
+                    accentColor="green"
+                    onMemberClick={(memberId) => {
+                      const member = team.find((m: any) => m.id === memberId);
+                      if (member?.username) {
+                        navigate(`/passport/${member.username}`);
+                      }
+                    }}
+                  />
                 </TabsContent>
 
                 {/* Tasks Tab - Kanban */}
