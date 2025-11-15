@@ -195,6 +195,10 @@ const App = () => (
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/dashboard/nexus" element={<NexusDashboard />} />
                         <Route path="/dashboard/foundation" element={<FoundationDashboard />} />
+                        <Route path="/dashboard/labs" element={<LabsDashboard />} />
+                        <Route path="/dashboard/gameforge" element={<GameForgeDashboard />} />
+                        <Route path="/dashboard/dev-link" element={<DevLinkDashboard />} />
+                        <Route path="/staff/dashboard" element={<StaffDashboard />} />
                         <Route path="/hub/client" element={<ClientHub />} />
                         <Route path="/realms" element={<Realms />} />
                         <Route path="/investors" element={<Investors />} />
