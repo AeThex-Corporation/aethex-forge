@@ -18,7 +18,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Link } from "react-router-dom";
-import OAuthConnections from "@/components/settings/OAuthConnections";
+import OAuthConnections, {
+  type ProviderDescriptor,
+  type ProviderKey,
+} from "@/components/settings/OAuthConnections";
 import RealmSwitcher, { RealmKey } from "@/components/settings/RealmSwitcher";
 import {
   User,
@@ -40,6 +43,9 @@ import {
   ArrowRight,
   Copy,
   CheckCircle2,
+  Github,
+  Mail,
+  MessageCircle,
 } from "lucide-react";
 
 const ARMS = [
