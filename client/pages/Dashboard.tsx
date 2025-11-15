@@ -219,6 +219,7 @@ export default function Dashboard() {
   }, [user?.id, setSearchParams]);
 
   const handleTabChange = (value: string) => {
+    console.log("[Dashboard] Tab change:", value);
     setActiveTab(value);
     const next = new URLSearchParams(searchParams.toString());
     if (value === "profile") {
