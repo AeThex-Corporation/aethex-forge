@@ -56,7 +56,7 @@ const OAuthConnections = memo(function OAuthConnections({
   onUnlink,
 }: OAuthConnectionsProps) {
   return (
-    <div className="space-y-4 pointer-events-auto" aria-live="polite">
+    <div className="space-y-4" aria-live="polite">
       {providers.map((providerConfig) => {
         const { provider, name, description, Icon, gradient } = providerConfig;
         const linkedMeta = linkedProviderMap[provider];
@@ -81,7 +81,7 @@ const OAuthConnections = memo(function OAuthConnections({
           <section
             key={provider}
             className={cn(
-              "flex flex-col gap-4 rounded-xl border p-4 md:flex-row md:items-center md:justify-between pointer-events-auto cursor-default",
+              "flex flex-col gap-4 rounded-xl border p-4 md:flex-row md:items-center md:justify-between",
               linkedMeta
                 ? "border-emerald-500/40 bg-emerald-500/5"
                 : "border-border/50 bg-background/20",
@@ -134,11 +134,11 @@ const OAuthConnections = memo(function OAuthConnections({
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-3 md:self-center pointer-events-auto">
+            <div className="flex items-center gap-3 md:self-center">
               {linkedMeta ? (
                 <Button
                   variant="outline"
-                  className="flex items-center gap-2 pointer-events-auto cursor-pointer"
+                  className="flex items-center gap-2"
                   disabled={isUnlinking}
                   onClick={() => onUnlink(provider)}
                   type="button"
@@ -155,7 +155,7 @@ const OAuthConnections = memo(function OAuthConnections({
                 </Button>
               ) : (
                 <Button
-                  className="flex items-center gap-2 bg-aethex-500 hover:bg-aethex-600 pointer-events-auto cursor-pointer"
+                  className="flex items-center gap-2 bg-aethex-500 hover:bg-aethex-600"
                   disabled={isLinking}
                   onClick={() => onLink(provider)}
                   type="button"
