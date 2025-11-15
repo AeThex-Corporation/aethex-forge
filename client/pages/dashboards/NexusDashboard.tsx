@@ -184,6 +184,90 @@ export default function NexusDashboard() {
     }
   };
 
+  const handleSaveNexusProfile = async () => {
+    if (!user) return;
+    setSavingProfile(true);
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error("No auth token");
+
+      const profileRes = await fetch(`${API_BASE}/api/nexus/creator/profile`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          headline: profileFormData.headline,
+          bio: profileFormData.bio,
+          experience_level: profileFormData.experience_level,
+          hourly_rate: profileFormData.hourly_rate
+            ? parseFloat(profileFormData.hourly_rate)
+            : null,
+          availability_status: profileFormData.availability_status,
+          availability_hours_per_week: profileFormData.availability_hours_per_week
+            ? parseFloat(profileFormData.availability_hours_per_week)
+            : null,
+          skills: profileFormData.skills,
+        }),
+      });
+
+      if (!profileRes.ok) {
+        throw new Error("Failed to save Nexus profile");
+      }
+
+      const updatedProfile = await profileRes.json();
+      setCreatorProfile(updatedProfile);
+
+      // Update user profile to mark Nexus as complete
+      const userProfileRes = await fetch(`${API_BASE}/api/user/profile-update`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nexus_profile_complete: true,
+          nexus_headline: profileFormData.headline,
+        }),
+      });
+
+      if (userProfileRes.ok) {
+        aethexToast({
+          message: "NEXUS profile saved successfully!",
+          type: "success",
+        });
+      }
+    } catch (error: any) {
+      aethexToast({
+        message: error?.message || "Failed to save profile",
+        type: "error",
+      });
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
+  const addSkill = () => {
+    if (newSkill.trim()) {
+      setProfileFormData({
+        ...profileFormData,
+        skills: [...profileFormData.skills, newSkill.trim()],
+      });
+      setNewSkill("");
+    }
+  };
+
+  const removeSkill = (index: number) => {
+    setProfileFormData({
+      ...profileFormData,
+      skills: profileFormData.skills.filter((_, i) => i !== index),
+    });
+  };
+
   if (authLoading || loading) {
     return <LoadingScreen message="Loading NEXUS Dashboard..." />;
   }
