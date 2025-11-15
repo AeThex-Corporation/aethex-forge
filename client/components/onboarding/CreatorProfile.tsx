@@ -72,7 +72,7 @@ export default function CreatorProfile({
   totalSteps,
 }: CreatorProfileProps) {
   const [inputValue, setInputValue] = useState("");
-  const creatorData = data.creatorProfile || {
+  const creatorData = data?.creatorProfile || {
     bio: "",
     skills: [],
     primaryArm: "",
