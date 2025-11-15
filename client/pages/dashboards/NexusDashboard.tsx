@@ -28,18 +28,26 @@ import {
   Heart,
   Star,
   ExternalLink,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
+type ViewMode = "creator" | "client";
+
 export default function NexusDashboard() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const [viewMode, setViewMode] = useState<ViewMode>("creator");
   const [activeTab, setActiveTab] = useState("overview");
   const [creatorProfile, setCreatorProfile] = useState<any>(null);
   const [applications, setApplications] = useState<any[]>([]);
   const [contracts, setContracts] = useState<any[]>([]);
   const [payoutInfo, setPayoutInfo] = useState<any>(null);
+  const [postedOpportunities, setPostedOpportunities] = useState<any[]>([]);
+  const [applicants, setApplicants] = useState<any[]>([]);
+  const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -89,6 +97,33 @@ export default function NexusDashboard() {
         const data = await payoutRes.json();
         setPayoutInfo(data.summary);
       }
+
+      // Load client data (posted opportunities)
+      const oppRes = await fetch(`${API_BASE}/api/nexus/client/opportunities?limit=10`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (oppRes.ok) {
+        const data = await oppRes.json();
+        setPostedOpportunities(data.opportunities || []);
+      }
+
+      // Load applicants
+      const appliRes = await fetch(`${API_BASE}/api/nexus/client/applicants?limit=50`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (appliRes.ok) {
+        const data = await appliRes.json();
+        setApplicants(data.applicants || []);
+      }
+
+      // Load payment history
+      const payHistRes = await fetch(`${API_BASE}/api/nexus/client/payment-history?limit=10`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (payHistRes.ok) {
+        const data = await payHistRes.json();
+        setPaymentHistory(data.payments || []);
+      }
     } catch (error: any) {
       aethexToast({
         message: "Failed to load dashboard data",
@@ -127,12 +162,18 @@ export default function NexusDashboard() {
   const isProfileComplete = creatorProfile?.verified || (creatorProfile?.headline && creatorProfile?.skills?.length > 0);
   const pendingApplications = applications.filter((a) => a.status === "submitted").length;
   const activeContracts = contracts.filter((c) => c.status === "active").length;
+  const openOpportunities = postedOpportunities.filter((o) => o.status === "open").length;
+  const applicantStats = {
+    applied: applicants.filter((a) => a.status === "applied").length,
+    interviewing: applicants.filter((a) => a.status === "interviewing").length,
+    hired: applicants.filter((a) => a.status === "hired").length,
+  };
 
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black py-8">
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
-          {/* Header */}
+          {/* Header with View Toggle */}
           <div className="space-y-4 animate-slide-down">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-2">
@@ -140,13 +181,43 @@ export default function NexusDashboard() {
                   NEXUS Marketplace
                 </h1>
                 <p className="text-gray-400 text-lg">
-                  Showcase your skills and land paid opportunities
+                  {viewMode === "creator"
+                    ? "Showcase your skills and land paid opportunities"
+                    : "Hire talent and manage your team"}
                 </p>
+              </div>
+
+              {/* View Toggle */}
+              <div className="flex items-center gap-2 bg-purple-950/40 border border-purple-500/30 rounded-lg p-1">
+                <Button
+                  variant={viewMode === "creator" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => {
+                    setViewMode("creator");
+                    setActiveTab("overview");
+                  }}
+                  className={viewMode === "creator" ? "bg-purple-600 hover:bg-purple-700" : ""}
+                >
+                  {viewMode === "creator" ? <ToggleRight className="h-4 w-4 mr-1" /> : <ToggleLeft className="h-4 w-4 mr-1" />}
+                  Creator
+                </Button>
+                <Button
+                  variant={viewMode === "client" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => {
+                    setViewMode("client");
+                    setActiveTab("overview");
+                  }}
+                  className={viewMode === "client" ? "bg-blue-600 hover:bg-blue-700" : ""}
+                >
+                  {viewMode === "client" ? <ToggleRight className="h-4 w-4 mr-1" /> : <ToggleLeft className="h-4 w-4 mr-1" />}
+                  Client
+                </Button>
               </div>
             </div>
 
-            {/* Setup Banner */}
-            {!isProfileComplete && (
+            {/* Setup Banner (Creator View) */}
+            {viewMode === "creator" && !isProfileComplete && (
               <Card className="bg-gradient-to-r from-orange-500/10 to-amber-500/10 border-orange-500/30">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between gap-4">
@@ -172,310 +243,590 @@ export default function NexusDashboard() {
             )}
           </div>
 
-          {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="applications">Applications</TabsTrigger>
-              <TabsTrigger value="contracts">Contracts</TabsTrigger>
-              <TabsTrigger value="profile">Profile</TabsTrigger>
-            </TabsList>
+          {/* Creator View */}
+          {viewMode === "creator" && (
+            <>
+              {/* Tabs */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="applications">Applications</TabsTrigger>
+                  <TabsTrigger value="contracts">Contracts</TabsTrigger>
+                  <TabsTrigger value="profile">Profile</TabsTrigger>
+                </TabsList>
 
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-6 animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Stat: Total Earnings */}
-                <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
-                  <CardContent className="p-6 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm text-gray-400">Total Earnings</p>
-                      <DollarSign className="h-5 w-5 text-green-500" />
-                    </div>
-                    <p className="text-3xl font-bold text-white">
-                      ${(payoutInfo?.total_earnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </p>
-                  </CardContent>
-                </Card>
-
-                {/* Stat: Pending Payouts */}
-                <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
-                  <CardContent className="p-6 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm text-gray-400">Pending Payouts</p>
-                      <Clock className="h-5 w-5 text-blue-500" />
-                    </div>
-                    <p className="text-3xl font-bold text-white">
-                      ${(payoutInfo?.pending_payouts || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </p>
-                  </CardContent>
-                </Card>
-
-                {/* Stat: Pending Applications */}
-                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                  <CardContent className="p-6 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm text-gray-400">Pending Applications</p>
-                      <Briefcase className="h-5 w-5 text-purple-500" />
-                    </div>
-                    <p className="text-3xl font-bold text-white">{pendingApplications}</p>
-                  </CardContent>
-                </Card>
-
-                {/* Stat: Active Contracts */}
-                <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
-                  <CardContent className="p-6 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm text-gray-400">Active Contracts</p>
-                      <CheckCircle className="h-5 w-5 text-red-500" />
-                    </div>
-                    <p className="text-3xl font-bold text-white">{activeContracts}</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Recent Applications */}
-              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                <CardHeader>
-                  <CardTitle>Recent Applications</CardTitle>
-                  <CardDescription>Your most recent bids</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {applications.length === 0 ? (
-                    <div className="text-center py-8 space-y-4">
-                      <AlertCircle className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
-                      <p className="text-gray-400">No applications yet. Browse opportunities to get started!</p>
-                      <Button
-                        onClick={() => navigate("/nexus")}
-                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                      >
-                        <ArrowRight className="h-4 w-4 mr-2" />
-                        Browse Opportunities
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {applications.slice(0, 5).map((app: any) => (
-                        <div key={app.id} className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition">
-                          <div className="space-y-1 flex-1">
-                            <p className="font-semibold text-white">{app.opportunity?.title}</p>
-                            <p className="text-sm text-gray-400">{app.opportunity?.category}</p>
-                          </div>
-                          <Badge variant={
-                            app.status === "accepted" ? "default" : 
-                            app.status === "rejected" ? "destructive" :
-                            "secondary"
-                          }>
-                            {app.status}
-                          </Badge>
+                {/* Overview Tab */}
+                <TabsContent value="overview" className="space-y-6 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Stat: Total Earnings */}
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Total Earnings</p>
+                          <DollarSign className="h-5 w-5 text-green-500" />
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                        <p className="text-3xl font-bold text-white">
+                          ${(payoutInfo?.total_earnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        </p>
+                      </CardContent>
+                    </Card>
 
-              {/* CTA Section */}
-              {applications.length < 3 && (
-                <Card className="bg-gradient-to-br from-purple-600/20 to-blue-600/20 border-purple-500/40">
-                  <CardContent className="p-8 text-center space-y-4">
-                    <h3 className="text-2xl font-bold text-white">Ready to Earn?</h3>
-                    <p className="text-gray-300 max-w-md mx-auto">
-                      Browse thousands of opportunities from clients looking for talented creators
-                    </p>
-                    <Button
-                      onClick={() => navigate("/nexus")}
-                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8"
-                    >
-                      Explore Opportunities
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-            </TabsContent>
-
-            {/* Applications Tab */}
-            <TabsContent value="applications" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                <CardHeader>
-                  <CardTitle>My Applications</CardTitle>
-                  <CardDescription>Track all your bids and applications</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {applications.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Briefcase className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                      <p className="text-gray-400 mb-4">No applications submitted yet</p>
-                      <Button onClick={() => navigate("/nexus")}>
-                        Browse Opportunities
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {applications.map((app: any) => (
-                        <div key={app.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition space-y-3">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="space-y-1 flex-1">
-                              <h4 className="font-semibold text-white">{app.opportunity?.title}</h4>
-                              <p className="text-sm text-gray-400">{app.opportunity?.description?.substring(0, 100)}...</p>
-                            </div>
-                            <Badge variant="outline">{app.status}</Badge>
-                          </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-400">Proposed: ${app.proposed_rate?.toLocaleString()}/hr</span>
-                            <span className="text-gray-500">Submitted {new Date(app.created_at).toLocaleDateString()}</span>
-                          </div>
+                    {/* Stat: Pending Payouts */}
+                    <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Pending Payouts</p>
+                          <Clock className="h-5 w-5 text-blue-500" />
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+                        <p className="text-3xl font-bold text-white">
+                          ${(payoutInfo?.pending_payouts || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        </p>
+                      </CardContent>
+                    </Card>
 
-            {/* Contracts Tab */}
-            <TabsContent value="contracts" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                <CardHeader>
-                  <CardTitle>Active Contracts</CardTitle>
-                  <CardDescription>Manage your ongoing work</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {contracts.length === 0 ? (
-                    <div className="text-center py-12">
-                      <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                      <p className="text-gray-400">No active contracts</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {contracts.map((contract: any) => (
-                        <div key={contract.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 space-y-4">
-                          <div className="flex items-start justify-between">
-                            <div className="space-y-1">
-                              <h4 className="font-semibold text-white">{contract.title}</h4>
-                              <p className="text-sm text-gray-400">Total: ${contract.total_amount?.toLocaleString()}</p>
-                            </div>
-                            <Badge className="bg-green-600/50 text-green-100">{contract.status}</Badge>
-                          </div>
-                          
-                          {/* Milestones */}
-                          {contract.milestones?.length > 0 && (
-                            <div className="space-y-2">
-                              <p className="text-xs font-semibold text-gray-300 uppercase">Progress</p>
-                              <div className="space-y-2">
-                                {contract.milestones.map((m: any) => (
-                                  <div key={m.id} className="flex items-center gap-2">
-                                    <CheckCircle className="h-4 w-4" style={{
-                                      color: m.status === "paid" ? "#22c55e" : m.status === "approved" ? "#3b82f6" : "#666"
-                                    }} />
-                                    <span className="text-sm text-gray-300">{m.description}</span>
-                                    <span className="text-sm text-gray-500 ml-auto">${m.amount?.toLocaleString()}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
+                    {/* Stat: Pending Applications */}
+                    <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Pending Applications</p>
+                          <Briefcase className="h-5 w-5 text-purple-500" />
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+                        <p className="text-3xl font-bold text-white">{pendingApplications}</p>
+                      </CardContent>
+                    </Card>
 
-            {/* Profile Tab */}
-            <TabsContent value="profile" className="space-y-6 animate-fade-in">
-              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                <CardHeader>
-                  <CardTitle>Your NEXUS Profile</CardTitle>
-                  <CardDescription>Your marketplace identity</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-300">Headline</label>
-                      <input
-                        type="text"
-                        value={creatorProfile?.headline || ""}
-                        placeholder="E.g., Senior Game Developer | Unreal Engine Specialist"
-                        className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
-                        disabled
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-300">Experience Level</label>
-                      <select
-                        value={creatorProfile?.experience_level || "intermediate"}
-                        className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
-                        disabled
-                      >
-                        <option>Beginner</option>
-                        <option>Intermediate</option>
-                        <option>Advanced</option>
-                        <option>Expert</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-300">Hourly Rate</label>
-                      <input
-                        type="number"
-                        value={creatorProfile?.hourly_rate || ""}
-                        placeholder="$50"
-                        className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 disabled:opacity-50"
-                        disabled
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-300">Availability</label>
-                      <select
-                        value={creatorProfile?.availability_status || "available"}
-                        className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
-                        disabled
-                      >
-                        <option>Available</option>
-                        <option>Busy</option>
-                        <option>Unavailable</option>
-                      </select>
-                    </div>
+                    {/* Stat: Active Contracts */}
+                    <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Active Contracts</p>
+                          <CheckCircle className="h-5 w-5 text-red-500" />
+                        </div>
+                        <p className="text-3xl font-bold text-white">{activeContracts}</p>
+                      </CardContent>
+                    </Card>
                   </div>
 
-                  {/* Verification Status */}
-                  {creatorProfile?.verified && (
-                    <div className="p-3 bg-green-600/20 border border-green-500/30 rounded-lg flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                      <span className="text-sm text-green-200">Profile Verified ✓</span>
-                    </div>
+                  {/* Recent Applications */}
+                  <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                    <CardHeader>
+                      <CardTitle>Recent Applications</CardTitle>
+                      <CardDescription>Your most recent bids</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {applications.length === 0 ? (
+                        <div className="text-center py-8 space-y-4">
+                          <AlertCircle className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
+                          <p className="text-gray-400">No applications yet. Browse opportunities to get started!</p>
+                          <Button
+                            onClick={() => navigate("/nexus")}
+                            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                          >
+                            <ArrowRight className="h-4 w-4 mr-2" />
+                            Browse Opportunities
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {applications.slice(0, 5).map((app: any) => (
+                            <div key={app.id} className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition">
+                              <div className="space-y-1 flex-1">
+                                <p className="font-semibold text-white">{app.opportunity?.title}</p>
+                                <p className="text-sm text-gray-400">{app.opportunity?.category}</p>
+                              </div>
+                              <Badge variant={
+                                app.status === "accepted" ? "default" :
+                                app.status === "rejected" ? "destructive" :
+                                "secondary"
+                              }>
+                                {app.status}
+                              </Badge>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* CTA Section */}
+                  {applications.length < 3 && (
+                    <Card className="bg-gradient-to-br from-purple-600/20 to-blue-600/20 border-purple-500/40">
+                      <CardContent className="p-8 text-center space-y-4">
+                        <h3 className="text-2xl font-bold text-white">Ready to Earn?</h3>
+                        <p className="text-gray-300 max-w-md mx-auto">
+                          Browse thousands of opportunities from clients looking for talented creators
+                        </p>
+                        <Button
+                          onClick={() => navigate("/nexus")}
+                          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8"
+                        >
+                          Explore Opportunities
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      </CardContent>
+                    </Card>
                   )}
+                </TabsContent>
 
-                  <p className="text-sm text-gray-400">
-                    To edit your profile, go to Dashboard → Profile Settings
-                  </p>
-                </CardContent>
-              </Card>
+                {/* Applications Tab */}
+                <TabsContent value="applications" className="space-y-4 animate-fade-in">
+                  <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                    <CardHeader>
+                      <CardTitle>My Applications</CardTitle>
+                      <CardDescription>Track all your bids and applications</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {applications.length === 0 ? (
+                        <div className="text-center py-12">
+                          <Briefcase className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                          <p className="text-gray-400 mb-4">No applications submitted yet</p>
+                          <Button onClick={() => navigate("/nexus")}>
+                            Browse Opportunities
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {applications.map((app: any) => (
+                            <div key={app.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition space-y-3">
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="space-y-1 flex-1">
+                                  <h4 className="font-semibold text-white">{app.opportunity?.title}</h4>
+                                  <p className="text-sm text-gray-400">{app.opportunity?.description?.substring(0, 100)}...</p>
+                                </div>
+                                <Badge variant="outline">{app.status}</Badge>
+                              </div>
+                              <div className="flex items-center justify-between text-sm">
+                                <span className="text-gray-400">Proposed: ${app.proposed_rate?.toLocaleString()}/hr</span>
+                                <span className="text-gray-500">Submitted {new Date(app.created_at).toLocaleDateString()}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-              {/* Payout Setup */}
-              <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
-                <CardHeader>
-                  <CardTitle>Payout Information</CardTitle>
-                  <CardDescription>Manage how you receive payments</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                  >
-                    Connect Stripe Account
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </Button>
-                  <p className="text-sm text-gray-400">
-                    Connect your Stripe account to receive payouts for completed contracts
-                  </p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                {/* Contracts Tab */}
+                <TabsContent value="contracts" className="space-y-4 animate-fade-in">
+                  <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                    <CardHeader>
+                      <CardTitle>Active Contracts</CardTitle>
+                      <CardDescription>Manage your ongoing work</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {contracts.length === 0 ? (
+                        <div className="text-center py-12">
+                          <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                          <p className="text-gray-400">No active contracts</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {contracts.map((contract: any) => (
+                            <div key={contract.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 space-y-4">
+                              <div className="flex items-start justify-between">
+                                <div className="space-y-1">
+                                  <h4 className="font-semibold text-white">{contract.title}</h4>
+                                  <p className="text-sm text-gray-400">Total: ${contract.total_amount?.toLocaleString()}</p>
+                                </div>
+                                <Badge className="bg-green-600/50 text-green-100">{contract.status}</Badge>
+                              </div>
+
+                              {/* Milestones */}
+                              {contract.milestones?.length > 0 && (
+                                <div className="space-y-2">
+                                  <p className="text-xs font-semibold text-gray-300 uppercase">Progress</p>
+                                  <div className="space-y-2">
+                                    {contract.milestones.map((m: any) => (
+                                      <div key={m.id} className="flex items-center gap-2">
+                                        <CheckCircle className="h-4 w-4" style={{
+                                          color: m.status === "paid" ? "#22c55e" : m.status === "approved" ? "#3b82f6" : "#666"
+                                        }} />
+                                        <span className="text-sm text-gray-300">{m.description}</span>
+                                        <span className="text-sm text-gray-500 ml-auto">${m.amount?.toLocaleString()}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Profile Tab */}
+                <TabsContent value="profile" className="space-y-6 animate-fade-in">
+                  <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                    <CardHeader>
+                      <CardTitle>Your NEXUS Profile</CardTitle>
+                      <CardDescription>Your marketplace identity</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-300">Headline</label>
+                          <input
+                            type="text"
+                            value={creatorProfile?.headline || ""}
+                            placeholder="E.g., Senior Game Developer | Unreal Engine Specialist"
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
+                            disabled
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-300">Experience Level</label>
+                          <select
+                            value={creatorProfile?.experience_level || "intermediate"}
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
+                            disabled
+                          >
+                            <option>Beginner</option>
+                            <option>Intermediate</option>
+                            <option>Advanced</option>
+                            <option>Expert</option>
+                          </select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-300">Hourly Rate</label>
+                          <input
+                            type="number"
+                            value={creatorProfile?.hourly_rate || ""}
+                            placeholder="$50"
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 disabled:opacity-50"
+                            disabled
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-300">Availability</label>
+                          <select
+                            value={creatorProfile?.availability_status || "available"}
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
+                            disabled
+                          >
+                            <option>Available</option>
+                            <option>Busy</option>
+                            <option>Unavailable</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Verification Status */}
+                      {creatorProfile?.verified && (
+                        <div className="p-3 bg-green-600/20 border border-green-500/30 rounded-lg flex items-center gap-2">
+                          <CheckCircle className="h-5 w-5 text-green-500" />
+                          <span className="text-sm text-green-200">Profile Verified ✓</span>
+                        </div>
+                      )}
+
+                      <p className="text-sm text-gray-400">
+                        To edit your profile, go to Dashboard → Profile Settings
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  {/* Payout Setup */}
+                  <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                    <CardHeader>
+                      <CardTitle>Payout Information</CardTitle>
+                      <CardDescription>Manage how you receive payments</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <Button
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      >
+                        Connect Stripe Account
+                        <ExternalLink className="h-4 w-4 ml-2" />
+                      </Button>
+                      <p className="text-sm text-gray-400">
+                        Connect your Stripe account to receive payouts for completed contracts
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </>
+          )}
+
+          {/* Client View */}
+          {viewMode === "client" && (
+            <>
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-4 bg-blue-950/30 border border-blue-500/20 p-1">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
+                  <TabsTrigger value="applicants">Applicants</TabsTrigger>
+                  <TabsTrigger value="contracts">Contracts</TabsTrigger>
+                </TabsList>
+
+                {/* Overview Tab */}
+                <TabsContent value="overview" className="space-y-6 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Stat: Open Opportunities */}
+                    <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Open Opportunities</p>
+                          <Briefcase className="h-5 w-5 text-blue-500" />
+                        </div>
+                        <p className="text-3xl font-bold text-white">{openOpportunities}</p>
+                      </CardContent>
+                    </Card>
+
+                    {/* Stat: Total Applicants */}
+                    <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Total Applicants</p>
+                          <Users className="h-5 w-5 text-purple-500" />
+                        </div>
+                        <p className="text-3xl font-bold text-white">{applicants.length}</p>
+                      </CardContent>
+                    </Card>
+
+                    {/* Stat: Active Contracts */}
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Active Contracts</p>
+                          <FileText className="h-5 w-5 text-green-500" />
+                        </div>
+                        <p className="text-3xl font-bold text-white">{contracts.filter(c => c.status === "active").length}</p>
+                      </CardContent>
+                    </Card>
+
+                    {/* Stat: Total Spent */}
+                    <Card className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border-orange-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-gray-400">Total Spent</p>
+                          <DollarSign className="h-5 w-5 text-orange-500" />
+                        </div>
+                        <p className="text-3xl font-bold text-white">
+                          ${(paymentHistory.reduce((acc, p) => acc + (p.amount || 0), 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Quick Stats */}
+                  <div className="grid grid-cols-3 gap-4">
+                    <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                      <CardContent className="p-4 text-center space-y-2">
+                        <p className="text-sm text-gray-400">Reviewing</p>
+                        <p className="text-2xl font-bold text-blue-400">{applicantStats.applied}</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                      <CardContent className="p-4 text-center space-y-2">
+                        <p className="text-sm text-gray-400">Interviewing</p>
+                        <p className="text-2xl font-bold text-purple-400">{applicantStats.interviewing}</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardContent className="p-4 text-center space-y-2">
+                        <p className="text-sm text-gray-400">Hired</p>
+                        <p className="text-2xl font-bold text-green-400">{applicantStats.hired}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* CTA Section */}
+                  <Card className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border-blue-500/40">
+                    <CardContent className="p-8 text-center space-y-4">
+                      <h3 className="text-2xl font-bold text-white">Hire Top Talent</h3>
+                      <p className="text-gray-300 max-w-md mx-auto">
+                        Post opportunities and find the perfect creators for your projects
+                      </p>
+                      <Button
+                        onClick={() => navigate("/opportunities/post")}
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8"
+                      >
+                        Post New Opportunity
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Opportunities Tab */}
+                <TabsContent value="opportunities" className="space-y-4 animate-fade-in">
+                  <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                    <CardHeader>
+                      <CardTitle>My Posted Opportunities</CardTitle>
+                      <CardDescription>Manage your job postings</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {postedOpportunities.length === 0 ? (
+                        <div className="text-center py-12">
+                          <Briefcase className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                          <p className="text-gray-400 mb-4">No opportunities posted yet</p>
+                          <Button onClick={() => navigate("/opportunities/post")}>
+                            Post an Opportunity
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {postedOpportunities.map((opp: any) => (
+                            <div key={opp.id} className="p-4 bg-black/30 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition space-y-3">
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="space-y-1 flex-1">
+                                  <h4 className="font-semibold text-white">{opp.title}</h4>
+                                  <p className="text-sm text-gray-400">{opp.description?.substring(0, 100)}...</p>
+                                </div>
+                                <Badge>{opp.status}</Badge>
+                              </div>
+                              <div className="flex items-center justify-between text-sm">
+                                <span className="text-gray-400">Budget: ${opp.budget?.toLocaleString()}</span>
+                                <span className="text-gray-500">{opp.applications_count || 0} applications</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Applicants Tab - Kanban Style */}
+                <TabsContent value="applicants" className="space-y-4 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Applied Column */}
+                    <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Applied ({applicantStats.applied})</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {applicants.filter(a => a.status === "applied").length === 0 ? (
+                          <p className="text-center text-gray-400 text-sm py-4">No applicants</p>
+                        ) : (
+                          applicants.filter(a => a.status === "applied").map((app: any) => (
+                            <div key={app.id} className="p-3 bg-black/30 rounded-lg border border-blue-500/20 cursor-move hover:border-blue-500/40 transition">
+                              <p className="font-semibold text-white text-sm">{app.user?.name}</p>
+                              <p className="text-xs text-gray-400 mt-1">{app.opportunity?.title}</p>
+                            </div>
+                          ))
+                        )}
+                      </CardContent>
+                    </Card>
+
+                    {/* Interviewing Column */}
+                    <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Interviewing ({applicantStats.interviewing})</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {applicants.filter(a => a.status === "interviewing").length === 0 ? (
+                          <p className="text-center text-gray-400 text-sm py-4">No applicants</p>
+                        ) : (
+                          applicants.filter(a => a.status === "interviewing").map((app: any) => (
+                            <div key={app.id} className="p-3 bg-black/30 rounded-lg border border-purple-500/20 cursor-move hover:border-purple-500/40 transition">
+                              <p className="font-semibold text-white text-sm">{app.user?.name}</p>
+                              <p className="text-xs text-gray-400 mt-1">{app.opportunity?.title}</p>
+                            </div>
+                          ))
+                        )}
+                      </CardContent>
+                    </Card>
+
+                    {/* Hired Column */}
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Hired ({applicantStats.hired})</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {applicants.filter(a => a.status === "hired").length === 0 ? (
+                          <p className="text-center text-gray-400 text-sm py-4">No applicants</p>
+                        ) : (
+                          applicants.filter(a => a.status === "hired").map((app: any) => (
+                            <div key={app.id} className="p-3 bg-black/30 rounded-lg border border-green-500/20 cursor-move hover:border-green-500/40 transition">
+                              <p className="font-semibold text-white text-sm">{app.user?.name}</p>
+                              <p className="text-xs text-gray-400 mt-1">{app.opportunity?.title}</p>
+                            </div>
+                          ))
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+
+                {/* Contracts Tab */}
+                <TabsContent value="contracts" className="space-y-4 animate-fade-in">
+                  <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                    <CardHeader>
+                      <CardTitle>My Active Contracts & Payment History</CardTitle>
+                      <CardDescription>Track your active work and payments</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {contracts.length === 0 ? (
+                        <div className="text-center py-12">
+                          <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                          <p className="text-gray-400">No contracts yet</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {contracts.map((contract: any) => (
+                            <div key={contract.id} className="p-4 bg-black/30 rounded-lg border border-blue-500/10 space-y-4">
+                              <div className="flex items-start justify-between">
+                                <div className="space-y-1">
+                                  <h4 className="font-semibold text-white">{contract.title}</h4>
+                                  <p className="text-sm text-gray-400">with {contract.creator?.name}</p>
+                                </div>
+                                <Badge className="bg-blue-600/50 text-blue-100">{contract.status}</Badge>
+                              </div>
+
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <p className="text-gray-400">Total Value</p>
+                                  <p className="font-semibold text-white">${contract.total_amount?.toLocaleString()}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-400">Paid</p>
+                                  <p className="font-semibold text-green-400">${(contract.paid_amount || 0).toLocaleString()}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-400">Remaining</p>
+                                  <p className="font-semibold text-orange-400">${((contract.total_amount || 0) - (contract.paid_amount || 0)).toLocaleString()}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Payment History */}
+                  {paymentHistory.length > 0 && (
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardHeader>
+                        <CardTitle>Payment History</CardTitle>
+                        <CardDescription>Recent payments made</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {paymentHistory.map((payment: any) => (
+                            <div key={payment.id} className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-green-500/10">
+                              <div className="space-y-1">
+                                <p className="font-semibold text-white text-sm">{payment.description}</p>
+                                <p className="text-xs text-gray-400">{new Date(payment.created_at).toLocaleDateString()}</p>
+                              </div>
+                              <p className="font-semibold text-green-400">${payment.amount?.toLocaleString()}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </TabsContent>
+              </Tabs>
+            </>
+          )}
         </div>
       </div>
     </Layout>
