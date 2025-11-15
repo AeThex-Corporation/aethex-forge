@@ -1115,12 +1115,12 @@ export default function Dashboard() {
                 <CardContent className="pointer-events-auto">
                   <Tabs value={activeTab} onValueChange={handleTabChange} className="pointer-events-auto">
                     <TabsList className="mb-4 flex flex-wrap gap-2 pointer-events-auto">
-                      <TabsTrigger value="profile">Profile</TabsTrigger>
-                      <TabsTrigger value="connections">Connections</TabsTrigger>
-                      <TabsTrigger value="notifications">
+                      <TabsTrigger value="profile" className="pointer-events-auto">Profile</TabsTrigger>
+                      <TabsTrigger value="connections" className="pointer-events-auto">Connections</TabsTrigger>
+                      <TabsTrigger value="notifications" className="pointer-events-auto">
                         Notifications
                       </TabsTrigger>
-                      <TabsTrigger value="privacy">Privacy</TabsTrigger>
+                      <TabsTrigger value="privacy" className="pointer-events-auto">Privacy</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="profile" className="space-y-4">
