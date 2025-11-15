@@ -372,41 +372,28 @@ export default function NexusDashboard() {
 
                 {/* Applications Tab */}
                 <TabsContent value="applications" className="space-y-4 animate-fade-in">
-                  <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                    <CardHeader>
-                      <CardTitle>My Applications</CardTitle>
-                      <CardDescription>Track all your bids and applications</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {applications.length === 0 ? (
-                        <div className="text-center py-12">
-                          <Briefcase className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                          <p className="text-gray-400 mb-4">No applications submitted yet</p>
-                          <Button onClick={() => navigate("/nexus")}>
-                            Browse Opportunities
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="space-y-3">
-                          {applications.map((app: any) => (
-                            <div key={app.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition space-y-3">
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="space-y-1 flex-1">
-                                  <h4 className="font-semibold text-white">{app.opportunity?.title}</h4>
-                                  <p className="text-sm text-gray-400">{app.opportunity?.description?.substring(0, 100)}...</p>
-                                </div>
-                                <Badge variant="outline">{app.status}</Badge>
-                              </div>
-                              <div className="flex items-center justify-between text-sm">
-                                <span className="text-gray-400">Proposed: ${app.proposed_rate?.toLocaleString()}/hr</span>
-                                <span className="text-gray-500">Submitted {new Date(app.created_at).toLocaleDateString()}</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                  <ApplicationsWidget
+                    applications={applications.map((a: any) => ({
+                      id: a.id,
+                      opportunity: a.opportunity,
+                      status: a.status || "submitted",
+                      proposed_rate: a.proposed_rate,
+                      proposed_rate_type: a.proposed_rate_type || "hourly",
+                      cover_letter: a.cover_letter,
+                      created_at: a.created_at,
+                    }))}
+                    title="My Job Applications"
+                    description="Track all your bids and applications"
+                    accentColor="purple"
+                    onViewDetails={(app) => {
+                      if (app.opportunity?.id) {
+                        navigate(`/opportunities/${app.opportunity.id}`);
+                      }
+                    }}
+                    showCTA={applications.length < 5}
+                    ctaText="Browse More Opportunities"
+                    onCTA={() => navigate("/nexus")}
+                  />
                 </TabsContent>
 
                 {/* Contracts Tab */}
