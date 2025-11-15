@@ -62,27 +62,27 @@ export default function FoundationDashboard() {
         const coursesRes = await fetch(`${API_BASE}/api/foundation/courses`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (coursesRes.ok) {
+        if (coursesRes.ok && coursesRes.headers.get("content-type")?.includes("application/json")) {
           const data = await coursesRes.json();
           setCourses(Array.isArray(data) ? data : []);
         }
       } catch (err: any) {
-        console.error("Failed to load courses:", err);
+        // Silently ignore API errors - dashboard will render with empty data
       }
 
       try {
         const mentorRes = await fetch(`${API_BASE}/api/foundation/mentorships`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (mentorRes.ok) {
+        if (mentorRes.ok && mentorRes.headers.get("content-type")?.includes("application/json")) {
           const data = await mentorRes.json();
           setMentorships(data.as_mentee || []);
         }
       } catch (err: any) {
-        console.error("Failed to load mentorships:", err);
+        // Silently ignore API errors - dashboard will render with empty data
       }
     } catch (error: any) {
-      console.error("Failed to load dashboard data", error);
+      // Silently ignore errors
     } finally {
       setLoading(false);
     }
