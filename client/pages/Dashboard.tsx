@@ -38,6 +38,8 @@ import {
   Sparkles,
   CheckCircle,
   ArrowRight,
+  Copy,
+  CheckCircle2,
 } from "lucide-react";
 
 const ARMS = [
