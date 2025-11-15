@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { SprintWidgetComponent } from "@/components/SprintWidget";
 import { TeamWidget } from "@/components/TeamWidget";
+import SprintManager from "@/components/SprintManager";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
