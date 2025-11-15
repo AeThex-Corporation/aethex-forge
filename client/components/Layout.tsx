@@ -124,7 +124,8 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
   const isSubdomainHost = (() => {
     try {
-      const hostname = typeof window !== "undefined" ? window.location.hostname : "";
+      const hostname =
+        typeof window !== "undefined" ? window.location.hostname : "";
       if (!hostname) return false;
       if (hostname.includes("aethex.me") || hostname.includes("aethex.space")) {
         const parts = hostname.split(".");
@@ -139,8 +140,8 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   const passportHref = isSubdomainHost
     ? "/"
     : profile?.username
-    ? `/passport/${profile.username}`
-    : "/passport/me";
+      ? `/passport/${profile.username}`
+      : "/passport/me";
 
   const navItems: { name: string; href: string }[] = [];
 
@@ -149,7 +150,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   };
 
   return (
-    <div className={cn("min-h-screen transition-all duration-200", theme.wallpaperClass)}>
+    <div
+      className={cn(
+        "min-h-screen transition-all duration-200",
+        theme.wallpaperClass,
+      )}
+    >
       <header
         className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 animate-slide-down overflow-hidden transition-all duration-200"
         style={{
@@ -173,7 +179,13 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <defs>
-                  <linearGradient id="osGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient
+                    id="osGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
                     <stop offset="0%" stopColor="#a78bfa" />
                     <stop offset="100%" stopColor="#60a5fa" />
                   </linearGradient>
@@ -187,11 +199,37 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 </defs>
 
                 {/* OS Window Frame */}
-                <rect x="6" y="6" width="52" height="52" rx="6" fill="none" stroke="url(#osGradient)" strokeWidth="2" opacity="0.8" />
+                <rect
+                  x="6"
+                  y="6"
+                  width="52"
+                  height="52"
+                  rx="6"
+                  fill="none"
+                  stroke="url(#osGradient)"
+                  strokeWidth="2"
+                  opacity="0.8"
+                />
 
                 {/* Title Bar */}
-                <rect x="6" y="6" width="52" height="12" rx="6" fill="url(#osGradient)" opacity="0.15" />
-                <line x1="6" y1="18" x2="58" y2="18" stroke="url(#osGradient)" strokeWidth="1" opacity="0.3" />
+                <rect
+                  x="6"
+                  y="6"
+                  width="52"
+                  height="12"
+                  rx="6"
+                  fill="url(#osGradient)"
+                  opacity="0.15"
+                />
+                <line
+                  x1="6"
+                  y1="18"
+                  x2="58"
+                  y2="18"
+                  stroke="url(#osGradient)"
+                  strokeWidth="1"
+                  opacity="0.3"
+                />
 
                 {/* System Dots (Traffic Light Style) */}
                 <circle cx="12" cy="12" r="1.5" fill="#a78bfa" opacity="0.7" />
@@ -201,11 +239,38 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 {/* Central OS Symbol - Abstract "A" */}
                 <g transform="translate(32, 35)">
                   {/* Left diagonal */}
-                  <line x1="-6" y1="6" x2="0" y2="-8" stroke="url(#osGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glow)" />
+                  <line
+                    x1="-6"
+                    y1="6"
+                    x2="0"
+                    y2="-8"
+                    stroke="url(#osGradient)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    filter="url(#glow)"
+                  />
                   {/* Right diagonal */}
-                  <line x1="6" y1="6" x2="0" y2="-8" stroke="url(#osGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glow)" />
+                  <line
+                    x1="6"
+                    y1="6"
+                    x2="0"
+                    y2="-8"
+                    stroke="url(#osGradient)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    filter="url(#glow)"
+                  />
                   {/* Crossbar */}
-                  <line x1="-3" y1="0" x2="3" y2="0" stroke="url(#osGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glow)" />
+                  <line
+                    x1="-3"
+                    y1="0"
+                    x2="3"
+                    y2="0"
+                    stroke="url(#osGradient)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    filter="url(#glow)"
+                  />
                   {/* Bottom connecting */}
                   <circle cx="-6" cy="6" r="1.5" fill="#a78bfa" opacity="0.9" />
                   <circle cx="6" cy="6" r="1.5" fill="#60a5fa" opacity="0.9" />
@@ -233,7 +298,13 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <defs>
-                  <linearGradient id="mobileOSGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient
+                    id="mobileOSGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
                     <stop offset="0%" stopColor="#c7d2fe" />
                     <stop offset="100%" stopColor="#dbeafe" />
                   </linearGradient>
@@ -247,11 +318,37 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                 </defs>
 
                 {/* OS Window Frame */}
-                <rect x="6" y="6" width="52" height="52" rx="6" fill="none" stroke="url(#mobileOSGradient)" strokeWidth="2" opacity="0.9" />
+                <rect
+                  x="6"
+                  y="6"
+                  width="52"
+                  height="52"
+                  rx="6"
+                  fill="none"
+                  stroke="url(#mobileOSGradient)"
+                  strokeWidth="2"
+                  opacity="0.9"
+                />
 
                 {/* Title Bar */}
-                <rect x="6" y="6" width="52" height="12" rx="6" fill="url(#mobileOSGradient)" opacity="0.2" />
-                <line x1="6" y1="18" x2="58" y2="18" stroke="url(#mobileOSGradient)" strokeWidth="1" opacity="0.4" />
+                <rect
+                  x="6"
+                  y="6"
+                  width="52"
+                  height="12"
+                  rx="6"
+                  fill="url(#mobileOSGradient)"
+                  opacity="0.2"
+                />
+                <line
+                  x1="6"
+                  y1="18"
+                  x2="58"
+                  y2="18"
+                  stroke="url(#mobileOSGradient)"
+                  strokeWidth="1"
+                  opacity="0.4"
+                />
 
                 {/* System Dots */}
                 <circle cx="12" cy="12" r="1.5" fill="#c7d2fe" opacity="0.8" />
@@ -260,9 +357,36 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
                 {/* Central OS Symbol */}
                 <g transform="translate(32, 35)">
-                  <line x1="-6" y1="6" x2="0" y2="-8" stroke="url(#mobileOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowMobile)" />
-                  <line x1="6" y1="6" x2="0" y2="-8" stroke="url(#mobileOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowMobile)" />
-                  <line x1="-3" y1="0" x2="3" y2="0" stroke="url(#mobileOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowMobile)" />
+                  <line
+                    x1="-6"
+                    y1="6"
+                    x2="0"
+                    y2="-8"
+                    stroke="url(#mobileOSGradient)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    filter="url(#glowMobile)"
+                  />
+                  <line
+                    x1="6"
+                    y1="6"
+                    x2="0"
+                    y2="-8"
+                    stroke="url(#mobileOSGradient)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    filter="url(#glowMobile)"
+                  />
+                  <line
+                    x1="-3"
+                    y1="0"
+                    x2="3"
+                    y2="0"
+                    stroke="url(#mobileOSGradient)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    filter="url(#glowMobile)"
+                  />
                   <circle cx="-6" cy="6" r="1.5" fill="#c7d2fe" opacity="1" />
                   <circle cx="6" cy="6" r="1.5" fill="#dbeafe" opacity="1" />
                 </g>
@@ -535,12 +659,21 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <defs>
-                      <linearGradient id="footerOSGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <linearGradient
+                        id="footerOSGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%"
+                      >
                         <stop offset="0%" stopColor="#818cf8" />
                         <stop offset="100%" stopColor="#a78bfa" />
                       </linearGradient>
                       <filter id="glowFooter">
-                        <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                        <feGaussianBlur
+                          stdDeviation="1.5"
+                          result="coloredBlur"
+                        />
                         <feMerge>
                           <feMergeNode in="coloredBlur" />
                           <feMergeNode in="SourceGraphic" />
@@ -549,24 +682,107 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                     </defs>
 
                     {/* OS Window Frame */}
-                    <rect x="6" y="6" width="52" height="52" rx="6" fill="none" stroke="url(#footerOSGradient)" strokeWidth="2" opacity="0.6" />
+                    <rect
+                      x="6"
+                      y="6"
+                      width="52"
+                      height="52"
+                      rx="6"
+                      fill="none"
+                      stroke="url(#footerOSGradient)"
+                      strokeWidth="2"
+                      opacity="0.6"
+                    />
 
                     {/* Title Bar */}
-                    <rect x="6" y="6" width="52" height="12" rx="6" fill="url(#footerOSGradient)" opacity="0.1" />
-                    <line x1="6" y1="18" x2="58" y2="18" stroke="url(#footerOSGradient)" strokeWidth="1" opacity="0.2" />
+                    <rect
+                      x="6"
+                      y="6"
+                      width="52"
+                      height="12"
+                      rx="6"
+                      fill="url(#footerOSGradient)"
+                      opacity="0.1"
+                    />
+                    <line
+                      x1="6"
+                      y1="18"
+                      x2="58"
+                      y2="18"
+                      stroke="url(#footerOSGradient)"
+                      strokeWidth="1"
+                      opacity="0.2"
+                    />
 
                     {/* System Dots */}
-                    <circle cx="12" cy="12" r="1.5" fill="#818cf8" opacity="0.5" />
-                    <circle cx="18" cy="12" r="1.5" fill="#a78bfa" opacity="0.5" />
-                    <circle cx="24" cy="12" r="1.5" fill="#c4b5fd" opacity="0.5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.5"
+                      fill="#818cf8"
+                      opacity="0.5"
+                    />
+                    <circle
+                      cx="18"
+                      cy="12"
+                      r="1.5"
+                      fill="#a78bfa"
+                      opacity="0.5"
+                    />
+                    <circle
+                      cx="24"
+                      cy="12"
+                      r="1.5"
+                      fill="#c4b5fd"
+                      opacity="0.5"
+                    />
 
                     {/* Central OS Symbol */}
                     <g transform="translate(32, 35)">
-                      <line x1="-6" y1="6" x2="0" y2="-8" stroke="url(#footerOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowFooter)" />
-                      <line x1="6" y1="6" x2="0" y2="-8" stroke="url(#footerOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowFooter)" />
-                      <line x1="-3" y1="0" x2="3" y2="0" stroke="url(#footerOSGradient)" strokeWidth="2" strokeLinecap="round" filter="url(#glowFooter)" />
-                      <circle cx="-6" cy="6" r="1.5" fill="#818cf8" opacity="0.7" />
-                      <circle cx="6" cy="6" r="1.5" fill="#a78bfa" opacity="0.7" />
+                      <line
+                        x1="-6"
+                        y1="6"
+                        x2="0"
+                        y2="-8"
+                        stroke="url(#footerOSGradient)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        filter="url(#glowFooter)"
+                      />
+                      <line
+                        x1="6"
+                        y1="6"
+                        x2="0"
+                        y2="-8"
+                        stroke="url(#footerOSGradient)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        filter="url(#glowFooter)"
+                      />
+                      <line
+                        x1="-3"
+                        y1="0"
+                        x2="3"
+                        y2="0"
+                        stroke="url(#footerOSGradient)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        filter="url(#glowFooter)"
+                      />
+                      <circle
+                        cx="-6"
+                        cy="6"
+                        r="1.5"
+                        fill="#818cf8"
+                        opacity="0.7"
+                      />
+                      <circle
+                        cx="6"
+                        cy="6"
+                        r="1.5"
+                        fill="#a78bfa"
+                        opacity="0.7"
+                      />
                     </g>
                   </svg>
                   <span className="font-bold text-gradient group-hover:animate-pulse">
@@ -596,8 +812,13 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       style={{
                         color: "var(--muted-foreground)",
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "var(--muted-foreground)"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color =
+                          "var(--muted-foreground)")
+                      }
                     >
                       info@aethex.biz
                     </a>
@@ -629,8 +850,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       style={{
                         color: "inherit",
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Game Development
                     </Link>
@@ -643,8 +868,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       style={{
                         color: "inherit",
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Development Consulting
                     </Link>
@@ -657,8 +886,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       style={{
                         color: "inherit",
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Mentorship Programs
                     </Link>
@@ -671,8 +904,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       style={{
                         color: "inherit",
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Research & Labs
                     </Link>
@@ -695,8 +932,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       About AeThex
                     </Link>
@@ -707,8 +948,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Opportunities
                     </Link>
@@ -719,8 +964,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Community Hub
                     </Link>
@@ -731,8 +980,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Changelog
                     </Link>
@@ -743,8 +996,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       System Status
                     </Link>
@@ -755,8 +1012,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Investors
                     </Link>
@@ -779,8 +1040,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Documentation
                     </Link>
@@ -791,8 +1056,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Tutorials
                     </Link>
@@ -803,8 +1072,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Blog
                     </Link>
@@ -815,8 +1088,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Support Center
                     </Link>
@@ -827,8 +1104,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Transparency
                     </Link>
@@ -839,8 +1120,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                       onClick={scrollToTop}
                       className="transition-all duration-300 hover:translate-x-1 inline-block"
                       style={{ color: "inherit" }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                      onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = theme.accentHex)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "inherit")
+                      }
                     >
                       Press Kit
                     </Link>
@@ -866,8 +1151,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                   onClick={scrollToTop}
                   className="text-xs text-muted-foreground transition-all duration-300 hover:scale-105"
                   style={{ color: "inherit" }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                  onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = theme.accentHex)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "inherit")
+                  }
                 >
                   Privacy Policy
                 </Link>
@@ -876,8 +1165,12 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
                   onClick={scrollToTop}
                   className="text-xs text-muted-foreground transition-all duration-300 hover:scale-105"
                   style={{ color: "inherit" }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = theme.accentHex}
-                  onMouseLeave={(e) => e.currentTarget.style.color = "inherit"}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = theme.accentHex)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "inherit")
+                  }
                 >
                   Terms of Service
                 </Link>
