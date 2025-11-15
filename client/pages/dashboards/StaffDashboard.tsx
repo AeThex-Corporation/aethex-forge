@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Shield, Target, DollarSign, FileText, Users, Link as LinkIcon, Calendar, Book, AlertCircle, Search, ExternalLink } from "lucide-react";
+import { DirectoryWidget } from "@/components/DirectoryWidget";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
@@ -289,50 +290,21 @@ export default function StaffDashboard() {
 
             {/* Directory Tab */}
             <TabsContent value="directory" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                <CardHeader>
-                  <CardTitle>Internal Directory</CardTitle>
-                  <CardDescription>Find employees and contractors</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Search Bar */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-3 h-5 w-5 text-gray-500" />
-                    <input
-                      type="text"
-                      placeholder="Search by name or role..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
-                    />
-                  </div>
-
-                  {/* Directory List */}
-                  {filteredDirectory.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Users className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                      <p className="text-gray-400">{searchQuery ? "No results found" : "No team members"}</p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {filteredDirectory.map((member: any) => (
-                        <div key={member.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition cursor-pointer" onClick={() => navigate(`/passport/${member.username}`)}>
-                          <div className="flex items-start gap-3">
-                            <img src={member.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop"} alt={member.full_name} className="w-10 h-10 rounded-full" />
-                            <div className="flex-1 min-w-0">
-                              <p className="font-semibold text-white truncate">{member.full_name}</p>
-                              <p className="text-xs text-gray-400">{member.role}</p>
-                              <Badge className="text-xs mt-2 bg-purple-600/50 text-purple-100">
-                                {member.employment_type === "employee" ? "👨‍💼 Employee" : "📋 Contractor"}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <DirectoryWidget
+                members={directory.map((m: any) => ({
+                  id: m.id,
+                  name: m.full_name,
+                  role: m.role || "Team Member",
+                  department: m.department,
+                  email: m.email,
+                  phone: m.phone,
+                  location: m.location,
+                  avatar_url: m.avatar_url,
+                  employment_type: m.employment_type === "employee" ? "employee" : "contractor",
+                }))}
+                title="Internal Directory"
+                description="Find employees and contractors"
+              />
             </TabsContent>
           </Tabs>
         </div>
