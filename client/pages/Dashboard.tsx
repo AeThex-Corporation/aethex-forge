@@ -1131,6 +1131,7 @@ export default function Dashboard() {
                             id="displayName"
                             value={displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
+                            className="pointer-events-auto"
                           />
                         </div>
                         <div>
