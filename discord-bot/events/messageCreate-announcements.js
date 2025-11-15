@@ -69,8 +69,7 @@ module.exports = {
           .insert({
             username: "aethex-announcements",
             full_name: "AeThex Announcements",
-            avatar_url:
-              "https://aethex.dev/logo.png",
+            avatar_url: "https://aethex.dev/logo.png",
           })
           .select("id");
 
@@ -108,9 +107,9 @@ module.exports = {
 
           if (imageExtensions.some((ext) => attachmentLower.endsWith(ext))) {
             mediaType = "image";
-          } else if (videoExtensions.some((ext) =>
-            attachmentLower.endsWith(ext),
-          )) {
+          } else if (
+            videoExtensions.some((ext) => attachmentLower.endsWith(ext))
+          ) {
             mediaType = "video";
           }
         }
@@ -149,11 +148,17 @@ module.exports = {
         );
 
       if (insertError) {
-        console.error("[Announcements Sync] Failed to create post:", insertError);
+        console.error(
+          "[Announcements Sync] Failed to create post:",
+          insertError,
+        );
         try {
           await message.react("❌");
         } catch (reactionError) {
-          console.warn("[Announcements Sync] Could not add reaction:", reactionError);
+          console.warn(
+            "[Announcements Sync] Could not add reaction:",
+            reactionError,
+          );
         }
         return;
       }
@@ -197,7 +202,10 @@ module.exports = {
             }),
           });
         } catch (webhookError) {
-          console.warn("[Announcements Sync] Failed to sync to webhook:", webhookError);
+          console.warn(
+            "[Announcements Sync] Failed to sync to webhook:",
+            webhookError,
+          );
         }
       }
 
@@ -209,7 +217,10 @@ module.exports = {
       try {
         await message.react("✅");
       } catch (reactionError) {
-        console.warn("[Announcements Sync] Could not add success reaction:", reactionError);
+        console.warn(
+          "[Announcements Sync] Could not add success reaction:",
+          reactionError,
+        );
       }
     } catch (error) {
       console.error("[Announcements Sync] Unexpected error:", error);
@@ -217,7 +228,10 @@ module.exports = {
       try {
         await message.react("⚠️");
       } catch (reactionError) {
-        console.warn("[Announcements Sync] Could not add warning reaction:", reactionError);
+        console.warn(
+          "[Announcements Sync] Could not add warning reaction:",
+          reactionError,
+        );
       }
     }
   },

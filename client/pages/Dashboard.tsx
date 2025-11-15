@@ -770,8 +770,7 @@ export default function Dashboard() {
               <div className="space-y-3 flex-1">
                 <div className="flex items-center gap-3">
                   <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-aethex-300 via-neon-blue to-aethex-400 bg-clip-text text-transparent">
-                    {activeRealm === "game_developer" &&
-                      "Game Development"}
+                    {activeRealm === "game_developer" && "Game Development"}
                     {activeRealm === "client" && "Consulting"}
                     {activeRealm === "community_member" && "Community"}
                     {activeRealm === "customer" && "Getting Started"}
@@ -784,7 +783,11 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <p className="text-base text-muted-foreground max-w-xl">
-                  Welcome back, <span className="text-aethex-300 font-semibold">{profile?.full_name || user.email?.split("@")[0]}</span> • {streakLabel}
+                  Welcome back,{" "}
+                  <span className="text-aethex-300 font-semibold">
+                    {profile?.full_name || user.email?.split("@")[0]}
+                  </span>{" "}
+                  • {streakLabel}
                 </p>
                 {longestStreak > 0 && (
                   <div className="flex flex-wrap gap-2 pt-2">
@@ -941,7 +944,12 @@ export default function Dashboard() {
                       className="bg-gradient-to-br from-card/60 to-card/30 border border-border/40 hover:border-aethex-400/50 transition-all duration-300 hover-lift animate-scale-in shadow-lg overflow-hidden group"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-300" style={{background: `linear-gradient(135deg, var(--color-${stat.color.split('-')[1]}), transparent)`}} />
+                      <div
+                        className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-300"
+                        style={{
+                          background: `linear-gradient(135deg, var(--color-${stat.color.split("-")[1]}), transparent)`,
+                        }}
+                      />
                       <CardContent className="p-6 relative">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
@@ -953,7 +961,7 @@ export default function Dashboard() {
                             </p>
                           </div>
                           <div
-                            className={`p-3 rounded-xl bg-gradient-to-r ${stat.color} shadow-lg shadow-${stat.color.split('-')[1]}-500/20 group-hover:shadow-xl transition-all duration-300`}
+                            className={`p-3 rounded-xl bg-gradient-to-r ${stat.color} shadow-lg shadow-${stat.color.split("-")[1]}-500/20 group-hover:shadow-xl transition-all duration-300`}
                           >
                             <Icon className="h-6 w-6 text-white" />
                           </div>
@@ -1031,10 +1039,7 @@ export default function Dashboard() {
                     >
                       Create Team
                     </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate("/corp")}
-                    >
+                    <Button variant="outline" onClick={() => navigate("/corp")}>
                       Consulting Overview
                     </Button>
                   </CardContent>

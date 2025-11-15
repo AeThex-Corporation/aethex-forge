@@ -18,18 +18,85 @@ import { aethexSocialService } from "@/lib/aethex-social-service";
 import { cn } from "@/lib/utils";
 import { normalizeErrorMessage } from "@/lib/error-utils";
 import { communityService, realtimeService } from "@/lib/supabase-service";
-import { ArrowUpRight, RotateCcw, TrendingUp, Users, Zap, Gamepad2, Briefcase, BookOpen, Network, Shield, Sparkles } from "lucide-react";
+import {
+  ArrowUpRight,
+  RotateCcw,
+  TrendingUp,
+  Users,
+  Zap,
+  Gamepad2,
+  Briefcase,
+  BookOpen,
+  Network,
+  Shield,
+  Sparkles,
+} from "lucide-react";
 
-export type ArmType = "labs" | "gameforge" | "corp" | "foundation" | "devlink" | "nexus" | "staff";
+export type ArmType =
+  | "labs"
+  | "gameforge"
+  | "corp"
+  | "foundation"
+  | "devlink"
+  | "nexus"
+  | "staff";
 
-const ARMS: { id: ArmType; label: string; icon: any; color: string; description: string }[] = [
-  { id: "labs", label: "Labs", icon: Zap, color: "text-yellow-400", description: "Innovation and experimentation" },
-  { id: "gameforge", label: "GameForge", icon: Gamepad2, color: "text-green-400", description: "Game development excellence" },
-  { id: "corp", label: "Corp", icon: Briefcase, color: "text-blue-400", description: "Commercial partnerships" },
-  { id: "foundation", label: "Foundation", icon: BookOpen, color: "text-red-400", description: "Education and mentorship" },
-  { id: "devlink", label: "Dev-Link", icon: Network, color: "text-cyan-400", description: "Developer networking" },
-  { id: "nexus", label: "Nexus", icon: Sparkles, color: "text-purple-400", description: "Talent marketplace" },
-  { id: "staff", label: "Staff", icon: Shield, color: "text-indigo-400", description: "Internal operations" },
+const ARMS: {
+  id: ArmType;
+  label: string;
+  icon: any;
+  color: string;
+  description: string;
+}[] = [
+  {
+    id: "labs",
+    label: "Labs",
+    icon: Zap,
+    color: "text-yellow-400",
+    description: "Innovation and experimentation",
+  },
+  {
+    id: "gameforge",
+    label: "GameForge",
+    icon: Gamepad2,
+    color: "text-green-400",
+    description: "Game development excellence",
+  },
+  {
+    id: "corp",
+    label: "Corp",
+    icon: Briefcase,
+    color: "text-blue-400",
+    description: "Commercial partnerships",
+  },
+  {
+    id: "foundation",
+    label: "Foundation",
+    icon: BookOpen,
+    color: "text-red-400",
+    description: "Education and mentorship",
+  },
+  {
+    id: "devlink",
+    label: "Dev-Link",
+    icon: Network,
+    color: "text-cyan-400",
+    description: "Developer networking",
+  },
+  {
+    id: "nexus",
+    label: "Nexus",
+    icon: Sparkles,
+    color: "text-purple-400",
+    description: "Talent marketplace",
+  },
+  {
+    id: "staff",
+    label: "Staff",
+    icon: Shield,
+    color: "text-indigo-400",
+    description: "Internal operations",
+  },
 ];
 
 interface FeedItem {
@@ -179,20 +246,23 @@ export default function ArmFeed({ arm }: ArmFeedProps) {
     [isFollowingAuthor, user, toast],
   );
 
-  const handleShare = useCallback(async (id: string) => {
-    const url = `${location.origin}/${arm}#post-${id}`;
-    try {
-      if ((navigator as any).share) {
-        await (navigator as any).share({
-          title: "AeThex",
-          text: `Check out this ${ARMS.find((a) => a.id === arm)?.label} post`,
-          url,
-        });
+  const handleShare = useCallback(
+    async (id: string) => {
+      const url = `${location.origin}/${arm}#post-${id}`;
+      try {
+        if ((navigator as any).share) {
+          await (navigator as any).share({
+            title: "AeThex",
+            text: `Check out this ${ARMS.find((a) => a.id === arm)?.label} post`,
+            url,
+          });
+        }
+      } catch (error) {
+        console.warn("Share cancelled", error);
       }
-    } catch (error) {
-      console.warn("Share cancelled", error);
-    }
-  }, [arm]);
+    },
+    [arm],
+  );
 
   const handleLike = useCallback(
     async (postId: string) => {

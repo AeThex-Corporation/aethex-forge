@@ -59,8 +59,7 @@ const ProjectPassport = ({
   };
 
   const statusLabel = project.status || "active";
-  const statusClass =
-    statusColors[statusLabel] || statusColors["active"];
+  const statusClass = statusColors[statusLabel] || statusColors["active"];
 
   return (
     <Layout>

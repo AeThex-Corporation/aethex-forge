@@ -62,11 +62,11 @@ const SubdomainPassport = () => {
         let url = "";
         if (subdomainInfo.isCreatorPassport) {
           url = `${API_BASE}/api/passport/subdomain/${encodeURIComponent(
-            subdomainInfo.subdomain
+            subdomainInfo.subdomain,
           )}`;
         } else if (subdomainInfo.isProjectPassport) {
           url = `${API_BASE}/api/passport/project/${encodeURIComponent(
-            subdomainInfo.subdomain
+            subdomainInfo.subdomain,
           )}`;
         }
 
@@ -82,7 +82,7 @@ const SubdomainPassport = () => {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(
-            errorData.error || `HTTP ${response.status}: Not found`
+            errorData.error || `HTTP ${response.status}: Not found`,
           );
         }
 

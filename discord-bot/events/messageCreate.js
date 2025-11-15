@@ -87,13 +87,17 @@ async function handleAnnouncementSync(message) {
         mediaUrl = attachment.url;
         const attachmentLower = attachment.name.toLowerCase();
 
-        if ([".jpg", ".jpeg", ".png", ".gif", ".webp"].some((ext) =>
-          attachmentLower.endsWith(ext),
-        )) {
+        if (
+          [".jpg", ".jpeg", ".png", ".gif", ".webp"].some((ext) =>
+            attachmentLower.endsWith(ext),
+          )
+        ) {
           mediaType = "image";
-        } else if ([".mp4", ".webm", ".mov", ".avi"].some((ext) =>
-          attachmentLower.endsWith(ext),
-        )) {
+        } else if (
+          [".mp4", ".webm", ".mov", ".avi"].some((ext) =>
+            attachmentLower.endsWith(ext),
+          )
+        ) {
           mediaType = "video";
         }
       }
@@ -137,9 +141,7 @@ async function handleAnnouncementSync(message) {
       return;
     }
 
-    console.log(
-      `[Announcements] ✅ Synced to AeThex (${armAffiliation} arm)`,
-    );
+    console.log(`[Announcements] ✅ Synced to AeThex (${armAffiliation} arm)`);
 
     await message.react("✅");
   } catch (error) {
@@ -160,7 +162,10 @@ module.exports = {
     if (!message.content && message.attachments.size === 0) return;
 
     // Check if this is an announcement to sync
-    if (ANNOUNCEMENT_CHANNELS.length > 0 && ANNOUNCEMENT_CHANNELS.includes(message.channelId)) {
+    if (
+      ANNOUNCEMENT_CHANNELS.length > 0 &&
+      ANNOUNCEMENT_CHANNELS.includes(message.channelId)
+    ) {
       return handleAnnouncementSync(message);
     }
 
@@ -200,7 +205,10 @@ module.exports = {
         .single();
 
       if (profileError || !userProfile) {
-        console.error("[Feed Sync] Could not fetch user profile:", profileError);
+        console.error(
+          "[Feed Sync] Could not fetch user profile:",
+          profileError,
+        );
         return;
       }
 
@@ -215,13 +223,17 @@ module.exports = {
           mediaUrl = attachment.url;
           const attachmentLower = attachment.name.toLowerCase();
 
-          if ([".jpg", ".jpeg", ".png", ".gif", ".webp"].some((ext) =>
-            attachmentLower.endsWith(ext),
-          )) {
+          if (
+            [".jpg", ".jpeg", ".png", ".gif", ".webp"].some((ext) =>
+              attachmentLower.endsWith(ext),
+            )
+          ) {
             mediaType = "image";
-          } else if ([".mp4", ".webm", ".mov", ".avi"].some((ext) =>
-            attachmentLower.endsWith(ext),
-          )) {
+          } else if (
+            [".mp4", ".webm", ".mov", ".avi"].some((ext) =>
+              attachmentLower.endsWith(ext),
+            )
+          ) {
             mediaType = "video";
           }
         }
@@ -234,7 +246,8 @@ module.exports = {
         const guildNameLower = guild.name.toLowerCase();
         if (guildNameLower.includes("gameforge")) armAffiliation = "gameforge";
         else if (guildNameLower.includes("corp")) armAffiliation = "corp";
-        else if (guildNameLower.includes("foundation")) armAffiliation = "foundation";
+        else if (guildNameLower.includes("foundation"))
+          armAffiliation = "foundation";
         else if (guildNameLower.includes("devlink")) armAffiliation = "devlink";
         else if (guildNameLower.includes("nexus")) armAffiliation = "nexus";
         else if (guildNameLower.includes("staff")) armAffiliation = "staff";
@@ -276,14 +289,15 @@ module.exports = {
         return;
       }
 
-      console.log(
-        `[Feed Sync] ✅ Posted from ${message.author.tag} to AeThex`,
-      );
+      console.log(`[Feed Sync] ✅ Posted from ${message.author.tag} to AeThex`);
 
       try {
         await message.react("✅");
       } catch (reactionError) {
-        console.warn("[Feed Sync] Could not add success reaction:", reactionError);
+        console.warn(
+          "[Feed Sync] Could not add success reaction:",
+          reactionError,
+        );
       }
 
       try {

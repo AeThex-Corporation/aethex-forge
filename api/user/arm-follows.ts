@@ -59,9 +59,7 @@ export default async function handler(req: any, res: any) {
       const { arm_affiliation } = req.body;
 
       if (!arm_affiliation) {
-        return res
-          .status(400)
-          .json({ error: "Missing arm_affiliation" });
+        return res.status(400).json({ error: "Missing arm_affiliation" });
       }
 
       if (!VALID_ARMS.includes(arm_affiliation)) {
@@ -115,9 +113,7 @@ export default async function handler(req: any, res: any) {
       const { arm_affiliation } = req.body;
 
       if (!arm_affiliation) {
-        return res
-          .status(400)
-          .json({ error: "Missing arm_affiliation" });
+        return res.status(400).json({ error: "Missing arm_affiliation" });
       }
 
       // Unfollow the arm

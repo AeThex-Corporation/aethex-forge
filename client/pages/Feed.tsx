@@ -235,7 +235,9 @@ export default function Feed() {
           body: JSON.stringify({ arm_affiliation: arm }),
         });
         setFollowedArms((state) => state.filter((a) => a !== arm));
-        toast({ description: `Unfollowed ${ARMS.find((a) => a.id === arm)?.label}` });
+        toast({
+          description: `Unfollowed ${ARMS.find((a) => a.id === arm)?.label}`,
+        });
       } else {
         // Follow
         await fetch(`/api/user/arm-follows?user_id=${user.id}`, {
@@ -244,11 +246,16 @@ export default function Feed() {
           body: JSON.stringify({ arm_affiliation: arm }),
         });
         setFollowedArms((state) => Array.from(new Set([...state, arm])));
-        toast({ description: `Following ${ARMS.find((a) => a.id === arm)?.label}!` });
+        toast({
+          description: `Following ${ARMS.find((a) => a.id === arm)?.label}!`,
+        });
       }
     } catch (error) {
       console.error("Failed to update arm follow:", error);
-      toast({ variant: "destructive", description: "Failed to update preference" });
+      toast({
+        variant: "destructive",
+        description: "Failed to update preference",
+      });
     }
   };
 
@@ -497,7 +504,8 @@ export default function Feed() {
                     onClick={handleManualRefresh}
                     className="gap-1 sm:gap-2 rounded-full border-border/60 bg-background/80 backdrop-blur text-xs sm:text-sm"
                   >
-                    <RotateCcw className="h-3 sm:h-4 w-3 sm:w-4" /> <span className="hidden sm:inline">Refresh</span>
+                    <RotateCcw className="h-3 sm:h-4 w-3 sm:w-4" />{" "}
+                    <span className="hidden sm:inline">Refresh</span>
                   </Button>
                 </div>
               </div>
@@ -547,11 +555,15 @@ export default function Feed() {
 
                 <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center justify-between gap-2 text-xs">
-                    <span className="uppercase text-muted-foreground font-semibold">Filter by Arms</span>
+                    <span className="uppercase text-muted-foreground font-semibold">
+                      Filter by Arms
+                    </span>
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => setShowArmFollowManager(!showArmFollowManager)}
+                      onClick={() =>
+                        setShowArmFollowManager(!showArmFollowManager)
+                      }
                       className="text-xs text-aethex-200 hover:text-aethex-100 h-auto p-1"
                     >
                       {showArmFollowManager ? "Hide" : "Manage"}
@@ -564,7 +576,9 @@ export default function Feed() {
                         <Button
                           key={arm.id}
                           variant={
-                            selectedArms.includes(arm.id) ? "default" : "outline"
+                            selectedArms.includes(arm.id)
+                              ? "default"
+                              : "outline"
                           }
                           size="sm"
                           onClick={() =>
@@ -582,7 +596,10 @@ export default function Feed() {
                           )}
                         >
                           <arm.icon
-                            className={cn("h-3 sm:h-3.5 w-3 sm:w-3.5", arm.color)}
+                            className={cn(
+                              "h-3 sm:h-3.5 w-3 sm:w-3.5",
+                              arm.color,
+                            )}
                           />
                           <span className="font-medium hidden sm:inline">
                             {arm.label}
@@ -595,14 +612,19 @@ export default function Feed() {
                   {showArmFollowManager && user?.id && (
                     <div className="rounded-xl sm:rounded-2xl border border-border/40 bg-background/60 p-3 sm:p-4 space-y-2 sm:space-y-3">
                       <p className="text-xs text-muted-foreground leading-relaxed">
-                        ✨ Follow arms to personalize your feed. Only posts from followed arms will appear in your "Following" tab.
+                        ✨ Follow arms to personalize your feed. Only posts from
+                        followed arms will appear in your "Following" tab.
                       </p>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
                         {ARMS.map((arm) => (
                           <Button
                             key={arm.id}
                             size="sm"
-                            variant={followedArms.includes(arm.id) ? "default" : "outline"}
+                            variant={
+                              followedArms.includes(arm.id)
+                                ? "default"
+                                : "outline"
+                            }
                             onClick={() => toggleFollowArm(arm.id)}
                             className={cn(
                               "rounded-full text-xs font-medium gap-1",
@@ -611,7 +633,8 @@ export default function Feed() {
                                 : "bg-background/60 text-muted-foreground hover:border-border",
                             )}
                           >
-                            {followedArms.includes(arm.id) ? "✓" : "+"} {arm.label}
+                            {followedArms.includes(arm.id) ? "✓" : "+"}{" "}
+                            {arm.label}
                           </Button>
                         ))}
                       </div>

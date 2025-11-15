@@ -309,7 +309,9 @@ export function createServer() {
   // Subdomain detection middleware for aethex.me and aethex.space
   app.use((req, res, next) => {
     const host = (req.headers.host || "").toLowerCase();
-    const forwarded = ((req.headers["x-forwarded-host"] as string) || "").toLowerCase();
+    const forwarded = (
+      (req.headers["x-forwarded-host"] as string) || ""
+    ).toLowerCase();
     const hostname = forwarded || host;
 
     // Parse subdomain
@@ -358,7 +360,9 @@ export function createServer() {
   // API: Creator passport lookup by subdomain (aethex.me)
   app.get("/api/passport/subdomain/:username", async (req, res) => {
     try {
-      const username = String(req.params.username || "").toLowerCase().trim();
+      const username = String(req.params.username || "")
+        .toLowerCase()
+        .trim();
       if (!username) {
         return res.status(400).json({ error: "username required" });
       }
@@ -366,7 +370,7 @@ export function createServer() {
       const { data, error } = await adminSupabase
         .from("user_profiles")
         .select(
-          "id, username, full_name, avatar_url, user_type, bio, created_at, email"
+          "id, username, full_name, avatar_url, user_type, bio, created_at, email",
         )
         .eq("username", username)
         .single();
@@ -405,7 +409,7 @@ export function createServer() {
       let query = adminSupabase
         .from("projects")
         .select(
-          "id, title, slug, description, user_id, created_at, updated_at, status, image_url, website"
+          "id, title, slug, description, user_id, created_at, updated_at, status, image_url, website",
         )
         .eq("slug", projectname);
 
@@ -416,7 +420,7 @@ export function createServer() {
         query = adminSupabase
           .from("projects")
           .select(
-            "id, title, slug, description, user_id, created_at, updated_at, status, image_url, website"
+            "id, title, slug, description, user_id, created_at, updated_at, status, image_url, website",
           )
           .ilike("title", projectname);
 
@@ -3252,7 +3256,9 @@ export function createServer() {
     app.get("/api/social/following", async (req, res) => {
       const userId = req.query.userId as string;
       if (!userId) {
-        return res.status(400).json({ error: "userId query parameter required" });
+        return res
+          .status(400)
+          .json({ error: "userId query parameter required" });
       }
       try {
         const { data, error } = await adminSupabase
@@ -3278,7 +3284,9 @@ export function createServer() {
     app.get("/api/social/followers", async (req, res) => {
       const userId = req.query.userId as string;
       if (!userId) {
-        return res.status(400).json({ error: "userId query parameter required" });
+        return res
+          .status(400)
+          .json({ error: "userId query parameter required" });
       }
       try {
         const { data, error } = await adminSupabase

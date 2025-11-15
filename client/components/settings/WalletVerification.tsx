@@ -54,7 +54,7 @@ export const WalletVerification = ({
     const normalized = walletInput.trim().toLowerCase();
     if (!isValidEthereumAddress(normalized)) {
       aethexToast.warning(
-        "Invalid Ethereum address. Must be 0x followed by 40 hexadecimal characters."
+        "Invalid Ethereum address. Must be 0x followed by 40 hexadecimal characters.",
       );
       return;
     }
@@ -78,7 +78,8 @@ export const WalletVerification = ({
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(
-          errorData.error || `HTTP ${response.status}: Failed to connect wallet`
+          errorData.error ||
+            `HTTP ${response.status}: Failed to connect wallet`,
         );
       }
 
@@ -93,7 +94,7 @@ export const WalletVerification = ({
     } catch (error: any) {
       console.error("[Wallet Verification] Error:", error?.message);
       aethexToast.error(
-        error?.message || "Failed to connect wallet. Please try again."
+        error?.message || "Failed to connect wallet. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -116,7 +117,8 @@ export const WalletVerification = ({
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(
-          errorData.error || `HTTP ${response.status}: Failed to disconnect wallet`
+          errorData.error ||
+            `HTTP ${response.status}: Failed to disconnect wallet`,
         );
       }
 
@@ -129,7 +131,7 @@ export const WalletVerification = ({
     } catch (error: any) {
       console.error("[Wallet Verification] Error:", error?.message);
       aethexToast.error(
-        error?.message || "Failed to disconnect wallet. Please try again."
+        error?.message || "Failed to disconnect wallet. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -150,7 +152,10 @@ export const WalletVerification = ({
         <CardTitle className="flex items-center gap-2">
           <span>🔐 Wallet Verification</span>
           {connectedWallet && (
-            <Badge variant="outline" className="ml-auto border-emerald-500/30 bg-emerald-500/10 text-emerald-300">
+            <Badge
+              variant="outline"
+              className="ml-auto border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+            >
               <CheckCircle className="mr-1 h-3 w-3" />
               Connected
             </Badge>
@@ -199,11 +204,14 @@ export const WalletVerification = ({
                   ✓ Proves you're the owner of this wallet (Web3 identity)
                 </li>
                 <li>
-                  ✓ Will unlock your <code className="text-aethex-300">.aethex</code> TLD
+                  ✓ Will unlock your{" "}
+                  <code className="text-aethex-300">.aethex</code> TLD
                   verification when the Protocol launches
                 </li>
                 <li>✓ No smart contracts or gas fees required right now</li>
-                <li>✓ Your wallet address is private and only visible to you</li>
+                <li>
+                  ✓ Your wallet address is private and only visible to you
+                </li>
               </ul>
             </div>
 

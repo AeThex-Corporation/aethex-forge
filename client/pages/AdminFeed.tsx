@@ -158,10 +158,15 @@ export default function AdminFeed() {
           {/* Main Form */}
           <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
             <CardHeader className="p-3 sm:p-4 lg:p-6">
-              <CardTitle className="text-lg sm:text-xl">Create a New Post</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">
+                Create a New Post
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-4 lg:p-6">
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 lg:space-y-6">
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-4 sm:space-y-5 lg:space-y-6"
+              >
                 {/* Title */}
                 <div className="space-y-1.5 sm:space-y-2">
                   <label className="block text-xs sm:text-sm font-medium text-foreground">
@@ -288,7 +293,9 @@ export default function AdminFeed() {
           {/* Quick Reference */}
           <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
             <CardHeader className="p-3 sm:p-4 lg:p-6">
-              <CardTitle className="text-base sm:text-lg">Arm Color Guide</CardTitle>
+              <CardTitle className="text-base sm:text-lg">
+                Arm Color Guide
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-4 lg:p-6">
               <div className="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -297,7 +304,9 @@ export default function AdminFeed() {
                     key={arm.id}
                     className="flex items-center gap-2 rounded-lg border border-border/30 bg-background/60 p-2 sm:p-3"
                   >
-                    <div className={`h-2 sm:h-3 w-2 sm:w-3 rounded-full ${arm.color}`} />
+                    <div
+                      className={`h-2 sm:h-3 w-2 sm:w-3 rounded-full ${arm.color}`}
+                    />
                     <span className="text-xs sm:text-sm font-medium text-foreground">
                       {arm.label}
                     </span>
@@ -310,7 +319,9 @@ export default function AdminFeed() {
           {/* Guidelines */}
           <Card className="border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
             <CardHeader className="p-3 sm:p-4 lg:p-6">
-              <CardTitle className="text-base sm:text-lg">Phase 1 Guidelines</CardTitle>
+              <CardTitle className="text-base sm:text-lg">
+                Phase 1 Guidelines
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-4 lg:p-6 space-y-2 sm:space-y-3 text-xs sm:text-sm text-muted-foreground">
               <p>
@@ -323,9 +334,9 @@ export default function AdminFeed() {
                 (Corp/Labs) separation is real.
               </p>
               <p>
-                🤝 <strong>Partnership Showcase:</strong> Use these posts to show
-                how different Arms collaborate. Example: "Corp hired 3 Architects
-                from Foundation via Nexus."
+                🤝 <strong>Partnership Showcase:</strong> Use these posts to
+                show how different Arms collaborate. Example: "Corp hired 3
+                Architects from Foundation via Nexus."
               </p>
               <p>
                 🚀 <strong>Phase 2:</strong> User-generated posts coming soon.

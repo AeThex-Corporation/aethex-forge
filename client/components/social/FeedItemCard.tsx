@@ -18,14 +18,52 @@ import { communityService } from "@/lib/supabase-service";
 import { Heart, MessageCircle, Share2, Volume2, VolumeX } from "lucide-react";
 import type { FeedItem } from "@/pages/Feed";
 
-const ARM_COLORS: Record<string, { bg: string; border: string; badge: string; text: string }> = {
-  labs: { bg: "bg-yellow-500/10", border: "border-l-4 border-l-yellow-400", badge: "bg-yellow-500/20 text-yellow-200", text: "text-yellow-400" },
-  gameforge: { bg: "bg-green-500/10", border: "border-l-4 border-l-green-400", badge: "bg-green-500/20 text-green-200", text: "text-green-400" },
-  corp: { bg: "bg-blue-500/10", border: "border-l-4 border-l-blue-400", badge: "bg-blue-500/20 text-blue-200", text: "text-blue-400" },
-  foundation: { bg: "bg-red-500/10", border: "border-l-4 border-l-red-400", badge: "bg-red-500/20 text-red-200", text: "text-red-400" },
-  devlink: { bg: "bg-cyan-500/10", border: "border-l-4 border-l-cyan-400", badge: "bg-cyan-500/20 text-cyan-200", text: "text-cyan-400" },
-  nexus: { bg: "bg-purple-500/10", border: "border-l-4 border-l-purple-400", badge: "bg-purple-500/20 text-purple-200", text: "text-purple-400" },
-  staff: { bg: "bg-indigo-500/10", border: "border-l-4 border-l-indigo-400", badge: "bg-indigo-500/20 text-indigo-200", text: "text-indigo-400" },
+const ARM_COLORS: Record<
+  string,
+  { bg: string; border: string; badge: string; text: string }
+> = {
+  labs: {
+    bg: "bg-yellow-500/10",
+    border: "border-l-4 border-l-yellow-400",
+    badge: "bg-yellow-500/20 text-yellow-200",
+    text: "text-yellow-400",
+  },
+  gameforge: {
+    bg: "bg-green-500/10",
+    border: "border-l-4 border-l-green-400",
+    badge: "bg-green-500/20 text-green-200",
+    text: "text-green-400",
+  },
+  corp: {
+    bg: "bg-blue-500/10",
+    border: "border-l-4 border-l-blue-400",
+    badge: "bg-blue-500/20 text-blue-200",
+    text: "text-blue-400",
+  },
+  foundation: {
+    bg: "bg-red-500/10",
+    border: "border-l-4 border-l-red-400",
+    badge: "bg-red-500/20 text-red-200",
+    text: "text-red-400",
+  },
+  devlink: {
+    bg: "bg-cyan-500/10",
+    border: "border-l-4 border-l-cyan-400",
+    badge: "bg-cyan-500/20 text-cyan-200",
+    text: "text-cyan-400",
+  },
+  nexus: {
+    bg: "bg-purple-500/10",
+    border: "border-l-4 border-l-purple-400",
+    badge: "bg-purple-500/20 text-purple-200",
+    text: "text-purple-400",
+  },
+  staff: {
+    bg: "bg-indigo-500/10",
+    border: "border-l-4 border-l-indigo-400",
+    badge: "bg-indigo-500/20 text-indigo-200",
+    text: "text-indigo-400",
+  },
 };
 
 const ARM_LABELS: Record<string, string> = {
@@ -112,46 +150,50 @@ export function FeedItemCard({
   const armLabel = ARM_LABELS[item.arm || "labs"] || "LABS";
 
   return (
-    <Card className={cn(
-      "overflow-hidden border-border/40 shadow-2xl backdrop-blur-lg",
-      armColor.border,
-      armColor.bg,
-      "bg-background/70"
-    )}>
+    <Card
+      className={cn(
+        "overflow-hidden border-border/40 shadow-2xl backdrop-blur-lg",
+        armColor.border,
+        armColor.bg,
+        "bg-background/70",
+      )}
+    >
       <CardHeader className="pb-0 p-4 sm:p-5 lg:p-6 !flex !flex-row items-start justify-between gap-3 space-y-0">
         <div className="flex flex-1 items-start gap-3">
-            <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30">
-              <AvatarImage
-                src={item.authorAvatar || undefined}
-                alt={item.authorName}
-              />
-              <AvatarFallback className="bg-aethex-500/10 text-aethex-300">
-                {item.authorName?.[0]?.toUpperCase() || "U"}
-              </AvatarFallback>
-            </Avatar>
-            <div className="min-w-0 flex-1 space-y-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <CardTitle className="text-lg font-semibold text-foreground">
-                  {item.authorName}
-                </CardTitle>
-                <Badge className={cn("text-xs font-bold uppercase", armColor.badge)}>
-                  {armLabel}
-                </Badge>
-              </div>
+          <Avatar className="h-12 w-12 ring-2 ring-aethex-500/30">
+            <AvatarImage
+              src={item.authorAvatar || undefined}
+              alt={item.authorName}
+            />
+            <AvatarFallback className="bg-aethex-500/10 text-aethex-300">
+              {item.authorName?.[0]?.toUpperCase() || "U"}
+            </AvatarFallback>
+          </Avatar>
+          <div className="min-w-0 flex-1 space-y-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <CardTitle className="text-lg font-semibold text-foreground">
+                {item.authorName}
+              </CardTitle>
+              <Badge
+                className={cn("text-xs font-bold uppercase", armColor.badge)}
+              >
+                {armLabel}
+              </Badge>
             </div>
+          </div>
         </div>
         <Button
-            size="sm"
-            variant={isFollowing ? "outline" : "default"}
-            onClick={() => onToggleFollow(item.authorId)}
-            className={cn(
-              "rounded-full border-border/60",
-              isFollowing
-                ? "bg-background/80 text-foreground"
-                : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white",
-            )}
-          >
-            {isFollowing ? "Following" : "Follow"}
+          size="sm"
+          variant={isFollowing ? "outline" : "default"}
+          onClick={() => onToggleFollow(item.authorId)}
+          className={cn(
+            "rounded-full border-border/60",
+            isFollowing
+              ? "bg-background/80 text-foreground"
+              : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white",
+          )}
+        >
+          {isFollowing ? "Following" : "Follow"}
         </Button>
       </CardHeader>
       <CardContent className="space-y-4 sm:space-y-5 lg:space-y-6 p-4 sm:p-5 lg:p-6">

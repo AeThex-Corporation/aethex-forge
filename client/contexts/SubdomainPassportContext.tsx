@@ -13,19 +13,17 @@ interface SubdomainPassportContextType {
   error: string | null;
 }
 
-const SubdomainPassportContext = createContext<SubdomainPassportContextType>(
-  {
-    subdomainInfo: null,
-    isLoading: true,
-    error: null,
-  }
-);
+const SubdomainPassportContext = createContext<SubdomainPassportContextType>({
+  subdomainInfo: null,
+  isLoading: true,
+  error: null,
+});
 
 export const useSubdomainPassport = () => {
   const context = useContext(SubdomainPassportContext);
   if (!context) {
     throw new Error(
-      "useSubdomainPassport must be used within SubdomainPassportProvider"
+      "useSubdomainPassport must be used within SubdomainPassportProvider",
     );
   }
   return context;
@@ -37,7 +35,7 @@ export const SubdomainPassportProvider = ({
   children: React.ReactNode;
 }) => {
   const [subdomainInfo, setSubdomainInfo] = useState<SubdomainInfo | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
