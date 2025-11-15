@@ -27,7 +27,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Loader2, Trash2, ExternalLink, RefreshCw } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2, Trash2, ExternalLink, RefreshCw, Plus, X } from "lucide-react";
 import { aethexToast } from "@/lib/aethex-toast";
 
 // API Base URL for fetch requests
