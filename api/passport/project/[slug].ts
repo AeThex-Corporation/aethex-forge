@@ -15,33 +15,47 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const admin = getAdminClient();
 
-    // Look up project by slug
-    const { data: project, error: projectError } = await admin
-      .from("aethex_projects")
-      .select(
-        `
-        id,
-        title,
-        slug,
-        description,
-        user_id,
-        status,
-        image_url,
-        website,
-        technologies,
-        created_at,
-        updated_at
-      `,
-      )
-      .eq("slug", slug)
-      .single();
+    const projectFields = `
+      id,
+      title,
+      slug,
+      description,
+      user_id,
+      status,
+      image_url,
+      website,
+      technologies,
+      created_at,
+      updated_at
+    `;
 
-    if (projectError) {
-      if (projectError.code === "PGRST116") {
-        // No rows found
-        return res.status(404).json({ error: "Project not found" });
+    // Try to look up project by slug first (case-insensitive)
+    let project: any = null;
+
+    try {
+      const result = await admin
+        .from("aethex_projects")
+        .select(projectFields)
+        .ilike("slug", `%${slug}%`)
+        .limit(1)
+        .single();
+      project = result.data;
+    } catch (e) {
+      // Continue to ID lookup
+    }
+
+    // If not found by slug, try by exact ID match
+    if (!project) {
+      try {
+        const result = await admin
+          .from("aethex_projects")
+          .select(projectFields)
+          .eq("id", slug)
+          .single();
+        project = result.data;
+      } catch (e) {
+        // Continue to error handling
       }
-      throw projectError;
     }
 
     if (!project) {
@@ -49,11 +63,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Get project owner
-    const { data: owner } = await admin
-      .from("user_profiles")
-      .select("id, username, full_name, avatar_url")
-      .eq("id", project.user_id)
-      .single();
+    let owner: any = null;
+    try {
+      const result = await admin
+        .from("user_profiles")
+        .select("id, username, full_name, avatar_url")
+        .eq("id", project.user_id)
+        .single();
+      owner = result.data;
+    } catch (e) {
+      // Owner may not exist or may be deleted
+      console.warn("[Passport Project] Could not find project owner:", e);
+    }
 
     return res.status(200).json({
       type: "project",
