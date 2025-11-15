@@ -15,43 +15,57 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const admin = getAdminClient();
 
-    // Look up user by username
-    const { data: user, error: userError } = await admin
-      .from("user_profiles")
-      .select(
-        `
-        id,
-        username,
-        full_name,
-        email,
-        bio,
-        avatar_url,
-        banner_url,
-        location,
-        website_url,
-        github_url,
-        linkedin_url,
-        twitter_url,
-        role,
-        level,
-        total_xp,
-        user_type,
-        experience_level,
-        current_streak,
-        longest_streak,
-        created_at,
-        updated_at
-      `,
-      )
-      .eq("username", username)
-      .single();
+    const userFields = `
+      id,
+      username,
+      full_name,
+      email,
+      bio,
+      avatar_url,
+      banner_url,
+      location,
+      website_url,
+      github_url,
+      linkedin_url,
+      twitter_url,
+      role,
+      level,
+      total_xp,
+      user_type,
+      experience_level,
+      current_streak,
+      longest_streak,
+      created_at,
+      updated_at
+    `;
 
-    if (userError) {
-      if (userError.code === "PGRST116") {
-        // No rows found
-        return res.status(404).json({ error: "User not found" });
+    // Try to look up user by username first (case-insensitive)
+    let user: any = null;
+
+    try {
+      const result = await admin
+        .from("user_profiles")
+        .select(userFields)
+        .ilike("username", `%${username}%`)
+        .limit(1)
+        .single();
+      user = result.data;
+    } catch (e) {
+      // Continue to ID lookup
+    }
+
+    // If not found by username, try by exact ID match
+    if (!user) {
+      try {
+        const result = await admin
+          .from("user_profiles")
+          .select(userFields)
+          .eq("id", username)
+          .single();
+        user = result.data;
+      } catch (e) {
+        // Continue to error handling
       }
-      throw userError;
     }
 
     if (!user) {
@@ -94,8 +108,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { data: linkedProviders = [] } = await admin
       .from("user_auth_identities")
       .select("provider, linked_at, last_sign_in_at")
-      .eq("user_id", user.id)
-      .not("deleted_at", "is", null);
+      .eq("user_id", user.id);
 
     return res.status(200).json({
       type: "creator",
@@ -104,7 +117,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         achievements: achievements
           .map((a: any) => a.achievements)
           .filter(Boolean),
-        interests: userInterests.map((i: any) => i.interests).filter(Boolean),
+        interests: userInterests
+          .map((i: any) => i.interests)
+          .filter(Boolean),
         linkedProviders,
       },
       domain: req.headers.host || "",
