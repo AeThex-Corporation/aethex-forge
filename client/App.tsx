@@ -588,7 +588,6 @@ const App = () => (
                         />
 
                         {/* Client Hub routes */}
-                        <Route path="/hub/client" element={<ClientHub />} />
                         <Route
                           path="/hub/client/dashboard"
                           element={<ClientDashboard />}
