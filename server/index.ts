@@ -5,6 +5,8 @@ import cors from "cors";
 import { adminSupabase } from "./supabase";
 import { emailService } from "./email";
 import { randomUUID, createHash, createVerify, randomBytes } from "crypto";
+import blogIndexHandler from "../api/blog/index";
+import blogSlugHandler from "../api/blog/[slug]";
 
 // Discord Interactions Handler
 const handleDiscordInteractions = async (
