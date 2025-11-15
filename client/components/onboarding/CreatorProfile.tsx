@@ -72,10 +72,12 @@ export default function CreatorProfile({
   totalSteps,
 }: CreatorProfileProps) {
   const [inputValue, setInputValue] = useState("");
-  const creatorData = data?.creatorProfile || {
-    bio: "",
-    skills: [],
-    primaryArm: "",
+  const creatorData = {
+    bio: data?.creatorProfile?.bio || "",
+    skills: Array.isArray(data?.creatorProfile?.skills)
+      ? data.creatorProfile.skills
+      : [],
+    primaryArm: data?.creatorProfile?.primaryArm || "",
   };
 
   const canProceed = useMemo(() => {
