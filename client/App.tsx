@@ -82,6 +82,7 @@ import Terms from "./pages/Terms";
 import Admin from "./pages/Admin";
 import Feed from "./pages/Feed";
 import AdminFeed from "./pages/AdminFeed";
+import AdminBlogManager from "./pages/admin/AdminBlogManager";
 import ProjectsNew from "./pages/ProjectsNew";
 import Opportunities from "./pages/Opportunities";
 import Explore from "./pages/Explore";
