@@ -81,7 +81,7 @@ const OAuthConnections = memo(function OAuthConnections({
           <section
             key={provider}
             className={cn(
-              "flex flex-col gap-4 rounded-xl border p-4 md:flex-row md:items-center md:justify-between",
+              "flex flex-col gap-4 rounded-xl border p-4 md:flex-row md:items-center md:justify-between pointer-events-auto cursor-default",
               linkedMeta
                 ? "border-emerald-500/40 bg-emerald-500/5"
                 : "border-border/50 bg-background/20",
