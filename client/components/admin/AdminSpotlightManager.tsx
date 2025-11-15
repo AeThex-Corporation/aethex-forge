@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { generateUUID } from "@/lib/utils";
 import type { AethexUserProfile } from "@/lib/aethex-database-adapter";
 import { ArrowDown, ArrowUp, Plus, Save, Trash2, Users } from "lucide-react";
 
