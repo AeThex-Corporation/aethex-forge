@@ -65,6 +65,7 @@ const normalizeProfile = (
     (row as any)?.longest_streak ??
     Math.max((row as any)?.current_streak ?? 0, 0),
   last_streak_at: (row as any)?.last_streak_at ?? null,
+  wallet_address: (row as any)?.wallet_address ?? null,
 });
 
 const ensureDailyStreakForProfile = async (
