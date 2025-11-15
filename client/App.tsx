@@ -103,6 +103,7 @@ import FoundationDashboard from "./pages/dashboards/FoundationDashboard";
 import LabsDashboard from "./pages/dashboards/LabsDashboard";
 import GameForgeDashboard from "./pages/dashboards/GameForgeDashboard";
 import DevLinkDashboard from "./pages/dashboards/DevLinkDashboard";
+import StaffDashboard from "./pages/dashboards/StaffDashboard";
 import Roadmap from "./pages/Roadmap";
 import Trust from "./pages/Trust";
 import PressKit from "./pages/PressKit";
