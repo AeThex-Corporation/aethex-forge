@@ -41,7 +41,8 @@ const Blog = () => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/blog?limit=50`);
+        // Use relative path for API calls to work in both dev and prod
+        const res = await fetch(`/api/blog?limit=50`);
         let data: any = [];
         try {
           if (res.ok) {
