@@ -1,76 +1,95 @@
-import { createClient } from "@supabase/supabase-js";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { getAdminClient } from "../_supabase";
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!,
-);
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const admin = getAdminClient();
 
-export async function getCourses(req: Request) {
+  // Only authenticated requests for enrollment
+  const authHeader = req.headers.authorization;
+  let userId: string | null = null;
+
+  if (authHeader) {
+    const token = authHeader.replace("Bearer ", "");
+    const { data: { user }, error: authError } = await admin.auth.getUser(token);
+    if (!authError && user) {
+      userId = user.id;
+    }
+  }
+
   try {
-    const url = new URL(req.url);
-    const category = url.searchParams.get("category");
-    const difficulty = url.searchParams.get("difficulty");
+    if (req.method === "GET") {
+      // List all published courses
+      const { data: courses, error: coursesError } = await admin
+        .from("foundation_courses")
+        .select(`
+          *,
+          instructor:user_profiles(id, full_name, avatar_url)
+        `)
+        .eq("is_published", true)
+        .order("order_index", { ascending: true });
 
-    let query = supabase.from("foundation_courses").select(
-      `
-      id,
-      slug,
-      title,
-      description,
-      category,
-      difficulty,
-      instructor_id,
-      cover_image_url,
-      estimated_hours,
-      is_published,
-      user_profiles!foundation_courses_instructor_id_fkey (
-        id,
-        full_name,
-        avatar_url
-      )
-    `,
-    );
+      if (coursesError) {
+        return res.status(500).json({ error: coursesError.message });
+      }
 
-    // Only show published courses
-    query = query.eq("is_published", true);
+      // If user is authenticated, get their enrollment status
+      let enrollments: any = {};
+      if (userId) {
+        const { data: userEnrollments } = await admin
+          .from("foundation_enrollments")
+          .select("course_id, progress_percent, status, completed_at")
+          .eq("user_id", userId);
 
-    if (category) {
-      query = query.eq("category", category);
+        if (userEnrollments) {
+          enrollments = Object.fromEntries(
+            userEnrollments.map((e: any) => [e.course_id, e])
+          );
+        }
+      }
+
+      const coursesWithStatus = (courses || []).map((course: any) => ({
+        ...course,
+        userEnrollment: enrollments[course.id] || null,
+      }));
+
+      return res.status(200).json(coursesWithStatus);
     }
 
-    if (difficulty) {
-      query = query.eq("difficulty", difficulty);
+    if (req.method === "POST") {
+      // Enroll in a course
+      if (!userId) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const { course_id } = req.body;
+      if (!course_id) {
+        return res.status(400).json({ error: "course_id required" });
+      }
+
+      const { data: enrollment, error: enrollError } = await admin
+        .from("foundation_enrollments")
+        .upsert(
+          {
+            user_id: userId,
+            course_id,
+            progress_percent: 0,
+            status: "in_progress",
+            enrolled_at: new Date().toISOString(),
+          },
+          { onConflict: "user_id,course_id" }
+        )
+        .select()
+        .single();
+
+      if (enrollError) {
+        return res.status(500).json({ error: enrollError.message });
+      }
+
+      return res.status(200).json(enrollment);
     }
 
-    const { data: courses, error } = await query.order("created_at", {
-      ascending: false,
-    });
-
-    if (error) throw error;
-
-    const formattedCourses = (courses || []).map((c: any) => ({
-      id: c.id,
-      slug: c.slug,
-      title: c.title,
-      description: c.description,
-      category: c.category,
-      difficulty: c.difficulty,
-      instructor_id: c.instructor_id,
-      instructor_name: c.user_profiles?.full_name,
-      instructor_avatar: c.user_profiles?.avatar_url,
-      cover_image_url: c.cover_image_url,
-      estimated_hours: c.estimated_hours,
-    }));
-
-    return new Response(JSON.stringify(formattedCourses), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   } catch (error: any) {
-    console.error("Error fetching courses:", error);
-    return new Response(JSON.stringify({ error: "Failed to fetch courses" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return res.status(500).json({ error: error?.message || "Server error" });
   }
 }
