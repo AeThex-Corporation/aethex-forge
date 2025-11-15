@@ -80,20 +80,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const achievementResults = await Promise.all(
       CORE_ACHIEVEMENTS.map(async (achievement) => {
         const uuidId = generateDeterministicUUID(achievement.id);
-        const { error } = await admin.from("achievements").upsert(
-          {
-            id: uuidId,
-            name: achievement.name,
-            description: achievement.description,
-            icon: achievement.icon,
-            badge_color: achievement.badgeColor,
-            xp_reward: achievement.xpReward,
-            created_at: nowIso,
-          },
-          { onConflict: "id" },
-        );
 
-        if (error) {
+        // First check if achievement already exists by id or name
+        const { data: existing } = await admin
+          .from("achievements")
+          .select("id")
+          .or(`id.eq.${uuidId},name.eq.${achievement.name}`)
+          .maybeSingle();
+
+        // If it exists, skip insertion (achievement is already there)
+        if (existing) {
+          return achievement.id;
+        }
+
+        const { error } = await admin.from("achievements").insert({
+          id: uuidId,
+          name: achievement.name,
+          description: achievement.description,
+          icon: achievement.icon,
+          badge_color: achievement.badgeColor,
+          xp_reward: achievement.xpReward,
+          created_at: nowIso,
+        });
+
+        // Ignore duplicate key errors (name already exists)
+        if (error && error.code !== "23505") {
           throw error;
         }
         return achievement.id;
