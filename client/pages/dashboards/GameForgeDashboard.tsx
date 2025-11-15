@@ -1,92 +1,311 @@
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Rocket, ArrowRight, Gamepad2, Users, Zap } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LoadingScreen from "@/components/LoadingScreen";
+import { Gamepad2, Users, Clock, CheckCircle, AlertCircle, Rocket, Send, Home } from "lucide-react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 export default function GameForgeDashboard() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [sprint, setSprint] = useState<any>(null);
+  const [team, setTeam] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      loadDashboardData();
+      const interval = setInterval(() => setActiveTab(activeTab), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [user, authLoading]);
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error("No auth token");
+
+      const sprintRes = await fetch(`${API_BASE}/api/gameforge/sprint`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (sprintRes.ok) setSprint(await sprintRes.json());
+
+      const teamRes = await fetch(`${API_BASE}/api/gameforge/team`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (teamRes.ok) setTeam(await teamRes.json());
+
+      const tasksRes = await fetch(`${API_BASE}/api/gameforge/tasks`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (tasksRes.ok) setTasks(await tasksRes.json());
+    } catch (error) {
+      console.error("Failed to load GAMEFORGE data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const timeRemaining = useMemo(() => {
+    if (!sprint?.deadline) return null;
+    const now = new Date();
+    const deadline = new Date(sprint.deadline);
+    const diff = deadline.getTime() - now.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return { days, hours, minutes, seconds };
+  }, [sprint]);
+
+  const tasksByStatus = {
+    todo: tasks.filter(t => t.status === "todo"),
+    inprogress: tasks.filter(t => t.status === "in_progress"),
+    done: tasks.filter(t => t.status === "done"),
+  };
+
+  if (authLoading || loading) {
+    return <LoadingScreen message="Loading GAMEFORGE..." />;
+  }
+
+  if (!user) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-b from-black via-green-950/30 to-black flex items-center justify-center px-4">
+          <div className="max-w-md text-center space-y-6">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent">
+              GAMEFORGE Studio
+            </h1>
+            <p className="text-gray-400">Build, collaborate, ship games</p>
+            <Button
+              onClick={() => navigate("/login")}
+              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-lg py-6"
+            >
+              Sign In
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-green-950/20 to-black py-12">
-        <div className="container mx-auto px-4 max-w-4xl">
-          {/* Header */}
-          <div className="space-y-8">
-            <div className="space-y-4 text-center">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="p-3 rounded-lg bg-green-500/20 border border-green-500/30">
-                  <Rocket className="h-8 w-8 text-green-400" />
-                </div>
+      <div className="min-h-screen bg-gradient-to-b from-black via-green-950/20 to-black py-8">
+        <div className="container mx-auto px-4 max-w-7xl space-y-8">
+          {sprint ? (
+            <>
+              {/* Active Sprint Header */}
+              <div className="space-y-4 animate-slide-down">
+                <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent">
+                  Mission Control
+                </h1>
+                <p className="text-gray-400 text-lg">Project: {sprint.title}</p>
+
+                {/* Countdown Timer */}
+                {timeRemaining && (
+                  <Card className="bg-gradient-to-br from-green-950/40 to-emerald-950/40 border-green-500/30">
+                    <CardContent className="p-6">
+                      <div className="text-center space-y-4">
+                        <p className="text-gray-400 text-sm">Time Remaining in Sprint</p>
+                        <div className="grid grid-cols-4 gap-4">
+                          <div className="text-center">
+                            <p className="text-3xl font-bold text-green-400">{timeRemaining.days}</p>
+                            <p className="text-xs text-gray-400">Days</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-3xl font-bold text-green-400">{String(timeRemaining.hours).padStart(2, '0')}</p>
+                            <p className="text-xs text-gray-400">Hours</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-3xl font-bold text-green-400">{String(timeRemaining.minutes).padStart(2, '0')}</p>
+                            <p className="text-xs text-gray-400">Minutes</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-3xl font-bold text-green-400">{String(timeRemaining.seconds).padStart(2, '0')}</p>
+                            <p className="text-xs text-gray-400">Seconds</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent">
-                GAMEFORGE Project Studio
-              </h1>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                This is the future home for your active game sprints, team Kanban boards, and build submissions per our GameForge Plan.
-              </p>
-            </div>
 
-            {/* Coming Soon Card */}
-            <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/30">
-              <CardContent className="p-12 space-y-8">
-                {/* Status */}
-                <div className="text-center space-y-4">
-                  <div className="inline-block px-4 py-2 rounded-full bg-green-500/20 border border-green-500/30">
-                    <p className="text-sm font-semibold text-green-300">Coming Soon</p>
-                  </div>
-                  <p className="text-gray-300 text-lg">
-                    The full bespoke GAMEFORGE dashboard with project management, team boards, and build tracking is currently in development per our Phase 3 Roadmap.
-                  </p>
-                </div>
+              {/* Tabs */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-4 bg-green-950/30 border border-green-500/20 p-1">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="scope">Scope</TabsTrigger>
+                  <TabsTrigger value="team">Team</TabsTrigger>
+                  <TabsTrigger value="tasks">Tasks</TabsTrigger>
+                </TabsList>
 
-                {/* Guiding CTA */}
-                <div className="bg-black/40 rounded-lg p-8 border border-green-500/20 space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                      <Gamepad2 className="h-5 w-5 text-green-400" />
-                      Join the Next Sprint!
-                    </h3>
-                    <p className="text-gray-300">
-                      The GAMEFORGE is already active! Go to the FOUNDATION's community hub to apply for a mentor and join the next 1-month game jam.
-                    </p>
+                {/* Overview Tab */}
+                <TabsContent value="overview" className="space-y-6 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <p className="text-sm text-gray-400">Sprint Phase</p>
+                        <p className="text-3xl font-bold text-white">{sprint.phase}</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 border-emerald-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <p className="text-sm text-gray-400">Team Size</p>
+                        <p className="text-3xl font-bold text-white">{team.length}</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-br from-teal-950/40 to-teal-900/20 border-teal-500/20">
+                      <CardContent className="p-6 space-y-2">
+                        <p className="text-sm text-gray-400">Tasks Completed</p>
+                        <p className="text-3xl font-bold text-white">{tasksByStatus.done.length}/{tasks.length}</p>
+                      </CardContent>
+                    </Card>
                   </div>
-                  <Button
-                    onClick={() => navigate("/dashboard/foundation")}
-                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-6 text-base group"
-                  >
-                    Go to FOUNDATION
-                    <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition" />
-                  </Button>
-                </div>
+
+                  {/* Submit Build CTA */}
+                  <Card className="bg-gradient-to-br from-green-600/20 to-emerald-600/20 border-green-500/40">
+                    <CardContent className="p-8 text-center space-y-4">
+                      <h3 className="text-2xl font-bold text-white">Ready to Ship?</h3>
+                      <p className="text-gray-300">Submit your final build for evaluation</p>
+                      <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-lg px-8">
+                        <Send className="h-4 w-4 mr-2" />
+                        Submit Final Build to aethex.fun
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Scope Tab */}
+                <TabsContent value="scope" className="space-y-4 animate-fade-in">
+                  <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                    <CardHeader>
+                      <CardTitle>The Scope Anchor (KND-001)</CardTitle>
+                      <CardDescription>Your north star - prevent feature creep</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="p-6 bg-black/30 rounded-lg border border-green-500/20">
+                        <p className="text-white leading-relaxed">{sprint.gdd || "Game Design Document not available"}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Team Tab */}
+                <TabsContent value="team" className="space-y-4 animate-fade-in">
+                  <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                    <CardHeader>
+                      <CardTitle>My Sprint Team</CardTitle>
+                      <CardDescription>Forge Master + Mentees</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {team.map((member: any) => (
+                          <div key={member.id} className="p-4 bg-black/30 rounded-lg border border-green-500/10 hover:border-green-500/30 transition cursor-pointer" onClick={() => navigate(`/passport/${member.username}`)}>
+                            <div className="flex items-start gap-3">
+                              <img src={member.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop"} alt={member.full_name} className="w-12 h-12 rounded-full" />
+                              <div className="flex-1">
+                                <p className="font-semibold text-white">{member.full_name}</p>
+                                <Badge className="text-xs mt-1">{member.role === "mentor" ? "🏆 Forge Master" : "Mentee"}</Badge>
+                                <p className="text-xs text-gray-400 mt-1">{member.role_title}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Tasks Tab - Kanban */}
+                <TabsContent value="tasks" className="space-y-4 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* To Do */}
+                    <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-lg">To Do ({tasksByStatus.todo.length})</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {tasksByStatus.todo.length === 0 ? (
+                          <p className="text-center text-gray-400 text-sm py-4">No tasks</p>
+                        ) : (
+                          tasksByStatus.todo.map((task: any) => (
+                            <div key={task.id} className="p-3 bg-black/30 rounded-lg border border-red-500/20 hover:border-red-500/40 transition">
+                              <p className="font-semibold text-white text-sm">{task.title}</p>
+                              <p className="text-xs text-gray-400 mt-1">{task.assigned_to?.full_name}</p>
+                            </div>
+                          ))
+                        )}
+                      </CardContent>
+                    </Card>
+
+                    {/* In Progress */}
+                    <Card className="bg-gradient-to-br from-yellow-950/40 to-yellow-900/20 border-yellow-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-lg">In Progress ({tasksByStatus.inprogress.length})</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {tasksByStatus.inprogress.length === 0 ? (
+                          <p className="text-center text-gray-400 text-sm py-4">No tasks</p>
+                        ) : (
+                          tasksByStatus.inprogress.map((task: any) => (
+                            <div key={task.id} className="p-3 bg-black/30 rounded-lg border border-yellow-500/20 hover:border-yellow-500/40 transition">
+                              <p className="font-semibold text-white text-sm">{task.title}</p>
+                              <p className="text-xs text-gray-400 mt-1">{task.assigned_to?.full_name}</p>
+                            </div>
+                          ))
+                        )}
+                      </CardContent>
+                    </Card>
+
+                    {/* Done */}
+                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Done ({tasksByStatus.done.length})</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {tasksByStatus.done.length === 0 ? (
+                          <p className="text-center text-gray-400 text-sm py-4">No tasks</p>
+                        ) : (
+                          tasksByStatus.done.map((task: any) => (
+                            <div key={task.id} className="p-3 bg-black/30 rounded-lg border border-green-500/20 hover:border-green-500/40 transition">
+                              <div className="flex items-center gap-2">
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                                <div className="flex-1">
+                                  <p className="font-semibold text-white text-sm line-through">{task.title}</p>
+                                  <p className="text-xs text-gray-400 mt-1">{task.assigned_to?.full_name}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </>
+          ) : (
+            <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
+              <CardContent className="p-12 text-center space-y-4">
+                <Gamepad2 className="h-12 w-12 mx-auto text-green-500 opacity-50" />
+                <p className="text-gray-400">No active sprint. Join one to get started!</p>
+                <Button onClick={() => navigate("/gameforge")}>Browse GAMEFORGE</Button>
               </CardContent>
             </Card>
-
-            {/* Features Coming */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="bg-green-950/30 border-green-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">🎮</p>
-                  <p className="font-semibold text-white">Active Sprints</p>
-                  <p className="text-sm text-gray-400">1-month game development cycles</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-green-950/30 border-green-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">👥</p>
-                  <p className="font-semibold text-white">Team Collaboration</p>
-                  <p className="text-sm text-gray-400">Kanban boards & sprint planning</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-green-950/30 border-green-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">🚀</p>
-                  <p className="font-semibold text-white">Build Submissions</p>
-                  <p className="text-sm text-gray-400">Ship your final game builds</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </Layout>
