@@ -229,7 +229,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       }
 
-      if (!godModeAwarded && existingIds.has(achievementIdMap.get("god-mode")!)) {
+      if (
+        !godModeAwarded &&
+        existingIds.has(achievementIdMap.get("god-mode")!)
+      ) {
         godModeAwarded = true;
       }
     }
