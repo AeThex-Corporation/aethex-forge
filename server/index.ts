@@ -1774,7 +1774,7 @@ export function createServer() {
 
               if (!token) {
                 result.className = 'error';
-                result.innerHTML = '<h3>❌ Error</h3><p>Please enter the admin token</p>';
+                result.innerHTML = '<h3>�� Error</h3><p>Please enter the admin token</p>';
                 result.style.display = 'block';
                 return;
               }
@@ -2503,6 +2503,120 @@ export function createServer() {
       } catch (e: any) {
         console.error("[API] /api/profile/ensure exception:", e);
         res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Wallet verification endpoint for Phase 2 Bridge UI
+    app.post("/api/profile/wallet-verify", async (req, res) => {
+      const { user_id, wallet_address } = req.body || {};
+
+      if (!user_id) {
+        return res.status(400).json({ error: "user_id is required" });
+      }
+
+      if (!wallet_address) {
+        return res.status(400).json({ error: "wallet_address is required" });
+      }
+
+      // Validate Ethereum address format (0x followed by 40 hex chars)
+      const ethAddressRegex = /^0x[a-fA-F0-9]{40}$/;
+      const normalizedAddress = String(wallet_address).toLowerCase();
+
+      if (!ethAddressRegex.test(normalizedAddress)) {
+        return res.status(400).json({
+          error: "Invalid Ethereum address format",
+        });
+      }
+
+      try {
+        // Check if wallet is already connected to a different user
+        const { data: existingUser, error: checkError } = await adminSupabase
+          .from("user_profiles")
+          .select("id, username")
+          .eq("wallet_address", normalizedAddress)
+          .neq("id", user_id)
+          .maybeSingle();
+
+        if (checkError && checkError.code !== "PGRST116") {
+          // PGRST116 = no rows returned (expected)
+          console.error("[Wallet Verify] Check error:", checkError);
+          return res.status(500).json({
+            error: "Failed to verify wallet availability",
+          });
+        }
+
+        if (existingUser) {
+          return res.status(409).json({
+            error: "This wallet is already connected to another account",
+          });
+        }
+
+        // Update user profile with wallet address
+        const { data, error } = await adminSupabase
+          .from("user_profiles")
+          .update({ wallet_address: normalizedAddress })
+          .eq("id", user_id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error("[Wallet Verify] Update error:", error);
+          return res.status(500).json({
+            error: error.message || "Failed to connect wallet",
+          });
+        }
+
+        console.log("[Wallet Verify] Wallet connected for user:", user_id);
+
+        return res.json({
+          ok: true,
+          message: "Wallet connected successfully",
+          wallet_address: normalizedAddress,
+          user: data,
+        });
+      } catch (e: any) {
+        console.error("[Wallet Verify] Exception:", e?.message);
+        return res.status(500).json({
+          error: e?.message || "Failed to connect wallet",
+        });
+      }
+    });
+
+    // Wallet disconnection endpoint
+    app.delete("/api/profile/wallet-verify", async (req, res) => {
+      const { user_id } = req.body || {};
+
+      if (!user_id) {
+        return res.status(400).json({ error: "user_id is required" });
+      }
+
+      try {
+        const { data, error } = await adminSupabase
+          .from("user_profiles")
+          .update({ wallet_address: null })
+          .eq("id", user_id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error("[Wallet Verify] Disconnect error:", error);
+          return res.status(500).json({
+            error: error.message || "Failed to disconnect wallet",
+          });
+        }
+
+        console.log("[Wallet Verify] Wallet disconnected for user:", user_id);
+
+        return res.json({
+          ok: true,
+          message: "Wallet disconnected successfully",
+          user: data,
+        });
+      } catch (e: any) {
+        console.error("[Wallet Verify] Disconnect exception:", e?.message);
+        return res.status(500).json({
+          error: e?.message || "Failed to disconnect wallet",
+        });
       }
     });
 
