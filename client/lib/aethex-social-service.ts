@@ -59,13 +59,23 @@ export const aethexSocialService = {
 
   async getFollowers(userId: string): Promise<string[]> {
     try {
-      const { data, error } = await supabase
-        .from("user_follows")
-        .select("follower_id")
-        .eq("following_id", userId);
-      if (error) return [];
-      return (data as any[]).map((r: any) => r.follower_id);
-    } catch {
+      const resp = await fetch(
+        `${API_BASE}/api/user/followers?userId=${encodeURIComponent(userId)}`
+      );
+
+      if (!resp.ok) {
+        console.error(
+          "Failed to load followers list: HTTP",
+          resp.status,
+          await resp.text(),
+        );
+        return [];
+      }
+
+      const result = await resp.json();
+      return result.data || [];
+    } catch (error) {
+      console.error("Unexpected error loading followers list:", error);
       return [];
     }
   },
