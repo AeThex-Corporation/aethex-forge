@@ -355,6 +355,210 @@ const Profile = () => {
                 </CardContent>
               </Card>
 
+              {/* SKILLS & LANGUAGES */}
+              {(profile.skills_detailed && profile.skills_detailed.length > 0) ||
+              (profile.languages && profile.languages.length > 0) ? (
+                <Card className="border-border/40 bg-background/60 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-white">
+                      <Code2 className="h-5 w-5 text-blue-300" />
+                      Skills & Languages
+                    </CardTitle>
+                    <CardDescription>
+                      Technical expertise and languages you speak.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {profile.skills_detailed && profile.skills_detailed.length > 0 ? (
+                      <div>
+                        <p className="text-sm font-medium text-foreground/80 mb-2">
+                          Technical Skills
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {(profile.skills_detailed as any[]).map(
+                            (skill: any, idx: number) => (
+                              <Badge
+                                key={idx}
+                                variant="outline"
+                                className="border-blue-400/60 text-blue-200 capitalize"
+                              >
+                                {skill.name}{" "}
+                                <span className="text-xs ml-1 opacity-70">
+                                  • {skill.level}
+                                </span>
+                              </Badge>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    ) : null}
+                    {profile.languages && profile.languages.length > 0 ? (
+                      <div>
+                        <p className="text-sm font-medium text-foreground/80 mb-2">
+                          Languages
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {(profile.languages as string[]).map(
+                            (lang: string, idx: number) => (
+                              <Badge
+                                key={idx}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {lang}
+                              </Badge>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    ) : null}
+                  </CardContent>
+                </Card>
+              ) : null}
+
+              {/* WORK EXPERIENCE */}
+              {profile.work_experience && profile.work_experience.length > 0 ? (
+                <Card className="border-border/40 bg-background/60 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-white">
+                      <Briefcase className="h-5 w-5 text-green-300" />
+                      Work Experience
+                    </CardTitle>
+                    <CardDescription>
+                      Professional background and experience.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {(profile.work_experience as any[]).map(
+                      (exp: any, idx: number) => (
+                        <div
+                          key={idx}
+                          className="rounded-lg border border-border/40 bg-background/50 p-4"
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <p className="font-medium text-foreground">
+                              {exp.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {exp.duration}
+                            </p>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {exp.company}
+                          </p>
+                          {exp.description && (
+                            <p className="text-sm text-muted-foreground">
+                              {exp.description}
+                            </p>
+                          )}
+                        </div>
+                      ),
+                    )}
+                  </CardContent>
+                </Card>
+              ) : null}
+
+              {/* PORTFOLIO ITEMS */}
+              {profile.portfolio_items && profile.portfolio_items.length > 0 ? (
+                <Card className="border-border/40 bg-background/60 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-white">
+                      <Globe className="h-5 w-5 text-purple-300" />
+                      Portfolio
+                    </CardTitle>
+                    <CardDescription>
+                      Featured projects and work samples.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {(profile.portfolio_items as any[]).map(
+                      (item: any, idx: number) => (
+                        <a
+                          key={idx}
+                          href={item.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block rounded-lg border border-border/40 bg-background/50 p-4 transition hover:border-aethex-400/60 hover:bg-background/70"
+                        >
+                          <p className="font-medium text-foreground hover:text-aethex-200">
+                            {item.title}
+                          </p>
+                          {item.description && (
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {item.description}
+                            </p>
+                          )}
+                          <p className="text-xs text-muted-foreground mt-2 break-all">
+                            {item.url}
+                          </p>
+                        </a>
+                      ),
+                    )}
+                  </CardContent>
+                </Card>
+              ) : null}
+
+              {/* ARM AFFILIATIONS */}
+              {profile.arm_affiliations && profile.arm_affiliations.length > 0 ? (
+                <Card className="border-border/40 bg-background/60 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-white">
+                      <Award className="h-5 w-5 text-amber-300" />
+                      Arm Affiliations
+                    </CardTitle>
+                    <CardDescription>
+                      Part of these AeThex arms and initiatives.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {(profile.arm_affiliations as string[]).map(
+                        (arm: string) => {
+                          const armConfig: Record<
+                            string,
+                            { label: string; color: string }
+                          > = {
+                            foundation: {
+                              label: "Foundation",
+                              color: "bg-red-500/20 text-red-200 border-red-500/40",
+                            },
+                            gameforge: {
+                              label: "GameForge",
+                              color: "bg-green-500/20 text-green-200 border-green-500/40",
+                            },
+                            labs: {
+                              label: "Labs",
+                              color: "bg-yellow-500/20 text-yellow-200 border-yellow-500/40",
+                            },
+                            corp: {
+                              label: "Corp",
+                              color: "bg-blue-500/20 text-blue-200 border-blue-500/40",
+                            },
+                            devlink: {
+                              label: "Dev-Link",
+                              color: "bg-cyan-500/20 text-cyan-200 border-cyan-500/40",
+                            },
+                          };
+                          const config = armConfig[arm] || {
+                            label: arm,
+                            color: "bg-slate-500/20 text-slate-200 border-slate-500/40",
+                          };
+                          return (
+                            <Badge
+                              key={arm}
+                              className={`border ${config.color}`}
+                              variant="outline"
+                            >
+                              {config.label}
+                            </Badge>
+                          );
+                        },
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : null}
+
               <Card className="border-border/40 bg-background/60 backdrop-blur">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
