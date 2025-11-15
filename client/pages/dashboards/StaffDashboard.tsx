@@ -1,100 +1,340 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Shield, ArrowRight, FileText, MessageSquare, Zap } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LoadingScreen from "@/components/LoadingScreen";
+import { Shield, Target, DollarSign, FileText, Users, Link as LinkIcon, Calendar, Book, AlertCircle, Search, ExternalLink } from "lucide-react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 export default function StaffDashboard() {
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [staffMember, setStaffMember] = useState<any>(null);
+  const [okrs, setOkrs] = useState<any[]>([]);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [directory, setDirectory] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      loadDashboardData();
+    }
+  }, [user, authLoading]);
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error("No auth token");
+
+      const memberRes = await fetch(`${API_BASE}/api/staff/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (memberRes.ok) setStaffMember(await memberRes.json());
+
+      const okrRes = await fetch(`${API_BASE}/api/staff/okrs`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (okrRes.ok) setOkrs(await okrRes.json());
+
+      const invRes = await fetch(`${API_BASE}/api/staff/invoices`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (invRes.ok) setInvoices(await invRes.json());
+
+      const dirRes = await fetch(`${API_BASE}/api/staff/directory`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (dirRes.ok) setDirectory(await dirRes.json());
+    } catch (error) {
+      console.error("Failed to load STAFF data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isEmployee = staffMember?.employment_type === "employee";
+  const isContractor = staffMember?.employment_type === "contractor";
+  const filteredDirectory = directory.filter(member =>
+    member.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    member.role?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (authLoading || loading) {
+    return <LoadingScreen message="Loading STAFF Portal..." />;
+  }
+
+  if (!user) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/30 to-black flex items-center justify-center px-4">
+          <div className="max-w-md text-center space-y-6">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+              STAFF Portal
+            </h1>
+            <p className="text-gray-400">Employee & Contractor Hub</p>
+            <Button
+              onClick={() => navigate("/login")}
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg py-6"
+            >
+              Sign In
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black py-12">
-        <div className="container mx-auto px-4 max-w-4xl">
+      <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black py-8">
+        <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
-          <div className="space-y-8">
-            <div className="space-y-4 text-center">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="p-3 rounded-lg bg-purple-500/20 border border-purple-500/30">
-                  <Shield className="h-8 w-8 text-purple-400" />
-                </div>
-              </div>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
-                STAFF Employee Portal
-              </h1>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                This is the future A-Corp internal dashboard for OKRs, benefits, and HR tools.
-              </p>
-            </div>
-
-            {/* Coming Soon Card */}
-            <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/30">
-              <CardContent className="p-12 space-y-8">
-                {/* Status */}
-                <div className="text-center space-y-4">
-                  <div className="inline-block px-4 py-2 rounded-full bg-purple-500/20 border border-purple-500/30">
-                    <p className="text-sm font-semibold text-purple-300">Coming Soon</p>
-                  </div>
-                  <p className="text-gray-300 text-lg">
-                    The full bespoke STAFF dashboard with OKR tracking, benefits management, and HR tools is currently in development per our Phase 3 Roadmap.
-                  </p>
-                </div>
-
-                {/* Guiding CTA */}
-                <div className="bg-black/40 rounded-lg p-8 border border-purple-500/20 space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                      <FileText className="h-5 w-5 text-purple-400" />
-                      Access Internal Resources
-                    </h3>
-                    <p className="text-gray-300">
-                      All A-Corp SOPs, Handbooks, and Benefit Guides are located in our Internal Doc Hub. All team chat happens in our private Slack.
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Button
-                      onClick={() => window.open("https://docs.aethex.dev", "_blank")}
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-6 text-base group"
-                    >
-                      <FileText className="h-4 w-4 mr-2" />
-                      Open Internal Doc Hub
-                      <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition" />
-                    </Button>
-                    <Button
-                      onClick={() => window.open("https://slack.com", "_blank")}
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-6 text-base group"
-                    >
-                      <MessageSquare className="h-4 w-4 mr-2" />
-                      Open Slack
-                      <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Features Coming */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="bg-purple-950/30 border-purple-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">🎯</p>
-                  <p className="font-semibold text-white">OKRs & Goals</p>
-                  <p className="text-sm text-gray-400">Track quarterly objectives</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-purple-950/30 border-purple-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">💰</p>
-                  <p className="font-semibold text-white">Benefits & Payroll</p>
-                  <p className="text-sm text-gray-400">Manage compensation & benefits</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-purple-950/30 border-purple-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">📚</p>
-                  <p className="font-semibold text-white">Company Resources</p>
-                  <p className="text-sm text-gray-400">SOPs, handbooks & guides</p>
-                </CardContent>
-              </Card>
-            </div>
+          <div className="space-y-4 animate-slide-down">
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+              STAFF Portal
+            </h1>
+            <p className="text-gray-400 text-lg">Employee & Contractor Management | Professional Utility Purple</p>
           </div>
+
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-5 bg-purple-950/30 border border-purple-500/20 p-1">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              {isEmployee && <TabsTrigger value="okrs">OKRs</TabsTrigger>}
+              {isEmployee && <TabsTrigger value="benefits">Pay & Benefits</TabsTrigger>}
+              {isContractor && <TabsTrigger value="invoices">Invoices</TabsTrigger>}
+              <TabsTrigger value="directory">Directory</TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6 animate-fade-in">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                  <CardContent className="p-6 space-y-2">
+                    <p className="text-sm text-gray-400">Employment Type</p>
+                    <p className="text-2xl font-bold text-white capitalize">{staffMember?.employment_type || "—"}</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gradient-to-br from-pink-950/40 to-pink-900/20 border-pink-500/20">
+                  <CardContent className="p-6 space-y-2">
+                    <p className="text-sm text-gray-400">Department</p>
+                    <p className="text-2xl font-bold text-white">{staffMember?.department || "—"}</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
+                  <CardContent className="p-6 space-y-2">
+                    <p className="text-sm text-gray-400">Start Date</p>
+                    <p className="text-2xl font-bold text-white">{staffMember?.start_date ? new Date(staffMember.start_date).toLocaleDateString() : "—"}</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Quick Links */}
+              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <Button variant="outline" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start">
+                    <FileText className="h-4 w-4 mr-2" />
+                    File an Expense (SOP-302)
+                  </Button>
+                  <Button variant="outline" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Request PTO (KND-300)
+                  </Button>
+                  <Button variant="outline" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start">
+                    <Book className="h-4 w-4 mr-2" />
+                    Internal Doc Hub
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* OKRs Tab - Employee Only */}
+            {isEmployee && (
+              <TabsContent value="okrs" className="space-y-4 animate-fade-in">
+                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                  <CardHeader>
+                    <CardTitle>My OKRs</CardTitle>
+                    <CardDescription>Quarterly Objectives & Key Results</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {okrs.length === 0 ? (
+                      <div className="text-center py-12">
+                        <Target className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                        <p className="text-gray-400">No OKRs set for this quarter</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {okrs.map((okr: any) => (
+                          <div key={okr.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 space-y-3">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-white">{okr.objective}</h4>
+                                <p className="text-sm text-gray-400 mt-1">{okr.description}</p>
+                              </div>
+                              <Badge className={okr.status === "achieved" ? "bg-green-600/50 text-green-100" : "bg-blue-600/50 text-blue-100"}>
+                                {okr.status}
+                              </Badge>
+                            </div>
+                            <div className="space-y-2">
+                              {okr.key_results?.map((kr: any) => (
+                                <div key={kr.id} className="flex items-start gap-3 text-sm">
+                                  <span className="text-purple-400 mt-1">•</span>
+                                  <div className="flex-1">
+                                    <p className="text-white">{kr.title}</p>
+                                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                                      <span>Progress</span>
+                                      <span>{kr.progress}%</span>
+                                    </div>
+                                    <div className="w-full bg-black/50 rounded-full h-2 mt-1">
+                                      <div
+                                        className="bg-purple-500 h-2 rounded-full"
+                                        style={{ width: `${kr.progress}%` }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            )}
+
+            {/* Pay & Benefits Tab - Employee Only */}
+            {isEmployee && (
+              <TabsContent value="benefits" className="space-y-4 animate-fade-in">
+                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                  <CardHeader>
+                    <CardTitle>Pay & Benefits</CardTitle>
+                    <CardDescription>Payroll and compensation information</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="p-4 bg-black/30 rounded-lg border border-purple-500/20 space-y-2">
+                      <p className="text-sm text-gray-400">Base Salary</p>
+                      <p className="text-3xl font-bold text-white">${staffMember?.salary?.toLocaleString() || "—"}</p>
+                    </div>
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      Open Rippling (Payroll System)
+                    </Button>
+                    <p className="text-xs text-gray-400">
+                      View your paystubs, tax documents, and benefits in the Rippling employee portal.
+                    </p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            )}
+
+            {/* Invoices Tab - Contractor Only */}
+            {isContractor && (
+              <TabsContent value="invoices" className="space-y-4 animate-fade-in">
+                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                  <CardHeader>
+                    <CardTitle>My Invoices</CardTitle>
+                    <CardDescription>SOP-301: Contractor Invoice Portal</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {invoices.length === 0 ? (
+                      <div className="text-center py-12">
+                        <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                        <p className="text-gray-400">No invoices submitted</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {invoices.map((invoice: any) => (
+                          <div key={invoice.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 space-y-3">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <p className="font-semibold text-white">{invoice.invoice_number}</p>
+                                <p className="text-xs text-gray-400 mt-1">{new Date(invoice.date).toLocaleDateString()}</p>
+                              </div>
+                              <div className="text-right">
+                                <p className="font-semibold text-white">${invoice.amount?.toLocaleString()}</p>
+                                <Badge className={
+                                  invoice.status === "paid"
+                                    ? "bg-green-600/50 text-green-100"
+                                    : invoice.status === "pending"
+                                    ? "bg-yellow-600/50 text-yellow-100"
+                                    : "bg-blue-600/50 text-blue-100"
+                                }>
+                                  {invoice.status}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            )}
+
+            {/* Directory Tab */}
+            <TabsContent value="directory" className="space-y-4 animate-fade-in">
+              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                <CardHeader>
+                  <CardTitle>Internal Directory</CardTitle>
+                  <CardDescription>Find employees and contractors</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Search Bar */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-5 w-5 text-gray-500" />
+                    <input
+                      type="text"
+                      placeholder="Search by name or role..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
+                    />
+                  </div>
+
+                  {/* Directory List */}
+                  {filteredDirectory.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Users className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                      <p className="text-gray-400">{searchQuery ? "No results found" : "No team members"}</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {filteredDirectory.map((member: any) => (
+                        <div key={member.id} className="p-4 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition cursor-pointer" onClick={() => navigate(`/passport/${member.username}`)}>
+                          <div className="flex items-start gap-3">
+                            <img src={member.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop"} alt={member.full_name} className="w-10 h-10 rounded-full" />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-white truncate">{member.full_name}</p>
+                              <p className="text-xs text-gray-400">{member.role}</p>
+                              <Badge className="text-xs mt-2 bg-purple-600/50 text-purple-100">
+                                {member.employment_type === "employee" ? "👨‍💼 Employee" : "📋 Contractor"}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </Layout>
