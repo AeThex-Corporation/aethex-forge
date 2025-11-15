@@ -1372,8 +1372,8 @@ export default function Dashboard() {
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="connections" className="space-y-6">
-                      <div className="space-y-2">
+                    <TabsContent value="connections" className="space-y-6 pointer-events-auto" style={{pointerEvents: 'auto'}}>
+                      <div className="space-y-2 pointer-events-auto">
                         <h3 className="text-lg font-semibold text-foreground">
                           Linked accounts
                         </h3>
