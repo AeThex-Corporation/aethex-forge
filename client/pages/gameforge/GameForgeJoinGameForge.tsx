@@ -151,8 +151,8 @@ export default function GameForgeJoinGameForge() {
                 <p className="text-xl text-green-100/80 max-w-3xl">
                   Ship complete games every month. GameForge is where game
                   studios and developers collaborate to create, iterate, and
-                  ship on a monthly cadence. Join existing projects, create
-                  your own studio, or contribute as a developer.
+                  ship on a monthly cadence. Join existing projects, create your
+                  own studio, or contribute as a developer.
                 </p>
 
                 <div className="flex flex-wrap gap-3 pt-4">
@@ -321,8 +321,8 @@ export default function GameForgeJoinGameForge() {
                 Ready to Ship?
               </h2>
               <p className="text-lg text-green-100/80 mb-8">
-                Join GameForge and start building with a community of
-                passionate game developers.
+                Join GameForge and start building with a community of passionate
+                game developers.
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
