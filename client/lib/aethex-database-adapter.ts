@@ -21,6 +21,7 @@ export interface AethexUserProfile extends UserProfile {
   last_streak_at?: string | null;
   social_links?: any;
   skills?: string[];
+  wallet_address?: string | null;
 }
 
 const isNonEmptyString = (value: unknown): value is string =>
