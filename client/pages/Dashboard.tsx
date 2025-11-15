@@ -1112,9 +1112,9 @@ export default function Dashboard() {
                     Manage your profile, notifications, and privacy
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <Tabs value={activeTab} onValueChange={handleTabChange}>
-                    <TabsList className="mb-4 flex flex-wrap gap-2">
+                <CardContent className="pointer-events-auto">
+                  <Tabs value={activeTab} onValueChange={handleTabChange} className="pointer-events-auto">
+                    <TabsList className="mb-4 flex flex-wrap gap-2 pointer-events-auto">
                       <TabsTrigger value="profile">Profile</TabsTrigger>
                       <TabsTrigger value="connections">Connections</TabsTrigger>
                       <TabsTrigger value="notifications">
