@@ -148,6 +148,85 @@ export default function AdminBlogManager() {
     new Set(blogPosts.map((p) => p.category).filter(Boolean)),
   );
 
+  const autoSlug =
+    slug ||
+    title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+
+  const addTag = () => {
+    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tag: string) => {
+    setTags(tags.filter((t) => t !== tag));
+  };
+
+  const handlePublish = async () => {
+    if (!title.trim() || !html.trim()) {
+      aethexToast.error({
+        title: "Missing required fields",
+        description: "Title and body are required",
+      });
+      return;
+    }
+
+    setIsPublishing(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/blog/publish`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          excerpt: excerpt || undefined,
+          html,
+          slug: autoSlug,
+          feature_image: featureImage || undefined,
+          tags,
+          meta_title: metaTitle || title,
+          meta_description: metaDescription || excerpt,
+          status: "published",
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to publish post");
+      }
+
+      const data = await response.json();
+      aethexToast.success({
+        title: "Post published!",
+        description: `Successfully published to Ghost`,
+      });
+
+      // Reset form
+      setTitle("");
+      setExcerpt("");
+      setHtml("");
+      setSlug("");
+      setFeatureImage("");
+      setTags([]);
+      setMetaTitle("");
+      setMetaDescription("");
+      setActiveTab("manage");
+      loadBlogPosts();
+    } catch (error: any) {
+      aethexToast.error({
+        title: "Failed to publish",
+        description: error.message || "Unknown error",
+      });
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
   const formatDate = (dateStr?: string | null) => {
     if (!dateStr) return "—";
     try {
