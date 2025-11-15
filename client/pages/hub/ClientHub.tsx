@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { aethexToast } from "@/lib/aethex-toast";
+import { supabase } from "@/lib/supabase";
 import {
   Card,
   CardContent,
