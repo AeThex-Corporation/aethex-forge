@@ -40,6 +40,8 @@ export default function GameForgeDashboard() {
   const [team, setTeam] = useState<any[]>([]);
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [isProjectLead, setIsProjectLead] = useState(false);
 
   useEffect(() => {
     if (!authLoading && user) {
