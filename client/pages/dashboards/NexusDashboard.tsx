@@ -651,48 +651,78 @@ export default function NexusDashboard() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <label className="text-sm font-semibold text-gray-300">
-                            Headline
-                          </label>
-                          <input
-                            type="text"
-                            value={creatorProfile?.headline || ""}
-                            placeholder="E.g., Senior Game Developer | Unreal Engine Specialist"
-                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
-                            disabled
-                          />
-                        </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-gray-300">
+                          Headline
+                        </label>
+                        <input
+                          type="text"
+                          value={profileFormData.headline}
+                          onChange={(e) =>
+                            setProfileFormData({
+                              ...profileFormData,
+                              headline: e.target.value,
+                            })
+                          }
+                          placeholder="E.g., Senior Game Developer | Unreal Engine Specialist"
+                          className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
+                        />
+                      </div>
 
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-gray-300">
+                          Bio
+                        </label>
+                        <textarea
+                          value={profileFormData.bio}
+                          onChange={(e) =>
+                            setProfileFormData({
+                              ...profileFormData,
+                              bio: e.target.value,
+                            })
+                          }
+                          placeholder="Tell clients about yourself, your experience, and what you specialize in"
+                          className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 resize-none h-24"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <label className="text-sm font-semibold text-gray-300">
                             Experience Level
                           </label>
                           <select
-                            value={
-                              creatorProfile?.experience_level || "intermediate"
+                            value={profileFormData.experience_level}
+                            onChange={(e) =>
+                              setProfileFormData({
+                                ...profileFormData,
+                                experience_level: e.target.value,
+                              })
                             }
-                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
-                            disabled
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white"
                           >
-                            <option>Beginner</option>
-                            <option>Intermediate</option>
-                            <option>Advanced</option>
-                            <option>Expert</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="expert">Expert</option>
                           </select>
                         </div>
 
                         <div className="space-y-2">
                           <label className="text-sm font-semibold text-gray-300">
-                            Hourly Rate
+                            Hourly Rate ($)
                           </label>
                           <input
                             type="number"
-                            value={creatorProfile?.hourly_rate || ""}
-                            placeholder="$50"
-                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500 disabled:opacity-50"
-                            disabled
+                            value={profileFormData.hourly_rate}
+                            onChange={(e) =>
+                              setProfileFormData({
+                                ...profileFormData,
+                                hourly_rate: e.target.value,
+                              })
+                            }
+                            placeholder="50"
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
                           />
                         </div>
 
@@ -701,16 +731,84 @@ export default function NexusDashboard() {
                             Availability
                           </label>
                           <select
-                            value={
-                              creatorProfile?.availability_status || "available"
+                            value={profileFormData.availability_status}
+                            onChange={(e) =>
+                              setProfileFormData({
+                                ...profileFormData,
+                                availability_status: e.target.value,
+                              })
                             }
-                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
-                            disabled
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white"
                           >
-                            <option>Available</option>
-                            <option>Busy</option>
-                            <option>Unavailable</option>
+                            <option value="available">Available</option>
+                            <option value="busy">Limited Availability</option>
+                            <option value="unavailable">Not Available</option>
                           </select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-semibold text-gray-300">
+                            Hours Per Week
+                          </label>
+                          <input
+                            type="number"
+                            value={profileFormData.availability_hours_per_week}
+                            onChange={(e) =>
+                              setProfileFormData({
+                                ...profileFormData,
+                                availability_hours_per_week: e.target.value,
+                              })
+                            }
+                            placeholder="40"
+                            className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Skills */}
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-gray-300">
+                          Skills
+                        </label>
+                        <div className="space-y-2 mb-3">
+                          {profileFormData.skills.map((skill, idx) => (
+                            <div
+                              key={idx}
+                              className="flex items-center justify-between p-2 bg-black/30 rounded border border-purple-500/20"
+                            >
+                              <span className="text-white">{skill}</span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeSkill(idx)}
+                                className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
+                              >
+                                ×
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={newSkill}
+                            onChange={(e) => setNewSkill(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                addSkill();
+                              }
+                            }}
+                            placeholder="Add a skill (e.g., Unreal Engine, C++)"
+                            className="flex-1 px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white placeholder-gray-500"
+                          />
+                          <Button
+                            size="sm"
+                            onClick={addSkill}
+                            className="bg-purple-600 hover:bg-purple-700"
+                          >
+                            Add
+                          </Button>
                         </div>
                       </div>
 
@@ -724,9 +822,13 @@ export default function NexusDashboard() {
                         </div>
                       )}
 
-                      <p className="text-sm text-gray-400">
-                        To edit your profile, go to Dashboard → Profile Settings
-                      </p>
+                      <Button
+                        onClick={handleSaveNexusProfile}
+                        disabled={savingProfile}
+                        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 h-10"
+                      >
+                        {savingProfile ? "Saving..." : "Save Profile"}
+                      </Button>
                     </CardContent>
                   </Card>
 
