@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Lightbulb, FileText, Zap, Lock, ExternalLink, ArrowRight, AlertCircle, Send } from "lucide-react";
+import { ResearchWidget } from "@/components/ResearchWidget";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
@@ -173,36 +174,21 @@ export default function LabsDashboard() {
 
             {/* Research Tracks Tab */}
             <TabsContent value="tracks" className="space-y-4 animate-fade-in">
-              <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
-                <CardHeader>
-                  <CardTitle>Active Research Tracks</CardTitle>
-                  <CardDescription>Internal R&D projects</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {researchTracks.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Lightbulb className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                      <p className="text-gray-400">No active research tracks</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {researchTracks.map((track: any) => (
-                        <a key={track.id} href={track.whitepaper_url} target="_blank" rel="noopener noreferrer" className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-white">{track.title}</h4>
-                              <p className="text-sm text-gray-400 mt-1">{track.description}</p>
-                            </div>
-                            <Badge className={track.status === "in_development" ? "bg-blue-600/50 text-blue-100" : "bg-gray-600/50 text-gray-100"}>
-                              {track.status}
-                            </Badge>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <ResearchWidget
+                tracks={researchTracks.map((t: any) => ({
+                  id: t.id,
+                  title: t.title,
+                  description: t.description,
+                  status: t.status,
+                  progress: t.progress || 0,
+                  publications: t.publications || [],
+                  whitepaper_url: t.whitepaper_url,
+                  lead: t.lead?.full_name,
+                }))}
+                title="Active Research Tracks"
+                description="Internal R&D projects"
+                accentColor="amber"
+              />
             </TabsContent>
 
             {/* Bounties Tab */}
