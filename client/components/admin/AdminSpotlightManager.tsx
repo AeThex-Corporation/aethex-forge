@@ -96,7 +96,7 @@ export default function AdminSpotlightManager({
     setEntries((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         type: "group",
         label: newGroupName.trim(),
         url: newGroupUrl.trim() || undefined,
