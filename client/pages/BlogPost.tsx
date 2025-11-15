@@ -12,6 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { User, Calendar } from "lucide-react";
 import { blogSeedPosts } from "@/data/blogSeed";
+import BlogCTASection from "@/components/blog/BlogCTASection";
 import FourOhFourPage from "./404";
 
 // API Base URL for fetch requests
