@@ -132,8 +132,13 @@ export default function DevLinkDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Card className="bg-gradient-to-br from-cyan-600/20 to-blue-600/20 border-cyan-500/40">
                   <CardContent className="p-6 text-center space-y-4">
-                    <h3 className="text-lg font-bold text-white">Browse Roblox Jobs</h3>
-                    <Button variant="outline" className="w-full border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10">
+                    <h3 className="text-lg font-bold text-white" style={{ fontFamily: theme.fontFamily }}>Browse Roblox Jobs</h3>
+                    <Button
+                      onClick={() => navigate("/dev-link/jobs")}
+                      variant="outline"
+                      className="w-full border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10"
+                      style={{ fontFamily: theme.fontFamily }}
+                    >
                       <ExternalLink className="h-4 w-4 mr-2" />
                       View All Roblox Jobs
                     </Button>
@@ -141,8 +146,13 @@ export default function DevLinkDashboard() {
                 </Card>
                 <Card className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border-blue-500/40">
                   <CardContent className="p-6 text-center space-y-4">
-                    <h3 className="text-lg font-bold text-white">Find a Teammate</h3>
-                    <Button variant="outline" className="w-full border-blue-500/30 text-blue-300 hover:bg-blue-500/10">
+                    <h3 className="text-lg font-bold text-white" style={{ fontFamily: theme.fontFamily }}>Find a Teammate</h3>
+                    <Button
+                      onClick={() => navigate("/dev-link/teams")}
+                      variant="outline"
+                      className="w-full border-blue-500/30 text-blue-300 hover:bg-blue-500/10"
+                      style={{ fontFamily: theme.fontFamily }}
+                    >
                       <Users className="h-4 w-4 mr-2" />
                       Search Teams
                     </Button>

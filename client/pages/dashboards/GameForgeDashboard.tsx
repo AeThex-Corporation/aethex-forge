@@ -182,9 +182,13 @@ export default function GameForgeDashboard() {
                   {/* Submit Build CTA */}
                   <Card className="bg-gradient-to-br from-green-600/20 to-emerald-600/20 border-green-500/40">
                     <CardContent className="p-8 text-center space-y-4">
-                      <h3 className="text-2xl font-bold text-white">Ready to Ship?</h3>
+                      <h3 className="text-2xl font-bold text-white" style={{ fontFamily: theme.fontFamily }}>Ready to Ship?</h3>
                       <p className="text-gray-300">Submit your final build for evaluation</p>
-                      <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-lg px-8">
+                      <Button
+                        onClick={() => navigate("/gameforge/submit-build")}
+                        className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-lg px-8"
+                        style={{ fontFamily: theme.fontFamily }}
+                      >
                         <Send className="h-4 w-4 mr-2" />
                         Submit Final Build to aethex.fun
                       </Button>

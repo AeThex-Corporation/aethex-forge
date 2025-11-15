@@ -164,9 +164,13 @@ export default function LabsDashboard() {
               {/* Submit Research Proposal CTA */}
               <Card className="bg-gradient-to-br from-amber-600/20 to-yellow-600/20 border-amber-500/40">
                 <CardContent className="p-8 text-center space-y-4">
-                  <h3 className="text-2xl font-bold text-white">Have a Research Idea?</h3>
+                  <h3 className="text-2xl font-bold text-white" style={{ fontFamily: theme.fontFamily }}>Have a Research Idea?</h3>
                   <p className="text-gray-300">Submit your research proposal for the LABS pipeline</p>
-                  <Button className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700">
+                  <Button
+                    onClick={() => navigate("/labs/submit-proposal")}
+                    className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700"
+                    style={{ fontFamily: theme.fontFamily }}
+                  >
                     <Send className="h-4 w-4 mr-2" />
                     Submit Research Proposal
                   </Button>

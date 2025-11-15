@@ -145,18 +145,33 @@ export default function StaffDashboard() {
               {/* Quick Links */}
               <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                 <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
+                  <CardTitle style={{ fontFamily: theme.fontFamily }}>Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <Button variant="outline" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start">
+                  <Button
+                    onClick={() => navigate("/staff/expenses")}
+                    variant="outline"
+                    className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start"
+                    style={{ fontFamily: theme.fontFamily }}
+                  >
                     <FileText className="h-4 w-4 mr-2" />
                     File an Expense (SOP-302)
                   </Button>
-                  <Button variant="outline" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start">
+                  <Button
+                    onClick={() => navigate("/staff/pto")}
+                    variant="outline"
+                    className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start"
+                    style={{ fontFamily: theme.fontFamily }}
+                  >
                     <Calendar className="h-4 w-4 mr-2" />
                     Request PTO (KND-300)
                   </Button>
-                  <Button variant="outline" className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start">
+                  <Button
+                    onClick={() => navigate("/staff/docs")}
+                    variant="outline"
+                    className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10 justify-start"
+                    style={{ fontFamily: theme.fontFamily }}
+                  >
                     <Book className="h-4 w-4 mr-2" />
                     Internal Doc Hub
                   </Button>
