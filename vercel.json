@@ -2,6 +2,38 @@
   "version": 2,
   "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist/spa",
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "aethex.app" }],
+      "destination": "https://aethex.dev/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "aethex.locker" }],
+      "destination": "https://aethex.dev/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "aethex.studio" }],
+      "destination": "https://aethex.dev/ethos/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "aethex.info" }],
+      "destination": "https://aethex.dev/foundation/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "aethex.site" }],
+      "destination": "https://aethex.me",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
