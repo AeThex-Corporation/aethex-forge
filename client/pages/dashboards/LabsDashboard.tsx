@@ -39,28 +39,53 @@ export default function LabsDashboard() {
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
-      const tracksRes = await fetch(`${API_BASE}/api/labs/research-tracks`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (tracksRes.ok) setResearchTracks(await tracksRes.json());
+      try {
+        const tracksRes = await fetch(`${API_BASE}/api/labs/research-tracks`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (tracksRes.ok) {
+          const data = await tracksRes.json();
+          setResearchTracks(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load research tracks:", err);
+      }
 
-      const bountiesRes = await fetch(`${API_BASE}/api/labs/bounties`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (bountiesRes.ok) setBounties(await bountiesRes.json());
+      try {
+        const bountiesRes = await fetch(`${API_BASE}/api/labs/bounties`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (bountiesRes.ok) {
+          const data = await bountiesRes.json();
+          setBounties(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load bounties:", err);
+      }
 
-      const pubRes = await fetch(`${API_BASE}/api/labs/publications`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (pubRes.ok) setPublications(await pubRes.json());
+      try {
+        const pubRes = await fetch(`${API_BASE}/api/labs/publications`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (pubRes.ok) {
+          const data = await pubRes.json();
+          setPublications(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load publications:", err);
+      }
 
-      const ipRes = await fetch(`${API_BASE}/api/labs/ip-portfolio`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (ipRes.ok) {
-        const data = await ipRes.json();
-        setIpPortfolio(data);
-        setIsAdmin(data?.is_admin || false);
+      try {
+        const ipRes = await fetch(`${API_BASE}/api/labs/ip-portfolio`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (ipRes.ok) {
+          const data = await ipRes.json();
+          setIpPortfolio(data);
+          setIsAdmin(data?.is_admin || false);
+        }
+      } catch (err) {
+        console.error("Failed to load IP portfolio:", err);
       }
     } catch (error) {
       console.error("Failed to load LABS data", error);

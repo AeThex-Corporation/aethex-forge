@@ -38,20 +38,41 @@ export default function DevLinkDashboard() {
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
-      const profileRes = await fetch(`${API_BASE}/api/devlink/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (profileRes.ok) setProfile(await profileRes.json());
+      try {
+        const profileRes = await fetch(`${API_BASE}/api/devlink/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (profileRes.ok) {
+          const data = await profileRes.json();
+          setProfile(data);
+        }
+      } catch (err) {
+        console.error("Failed to load profile:", err);
+      }
 
-      const oppRes = await fetch(`${API_BASE}/api/devlink/opportunities`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (oppRes.ok) setOpportunities(await oppRes.json());
+      try {
+        const oppRes = await fetch(`${API_BASE}/api/devlink/opportunities`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (oppRes.ok) {
+          const data = await oppRes.json();
+          setOpportunities(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load opportunities:", err);
+      }
 
-      const teamsRes = await fetch(`${API_BASE}/api/devlink/teams`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (teamsRes.ok) setTeams(await teamsRes.json());
+      try {
+        const teamsRes = await fetch(`${API_BASE}/api/devlink/teams`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (teamsRes.ok) {
+          const data = await teamsRes.json();
+          setTeams(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load teams:", err);
+      }
     } catch (error) {
       console.error("Failed to load DEV-LINK data", error);
     } finally {

@@ -58,22 +58,28 @@ export default function FoundationDashboard() {
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
-      // Load courses
-      const coursesRes = await fetch(`${API_BASE}/api/foundation/courses`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (coursesRes.ok) {
-        const data = await coursesRes.json();
-        setCourses(Array.isArray(data) ? data : []);
+      try {
+        const coursesRes = await fetch(`${API_BASE}/api/foundation/courses`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (coursesRes.ok) {
+          const data = await coursesRes.json();
+          setCourses(Array.isArray(data) ? data : []);
+        }
+      } catch (err: any) {
+        console.error("Failed to load courses:", err);
       }
 
-      // Load mentorships
-      const mentorRes = await fetch(`${API_BASE}/api/foundation/mentorships`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (mentorRes.ok) {
-        const data = await mentorRes.json();
-        setMentorships(data.as_mentee || []);
+      try {
+        const mentorRes = await fetch(`${API_BASE}/api/foundation/mentorships`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (mentorRes.ok) {
+          const data = await mentorRes.json();
+          setMentorships(data.as_mentee || []);
+        }
+      } catch (err: any) {
+        console.error("Failed to load mentorships:", err);
       }
     } catch (error: any) {
       console.error("Failed to load dashboard data", error);

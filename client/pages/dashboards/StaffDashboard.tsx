@@ -39,25 +39,53 @@ export default function StaffDashboard() {
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
-      const memberRes = await fetch(`${API_BASE}/api/staff/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (memberRes.ok) setStaffMember(await memberRes.json());
+      try {
+        const memberRes = await fetch(`${API_BASE}/api/staff/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (memberRes.ok) {
+          const data = await memberRes.json();
+          setStaffMember(data);
+        }
+      } catch (err) {
+        console.error("Failed to load staff member data:", err);
+      }
 
-      const okrRes = await fetch(`${API_BASE}/api/staff/okrs`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (okrRes.ok) setOkrs(await okrRes.json());
+      try {
+        const okrRes = await fetch(`${API_BASE}/api/staff/okrs`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (okrRes.ok) {
+          const data = await okrRes.json();
+          setOkrs(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load OKRs:", err);
+      }
 
-      const invRes = await fetch(`${API_BASE}/api/staff/invoices`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (invRes.ok) setInvoices(await invRes.json());
+      try {
+        const invRes = await fetch(`${API_BASE}/api/staff/invoices`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (invRes.ok) {
+          const data = await invRes.json();
+          setInvoices(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load invoices:", err);
+      }
 
-      const dirRes = await fetch(`${API_BASE}/api/staff/directory`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (dirRes.ok) setDirectory(await dirRes.json());
+      try {
+        const dirRes = await fetch(`${API_BASE}/api/staff/directory`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (dirRes.ok) {
+          const data = await dirRes.json();
+          setDirectory(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        console.error("Failed to load directory:", err);
+      }
     } catch (error) {
       console.error("Failed to load STAFF data", error);
     } finally {
