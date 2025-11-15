@@ -11,7 +11,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -84,7 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             availability_status: availability_status || "available",
             availability_hours_per_week: availability_hours_per_week || null,
           },
-          { onConflict: "user_id" }
+          { onConflict: "user_id" },
         )
         .select()
         .single();

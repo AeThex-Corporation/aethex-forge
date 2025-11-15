@@ -192,11 +192,26 @@ const App = () => (
                         <Route path="/" element={<SubdomainPassport />} />
                         <Route path="/onboarding" element={<Onboarding />} />
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/dashboard/nexus" element={<NexusDashboard />} />
-                        <Route path="/dashboard/foundation" element={<FoundationDashboard />} />
-                        <Route path="/dashboard/labs" element={<LabsDashboard />} />
-                        <Route path="/dashboard/gameforge" element={<GameForgeDashboard />} />
-                        <Route path="/dashboard/dev-link" element={<DevLinkDashboard />} />
+                        <Route
+                          path="/dashboard/nexus"
+                          element={<NexusDashboard />}
+                        />
+                        <Route
+                          path="/dashboard/foundation"
+                          element={<FoundationDashboard />}
+                        />
+                        <Route
+                          path="/dashboard/labs"
+                          element={<LabsDashboard />}
+                        />
+                        <Route
+                          path="/dashboard/gameforge"
+                          element={<GameForgeDashboard />}
+                        />
+                        <Route
+                          path="/dashboard/dev-link"
+                          element={<DevLinkDashboard />}
+                        />
                         <Route
                           path="/hub/client"
                           element={

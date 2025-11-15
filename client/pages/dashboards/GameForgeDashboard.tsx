@@ -5,11 +5,26 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useArmTheme } from "@/contexts/ArmThemeContext";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
-import { Gamepad2, Users, Clock, CheckCircle, AlertCircle, Rocket, Send, Home } from "lucide-react";
+import {
+  Gamepad2,
+  Users,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Rocket,
+  Send,
+  Home,
+} from "lucide-react";
 import { SprintWidgetComponent } from "@/components/SprintWidget";
 import { TeamWidget } from "@/components/TeamWidget";
 
@@ -36,7 +51,9 @@ export default function GameForgeDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
@@ -44,7 +61,10 @@ export default function GameForgeDashboard() {
         const sprintRes = await fetch(`${API_BASE}/api/gameforge/sprint`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (sprintRes.ok && sprintRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          sprintRes.ok &&
+          sprintRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await sprintRes.json();
           setSprint(data);
         }
@@ -56,7 +76,10 @@ export default function GameForgeDashboard() {
         const teamRes = await fetch(`${API_BASE}/api/gameforge/team`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (teamRes.ok && teamRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          teamRes.ok &&
+          teamRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await teamRes.json();
           setTeam(Array.isArray(data) ? data : []);
         }
@@ -68,7 +91,10 @@ export default function GameForgeDashboard() {
         const tasksRes = await fetch(`${API_BASE}/api/gameforge/tasks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (tasksRes.ok && tasksRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          tasksRes.ok &&
+          tasksRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await tasksRes.json();
           setTasks(Array.isArray(data) ? data : []);
         }
@@ -95,9 +121,9 @@ export default function GameForgeDashboard() {
   }, [sprint]);
 
   const tasksByStatus = {
-    todo: tasks.filter(t => t.status === "todo"),
-    inprogress: tasks.filter(t => t.status === "in_progress"),
-    done: tasks.filter(t => t.status === "done"),
+    todo: tasks.filter((t) => t.status === "todo"),
+    inprogress: tasks.filter((t) => t.status === "in_progress"),
+    done: tasks.filter((t) => t.status === "done"),
   };
 
   if (authLoading || loading) {
@@ -127,13 +153,18 @@ export default function GameForgeDashboard() {
 
   return (
     <Layout>
-      <div className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`} style={{ backgroundImage: theme.wallpaperPattern }}>
+      <div
+        className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`}
+        style={{ backgroundImage: theme.wallpaperPattern }}
+      >
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {sprint ? (
             <>
               {/* Active Sprint Header */}
               <div className="space-y-4 animate-slide-down">
-                <h1 className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}>
+                <h1
+                  className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}
+                >
                   Mission Control
                 </h1>
                 <p className="text-gray-400 text-lg">Project: {sprint.title}</p>
@@ -143,22 +174,32 @@ export default function GameForgeDashboard() {
                   <Card className="bg-gradient-to-br from-green-950/40 to-emerald-950/40 border-green-500/30">
                     <CardContent className="p-6">
                       <div className="text-center space-y-4">
-                        <p className="text-gray-400 text-sm">Time Remaining in Sprint</p>
+                        <p className="text-gray-400 text-sm">
+                          Time Remaining in Sprint
+                        </p>
                         <div className="grid grid-cols-4 gap-4">
                           <div className="text-center">
-                            <p className="text-3xl font-bold text-green-400">{timeRemaining.days}</p>
+                            <p className="text-3xl font-bold text-green-400">
+                              {timeRemaining.days}
+                            </p>
                             <p className="text-xs text-gray-400">Days</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-3xl font-bold text-green-400">{String(timeRemaining.hours).padStart(2, '0')}</p>
+                            <p className="text-3xl font-bold text-green-400">
+                              {String(timeRemaining.hours).padStart(2, "0")}
+                            </p>
                             <p className="text-xs text-gray-400">Hours</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-3xl font-bold text-green-400">{String(timeRemaining.minutes).padStart(2, '0')}</p>
+                            <p className="text-3xl font-bold text-green-400">
+                              {String(timeRemaining.minutes).padStart(2, "0")}
+                            </p>
                             <p className="text-xs text-gray-400">Minutes</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-3xl font-bold text-green-400">{String(timeRemaining.seconds).padStart(2, '0')}</p>
+                            <p className="text-3xl font-bold text-green-400">
+                              {String(timeRemaining.seconds).padStart(2, "0")}
+                            </p>
                             <p className="text-xs text-gray-400">Seconds</p>
                           </div>
                         </div>
@@ -169,8 +210,15 @@ export default function GameForgeDashboard() {
               </div>
 
               {/* Tabs */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-4 bg-green-950/30 border border-green-500/20 p-1" style={{ fontFamily: theme.fontFamily }}>
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+              >
+                <TabsList
+                  className="grid w-full grid-cols-4 bg-green-950/30 border border-green-500/20 p-1"
+                  style={{ fontFamily: theme.fontFamily }}
+                >
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="scope">Scope</TabsTrigger>
                   <TabsTrigger value="team">Team</TabsTrigger>
@@ -178,24 +226,33 @@ export default function GameForgeDashboard() {
                 </TabsList>
 
                 {/* Overview Tab */}
-                <TabsContent value="overview" className="space-y-6 animate-fade-in">
+                <TabsContent
+                  value="overview"
+                  className="space-y-6 animate-fade-in"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                       <CardContent className="p-6 space-y-2">
                         <p className="text-sm text-gray-400">Sprint Phase</p>
-                        <p className="text-3xl font-bold text-white">{sprint.phase}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {sprint.phase}
+                        </p>
                       </CardContent>
                     </Card>
                     <Card className="bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 border-emerald-500/20">
                       <CardContent className="p-6 space-y-2">
                         <p className="text-sm text-gray-400">Team Size</p>
-                        <p className="text-3xl font-bold text-white">{team.length}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {team.length}
+                        </p>
                       </CardContent>
                     </Card>
                     <Card className="bg-gradient-to-br from-teal-950/40 to-teal-900/20 border-teal-500/20">
                       <CardContent className="p-6 space-y-2">
                         <p className="text-sm text-gray-400">Tasks Completed</p>
-                        <p className="text-3xl font-bold text-white">{tasksByStatus.done.length}/{tasks.length}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {tasksByStatus.done.length}/{tasks.length}
+                        </p>
                       </CardContent>
                     </Card>
                   </div>
@@ -203,8 +260,15 @@ export default function GameForgeDashboard() {
                   {/* Submit Build CTA */}
                   <Card className="bg-gradient-to-br from-green-600/20 to-emerald-600/20 border-green-500/40">
                     <CardContent className="p-8 text-center space-y-4">
-                      <h3 className="text-2xl font-bold text-white" style={{ fontFamily: theme.fontFamily }}>Ready to Ship?</h3>
-                      <p className="text-gray-300">Submit your final build for evaluation</p>
+                      <h3
+                        className="text-2xl font-bold text-white"
+                        style={{ fontFamily: theme.fontFamily }}
+                      >
+                        Ready to Ship?
+                      </h3>
+                      <p className="text-gray-300">
+                        Submit your final build for evaluation
+                      </p>
                       <Button
                         onClick={() => navigate("/gameforge/submit-build")}
                         className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-lg px-8"
@@ -218,15 +282,22 @@ export default function GameForgeDashboard() {
                 </TabsContent>
 
                 {/* Scope Tab */}
-                <TabsContent value="scope" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="scope"
+                  className="space-y-4 animate-fade-in"
+                >
                   <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                     <CardHeader>
                       <CardTitle>The Scope Anchor (KND-001)</CardTitle>
-                      <CardDescription>Your north star - prevent feature creep</CardDescription>
+                      <CardDescription>
+                        Your north star - prevent feature creep
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="p-6 bg-black/30 rounded-lg border border-green-500/20">
-                        <p className="text-white leading-relaxed">{sprint.gdd || "Game Design Document not available"}</p>
+                        <p className="text-white leading-relaxed">
+                          {sprint.gdd || "Game Design Document not available"}
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
@@ -255,21 +326,35 @@ export default function GameForgeDashboard() {
                 </TabsContent>
 
                 {/* Tasks Tab - Kanban */}
-                <TabsContent value="tasks" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="tasks"
+                  className="space-y-4 animate-fade-in"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* To Do */}
                     <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
                       <CardHeader>
-                        <CardTitle className="text-lg">To Do ({tasksByStatus.todo.length})</CardTitle>
+                        <CardTitle className="text-lg">
+                          To Do ({tasksByStatus.todo.length})
+                        </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         {tasksByStatus.todo.length === 0 ? (
-                          <p className="text-center text-gray-400 text-sm py-4">No tasks</p>
+                          <p className="text-center text-gray-400 text-sm py-4">
+                            No tasks
+                          </p>
                         ) : (
                           tasksByStatus.todo.map((task: any) => (
-                            <div key={task.id} className="p-3 bg-black/30 rounded-lg border border-red-500/20 hover:border-red-500/40 transition">
-                              <p className="font-semibold text-white text-sm">{task.title}</p>
-                              <p className="text-xs text-gray-400 mt-1">{task.assigned_to?.full_name}</p>
+                            <div
+                              key={task.id}
+                              className="p-3 bg-black/30 rounded-lg border border-red-500/20 hover:border-red-500/40 transition"
+                            >
+                              <p className="font-semibold text-white text-sm">
+                                {task.title}
+                              </p>
+                              <p className="text-xs text-gray-400 mt-1">
+                                {task.assigned_to?.full_name}
+                              </p>
                             </div>
                           ))
                         )}
@@ -279,16 +364,27 @@ export default function GameForgeDashboard() {
                     {/* In Progress */}
                     <Card className="bg-gradient-to-br from-yellow-950/40 to-yellow-900/20 border-yellow-500/20">
                       <CardHeader>
-                        <CardTitle className="text-lg">In Progress ({tasksByStatus.inprogress.length})</CardTitle>
+                        <CardTitle className="text-lg">
+                          In Progress ({tasksByStatus.inprogress.length})
+                        </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         {tasksByStatus.inprogress.length === 0 ? (
-                          <p className="text-center text-gray-400 text-sm py-4">No tasks</p>
+                          <p className="text-center text-gray-400 text-sm py-4">
+                            No tasks
+                          </p>
                         ) : (
                           tasksByStatus.inprogress.map((task: any) => (
-                            <div key={task.id} className="p-3 bg-black/30 rounded-lg border border-yellow-500/20 hover:border-yellow-500/40 transition">
-                              <p className="font-semibold text-white text-sm">{task.title}</p>
-                              <p className="text-xs text-gray-400 mt-1">{task.assigned_to?.full_name}</p>
+                            <div
+                              key={task.id}
+                              className="p-3 bg-black/30 rounded-lg border border-yellow-500/20 hover:border-yellow-500/40 transition"
+                            >
+                              <p className="font-semibold text-white text-sm">
+                                {task.title}
+                              </p>
+                              <p className="text-xs text-gray-400 mt-1">
+                                {task.assigned_to?.full_name}
+                              </p>
                             </div>
                           ))
                         )}
@@ -298,19 +394,30 @@ export default function GameForgeDashboard() {
                     {/* Done */}
                     <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                       <CardHeader>
-                        <CardTitle className="text-lg">Done ({tasksByStatus.done.length})</CardTitle>
+                        <CardTitle className="text-lg">
+                          Done ({tasksByStatus.done.length})
+                        </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         {tasksByStatus.done.length === 0 ? (
-                          <p className="text-center text-gray-400 text-sm py-4">No tasks</p>
+                          <p className="text-center text-gray-400 text-sm py-4">
+                            No tasks
+                          </p>
                         ) : (
                           tasksByStatus.done.map((task: any) => (
-                            <div key={task.id} className="p-3 bg-black/30 rounded-lg border border-green-500/20 hover:border-green-500/40 transition">
+                            <div
+                              key={task.id}
+                              className="p-3 bg-black/30 rounded-lg border border-green-500/20 hover:border-green-500/40 transition"
+                            >
                               <div className="flex items-center gap-2">
                                 <CheckCircle className="h-4 w-4 text-green-500" />
                                 <div className="flex-1">
-                                  <p className="font-semibold text-white text-sm line-through">{task.title}</p>
-                                  <p className="text-xs text-gray-400 mt-1">{task.assigned_to?.full_name}</p>
+                                  <p className="font-semibold text-white text-sm line-through">
+                                    {task.title}
+                                  </p>
+                                  <p className="text-xs text-gray-400 mt-1">
+                                    {task.assigned_to?.full_name}
+                                  </p>
                                 </div>
                               </div>
                             </div>
@@ -326,8 +433,12 @@ export default function GameForgeDashboard() {
             <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
               <CardContent className="p-12 text-center space-y-4">
                 <Gamepad2 className="h-12 w-12 mx-auto text-green-500 opacity-50" />
-                <p className="text-gray-400">No active sprint. Join one to get started!</p>
-                <Button onClick={() => navigate("/gameforge")}>Browse GAMEFORGE</Button>
+                <p className="text-gray-400">
+                  No active sprint. Join one to get started!
+                </p>
+                <Button onClick={() => navigate("/gameforge")}>
+                  Browse GAMEFORGE
+                </Button>
               </CardContent>
             </Card>
           )}

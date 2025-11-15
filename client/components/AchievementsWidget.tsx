@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trophy, Lock, Star, ArrowRight } from "lucide-react";
@@ -25,11 +31,23 @@ interface AchievementsWidgetProps {
 }
 
 const rarityMap = {
-  common: { color: "bg-gray-600/50 text-gray-100", border: "border-gray-500/30" },
-  uncommon: { color: "bg-green-600/50 text-green-100", border: "border-green-500/30" },
+  common: {
+    color: "bg-gray-600/50 text-gray-100",
+    border: "border-gray-500/30",
+  },
+  uncommon: {
+    color: "bg-green-600/50 text-green-100",
+    border: "border-green-500/30",
+  },
   rare: { color: "bg-blue-600/50 text-blue-100", border: "border-blue-500/30" },
-  epic: { color: "bg-purple-600/50 text-purple-100", border: "border-purple-500/30" },
-  legendary: { color: "bg-yellow-600/50 text-yellow-100", border: "border-yellow-500/30" },
+  epic: {
+    color: "bg-purple-600/50 text-purple-100",
+    border: "border-purple-500/30",
+  },
+  legendary: {
+    color: "bg-yellow-600/50 text-yellow-100",
+    border: "border-yellow-500/30",
+  },
 };
 
 const colorMap = {
@@ -92,7 +110,9 @@ export function AchievementsWidget({
           <div className="text-center py-12 space-y-4">
             <Trophy className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
             <p className="text-gray-400">No achievements yet</p>
-            <p className="text-sm text-gray-500">Complete courses and challenges to earn badges</p>
+            <p className="text-sm text-gray-500">
+              Complete courses and challenges to earn badges
+            </p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -144,9 +164,7 @@ export function AchievementsWidget({
 
               {/* Locked Achievements Placeholder */}
               {hasMore && (
-                <div
-                  className="p-3 rounded-lg border border-gray-600/30 bg-black/30 text-center space-y-2 opacity-50"
-                >
+                <div className="p-3 rounded-lg border border-gray-600/30 bg-black/30 text-center space-y-2 opacity-50">
                   <div className="flex justify-center">
                     <Lock className="w-6 h-6 text-gray-500" />
                   </div>

@@ -15,7 +15,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -28,7 +31,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     let query = admin
       .from("nexus_contracts")
-      .select(`
+      .select(
+        `
         *,
         creator:user_profiles(
           id,
@@ -38,7 +42,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ),
         milestones:nexus_milestones(*),
         payments:nexus_payments(*)
-      `)
+      `,
+      )
       .eq("client_id", user.id)
       .order("created_at", { ascending: false });
 
@@ -48,7 +53,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { data: contracts, error: contractsError } = await query.range(
       offset,
-      offset + limit - 1
+      offset + limit - 1,
     );
 
     if (contractsError) {
@@ -63,11 +68,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const totalSpent = (allContracts || []).reduce(
       (sum: number, c: any) => sum + (c.total_amount || 0),
-      0
+      0,
     );
 
     const activeContracts = (allContracts || []).filter(
-      (c: any) => c.status === "active"
+      (c: any) => c.status === "active",
     ).length;
 
     return res.status(200).json({

@@ -10,7 +10,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (authHeader) {
     const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await admin.auth.getUser(token);
+    const {
+      data: { user },
+      error: authError,
+    } = await admin.auth.getUser(token);
     if (!authError && user) {
       userId = user.id;
     }
@@ -21,10 +24,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // List all published courses
       const { data: courses, error: coursesError } = await admin
         .from("foundation_courses")
-        .select(`
+        .select(
+          `
           *,
           instructor:user_profiles(id, full_name, avatar_url)
-        `)
+        `,
+        )
         .eq("is_published", true)
         .order("order_index", { ascending: true });
 
@@ -42,7 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         if (userEnrollments) {
           enrollments = Object.fromEntries(
-            userEnrollments.map((e: any) => [e.course_id, e])
+            userEnrollments.map((e: any) => [e.course_id, e]),
           );
         }
       }
@@ -76,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             status: "in_progress",
             enrolled_at: new Date().toISOString(),
           },
-          { onConflict: "user_id,course_id" }
+          { onConflict: "user_id,course_id" },
         )
         .select()
         .single();

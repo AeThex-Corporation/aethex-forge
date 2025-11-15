@@ -15,7 +15,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -28,12 +31,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     let query = admin
       .from("nexus_contracts")
-      .select(`
+      .select(
+        `
         *,
         client:user_profiles(id, full_name, avatar_url),
         milestones:nexus_milestones(*),
         payments:nexus_payments(*)
-      `)
+      `,
+      )
       .eq("creator_id", user.id)
       .order("created_at", { ascending: false });
 
@@ -41,9 +46,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       query = query.eq("status", status);
     }
 
-    const { data: contracts, error: contractsError, count } = await query
+    const {
+      data: contracts,
+      error: contractsError,
+      count,
+    } = await query
       .range(offset, offset + limit - 1)
-      .then(result => ({ ...result, count: result.data?.length || 0 }));
+      .then((result) => ({ ...result, count: result.data?.length || 0 }));
 
     if (contractsError) {
       return res.status(500).json({ error: contractsError.message });

@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: bounties, error } = await supabase
       .from("labs_bounties")
-      .select(`
+      .select(
+        `
         id,
         title,
         description,
@@ -27,7 +28,8 @@ export default async (req: Request) => {
         status,
         research_track_id,
         created_at
-      `)
+      `,
+      )
       .eq("status", "available")
       .order("reward", { ascending: false });
 

@@ -11,7 +11,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -41,18 +44,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // Get lesson progress
       const { data: lessonProgress } = await admin
         .from("foundation_lesson_progress")
-        .select(`
+        .select(
+          `
           *,
           lesson:foundation_course_lessons(id, title, order_index)
-        `)
+        `,
+        )
         .eq("user_id", user.id)
-        .in("lesson_id", 
+        .in(
+          "lesson_id",
           // Get lesson IDs for this course
-          (await admin
+          await admin
             .from("foundation_course_lessons")
             .select("id")
             .eq("course_id", courseId)
-            .then(r => r.data?.map((l: any) => l.id) || []))
+            .then((r) => r.data?.map((l: any) => l.id) || []),
         );
 
       return res.status(200).json({
@@ -66,7 +72,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const { lesson_id, course_id, completed } = req.body;
 
       if (!lesson_id || !course_id) {
-        return res.status(400).json({ error: "lesson_id and course_id required" });
+        return res
+          .status(400)
+          .json({ error: "lesson_id and course_id required" });
       }
 
       if (completed) {
@@ -103,7 +111,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .in("lesson_id", lessonsData?.map((l: any) => l.id) || []);
 
         const completedCount = completedData?.length || 0;
-        const progressPercent = Math.round((completedCount / totalLessons) * 100);
+        const progressPercent = Math.round(
+          (completedCount / totalLessons) * 100,
+        );
 
         // Update enrollment progress
         await admin

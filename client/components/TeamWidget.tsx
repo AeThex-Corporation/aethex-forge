@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Users, MessageCircle, ExternalLink } from "lucide-react";
@@ -108,7 +114,9 @@ export function TeamWidget({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-white truncate">{member.name}</h4>
+                    <h4 className="font-semibold text-white truncate">
+                      {member.name}
+                    </h4>
                     <p className="text-xs text-gray-400">{member.role}</p>
                     {member.title && (
                       <p className="text-xs text-gray-500">{member.title}</p>
@@ -118,7 +126,9 @@ export function TeamWidget({
 
                 {/* Bio */}
                 {member.bio && (
-                  <p className="text-xs text-gray-400 line-clamp-2">{member.bio}</p>
+                  <p className="text-xs text-gray-400 line-clamp-2">
+                    {member.bio}
+                  </p>
                 )}
 
                 {/* Links */}

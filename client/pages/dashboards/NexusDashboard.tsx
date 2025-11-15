@@ -63,7 +63,9 @@ export default function NexusDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
@@ -76,54 +78,72 @@ export default function NexusDashboard() {
       }
 
       // Load applications
-      const appRes = await fetch(`${API_BASE}/api/nexus/creator/applications?limit=10`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const appRes = await fetch(
+        `${API_BASE}/api/nexus/creator/applications?limit=10`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (appRes.ok) {
         const data = await appRes.json();
         setApplications(data.applications || []);
       }
 
       // Load contracts
-      const contractRes = await fetch(`${API_BASE}/api/nexus/creator/contracts?limit=10`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const contractRes = await fetch(
+        `${API_BASE}/api/nexus/creator/contracts?limit=10`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (contractRes.ok) {
         const data = await contractRes.json();
         setContracts(data.contracts || []);
       }
 
       // Load payout info
-      const payoutRes = await fetch(`${API_BASE}/api/nexus/creator/payouts?limit=10`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const payoutRes = await fetch(
+        `${API_BASE}/api/nexus/creator/payouts?limit=10`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (payoutRes.ok) {
         const data = await payoutRes.json();
         setPayoutInfo(data.summary);
       }
 
       // Load client data (posted opportunities)
-      const oppRes = await fetch(`${API_BASE}/api/nexus/client/opportunities?limit=10`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const oppRes = await fetch(
+        `${API_BASE}/api/nexus/client/opportunities?limit=10`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (oppRes.ok) {
         const data = await oppRes.json();
         setPostedOpportunities(data.opportunities || []);
       }
 
       // Load applicants
-      const appliRes = await fetch(`${API_BASE}/api/nexus/client/applicants?limit=50`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const appliRes = await fetch(
+        `${API_BASE}/api/nexus/client/applicants?limit=50`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (appliRes.ok) {
         const data = await appliRes.json();
         setApplicants(data.applicants || []);
       }
 
       // Load payment history
-      const payHistRes = await fetch(`${API_BASE}/api/nexus/client/payment-history?limit=10`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const payHistRes = await fetch(
+        `${API_BASE}/api/nexus/client/payment-history?limit=10`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (payHistRes.ok) {
         const data = await payHistRes.json();
         setPaymentHistory(data.payments || []);
@@ -150,7 +170,9 @@ export default function NexusDashboard() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
               Sign In to NEXUS
             </h1>
-            <p className="text-gray-400">Access the marketplace and start earning</p>
+            <p className="text-gray-400">
+              Access the marketplace and start earning
+            </p>
             <Button
               onClick={() => navigate("/login")}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg py-6"
@@ -163,10 +185,16 @@ export default function NexusDashboard() {
     );
   }
 
-  const isProfileComplete = creatorProfile?.verified || (creatorProfile?.headline && creatorProfile?.skills?.length > 0);
-  const pendingApplications = applications.filter((a) => a.status === "submitted").length;
+  const isProfileComplete =
+    creatorProfile?.verified ||
+    (creatorProfile?.headline && creatorProfile?.skills?.length > 0);
+  const pendingApplications = applications.filter(
+    (a) => a.status === "submitted",
+  ).length;
   const activeContracts = contracts.filter((c) => c.status === "active").length;
-  const openOpportunities = postedOpportunities.filter((o) => o.status === "open").length;
+  const openOpportunities = postedOpportunities.filter(
+    (o) => o.status === "open",
+  ).length;
   const applicantStats = {
     applied: applicants.filter((a) => a.status === "applied").length,
     interviewing: applicants.filter((a) => a.status === "interviewing").length,
@@ -200,9 +228,17 @@ export default function NexusDashboard() {
                     setViewMode("creator");
                     setActiveTab("overview");
                   }}
-                  className={viewMode === "creator" ? "bg-purple-600 hover:bg-purple-700" : ""}
+                  className={
+                    viewMode === "creator"
+                      ? "bg-purple-600 hover:bg-purple-700"
+                      : ""
+                  }
                 >
-                  {viewMode === "creator" ? <ToggleRight className="h-4 w-4 mr-1" /> : <ToggleLeft className="h-4 w-4 mr-1" />}
+                  {viewMode === "creator" ? (
+                    <ToggleRight className="h-4 w-4 mr-1" />
+                  ) : (
+                    <ToggleLeft className="h-4 w-4 mr-1" />
+                  )}
                   Creator
                 </Button>
                 <Button
@@ -212,9 +248,15 @@ export default function NexusDashboard() {
                     setViewMode("client");
                     setActiveTab("overview");
                   }}
-                  className={viewMode === "client" ? "bg-blue-600 hover:bg-blue-700" : ""}
+                  className={
+                    viewMode === "client" ? "bg-blue-600 hover:bg-blue-700" : ""
+                  }
                 >
-                  {viewMode === "client" ? <ToggleRight className="h-4 w-4 mr-1" /> : <ToggleLeft className="h-4 w-4 mr-1" />}
+                  {viewMode === "client" ? (
+                    <ToggleRight className="h-4 w-4 mr-1" />
+                  ) : (
+                    <ToggleLeft className="h-4 w-4 mr-1" />
+                  )}
                   Client
                 </Button>
               </div>
@@ -231,7 +273,8 @@ export default function NexusDashboard() {
                         Complete Your NEXUS Profile
                       </p>
                       <p className="text-sm text-orange-200">
-                        Add a headline, skills, and hourly rate to attract clients and start bidding on opportunities
+                        Add a headline, skills, and hourly rate to attract
+                        clients and start bidding on opportunities
                       </p>
                     </div>
                     <Button
@@ -251,7 +294,11 @@ export default function NexusDashboard() {
           {viewMode === "creator" && (
             <>
               {/* Tabs */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+              >
                 <TabsList className="grid w-full grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="applications">Applications</TabsTrigger>
@@ -260,17 +307,26 @@ export default function NexusDashboard() {
                 </TabsList>
 
                 {/* Overview Tab */}
-                <TabsContent value="overview" className="space-y-6 animate-fade-in">
+                <TabsContent
+                  value="overview"
+                  className="space-y-6 animate-fade-in"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Stat: Total Earnings */}
                     <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                       <CardContent className="p-6 space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-400">Total Earnings</p>
+                          <p className="text-sm text-gray-400">
+                            Total Earnings
+                          </p>
                           <DollarSign className="h-5 w-5 text-green-500" />
                         </div>
                         <p className="text-3xl font-bold text-white">
-                          ${(payoutInfo?.total_earnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          $
+                          {(payoutInfo?.total_earnings || 0).toLocaleString(
+                            "en-US",
+                            { minimumFractionDigits: 2 },
+                          )}
                         </p>
                       </CardContent>
                     </Card>
@@ -279,11 +335,17 @@ export default function NexusDashboard() {
                     <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
                       <CardContent className="p-6 space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-400">Pending Payouts</p>
+                          <p className="text-sm text-gray-400">
+                            Pending Payouts
+                          </p>
                           <Clock className="h-5 w-5 text-blue-500" />
                         </div>
                         <p className="text-3xl font-bold text-white">
-                          ${(payoutInfo?.pending_payouts || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          $
+                          {(payoutInfo?.pending_payouts || 0).toLocaleString(
+                            "en-US",
+                            { minimumFractionDigits: 2 },
+                          )}
                         </p>
                       </CardContent>
                     </Card>
@@ -292,10 +354,14 @@ export default function NexusDashboard() {
                     <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                       <CardContent className="p-6 space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-400">Pending Applications</p>
+                          <p className="text-sm text-gray-400">
+                            Pending Applications
+                          </p>
                           <Briefcase className="h-5 w-5 text-purple-500" />
                         </div>
-                        <p className="text-3xl font-bold text-white">{pendingApplications}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {pendingApplications}
+                        </p>
                       </CardContent>
                     </Card>
 
@@ -303,10 +369,14 @@ export default function NexusDashboard() {
                     <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
                       <CardContent className="p-6 space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-400">Active Contracts</p>
+                          <p className="text-sm text-gray-400">
+                            Active Contracts
+                          </p>
                           <CheckCircle className="h-5 w-5 text-red-500" />
                         </div>
-                        <p className="text-3xl font-bold text-white">{activeContracts}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {activeContracts}
+                        </p>
                       </CardContent>
                     </Card>
                   </div>
@@ -321,7 +391,10 @@ export default function NexusDashboard() {
                       {applications.length === 0 ? (
                         <div className="text-center py-8 space-y-4">
                           <AlertCircle className="h-12 w-12 mx-auto text-gray-500 opacity-50" />
-                          <p className="text-gray-400">No applications yet. Browse opportunities to get started!</p>
+                          <p className="text-gray-400">
+                            No applications yet. Browse opportunities to get
+                            started!
+                          </p>
                           <Button
                             onClick={() => navigate("/nexus")}
                             className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
@@ -333,16 +406,27 @@ export default function NexusDashboard() {
                       ) : (
                         <div className="space-y-3">
                           {applications.slice(0, 5).map((app: any) => (
-                            <div key={app.id} className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition">
+                            <div
+                              key={app.id}
+                              className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-purple-500/10 hover:border-purple-500/30 transition"
+                            >
                               <div className="space-y-1 flex-1">
-                                <p className="font-semibold text-white">{app.opportunity?.title}</p>
-                                <p className="text-sm text-gray-400">{app.opportunity?.category}</p>
+                                <p className="font-semibold text-white">
+                                  {app.opportunity?.title}
+                                </p>
+                                <p className="text-sm text-gray-400">
+                                  {app.opportunity?.category}
+                                </p>
                               </div>
-                              <Badge variant={
-                                app.status === "accepted" ? "default" :
-                                app.status === "rejected" ? "destructive" :
-                                "secondary"
-                              }>
+                              <Badge
+                                variant={
+                                  app.status === "accepted"
+                                    ? "default"
+                                    : app.status === "rejected"
+                                      ? "destructive"
+                                      : "secondary"
+                                }
+                              >
                                 {app.status}
                               </Badge>
                             </div>
@@ -357,8 +441,13 @@ export default function NexusDashboard() {
                     <CardContent className="p-8">
                       <div className="space-y-6">
                         <div className="text-center space-y-2">
-                          <h3 className="text-2xl font-bold text-white">Maximize Your Earnings</h3>
-                          <p className="text-gray-300">Complete your profile and start bidding on opportunities</p>
+                          <h3 className="text-2xl font-bold text-white">
+                            Maximize Your Earnings
+                          </h3>
+                          <p className="text-gray-300">
+                            Complete your profile and start bidding on
+                            opportunities
+                          </p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <Button
@@ -382,7 +471,10 @@ export default function NexusDashboard() {
                 </TabsContent>
 
                 {/* Applications Tab */}
-                <TabsContent value="applications" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="applications"
+                  className="space-y-4 animate-fade-in"
+                >
                   <ApplicationsWidget
                     applications={applications.map((a: any) => ({
                       id: a.id,
@@ -408,7 +500,10 @@ export default function NexusDashboard() {
                 </TabsContent>
 
                 {/* Contracts Tab */}
-                <TabsContent value="contracts" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="contracts"
+                  className="space-y-4 animate-fade-in"
+                >
                   <ContractsWidget
                     contracts={contracts.map((c: any) => ({
                       id: c.id,
@@ -416,7 +511,11 @@ export default function NexusDashboard() {
                       client_name: c.client?.full_name || "Client",
                       status: c.status || "active",
                       total_amount: c.total_amount || 0,
-                      paid_amount: c.payments?.reduce((sum: number, p: any) => sum + (p.amount || 0), 0) || 0,
+                      paid_amount:
+                        c.payments?.reduce(
+                          (sum: number, p: any) => sum + (p.amount || 0),
+                          0,
+                        ) || 0,
                       start_date: c.start_date,
                       end_date: c.end_date,
                       description: c.description,
@@ -430,16 +529,23 @@ export default function NexusDashboard() {
                 </TabsContent>
 
                 {/* Profile Tab */}
-                <TabsContent value="profile" className="space-y-6 animate-fade-in">
+                <TabsContent
+                  value="profile"
+                  className="space-y-6 animate-fade-in"
+                >
                   <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                     <CardHeader>
                       <CardTitle>Your NEXUS Profile</CardTitle>
-                      <CardDescription>Your marketplace identity</CardDescription>
+                      <CardDescription>
+                        Your marketplace identity
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-gray-300">Headline</label>
+                          <label className="text-sm font-semibold text-gray-300">
+                            Headline
+                          </label>
                           <input
                             type="text"
                             value={creatorProfile?.headline || ""}
@@ -450,9 +556,13 @@ export default function NexusDashboard() {
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-gray-300">Experience Level</label>
+                          <label className="text-sm font-semibold text-gray-300">
+                            Experience Level
+                          </label>
                           <select
-                            value={creatorProfile?.experience_level || "intermediate"}
+                            value={
+                              creatorProfile?.experience_level || "intermediate"
+                            }
                             className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
                             disabled
                           >
@@ -464,7 +574,9 @@ export default function NexusDashboard() {
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-gray-300">Hourly Rate</label>
+                          <label className="text-sm font-semibold text-gray-300">
+                            Hourly Rate
+                          </label>
                           <input
                             type="number"
                             value={creatorProfile?.hourly_rate || ""}
@@ -475,9 +587,13 @@ export default function NexusDashboard() {
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-gray-300">Availability</label>
+                          <label className="text-sm font-semibold text-gray-300">
+                            Availability
+                          </label>
                           <select
-                            value={creatorProfile?.availability_status || "available"}
+                            value={
+                              creatorProfile?.availability_status || "available"
+                            }
                             className="w-full px-4 py-2 bg-black/30 border border-purple-500/20 rounded-lg text-white disabled:opacity-50"
                             disabled
                           >
@@ -492,7 +608,9 @@ export default function NexusDashboard() {
                       {creatorProfile?.verified && (
                         <div className="p-3 bg-green-600/20 border border-green-500/30 rounded-lg flex items-center gap-2">
                           <CheckCircle className="h-5 w-5 text-green-500" />
-                          <span className="text-sm text-green-200">Profile Verified ✓</span>
+                          <span className="text-sm text-green-200">
+                            Profile Verified ✓
+                          </span>
                         </div>
                       )}
 
@@ -506,17 +624,18 @@ export default function NexusDashboard() {
                   <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
                     <CardHeader>
                       <CardTitle>Payout Information</CardTitle>
-                      <CardDescription>Manage how you receive payments</CardDescription>
+                      <CardDescription>
+                        Manage how you receive payments
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <Button
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                      >
+                      <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                         Connect Stripe Account
                         <ExternalLink className="h-4 w-4 ml-2" />
                       </Button>
                       <p className="text-sm text-gray-400">
-                        Connect your Stripe account to receive payouts for completed contracts
+                        Connect your Stripe account to receive payouts for
+                        completed contracts
                       </p>
                     </CardContent>
                   </Card>
@@ -528,7 +647,11 @@ export default function NexusDashboard() {
           {/* Client View */}
           {viewMode === "client" && (
             <>
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+              >
                 <TabsList className="grid w-full grid-cols-4 bg-blue-950/30 border border-blue-500/20 p-1">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
@@ -537,16 +660,23 @@ export default function NexusDashboard() {
                 </TabsList>
 
                 {/* Overview Tab */}
-                <TabsContent value="overview" className="space-y-6 animate-fade-in">
+                <TabsContent
+                  value="overview"
+                  className="space-y-6 animate-fade-in"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Stat: Open Opportunities */}
                     <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
                       <CardContent className="p-6 space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-400">Open Opportunities</p>
+                          <p className="text-sm text-gray-400">
+                            Open Opportunities
+                          </p>
                           <Briefcase className="h-5 w-5 text-blue-500" />
                         </div>
-                        <p className="text-3xl font-bold text-white">{openOpportunities}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {openOpportunities}
+                        </p>
                       </CardContent>
                     </Card>
 
@@ -554,10 +684,14 @@ export default function NexusDashboard() {
                     <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                       <CardContent className="p-6 space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-400">Total Applicants</p>
+                          <p className="text-sm text-gray-400">
+                            Total Applicants
+                          </p>
                           <Users className="h-5 w-5 text-purple-500" />
                         </div>
-                        <p className="text-3xl font-bold text-white">{applicants.length}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {applicants.length}
+                        </p>
                       </CardContent>
                     </Card>
 
@@ -565,10 +699,17 @@ export default function NexusDashboard() {
                     <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                       <CardContent className="p-6 space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-400">Active Contracts</p>
+                          <p className="text-sm text-gray-400">
+                            Active Contracts
+                          </p>
                           <FileText className="h-5 w-5 text-green-500" />
                         </div>
-                        <p className="text-3xl font-bold text-white">{contracts.filter(c => c.status === "active").length}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {
+                            contracts.filter((c) => c.status === "active")
+                              .length
+                          }
+                        </p>
                       </CardContent>
                     </Card>
 
@@ -580,7 +721,12 @@ export default function NexusDashboard() {
                           <DollarSign className="h-5 w-5 text-orange-500" />
                         </div>
                         <p className="text-3xl font-bold text-white">
-                          ${(paymentHistory.reduce((acc, p) => acc + (p.amount || 0), 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          $
+                          {paymentHistory
+                            .reduce((acc, p) => acc + (p.amount || 0), 0)
+                            .toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                            })}
                         </p>
                       </CardContent>
                     </Card>
@@ -591,19 +737,25 @@ export default function NexusDashboard() {
                     <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
                       <CardContent className="p-4 text-center space-y-2">
                         <p className="text-sm text-gray-400">Reviewing</p>
-                        <p className="text-2xl font-bold text-blue-400">{applicantStats.applied}</p>
+                        <p className="text-2xl font-bold text-blue-400">
+                          {applicantStats.applied}
+                        </p>
                       </CardContent>
                     </Card>
                     <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                       <CardContent className="p-4 text-center space-y-2">
                         <p className="text-sm text-gray-400">Interviewing</p>
-                        <p className="text-2xl font-bold text-purple-400">{applicantStats.interviewing}</p>
+                        <p className="text-2xl font-bold text-purple-400">
+                          {applicantStats.interviewing}
+                        </p>
                       </CardContent>
                     </Card>
                     <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                       <CardContent className="p-4 text-center space-y-2">
                         <p className="text-sm text-gray-400">Hired</p>
-                        <p className="text-2xl font-bold text-green-400">{applicantStats.hired}</p>
+                        <p className="text-2xl font-bold text-green-400">
+                          {applicantStats.hired}
+                        </p>
                       </CardContent>
                     </Card>
                   </div>
@@ -611,9 +763,12 @@ export default function NexusDashboard() {
                   {/* CTA Section */}
                   <Card className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border-blue-500/40">
                     <CardContent className="p-8 text-center space-y-4">
-                      <h3 className="text-2xl font-bold text-white">Hire Top Talent</h3>
+                      <h3 className="text-2xl font-bold text-white">
+                        Hire Top Talent
+                      </h3>
                       <p className="text-gray-300 max-w-md mx-auto">
-                        Post opportunities and find the perfect creators for your projects
+                        Post opportunities and find the perfect creators for
+                        your projects
                       </p>
                       <Button
                         onClick={() => navigate("/opportunities/post")}
@@ -627,7 +782,10 @@ export default function NexusDashboard() {
                 </TabsContent>
 
                 {/* Opportunities Tab */}
-                <TabsContent value="opportunities" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="opportunities"
+                  className="space-y-4 animate-fade-in"
+                >
                   <PostedOpportunitiesWidget
                     opportunities={postedOpportunities.map((o: any) => ({
                       id: o.id,
@@ -659,8 +817,13 @@ export default function NexusDashboard() {
                   {postedOpportunities.length === 0 && (
                     <Card className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border-blue-500/40">
                       <CardContent className="p-8 text-center space-y-4">
-                        <h3 className="text-2xl font-bold text-white">Start Hiring Talent</h3>
-                        <p className="text-gray-300">Post opportunities and find the perfect creators for your projects</p>
+                        <h3 className="text-2xl font-bold text-white">
+                          Start Hiring Talent
+                        </h3>
+                        <p className="text-gray-300">
+                          Post opportunities and find the perfect creators for
+                          your projects
+                        </p>
                         <Button
                           onClick={() => navigate("/opportunities/post")}
                           className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
@@ -674,7 +837,10 @@ export default function NexusDashboard() {
                 </TabsContent>
 
                 {/* Applicants Tab - Kanban Style */}
-                <TabsContent value="applicants" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="applicants"
+                  className="space-y-4 animate-fade-in"
+                >
                   <ApplicantTrackerWidget
                     applicants={applicants.map((a: any) => ({
                       id: a.id,
@@ -704,7 +870,10 @@ export default function NexusDashboard() {
                 </TabsContent>
 
                 {/* Contracts Tab */}
-                <TabsContent value="contracts" className="space-y-4 animate-fade-in">
+                <TabsContent
+                  value="contracts"
+                  className="space-y-4 animate-fade-in"
+                >
                   <ContractsWidget
                     contracts={contracts.map((c: any) => ({
                       id: c.id,
@@ -712,7 +881,11 @@ export default function NexusDashboard() {
                       creator_name: c.creator?.full_name || "Creator",
                       status: c.status || "active",
                       total_amount: c.total_amount || 0,
-                      paid_amount: c.payments?.reduce((sum: number, p: any) => sum + (p.amount || 0), 0) || 0,
+                      paid_amount:
+                        c.payments?.reduce(
+                          (sum: number, p: any) => sum + (p.amount || 0),
+                          0,
+                        ) || 0,
                       start_date: c.start_date,
                       end_date: c.end_date,
                       description: c.description,
@@ -729,17 +902,30 @@ export default function NexusDashboard() {
                     <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                       <CardHeader>
                         <CardTitle>Payment History</CardTitle>
-                        <CardDescription>Recent payments made to creators</CardDescription>
+                        <CardDescription>
+                          Recent payments made to creators
+                        </CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-3">
                           {paymentHistory.map((payment: any) => (
-                            <div key={payment.id} className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-green-500/10">
+                            <div
+                              key={payment.id}
+                              className="flex items-center justify-between p-3 bg-black/30 rounded-lg border border-green-500/10"
+                            >
                               <div className="space-y-1">
-                                <p className="font-semibold text-white text-sm">{payment.description}</p>
-                                <p className="text-xs text-gray-400">{new Date(payment.created_at).toLocaleDateString()}</p>
+                                <p className="font-semibold text-white text-sm">
+                                  {payment.description}
+                                </p>
+                                <p className="text-xs text-gray-400">
+                                  {new Date(
+                                    payment.created_at,
+                                  ).toLocaleDateString()}
+                                </p>
                               </div>
-                              <p className="font-semibold text-green-400">${payment.amount?.toLocaleString()}</p>
+                              <p className="font-semibold text-green-400">
+                                ${payment.amount?.toLocaleString()}
+                              </p>
                             </div>
                           ))}
                         </div>

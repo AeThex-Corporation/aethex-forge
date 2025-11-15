@@ -1,7 +1,20 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Briefcase, MapPin, DollarSign, Clock, ArrowRight, AlertCircle } from "lucide-react";
+import {
+  Briefcase,
+  MapPin,
+  DollarSign,
+  Clock,
+  ArrowRight,
+  AlertCircle,
+} from "lucide-react";
 
 export interface Opportunity {
   id: string;
@@ -112,7 +125,9 @@ export function OpportunitiesWidget({
                       {opp.title}
                     </h4>
                     {opp.category && (
-                      <p className="text-xs text-gray-400 mt-1">{opp.category}</p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {opp.category}
+                      </p>
                     )}
                   </div>
                   <Badge className={statusBadge[opp.status]}>

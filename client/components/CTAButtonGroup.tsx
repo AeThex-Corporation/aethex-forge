@@ -46,15 +46,15 @@ export function CTAButtonGroup({
           btn.size === "sm"
             ? "text-sm px-3 py-1"
             : btn.size === "lg"
-            ? "text-lg px-6 py-3"
-            : "px-4 py-2";
+              ? "text-lg px-6 py-3"
+              : "px-4 py-2";
 
         const variantClass =
           btn.variant === "outline"
             ? "border border-opacity-30 text-opacity-75 hover:bg-opacity-10"
             : btn.variant === "secondary"
-            ? "bg-opacity-50 hover:bg-opacity-75"
-            : "";
+              ? "bg-opacity-50 hover:bg-opacity-75"
+              : "";
 
         const widthClass = btn.fullWidth ? "w-full" : "";
 
@@ -66,11 +66,18 @@ export function CTAButtonGroup({
           key: idx,
           className: `${sizeClass} ${variantClass} ${widthClass}`,
           onClick: btn.onClick,
-          ...(btn.href && { href: btn.href, target: "_blank", rel: "noopener noreferrer" }),
+          ...(btn.href && {
+            href: btn.href,
+            target: "_blank",
+            rel: "noopener noreferrer",
+          }),
         };
 
         return (
-          <Button {...(baseProps as any)} variant={btn.variant === "outline" ? "outline" : "default"}>
+          <Button
+            {...(baseProps as any)}
+            variant={btn.variant === "outline" ? "outline" : "default"}
+          >
             {Icon && <Icon className="h-4 w-4 mr-2" />}
             {btn.label}
           </Button>
@@ -100,7 +107,9 @@ export function CTASection({
   layout = "vertical",
 }: CTASectionProps) {
   return (
-    <div className={`bg-gradient-to-br ${gradient} rounded-lg border p-8 text-center space-y-4`}>
+    <div
+      className={`bg-gradient-to-br ${gradient} rounded-lg border p-8 text-center space-y-4`}
+    >
       <h3 className="text-2xl font-bold text-white">{title}</h3>
       {subtitle && <p className="text-gray-300">{subtitle}</p>}
       {children && <div className="my-4">{children}</div>}

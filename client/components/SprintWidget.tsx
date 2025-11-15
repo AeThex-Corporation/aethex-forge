@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Zap, TrendingUp } from "lucide-react";
 
@@ -66,11 +72,14 @@ export function SprintWidgetComponent({
 
   const now = new Date();
   const endDate = new Date(sprint.end_date);
-  const daysRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  const daysRemaining = Math.ceil(
+    (endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+  );
   const isActive = sprint.status === "active";
-  const progress = sprint.tasks_total && sprint.tasks_total > 0
-    ? Math.round(((sprint.tasks_completed || 0) / sprint.tasks_total) * 100)
-    : 0;
+  const progress =
+    sprint.tasks_total && sprint.tasks_total > 0
+      ? Math.round(((sprint.tasks_completed || 0) / sprint.tasks_total) * 100)
+      : 0;
 
   const formatCountdown = (days: number) => {
     if (days < 0) return "Sprint Over";
@@ -87,11 +96,21 @@ export function SprintWidgetComponent({
             <CardTitle className="flex items-center gap-2">
               <Zap className="h-5 w-5" />
               {sprint.project_name || "Sprint"}
-              {sprint.sprint_number && <span className="text-sm font-normal text-gray-400">#{sprint.sprint_number}</span>}
+              {sprint.sprint_number && (
+                <span className="text-sm font-normal text-gray-400">
+                  #{sprint.sprint_number}
+                </span>
+              )}
             </CardTitle>
             <CardDescription>Sprint timeline and progress</CardDescription>
           </div>
-          <Badge className={isActive ? "bg-green-600/50 text-green-100" : "bg-blue-600/50 text-blue-100"}>
+          <Badge
+            className={
+              isActive
+                ? "bg-green-600/50 text-green-100"
+                : "bg-blue-600/50 text-blue-100"
+            }
+          >
             {sprint.status}
           </Badge>
         </div>
@@ -106,12 +125,16 @@ export function SprintWidgetComponent({
           <div className={`text-3xl font-bold ${colors.accent}`}>
             {daysRemaining > 0 ? daysRemaining : 0} days
           </div>
-          <p className="text-sm text-gray-400">{formatCountdown(daysRemaining)}</p>
+          <p className="text-sm text-gray-400">
+            {formatCountdown(daysRemaining)}
+          </p>
         </div>
 
         {/* Timeline */}
         <div className="space-y-2">
-          <p className="text-xs font-semibold text-gray-300 uppercase">Timeline</p>
+          <p className="text-xs font-semibold text-gray-300 uppercase">
+            Timeline
+          </p>
           <div className="grid grid-cols-2 gap-4">
             <div className="p-2 bg-black/30 rounded border border-gray-500/10">
               <p className="text-xs text-gray-400">Start</p>
@@ -132,7 +155,9 @@ export function SprintWidgetComponent({
         {sprint.tasks_total && sprint.tasks_total > 0 && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold text-gray-300 uppercase">Task Progress</p>
+              <p className="text-xs font-semibold text-gray-300 uppercase">
+                Task Progress
+              </p>
               <p className="text-sm font-bold text-white">{progress}%</p>
             </div>
             <div className="w-full bg-black/50 rounded-full h-3">
@@ -142,7 +167,8 @@ export function SprintWidgetComponent({
               />
             </div>
             <p className="text-xs text-gray-400">
-              {sprint.tasks_completed || 0} of {sprint.tasks_total} tasks completed
+              {sprint.tasks_completed || 0} of {sprint.tasks_total} tasks
+              completed
             </p>
           </div>
         )}
@@ -150,7 +176,9 @@ export function SprintWidgetComponent({
         {/* Scope */}
         {sprint.scope && (
           <div className="p-3 bg-black/30 rounded-lg border border-gray-500/10 space-y-2">
-            <p className="text-xs font-semibold text-gray-300 uppercase">Scope</p>
+            <p className="text-xs font-semibold text-gray-300 uppercase">
+              Scope
+            </p>
             <p className="text-sm text-gray-300">{sprint.scope}</p>
           </div>
         )}
@@ -159,8 +187,12 @@ export function SprintWidgetComponent({
         {sprint.team_size && (
           <div className="p-3 bg-black/30 rounded-lg border border-gray-500/10 flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold text-gray-300 uppercase">Team Size</p>
-              <p className="text-sm text-gray-300 mt-1">{sprint.team_size} members</p>
+              <p className="text-xs font-semibold text-gray-300 uppercase">
+                Team Size
+              </p>
+              <p className="text-sm text-gray-300 mt-1">
+                {sprint.team_size} members
+              </p>
             </div>
             <TrendingUp className="h-5 w-5 text-gray-500" />
           </div>

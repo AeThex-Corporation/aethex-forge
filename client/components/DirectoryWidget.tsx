@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Users, Search, Phone, Mail, MapPin } from "lucide-react";
@@ -48,8 +54,12 @@ export function DirectoryWidget({
     return matchesSearch;
   });
 
-  const employeeCount = members.filter(m => m.employment_type === "employee").length;
-  const contractorCount = members.filter(m => m.employment_type === "contractor").length;
+  const employeeCount = members.filter(
+    (m) => m.employment_type === "employee",
+  ).length;
+  const contractorCount = members.filter(
+    (m) => m.employment_type === "contractor",
+  ).length;
 
   return (
     <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
@@ -69,7 +79,9 @@ export function DirectoryWidget({
           </div>
           <div className="text-center">
             <p className="text-xs text-gray-400">Contractors</p>
-            <p className="text-lg font-bold text-orange-400">{contractorCount}</p>
+            <p className="text-lg font-bold text-orange-400">
+              {contractorCount}
+            </p>
           </div>
         </div>
 
@@ -114,10 +126,14 @@ export function DirectoryWidget({
                   )}
 
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-white truncate">{member.name}</h4>
+                    <h4 className="font-semibold text-white truncate">
+                      {member.name}
+                    </h4>
                     <p className="text-xs text-gray-400">{member.role}</p>
                     {member.department && (
-                      <p className="text-xs text-gray-500">{member.department}</p>
+                      <p className="text-xs text-gray-500">
+                        {member.department}
+                      </p>
                     )}
                   </div>
 

@@ -32,7 +32,8 @@ export default async (req: Request) => {
     // Fetch IP portfolio (all projects' IP counts)
     const { data: portfolio, error } = await supabase
       .from("labs_ip_portfolio")
-      .select(`
+      .select(
+        `
         id,
         patents_count,
         trademarks_count,
@@ -40,7 +41,8 @@ export default async (req: Request) => {
         copyrights_count,
         created_at,
         updated_at
-      `)
+      `,
+      )
       .single();
 
     if (error && error.code !== "PGRST116") {

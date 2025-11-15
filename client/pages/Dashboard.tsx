@@ -115,9 +115,20 @@ const ARMS = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user, profile, loading: authLoading, signOut, profileComplete, linkedProviders, linkProvider, unlinkProvider } = useAuth();
+  const {
+    user,
+    profile,
+    loading: authLoading,
+    signOut,
+    profileComplete,
+    linkedProviders,
+    linkProvider,
+    unlinkProvider,
+  } = useAuth();
   const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState(() => searchParams.get("tab") ?? "realms");
+  const [activeTab, setActiveTab] = useState(
+    () => searchParams.get("tab") ?? "realms",
+  );
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [website, setWebsite] = useState("");
@@ -218,7 +229,10 @@ export default function Dashboard() {
                   Dashboard
                 </h1>
                 <p className="text-gray-400 text-lg">
-                  Welcome back, <span className="text-purple-300 font-semibold">{profile?.full_name || user.email?.split("@")[0]}</span>
+                  Welcome back,{" "}
+                  <span className="text-purple-300 font-semibold">
+                    {profile?.full_name || user.email?.split("@")[0]}
+                  </span>
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -229,7 +243,10 @@ export default function Dashboard() {
                   </Badge>
                 )}
                 {profile?.level && (
-                  <Badge variant="outline" className="border-purple-500/30 text-purple-300 bg-purple-500/10 text-sm py-1 px-3">
+                  <Badge
+                    variant="outline"
+                    className="border-purple-500/30 text-purple-300 bg-purple-500/10 text-sm py-1 px-3"
+                  >
                     <Star className="h-3 w-3 mr-1" />
                     Level {profile.level}
                   </Badge>
@@ -243,8 +260,13 @@ export default function Dashboard() {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1">
-                      <p className="font-semibold text-white">Complete Your Profile</p>
-                      <p className="text-sm text-orange-200">Set up your profile to unlock all AeThex features and join the community</p>
+                      <p className="font-semibold text-white">
+                        Complete Your Profile
+                      </p>
+                      <p className="text-sm text-orange-200">
+                        Set up your profile to unlock all AeThex features and
+                        join the community
+                      </p>
                     </div>
                     <Button
                       size="sm"
@@ -260,7 +282,11 @@ export default function Dashboard() {
           </div>
 
           {/* Tabs Section */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-4 lg:grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
               <TabsTrigger value="realms" className="text-sm md:text-base">
                 <span className="hidden sm:inline">Realms</span>
@@ -291,17 +317,26 @@ export default function Dashboard() {
                       }}
                       className="group relative overflow-hidden"
                     >
-                      <Card className={`bg-gradient-to-br ${arm.bgGradient} border transition-all duration-300 h-full hover:shadow-lg hover:shadow-purple-500/20 ${arm.borderColor} cursor-pointer`}>
+                      <Card
+                        className={`bg-gradient-to-br ${arm.bgGradient} border transition-all duration-300 h-full hover:shadow-lg hover:shadow-purple-500/20 ${arm.borderColor} cursor-pointer`}
+                      >
                         <CardContent className="p-6 space-y-4">
                           <div className="flex items-start justify-between">
                             <div className="space-y-1">
                               <div className="flex items-center gap-3">
                                 <div className="p-2 rounded-lg bg-black/30 group-hover:bg-black/50 transition-colors">
-                                  <IconComponent className="h-5 w-5" style={{ color: arm.color }} />
+                                  <IconComponent
+                                    className="h-5 w-5"
+                                    style={{ color: arm.color }}
+                                  />
                                 </div>
-                                <h3 className="text-xl font-bold text-white">{arm.label}</h3>
+                                <h3 className="text-xl font-bold text-white">
+                                  {arm.label}
+                                </h3>
                               </div>
-                              <p className="text-sm text-gray-400">{arm.description}</p>
+                              <p className="text-sm text-gray-400">
+                                {arm.description}
+                              </p>
                             </div>
                           </div>
                           <div className="pt-2 flex items-center gap-2 text-purple-300 group-hover:gap-3 transition-all">
@@ -325,13 +360,18 @@ export default function Dashboard() {
                     <div className="relative mx-auto w-24 h-24">
                       <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/30 to-blue-500/30 blur-lg" />
                       <img
-                        src={profile?.avatar_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"}
+                        src={
+                          profile?.avatar_url ||
+                          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
+                        }
                         alt="Profile"
                         className="w-24 h-24 rounded-full ring-4 ring-purple-500/40 relative"
                       />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-lg font-bold text-white">{profile?.full_name || "User"}</h3>
+                      <h3 className="text-lg font-bold text-white">
+                        {profile?.full_name || "User"}
+                      </h3>
                       <p className="text-sm text-gray-400">{user.email}</p>
                       <Badge className="bg-purple-600/50 text-purple-100 mx-auto">
                         <Star className="h-3 w-3 mr-1" />
@@ -345,7 +385,9 @@ export default function Dashboard() {
                 <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20 lg:col-span-2">
                   <CardHeader>
                     <CardTitle>Edit Profile</CardTitle>
-                    <CardDescription>Update your public profile information</CardDescription>
+                    <CardDescription>
+                      Update your public profile information
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
@@ -429,14 +471,23 @@ export default function Dashboard() {
             </TabsContent>
 
             {/* Connections Tab */}
-            <TabsContent value="connections" className="space-y-6 animate-fade-in">
+            <TabsContent
+              value="connections"
+              className="space-y-6 animate-fade-in"
+            >
               <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                 <CardHeader>
                   <CardTitle>Connected Accounts</CardTitle>
-                  <CardDescription>Link external accounts to your AeThex profile</CardDescription>
+                  <CardDescription>
+                    Link external accounts to your AeThex profile
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <OAuthConnections linkedProviders={linkedProviders} linkProvider={linkProvider} unlinkProvider={unlinkProvider} />
+                  <OAuthConnections
+                    linkedProviders={linkedProviders}
+                    linkProvider={linkProvider}
+                    unlinkProvider={unlinkProvider}
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -448,7 +499,9 @@ export default function Dashboard() {
                 <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                   <CardHeader>
                     <CardTitle>Primary Realm</CardTitle>
-                    <CardDescription>Choose your primary area of focus</CardDescription>
+                    <CardDescription>
+                      Choose your primary area of focus
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <RealmSwitcher />

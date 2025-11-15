@@ -1,7 +1,20 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, Calendar, CheckCircle, Clock, MessageCircle, ArrowRight } from "lucide-react";
+import {
+  Users,
+  Calendar,
+  CheckCircle,
+  Clock,
+  MessageCircle,
+  ArrowRight,
+} from "lucide-react";
 
 export interface Mentor {
   id: string;
@@ -59,7 +72,8 @@ export function MentorshipWidget({
   accentColor = "red",
 }: MentorshipWidgetProps) {
   const colors = colorMap[accentColor];
-  const person = mentorship?.type === "mentor" ? mentorship.mentor : mentorship?.mentee;
+  const person =
+    mentorship?.type === "mentor" ? mentorship.mentor : mentorship?.mentee;
 
   if (!mentorship) {
     return (
@@ -77,7 +91,7 @@ export function MentorshipWidget({
             <div>
               <p className="text-gray-400 mb-2">No active mentorship</p>
               <p className="text-sm text-gray-500 mb-4">
-                {title.includes("Mentorship") 
+                {title.includes("Mentorship")
                   ? "Connect with an experienced mentor or become one yourself"
                   : ""}
               </p>
@@ -105,7 +119,9 @@ export function MentorshipWidget({
           {title}
         </CardTitle>
         <CardDescription>
-          {mentorship.type === "mentor" ? "Mentoring someone" : "Being mentored by"}
+          {mentorship.type === "mentor"
+            ? "Mentoring someone"
+            : "Being mentored by"}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -116,12 +132,13 @@ export function MentorshipWidget({
               mentorship.status === "active"
                 ? "bg-green-600/50 text-green-100"
                 : mentorship.status === "paused"
-                ? "bg-yellow-600/50 text-yellow-100"
-                : "bg-gray-600/50 text-gray-100"
+                  ? "bg-yellow-600/50 text-yellow-100"
+                  : "bg-gray-600/50 text-gray-100"
             }
           >
-            {mentorship.status === "active" ? "🟢" : "⏸"}
-            {" "}{mentorship.status.charAt(0).toUpperCase() + mentorship.status.slice(1)}
+            {mentorship.status === "active" ? "🟢" : "⏸"}{" "}
+            {mentorship.status.charAt(0).toUpperCase() +
+              mentorship.status.slice(1)}
           </Badge>
         </div>
 
@@ -151,10 +168,15 @@ export function MentorshipWidget({
             {/* Specialties */}
             {person.specialties && person.specialties.length > 0 && (
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-gray-300 uppercase">Specialties</p>
+                <p className="text-xs font-semibold text-gray-300 uppercase">
+                  Specialties
+                </p>
                 <div className="flex gap-1 flex-wrap">
                   {person.specialties.slice(0, 4).map((specialty) => (
-                    <Badge key={specialty} className="bg-gray-600/30 text-gray-200 text-xs">
+                    <Badge
+                      key={specialty}
+                      className="bg-gray-600/30 text-gray-200 text-xs"
+                    >
                       {specialty}
                     </Badge>
                   ))}
@@ -174,7 +196,9 @@ export function MentorshipWidget({
           {mentorship.sessions_completed !== undefined && (
             <div className="text-center">
               <p className="text-xs text-gray-400">Sessions</p>
-              <p className="text-lg font-bold text-white">{mentorship.sessions_completed}</p>
+              <p className="text-lg font-bold text-white">
+                {mentorship.sessions_completed}
+              </p>
             </div>
           )}
           {mentorship.next_session && (

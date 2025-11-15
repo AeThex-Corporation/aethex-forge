@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: staffMember, error } = await supabase
       .from("staff_members")
-      .select(`
+      .select(
+        `
         id,
         user_id,
         full_name,
@@ -30,7 +31,8 @@ export default async (req: Request) => {
         salary,
         avatar_url,
         created_at
-      `)
+      `,
+      )
       .eq("user_id", userData.user.id)
       .single();
 

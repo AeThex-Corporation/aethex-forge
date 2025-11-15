@@ -1,7 +1,13 @@
 import { supabase } from "../_supabase";
 
 const VALID_ARMS = ["foundation", "gameforge", "labs", "corp", "devlink"];
-const VALID_TYPES = ["courses", "projects", "research", "opportunities", "manual"];
+const VALID_TYPES = [
+  "courses",
+  "projects",
+  "research",
+  "opportunities",
+  "manual",
+];
 
 export default async (req: Request) => {
   try {
@@ -28,7 +34,9 @@ export default async (req: Request) => {
         .order("created_at", { ascending: false });
 
       if (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+        });
       }
 
       return new Response(JSON.stringify(data), {
@@ -42,7 +50,10 @@ export default async (req: Request) => {
       const body = await req.json();
       const { arm, affiliation_type, affiliation_data, confirmed } = body;
 
-      if (!VALID_ARMS.includes(arm) || !VALID_TYPES.includes(affiliation_type)) {
+      if (
+        !VALID_ARMS.includes(arm) ||
+        !VALID_TYPES.includes(affiliation_type)
+      ) {
         return new Response("Invalid arm or affiliation type", { status: 400 });
       }
 
@@ -57,13 +68,15 @@ export default async (req: Request) => {
             affiliation_data: affiliation_data || {},
             confirmed: confirmed === true,
           },
-          { onConflict: "user_id,arm,affiliation_type" }
+          { onConflict: "user_id,arm,affiliation_type" },
         )
         .select()
         .single();
 
       if (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+        });
       }
 
       return new Response(JSON.stringify(data), {
@@ -89,7 +102,9 @@ export default async (req: Request) => {
         .eq("affiliation_type", affiliation_type || null);
 
       if (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
+        });
       }
 
       return new Response(JSON.stringify({ success: true }), {
@@ -101,6 +116,8 @@ export default async (req: Request) => {
     return new Response("Method not allowed", { status: 405 });
   } catch (error: any) {
     console.error("Arm affiliations error:", error);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
   }
 };

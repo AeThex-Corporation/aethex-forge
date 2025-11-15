@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: directory, error } = await supabase
       .from("staff_members")
-      .select(`
+      .select(
+        `
         id,
         user_id,
         full_name,
@@ -31,7 +32,8 @@ export default async (req: Request) => {
         location,
         username,
         created_at
-      `)
+      `,
+      )
       .order("full_name", { ascending: true });
 
     if (error) {

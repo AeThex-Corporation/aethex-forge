@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: publications, error } = await supabase
       .from("labs_publications")
-      .select(`
+      .select(
+        `
         id,
         title,
         description,
@@ -27,7 +28,8 @@ export default async (req: Request) => {
         published_date,
         research_track_id,
         created_at
-      `)
+      `,
+      )
       .order("published_date", { ascending: false });
 
     if (error) {

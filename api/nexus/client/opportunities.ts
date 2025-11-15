@@ -11,7 +11,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -26,10 +29,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       let query = admin
         .from("nexus_opportunities")
-        .select(`
+        .select(
+          `
           *,
           applications:nexus_applications(id, status, creator_id)
-        `)
+        `,
+        )
         .eq("posted_by", user.id)
         .order("created_at", { ascending: false });
 
@@ -39,7 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       const { data: opportunities, error: oppError } = await query.range(
         offset,
-        offset + limit - 1
+        offset + limit - 1,
       );
 
       if (oppError) {
@@ -72,7 +77,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       if (!title || !description || !category || !budget_type) {
         return res.status(400).json({
-          error: "Missing required fields: title, description, category, budget_type",
+          error:
+            "Missing required fields: title, description, category, budget_type",
         });
       }
 
@@ -83,7 +89,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           title,
           description,
           category,
-          required_skills: Array.isArray(required_skills) ? required_skills : [],
+          required_skills: Array.isArray(required_skills)
+            ? required_skills
+            : [],
           budget_type,
           budget_min: budget_min || null,
           budget_max: budget_max || null,

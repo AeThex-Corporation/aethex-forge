@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, MessageCircle, CheckCircle, Clock, ArrowRight } from "lucide-react";
+import {
+  Users,
+  MessageCircle,
+  CheckCircle,
+  Clock,
+  ArrowRight,
+} from "lucide-react";
 
 export interface Applicant {
   id: string;
@@ -27,7 +39,10 @@ interface ApplicantTrackerWidgetProps {
   description?: string;
   onViewProfile?: (applicantId: string) => void;
   onMessage?: (applicantId: string) => void;
-  onUpdateStatus?: (applicantId: string, newStatus: "applied" | "interviewing" | "hired") => void;
+  onUpdateStatus?: (
+    applicantId: string,
+    newStatus: "applied" | "interviewing" | "hired",
+  ) => void;
   accentColor?: "blue" | "purple" | "cyan" | "green";
 }
 
@@ -73,12 +88,16 @@ export function ApplicantTrackerWidget({
   const [draggedApplicant, setDraggedApplicant] = useState<string | null>(null);
 
   const statusCounts = {
-    applied: applicants.filter(a => a.status === "applied").length,
-    interviewing: applicants.filter(a => a.status === "interviewing").length,
-    hired: applicants.filter(a => a.status === "hired").length,
+    applied: applicants.filter((a) => a.status === "applied").length,
+    interviewing: applicants.filter((a) => a.status === "interviewing").length,
+    hired: applicants.filter((a) => a.status === "hired").length,
   };
 
-  const allStatuses: Array<"applied" | "interviewing" | "hired"> = ["applied", "interviewing", "hired"];
+  const allStatuses: Array<"applied" | "interviewing" | "hired"> = [
+    "applied",
+    "interviewing",
+    "hired",
+  ];
 
   const handleDragStart = (applicantId: string) => {
     setDraggedApplicant(applicantId);
@@ -115,7 +134,9 @@ export function ApplicantTrackerWidget({
             {allStatuses.map((status) => {
               const statusInfo = statusColors[status];
               const StatusIcon = statusInfo.icon;
-              const statusApplicants = applicants.filter(a => a.status === status);
+              const statusApplicants = applicants.filter(
+                (a) => a.status === status,
+              );
 
               return (
                 <div
@@ -128,9 +149,13 @@ export function ApplicantTrackerWidget({
                   <div className="mb-4 pb-3 border-b border-gray-500/20">
                     <div className="flex items-center gap-2 mb-2">
                       <StatusIcon className="h-4 w-4" />
-                      <span className="font-semibold text-white">{statusInfo.label}</span>
+                      <span className="font-semibold text-white">
+                        {statusInfo.label}
+                      </span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-100">{statusApplicants.length}</p>
+                    <p className="text-2xl font-bold text-gray-100">
+                      {statusApplicants.length}
+                    </p>
                   </div>
 
                   {/* Applicants List */}

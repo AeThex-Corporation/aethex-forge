@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: invoices, error } = await supabase
       .from("contractor_invoices")
-      .select(`
+      .select(
+        `
         id,
         user_id,
         invoice_number,
@@ -28,7 +29,8 @@ export default async (req: Request) => {
         due_date,
         description,
         created_at
-      `)
+      `,
+      )
       .eq("user_id", userData.user.id)
       .order("date", { ascending: false });
 

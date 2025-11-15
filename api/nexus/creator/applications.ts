@@ -15,7 +15,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -28,7 +31,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     let query = admin
       .from("nexus_applications")
-      .select(`
+      .select(
+        `
         *,
         opportunity:nexus_opportunities(
           id,
@@ -43,7 +47,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           posted_by,
           created_at
         )
-      `)
+      `,
+      )
       .eq("creator_id", user.id)
       .order("created_at", { ascending: false });
 
@@ -51,9 +56,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       query = query.eq("status", status);
     }
 
-    const { data: applications, error: applicationsError, count } = await query
+    const {
+      data: applications,
+      error: applicationsError,
+      count,
+    } = await query
       .range(offset, offset + limit - 1)
-      .then(result => ({ ...result, count: result.data?.length || 0 }));
+      .then((result) => ({ ...result, count: result.data?.length || 0 }));
 
     if (applicationsError) {
       return res.status(500).json({ error: applicationsError.message });

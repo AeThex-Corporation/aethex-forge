@@ -11,7 +11,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -26,20 +29,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (role === "mentor") {
         const { data: m } = await admin
           .from("foundation_mentorships")
-          .select(`
+          .select(
+            `
             *,
             mentee:user_profiles!mentee_id(id, full_name, avatar_url, email)
-          `)
+          `,
+          )
           .eq("mentor_id", user.id)
           .order("created_at", { ascending: false });
         mentorships = m;
       } else if (role === "mentee") {
         const { data: m } = await admin
           .from("foundation_mentorships")
-          .select(`
+          .select(
+            `
             *,
             mentor:user_profiles!mentor_id(id, full_name, avatar_url, email)
-          `)
+          `,
+          )
           .eq("mentee_id", user.id)
           .order("created_at", { ascending: false });
         mentorships = m;
@@ -49,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .from("foundation_mentorships")
           .select(
             `*,
-            mentee:user_profiles!mentee_id(id, full_name, avatar_url, email)`
+            mentee:user_profiles!mentee_id(id, full_name, avatar_url, email)`,
           )
           .eq("mentor_id", user.id);
 
@@ -57,7 +64,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .from("foundation_mentorships")
           .select(
             `*,
-            mentor:user_profiles!mentor_id(id, full_name, avatar_url, email)`
+            mentor:user_profiles!mentor_id(id, full_name, avatar_url, email)`,
           )
           .eq("mentee_id", user.id);
 

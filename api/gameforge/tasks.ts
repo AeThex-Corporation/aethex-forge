@@ -21,7 +21,8 @@ export default async (req: Request) => {
 
     let query = supabase
       .from("gameforge_tasks")
-      .select(`
+      .select(
+        `
         id,
         title,
         description,
@@ -34,7 +35,8 @@ export default async (req: Request) => {
         priority,
         due_date,
         created_at
-      `)
+      `,
+      )
       .eq("created_by_id", userData.user.id);
 
     if (sprintId) {

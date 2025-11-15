@@ -54,7 +54,9 @@ export default function FoundationDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
@@ -62,7 +64,10 @@ export default function FoundationDashboard() {
         const coursesRes = await fetch(`${API_BASE}/api/foundation/courses`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (coursesRes.ok && coursesRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          coursesRes.ok &&
+          coursesRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await coursesRes.json();
           setCourses(Array.isArray(data) ? data : []);
         }
@@ -71,10 +76,16 @@ export default function FoundationDashboard() {
       }
 
       try {
-        const mentorRes = await fetch(`${API_BASE}/api/foundation/mentorships`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (mentorRes.ok && mentorRes.headers.get("content-type")?.includes("application/json")) {
+        const mentorRes = await fetch(
+          `${API_BASE}/api/foundation/mentorships`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        if (
+          mentorRes.ok &&
+          mentorRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await mentorRes.json();
           setMentorships(data.as_mentee || []);
         }
@@ -100,7 +111,9 @@ export default function FoundationDashboard() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-red-300 to-orange-300 bg-clip-text text-transparent">
               Join FOUNDATION
             </h1>
-            <p className="text-gray-400">Learn from industry experts and mentors</p>
+            <p className="text-gray-400">
+              Learn from industry experts and mentors
+            </p>
             <Button
               onClick={() => navigate("/login")}
               className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-lg py-6"
@@ -114,18 +127,25 @@ export default function FoundationDashboard() {
   }
 
   const enrolledCourses = courses.filter((c: any) => c.userEnrollment);
-  const completedCourses = enrolledCourses.filter((c: any) => c.userEnrollment?.status === "completed");
+  const completedCourses = enrolledCourses.filter(
+    (c: any) => c.userEnrollment?.status === "completed",
+  );
   const activeMentor = mentorships.find((m: any) => m.status === "accepted");
 
   return (
     <Layout>
-      <div className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`} style={{ backgroundImage: theme.wallpaperPattern }}>
+      <div
+        className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`}
+        style={{ backgroundImage: theme.wallpaperPattern }}
+      >
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-slide-down">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-2">
-                <h1 className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}>
+                <h1
+                  className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}
+                >
                   FOUNDATION University
                 </h1>
                 <p className="text-gray-400 text-lg">
@@ -140,8 +160,12 @@ export default function FoundationDashboard() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wider">Courses Enrolled</p>
-                      <p className="text-2xl font-bold text-white mt-1">{enrolledCourses.length}</p>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">
+                        Courses Enrolled
+                      </p>
+                      <p className="text-2xl font-bold text-white mt-1">
+                        {enrolledCourses.length}
+                      </p>
                     </div>
                     <BookOpen className="h-6 w-6 text-red-500 opacity-50" />
                   </div>
@@ -152,8 +176,12 @@ export default function FoundationDashboard() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wider">Completed</p>
-                      <p className="text-2xl font-bold text-white mt-1">{completedCourses.length}</p>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">
+                        Completed
+                      </p>
+                      <p className="text-2xl font-bold text-white mt-1">
+                        {completedCourses.length}
+                      </p>
                     </div>
                     <CheckCircle className="h-6 w-6 text-red-500 opacity-50" />
                   </div>
@@ -164,27 +192,38 @@ export default function FoundationDashboard() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wider">Achievements</p>
-                      <p className="text-2xl font-bold text-white mt-1">{achievements.length}</p>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">
+                        Achievements
+                      </p>
+                      <p className="text-2xl font-bold text-white mt-1">
+                        {achievements.length}
+                      </p>
                     </div>
                     <Award className="h-6 w-6 text-red-500 opacity-50" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className={`bg-gradient-to-br ${activeMentor ? 'from-green-950/40 to-green-900/20 border-green-500/20' : 'from-gray-950/40 to-gray-900/20 border-gray-500/20'}`}>
+              <Card
+                className={`bg-gradient-to-br ${activeMentor ? "from-green-950/40 to-green-900/20 border-green-500/20" : "from-gray-950/40 to-gray-900/20 border-gray-500/20"}`}
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wider">Mentor</p>
+                      <p className="text-xs text-gray-400 uppercase tracking-wider">
+                        Mentor
+                      </p>
                       <p className="text-2xl font-bold text-white mt-1">
-                        {activeMentor ? '✓' : '—'}
+                        {activeMentor ? "✓" : "—"}
                       </p>
                     </div>
-                    <Users className="h-6 w-6" style={{
-                      color: activeMentor ? '#22c55e' : '#666',
-                      opacity: 0.5
-                    }} />
+                    <Users
+                      className="h-6 w-6"
+                      style={{
+                        color: activeMentor ? "#22c55e" : "#666",
+                        opacity: 0.5,
+                      }}
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -192,8 +231,15 @@ export default function FoundationDashboard() {
           </div>
 
           {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-red-950/30 border border-red-500/20 p-1" style={{ fontFamily: theme.fontFamily }}>
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList
+              className="grid w-full grid-cols-4 bg-red-950/30 border border-red-500/20 p-1"
+              style={{ fontFamily: theme.fontFamily }}
+            >
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="courses">Courses</TabsTrigger>
               <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
@@ -213,7 +259,9 @@ export default function FoundationDashboard() {
                     expertise: m.mentor?.role_title,
                   },
                   status: m.status,
-                  connectedSince: m.accepted_at ? new Date(m.accepted_at).toLocaleDateString() : null,
+                  connectedSince: m.accepted_at
+                    ? new Date(m.accepted_at).toLocaleDateString()
+                    : null,
                   lastSession: m.last_session_date,
                   nextSession: m.next_session_date,
                 }))}
@@ -269,7 +317,10 @@ export default function FoundationDashboard() {
             </TabsContent>
 
             {/* Mentorship Tab */}
-            <TabsContent value="mentorship" className="space-y-4 animate-fade-in">
+            <TabsContent
+              value="mentorship"
+              className="space-y-4 animate-fade-in"
+            >
               <MentorshipWidget
                 mentorships={mentorships.map((m: any) => ({
                   id: m.id,
@@ -280,7 +331,9 @@ export default function FoundationDashboard() {
                     expertise: m.mentor?.role_title,
                   },
                   status: m.status,
-                  connectedSince: m.accepted_at ? new Date(m.accepted_at).toLocaleDateString() : null,
+                  connectedSince: m.accepted_at
+                    ? new Date(m.accepted_at).toLocaleDateString()
+                    : null,
                   lastSession: m.last_session_date,
                   nextSession: m.next_session_date,
                 }))}
@@ -292,7 +345,10 @@ export default function FoundationDashboard() {
             </TabsContent>
 
             {/* Achievements Tab */}
-            <TabsContent value="achievements" className="space-y-4 animate-fade-in">
+            <TabsContent
+              value="achievements"
+              className="space-y-4 animate-fade-in"
+            >
               <AchievementsWidget
                 achievements={achievements.map((a: any) => ({
                   id: a.id,

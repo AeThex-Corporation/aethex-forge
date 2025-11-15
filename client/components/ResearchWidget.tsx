@@ -1,7 +1,19 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookMarked, ExternalLink, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import {
+  BookMarked,
+  ExternalLink,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
 
 export interface ResearchTrack {
   id: string;
@@ -40,10 +52,26 @@ const colorMap = {
 };
 
 const statusMap = {
-  active: { label: "Active", color: "bg-green-600/50 text-green-100", icon: CheckCircle },
-  paused: { label: "Paused", color: "bg-yellow-600/50 text-yellow-100", icon: Clock },
-  completed: { label: "Completed", color: "bg-blue-600/50 text-blue-100", icon: CheckCircle },
-  on_hold: { label: "On Hold", color: "bg-red-600/50 text-red-100", icon: AlertCircle },
+  active: {
+    label: "Active",
+    color: "bg-green-600/50 text-green-100",
+    icon: CheckCircle,
+  },
+  paused: {
+    label: "Paused",
+    color: "bg-yellow-600/50 text-yellow-100",
+    icon: Clock,
+  },
+  completed: {
+    label: "Completed",
+    color: "bg-blue-600/50 text-blue-100",
+    icon: CheckCircle,
+  },
+  on_hold: {
+    label: "On Hold",
+    color: "bg-red-600/50 text-red-100",
+    icon: AlertCircle,
+  },
 };
 
 export function ResearchWidget({
@@ -54,8 +82,8 @@ export function ResearchWidget({
   accentColor = "yellow",
 }: ResearchWidgetProps) {
   const colors = colorMap[accentColor];
-  const activeCount = tracks.filter(t => t.status === "active").length;
-  const completedCount = tracks.filter(t => t.status === "completed").length;
+  const activeCount = tracks.filter((t) => t.status === "active").length;
+  const completedCount = tracks.filter((t) => t.status === "completed").length;
 
   return (
     <Card className={`${colors.bg} border ${colors.border}`}>
@@ -82,11 +110,15 @@ export function ResearchWidget({
               </div>
               <div className="text-center">
                 <p className="text-xs text-gray-400">Active</p>
-                <p className="text-lg font-bold text-green-400">{activeCount}</p>
+                <p className="text-lg font-bold text-green-400">
+                  {activeCount}
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-xs text-gray-400">Completed</p>
-                <p className="text-lg font-bold text-blue-400">{completedCount}</p>
+                <p className="text-lg font-bold text-blue-400">
+                  {completedCount}
+                </p>
               </div>
             </div>
 
@@ -105,9 +137,13 @@ export function ResearchWidget({
                     {/* Header */}
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-white">{track.title}</h4>
+                        <h4 className="font-semibold text-white">
+                          {track.title}
+                        </h4>
                         {track.category && (
-                          <p className="text-xs text-gray-400">{track.category}</p>
+                          <p className="text-xs text-gray-400">
+                            {track.category}
+                          </p>
                         )}
                       </div>
                       <Badge className={statusInfo.color}>
@@ -118,7 +154,9 @@ export function ResearchWidget({
 
                     {/* Description */}
                     {track.description && (
-                      <p className="text-sm text-gray-400">{track.description}</p>
+                      <p className="text-sm text-gray-400">
+                        {track.description}
+                      </p>
                     )}
 
                     {/* Meta */}

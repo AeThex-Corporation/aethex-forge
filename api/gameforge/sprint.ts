@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: sprint, error } = await supabase
       .from("gameforge_sprints")
-      .select(`
+      .select(
+        `
         id,
         project_id,
         title,
@@ -29,7 +30,8 @@ export default async (req: Request) => {
         deadline,
         gdd,
         scope
-      `)
+      `,
+      )
       .eq("user_id", userData.user.id)
       .order("created_at", { ascending: false })
       .limit(1)

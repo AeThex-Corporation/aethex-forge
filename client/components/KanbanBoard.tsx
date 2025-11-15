@@ -5,7 +5,15 @@ import { Badge } from "@/components/ui/badge";
 export interface KanbanColumn {
   id: string;
   title: string;
-  color: "blue" | "yellow" | "green" | "red" | "purple" | "pink" | "cyan" | "amber";
+  color:
+    | "blue"
+    | "yellow"
+    | "green"
+    | "red"
+    | "purple"
+    | "pink"
+    | "cyan"
+    | "amber";
   items: KanbanItem[];
   count?: number;
 }
@@ -59,17 +67,25 @@ interface KanbanBoardProps {
 }
 
 export function KanbanBoard({ columns, gap = "medium" }: KanbanBoardProps) {
-  const gapClass = gap === "small" ? "gap-3" : gap === "large" ? "gap-6" : "gap-4";
+  const gapClass =
+    gap === "small" ? "gap-3" : gap === "large" ? "gap-6" : "gap-4";
 
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gapClass}`}>
+    <div
+      className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${gapClass}`}
+    >
       {columns.map((column) => (
-        <Card key={column.id} className={`bg-gradient-to-br ${colorMap[column.color]} border`}>
+        <Card
+          key={column.id}
+          className={`bg-gradient-to-br ${colorMap[column.color]} border`}
+        >
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center justify-between">
               <span>{column.title}</span>
               {column.count !== undefined && (
-                <span className="text-sm font-semibold text-gray-400">({column.count})</span>
+                <span className="text-sm font-semibold text-gray-400">
+                  ({column.count})
+                </span>
               )}
             </CardTitle>
           </CardHeader>
@@ -86,15 +102,23 @@ export function KanbanBoard({ columns, gap = "medium" }: KanbanBoardProps) {
                   className={`p-3 bg-black/30 rounded-lg border transition cursor-move ${borderMap[column.color]} ${item.onClick ? "cursor-pointer" : ""}`}
                 >
                   <div className="flex items-start gap-2">
-                    {item.icon && <div className="flex-shrink-0 mt-1">{item.icon}</div>}
+                    {item.icon && (
+                      <div className="flex-shrink-0 mt-1">{item.icon}</div>
+                    )}
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-white text-sm truncate">{item.title}</p>
+                      <p className="font-semibold text-white text-sm truncate">
+                        {item.title}
+                      </p>
                       {item.subtitle && (
-                        <p className="text-xs text-gray-400 mt-1 truncate">{item.subtitle}</p>
+                        <p className="text-xs text-gray-400 mt-1 truncate">
+                          {item.subtitle}
+                        </p>
                       )}
                       {item.badge && (
                         <div className="mt-2">
-                          <Badge className={`bg-${column.color}-600/50 ${textColorMap[column.color]} text-xs`}>
+                          <Badge
+                            className={`bg-${column.color}-600/50 ${textColorMap[column.color]} text-xs`}
+                          >
                             {item.badge}
                           </Badge>
                         </div>
@@ -102,9 +126,14 @@ export function KanbanBoard({ columns, gap = "medium" }: KanbanBoardProps) {
                       {item.metadata && (
                         <div className="mt-2 space-y-1">
                           {Object.entries(item.metadata).map(([key, value]) => (
-                            <div key={key} className="flex justify-between text-xs text-gray-400">
+                            <div
+                              key={key}
+                              className="flex justify-between text-xs text-gray-400"
+                            >
                               <span>{key}:</span>
-                              <span className="font-semibold text-white">{value}</span>
+                              <span className="font-semibold text-white">
+                                {value}
+                              </span>
                             </div>
                           ))}
                         </div>

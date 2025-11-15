@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -77,9 +83,16 @@ export function ProfileEditor({
     arm_affiliations: (profile.arm_affiliations as string[]) || [],
   });
 
-  const [newSkill, setNewSkill] = useState({ name: "", level: "intermediate" as const });
+  const [newSkill, setNewSkill] = useState({
+    name: "",
+    level: "intermediate" as const,
+  });
   const [newLanguage, setNewLanguage] = useState("");
-  const [newWorkExp, setNewWorkExp] = useState({ company: "", title: "", duration: "" });
+  const [newWorkExp, setNewWorkExp] = useState({
+    company: "",
+    title: "",
+    duration: "",
+  });
   const [newPortfolio, setNewPortfolio] = useState({ title: "", url: "" });
   const [copied, setCopied] = useState(false);
 
@@ -88,7 +101,9 @@ export function ProfileEditor({
   const handleSubmit = async () => {
     await onSave({
       ...formData,
-      hourly_rate: formData.hourly_rate ? parseFloat(formData.hourly_rate) : undefined,
+      hourly_rate: formData.hourly_rate
+        ? parseFloat(formData.hourly_rate)
+        : undefined,
       skills_detailed: formData.skills_detailed,
       languages: formData.languages,
       work_experience: formData.work_experience,
@@ -206,7 +221,11 @@ export function ProfileEditor({
                 onClick={copyProfileUrl}
                 title={copied ? "Copied!" : "Copy"}
               >
-                {copied ? <CheckCircle2 className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {copied ? (
+                  <CheckCircle2 className="h-4 w-4" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </CardContent>
@@ -221,7 +240,9 @@ export function ProfileEditor({
               <label className="text-sm font-medium">Bio</label>
               <textarea
                 value={formData.bio_detailed}
-                onChange={(e) => setFormData({ ...formData, bio_detailed: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, bio_detailed: e.target.value })
+                }
                 placeholder="Tell us about yourself..."
                 className="w-full px-3 py-2 mt-1 border rounded-lg bg-background"
                 rows={4}
@@ -233,7 +254,9 @@ export function ProfileEditor({
                 <label className="text-sm font-medium">Location</label>
                 <Input
                   value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, location: e.target.value })
+                  }
                   placeholder="City, Country"
                 />
               </div>
@@ -241,7 +264,9 @@ export function ProfileEditor({
                 <label className="text-sm font-medium">Timezone</label>
                 <Input
                   value={formData.timezone}
-                  onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, timezone: e.target.value })
+                  }
                   placeholder="UTC-8 or America/Los_Angeles"
                 />
               </div>
@@ -256,7 +281,9 @@ export function ProfileEditor({
                 <Input
                   type="number"
                   value={formData.hourly_rate}
-                  onChange={(e) => setFormData({ ...formData, hourly_rate: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, hourly_rate: e.target.value })
+                  }
                   placeholder="50"
                 />
               </div>
@@ -268,7 +295,10 @@ export function ProfileEditor({
                 <select
                   value={formData.availability_status}
                   onChange={(e) =>
-                    setFormData({ ...formData, availability_status: e.target.value })
+                    setFormData({
+                      ...formData,
+                      availability_status: e.target.value,
+                    })
                   }
                   className="w-full px-3 py-2 border rounded-lg bg-background"
                 >
@@ -296,7 +326,9 @@ export function ProfileEditor({
               <label className="text-sm font-medium">Twitter</label>
               <Input
                 value={formData.twitter_url}
-                onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, twitter_url: e.target.value })
+                }
                 placeholder="https://twitter.com/username"
               />
             </div>
@@ -304,7 +336,9 @@ export function ProfileEditor({
               <label className="text-sm font-medium">LinkedIn</label>
               <Input
                 value={formData.linkedin_url}
-                onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, linkedin_url: e.target.value })
+                }
                 placeholder="https://linkedin.com/in/username"
               />
             </div>
@@ -312,7 +346,9 @@ export function ProfileEditor({
               <label className="text-sm font-medium">GitHub</label>
               <Input
                 value={formData.github_url}
-                onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, github_url: e.target.value })
+                }
                 placeholder="https://github.com/username"
               />
             </div>
@@ -320,7 +356,9 @@ export function ProfileEditor({
               <label className="text-sm font-medium">Portfolio Website</label>
               <Input
                 value={formData.portfolio_url}
-                onChange={(e) => setFormData({ ...formData, portfolio_url: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, portfolio_url: e.target.value })
+                }
                 placeholder="https://yourportfolio.com"
               />
             </div>
@@ -328,7 +366,9 @@ export function ProfileEditor({
               <label className="text-sm font-medium">YouTube</label>
               <Input
                 value={formData.youtube_url}
-                onChange={(e) => setFormData({ ...formData, youtube_url: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, youtube_url: e.target.value })
+                }
                 placeholder="https://youtube.com/@username"
               />
             </div>
@@ -336,7 +376,9 @@ export function ProfileEditor({
               <label className="text-sm font-medium">Twitch</label>
               <Input
                 value={formData.twitch_url}
-                onChange={(e) => setFormData({ ...formData, twitch_url: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, twitch_url: e.target.value })
+                }
                 placeholder="https://twitch.tv/username"
               />
             </div>
@@ -359,10 +401,15 @@ export function ProfileEditor({
               <h3 className="font-semibold mb-3">Technical Skills</h3>
               <div className="space-y-2 mb-4">
                 {formData.skills_detailed.map((skill, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2 bg-muted rounded"
+                  >
                     <div>
                       <p className="font-medium">{skill.name}</p>
-                      <p className="text-xs text-muted-foreground capitalize">{skill.level}</p>
+                      <p className="text-xs text-muted-foreground capitalize">
+                        {skill.level}
+                      </p>
                     </div>
                     <Button
                       variant="ghost"
@@ -378,7 +425,9 @@ export function ProfileEditor({
               <div className="flex gap-2">
                 <Input
                   value={newSkill.name}
-                  onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewSkill({ ...newSkill, name: e.target.value })
+                  }
                   placeholder="Add skill"
                 />
                 <select
@@ -386,7 +435,10 @@ export function ProfileEditor({
                   onChange={(e) =>
                     setNewSkill({
                       ...newSkill,
-                      level: e.target.value as "beginner" | "intermediate" | "expert",
+                      level: e.target.value as
+                        | "beginner"
+                        | "intermediate"
+                        | "expert",
                     })
                   }
                   className="px-2 border rounded-lg bg-background"
@@ -406,7 +458,10 @@ export function ProfileEditor({
               <h3 className="font-semibold mb-3">Languages</h3>
               <div className="space-y-2 mb-4">
                 {formData.languages.map((lang, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2 bg-muted rounded"
+                  >
                     <p className="font-medium">{lang}</p>
                     <Button
                       variant="ghost"
@@ -453,8 +508,12 @@ export function ProfileEditor({
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="font-medium">{exp.title}</p>
-                        <p className="text-sm text-muted-foreground">{exp.company}</p>
-                        <p className="text-xs text-muted-foreground">{exp.duration}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {exp.company}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {exp.duration}
+                        </p>
                       </div>
                       <Button
                         variant="ghost"
@@ -466,7 +525,9 @@ export function ProfileEditor({
                       </Button>
                     </div>
                     {exp.description && (
-                      <p className="text-sm text-muted-foreground">{exp.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {exp.description}
+                      </p>
                     )}
                   </div>
                 ))}
@@ -474,17 +535,23 @@ export function ProfileEditor({
               <div className="space-y-2 p-3 border rounded-lg">
                 <Input
                   value={newWorkExp.title}
-                  onChange={(e) => setNewWorkExp({ ...newWorkExp, title: e.target.value })}
+                  onChange={(e) =>
+                    setNewWorkExp({ ...newWorkExp, title: e.target.value })
+                  }
                   placeholder="Job Title"
                 />
                 <Input
                   value={newWorkExp.company}
-                  onChange={(e) => setNewWorkExp({ ...newWorkExp, company: e.target.value })}
+                  onChange={(e) =>
+                    setNewWorkExp({ ...newWorkExp, company: e.target.value })
+                  }
                   placeholder="Company"
                 />
                 <Input
                   value={newWorkExp.duration}
-                  onChange={(e) => setNewWorkExp({ ...newWorkExp, duration: e.target.value })}
+                  onChange={(e) =>
+                    setNewWorkExp({ ...newWorkExp, duration: e.target.value })
+                  }
                   placeholder="Duration (e.g., 2020-2023)"
                 />
                 <Button size="sm" onClick={addWorkExp} className="w-full">
@@ -522,7 +589,9 @@ export function ProfileEditor({
                       </Button>
                     </div>
                     {item.description && (
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {item.description}
+                      </p>
                     )}
                   </div>
                 ))}
@@ -530,12 +599,16 @@ export function ProfileEditor({
               <div className="space-y-2 p-3 border rounded-lg">
                 <Input
                   value={newPortfolio.title}
-                  onChange={(e) => setNewPortfolio({ ...newPortfolio, title: e.target.value })}
+                  onChange={(e) =>
+                    setNewPortfolio({ ...newPortfolio, title: e.target.value })
+                  }
                   placeholder="Project Title"
                 />
                 <Input
                   value={newPortfolio.url}
-                  onChange={(e) => setNewPortfolio({ ...newPortfolio, url: e.target.value })}
+                  onChange={(e) =>
+                    setNewPortfolio({ ...newPortfolio, url: e.target.value })
+                  }
                   placeholder="Project URL"
                 />
                 <Button size="sm" onClick={addPortfolio} className="w-full">
@@ -557,7 +630,8 @@ export function ProfileEditor({
               Arm Affiliations
             </CardTitle>
             <CardDescription>
-              Select the arms you're part of. They can also be auto-detected from your activities.
+              Select the arms you're part of. They can also be auto-detected
+              from your activities.
             </CardDescription>
           </CardHeader>
           <CardContent>

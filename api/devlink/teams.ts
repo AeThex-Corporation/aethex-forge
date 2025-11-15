@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: teams, error } = await supabase
       .from("devlink_teams")
-      .select(`
+      .select(
+        `
         id,
         name,
         description,
@@ -31,7 +32,8 @@ export default async (req: Request) => {
           full_name,
           avatar_url
         )
-      `)
+      `,
+      )
       .contains("members", [{ user_id: userData.user.id }])
       .order("created_at", { ascending: false });
 

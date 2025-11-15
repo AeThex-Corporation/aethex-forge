@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music, Toggle, ToggleLeft, ToggleRight, ExternalLink } from "lucide-react";
+import {
+  Music,
+  Toggle,
+  ToggleLeft,
+  ToggleRight,
+  ExternalLink,
+} from "lucide-react";
 
 export interface EthosStorefrontData {
   for_hire: boolean;
@@ -92,7 +104,9 @@ export function EthosStorefrontWidget({
           <Music className="h-5 w-5" />
           My ETHOS Storefront
         </CardTitle>
-        <CardDescription>Your marketplace presence for services and tracks</CardDescription>
+        <CardDescription>
+          Your marketplace presence for services and tracks
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Profile Header */}
@@ -106,13 +120,17 @@ export function EthosStorefrontWidget({
           )}
           <div className="flex-1">
             {data.headline && (
-              <h3 className="text-lg font-semibold text-white">{data.headline}</h3>
+              <h3 className="text-lg font-semibold text-white">
+                {data.headline}
+              </h3>
             )}
             {data.bio && (
               <p className="text-sm text-gray-400 mt-1">{data.bio}</p>
             )}
             {data.verified && (
-              <Badge className="bg-green-600/50 text-green-100 mt-2">✓ Verified</Badge>
+              <Badge className="bg-green-600/50 text-green-100 mt-2">
+                ✓ Verified
+              </Badge>
             )}
           </div>
         </div>
@@ -121,7 +139,9 @@ export function EthosStorefrontWidget({
         <div className="p-4 bg-black/30 rounded-lg border border-gray-500/10 flex items-center justify-between">
           <div>
             <p className="font-semibold text-white">Available for Work</p>
-            <p className="text-sm text-gray-400">Is your profile visible to clients?</p>
+            <p className="text-sm text-gray-400">
+              Is your profile visible to clients?
+            </p>
           </div>
           <button
             onClick={() => handleToggleForHire(!isForHire)}

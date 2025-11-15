@@ -1,6 +1,18 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FileText, AlertCircle, CheckCircle, Clock, DollarSign } from "lucide-react";
+import {
+  FileText,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  DollarSign,
+} from "lucide-react";
 
 export interface Contract {
   id: string;
@@ -79,7 +91,7 @@ export function ContractsWidget({
   accentColor = "purple",
 }: ContractsWidgetProps) {
   const colors = colorMap[accentColor];
-  const activeContracts = contracts.filter(c => c.status === "active");
+  const activeContracts = contracts.filter((c) => c.status === "active");
 
   return (
     <Card className={`${colors.bg} border ${colors.border}`}>
@@ -100,9 +112,12 @@ export function ContractsWidget({
           <div className="space-y-4">
             {contracts.map((contract) => {
               const StatusIcon = statusMap[contract.status].icon;
-              const progress = contract.paid_amount && contract.total_amount 
-                ? Math.round((contract.paid_amount / contract.total_amount) * 100)
-                : 0;
+              const progress =
+                contract.paid_amount && contract.total_amount
+                  ? Math.round(
+                      (contract.paid_amount / contract.total_amount) * 100,
+                    )
+                  : 0;
 
               return (
                 <div
@@ -128,7 +143,9 @@ export function ContractsWidget({
                   </div>
 
                   {contract.description && (
-                    <p className="text-sm text-gray-400">{contract.description}</p>
+                    <p className="text-sm text-gray-400">
+                      {contract.description}
+                    </p>
                   )}
 
                   <div className="grid grid-cols-2 gap-4 text-sm">
@@ -150,7 +167,9 @@ export function ContractsWidget({
 
                   {contract.milestones && contract.milestones.length > 0 && (
                     <div className="space-y-2 pt-2 border-t border-gray-500/10">
-                      <p className="text-xs font-semibold text-gray-300 uppercase">Milestones</p>
+                      <p className="text-xs font-semibold text-gray-300 uppercase">
+                        Milestones
+                      </p>
                       <div className="space-y-2">
                         {contract.milestones.map((m) => (
                           <div
@@ -165,8 +184,8 @@ export function ContractsWidget({
                                     m.status === "paid"
                                       ? "#22c55e"
                                       : m.status === "approved"
-                                      ? "#3b82f6"
-                                      : "#666",
+                                        ? "#3b82f6"
+                                        : "#666",
                                 }}
                               />
                               <span className="text-gray-300 truncate">

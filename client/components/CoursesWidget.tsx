@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, CheckCircle, Clock, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,9 +51,21 @@ const colorMap = {
 };
 
 const statusMap = {
-  not_started: { label: "Not Started", color: "bg-gray-600/50 text-gray-100", icon: Lock },
-  in_progress: { label: "In Progress", color: "bg-blue-600/50 text-blue-100", icon: Clock },
-  completed: { label: "Completed", color: "bg-green-600/50 text-green-100", icon: CheckCircle },
+  not_started: {
+    label: "Not Started",
+    color: "bg-gray-600/50 text-gray-100",
+    icon: Lock,
+  },
+  in_progress: {
+    label: "In Progress",
+    color: "bg-blue-600/50 text-blue-100",
+    icon: Clock,
+  },
+  completed: {
+    label: "Completed",
+    color: "bg-green-600/50 text-green-100",
+    icon: CheckCircle,
+  },
 };
 
 export function CoursesWidget({
@@ -58,8 +76,10 @@ export function CoursesWidget({
   accentColor = "red",
 }: CoursesWidgetProps) {
   const colors = colorMap[accentColor];
-  const completedCount = courses.filter(c => c.status === "completed").length;
-  const inProgressCount = courses.filter(c => c.status === "in_progress").length;
+  const completedCount = courses.filter((c) => c.status === "completed").length;
+  const inProgressCount = courses.filter(
+    (c) => c.status === "in_progress",
+  ).length;
 
   return (
     <Card className={`${colors.bg} border ${colors.border}`}>
@@ -75,7 +95,9 @@ export function CoursesWidget({
           <div className="text-center py-12">
             <BookOpen className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
             <p className="text-gray-400 mb-4">No courses yet</p>
-            <p className="text-sm text-gray-500">Start your learning journey today</p>
+            <p className="text-sm text-gray-500">
+              Start your learning journey today
+            </p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -87,11 +109,15 @@ export function CoursesWidget({
               </div>
               <div className="text-center">
                 <p className="text-xs text-gray-400">In Progress</p>
-                <p className="text-lg font-bold text-blue-400">{inProgressCount}</p>
+                <p className="text-lg font-bold text-blue-400">
+                  {inProgressCount}
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-xs text-gray-400">Completed</p>
-                <p className="text-lg font-bold text-green-400">{completedCount}</p>
+                <p className="text-lg font-bold text-green-400">
+                  {completedCount}
+                </p>
               </div>
             </div>
 
@@ -111,25 +137,25 @@ export function CoursesWidget({
                     {/* Course Header */}
                     <div className="space-y-2">
                       <div className="flex items-start justify-between gap-2">
-                        <h4 className="font-semibold text-white">{course.title}</h4>
+                        <h4 className="font-semibold text-white">
+                          {course.title}
+                        </h4>
                         <Badge className={statusInfo.color}>
                           <StatusIcon className="h-3 w-3 mr-1" />
                           {statusInfo.label}
                         </Badge>
                       </div>
                       {course.description && (
-                        <p className="text-xs text-gray-400">{course.description}</p>
+                        <p className="text-xs text-gray-400">
+                          {course.description}
+                        </p>
                       )}
                     </div>
 
                     {/* Course Meta */}
                     <div className="flex items-center justify-between text-xs text-gray-400 py-2 border-y border-gray-500/10">
-                      {course.instructor && (
-                        <span>{course.instructor}</span>
-                      )}
-                      {course.duration && (
-                        <span>{course.duration}</span>
-                      )}
+                      {course.instructor && <span>{course.instructor}</span>}
+                      {course.duration && <span>{course.duration}</span>}
                     </div>
 
                     {/* Progress */}
@@ -138,16 +164,18 @@ export function CoursesWidget({
                         <div className="flex justify-between text-xs">
                           <span className="text-gray-400">Progress</span>
                           <span className="text-gray-300 font-semibold">
-                            {course.lessons_completed || 0}/{course.lessons_total}
+                            {course.lessons_completed || 0}/
+                            {course.lessons_total}
                           </span>
                         </div>
                         <div className="w-full bg-black/50 rounded-full h-2">
                           <div
                             className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full transition-all"
                             style={{
-                              width: course.lessons_total > 0
-                                ? `${(((course.lessons_completed || 0) / course.lessons_total) * 100)}%`
-                                : "0%"
+                              width:
+                                course.lessons_total > 0
+                                  ? `${((course.lessons_completed || 0) / course.lessons_total) * 100}%`
+                                  : "0%",
                             }}
                           />
                         </div>
@@ -164,7 +192,9 @@ export function CoursesWidget({
                         onViewCourse?.(course.id);
                       }}
                     >
-                      {course.status === "completed" ? "Review Course" : "Continue Learning"}
+                      {course.status === "completed"
+                        ? "Review Course"
+                        : "Continue Learning"}
                       <ArrowRight className="h-3 w-3 ml-1" />
                     </Button>
                   </div>

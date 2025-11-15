@@ -1,7 +1,21 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Briefcase, AlertCircle, BarChart3, Clock, Users, DollarSign, ArrowRight } from "lucide-react";
+import {
+  Briefcase,
+  AlertCircle,
+  BarChart3,
+  Clock,
+  Users,
+  DollarSign,
+  ArrowRight,
+} from "lucide-react";
 
 export interface PostedOpportunity {
   id: string;
@@ -96,24 +110,32 @@ export function PostedOpportunitiesWidget({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 bg-black/20 rounded-lg mb-4">
               <div className="text-center">
                 <p className="text-xs text-gray-400">Total Posted</p>
-                <p className="text-lg font-bold text-white">{opportunities.length}</p>
+                <p className="text-lg font-bold text-white">
+                  {opportunities.length}
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-xs text-gray-400">Open</p>
                 <p className="text-lg font-bold text-green-400">
-                  {opportunities.filter(o => o.status === "open").length}
+                  {opportunities.filter((o) => o.status === "open").length}
                 </p>
               </div>
               <div className="text-center">
                 <p className="text-xs text-gray-400">In Progress</p>
                 <p className="text-lg font-bold text-blue-400">
-                  {opportunities.filter(o => o.status === "in_progress").length}
+                  {
+                    opportunities.filter((o) => o.status === "in_progress")
+                      .length
+                  }
                 </p>
               </div>
               <div className="text-center">
                 <p className="text-xs text-gray-400">Total Applicants</p>
                 <p className="text-lg font-bold text-purple-400">
-                  {opportunities.reduce((sum, o) => sum + (o.applications_count || 0), 0)}
+                  {opportunities.reduce(
+                    (sum, o) => sum + (o.applications_count || 0),
+                    0,
+                  )}
                 </p>
               </div>
             </div>
@@ -132,7 +154,9 @@ export function PostedOpportunitiesWidget({
                         {opp.title}
                       </h4>
                       {opp.category && (
-                        <p className="text-xs text-gray-400 mt-1">{opp.category}</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {opp.category}
+                        </p>
                       )}
                     </div>
                     <Badge className={statusBadge[opp.status]}>
@@ -183,13 +207,20 @@ export function PostedOpportunitiesWidget({
                     {opp.deadline && (
                       <div className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        <span>Due {new Date(opp.deadline).toLocaleDateString()}</span>
+                        <span>
+                          Due {new Date(opp.deadline).toLocaleDateString()}
+                        </span>
                       </div>
                     )}
                     {opp.applications_count !== undefined && (
                       <div className="flex items-center gap-1">
                         <Users className="h-3 w-3" />
-                        <span>{opp.applications_count} {opp.applications_count === 1 ? "application" : "applications"}</span>
+                        <span>
+                          {opp.applications_count}{" "}
+                          {opp.applications_count === 1
+                            ? "application"
+                            : "applications"}
+                        </span>
                       </div>
                     )}
                   </div>

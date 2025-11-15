@@ -1,6 +1,18 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, AlertCircle, CheckCircle, Clock, ArrowRight } from "lucide-react";
+import {
+  Briefcase,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  ArrowRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export interface Application {
@@ -70,11 +82,31 @@ const colorMap = {
 };
 
 const statusMap = {
-  submitted: { color: "bg-blue-600/50 text-blue-100", icon: Clock, label: "Submitted" },
-  pending: { color: "bg-yellow-600/50 text-yellow-100", icon: Clock, label: "Pending" },
-  accepted: { color: "bg-green-600/50 text-green-100", icon: CheckCircle, label: "Accepted" },
-  rejected: { color: "bg-red-600/50 text-red-100", icon: AlertCircle, label: "Rejected" },
-  interview: { color: "bg-purple-600/50 text-purple-100", icon: Briefcase, label: "Interview" },
+  submitted: {
+    color: "bg-blue-600/50 text-blue-100",
+    icon: Clock,
+    label: "Submitted",
+  },
+  pending: {
+    color: "bg-yellow-600/50 text-yellow-100",
+    icon: Clock,
+    label: "Pending",
+  },
+  accepted: {
+    color: "bg-green-600/50 text-green-100",
+    icon: CheckCircle,
+    label: "Accepted",
+  },
+  rejected: {
+    color: "bg-red-600/50 text-red-100",
+    icon: AlertCircle,
+    label: "Rejected",
+  },
+  interview: {
+    color: "bg-purple-600/50 text-purple-100",
+    icon: Briefcase,
+    label: "Interview",
+  },
 };
 
 export function ApplicationsWidget({
@@ -89,11 +121,11 @@ export function ApplicationsWidget({
 }: ApplicationsWidgetProps) {
   const colors = colorMap[accentColor];
   const statusCounts = {
-    submitted: applications.filter(a => a.status === "submitted").length,
-    pending: applications.filter(a => a.status === "pending").length,
-    accepted: applications.filter(a => a.status === "accepted").length,
-    rejected: applications.filter(a => a.status === "rejected").length,
-    interview: applications.filter(a => a.status === "interview").length,
+    submitted: applications.filter((a) => a.status === "submitted").length,
+    pending: applications.filter((a) => a.status === "pending").length,
+    accepted: applications.filter((a) => a.status === "accepted").length,
+    rejected: applications.filter((a) => a.status === "rejected").length,
+    interview: applications.filter((a) => a.status === "interview").length,
   };
 
   return (
@@ -123,36 +155,47 @@ export function ApplicationsWidget({
         ) : (
           <div className="space-y-4">
             {/* Status Summary */}
-            {Object.entries(statusCounts).filter(([_, count]) => count > 0).length > 0 && (
+            {Object.entries(statusCounts).filter(([_, count]) => count > 0)
+              .length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4 p-3 bg-black/20 rounded-lg">
                 {statusCounts.submitted > 0 && (
                   <div className="text-center">
                     <p className="text-xs text-gray-400">Submitted</p>
-                    <p className="text-lg font-bold text-blue-400">{statusCounts.submitted}</p>
+                    <p className="text-lg font-bold text-blue-400">
+                      {statusCounts.submitted}
+                    </p>
                   </div>
                 )}
                 {statusCounts.interview > 0 && (
                   <div className="text-center">
                     <p className="text-xs text-gray-400">Interview</p>
-                    <p className="text-lg font-bold text-purple-400">{statusCounts.interview}</p>
+                    <p className="text-lg font-bold text-purple-400">
+                      {statusCounts.interview}
+                    </p>
                   </div>
                 )}
                 {statusCounts.accepted > 0 && (
                   <div className="text-center">
                     <p className="text-xs text-gray-400">Accepted</p>
-                    <p className="text-lg font-bold text-green-400">{statusCounts.accepted}</p>
+                    <p className="text-lg font-bold text-green-400">
+                      {statusCounts.accepted}
+                    </p>
                   </div>
                 )}
                 {statusCounts.pending > 0 && (
                   <div className="text-center">
                     <p className="text-xs text-gray-400">Pending</p>
-                    <p className="text-lg font-bold text-yellow-400">{statusCounts.pending}</p>
+                    <p className="text-lg font-bold text-yellow-400">
+                      {statusCounts.pending}
+                    </p>
                   </div>
                 )}
                 {statusCounts.rejected > 0 && (
                   <div className="text-center">
                     <p className="text-xs text-gray-400">Rejected</p>
-                    <p className="text-lg font-bold text-red-400">{statusCounts.rejected}</p>
+                    <p className="text-lg font-bold text-red-400">
+                      {statusCounts.rejected}
+                    </p>
                   </div>
                 )}
               </div>
@@ -176,10 +219,14 @@ export function ApplicationsWidget({
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <h4 className="font-semibold text-white truncate">
-                          {app.opportunity?.title || app.title || "Untitled Opportunity"}
+                          {app.opportunity?.title ||
+                            app.title ||
+                            "Untitled Opportunity"}
                         </h4>
                         {app.opportunity?.category && (
-                          <p className="text-sm text-gray-400 mt-1">{app.opportunity.category}</p>
+                          <p className="text-sm text-gray-400 mt-1">
+                            {app.opportunity.category}
+                          </p>
                         )}
                       </div>
                       <Badge className={statusInfo.color}>
@@ -216,11 +263,7 @@ export function ApplicationsWidget({
             </div>
 
             {showCTA && onCTA && applications.length > 0 && (
-              <Button
-                onClick={onCTA}
-                variant="outline"
-                className="w-full mt-4"
-              >
+              <Button onClick={onCTA} variant="outline" className="w-full mt-4">
                 <ArrowRight className="h-4 w-4 mr-2" />
                 {ctaText}
               </Button>

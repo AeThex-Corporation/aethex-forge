@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: profile, error } = await supabase
       .from("devlink_profiles")
-      .select(`
+      .select(
+        `
         id,
         user_id,
         username,
@@ -28,7 +29,8 @@ export default async (req: Request) => {
         certifications,
         created_at,
         updated_at
-      `)
+      `,
+      )
       .eq("user_id", userData.user.id)
       .single();
 
@@ -46,7 +48,9 @@ export default async (req: Request) => {
         .insert([
           {
             user_id: userData.user.id,
-            username: userData.user.user_metadata?.username || userData.user.email?.split("@")[0],
+            username:
+              userData.user.user_metadata?.username ||
+              userData.user.email?.split("@")[0],
             profile_views: 0,
           },
         ])

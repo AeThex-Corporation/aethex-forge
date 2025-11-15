@@ -5,11 +5,26 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useArmTheme } from "@/contexts/ArmThemeContext";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
-import { Lightbulb, FileText, Zap, Lock, ExternalLink, ArrowRight, AlertCircle, Send } from "lucide-react";
+import {
+  Lightbulb,
+  FileText,
+  Zap,
+  Lock,
+  ExternalLink,
+  ArrowRight,
+  AlertCircle,
+  Send,
+} from "lucide-react";
 import { ResearchWidget } from "@/components/ResearchWidget";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
@@ -35,7 +50,9 @@ export default function LabsDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
@@ -43,7 +60,10 @@ export default function LabsDashboard() {
         const tracksRes = await fetch(`${API_BASE}/api/labs/research-tracks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (tracksRes.ok && tracksRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          tracksRes.ok &&
+          tracksRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await tracksRes.json();
           setResearchTracks(Array.isArray(data) ? data : []);
         }
@@ -55,7 +75,10 @@ export default function LabsDashboard() {
         const bountiesRes = await fetch(`${API_BASE}/api/labs/bounties`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (bountiesRes.ok && bountiesRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          bountiesRes.ok &&
+          bountiesRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await bountiesRes.json();
           setBounties(Array.isArray(data) ? data : []);
         }
@@ -67,7 +90,10 @@ export default function LabsDashboard() {
         const pubRes = await fetch(`${API_BASE}/api/labs/publications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (pubRes.ok && pubRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          pubRes.ok &&
+          pubRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await pubRes.json();
           setPublications(Array.isArray(data) ? data : []);
         }
@@ -79,7 +105,10 @@ export default function LabsDashboard() {
         const ipRes = await fetch(`${API_BASE}/api/labs/ip-portfolio`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (ipRes.ok && ipRes.headers.get("content-type")?.includes("application/json")) {
+        if (
+          ipRes.ok &&
+          ipRes.headers.get("content-type")?.includes("application/json")
+        ) {
           const data = await ipRes.json();
           setIpPortfolio(data);
           setIsAdmin(data?.is_admin || false);
@@ -121,19 +150,33 @@ export default function LabsDashboard() {
 
   return (
     <Layout>
-      <div className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`} style={{ backgroundImage: theme.wallpaperPattern }}>
+      <div
+        className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`}
+        style={{ backgroundImage: theme.wallpaperPattern }}
+      >
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-slide-down">
-            <h1 className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}>
+            <h1
+              className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}
+            >
               Research LABS
             </h1>
-            <p className="text-gray-400 text-lg">R&D Workshop | Blueprint Technical</p>
+            <p className="text-gray-400 text-lg">
+              R&D Workshop | Blueprint Technical
+            </p>
           </div>
 
           {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-amber-950/30 border border-amber-500/20 p-1" style={{ fontFamily: theme.fontFamily }}>
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList
+              className="grid w-full grid-cols-4 bg-amber-950/30 border border-amber-500/20 p-1"
+              style={{ fontFamily: theme.fontFamily }}
+            >
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="tracks">Tracks</TabsTrigger>
               <TabsTrigger value="bounties">Bounties</TabsTrigger>
@@ -146,19 +189,25 @@ export default function LabsDashboard() {
                 <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
                   <CardContent className="p-6 space-y-2">
                     <p className="text-sm text-gray-400">Active Tracks</p>
-                    <p className="text-3xl font-bold text-white">{researchTracks.length}</p>
+                    <p className="text-3xl font-bold text-white">
+                      {researchTracks.length}
+                    </p>
                   </CardContent>
                 </Card>
                 <Card className="bg-gradient-to-br from-yellow-950/40 to-yellow-900/20 border-yellow-500/20">
                   <CardContent className="p-6 space-y-2">
                     <p className="text-sm text-gray-400">Available Bounties</p>
-                    <p className="text-3xl font-bold text-white">{bounties.length}</p>
+                    <p className="text-3xl font-bold text-white">
+                      {bounties.length}
+                    </p>
                   </CardContent>
                 </Card>
                 <Card className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border-orange-500/20">
                   <CardContent className="p-6 space-y-2">
                     <p className="text-sm text-gray-400">Publications</p>
-                    <p className="text-3xl font-bold text-white">{publications.length}</p>
+                    <p className="text-3xl font-bold text-white">
+                      {publications.length}
+                    </p>
                   </CardContent>
                 </Card>
               </div>
@@ -171,12 +220,24 @@ export default function LabsDashboard() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {publications.slice(0, 3).map((pub: any) => (
-                      <a key={pub.id} href={pub.url} target="_blank" rel="noopener noreferrer" className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block">
+                      <a
+                        key={pub.id}
+                        href={pub.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block"
+                      >
                         <div className="flex items-start gap-3">
                           <FileText className="h-5 w-5 text-amber-500 flex-shrink-0 mt-1" />
                           <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-white truncate">{pub.title}</p>
-                            <p className="text-xs text-gray-400 mt-1">{new Date(pub.published_date).toLocaleDateString()}</p>
+                            <p className="font-semibold text-white truncate">
+                              {pub.title}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              {new Date(
+                                pub.published_date,
+                              ).toLocaleDateString()}
+                            </p>
                           </div>
                           <ExternalLink className="h-4 w-4 text-gray-500 flex-shrink-0" />
                         </div>
@@ -189,8 +250,15 @@ export default function LabsDashboard() {
               {/* Submit Research Proposal CTA */}
               <Card className="bg-gradient-to-br from-amber-600/20 to-yellow-600/20 border-amber-500/40">
                 <CardContent className="p-8 text-center space-y-4">
-                  <h3 className="text-2xl font-bold text-white" style={{ fontFamily: theme.fontFamily }}>Have a Research Idea?</h3>
-                  <p className="text-gray-300">Submit your research proposal for the LABS pipeline</p>
+                  <h3
+                    className="text-2xl font-bold text-white"
+                    style={{ fontFamily: theme.fontFamily }}
+                  >
+                    Have a Research Idea?
+                  </h3>
+                  <p className="text-gray-300">
+                    Submit your research proposal for the LABS pipeline
+                  </p>
                   <Button
                     onClick={() => navigate("/labs/submit-proposal")}
                     className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700"
@@ -227,7 +295,9 @@ export default function LabsDashboard() {
               <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
                 <CardHeader>
                   <CardTitle>Research Bounties</CardTitle>
-                  <CardDescription>High-difficulty opportunities from NEXUS</CardDescription>
+                  <CardDescription>
+                    High-difficulty opportunities from NEXUS
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {bounties.length === 0 ? (
@@ -238,13 +308,26 @@ export default function LabsDashboard() {
                   ) : (
                     <div className="space-y-3">
                       {bounties.map((bounty: any) => (
-                        <div key={bounty.id} className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition">
+                        <div
+                          key={bounty.id}
+                          className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition"
+                        >
                           <div className="flex items-start justify-between gap-4 mb-2">
-                            <h4 className="font-semibold text-white">{bounty.title}</h4>
-                            <p className="text-lg font-bold text-amber-400">${bounty.reward?.toLocaleString()}</p>
+                            <h4 className="font-semibold text-white">
+                              {bounty.title}
+                            </h4>
+                            <p className="text-lg font-bold text-amber-400">
+                              ${bounty.reward?.toLocaleString()}
+                            </p>
                           </div>
-                          <p className="text-sm text-gray-400">{bounty.description}</p>
-                          <Button size="sm" variant="outline" className="mt-3 border-amber-500/30 text-amber-300 hover:bg-amber-500/10">
+                          <p className="text-sm text-gray-400">
+                            {bounty.description}
+                          </p>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="mt-3 border-amber-500/30 text-amber-300 hover:bg-amber-500/10"
+                          >
                             View Details <ArrowRight className="h-3 w-3 ml-2" />
                           </Button>
                         </div>
@@ -260,7 +343,9 @@ export default function LabsDashboard() {
               <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
                 <CardHeader>
                   <CardTitle>Publication Pipeline</CardTitle>
-                  <CardDescription>Upcoming whitepapers and technical blog posts</CardDescription>
+                  <CardDescription>
+                    Upcoming whitepapers and technical blog posts
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {publications.length === 0 ? (
@@ -271,15 +356,33 @@ export default function LabsDashboard() {
                   ) : (
                     <div className="space-y-3">
                       {publications.map((pub: any) => (
-                        <a key={pub.id} href={pub.url} target="_blank" rel="noopener noreferrer" className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block">
+                        <a
+                          key={pub.id}
+                          href={pub.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block"
+                        >
                           <div className="flex items-start justify-between gap-4 mb-2">
-                            <h4 className="font-semibold text-white">{pub.title}</h4>
-                            <Badge className={pub.status === "published" ? "bg-green-600/50 text-green-100" : "bg-blue-600/50 text-blue-100"}>
+                            <h4 className="font-semibold text-white">
+                              {pub.title}
+                            </h4>
+                            <Badge
+                              className={
+                                pub.status === "published"
+                                  ? "bg-green-600/50 text-green-100"
+                                  : "bg-blue-600/50 text-blue-100"
+                              }
+                            >
                               {pub.status}
                             </Badge>
                           </div>
-                          <p className="text-sm text-gray-400">{pub.description}</p>
-                          <p className="text-xs text-gray-500 mt-2">{new Date(pub.published_date).toLocaleDateString()}</p>
+                          <p className="text-sm text-gray-400">
+                            {pub.description}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-2">
+                            {new Date(pub.published_date).toLocaleDateString()}
+                          </p>
                         </a>
                       ))}
                     </div>
@@ -302,23 +405,33 @@ export default function LabsDashboard() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
                         <p className="text-sm text-gray-400">Patents Filed</p>
-                        <p className="text-3xl font-bold text-white">{ipPortfolio.patents_count || 0}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {ipPortfolio.patents_count || 0}
+                        </p>
                       </div>
                       <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
                         <p className="text-sm text-gray-400">Trademarks</p>
-                        <p className="text-3xl font-bold text-white">{ipPortfolio.trademarks_count || 0}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {ipPortfolio.trademarks_count || 0}
+                        </p>
                       </div>
                       <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
                         <p className="text-sm text-gray-400">Trade Secrets</p>
-                        <p className="text-3xl font-bold text-white">{ipPortfolio.trade_secrets_count || 0}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {ipPortfolio.trade_secrets_count || 0}
+                        </p>
                       </div>
                       <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
                         <p className="text-sm text-gray-400">Copyrights</p>
-                        <p className="text-3xl font-bold text-white">{ipPortfolio.copyrights_count || 0}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {ipPortfolio.copyrights_count || 0}
+                        </p>
                       </div>
                     </div>
                   ) : (
-                    <p className="text-gray-400 text-center py-8">IP portfolio data not available</p>
+                    <p className="text-gray-400 text-center py-8">
+                      IP portfolio data not available
+                    </p>
                   )}
                 </CardContent>
               </Card>

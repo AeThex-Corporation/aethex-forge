@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: opportunities, error } = await supabase
       .from("devlink_opportunities")
-      .select(`
+      .select(
+        `
         id,
         title,
         description,
@@ -27,7 +28,8 @@ export default async (req: Request) => {
         status,
         skills_required,
         created_at
-      `)
+      `,
+      )
       .eq("status", "open")
       .eq("type", "roblox")
       .order("created_at", { ascending: false });

@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { DollarSign, AlertCircle, CheckCircle, Clock, ExternalLink } from "lucide-react";
+import {
+  DollarSign,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  ExternalLink,
+} from "lucide-react";
 
 export interface PayoutData {
   available_for_payout: number;
@@ -93,14 +105,12 @@ export function PayoutsWidget({
             <div>
               <p className="font-semibold text-white">Connect Stripe Account</p>
               <p className="text-sm text-gray-400 mt-1">
-                To receive payouts for completed contracts, you need to connect your Stripe account.
+                To receive payouts for completed contracts, you need to connect
+                your Stripe account.
               </p>
             </div>
           </div>
-          <Button
-            onClick={onConnectStripe}
-            className={colors.accent}
-          >
+          <Button onClick={onConnectStripe} className={colors.accent}>
             <ExternalLink className="h-4 w-4 mr-2" />
             Connect Stripe Account
           </Button>
@@ -130,7 +140,10 @@ export function PayoutsWidget({
           <div className="p-4 bg-black/30 rounded-lg border border-green-500/20 space-y-2">
             <p className="text-sm text-gray-400">Available for Payout</p>
             <p className="text-3xl font-bold text-green-400">
-              ${data.available_for_payout.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              $
+              {data.available_for_payout.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
             </p>
             <div className="flex gap-2 pt-2">
               <Button
@@ -147,10 +160,16 @@ export function PayoutsWidget({
           <div className="p-4 bg-black/30 rounded-lg border border-yellow-500/20 space-y-2">
             <p className="text-sm text-gray-400">Pending (30-day Clearance)</p>
             <p className="text-3xl font-bold text-yellow-400">
-              ${data.pending_30_day_clearance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              $
+              {data.pending_30_day_clearance.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
             </p>
             <p className="text-xs text-gray-500">
-              Next payout: {data.next_payout_date ? new Date(data.next_payout_date).toLocaleDateString() : "TBD"}
+              Next payout:{" "}
+              {data.next_payout_date
+                ? new Date(data.next_payout_date).toLocaleDateString()
+                : "TBD"}
             </p>
           </div>
 
@@ -158,10 +177,16 @@ export function PayoutsWidget({
           <div className="p-4 bg-black/30 rounded-lg border border-blue-500/20 space-y-2">
             <p className="text-sm text-gray-400">Total Earned (All-Time)</p>
             <p className="text-3xl font-bold text-blue-400">
-              ${data.total_earned.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              $
+              {data.total_earned.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
             </p>
             <p className="text-xs text-gray-500">
-              Last payout: {data.last_payout_date ? new Date(data.last_payout_date).toLocaleDateString() : "Never"}
+              Last payout:{" "}
+              {data.last_payout_date
+                ? new Date(data.last_payout_date).toLocaleDateString()
+                : "Never"}
             </p>
           </div>
         </div>
@@ -186,10 +211,15 @@ export function PayoutsWidget({
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-white">
-                        ${payout.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        $
+                        {payout.amount.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                        })}
                       </p>
                       {payout.description && (
-                        <p className="text-xs text-gray-400 truncate">{payout.description}</p>
+                        <p className="text-xs text-gray-400 truncate">
+                          {payout.description}
+                        </p>
                       )}
                       <p className="text-xs text-gray-500">
                         {new Date(payout.date).toLocaleDateString()}
@@ -201,8 +231,8 @@ export function PayoutsWidget({
                       payout.status === "completed"
                         ? "bg-green-600/50 text-green-100"
                         : payout.status === "pending"
-                        ? "bg-yellow-600/50 text-yellow-100"
-                        : "bg-red-600/50 text-red-100"
+                          ? "bg-yellow-600/50 text-yellow-100"
+                          : "bg-red-600/50 text-red-100"
                     }
                   >
                     {payout.status}

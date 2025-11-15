@@ -1,6 +1,13 @@
 import { ReactNode } from "react";
 
-export type ArmKey = "nexus" | "corp" | "foundation" | "gameforge" | "labs" | "devlink" | "staff";
+export type ArmKey =
+  | "nexus"
+  | "corp"
+  | "foundation"
+  | "gameforge"
+  | "labs"
+  | "devlink"
+  | "staff";
 
 interface ThemeConfig {
   arm: ArmKey;
@@ -105,11 +112,16 @@ interface DashboardThemeProviderProps {
   children: ReactNode;
 }
 
-export function DashboardThemeProvider({ arm, children }: DashboardThemeProviderProps) {
+export function DashboardThemeProvider({
+  arm,
+  children,
+}: DashboardThemeProviderProps) {
   const theme = getTheme(arm);
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b ${theme.bgGradient} ${theme.fontFamily}`}>
+    <div
+      className={`min-h-screen bg-gradient-to-b ${theme.bgGradient} ${theme.fontFamily}`}
+    >
       {children}
     </div>
   );
@@ -121,13 +133,19 @@ interface DashboardHeaderProps {
   subtitle?: string;
 }
 
-export function DashboardHeader({ arm, title, subtitle }: DashboardHeaderProps) {
+export function DashboardHeader({
+  arm,
+  title,
+  subtitle,
+}: DashboardHeaderProps) {
   const theme = getTheme(arm);
 
   return (
     <div className="space-y-4 animate-slide-down">
       <div className="space-y-2">
-        <h1 className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.headerGradient} bg-clip-text text-transparent`}>
+        <h1
+          className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.headerGradient} bg-clip-text text-transparent`}
+        >
           {title}
         </h1>
         {subtitle && <p className="text-gray-400 text-lg">{subtitle}</p>}
@@ -141,7 +159,10 @@ interface ColorPaletteConfig {
   variant?: "default" | "alt";
 }
 
-export function getColorClasses(arm: ArmKey, variant: "default" | "alt" = "default") {
+export function getColorClasses(
+  arm: ArmKey,
+  variant: "default" | "alt" = "default",
+) {
   const configs: Record<ArmKey, Record<string, Record<string, string>>> = {
     nexus: {
       default: {

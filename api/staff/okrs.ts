@@ -18,7 +18,8 @@ export default async (req: Request) => {
 
     const { data: okrs, error } = await supabase
       .from("staff_okrs")
-      .select(`
+      .select(
+        `
         id,
         user_id,
         objective,
@@ -33,7 +34,8 @@ export default async (req: Request) => {
           target_value
         ),
         created_at
-      `)
+      `,
+      )
       .eq("user_id", userData.user.id)
       .order("created_at", { ascending: false });
 

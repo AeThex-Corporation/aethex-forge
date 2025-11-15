@@ -15,7 +15,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
+  const {
+    data: { user },
+    error: authError,
+  } = await admin.auth.getUser(token);
 
   if (authError || !user) {
     return res.status(401).json({ error: "Invalid token" });
@@ -29,7 +32,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Get payments for creator's contracts
     let query = admin
       .from("nexus_payments")
-      .select(`
+      .select(
+        `
         *,
         contract:nexus_contracts(
           id,
@@ -40,7 +44,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           created_at
         ),
         milestone:nexus_milestones(id, description, amount, status)
-      `)
+      `,
+      )
       .eq("contract.creator_id", user.id)
       .order("created_at", { ascending: false });
 
@@ -50,7 +55,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { data: payments, error: paymentsError } = await query.range(
       offset,
-      offset + limit - 1
+      offset + limit - 1,
     );
 
     if (paymentsError) {
@@ -63,11 +68,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .select("total_amount, creator_payout_amount, status")
       .eq("creator_id", user.id);
 
-    const totalEarnings = (contracts || [])
-      .reduce((sum: number, c: any) => sum + (c.creator_payout_amount || 0), 0);
+    const totalEarnings = (contracts || []).reduce(
+      (sum: number, c: any) => sum + (c.creator_payout_amount || 0),
+      0,
+    );
 
     const completedContracts = (contracts || []).filter(
-      (c: any) => c.status === "completed"
+      (c: any) => c.status === "completed",
     ).length;
 
     const pendingPayouts = (payments || [])
