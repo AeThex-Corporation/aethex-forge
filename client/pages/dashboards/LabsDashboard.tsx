@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useArmTheme } from "@/contexts/ArmThemeContext";
 import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +17,7 @@ const API_BASE = import.meta.env.VITE_API_BASE || "";
 export default function LabsDashboard() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { theme } = useArmTheme();
   const [activeTab, setActiveTab] = useState("overview");
   const [researchTracks, setResearchTracks] = useState<any[]>([]);
   const [bounties, setBounties] = useState<any[]>([]);
@@ -94,11 +96,11 @@ export default function LabsDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-amber-950/20 to-black py-8">
+      <div className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`} style={{ backgroundImage: theme.wallpaperPattern }}>
         <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-slide-down">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent">
+            <h1 className={`text-5xl md:text-6xl font-bold bg-gradient-to-r ${theme.accentColor} bg-clip-text text-transparent`}>
               Research LABS
             </h1>
             <p className="text-gray-400 text-lg">R&D Workshop | Blueprint Technical</p>
@@ -106,7 +108,7 @@ export default function LabsDashboard() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-amber-950/30 border border-amber-500/20 p-1">
+            <TabsList className="grid w-full grid-cols-4 bg-amber-950/30 border border-amber-500/20 p-1" style={{ fontFamily: theme.fontFamily }}>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="tracks">Tracks</TabsTrigger>
               <TabsTrigger value="bounties">Bounties</TabsTrigger>
