@@ -53,6 +53,17 @@ export default function NexusDashboard() {
   const [applicants, setApplicants] = useState<any[]>([]);
   const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [profileFormData, setProfileFormData] = useState({
+    headline: "",
+    bio: "",
+    experience_level: "intermediate",
+    hourly_rate: "",
+    availability_status: "available",
+    availability_hours_per_week: "",
+    skills: [] as string[],
+  });
+  const [newSkill, setNewSkill] = useState("");
 
   useEffect(() => {
     if (!authLoading && user) {
