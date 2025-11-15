@@ -122,7 +122,23 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     { name: "Contact", href: "/contact" },
   ];
 
-  const passportHref = profile?.username
+  const isSubdomainHost = (() => {
+    try {
+      const hostname = typeof window !== "undefined" ? window.location.hostname : "";
+      if (!hostname) return false;
+      if (hostname.includes("aethex.me") || hostname.includes("aethex.space")) {
+        const parts = hostname.split(".");
+        return parts.length > 2;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  })();
+
+  const passportHref = isSubdomainHost
+    ? "/"
+    : profile?.username
     ? `/passport/${profile.username}`
     : "/passport/me";
 
