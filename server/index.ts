@@ -355,6 +355,106 @@ export function createServer() {
     res.json({ message: ping });
   });
 
+  // API: Creator passport lookup by subdomain (aethex.me)
+  app.get("/api/passport/subdomain/:username", async (req, res) => {
+    try {
+      const username = String(req.params.username || "").toLowerCase().trim();
+      if (!username) {
+        return res.status(400).json({ error: "username required" });
+      }
+
+      const { data, error } = await adminSupabase
+        .from("user_profiles")
+        .select(
+          "id, username, full_name, avatar_url, user_type, bio, created_at, email"
+        )
+        .eq("username", username)
+        .single();
+
+      if (error || !data) {
+        return res.status(404).json({
+          error: "Creator not found",
+          username,
+        });
+      }
+
+      return res.json({
+        type: "creator",
+        user: data,
+        domain: "aethex.me",
+      });
+    } catch (e: any) {
+      console.error("[Passport Subdomain] Error:", e?.message);
+      return res.status(500).json({
+        error: e?.message || "Failed to fetch creator passport",
+      });
+    }
+  });
+
+  // API: Project passport lookup by subdomain (aethex.space)
+  app.get("/api/passport/project/:projectname", async (req, res) => {
+    try {
+      const projectname = String(req.params.projectname || "")
+        .toLowerCase()
+        .trim();
+      if (!projectname) {
+        return res.status(400).json({ error: "projectname required" });
+      }
+
+      // First try exact match by name
+      let query = adminSupabase
+        .from("projects")
+        .select(
+          "id, title, slug, description, user_id, created_at, updated_at, status, image_url, website"
+        )
+        .eq("slug", projectname);
+
+      let { data, error } = await query.single();
+
+      // If not found by slug, try by title (case-insensitive)
+      if (error && error.code === "PGRST116") {
+        query = adminSupabase
+          .from("projects")
+          .select(
+            "id, title, slug, description, user_id, created_at, updated_at, status, image_url, website"
+          )
+          .ilike("title", projectname);
+
+        const response = await query;
+        if (response.data && response.data.length > 0) {
+          data = response.data[0];
+          error = null;
+        }
+      }
+
+      if (error || !data) {
+        return res.status(404).json({
+          error: "Project not found",
+          projectname,
+        });
+      }
+
+      // Fetch project owner info
+      const { data: owner } = await adminSupabase
+        .from("user_profiles")
+        .select("id, username, full_name, avatar_url")
+        .eq("id", (data as any).user_id)
+        .maybeSingle();
+
+      return res.json({
+        type: "project",
+        project: data,
+        owner,
+        domain: "aethex.space",
+      });
+    } catch (e: any) {
+      console.error("[Project Subdomain] Error:", e?.message);
+      return res.status(500).json({
+        error: e?.message || "Failed to fetch project passport",
+      });
+    }
+  });
+
   // DevConnect REST proxy (GET only)
   app.get("/api/devconnect/rest/:table", async (req, res) => {
     try {
