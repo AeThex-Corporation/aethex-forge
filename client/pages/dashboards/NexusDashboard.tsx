@@ -51,7 +51,8 @@ export default function NexusDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      const token = (await (window as any).supabaseClient.auth.getSession()).data?.session?.access_token;
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
       // Load creator profile
