@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm ci && npm run build && npm run build:api",
+  "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist/spa",
   "redirects": [
     {
