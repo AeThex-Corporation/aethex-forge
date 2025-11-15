@@ -134,13 +134,14 @@ const OAuthConnections = memo(function OAuthConnections({
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-3 md:self-center">
+            <div className="flex items-center gap-3 md:self-center pointer-events-auto">
               {linkedMeta ? (
                 <Button
                   variant="outline"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 pointer-events-auto cursor-pointer"
                   disabled={isUnlinking}
                   onClick={() => onUnlink(provider)}
+                  type="button"
                 >
                   {isUnlinking ? (
                     <Loader2
@@ -154,9 +155,10 @@ const OAuthConnections = memo(function OAuthConnections({
                 </Button>
               ) : (
                 <Button
-                  className="flex items-center gap-2 bg-aethex-500 hover:bg-aethex-600"
+                  className="flex items-center gap-2 bg-aethex-500 hover:bg-aethex-600 pointer-events-auto cursor-pointer"
                   disabled={isLinking}
                   onClick={() => onLink(provider)}
+                  type="button"
                 >
                   {isLinking ? (
                     <Loader2
