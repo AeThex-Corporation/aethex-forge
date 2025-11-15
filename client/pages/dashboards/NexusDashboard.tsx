@@ -627,41 +627,49 @@ export default function NexusDashboard() {
 
                 {/* Opportunities Tab */}
                 <TabsContent value="opportunities" className="space-y-4 animate-fade-in">
-                  <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
-                    <CardHeader>
-                      <CardTitle>My Posted Opportunities</CardTitle>
-                      <CardDescription>Manage your job postings</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {postedOpportunities.length === 0 ? (
-                        <div className="text-center py-12">
-                          <Briefcase className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
-                          <p className="text-gray-400 mb-4">No opportunities posted yet</p>
-                          <Button onClick={() => navigate("/opportunities/post")}>
-                            Post an Opportunity
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="space-y-3">
-                          {postedOpportunities.map((opp: any) => (
-                            <div key={opp.id} className="p-4 bg-black/30 rounded-lg border border-blue-500/10 hover:border-blue-500/30 transition space-y-3">
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="space-y-1 flex-1">
-                                  <h4 className="font-semibold text-white">{opp.title}</h4>
-                                  <p className="text-sm text-gray-400">{opp.description?.substring(0, 100)}...</p>
-                                </div>
-                                <Badge>{opp.status}</Badge>
-                              </div>
-                              <div className="flex items-center justify-between text-sm">
-                                <span className="text-gray-400">Budget: ${opp.budget?.toLocaleString()}</span>
-                                <span className="text-gray-500">{opp.applications_count || 0} applications</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                  <PostedOpportunitiesWidget
+                    opportunities={postedOpportunities.map((o: any) => ({
+                      id: o.id,
+                      title: o.title,
+                      description: o.description,
+                      category: o.category,
+                      budget: o.budget,
+                      status: o.status || "open",
+                      applications_count: o.applications_count,
+                      created_at: o.created_at,
+                      deadline: o.deadline,
+                      required_skills: o.required_skills,
+                      experience_level: o.experience_level,
+                    }))}
+                    title="My Posted Opportunities"
+                    description="Manage your job postings and track applications"
+                    accentColor="blue"
+                    onViewApplications={(oppId) => {
+                      navigate(`/opportunities/${oppId}/applications`);
+                    }}
+                    onViewDetails={(oppId) => {
+                      navigate(`/opportunities/${oppId}`);
+                    }}
+                    onEdit={(oppId) => {
+                      navigate(`/opportunities/${oppId}/edit`);
+                    }}
+                  />
+
+                  {postedOpportunities.length === 0 && (
+                    <Card className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border-blue-500/40">
+                      <CardContent className="p-8 text-center space-y-4">
+                        <h3 className="text-2xl font-bold text-white">Start Hiring Talent</h3>
+                        <p className="text-gray-300">Post opportunities and find the perfect creators for your projects</p>
+                        <Button
+                          onClick={() => navigate("/opportunities/post")}
+                          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+                        >
+                          Post an Opportunity
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )}
                 </TabsContent>
 
                 {/* Applicants Tab - Kanban Style */}
