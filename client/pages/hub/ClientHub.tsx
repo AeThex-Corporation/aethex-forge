@@ -15,6 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoadingScreen from "@/components/LoadingScreen";
+import ProjectStatusWidget from "@/components/ProjectStatusWidget";
 import {
   FileText,
   DollarSign,
