@@ -71,6 +71,21 @@ export default function NexusDashboard() {
     }
   }, [user, authLoading]);
 
+  useEffect(() => {
+    if (creatorProfile) {
+      setProfileFormData({
+        headline: creatorProfile.headline || "",
+        bio: creatorProfile.bio || "",
+        experience_level: creatorProfile.experience_level || "intermediate",
+        hourly_rate: creatorProfile.hourly_rate?.toString() || "",
+        availability_status: creatorProfile.availability_status || "available",
+        availability_hours_per_week:
+          creatorProfile.availability_hours_per_week?.toString() || "",
+        skills: Array.isArray(creatorProfile.skills) ? creatorProfile.skills : [],
+      });
+    }
+  }, [creatorProfile]);
+
   const loadDashboardData = async () => {
     try {
       setLoading(true);
