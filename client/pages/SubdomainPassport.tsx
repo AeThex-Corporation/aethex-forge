@@ -104,9 +104,9 @@ const SubdomainPassport = () => {
     return <LoadingScreen message="Detecting passport..." />;
   }
 
-  // No subdomain detected - not a subdomain request
+  // No subdomain detected - not a subdomain request, show main Index page
   if (!subdomainInfo) {
-    return <Navigate to="/" replace />;
+    return <Index />;
   }
 
   // Loading passport data
