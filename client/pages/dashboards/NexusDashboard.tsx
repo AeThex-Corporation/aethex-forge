@@ -675,64 +675,32 @@ export default function NexusDashboard() {
 
                 {/* Applicants Tab - Kanban Style */}
                 <TabsContent value="applicants" className="space-y-4 animate-fade-in">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* Applied Column */}
-                    <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
-                      <CardHeader>
-                        <CardTitle className="text-lg">Applied ({applicantStats.applied})</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        {applicants.filter(a => a.status === "applied").length === 0 ? (
-                          <p className="text-center text-gray-400 text-sm py-4">No applicants</p>
-                        ) : (
-                          applicants.filter(a => a.status === "applied").map((app: any) => (
-                            <div key={app.id} className="p-3 bg-black/30 rounded-lg border border-blue-500/20 cursor-move hover:border-blue-500/40 transition">
-                              <p className="font-semibold text-white text-sm">{app.user?.name}</p>
-                              <p className="text-xs text-gray-400 mt-1">{app.opportunity?.title}</p>
-                            </div>
-                          ))
-                        )}
-                      </CardContent>
-                    </Card>
-
-                    {/* Interviewing Column */}
-                    <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                      <CardHeader>
-                        <CardTitle className="text-lg">Interviewing ({applicantStats.interviewing})</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        {applicants.filter(a => a.status === "interviewing").length === 0 ? (
-                          <p className="text-center text-gray-400 text-sm py-4">No applicants</p>
-                        ) : (
-                          applicants.filter(a => a.status === "interviewing").map((app: any) => (
-                            <div key={app.id} className="p-3 bg-black/30 rounded-lg border border-purple-500/20 cursor-move hover:border-purple-500/40 transition">
-                              <p className="font-semibold text-white text-sm">{app.user?.name}</p>
-                              <p className="text-xs text-gray-400 mt-1">{app.opportunity?.title}</p>
-                            </div>
-                          ))
-                        )}
-                      </CardContent>
-                    </Card>
-
-                    {/* Hired Column */}
-                    <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
-                      <CardHeader>
-                        <CardTitle className="text-lg">Hired ({applicantStats.hired})</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        {applicants.filter(a => a.status === "hired").length === 0 ? (
-                          <p className="text-center text-gray-400 text-sm py-4">No applicants</p>
-                        ) : (
-                          applicants.filter(a => a.status === "hired").map((app: any) => (
-                            <div key={app.id} className="p-3 bg-black/30 rounded-lg border border-green-500/20 cursor-move hover:border-green-500/40 transition">
-                              <p className="font-semibold text-white text-sm">{app.user?.name}</p>
-                              <p className="text-xs text-gray-400 mt-1">{app.opportunity?.title}</p>
-                            </div>
-                          ))
-                        )}
-                      </CardContent>
-                    </Card>
-                  </div>
+                  <ApplicantTrackerWidget
+                    applicants={applicants.map((a: any) => ({
+                      id: a.id,
+                      user: a.user,
+                      opportunity: a.opportunity,
+                      status: a.status || "applied",
+                      rating: a.rating,
+                      notes: a.notes,
+                      applied_at: a.created_at,
+                    }))}
+                    title="Applicant Tracker"
+                    description="Manage applicants and track them through your hiring pipeline"
+                    onViewProfile={(applicantId) => {
+                      navigate(`/applicants/${applicantId}`);
+                    }}
+                    onMessage={(applicantId) => {
+                      navigate(`/applicants/${applicantId}/message`);
+                    }}
+                    onUpdateStatus={(applicantId, newStatus) => {
+                      aethexToast({
+                        message: `Updated applicant status to ${newStatus}`,
+                        type: "success",
+                      });
+                    }}
+                    accentColor="blue"
+                  />
                 </TabsContent>
 
                 {/* Contracts Tab */}
