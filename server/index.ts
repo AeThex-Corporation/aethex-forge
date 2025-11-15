@@ -156,7 +156,7 @@ const handleDiscordInteractions = async (
           return res.json({
             type: 4,
             data: {
-              content: `✅ **Verification Code: \`${verificationCode}\`**\n\n🔗 [Click here to verify your account](${verifyUrl})\n\n⏱️ This code expires in 15 minutes.`,
+              content: `✅ **Verification Code: \`${verificationCode}\`**\n\n��� [Click here to verify your account](${verifyUrl})\n\n⏱️ This code expires in 15 minutes.`,
               flags: 0,
             },
           });
@@ -6190,6 +6190,12 @@ export function createServer() {
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
+
+  // Blog API routes
+  app.get("/api/blog", blogIndexHandler);
+  app.get("/api/blog/:slug", (req: express.Request, res: express.Response) => {
+    return blogSlugHandler(req, res);
+  });
 
   return app;
 }
