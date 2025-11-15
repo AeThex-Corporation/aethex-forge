@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE || "";
@@ -114,15 +115,17 @@ async function fetchFromSupabase(slug: string): Promise<any | null> {
   }
 }
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  res.setHeader("Content-Type", "application/json");
+
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const { slug } = req.query;
+    const slug = req.query.slug as string;
 
-    if (!slug || typeof slug !== "string") {
+    if (!slug) {
       return res.status(400).json({ error: "Slug parameter is required" });
     }
 
