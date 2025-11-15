@@ -183,9 +183,8 @@ const App = () => (
                     <SkipAgentController />
                   <PageTransition>
                   <Routes>
-                    {/* Subdomain Passport (aethex.me and aethex.space) - must be before Index route */}
+                    {/* Subdomain Passport (aethex.me and aethex.space) handles its own redirect if not a subdomain */}
                     <Route path="/" element={<SubdomainPassport />} />
-                    <Route path="/" element={<Index />} />
                     <Route path="/onboarding" element={<Onboarding />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/realms" element={<Realms />} />
