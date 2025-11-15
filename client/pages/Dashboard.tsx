@@ -1373,6 +1373,10 @@ export default function Dashboard() {
 
                       <Separator className="my-6" />
 
+                      <WalletVerification />
+
+                      <Separator className="my-6" />
+
                       <div className="space-y-2">
                         <h3 className="text-lg font-semibold text-foreground">
                           Your network
