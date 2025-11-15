@@ -32,6 +32,8 @@ import {
   ExternalLink,
   Award,
   Music,
+  Copy,
+  CheckCircle2,
 } from "lucide-react";
 import { aethexSocialService } from "@/lib/aethex-social-service";
 
