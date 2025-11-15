@@ -1,89 +1,312 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Code2, ArrowRight, Sparkles } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LoadingScreen from "@/components/LoadingScreen";
+import { Lightbulb, FileText, Zap, Lock, ExternalLink, ArrowRight, AlertCircle, Send } from "lucide-react";
+
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 export default function LabsDashboard() {
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [researchTracks, setResearchTracks] = useState<any[]>([]);
+  const [bounties, setBounties] = useState<any[]>([]);
+  const [publications, setPublications] = useState<any[]>([]);
+  const [ipPortfolio, setIpPortfolio] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      loadDashboardData();
+    }
+  }, [user, authLoading]);
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error("No auth token");
+
+      const tracksRes = await fetch(`${API_BASE}/api/labs/research-tracks`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (tracksRes.ok) setResearchTracks(await tracksRes.json());
+
+      const bountiesRes = await fetch(`${API_BASE}/api/labs/bounties`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (bountiesRes.ok) setBounties(await bountiesRes.json());
+
+      const pubRes = await fetch(`${API_BASE}/api/labs/publications`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (pubRes.ok) setPublications(await pubRes.json());
+
+      const ipRes = await fetch(`${API_BASE}/api/labs/ip-portfolio`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (ipRes.ok) {
+        const data = await ipRes.json();
+        setIpPortfolio(data);
+        setIsAdmin(data?.is_admin || false);
+      }
+    } catch (error) {
+      console.error("Failed to load LABS data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (authLoading || loading) {
+    return <LoadingScreen message="Loading LABS..." />;
+  }
+
+  if (!user) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-b from-black via-amber-950/30 to-black flex items-center justify-center px-4">
+          <div className="max-w-md text-center space-y-6">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent">
+              Research LABS
+            </h1>
+            <p className="text-gray-400">Discover cutting-edge R&D</p>
+            <Button
+              onClick={() => navigate("/login")}
+              className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-lg py-6"
+            >
+              Sign In
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-amber-950/20 to-black py-12">
-        <div className="container mx-auto px-4 max-w-4xl">
+      <div className="min-h-screen bg-gradient-to-b from-black via-amber-950/20 to-black py-8">
+        <div className="container mx-auto px-4 max-w-7xl space-y-8">
           {/* Header */}
-          <div className="space-y-8">
-            <div className="space-y-4 text-center">
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="p-3 rounded-lg bg-amber-500/20 border border-amber-500/30">
-                  <Code2 className="h-8 w-8 text-amber-400" />
-                </div>
-              </div>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent">
-                LABS R&D Hub
-              </h1>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                This is the future home for all LABS R&D projects, IP management, and whitepaper publications.
-              </p>
-            </div>
-
-            {/* Coming Soon Card */}
-            <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/30">
-              <CardContent className="p-12 space-y-8">
-                {/* Status */}
-                <div className="text-center space-y-4">
-                  <div className="inline-block px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30">
-                    <p className="text-sm font-semibold text-amber-300">Coming Soon</p>
-                  </div>
-                  <p className="text-gray-300 text-lg">
-                    The full bespoke LABS dashboard with research project tracking, IP management, and publication tools is currently in development per our Phase 3 Roadmap.
-                  </p>
-                </div>
-
-                {/* Guiding CTA */}
-                <div className="bg-black/40 rounded-lg p-8 border border-amber-500/20 space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-amber-400" />
-                      Explore Our Research
-                    </h3>
-                    <p className="text-gray-300">
-                      You don't have to wait for the dashboard. You can read all our latest technical deep-dives and whitepapers on our official AeThex Blog right now.
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => window.open("https://aethex.blog", "_blank")}
-                    className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-semibold py-6 text-base group"
-                  >
-                    Go to AeThex Blog
-                    <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Features Coming */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="bg-amber-950/30 border-amber-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">📚</p>
-                  <p className="font-semibold text-white">Research Projects</p>
-                  <p className="text-sm text-gray-400">Track active R&D initiatives</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-amber-950/30 border-amber-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">🔒</p>
-                  <p className="font-semibold text-white">IP Management</p>
-                  <p className="text-sm text-gray-400">Secure access to our vault</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-amber-950/30 border-amber-500/20">
-                <CardContent className="p-6 space-y-3">
-                  <p className="text-2xl">📖</p>
-                  <p className="font-semibold text-white">Publications</p>
-                  <p className="text-sm text-gray-400">Whitepapers & technical docs</p>
-                </CardContent>
-              </Card>
-            </div>
+          <div className="space-y-4 animate-slide-down">
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent">
+              Research LABS
+            </h1>
+            <p className="text-gray-400 text-lg">R&D Workshop | Blueprint Technical</p>
           </div>
+
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-4 bg-amber-950/30 border border-amber-500/20 p-1">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="tracks">Tracks</TabsTrigger>
+              <TabsTrigger value="bounties">Bounties</TabsTrigger>
+              <TabsTrigger value="pubs">Publications</TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6 animate-fade-in">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
+                  <CardContent className="p-6 space-y-2">
+                    <p className="text-sm text-gray-400">Active Tracks</p>
+                    <p className="text-3xl font-bold text-white">{researchTracks.length}</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gradient-to-br from-yellow-950/40 to-yellow-900/20 border-yellow-500/20">
+                  <CardContent className="p-6 space-y-2">
+                    <p className="text-sm text-gray-400">Available Bounties</p>
+                    <p className="text-3xl font-bold text-white">{bounties.length}</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border-orange-500/20">
+                  <CardContent className="p-6 space-y-2">
+                    <p className="text-sm text-gray-400">Publications</p>
+                    <p className="text-3xl font-bold text-white">{publications.length}</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Recent Publications */}
+              {publications.length > 0 && (
+                <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
+                  <CardHeader>
+                    <CardTitle>Recent Publications</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {publications.slice(0, 3).map((pub: any) => (
+                      <a key={pub.id} href={pub.url} target="_blank" rel="noopener noreferrer" className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block">
+                        <div className="flex items-start gap-3">
+                          <FileText className="h-5 w-5 text-amber-500 flex-shrink-0 mt-1" />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-white truncate">{pub.title}</p>
+                            <p className="text-xs text-gray-400 mt-1">{new Date(pub.published_date).toLocaleDateString()}</p>
+                          </div>
+                          <ExternalLink className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                        </div>
+                      </a>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Submit Research Proposal CTA */}
+              <Card className="bg-gradient-to-br from-amber-600/20 to-yellow-600/20 border-amber-500/40">
+                <CardContent className="p-8 text-center space-y-4">
+                  <h3 className="text-2xl font-bold text-white">Have a Research Idea?</h3>
+                  <p className="text-gray-300">Submit your research proposal for the LABS pipeline</p>
+                  <Button className="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700">
+                    <Send className="h-4 w-4 mr-2" />
+                    Submit Research Proposal
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Research Tracks Tab */}
+            <TabsContent value="tracks" className="space-y-4 animate-fade-in">
+              <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
+                <CardHeader>
+                  <CardTitle>Active Research Tracks</CardTitle>
+                  <CardDescription>Internal R&D projects</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {researchTracks.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Lightbulb className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                      <p className="text-gray-400">No active research tracks</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {researchTracks.map((track: any) => (
+                        <a key={track.id} href={track.whitepaper_url} target="_blank" rel="noopener noreferrer" className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-white">{track.title}</h4>
+                              <p className="text-sm text-gray-400 mt-1">{track.description}</p>
+                            </div>
+                            <Badge className={track.status === "in_development" ? "bg-blue-600/50 text-blue-100" : "bg-gray-600/50 text-gray-100"}>
+                              {track.status}
+                            </Badge>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Bounties Tab */}
+            <TabsContent value="bounties" className="space-y-4 animate-fade-in">
+              <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
+                <CardHeader>
+                  <CardTitle>Research Bounties</CardTitle>
+                  <CardDescription>High-difficulty opportunities from NEXUS</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {bounties.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Zap className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                      <p className="text-gray-400">No bounties available</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {bounties.map((bounty: any) => (
+                        <div key={bounty.id} className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition">
+                          <div className="flex items-start justify-between gap-4 mb-2">
+                            <h4 className="font-semibold text-white">{bounty.title}</h4>
+                            <p className="text-lg font-bold text-amber-400">${bounty.reward?.toLocaleString()}</p>
+                          </div>
+                          <p className="text-sm text-gray-400">{bounty.description}</p>
+                          <Button size="sm" variant="outline" className="mt-3 border-amber-500/30 text-amber-300 hover:bg-amber-500/10">
+                            View Details <ArrowRight className="h-3 w-3 ml-2" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Publications Tab */}
+            <TabsContent value="pubs" className="space-y-4 animate-fade-in">
+              <Card className="bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-500/20">
+                <CardHeader>
+                  <CardTitle>Publication Pipeline</CardTitle>
+                  <CardDescription>Upcoming whitepapers and technical blog posts</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {publications.length === 0 ? (
+                    <div className="text-center py-12">
+                      <FileText className="h-12 w-12 mx-auto text-gray-500 opacity-50 mb-4" />
+                      <p className="text-gray-400">No publications</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {publications.map((pub: any) => (
+                        <a key={pub.id} href={pub.url} target="_blank" rel="noopener noreferrer" className="p-4 bg-black/30 rounded-lg border border-amber-500/10 hover:border-amber-500/30 transition block">
+                          <div className="flex items-start justify-between gap-4 mb-2">
+                            <h4 className="font-semibold text-white">{pub.title}</h4>
+                            <Badge className={pub.status === "published" ? "bg-green-600/50 text-green-100" : "bg-blue-600/50 text-blue-100"}>
+                              {pub.status}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-400">{pub.description}</p>
+                          <p className="text-xs text-gray-500 mt-2">{new Date(pub.published_date).toLocaleDateString()}</p>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* IP Dashboard - Admin Only */}
+            {isAdmin && (
+              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20 mt-6">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Lock className="h-5 w-5 text-red-500" />
+                    IP Dashboard (Admin Only)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {ipPortfolio ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
+                        <p className="text-sm text-gray-400">Patents Filed</p>
+                        <p className="text-3xl font-bold text-white">{ipPortfolio.patents_count || 0}</p>
+                      </div>
+                      <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
+                        <p className="text-sm text-gray-400">Trademarks</p>
+                        <p className="text-3xl font-bold text-white">{ipPortfolio.trademarks_count || 0}</p>
+                      </div>
+                      <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
+                        <p className="text-sm text-gray-400">Trade Secrets</p>
+                        <p className="text-3xl font-bold text-white">{ipPortfolio.trade_secrets_count || 0}</p>
+                      </div>
+                      <div className="p-4 bg-black/30 rounded-lg border border-red-500/20">
+                        <p className="text-sm text-gray-400">Copyrights</p>
+                        <p className="text-3xl font-bold text-white">{ipPortfolio.copyrights_count || 0}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-gray-400 text-center py-8">IP portfolio data not available</p>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </Tabs>
         </div>
       </div>
     </Layout>
