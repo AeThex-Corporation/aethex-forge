@@ -40,7 +40,7 @@ console.log("Step 2: Transpiling to JavaScript with ESM imports...");
 try {
   execSync(
     `npx esbuild "${destApi}/**/*.ts" --platform=node --target=es2020 --format=esm --outdir="${destApi}" --allow-overwrite`,
-    { cwd: __dirname, stdio: "inherit" }
+    { cwd: __dirname, stdio: "inherit" },
   );
   console.log("✓ Transpiled to JavaScript");
 } catch (error) {
@@ -53,32 +53,32 @@ let fixedCount = 0;
 
 function fixImportsInDir(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
-  
+
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    
+
     if (entry.isDirectory()) {
       fixImportsInDir(fullPath);
     } else if (entry.name.endsWith(".js")) {
       let content = fs.readFileSync(fullPath, "utf-8");
-      
+
       // Fix relative imports for ESM: "../../_supabase" -> "../../_supabase.js"
       let fixedContent = content.replace(
         /from\s+"(\.\.?\/[^"]+)"/g,
         (match, importPath) => {
           if (importPath.endsWith(".js")) return match;
           return `from "${importPath}.js"`;
-        }
+        },
       );
-      
+
       fixedContent = fixedContent.replace(
         /from\s+'(\.\.?\/[^']+)'/g,
         (match, importPath) => {
           if (importPath.endsWith(".js")) return match;
           return `from '${importPath}.js'`;
-        }
+        },
       );
-      
+
       if (fixedContent !== content) {
         fs.writeFileSync(fullPath, fixedContent);
         fixedCount++;
