@@ -13,15 +13,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    console.log("[Passport] Initializing admin client...");
+    console.log("[Passport] Subdomain request for:", username);
     const admin = getAdminClient();
-    console.log("[Passport] Admin client initialized successfully");
 
     const userFields = `
       id,
       username,
       full_name,
-      email,
       bio,
       avatar_url,
       banner_url,
@@ -41,7 +39,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       updated_at
     `;
 
-    // Try to look up user by username first (case-insensitive)
+    // Try to look up user by username first (exact match)
     let user: any = null;
 
     try {
