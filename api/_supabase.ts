@@ -1,8 +1,10 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
 
+// Prioritize VITE_SUPABASE_URL (main instance with actual data)
+// Fall back to SUPABASE_URL (custom domain alias)
 const SUPABASE_URL =
-  process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
+  process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "";
 const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE || "";
 
 console.log("[Supabase Init] SUPABASE_URL configured:", !!SUPABASE_URL);
