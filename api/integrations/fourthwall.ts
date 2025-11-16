@@ -52,7 +52,7 @@ async function getFourthwallToken(): Promise<string> {
       throw new Error(`Fourthwall auth failed: ${response.statusText}`);
     }
 
-    const data: FourthwallAuthResponse = await response.json();
+    const data = (await response.json()) as FourthwallAuthResponse;
     return data.token;
   } catch (error) {
     console.error("[Fourthwall] Auth error:", error);
@@ -103,7 +103,7 @@ async function handleGetProducts(req: any, res: any) {
       throw new Error(`Failed to fetch products: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as { products?: unknown };
 
     return res.status(200).json({
       success: true,

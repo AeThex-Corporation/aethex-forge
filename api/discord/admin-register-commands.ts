@@ -101,7 +101,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       );
 
       if (bulkResponse.ok) {
-        const data = await bulkResponse.json();
+        const data = (await bulkResponse.json()) as any[];
         console.log(`✅ Successfully registered ${data.length} slash commands`);
 
         return res.status(200).json({
@@ -112,7 +112,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       // If bulk update failed, try individual registration
-      const errorData = await bulkResponse.json();
+      const errorData = (await bulkResponse.json()) as any;
       const errorCode = errorData?.code;
 
       if (errorCode === 50240) {
