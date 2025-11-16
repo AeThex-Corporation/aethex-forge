@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import { corsHeaders } from "../_cors";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
