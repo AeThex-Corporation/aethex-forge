@@ -28,14 +28,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE;
 
     if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceRole) {
-      console.error(
-        "[Discord Create Session] Missing environment variables:",
-        {
-          supabaseUrl: !!supabaseUrl,
-          supabaseAnonKey: !!supabaseAnonKey,
-          supabaseServiceRole: !!supabaseServiceRole,
-        },
-      );
+      console.error("[Discord Create Session] Missing environment variables:", {
+        supabaseUrl: !!supabaseUrl,
+        supabaseAnonKey: !!supabaseAnonKey,
+        supabaseServiceRole: !!supabaseServiceRole,
+      });
       return res.status(500).json({ error: "Server configuration error" });
     }
 
@@ -75,7 +72,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         "[Discord Create Session] Failed to create session:",
         createError,
       );
-      return res.status(500).json({ error: "Failed to create linking session" });
+      return res
+        .status(500)
+        .json({ error: "Failed to create linking session" });
     }
 
     console.log("[Discord Create Session] Session created for user:", userId);
