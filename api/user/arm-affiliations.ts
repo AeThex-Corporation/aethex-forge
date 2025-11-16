@@ -47,7 +47,7 @@ export default async (req: Request) => {
 
     // POST - Add or confirm arm affiliation
     if (req.method === "POST") {
-      const body = await req.json();
+      const body = (await req.json()) as any;
       const { arm, affiliation_type, affiliation_data, confirmed } = body;
 
       if (

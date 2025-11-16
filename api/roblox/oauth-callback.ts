@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(401).json({ error: "Token exchange failed" });
     }
 
-    const tokenData: RobloxTokenResponse = await tokenResponse.json();
+    const tokenData = (await tokenResponse.json()) as RobloxTokenResponse;
 
     // Get user info with access token
     const userResponse = await fetch(
@@ -72,7 +72,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(401).json({ error: "Failed to fetch user info" });
     }
 
-    const userInfo: RobloxUserInfo = await userResponse.json();
+    const userInfo = (await userResponse.json()) as RobloxUserInfo;
 
     // Return user info to frontend
     return res.status(200).json({
