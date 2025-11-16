@@ -87,7 +87,7 @@ const SubdomainPassport = () => {
   const { subdomainInfo, isLoading: isSubdomainLoading } =
     useSubdomainPassport();
   const [data, setData] = useState<
-    CreatorPassportResponse | ProjectPassportResponse | null
+    CreatorPassportResponse | ProjectPassportResponse | GroupPassportResponse | null
   >(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
