@@ -1074,13 +1074,13 @@ export const aethexAchievementService = {
         targetUsername: target?.username,
       };
 
-      // Use API_BASE or fallback to window.location.origin for local dev
-      const baseUrl =
-        API_BASE || (typeof window !== "undefined" ? window.location.origin : "");
+      // Always use the current origin for API calls since the API is served from the same origin
+      // This works for both development (localhost:8080) and production (aethex.dev)
+      const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
       if (!baseUrl) {
         console.warn(
-          "[Rewards] Cannot activate - no API base URL available",
+          "[Rewards] Cannot activate - no origin available",
         );
         return null;
       }
