@@ -36,7 +36,7 @@ import {
   ToggleRight,
 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
 
 type ViewMode = "creator" | "client";
 
