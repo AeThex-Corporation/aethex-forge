@@ -30,7 +30,19 @@
     {
       "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "aethex.site" }],
-      "destination": "https://aethex.me",
+      "destination": "https://aethex.dev/:path",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "aethex.me" }],
+      "destination": "https://aethex.dev/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "aethex.space" }],
+      "destination": "https://aethex.dev/",
       "permanent": true
     }
   ],
