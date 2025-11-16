@@ -190,18 +190,22 @@ const SubdomainPassport = () => {
     );
   }
 
-  // Render project passport
+  // Render group passport
   if (
     subdomainInfo.isProjectPassport &&
-    data.type === "project" &&
-    "project" in data
+    data.type === "group" &&
+    "group" in data
   ) {
     return (
-      <ProjectPassport
-        project={data.project}
-        owner={data.owner}
-        isSubdomain={true}
-      />
+      <Layout>
+        <div className="container mx-auto px-4 max-w-6xl">
+          <GroupPassport
+            group={data.group}
+            projects={data.projects}
+            owner={data.owner}
+          />
+        </div>
+      </Layout>
     );
   }
 
