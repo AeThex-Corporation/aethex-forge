@@ -43,7 +43,7 @@ try {
       cwd: __dirname,
       stdio: "inherit",
       env: { ...process.env, SKIP_TSC: "true" },
-    }
+    },
   );
   console.log("✓ API routes transpiled successfully");
 } catch (error) {
@@ -72,7 +72,7 @@ function fixImportsInDir(dir) {
             return match;
           }
           return `from "${importPath}.js"`;
-        }
+        },
       );
 
       fixedContent = fixedContent.replace(
@@ -82,7 +82,7 @@ function fixImportsInDir(dir) {
             return match;
           }
           return `from '${importPath}.js'`;
-        }
+        },
       );
 
       if (fixedContent !== content) {
