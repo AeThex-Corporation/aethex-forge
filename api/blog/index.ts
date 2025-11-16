@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE || "";
@@ -117,7 +116,7 @@ async function fetchFromSupabase(limit: number = 50): Promise<any[]> {
   }
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   res.setHeader("Content-Type", "application/json");
 
   if (req.method !== "GET") {
