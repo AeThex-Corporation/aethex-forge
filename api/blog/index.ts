@@ -59,7 +59,7 @@ async function fetchFromGhost(limit: number = 50): Promise<any[]> {
       return [];
     }
 
-    const data: GhostApiResponse = await response.json();
+    const data = (await response.json()) as GhostApiResponse;
     return (
       data.posts?.map((post) => ({
         id: post.id,
