@@ -44,7 +44,7 @@ export interface ApplicationWithCreator {
   };
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
 
 export async function getMyApplications(filters?: {
   status?: string;
@@ -105,8 +105,10 @@ export async function updateApplicationStatus(
 export async function withdrawApplication(
   applicationId: string,
 ): Promise<void> {
+  const apiBase = getApiBase();
+  if (!apiBase) throw new Error("No API base available");
   const response = await fetch(
-    `${API_BASE}/api/applications/${applicationId}`,
+    `${apiBase}/api/applications/${applicationId}`,
     {
       method: "DELETE",
     },
