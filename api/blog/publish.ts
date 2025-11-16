@@ -23,7 +23,7 @@ async function isUserAdminOrStaff(userId: string): Promise<boolean> {
       .in("role", ["admin", "staff"])
       .single();
 
-    return !error && data;
+    return !error && !!data;
   } catch {
     return false;
   }
