@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL =
@@ -31,3 +32,11 @@ export function getAdminClient() {
 
 // Alias for backward compatibility
 export const supabase = getAdminClient();
+
+// Dummy default export for Vercel (this file is a utility, not a handler)
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse,
+) {
+  return res.status(501).json({ error: "Not a handler" });
+}
