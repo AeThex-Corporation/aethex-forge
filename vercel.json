@@ -2,11 +2,6 @@
   "version": 2,
   "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist/spa",
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "@vercel/node@3.2.15"
-    }
-  },
   "redirects": [
     {
       "source": "/:path(.*)",
