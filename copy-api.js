@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) {
@@ -30,7 +30,7 @@ function copyDir(src, dest) {
   console.log(`Copied ${src} to ${dest}`);
 }
 
-const srcApi = path.resolve(__dirname, 'api');
-const destApi = path.resolve(__dirname, '..', 'api');
+const srcApi = path.resolve(__dirname, "api");
+const destApi = path.resolve(__dirname, "..", "api");
 
 copyDir(srcApi, destApi);
