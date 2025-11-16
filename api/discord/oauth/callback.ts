@@ -146,7 +146,7 @@ export default async function handler(req: any, res: any) {
       return res.redirect("/login?error=token_exchange");
     }
 
-    const tokenData: DiscordTokenResponse = await tokenResponse.json();
+    const tokenData = (await tokenResponse.json()) as DiscordTokenResponse;
 
     // Fetch Discord user profile
     const userResponse = await fetch("https://discord.com/api/v10/users/@me", {
@@ -160,7 +160,7 @@ export default async function handler(req: any, res: any) {
       return res.redirect("/login?error=user_fetch");
     }
 
-    const discordUser: DiscordUser = await userResponse.json();
+    const discordUser = (await userResponse.json()) as DiscordUser;
 
     // Validate Discord user has email
     if (!discordUser.email) {
