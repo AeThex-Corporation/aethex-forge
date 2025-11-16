@@ -74,7 +74,8 @@ export default function Space4PlatformStrategy() {
                   GitHub, Discord, Roblox, Web3)
                 </p>
                 <p>
-                  <strong>Hosting:</strong> Vercel (frontend & serverless functions)
+                  <strong>Hosting:</strong> Vercel (frontend & serverless
+                  functions)
                 </p>
               </div>
             </div>
