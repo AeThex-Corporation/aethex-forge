@@ -28,3 +28,6 @@ export function getAdminClient() {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 }
+
+// Alias for backward compatibility
+export const supabase = getAdminClient();
