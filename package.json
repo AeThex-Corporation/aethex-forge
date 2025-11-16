@@ -12,9 +12,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:client && npm run copy:api",
+    "build": "npm run build:client && npm run build:api",
     "build:client": "vite build",
-    "copy:api": "node copy-api.js",
+    "build:api": "node build-api.js",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc"
