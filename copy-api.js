@@ -30,12 +30,14 @@ function copyDir(src, dest) {
     }
   }
 
-  console.log(`Copied ${src} to ${dest}`);
+  console.log(`✓ Copied ${src} to ${dest}`);
 }
 
-// Source is code/api relative to this file (__dirname is where package.json is)
-const srcApi = path.resolve(__dirname, 'code', 'api');
-// Destination is api/ at the root level
-const destApi = path.resolve(__dirname, 'api');
+// When this file is at code/copy-api.js:
+// __dirname = code/
+// srcApi = code/api
+// destApi = .../api (at root)
+const srcApi = path.resolve(__dirname, 'api');
+const destApi = path.resolve(__dirname, '..', 'api');
 
 copyDir(srcApi, destApi);
