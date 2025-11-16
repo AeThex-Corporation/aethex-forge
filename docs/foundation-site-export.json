@@ -1,0 +1,179 @@
+{
+  "project": "aethex-forge",
+  "generated_at": "2025-11-16T00:00:00Z",
+  "overview": {
+    "description": "Comprehensive export of the Foundation site: frontend routes, components, server endpoints, Supabase schema references, Discord integration, build and deployment details.",
+    "root": "/",
+    "notes": "This file describes site structure, code locations, and deployment guidance. It references files present in the repository under 'code/'."
+  },
+  "frontend": {
+    "framework": "Vite + React",
+    "entry": "code/client/main.tsx",
+    "app_root": "code/client/App.tsx",
+    "pages_dir": "code/client/pages",
+    "pages": [
+      "code/client/pages/Index.tsx",
+      "code/client/pages/Login.tsx",
+      "code/client/pages/DiscordVerify.tsx",
+      "code/client/pages/Dashboard.tsx",
+      "code/client/pages/Activity.tsx",
+      "code/client/pages/Onboarding.tsx",
+      "code/client/pages/Admin.tsx",
+      "code/client/pages/404.tsx",
+      "code/client/pages/About.tsx",
+      "code/client/pages/creators/CreatorProfile.tsx",
+      "code/client/pages/docs/DocsOverview.tsx",
+      "code/client/pages/docs/DocsTutorials.tsx\n    "],
+    "routes_and_expected_urls": {
+      "/": "Index (code/client/pages/Index.tsx)",
+      "/login": "Login (code/client/pages/Login.tsx)",
+      "/dashboard": "Dashboard (code/client/pages/Dashboard.tsx)",
+      "/activity": "Discord Activity SPA (code/client/pages/Activity.tsx)",
+      "/onboarding": "Onboarding (code/client/pages/Onboarding.tsx)",
+      "/profile/:username": "Creator Profile (code/client/pages/creators/CreatorProfile.tsx)",
+      "/profile/link-discord": "Discord verification (code/client/pages/DiscordVerify.tsx)",
+      "/docs/*": "Docs pages (code/client/pages/docs/*)",
+      "subdomain passports (example: mrpiglr.aethex.me)": "Handled by client SubdomainPassport component (code/client/pages/SubdomainPassport.tsx) which fetches API: /api/passport/subdomain-data/:username"
+    },
+    "components_highlights": [
+      "code/client/components/Layout.tsx - app layout, header, nav",
+      "code/client/components/ui/* - shared UI primitives (accordion, alert, toast, loading)",
+      "code/client/components/passport/PassportSummary.tsx - renders passport summary",
+      "code/client/components/settings/OAuthConnections.tsx - OAuth providers UI (Discord etc.)",
+      "code/client/components/admin/AdminDiscordManagement.tsx - admin UI for discord role mappings",
+      "code/client/components/blog/* and docs components under code/client/components/docs"
+    ],
+    "static_assets": "code/public (discord-manifest.json, placeholder.svg, robots.txt, site.webmanifest, etc.)"
+  },
+  "client_integration_points": {
+    "AuthContext": "code/client/contexts/AuthContext.tsx (central auth state, linkProvider('discord') flow)",
+    "DiscordActivityContext": "code/client/contexts/DiscordActivityContext.tsx (Activity SDK integration)",
+    "api_helpers": "code/client/api/* (client-side API wrappers)"
+  },
+  "api_and_server": {
+    "server_framework": "Express mounted into Vite dev middleware and built as a Node server",
+    "express_entry": "code/server/index.ts",
+    "server_build_entry": "code/server/node-build.ts (production entry)",
+    "server_mount_in_dev": "code/vite.config.ts -> expressPlugin loads createServer() from code/server/index.ts",
+    "server_routes_summary": {
+      "/api/passport/subdomain-data/:username": "Returns JSON for creator passport (code/server/index.ts)",
+      "/api/passport/project-data/:projectSlug": "Returns JSON for project passport (code/server/index.ts)",
+      "Discord OAuth and linking endpoints (server or api/*):": [
+        "code/api/discord/oauth/start.ts - OAuth start redirect",
+        "code/api/discord/oauth/callback.ts - OAuth callback handler",
+        "code/api/discord/link.ts - Link via verification code",
+        "code/api/discord/verify-code.ts - Verify posted code",
+        "code/api/discord/activity-auth.ts - Activity token verification",
+        "code/api/discord/sync-roles.ts - Role sync endpoint",
+        "code/api/discord/admin-register-commands.ts - (admin command registration)"
+      ],
+      "Other serverless APIs (Vercel-style) under code/api": "Many endpoints for achievements, profile/ensure, feed, blog, nexus, etc. See code/api/**/*"
+    },
+    "server_notes": "Production server serves dist/spa static files from dist/server and runs the Express app (node dist/server/production.mjs). In dev the Express app is mounted into Vite dev server.",
+    "server_files": ["code/server/index.ts","code/server/supabase.ts","code/server/node-build.ts"]
+  },
+  "supabase_and_db": {
+    "primary": "VITE_SUPABASE_URL (https://kmdeisowhtsalsekkzqd.supabase.co) and alias SUPABASE_URL (https://supabase.aethex.tech)",
+    "service_role": "SUPABASE_SERVICE_ROLE (server-side service role token)",
+    "migrations_dir": "code/supabase/migrations",
+    "relevant_migrations": [
+      "code/supabase/migrations/20250107_add_discord_integration.sql",
+      "code/supabase/migrations/202407090001_create_applications.sql",
+      "... other migrations under code/supabase/migrations"
+    ],
+    "important_tables": [
+      "user_profiles",
+      "user_achievements",
+      "user_interests",
+      "user_auth_identities",
+      "discord_links",
+      "discord_verifications",
+      "discord_role_mappings",
+      "applications, invites, other project-specific tables"
+    ],
+    "db_access_from_server": "code/api/_supabase.ts (serverless functions) and code/server/supabase.ts (Express server) initialize admin clients using SUPABASE_SERVICE_ROLE"
+  },
+  "discord_integration": {
+    "bot_code": "code/discord-bot/bot.js and commands under code/discord-bot/commands/*.js",
+    "oauth": {
+      "start": "code/api/discord/oauth/start.ts",
+      "callback": "code/api/discord/oauth/callback.ts",
+      "redirect_uri_env": "DISCORD_REDIRECT_URI (set to production callback URL)"
+    },
+    "activity": {
+      "manifest": "code/public/discord-manifest.json",
+      "activity_auth_endpoint": "code/api/discord/activity-auth.ts",
+      "client_integration": "code/client/contexts/DiscordActivityContext.tsx and code/client/pages/Activity.tsx"
+    },
+    "linking_flow": "user clicks 'Link Discord' -> linkProvider('discord') -> /api/discord/oauth/start -> OAuth -> /api/discord/oauth/callback -> backend saves discord_link (discord_links table) -> triggers role sync",
+    "slash_commands": "registered via discord-bot scripts or admin API (code/discord-bot/scripts/register-commands.js / code/api/discord/admin-register-commands.ts)",
+    "health_checks": "code/client/lib/discord-bot-status.ts polls bot health endpoints (bot health API located in code/server/index.ts or code/api/discord/bot-health.ts)"
+  },
+  "design_and_layout": {
+    "design_system": "Tailwind CSS + Lucide icons + Radix UI primitives (see dependencies)",
+    "global_styles": "code/client/global.css",
+    "layout_component": "code/client/components/Layout.tsx",
+    "passport_ui": "code/client/components/passport/PassportSummary.tsx",
+    "theme_and_switcher": "code/client/components/ThemeToggle and ArmSwitcher in code/client/components/ArmSwitcher.tsx",
+    "ui_primitives": "code/client/components/ui/* (accordion, alert, toast, loading screen)"
+  },
+  "build_and_scripts": {
+    "dev": "npm run dev -> vite (code/vite.config.ts mounts Express in dev)",
+    "build_flow": "npm run build -> build:api (node build-api.js), build:client (vite build), build:server (vite build --config vite.config.server.ts)",
+    "start_production": "npm start -> node dist/server/production.mjs",
+    "docker": "code/Dockerfile (added for Railway); builds and runs the production server exposing PORT (3000)",
+    "important_files": ["code/package.json","code/vite.config.server.ts","code/vite.config.ts","code/build-api.js","code/Dockerfile"]
+  },
+  "deployment_and_hosts": {
+    "current_hosts": {
+      "vercel": "Frontend + serverless functions (code/api/*) can be deployed to Vercel",
+      "fly_io": "Previously used to host Express server; domain example given in conversation",
+      "railway": "Configured (code/railway.json + Dockerfile) as recommended unified host for Express + Bot + Frontend"
+    },
+    "dns_notes": "Subdomain passports require wildcard DNS (*.aethex.me) pointing to the host running Express server. If Express is on Railway/Fly, update DNS accordingly. Vercel cannot serve arbitrary wildcard subdomain server routes unless serverless functions handle them.",
+    "recommended_setup": "Keep frontend on Vercel if desired; deploy Express + Discord bot to Railway or Fly; point wildcard DNS to that host. Alternatively deploy everything to Railway for single-host simplicity."
+  },
+  "environment_variables": {
+    "required_keys": [
+      "VITE_SUPABASE_URL",
+      "VITE_SUPABASE_ANON_KEY",
+      "SUPABASE_SERVICE_ROLE",
+      "SUPABASE_URL",
+      "DISCORD_CLIENT_ID",
+      "DISCORD_CLIENT_SECRET",
+      "DISCORD_BOT_TOKEN",
+      "DISCORD_PUBLIC_KEY",
+      "DISCORD_REDIRECT_URI",
+      "VITE_API_BASE",
+      "SMTP_HOST",
+      "SMTP_PORT",
+      "SMTP_USER",
+      "SMTP_PASSWORD",
+      "VITE_GHOST_API_URL",
+      "GHOST_ADMIN_API_KEY",
+      "FOURTHWALL_API_EMAIL",
+      "FOURTHWALL_API_PASSWORD"
+    ],
+    "notes": "Do not commit secrets to source. Use Railway/Vercel environment settings or Vault. Many variables are present in the project environment already; ensure production values are set in your deployment host."
+  },
+  "export_instructions": {
+    "purpose": "This file is a machine-readable site map and operational guide. Use as baseline for exporting docs or generating human-friendly markdown/zip exports.",
+    "how_to_export_code": [
+      "1. Push latest branch to remote (use Push Code in UI)",
+      "2. Build artifacts (npm run build) locally to verify",
+      "3. Package dist/spa and dist/server for deployment",
+      "4. Ensure env vars set on target host",
+      "5. Update DNS to point wildcard domains to host running Express"
+    ]
+  },
+  "appendix": {
+    "key_files_index": {
+      "frontend": ["code/client/App.tsx","code/client/main.tsx","code/client/global.css","code/client/pages/*","code/client/components/*","code/client/contexts/*"],
+      "api": ["code/api/* (serverless functions)","code/api/discord/*","code/api/passport/*","code/api/profile/ensure.ts"],
+      "server": ["code/server/index.ts","code/server/supabase.ts","code/server/node-build.ts"],
+      "discord": ["code/discord-bot/bot.js","code/discord-bot/commands/*"],
+      "migrations": ["code/supabase/migrations/*"]
+    },
+    "contact": "Repository owner / admin (you)"
+  }
+}
