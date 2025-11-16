@@ -1,5 +1,3 @@
-api/_*.ts
-api/_*.js
 api/opportunities.ts
 api/opportunities.js
 api/**/lib
