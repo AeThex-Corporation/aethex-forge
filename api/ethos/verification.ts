@@ -51,7 +51,9 @@ export default async function handler(req: any, res: any) {
         .single();
 
       if (!adminCheck?.is_admin) {
-        return res.status(403).json({ error: "Only admins can view verification requests" });
+        return res
+          .status(403)
+          .json({ error: "Only admins can view verification requests" });
       }
 
       const query_builder = supabase
@@ -85,7 +87,13 @@ export default async function handler(req: any, res: any) {
     }
 
     if (method === "POST") {
-      const { action, request_id, rejection_reason, submission_notes, portfolio_links } = body;
+      const {
+        action,
+        request_id,
+        rejection_reason,
+        submission_notes,
+        portfolio_links,
+      } = body;
       const authUser = req.headers["x-user-id"];
 
       if (!authUser) {
@@ -102,7 +110,9 @@ export default async function handler(req: any, res: any) {
           .single();
 
         if (existingRequest) {
-          return res.status(400).json({ error: "You already have a pending verification request" });
+          return res
+            .status(400)
+            .json({ error: "You already have a pending verification request" });
         }
 
         // Create verification request
@@ -121,14 +131,12 @@ export default async function handler(req: any, res: any) {
         if (requestError) throw requestError;
 
         // Log the submission
-        await supabase
-          .from("ethos_verification_audit_log")
-          .insert({
-            request_id: request.id,
-            action: "submitted",
-            actor_id: authUser,
-            notes: "Artist submitted verification request",
-          });
+        await supabase.from("ethos_verification_audit_log").insert({
+          request_id: request.id,
+          action: "submitted",
+          actor_id: authUser,
+          notes: "Artist submitted verification request",
+        });
 
         return res.status(201).json({ data: request });
       }
@@ -142,7 +150,9 @@ export default async function handler(req: any, res: any) {
           .single();
 
         if (!adminCheck?.is_admin) {
-          return res.status(403).json({ error: "Only admins can approve verification" });
+          return res
+            .status(403)
+            .json({ error: "Only admins can approve verification" });
         }
 
         const { data: request, error: updateError } = await supabase
@@ -165,14 +175,12 @@ export default async function handler(req: any, res: any) {
           .eq("user_id", request.user_id);
 
         // Log the approval
-        await supabase
-          .from("ethos_verification_audit_log")
-          .insert({
-            request_id,
-            action: "approved",
-            actor_id: authUser,
-            notes: "Artist verified by admin",
-          });
+        await supabase.from("ethos_verification_audit_log").insert({
+          request_id,
+          action: "approved",
+          actor_id: authUser,
+          notes: "Artist verified by admin",
+        });
 
         // Send verification email
         const { data: userData } = await supabase
@@ -233,7 +241,9 @@ export default async function handler(req: any, res: any) {
           .single();
 
         if (!adminCheck?.is_admin) {
-          return res.status(403).json({ error: "Only admins can reject verification" });
+          return res
+            .status(403)
+            .json({ error: "Only admins can reject verification" });
         }
 
         const { data: request, error: updateError } = await supabase
@@ -251,14 +261,12 @@ export default async function handler(req: any, res: any) {
         if (updateError) throw updateError;
 
         // Log the rejection
-        await supabase
-          .from("ethos_verification_audit_log")
-          .insert({
-            request_id,
-            action: "rejected",
-            actor_id: authUser,
-            notes: rejection_reason,
-          });
+        await supabase.from("ethos_verification_audit_log").insert({
+          request_id,
+          action: "rejected",
+          actor_id: authUser,
+          notes: rejection_reason,
+        });
 
         // Send rejection email
         const { data: userData } = await supabase
