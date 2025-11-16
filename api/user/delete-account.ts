@@ -21,7 +21,7 @@ export default async (req: Request) => {
       });
     }
 
-    const { email } = await req.json();
+    const { email } = (await req.json()) as { email?: string };
 
     if (!email) {
       return new Response(

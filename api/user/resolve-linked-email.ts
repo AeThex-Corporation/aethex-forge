@@ -9,7 +9,7 @@ export default async (req: Request) => {
   }
 
   try {
-    const { email } = await req.json();
+    const { email } = (await req.json()) as { email?: string };
 
     if (!email) {
       return new Response(JSON.stringify({ error: "Email is required" }), {
