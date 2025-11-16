@@ -33,7 +33,8 @@ import { CoursesWidget } from "@/components/CoursesWidget";
 import { MentorshipWidget } from "@/components/MentorshipWidget";
 import { AchievementsWidget } from "@/components/AchievementsWidget";
 
-const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
+const getApiBase = () =>
+  typeof window !== "undefined" ? window.location.origin : "";
 
 export default function FoundationDashboard() {
   const navigate = useNavigate();
@@ -81,12 +82,9 @@ export default function FoundationDashboard() {
           console.warn("[Foundation] No API base available");
           return;
         }
-        const mentorRes = await fetch(
-          `${apiBase}/api/foundation/mentorships`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const mentorRes = await fetch(`${apiBase}/api/foundation/mentorships`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         if (
           mentorRes.ok &&
           mentorRes.headers.get("content-type")?.includes("application/json")

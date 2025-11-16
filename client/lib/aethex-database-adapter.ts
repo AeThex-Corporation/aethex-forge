@@ -301,7 +301,10 @@ export const aethexUserService = {
       await this.updateProfile(user.id, {
         username: "mrpiglr",
       }).catch((err) => {
-        console.warn("[Profile] Failed to auto-populate mrpiglr username:", err);
+        console.warn(
+          "[Profile] Failed to auto-populate mrpiglr username:",
+          err,
+        );
       });
       normalized.username = "mrpiglr";
     }
@@ -1001,7 +1004,8 @@ export const aethexAchievementService = {
     ensureSupabase();
 
     try {
-      const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+      const baseUrl =
+        typeof window !== "undefined" ? window.location.origin : "";
       if (!baseUrl) {
         console.warn("[Achievement] Cannot award - no origin available");
         return;
@@ -1082,12 +1086,11 @@ export const aethexAchievementService = {
 
       // Always use the current origin for API calls since the API is served from the same origin
       // This works for both development (localhost:8080) and production (aethex.dev)
-      const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+      const baseUrl =
+        typeof window !== "undefined" ? window.location.origin : "";
 
       if (!baseUrl) {
-        console.warn(
-          "[Rewards] Cannot activate - no origin available",
-        );
+        console.warn("[Rewards] Cannot activate - no origin available");
         return null;
       }
 

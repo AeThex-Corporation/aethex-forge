@@ -36,7 +36,8 @@ import {
   ToggleRight,
 } from "lucide-react";
 
-const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
+const getApiBase = () =>
+  typeof window !== "undefined" ? window.location.origin : "";
 
 type ViewMode = "creator" | "client";
 
@@ -234,20 +235,17 @@ export default function NexusDashboard() {
       setCreatorProfile(updatedProfile);
 
       // Update user profile to mark Nexus as complete
-      const userProfileRes = await fetch(
-        `${apiBase}/api/user/profile-update`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nexus_profile_complete: true,
-            nexus_headline: profileFormData.headline,
-          }),
+      const userProfileRes = await fetch(`${apiBase}/api/user/profile-update`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          nexus_profile_complete: true,
+          nexus_headline: profileFormData.headline,
+        }),
+      });
 
       if (userProfileRes.ok) {
         aethexToast({

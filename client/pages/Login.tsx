@@ -262,8 +262,7 @@ export default function Login() {
           nonce: nonce.nonce,
           signature,
           redirectTo:
-            window.location.origin +
-            (profile ? "/dashboard" : "/onboarding"),
+            window.location.origin + (profile ? "/dashboard" : "/onboarding"),
         }),
       })
         .then((r) => (r.ok ? r.json() : null))

@@ -51,7 +51,8 @@ export interface CreatorsResponse {
   };
 }
 
-const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
+const getApiBase = () =>
+  typeof window !== "undefined" ? window.location.origin : "";
 
 export async function getCreators(filters?: {
   arm?: string;
@@ -170,13 +171,10 @@ export async function endorseSkill(
 ): Promise<void> {
   const apiBase = getApiBase();
   if (!apiBase) throw new Error("No API base available");
-  const response = await fetch(
-    `${apiBase}/api/creators/${creatorId}/endorse`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ skill }),
-    },
-  );
+  const response = await fetch(`${apiBase}/api/creators/${creatorId}/endorse`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ skill }),
+  });
   if (!response.ok) throw new Error("Failed to endorse skill");
 }

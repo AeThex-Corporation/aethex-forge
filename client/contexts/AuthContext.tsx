@@ -397,7 +397,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     rewardsActivatedRef.current = true;
 
     // Only attempt to activate if this is the admin user
-    if (profile?.email === "mrpiglr@gmail.com" || profile?.username === "mrpiglr") {
+    if (
+      profile?.email === "mrpiglr@gmail.com" ||
+      profile?.username === "mrpiglr"
+    ) {
       aethexAchievementService
         .activateCommunityRewards({
           email: profile?.email,

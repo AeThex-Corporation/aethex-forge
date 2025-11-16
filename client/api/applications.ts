@@ -44,7 +44,8 @@ export interface ApplicationWithCreator {
   };
 }
 
-const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
+const getApiBase = () =>
+  typeof window !== "undefined" ? window.location.origin : "";
 
 export async function getMyApplications(filters?: {
   status?: string;
@@ -107,11 +108,8 @@ export async function withdrawApplication(
 ): Promise<void> {
   const apiBase = getApiBase();
   if (!apiBase) throw new Error("No API base available");
-  const response = await fetch(
-    `${apiBase}/api/applications/${applicationId}`,
-    {
-      method: "DELETE",
-    },
-  );
+  const response = await fetch(`${apiBase}/api/applications/${applicationId}`, {
+    method: "DELETE",
+  });
   if (!response.ok) throw new Error("Failed to withdraw application");
 }
