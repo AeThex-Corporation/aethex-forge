@@ -59,7 +59,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             select distinct project_id from gameforge_team_members
             where user_id = '${user.id}'
           )
-        `,
+        ` as any,
         );
       }
 
