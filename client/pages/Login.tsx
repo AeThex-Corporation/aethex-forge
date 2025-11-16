@@ -263,7 +263,7 @@ export default function Login() {
           signature,
           redirectTo:
             window.location.origin +
-            (profileComplete ? "/dashboard" : "/onboarding"),
+            (profile ? "/dashboard" : "/onboarding"),
         }),
       })
         .then((r) => (r.ok ? r.json() : null))
