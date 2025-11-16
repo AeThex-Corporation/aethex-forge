@@ -23,7 +23,8 @@
       "code/client/pages/About.tsx",
       "code/client/pages/creators/CreatorProfile.tsx",
       "code/client/pages/docs/DocsOverview.tsx",
-      "code/client/pages/docs/DocsTutorials.tsx\n    "],
+      "code/client/pages/docs/DocsTutorials.tsx"
+    ],
     "routes_and_expected_urls": {
       "/": "Index (code/client/pages/Index.tsx)",
       "/login": "Login (code/client/pages/Login.tsx)",
@@ -161,9 +162,9 @@
     "how_to_export_code": [
       "1. Push latest branch to remote (use Push Code in UI)",
       "2. Build artifacts (npm run build) locally to verify",
-      "3. Package dist/spa and dist/server for deployment",
-      "4. Ensure env vars set on target host",
-      "5. Update DNS to point wildcard domains to host running Express"
+      "      3. Package dist/spa and dist/server for deployment",
+      "      4. Ensure env vars set on target host",
+      "      5. Update DNS to point wildcard domains to host running Express"
     ]
   },
   "appendix": {
