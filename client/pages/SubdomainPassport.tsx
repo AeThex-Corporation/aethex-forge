@@ -87,7 +87,10 @@ const SubdomainPassport = () => {
   const { subdomainInfo, isLoading: isSubdomainLoading } =
     useSubdomainPassport();
   const [data, setData] = useState<
-    CreatorPassportResponse | ProjectPassportResponse | GroupPassportResponse | null
+    | CreatorPassportResponse
+    | ProjectPassportResponse
+    | GroupPassportResponse
+    | null
   >(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -154,14 +157,8 @@ const SubdomainPassport = () => {
 
   // Loading passport data
   if (loading) {
-    const passportType = subdomainInfo.isCreatorPassport
-      ? "creator"
-      : "group";
-    return (
-      <LoadingScreen
-        message={`Loading ${passportType} passport...`}
-      />
-    );
+    const passportType = subdomainInfo.isCreatorPassport ? "creator" : "group";
+    return <LoadingScreen message={`Loading ${passportType} passport...`} />;
   }
 
   // Error loading passport

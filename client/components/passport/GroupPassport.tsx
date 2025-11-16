@@ -1,13 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Globe,
-  Github,
-  Users,
-  Calendar,
-  Mail,
-  MapPin,
-} from "lucide-react";
+import { Globe, Github, Users, Calendar, Mail, MapPin } from "lucide-react";
 
 interface GroupMember {
   userId: string;
@@ -118,7 +111,11 @@ export default function GroupPassport({
             </a>
           )}
           {group.github_url && (
-            <a href={group.github_url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={group.github_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="outline" size="sm" className="gap-2">
                 <Github className="h-4 w-4" />
                 GitHub
@@ -131,7 +128,9 @@ export default function GroupPassport({
       {/* Members Section */}
       {group.members && group.members.length > 0 && (
         <div>
-          <h2 className="mb-6 text-2xl font-bold text-slate-900">Team Members</h2>
+          <h2 className="mb-6 text-2xl font-bold text-slate-900">
+            Team Members
+          </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {group.members.map((member) => (
               <div
