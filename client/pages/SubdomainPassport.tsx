@@ -10,7 +10,7 @@ import FourOhFourPage from "@/pages/404";
 import Index from "@/pages/Index";
 import type { AethexUserProfile } from "@/lib/aethex-database-adapter";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
 
 interface CreatorPassportResponse {
   type: "creator";
@@ -105,13 +105,20 @@ const SubdomainPassport = () => {
         setLoading(true);
         setError(null);
 
+        const apiBase = getApiBase();
+        if (!apiBase) {
+          setError("Cannot determine API base");
+          setLoading(false);
+          return;
+        }
+
         let url = "";
         if (subdomainInfo.isCreatorPassport) {
-          url = `${API_BASE}/api/passport/subdomain/${encodeURIComponent(
+          url = `${apiBase}/api/passport/subdomain/${encodeURIComponent(
             subdomainInfo.subdomain,
           )}`;
         } else if (subdomainInfo.isProjectPassport) {
-          url = `${API_BASE}/api/passport/group/${encodeURIComponent(
+          url = `${apiBase}/api/passport/group/${encodeURIComponent(
             subdomainInfo.subdomain,
           )}`;
         }
