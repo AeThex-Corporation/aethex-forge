@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+const fs = require('fs');
+const path = require('path');
+
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) {
+    console.warn(`Source directory not found: ${src}`);
+    return;
+  }
+
+  if (fs.existsSync(dest)) {
+    fs.rmSync(dest, { recursive: true, force: true });
+  }
+
+  fs.mkdirSync(dest, { recursive: true });
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+
+  console.log(`Copied ${src} to ${dest}`);
+}
+
+const srcApi = path.resolve(__dirname, 'api');
+const destApi = path.resolve(__dirname, '..', 'api');
+
+copyDir(srcApi, destApi);
