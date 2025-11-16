@@ -894,7 +894,7 @@ export const aethexAchievementService = {
         await aethexNotificationService.createNotification(
           userId,
           "success",
-          `🏆 Achievement Unlocked: ${achievement.name}`,
+          `�� Achievement Unlocked: ${achievement.name}`,
           `You've earned ${achievement.xp_reward} XP!`,
         );
       } catch (notifError) {
@@ -1031,20 +1031,23 @@ export const aethexAchievementService = {
     username?: string;
   }): Promise<ActivateRewardsResponse | null> {
     try {
-      // Skip if API_BASE is not configured (development edge case)
-      if (!API_BASE) {
-        console.warn(
-          "[Rewards] Skipping activation - API_BASE not configured",
-        );
-        return null;
-      }
-
       const payload = {
         targetEmail: target?.email,
         targetUsername: target?.username,
       };
 
-      const url = `${API_BASE}/api/achievements/activate`;
+      // Use API_BASE or fallback to window.location.origin for local dev
+      const baseUrl =
+        API_BASE || (typeof window !== "undefined" ? window.location.origin : "");
+
+      if (!baseUrl) {
+        console.warn(
+          "[Rewards] Cannot activate - no API base URL available",
+        );
+        return null;
+      }
+
+      const url = `${baseUrl}/api/achievements/activate`;
       console.log("[Rewards] Activating at:", url);
 
       const response = await fetch(url, {
