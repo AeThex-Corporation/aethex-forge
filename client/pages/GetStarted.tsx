@@ -83,13 +83,13 @@ export default function GetStarted() {
   ];
 
   const navigate = useNavigate();
-  const { user, profileComplete, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
 
   useEffect(() => {
     if (loading) return;
-    if (user && profileComplete) navigate("/dashboard", { replace: true });
-    if (user && !profileComplete) navigate("/onboarding", { replace: true });
-  }, [user, profileComplete, loading, navigate]);
+    if (user && profile) navigate("/dashboard", { replace: true });
+    if (user && !profile) navigate("/onboarding", { replace: true });
+  }, [user, profile, loading, navigate]);
 
   return (
     <Layout>
