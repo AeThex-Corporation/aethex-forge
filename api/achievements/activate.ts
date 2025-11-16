@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { randomUUID } from "crypto";
 import { createHash } from "crypto";
-import { getAdminClient } from "../_supabase";
+import { getAdminClient } from "../_supabase.js";
 
 const generateDeterministicUUID = (str: string): string => {
   const hash = createHash("sha256").update(str).digest("hex");
