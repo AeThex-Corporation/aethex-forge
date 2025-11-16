@@ -19,7 +19,7 @@ export default async (req: Request) => {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const body = await req.json();
+    const body = (await req.json()) as any;
     const userId = userData.user.id;
 
     // Sanitize and validate input
