@@ -54,7 +54,7 @@ export default async function handler(req: any, res: any) {
       });
     }
 
-    const tokenData = await tokenResponse.json();
+    const tokenData = (await tokenResponse.json()) as { access_token: string; token_type: string; expires_in: number };
     const accessToken = tokenData.access_token;
 
     if (!accessToken) {
@@ -74,7 +74,7 @@ export default async function handler(req: any, res: any) {
       return res.status(401).json({ error: "Invalid token" });
     }
 
-    const discordUser = await userResponse.json();
+    const discordUser = (await userResponse.json()) as { id: string; username: string };
     console.log(
       "[Discord Token] Token exchange successful for user:",
       discordUser.id,
