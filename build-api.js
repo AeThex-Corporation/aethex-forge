@@ -10,6 +10,16 @@ console.log("Preparing API files for Vercel...");
 const srcApi = path.resolve(__dirname, "api");
 const destApi = path.resolve(__dirname, "..", "api");
 
+const UTILITY_PATTERNS = [
+  /^_/,
+  /^opportunities\.ts$/,
+  /^opportunities\.js$/,
+];
+
+function isUtilityFile(filename) {
+  return UTILITY_PATTERNS.some((pattern) => pattern.test(filename));
+}
+
 function copyDir(src, dest) {
   if (fs.existsSync(dest)) {
     fs.rmSync(dest, { recursive: true, force: true });
@@ -24,7 +34,10 @@ function copyDir(src, dest) {
     if (entry.isDirectory()) {
       copyDir(srcPath, destPath);
     } else if (!entry.name.startsWith(".")) {
-      fs.copyFileSync(srcPath, destPath);
+      // Skip utility files at the root api level
+      if (!isUtilityFile(entry.name) || src !== srcApi) {
+        fs.copyFileSync(srcPath, destPath);
+      }
     }
   }
 }
