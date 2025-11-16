@@ -5,6 +5,7 @@ import { useSubdomainPassport } from "@/contexts/SubdomainPassportContext";
 import Layout from "@/components/Layout";
 import PassportSummary from "@/components/passport/PassportSummary";
 import ProjectPassport from "@/components/passport/ProjectPassport";
+import GroupPassport from "@/components/passport/GroupPassport";
 import FourOhFourPage from "@/pages/404";
 import Index from "@/pages/Index";
 import type { AethexUserProfile } from "@/lib/aethex-database-adapter";
@@ -31,6 +32,48 @@ interface ProjectPassportResponse {
     image_url?: string;
     website?: string;
   };
+  owner?: {
+    id: string;
+    username: string;
+    full_name: string;
+    avatar_url: string | null;
+  };
+  domain: string;
+}
+
+interface GroupPassportResponse {
+  type: "group";
+  group: {
+    id: string;
+    name: string;
+    description: string | null;
+    logo_url: string | null;
+    banner_url: string | null;
+    website: string | null;
+    github_url: string | null;
+    created_at: string;
+    updated_at: string;
+    memberCount: number;
+    members: Array<{
+      userId: string;
+      role: string;
+      joinedAt: string;
+      user: {
+        id: string;
+        username: string;
+        full_name: string;
+        avatar_url: string | null;
+      };
+    }>;
+  };
+  projects: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    description: string | null;
+    image_url: string | null;
+    created_at: string;
+  }>;
   owner?: {
     id: string;
     username: string;
