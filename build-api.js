@@ -48,5 +48,43 @@ try {
   console.log("✓ API routes transpiled successfully");
 } catch (error) {
   console.error("Error transpiling API routes:", error.message);
-  // Don't exit, as TypeScript compilation might fail for other reasons
 }
+
+// Fix ESM imports by adding .js extensions to relative imports
+console.log("Fixing ESM imports...");
+function fixImportsInDir(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      fixImportsInDir(fullPath);
+    } else if (entry.name.endsWith(".js")) {
+      let content = fs.readFileSync(fullPath, "utf-8");
+
+      // Fix: import x from "../../_supabase" -> import x from "../../_supabase.js"
+      // This regex matches relative imports without .js extension
+      const fixedContent = content
+        .replace(/from\s+["'](\.[^"']*?)(?<!\.js)(["'])/g, (match, path, quote) => {
+          // Skip if it's already .js
+          if (path.endsWith(".js")) {
+            return match;
+          }
+          // Skip if it's a node_modules import
+          if (!path.startsWith(".")) {
+            return match;
+          }
+          return `from "${path}.js"${quote}`;
+        });
+
+      if (fixedContent !== content) {
+        fs.writeFileSync(fullPath, fixedContent);
+        console.log(`✓ Fixed imports in ${path.relative(destApi, fullPath)}`);
+      }
+    }
+  }
+}
+
+fixImportsInDir(destApi);
+console.log("✓ ESM imports fixed");
