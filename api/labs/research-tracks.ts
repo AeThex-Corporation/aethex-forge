@@ -1,4 +1,4 @@
-import { supabase } from "../_supabase";
+import { supabase } from "../_supabase.js";
 
 export default async (req: Request) => {
   if (req.method !== "GET") {
