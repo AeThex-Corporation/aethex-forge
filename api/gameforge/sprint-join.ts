@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../../_supabase";
+import { getAdminClient } from "../_supabase";
 
 const admin = getAdminClient();
 
