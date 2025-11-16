@@ -48,12 +48,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const result = await admin
         .from("user_profiles")
         .select(userFields)
-        .ilike("username", `%${username}%`)
-        .limit(1)
+        .eq("username", username)
         .single();
       user = result.data;
     } catch (e) {
-      // Continue to ID lookup
+      console.log("[Passport] Username exact match failed, trying ilike:", e?.message);
+      // Try case-insensitive match
+      try {
+        const result2 = await admin
+          .from("user_profiles")
+          .select(userFields)
+          .ilike("username", username)
+          .limit(1)
+          .single();
+        user = result2.data;
+      } catch (e2) {
+        // Continue to ID lookup
+      }
     }
 
     // If not found by username, try by exact ID match
