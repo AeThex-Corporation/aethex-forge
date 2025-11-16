@@ -57,7 +57,7 @@ async function fetchFromGhost(slug: string): Promise<any | null> {
       return null;
     }
 
-    const data: GhostApiResponse = await response.json();
+    const data = (await response.json()) as GhostApiResponse;
     const post = data.posts && data.posts.length > 0 ? data.posts[0] : null;
 
     if (!post) {
