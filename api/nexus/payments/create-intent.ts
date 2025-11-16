@@ -47,11 +47,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .single();
 
     if (oppError || !opportunity || opportunity.posted_by !== user.id) {
-      return res
-        .status(403)
-        .json({
-          error: "Not authorized to post contracts for this opportunity",
-        });
+      return res.status(403).json({
+        error: "Not authorized to post contracts for this opportunity",
+      });
     }
 
     // Verify the creator has applied

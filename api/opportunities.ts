@@ -315,9 +315,6 @@ export async function closeOpportunity(opportunityId: string, userId: string) {
 }
 
 // Dummy default export for Vercel (this file is a utility, not a handler)
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   return res.status(501).json({ error: "Not a handler" });
 }
