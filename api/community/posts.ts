@@ -110,7 +110,7 @@ export default async function handler(req: any, res: any) {
         return res.status(500).json({ error: error.message });
       }
 
-      const createdPost = (data?.[0] as any);
+      const createdPost = data?.[0] as any;
 
       // Sync post to Discord feed webhook
       try {

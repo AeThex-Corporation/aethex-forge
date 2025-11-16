@@ -145,7 +145,10 @@ export async function getApplicationsForOpportunity(
 
 export async function submitApplication(req: Request, userId: string) {
   try {
-    const body = (await req.json()) as { opportunity_id?: string; cover_letter?: string };
+    const body = (await req.json()) as {
+      opportunity_id?: string;
+      cover_letter?: string;
+    };
     const { opportunity_id, cover_letter } = body;
 
     // Get creator ID for this user

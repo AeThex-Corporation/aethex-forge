@@ -10,7 +10,10 @@ export default async (req: Request) => {
 
   try {
     const supabase = getAdminClient();
-    const { primaryEmail, linkedEmail } = (await req.json()) as { primaryEmail?: string; linkedEmail?: string };
+    const { primaryEmail, linkedEmail } = (await req.json()) as {
+      primaryEmail?: string;
+      linkedEmail?: string;
+    };
 
     if (!primaryEmail || !linkedEmail) {
       return new Response(

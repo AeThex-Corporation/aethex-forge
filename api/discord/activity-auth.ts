@@ -53,7 +53,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       throw new Error(`Discord API error: ${discordResponse.statusText}`);
     }
 
-    const discordUser = (await discordResponse.json()) as { id: string; username: string; global_name?: string; avatar?: string };
+    const discordUser = (await discordResponse.json()) as {
+      id: string;
+      username: string;
+      global_name?: string;
+      avatar?: string;
+    };
     const discord_id = discordUser.id;
     const discord_username = discordUser.username;
 
