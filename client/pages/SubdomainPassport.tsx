@@ -10,7 +10,8 @@ import FourOhFourPage from "@/pages/404";
 import Index from "@/pages/Index";
 import type { AethexUserProfile } from "@/lib/aethex-database-adapter";
 
-const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
+const getApiBase = () =>
+  typeof window !== "undefined" ? window.location.origin : "";
 
 interface CreatorPassportResponse {
   type: "creator";

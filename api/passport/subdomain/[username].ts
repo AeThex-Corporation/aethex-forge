@@ -50,7 +50,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .single();
       user = result.data;
     } catch (e) {
-      console.log("[Passport] Username exact match failed, trying ilike:", e?.message);
+      console.log(
+        "[Passport] Username exact match failed, trying ilike:",
+        e?.message,
+      );
       // Try case-insensitive match
       try {
         const result2 = await admin
