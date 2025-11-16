@@ -5,11 +5,12 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-console.log("Copying API files for Vercel...");
+console.log("Preparing API files for Vercel...");
 
 const srcApi = path.resolve(__dirname, "api");
 const destApi = path.resolve(__dirname, "..", "api");
 
+// Copy entire API directory
 function copyDir(src, dest) {
   if (fs.existsSync(dest)) {
     fs.rmSync(dest, { recursive: true, force: true });
@@ -29,6 +30,9 @@ function copyDir(src, dest) {
   }
 }
 
-console.log(`Copying from ${srcApi} to ${destApi}...`);
+console.log(`Copying API files from ${srcApi}...`);
 copyDir(srcApi, destApi);
-console.log("✓ API files copied. Vercel will compile TypeScript automatically.");
+console.log(`✓ Copied to ${destApi}`);
+
+// Vercel will auto-compile TypeScript files
+console.log("Vercel will compile TypeScript files automatically.");
