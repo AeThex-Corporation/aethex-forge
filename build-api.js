@@ -112,4 +112,6 @@ function removeTypeScriptFiles(dir) {
 removeTypeScriptFiles(destApi);
 console.log(`✓ Removed ${removedCount} TypeScript files`);
 
-console.log("\n✓ API build complete! Vercel will serve the pre-compiled JavaScript files.");
+console.log(
+  "\n✓ API build complete! Vercel will serve the pre-compiled JavaScript files.",
+);
