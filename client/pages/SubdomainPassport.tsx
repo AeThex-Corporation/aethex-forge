@@ -154,11 +154,12 @@ const SubdomainPassport = () => {
 
   // Loading passport data
   if (loading) {
+    const passportType = subdomainInfo.isCreatorPassport
+      ? "creator"
+      : "group";
     return (
       <LoadingScreen
-        message={`Loading ${
-          subdomainInfo.isCreatorPassport ? "creator" : "project"
-        } passport...`}
+        message={`Loading ${passportType} passport...`}
       />
     );
   }
