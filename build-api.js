@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 console.log("Preparing API files for Vercel...");
 
 const srcApi = path.resolve(__dirname, "api");
-const destApi = path.resolve(__dirname, "..", "api");
+const destApi = path.resolve(__dirname, "api");
 
 const UTILITY_PATTERNS = [
   /^_/,
