@@ -106,16 +106,6 @@ const SubdomainPassport = () => {
         setLoading(true);
         setError(null);
 
-        // Check if server pre-fetched the data (for SSR)
-        const preloadedData = (window as any).__PASSPORT_DATA__;
-        if (preloadedData) {
-          console.log("[SubdomainPassport] Using pre-fetched server data");
-          setData(preloadedData);
-          setLoading(false);
-          return;
-        }
-
-        // Fallback to API call if no preloaded data
         const apiBase = getApiBase();
         if (!apiBase) {
           setError("Cannot determine API base");
@@ -125,11 +115,11 @@ const SubdomainPassport = () => {
 
         let url = "";
         if (subdomainInfo.isCreatorPassport) {
-          url = `${apiBase}/api/passport/subdomain/${encodeURIComponent(
+          url = `${apiBase}/api/passport/subdomain-data/${encodeURIComponent(
             subdomainInfo.subdomain,
           )}`;
         } else if (subdomainInfo.isProjectPassport) {
-          url = `${apiBase}/api/passport/group/${encodeURIComponent(
+          url = `${apiBase}/api/passport/project-data/${encodeURIComponent(
             subdomainInfo.subdomain,
           )}`;
         }
