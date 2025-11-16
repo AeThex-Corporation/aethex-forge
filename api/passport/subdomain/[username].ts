@@ -13,7 +13,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    console.log("[Passport] Initializing admin client...");
     const admin = getAdminClient();
+    console.log("[Passport] Admin client initialized successfully");
 
     const userFields = `
       id,
