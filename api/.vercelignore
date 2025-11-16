@@ -1,6 +1,3 @@
-_*.ts
-_*.js
 **/lib
 **/utils
 **/helpers
-opportunities.ts
