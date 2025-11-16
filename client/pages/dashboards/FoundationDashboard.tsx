@@ -33,7 +33,7 @@ import { CoursesWidget } from "@/components/CoursesWidget";
 import { MentorshipWidget } from "@/components/MentorshipWidget";
 import { AchievementsWidget } from "@/components/AchievementsWidget";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const getApiBase = () => typeof window !== "undefined" ? window.location.origin : "";
 
 export default function FoundationDashboard() {
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ export default function FoundationDashboard() {
       if (!token) throw new Error("No auth token");
 
       try {
-        const coursesRes = await fetch(`${API_BASE}/api/foundation/courses`, {
+        const coursesRes = await fetch(`${apiBase}/api/foundation/courses`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (
@@ -76,8 +76,13 @@ export default function FoundationDashboard() {
       }
 
       try {
+        const apiBase = getApiBase();
+        if (!apiBase) {
+          console.warn("[Foundation] No API base available");
+          return;
+        }
         const mentorRes = await fetch(
-          `${API_BASE}/api/foundation/mentorships`,
+          `${apiBase}/api/foundation/mentorships`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
