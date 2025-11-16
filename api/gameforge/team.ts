@@ -21,7 +21,7 @@ export default async function handler(req: any, res: any) {
         { count: "exact" },
       );
 
-      if (user_id) dbQuery = dbQuery.eq("user_id", user_id).single();
+      if (user_id) dbQuery = dbQuery.eq("user_id", user_id).single() as any;
       if (project_id) dbQuery = dbQuery.contains("project_ids", [project_id]);
       if (role) dbQuery = dbQuery.eq("role", role);
       if (!user_id) dbQuery = dbQuery.eq("is_active", true);

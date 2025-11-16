@@ -102,7 +102,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       success: true,
       game_token: gameToken,
       user_id: userData.id,
-      username: userData.username,
+      username: userData.username || roblox_username,
       expires_in: 86400, // seconds
     });
   } catch (error: any) {
