@@ -3,10 +3,8 @@
   "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist/spa",
   "functions": {
-    "api/**/*.ts": {
-      "runtime": "@vercel/node@3.2.15",
-      "includeFiles": "api/**/*.ts",
-      "excludeFiles": "**/*.test.ts,**/*.spec.ts"
+    "api/**/*.js": {
+      "runtime": "@vercel/node@3.2.15"
     }
   },
   "env": {
