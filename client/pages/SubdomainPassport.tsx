@@ -108,7 +108,7 @@ const SubdomainPassport = () => {
             subdomainInfo.subdomain,
           )}`;
         } else if (subdomainInfo.isProjectPassport) {
-          url = `${API_BASE}/api/passport/project/${encodeURIComponent(
+          url = `${API_BASE}/api/passport/group/${encodeURIComponent(
             subdomainInfo.subdomain,
           )}`;
         }
