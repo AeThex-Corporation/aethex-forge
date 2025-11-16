@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -33,7 +33,7 @@ function copyDir(src, dest) {
   console.log(`Copied ${src} to ${dest}`);
 }
 
-const srcApi = path.resolve(__dirname, 'api');
-const destApi = path.resolve(__dirname, '..', 'api');
+const srcApi = path.resolve(__dirname, "api");
+const destApi = path.resolve(__dirname, "..", "api");
 
 copyDir(srcApi, destApi);
