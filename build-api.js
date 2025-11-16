@@ -50,6 +50,7 @@ try {
 // Step 3: Fix ESM imports by adding .js extensions to relative imports
 console.log("Step 3: Fixing ESM module imports...");
 let fixedCount = 0;
+let importFixedCount = 0;
 
 function fixImportsInDir(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -61,34 +62,69 @@ function fixImportsInDir(dir) {
       fixImportsInDir(fullPath);
     } else if (entry.name.endsWith(".js")) {
       let content = fs.readFileSync(fullPath, "utf-8");
+      let originalContent = content;
 
-      // Fix relative imports for ESM: "../../_supabase" -> "../../_supabase.js"
-      let fixedContent = content.replace(
-        /from\s+"(\.\.?\/[^"]+)"/g,
+      // Pattern 1: import ... from "..."
+      content = content.replace(
+        /from\s+["'](\.[^"']+)["']/g,
         (match, importPath) => {
-          if (importPath.endsWith(".js")) return match;
+          if (
+            importPath.endsWith(".js") ||
+            importPath.endsWith(".json") ||
+            importPath.includes("node_modules")
+          ) {
+            return match;
+          }
+          importFixedCount++;
           return `from "${importPath}.js"`;
         },
       );
 
-      fixedContent = fixedContent.replace(
-        /from\s+'(\.\.?\/[^']+)'/g,
+      // Pattern 2: import("...")
+      content = content.replace(
+        /import\s*\(\s*["'](\.[^"']+)["']\s*\)/g,
         (match, importPath) => {
-          if (importPath.endsWith(".js")) return match;
-          return `from '${importPath}.js'`;
+          if (
+            importPath.endsWith(".js") ||
+            importPath.endsWith(".json") ||
+            importPath.includes("node_modules")
+          ) {
+            return match;
+          }
+          importFixedCount++;
+          return `import("${importPath}.js")`;
         },
       );
 
-      if (fixedContent !== content) {
-        fs.writeFileSync(fullPath, fixedContent);
+      // Pattern 3: require("...")
+      content = content.replace(
+        /require\s*\(\s*["'](\.[^"']+)["']\s*\)/g,
+        (match, importPath) => {
+          if (
+            importPath.endsWith(".js") ||
+            importPath.endsWith(".json") ||
+            importPath.includes("node_modules")
+          ) {
+            return match;
+          }
+          importFixedCount++;
+          return `require("${importPath}.js")`;
+        },
+      );
+
+      if (content !== originalContent) {
+        fs.writeFileSync(fullPath, content);
         fixedCount++;
+        console.log(`  Fixed: ${path.relative(destApi, fullPath)}`);
       }
     }
   }
 }
 
 fixImportsInDir(destApi);
-console.log(`✓ Fixed ESM imports in ${fixedCount} files`);
+console.log(
+  `✓ Fixed ESM imports in ${fixedCount} files (${importFixedCount} total imports)`,
+);
 
 // Step 4: Remove TypeScript files so Vercel doesn't recompile them
 console.log("Step 4: Removing TypeScript source files...");
