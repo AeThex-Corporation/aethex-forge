@@ -309,6 +309,29 @@ export const aethexUserService = {
     return await ensureDailyStreakForProfile(normalized);
   },
 
+  async profileExists(userId: string): Promise<boolean> {
+    if (!userId) return false;
+
+    ensureSupabase();
+
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("id")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      if ((error as any)?.code === "PGRST116") {
+        return false;
+      }
+      // Log other errors but don't throw
+      console.warn("[Profile] Error checking profile existence:", error);
+      return false;
+    }
+
+    return !!data?.id;
+  },
+
   async getProfileById(userId: string): Promise<AethexUserProfile | null> {
     if (!userId) return null;
 
