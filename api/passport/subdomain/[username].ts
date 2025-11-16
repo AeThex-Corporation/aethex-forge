@@ -116,7 +116,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       domain: req.headers.host || "",
     });
   } catch (error: any) {
-    console.error("[Passport Subdomain Error]", error);
+    console.error("[Passport Subdomain Error]", {
+      message: error?.message || String(error),
+      code: error?.code,
+      status: error?.status,
+      details: error?.details || error?.hint,
+    });
 
     if (/SUPABASE_/.test(String(error?.message || ""))) {
       return res.status(500).json({
