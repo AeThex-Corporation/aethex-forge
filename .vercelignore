@@ -1,4 +1,7 @@
 api/_*.ts
 api/_*.js
 api/opportunities.ts
-api/applications.ts
+api/opportunities.js
+api/**/lib
+api/**/utils
+api/**/helpers
