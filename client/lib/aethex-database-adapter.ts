@@ -1031,11 +1031,23 @@ export const aethexAchievementService = {
     username?: string;
   }): Promise<ActivateRewardsResponse | null> {
     try {
+      // Skip if API_BASE is not configured (development edge case)
+      if (!API_BASE) {
+        console.warn(
+          "[Rewards] Skipping activation - API_BASE not configured",
+        );
+        return null;
+      }
+
       const payload = {
         targetEmail: target?.email,
         targetUsername: target?.username,
       };
-      const response = await fetch(`${API_BASE}/api/achievements/activate`, {
+
+      const url = `${API_BASE}/api/achievements/activate`;
+      console.log("[Rewards] Activating at:", url);
+
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1043,11 +1055,19 @@ export const aethexAchievementService = {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || "Failed to activate community rewards");
+        console.warn(
+          "[Rewards] Activation failed:",
+          response.status,
+          errorText,
+        );
+        return null;
       }
 
-      return (await response.json()) as ActivateRewardsResponse;
-    } catch {
+      const result = (await response.json()) as ActivateRewardsResponse;
+      console.log("[Rewards] Activation succeeded:", result);
+      return result;
+    } catch (error: any) {
+      console.warn("[Rewards] Activation error:", error?.message || error);
       return null;
     }
   },
