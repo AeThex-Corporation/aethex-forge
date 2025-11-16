@@ -1,4 +1,4 @@
-import { getAdminClient } from "./_supabase";
+import { getAdminClient } from "./_supabase.js";
 
 export async function createNotification(
   userId: string,
