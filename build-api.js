@@ -64,19 +64,22 @@ function fixImportsInDir(dir) {
       let content = fs.readFileSync(fullPath, "utf-8");
 
       // Fix: import x from "../../_supabase" -> import x from "../../_supabase.js"
-      // This regex matches relative imports without .js extension
-      const fixedContent = content
-        .replace(/from\s+["'](\.[^"']*?)(?<!\.js)(["'])/g, (match, path, quote) => {
-          // Skip if it's already .js
-          if (path.endsWith(".js")) {
+      // Match relative imports (starting with . or ..) that don't end with .js
+      const fixedContent = content.replace(
+        /from\s+["'](\.[^"']*?)(?<!\.js)(["'])/g,
+        (match, importPath, quote) => {
+          // Skip if it already has .js
+          if (importPath.endsWith(".js")) {
             return match;
           }
           // Skip if it's a node_modules import
-          if (!path.startsWith(".")) {
+          if (!importPath.startsWith(".")) {
             return match;
           }
-          return `from "${path}.js"${quote}`;
-        });
+          // Add .js extension and return with proper quote
+          return `from "${importPath}.js"${quote}`;
+        }
+      );
 
       if (fixedContent !== content) {
         fs.writeFileSync(fullPath, fixedContent);
