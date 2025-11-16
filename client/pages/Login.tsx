@@ -134,10 +134,14 @@ export default function Login() {
 
       // Check if there's an OAuth redirect destination stored (e.g., from staff login)
       const oauthRedirect = sessionStorage.getItem("oauth_redirect_to");
+
+      // New logic: if profile exists (even if incomplete), go to Dashboard
+      // Otherwise send to Onboarding for new users
+      const profileExists = profile !== null;
       const redirectDest =
         (next && next.startsWith("/") ? next : null) ||
         oauthRedirect ||
-        (profileComplete ? "/dashboard" : "/onboarding");
+        (profileExists ? "/dashboard" : "/onboarding");
 
       // Clear the stored redirect after using it
       if (oauthRedirect) {
@@ -148,7 +152,7 @@ export default function Login() {
         replace: true,
       });
     }
-  }, [user, loading, profileComplete, navigate, location.search]);
+  }, [user, profile, loading, navigate, location.search]);
 
   // Pre-fill email if Discord was just linked
   useEffect(() => {
