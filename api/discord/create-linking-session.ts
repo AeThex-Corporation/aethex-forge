@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const userId = user.id;
 
     // Generate a random session token
-    const sessionToken = uuidv4();
+    const sessionToken = randomUUID();
 
     // Create a temporary linking session (expires in 10 minutes)
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
