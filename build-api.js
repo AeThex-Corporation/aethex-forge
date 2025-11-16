@@ -64,7 +64,6 @@ async function buildAll() {
         sourcemap: false,
         logLevel: "silent",
       });
-      console.log(`✓ ${relativePath}`);
     } catch (error) {
       console.error(`✗ Failed to build ${relativePath}:`, error.message);
       process.exit(1);
@@ -73,4 +72,54 @@ async function buildAll() {
 }
 
 await buildAll();
-console.log(`\n✓ API build complete! ${tsFiles.length} files compiled.`);
+console.log(`✓ Built ${tsFiles.length} files`);
+
+// Step 2: Fix ESM imports by adding .js extensions
+console.log("Fixing ESM imports for Node.js...");
+let totalImportsFixed = 0;
+
+function fixESMImports(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      fixESMImports(fullPath);
+    } else if (entry.name.endsWith(".js")) {
+      let content = fs.readFileSync(fullPath, "utf-8");
+      const originalContent = content;
+
+      // Match: import X from "..." or "..."
+      content = content.replace(
+        /from\s+["'](\.[^"']+)["']/g,
+        (match, importPath) => {
+          // Skip if already has extension or is node_modules
+          if (
+            importPath.endsWith(".js") ||
+            importPath.endsWith(".mjs") ||
+            importPath.endsWith(".json") ||
+            importPath.includes("node_modules")
+          ) {
+            return match;
+          }
+          totalImportsFixed++;
+          const newPath = importPath + ".js";
+          console.log(
+            `  Fixed import in ${path.relative(destApi, fullPath)}: ${importPath} → ${newPath}`,
+          );
+          return `from "${newPath}"`;
+        },
+      );
+
+      if (content !== originalContent) {
+        fs.writeFileSync(fullPath, content);
+      }
+    }
+  }
+}
+
+fixESMImports(destApi);
+console.log(`✓ Fixed ${totalImportsFixed} ESM imports`);
+
+console.log("\n✓ API build complete! Ready for Vercel deployment.");
