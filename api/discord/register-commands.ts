@@ -87,7 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = (await response.json()) as any;
       console.error("[Discord] Registration error:", errorData);
       return res.status(response.status).json({
         error: "Failed to register commands",
@@ -95,7 +95,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as any[];
     console.log("[Discord] Successfully registered commands:", data);
 
     return res.status(200).json({

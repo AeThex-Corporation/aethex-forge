@@ -7,7 +7,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
 export async function linkDevConnectAccount(req: Request, userId: string) {
   try {
-    const body = await req.json();
+    const body = (await req.json()) as { devconnect_username?: string; devconnect_profile_url?: string };
     const { devconnect_username, devconnect_profile_url } = body;
 
     if (!devconnect_username) {

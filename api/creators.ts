@@ -119,7 +119,7 @@ export async function getCreatorByUsername(username: string) {
 
 export async function createCreatorProfile(req: Request, userId: string) {
   try {
-    const body = await req.json();
+    const body = (await req.json()) as any;
     const {
       username,
       bio,
@@ -164,7 +164,7 @@ export async function createCreatorProfile(req: Request, userId: string) {
 
 export async function updateCreatorProfile(req: Request, userId: string) {
   try {
-    const body = await req.json();
+    const body = (await req.json()) as any;
     const {
       username,
       bio,
