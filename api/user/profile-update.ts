@@ -1,4 +1,4 @@
-import { supabase } from "../_supabase";
+import { getAdminClient } from "../_supabase";
 
 export default async (req: Request) => {
   if (req.method !== "PUT" && req.method !== "POST") {
@@ -12,6 +12,7 @@ export default async (req: Request) => {
     }
 
     const token = authHeader.slice(7);
+    const supabase = getAdminClient();
     const { data: userData } = await supabase.auth.getUser(token);
 
     if (!userData.user) {
