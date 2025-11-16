@@ -413,10 +413,7 @@ export default function Login() {
                         variant="outline"
                         className="w-full hover-lift interactive-scale border-border/50 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-200"
                         onClick={() => {
-                          const apiBase =
-                            (import.meta as any)?.env?.VITE_API_BASE ||
-                            window.location.origin;
-                          const u = new URL("/api/roblox/oauth/start", apiBase);
+                          const u = new URL("/api/roblox/oauth/start", API_BASE);
                           const next = new URLSearchParams(
                             window.location.search,
                           ).get("next");
@@ -433,10 +430,7 @@ export default function Login() {
                           variant="outline"
                           className="w-full hover-lift interactive-scale border-border/50 hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all duration-200"
                           onClick={() => {
-                            const apiBase =
-                              (import.meta as any)?.env?.VITE_API_BASE ||
-                              window.location.origin;
-                            const u = new URL("/api/discord/oauth/start", apiBase);
+                            const u = new URL("/api/discord/oauth/start", API_BASE);
                             const next = new URLSearchParams(
                               window.location.search,
                             ).get("next");
