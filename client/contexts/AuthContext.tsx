@@ -396,27 +396,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     rewardsActivatedRef.current = true;
 
-    aethexAchievementService
-      .activateCommunityRewards({
-        email: "mrpiglr@gmail.com",
-        username: "mrpiglr",
-      })
-      .then((response) => {
-        if (response?.godModeAwarded) {
-          try {
-            aethexToast.success({
-              title: "GOD mode activated",
-              description: "Legendary rewards synced for mrpiglr.",
-            });
-          } catch (toastError) {
-            console.warn("Failed to show activation toast", toastError);
+    // Only attempt to activate if this is the admin user
+    if (profile?.email === "mrpiglr@gmail.com" || profile?.username === "mrpiglr") {
+      aethexAchievementService
+        .activateCommunityRewards({
+          email: profile?.email,
+          username: profile?.username,
+        })
+        .then((response) => {
+          if (response?.godModeAwarded) {
+            try {
+              aethexToast.success({
+                title: "GOD mode activated",
+                description: "Legendary rewards synced.",
+              });
+            } catch (toastError) {
+              console.warn("Failed to show activation toast", toastError);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.warn("activateCommunityRewards invocation failed", error);
-        rewardsActivatedRef.current = false;
-      });
+        })
+        .catch((error) => {
+          console.warn(
+            "activateCommunityRewards invocation failed",
+            error?.message || error,
+          );
+          rewardsActivatedRef.current = false;
+        });
+    }
   }, [user, profile, roles]);
 
   const inviteProcessedRef = useRef(false);
