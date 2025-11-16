@@ -10,7 +10,15 @@ console.log("Preparing API files for Vercel...");
 const srcApi = path.resolve(__dirname, "api");
 const destApi = path.resolve(__dirname, "..", "api");
 
-// Copy entire API directory
+// Files to exclude from API directory (utilities that shouldn't be handlers)
+const excludeFiles = new Set([
+  "_supabase.ts",
+  "_cors.ts",
+  "_notifications.ts",
+  "opportunities.ts",
+  "applications.ts",
+]);
+
 function copyDir(src, dest) {
   if (fs.existsSync(dest)) {
     fs.rmSync(dest, { recursive: true, force: true });
@@ -24,15 +32,15 @@ function copyDir(src, dest) {
 
     if (entry.isDirectory()) {
       copyDir(srcPath, destPath);
-    } else if (!entry.name.startsWith(".")) {
+    } else if (!entry.name.startsWith(".") && !excludeFiles.has(entry.name)) {
       fs.copyFileSync(srcPath, destPath);
+      console.log(`  Copied: ${entry.name}`);
+    } else if (excludeFiles.has(entry.name)) {
+      console.log(`  Skipped (utility): ${entry.name}`);
     }
   }
 }
 
 console.log(`Copying API files from ${srcApi}...`);
 copyDir(srcApi, destApi);
-console.log(`✓ Copied to ${destApi}`);
-
-// Vercel will auto-compile TypeScript files
-console.log("Vercel will compile TypeScript files automatically.");
+console.log(`✓ API files prepared for Vercel`);
