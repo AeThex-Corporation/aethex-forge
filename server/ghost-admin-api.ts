@@ -126,7 +126,7 @@ export async function publishPostToGhost(
       throw new Error(`Ghost API error: ${response.statusText}`);
     }
 
-    const data: GhostPostResponse = await response.json();
+    const data = (await response.json()) as GhostPostResponse;
     const createdPost = data.posts[0];
 
     return {
@@ -188,7 +188,7 @@ export async function updatePostInGhost(
       throw new Error(`Ghost API error: ${response.statusText}`);
     }
 
-    const data: GhostPostResponse = await response.json();
+    const data = (await response.json()) as GhostPostResponse;
     const updatedPost = data.posts[0];
 
     return {
