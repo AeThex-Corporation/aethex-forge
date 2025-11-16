@@ -1001,7 +1001,13 @@ export const aethexAchievementService = {
     ensureSupabase();
 
     try {
-      const resp = await fetch(`${API_BASE}/api/achievements/award`, {
+      const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+      if (!baseUrl) {
+        console.warn("[Achievement] Cannot award - no origin available");
+        return;
+      }
+
+      const resp = await fetch(`${baseUrl}/api/achievements/award`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
