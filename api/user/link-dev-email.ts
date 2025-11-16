@@ -1,4 +1,4 @@
-import { getAdminClient } from "../_supabase";
+import { getAdminClient } from "../_supabase.js";
 
 /**
  * Link a .dev email to an existing profile (no merging, just email linking)

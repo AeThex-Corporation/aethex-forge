@@ -1,4 +1,4 @@
-import { getAdminClient } from "../_supabase";
+import { getAdminClient } from "../_supabase.js";
 
 export default async (req: Request) => {
   const { method, headers } = req;

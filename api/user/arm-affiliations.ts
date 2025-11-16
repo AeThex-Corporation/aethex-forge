@@ -1,4 +1,4 @@
-import { supabase } from "../_supabase";
+import { supabase } from "../_supabase.js";
 
 const VALID_ARMS = ["foundation", "gameforge", "labs", "corp", "devlink"];
 const VALID_TYPES = [

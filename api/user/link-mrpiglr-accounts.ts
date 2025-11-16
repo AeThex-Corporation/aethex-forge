@@ -1,4 +1,4 @@
-import { getAdminClient } from "../_supabase";
+import { getAdminClient } from "../_supabase.js";
 
 /**
  * Admin-only endpoint to link mrpiglr@aethex.dev to mrpiglr@gmail.com
