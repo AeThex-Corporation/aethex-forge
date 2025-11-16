@@ -5,44 +5,15 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-console.log("Preparing API files for Vercel...");
+console.log("Validating API setup for Vercel...");
 
-const srcApi = path.resolve(__dirname, "api");
-const destApi = path.resolve(__dirname, "api");
+const apiDir = path.resolve(__dirname, "api");
 
-const UTILITY_PATTERNS = [
-  /^_/,
-  /^opportunities\.ts$/,
-  /^opportunities\.js$/,
-];
-
-function isUtilityFile(filename) {
-  return UTILITY_PATTERNS.some((pattern) => pattern.test(filename));
+if (!fs.existsSync(apiDir)) {
+  console.error("❌ API directory not found at", apiDir);
+  process.exit(1);
 }
 
-function copyDir(src, dest) {
-  if (fs.existsSync(dest)) {
-    fs.rmSync(dest, { recursive: true, force: true });
-  }
-  fs.mkdirSync(dest, { recursive: true });
-
-  const entries = fs.readdirSync(src, { withFileTypes: true });
-  for (const entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-
-    if (entry.isDirectory()) {
-      copyDir(srcPath, destPath);
-    } else if (!entry.name.startsWith(".")) {
-      // Skip utility files at the root api level
-      if (!isUtilityFile(entry.name) || src !== srcApi) {
-        fs.copyFileSync(srcPath, destPath);
-      }
-    }
-  }
-}
-
-console.log(`Copying API files from ${srcApi}...`);
-copyDir(srcApi, destApi);
-console.log(`✓ Copied to ${destApi}`);
-console.log("Vercel will compile and serve TypeScript files.");
+const files = fs.readdirSync(apiDir);
+console.log(`✓ Found API directory with ${files.length} entries`);
+console.log("✓ Vercel will compile TypeScript files automatically");
