@@ -34,7 +34,18 @@
       "permanent": true
     }
   ],
-  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/login/:path*", "destination": "/index.html" },
+    { "source": "/dashboard", "destination": "/index.html" },
+    { "source": "/dashboard/:path*", "destination": "/index.html" },
+    { "source": "/profile", "destination": "/index.html" },
+    { "source": "/profile/:path*", "destination": "/index.html" },
+    { "source": "/activity", "destination": "/index.html" },
+    { "source": "/activity/:path*", "destination": "/index.html" },
+    { "source": "/:path*", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
