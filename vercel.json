@@ -44,7 +44,24 @@
     { "source": "/profile/:path*", "destination": "/index.html" },
     { "source": "/activity", "destination": "/index.html" },
     { "source": "/activity/:path*", "destination": "/index.html" },
-    { "source": "/:path*", "destination": "/index.html" }
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/admin/:path*", "destination": "/index.html" },
+    { "source": "/creators", "destination": "/index.html" },
+    { "source": "/creators/:path*", "destination": "/index.html" },
+    { "source": "/opportunities", "destination": "/index.html" },
+    { "source": "/opportunities/:path*", "destination": "/index.html" },
+    { "source": "/nexus", "destination": "/index.html" },
+    { "source": "/nexus/:path*", "destination": "/index.html" },
+    { "source": "/foundation", "destination": "/index.html" },
+    { "source": "/foundation/:path*", "destination": "/index.html" },
+    { "source": "/gameforge", "destination": "/index.html" },
+    { "source": "/gameforge/:path*", "destination": "/index.html" },
+    { "source": "/labs", "destination": "/index.html" },
+    { "source": "/labs/:path*", "destination": "/index.html" },
+    { "source": "/corp", "destination": "/index.html" },
+    { "source": "/corp/:path*", "destination": "/index.html" },
+    { "source": "/devlink", "destination": "/index.html" },
+    { "source": "/devlink/:path*", "destination": "/index.html" }
   ],
   "headers": [
     {
