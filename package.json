@@ -14,7 +14,7 @@
     "dev": "vite",
     "build": "npm run build:client && npm run copy:api",
     "build:client": "vite build",
-    "copy:api": "if [ -d 'code/api' ]; then rm -rf api && cp -r code/api api; elif [ -d '../code/api' ]; then rm -rf api && cp -r ../code/api api; fi",
+    "copy:api": "node copy-api.js",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc"
