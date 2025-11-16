@@ -90,4 +90,26 @@ function fixImportsInDir(dir) {
 fixImportsInDir(destApi);
 console.log(`✓ Fixed ESM imports in ${fixedCount} files`);
 
-console.log("\n✓ API build complete! Vercel will serve the JavaScript files.");
+// Step 4: Remove TypeScript files so Vercel doesn't recompile them
+console.log("Step 4: Removing TypeScript source files...");
+let removedCount = 0;
+
+function removeTypeScriptFiles(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      removeTypeScriptFiles(fullPath);
+    } else if (entry.name.endsWith(".ts") && !entry.name.endsWith(".d.ts")) {
+      fs.unlinkSync(fullPath);
+      removedCount++;
+    }
+  }
+}
+
+removeTypeScriptFiles(destApi);
+console.log(`✓ Removed ${removedCount} TypeScript files`);
+
+console.log("\n✓ API build complete! Vercel will serve the pre-compiled JavaScript files.");
