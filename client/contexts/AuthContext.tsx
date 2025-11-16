@@ -741,9 +741,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // Special handling for Discord - use custom OAuth endpoint
       if (provider === "discord") {
         try {
-          const apiBase =
-            (import.meta as any)?.env?.VITE_API_BASE || window.location.origin;
-
           // Get current auth session to get auth token
           const { data: sessionData, error: sessionError } =
             await supabase.auth.getSession();
@@ -765,7 +762,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
           // Create temporary linking session
           const sessionRes = await fetch(
-            `${apiBase}/api/discord/create-linking-session`,
+            `${API_BASE}/api/discord/create-linking-session`,
             {
               method: "POST",
               headers: {
