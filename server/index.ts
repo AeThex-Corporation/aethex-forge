@@ -353,6 +353,126 @@ export function createServer() {
     next();
   });
 
+  // Subdomain Passport Handler - serves the React app with pre-fetched data
+  app.use(async (req, res, next) => {
+    const subdomainInfo = (req as any).subdomainInfo;
+
+    // Only handle root path for subdomains
+    if (!subdomainInfo.domain || req.path !== "/") {
+      return next();
+    }
+
+    try {
+      let passportData: any = null;
+
+      // Creator Passport (aethex.me)
+      if (subdomainInfo.isCreatorPassport) {
+        console.log(
+          "[Passport Handler] Fetching creator:",
+          subdomainInfo.subdomain,
+        );
+        const { data: user, error } = await adminSupabase
+          .from("user_profiles")
+          .select(
+            "id, username, full_name, bio, avatar_url, banner_url, location, website_url, github_url, linkedin_url, twitter_url, role, level, total_xp, user_type, experience_level, current_streak, longest_streak, created_at, updated_at",
+          )
+          .eq("username", subdomainInfo.subdomain)
+          .single();
+
+        if (error || !user) {
+          console.log("[Passport Handler] Creator not found");
+          return next(); // Fall through to 404
+        }
+
+        // Fetch achievements
+        const { data: achievements = [] } = await adminSupabase
+          .from("user_achievements")
+          .select(
+            `
+            achievement_id,
+            achievements(
+              id,
+              name,
+              description,
+              icon,
+              category,
+              badge_color
+            )
+          `,
+          )
+          .eq("user_id", user.id);
+
+        passportData = {
+          type: "creator",
+          user,
+          achievements: achievements
+            .map((a: any) => a.achievements)
+            .filter(Boolean),
+          domain: "aethex.me",
+        };
+      }
+
+      // Project Passport (aethex.space)
+      if (subdomainInfo.isProjectPassport) {
+        console.log(
+          "[Passport Handler] Fetching project:",
+          subdomainInfo.subdomain,
+        );
+        const { data: project, error } = await adminSupabase
+          .from("projects")
+          .select(
+            "id, slug, name, description, logo_url, banner_url, website_url, github_url, team_size, created_at, updated_at",
+          )
+          .eq("slug", subdomainInfo.subdomain)
+          .single();
+
+        if (error || !project) {
+          console.log("[Passport Handler] Project not found");
+          return next(); // Fall through to 404
+        }
+
+        passportData = {
+          type: "group",
+          group: project,
+          domain: "aethex.space",
+        };
+      }
+
+      // If we found passport data, inject it into the page
+      if (passportData) {
+        console.log("[Passport Handler] Serving passport with pre-fetched data");
+        // The React app will receive this data via window.__PASSPORT_DATA__
+        const dataJson = JSON.stringify(passportData)
+          .replace(/</g, "\\u003c")
+          .replace(/>/g, "\\u003e");
+
+        res.set("Content-Type", "text/html; charset=utf-8");
+        res.send(`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AeThex Passport</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.__PASSPORT_DATA__ = ${dataJson};
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>`);
+        return;
+      }
+
+      next();
+    } catch (error: any) {
+      console.error("[Passport Handler] Error:", error?.message);
+      next();
+    }
+  });
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";
