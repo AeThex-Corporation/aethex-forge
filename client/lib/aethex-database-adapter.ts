@@ -291,6 +291,21 @@ export const aethexUserService = {
     }
 
     const normalized = normalizeProfile(data, user.email);
+
+    // Auto-populate username for mrpiglr if empty
+    if (
+      normalized &&
+      user.email === "mrpiglr@gmail.com" &&
+      !normalized.username
+    ) {
+      await this.updateProfile(user.id, {
+        username: "mrpiglr",
+      }).catch((err) => {
+        console.warn("[Profile] Failed to auto-populate mrpiglr username:", err);
+      });
+      normalized.username = "mrpiglr";
+    }
+
     return await ensureDailyStreakForProfile(normalized);
   },
 
