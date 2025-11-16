@@ -80,8 +80,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      console.log("[Passport] User not found for username:", username);
+      return res.status(404).json({ error: "User not found", username });
     }
+
+    console.log("[Passport] Found user:", user.username, user.id);
 
     // Get user's achievements
     const { data: achievements = [] } = await admin
