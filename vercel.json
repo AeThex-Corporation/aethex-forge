@@ -35,6 +35,8 @@
     }
   ],
   "rewrites": [
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "*.aethex.me" }], "destination": "/index.html" },
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "*.aethex.space" }], "destination": "/index.html" },
     { "source": "/", "destination": "/index.html" },
     { "source": "/login", "destination": "/index.html" },
     { "source": "/login/:path*", "destination": "/index.html" },
