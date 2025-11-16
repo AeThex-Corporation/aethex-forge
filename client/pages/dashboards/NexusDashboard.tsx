@@ -91,6 +91,10 @@ export default function NexusDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
+      const apiBase = getApiBase();
+      if (!apiBase) {
+        throw new Error("No API base available");
+      }
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -98,7 +102,7 @@ export default function NexusDashboard() {
       if (!token) throw new Error("No auth token");
 
       // Load creator profile
-      const profileRes = await fetch(`${API_BASE}/api/nexus/creator/profile`, {
+      const profileRes = await fetch(`${apiBase}/api/nexus/creator/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (profileRes.ok) {
@@ -107,7 +111,7 @@ export default function NexusDashboard() {
 
       // Load applications
       const appRes = await fetch(
-        `${API_BASE}/api/nexus/creator/applications?limit=10`,
+        `${apiBase}/api/nexus/creator/applications?limit=10`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -119,7 +123,7 @@ export default function NexusDashboard() {
 
       // Load contracts
       const contractRes = await fetch(
-        `${API_BASE}/api/nexus/creator/contracts?limit=10`,
+        `${apiBase}/api/nexus/creator/contracts?limit=10`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -131,7 +135,7 @@ export default function NexusDashboard() {
 
       // Load payout info
       const payoutRes = await fetch(
-        `${API_BASE}/api/nexus/creator/payouts?limit=10`,
+        `${apiBase}/api/nexus/creator/payouts?limit=10`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -143,7 +147,7 @@ export default function NexusDashboard() {
 
       // Load client data (posted opportunities)
       const oppRes = await fetch(
-        `${API_BASE}/api/nexus/client/opportunities?limit=10`,
+        `${apiBase}/api/nexus/client/opportunities?limit=10`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -155,7 +159,7 @@ export default function NexusDashboard() {
 
       // Load applicants
       const appliRes = await fetch(
-        `${API_BASE}/api/nexus/client/applicants?limit=50`,
+        `${apiBase}/api/nexus/client/applicants?limit=50`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -167,7 +171,7 @@ export default function NexusDashboard() {
 
       // Load payment history
       const payHistRes = await fetch(
-        `${API_BASE}/api/nexus/client/payment-history?limit=10`,
+        `${apiBase}/api/nexus/client/payment-history?limit=10`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -190,13 +194,17 @@ export default function NexusDashboard() {
     if (!user) return;
     setSavingProfile(true);
     try {
+      const apiBase = getApiBase();
+      if (!apiBase) {
+        throw new Error("No API base available");
+      }
       const {
         data: { session },
       } = await supabase.auth.getSession();
       const token = session?.access_token;
       if (!token) throw new Error("No auth token");
 
-      const profileRes = await fetch(`${API_BASE}/api/nexus/creator/profile`, {
+      const profileRes = await fetch(`${apiBase}/api/nexus/creator/profile`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -227,7 +235,7 @@ export default function NexusDashboard() {
 
       // Update user profile to mark Nexus as complete
       const userProfileRes = await fetch(
-        `${API_BASE}/api/user/profile-update`,
+        `${apiBase}/api/user/profile-update`,
         {
           method: "POST",
           headers: {
