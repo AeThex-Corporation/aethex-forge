@@ -56,12 +56,24 @@
     {
       "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "*.aethex.me" }],
+      "missing": [{ "type": "header", "key": "x-vercel-rewrite-override" }],
       "destination": "/index.html"
     },
     {
       "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "*.aethex.space" }],
+      "missing": [{ "type": "header", "key": "x-vercel-rewrite-override" }],
       "destination": "/index.html"
+    },
+    {
+      "source": "/api/:path(.*)",
+      "has": [{ "type": "host", "value": "*.aethex.me" }],
+      "destination": "/api/:path"
+    },
+    {
+      "source": "/api/:path(.*)",
+      "has": [{ "type": "host", "value": "*.aethex.space" }],
+      "destination": "/api/:path"
     },
     { "source": "/", "destination": "/index.html" },
     { "source": "/login", "destination": "/index.html" },
