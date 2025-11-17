@@ -53,7 +53,8 @@ const THEMES: Record<ArmType, ArmTheme> = {
     wallpaperPattern:
       "linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px), linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px)",
     fontClass: "font-corp",
-    fontFamily: '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
+    fontFamily:
+      '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
     displayName: "Corp",
   },
   foundation: {
@@ -86,7 +87,8 @@ const THEMES: Record<ArmType, ArmTheme> = {
     wallpaperPattern:
       "radial-gradient(circle, rgba(168, 85, 247, 0.08) 1px, transparent 1px)",
     fontClass: "font-staff",
-    fontFamily: '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
+    fontFamily:
+      '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
     displayName: "Staff",
   },
   nexus: {
@@ -97,7 +99,8 @@ const THEMES: Record<ArmType, ArmTheme> = {
     wallpaperPattern:
       "linear-gradient(45deg, rgba(236, 72, 153, 0.06) 25%, transparent 25%, transparent 75%, rgba(236, 72, 153, 0.06) 75%), linear-gradient(45deg, rgba(236, 72, 153, 0.06) 25%, transparent 25%, transparent 75%, rgba(236, 72, 153, 0.06) 75%)",
     fontClass: "font-nexus",
-    fontFamily: '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
+    fontFamily:
+      '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
     displayName: "Nexus",
   },
   default: {
@@ -107,7 +110,8 @@ const THEMES: Record<ArmType, ArmTheme> = {
     wallpaperClass: "wallpaper-default",
     wallpaperPattern: "none",
     fontClass: "font-default",
-    fontFamily: '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
+    fontFamily:
+      '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
     displayName: "AeThex",
   },
 };
@@ -129,14 +133,10 @@ interface ArmThemeContextType {
 }
 
 const ArmThemeContext = createContext<ArmThemeContextType | undefined>(
-  undefined
+  undefined,
 );
 
-export function ArmThemeProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ArmThemeProvider({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const currentArm = detectArmFromPath(location.pathname);
   const theme = THEMES[currentArm];

@@ -60,7 +60,8 @@ export default function Index() {
   const audienceNav = [
     {
       title: "Solutions for Business",
-      description: "Custom software development, consulting, and digital transformation",
+      description:
+        "Custom software development, consulting, and digital transformation",
       icon: Briefcase,
       color: "from-blue-500 to-cyan-500",
       link: "/corp",
@@ -68,7 +69,8 @@ export default function Index() {
     },
     {
       title: "Explore & Learn",
-      description: "Open source projects, educational workshops, and community resources",
+      description:
+        "Open source projects, educational workshops, and community resources",
       icon: BookOpen,
       color: "from-red-500 to-pink-500",
       link: "https://aethex.foundation",
@@ -77,7 +79,8 @@ export default function Index() {
     },
     {
       title: "Join the Network",
-      description: "Professional networking, job board, and portfolio showcase for Roblox devs",
+      description:
+        "Professional networking, job board, and portfolio showcase for Roblox devs",
       icon: Network,
       color: "from-cyan-500 to-blue-500",
       link: "/dev-link",
@@ -85,7 +88,8 @@ export default function Index() {
     },
     {
       title: "Careers & Innovation",
-      description: "Join our team and work on cutting-edge R&D and experimental features",
+      description:
+        "Join our team and work on cutting-edge R&D and experimental features",
       icon: Zap,
       color: "from-yellow-500 to-amber-500",
       link: "/labs",
@@ -230,7 +234,8 @@ export default function Index() {
                     Building the Future of Immersive Digital Experiences
                   </h2>
                   <p className="text-lg text-muted-foreground max-w-3xl mx-auto animate-slide-up">
-                    Software innovation, enterprise consulting, open source education, and professional networking—all in one ecosystem.
+                    Software innovation, enterprise consulting, open source
+                    education, and professional networking—all in one ecosystem.
                   </p>
                 </div>
               </div>
@@ -240,12 +245,9 @@ export default function Index() {
                 {audienceNav.map((item, index) => {
                   const Icon = item.icon;
                   return (
-                    <Link
-                      key={index}
-                      to={item.link}
-                      className="group"
-                    >
-                      <Card className="relative overflow-hidden rounded-xl border border-border/30 hover:border-aethex-400/50 bg-card/60 backdrop-blur-sm hover:translate-y-[-4px] hover:shadow-[0_12px_40px_rgba(80,80,120,0.3)] transition-all duration-300 h-full cursor-pointer"
+                    <Link key={index} to={item.link} className="group">
+                      <Card
+                        className="relative overflow-hidden rounded-xl border border-border/30 hover:border-aethex-400/50 bg-card/60 backdrop-blur-sm hover:translate-y-[-4px] hover:shadow-[0_12px_40px_rgba(80,80,120,0.3)] transition-all duration-300 h-full cursor-pointer"
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
                         <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/6 via-transparent to-white/0" />
@@ -281,12 +283,17 @@ export default function Index() {
                 <h3 className="text-2xl font-bold mb-6">Recent Wins</h3>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {showcaseWins.map((win, index) => (
-                    <Card key={index} className={`border ${win.color} bg-opacity-50`}>
+                    <Card
+                      key={index}
+                      className={`border ${win.color} bg-opacity-50`}
+                    >
                       <CardContent className="pt-6">
                         <Badge variant="outline" className="mb-3 text-xs">
                           {win.division}
                         </Badge>
-                        <h4 className="font-semibold text-sm mb-2">{win.title}</h4>
+                        <h4 className="font-semibold text-sm mb-2">
+                          {win.title}
+                        </h4>
                         <p className="text-xs text-muted-foreground mb-3">
                           {win.description}
                         </p>
