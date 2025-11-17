@@ -45,6 +45,13 @@ const ARMS = [
   { id: "labs", label: "Labs", color: "#FBBF24", href: "/labs" },
   { id: "gameforge", label: "GameForge", color: "#22C55E", href: "/gameforge" },
   { id: "corp", label: "Corp", color: "#3B82F6", href: "/corp" },
+  {
+    id: "foundation",
+    label: "Foundation",
+    color: "#EF4444",
+    href: "https://aethex.foundation",
+    external: true,
+  },
   { id: "devlink", label: "Dev-Link", color: "#06B6D4", href: "/dev-link" },
   { id: "nexus", label: "Nexus", color: "#A855F7", href: "/nexus" },
 ];
@@ -56,6 +63,8 @@ const ARM_LOGOS: Record<string, string> = {
   gameforge:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
   corp: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800",
+  foundation:
+    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
   devlink:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
   nexus:

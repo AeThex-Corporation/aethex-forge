@@ -5,6 +5,7 @@ export type ArmType =
   | "labs"
   | "gameforge"
   | "corp"
+  | "foundation"
   | "devlink"
   | "staff"
   | "nexus"
@@ -55,6 +56,17 @@ const THEMES: Record<ArmType, ArmTheme> = {
     fontFamily: '"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", sans-serif',
     displayName: "Corp",
   },
+  foundation: {
+    arm: "foundation",
+    accentColor: "from-red-500 to-red-400",
+    accentHex: "#ef4444",
+    wallpaperClass: "wallpaper-foundation",
+    wallpaperPattern:
+      "repeating-linear-gradient(0deg, rgba(239, 68, 68, 0.04) 0px, rgba(239, 68, 68, 0.04) 1px, transparent 1px, transparent 2px)",
+    fontClass: "font-foundation",
+    fontFamily: '"Merriweather", "Georgia", serif',
+    displayName: "Foundation",
+  },
   devlink: {
     arm: "devlink",
     accentColor: "from-cyan-500 to-cyan-400",
@@ -104,6 +116,7 @@ const detectArmFromPath = (pathname: string): ArmType => {
   if (pathname.includes("/labs")) return "labs";
   if (pathname.includes("/gameforge")) return "gameforge";
   if (pathname.includes("/corp")) return "corp";
+  if (pathname.includes("/foundation")) return "foundation";
   if (pathname.includes("/dev-link")) return "devlink";
   if (pathname.includes("/staff")) return "staff";
   if (pathname.includes("/nexus")) return "nexus";
