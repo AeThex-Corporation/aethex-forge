@@ -109,8 +109,12 @@ export default function Arms() {
   const location = useLocation();
   const [hoveredArm, setHoveredArm] = useState<string | null>(null);
 
-  const handleSelectArm = (href: string) => {
-    navigate(href);
+  const handleSelectArm = (href: string, external?: boolean) => {
+    if (external) {
+      window.open(href, "_blank");
+    } else {
+      navigate(href);
+    }
   };
 
   const handleBack = () => {
@@ -211,7 +215,7 @@ export default function Arms() {
           {ARMS.map((arm) => (
             <button
               key={arm.id}
-              onClick={() => handleSelectArm(arm.href)}
+              onClick={() => handleSelectArm(arm.href, arm.external)}
               onMouseEnter={() => setHoveredArm(arm.id)}
               onMouseLeave={() => setHoveredArm(null)}
               className="group relative p-6 sm:p-8 rounded-2xl border border-gray-800/50 bg-gradient-to-br from-gray-950/60 to-black/80 backdrop-blur-sm hover:border-gray-700 transition-all duration-500 transform hover:scale-105 hover:-translate-y-3"
