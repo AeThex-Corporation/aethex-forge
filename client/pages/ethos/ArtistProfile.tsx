@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // API Base URL for fetch requests
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { Star, Mail, Music, Zap, Clock } from "lucide-react";
+import { resolveIdentifierToUserId, isUUID } from "@/lib/identifier-resolver";
 
 interface Artist {
   user_id: string;
