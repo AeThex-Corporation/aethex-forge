@@ -216,21 +216,65 @@ export async function updateCreatorProfile(req: Request, userId: string) {
       spotify_profile_url,
     } = body;
 
+    // Validate required fields if provided
+    if (username !== undefined && username !== null) {
+      if (typeof username !== "string" || username.trim().length === 0) {
+        return new Response(
+          JSON.stringify({ error: "Username must be a non-empty string" }),
+          { status: 400, headers: { "Content-Type": "application/json" } },
+        );
+      }
+
+      // Check if username is being changed to something that already exists
+      const { data: currentCreator } = await supabase
+        .from("aethex_creators")
+        .select("username")
+        .eq("user_id", userId)
+        .single();
+
+      const normalizedUsername = username.trim().toLowerCase();
+
+      if (
+        currentCreator &&
+        currentCreator.username !== normalizedUsername
+      ) {
+        // Username is being changed, check if new username exists
+        const { data: existingCreator } = await supabase
+          .from("aethex_creators")
+          .select("id")
+          .eq("username", normalizedUsername)
+          .single();
+
+        if (existingCreator) {
+          return new Response(
+            JSON.stringify({ error: "Username is already taken" }),
+            { status: 409, headers: { "Content-Type": "application/json" } },
+          );
+        }
+      }
+    }
+
+    const updateData: any = {
+      updated_at: new Date().toISOString(),
+    };
+
+    // Only update fields that are provided
+    if (username !== undefined && username !== null) {
+      updateData.username = username.trim().toLowerCase();
+    }
+    if (bio !== undefined) updateData.bio = bio;
+    if (skills !== undefined) updateData.skills = skills;
+    if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
+    if (experience_level !== undefined) updateData.experience_level = experience_level;
+    if (primary_arm !== undefined) updateData.primary_arm = primary_arm;
+    if (arm_affiliations !== undefined) updateData.arm_affiliations = arm_affiliations;
+    if (is_discoverable !== undefined) updateData.is_discoverable = is_discoverable;
+    if (allow_recommendations !== undefined) updateData.allow_recommendations = allow_recommendations;
+    if (spotify_profile_url !== undefined) updateData.spotify_profile_url = spotify_profile_url;
+
     const { data, error } = await supabase
       .from("aethex_creators")
-      .update({
-        username,
-        bio,
-        skills,
-        avatar_url,
-        experience_level,
-        primary_arm,
-        arm_affiliations,
-        is_discoverable,
-        allow_recommendations,
-        spotify_profile_url,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq("user_id", userId)
       .select()
       .single();
