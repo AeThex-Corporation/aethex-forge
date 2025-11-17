@@ -21,6 +21,7 @@ import MentorshipPrograms from "./pages/MentorshipPrograms";
 import ResearchLabs from "./pages/ResearchLabs";
 import Labs from "./pages/Labs";
 import GameForge from "./pages/GameForge";
+import Foundation from "./pages/Foundation";
 import Corp from "./pages/Corp";
 import Staff from "./pages/Staff";
 import DevLink from "./pages/DevLink";
