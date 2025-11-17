@@ -40,15 +40,6 @@ const ARMS: Arm[] = [
     href: "/dev-link",
   },
   {
-    id: "foundation",
-    name: "AeThex | Foundation",
-    label: "Foundation",
-    color: "#EF4444",
-    bgColor: "bg-red-500/20",
-    textColor: "text-red-400",
-    href: "/foundation",
-  },
-  {
     id: "corp",
     name: "AeThex | Corp",
     label: "Corp",
@@ -84,8 +75,6 @@ const LOGO_URLS: Record<string, string> = {
   gameforge:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
   corp: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800",
-  foundation:
-    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
   devlink:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
   nexus:
