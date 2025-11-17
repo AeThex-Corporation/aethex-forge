@@ -90,6 +90,7 @@ UNIQUE(user_id, provider)           -- One user can only link one Discord accoun
 #### Second Login with Different Provider Y (Same Person)
 
 **Case A: Direct Provider Match**
+
 ```
 1. User clicks "Login with Discord"
 2. OAuth returns discord user data
@@ -101,6 +102,7 @@ UNIQUE(user_id, provider)           -- One user can only link one Discord accoun
 ```
 
 **Case B: Email Match (Account Recovery)**
+
 ```
 1. User lost GitHub password, tries "Login with Discord"
 2. Discord email matches existing Passport email
@@ -117,11 +119,12 @@ UNIQUE(user_id, provider)           -- One user can only link one Discord accoun
 ```typescript
 async function federateOAuthUser(
   provider: string,
-  oauthUser: OAuthUser
-): Promise<FederationResult>
+  oauthUser: OAuthUser,
+): Promise<FederationResult>;
 ```
 
 **Logic:**
+
 1. Look up `provider_identities` table
    - If found → return linked Passport user_id
    - If not found → create new Passport + provider link
@@ -159,6 +162,7 @@ redirect("/dashboard");
 ## Login Flow (Updated)
 
 ### Before (No Federation)
+
 ```
 GitHub → GitHub auth session
 Discord → Discord auth session (different user)
@@ -166,6 +170,7 @@ Google → Google auth session (different user)
 ```
 
 ### After (Federation)
+
 ```
 GitHub → Federate to Foundation → Passport A session
 Discord → Federate to Foundation → Passport A session (same)
@@ -181,7 +186,7 @@ Google → Federate to Foundation → Passport A session (same)
 ```
 1. User signs up with GitHub
    → Creates Passport, logs in
-   
+
 2. User logs out, wants to use Discord
    → Logs in with Discord
    → System recognizes Discord is new
@@ -208,19 +213,24 @@ Google → Federate to Foundation → Passport A session (same)
 ## Security Considerations
 
 ### Provider ID Collision (Prevented)
+
 ```sql
 UNIQUE(provider, provider_user_id)
 ```
+
 → Prevents provider ID from linking to multiple Passports
 
 ### Account Takeover (Prevented)
+
 ```sql
 UNIQUE(user_id, provider)
 ```
+
 → User can't link same provider twice
 → User can't have duplicate providers
 
 ### Email Verification (Recommended)
+
 → For auto-linking on email match, require email verification
 → Prevent account takeover via unverified email addresses
 
@@ -262,7 +272,7 @@ If you had existing users with separate GitHub/Discord/Google accounts:
 ✅ **Data Consistency** - No duplicate user records  
 ✅ **Security** - Prevents account fragmentation  
 ✅ **Future Growth** - Easy to add new OAuth providers  
-✅ **Account Recovery** - Email-based recovery across providers  
+✅ **Account Recovery** - Email-based recovery across providers
 
 ---
 

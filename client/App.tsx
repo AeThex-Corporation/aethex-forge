@@ -244,7 +244,6 @@ const App = () => (
                           element={<DiscordVerify />}
                         />
 
-
                         <Route
                           path="/passport"
                           element={<Navigate to="/passport/me" replace />}
@@ -374,7 +373,6 @@ const App = () => (
                           path="/corp/contact-us"
                           element={<CorpContactUs />}
                         />
-
 
                         {/* Staff Arm Routes */}
                         <Route path="/staff" element={<Staff />} />
@@ -591,7 +589,6 @@ const App = () => (
                         <Route path="/tutorials" element={<Tutorials />} />
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/blog/:slug" element={<BlogPost />} />
-
 
                         {/* Ethos Guild Routes */}
                         <Route

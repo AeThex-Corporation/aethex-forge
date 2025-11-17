@@ -160,12 +160,9 @@ export default function ClientDashboard() {
 
       // Load team
       try {
-        const teamRes = await fetch(
-          `${apiBase}/api/corp/team?limit=50`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const teamRes = await fetch(`${apiBase}/api/corp/team?limit=50`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         if (teamRes.ok) {
           const data = await teamRes.json();
           setTeamMembers(Array.isArray(data) ? data : data.team || []);
@@ -195,7 +192,9 @@ export default function ClientDashboard() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
               CORP Dashboard
             </h1>
-            <p className="text-gray-400">Enterprise services & project management</p>
+            <p className="text-gray-400">
+              Enterprise services & project management
+            </p>
             <Button
               onClick={() => navigate("/login")}
               className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6"
@@ -210,8 +209,9 @@ export default function ClientDashboard() {
 
   const totalProjectValue = projects.reduce((acc, p) => acc + p.budget, 0);
   const totalSpent = projects.reduce((acc, p) => acc + p.spent, 0);
-  const activeProjects = projects.filter((p) => p.status === "in-progress")
-    .length;
+  const activeProjects = projects.filter(
+    (p) => p.status === "in-progress",
+  ).length;
   const overdueInvoices = invoices.filter((i) => i.status === "overdue").length;
   const totalRevenue = invoices.reduce((acc, i) => acc + i.amount, 0);
 
@@ -261,7 +261,9 @@ export default function ClientDashboard() {
                   <p className="text-sm text-gray-400">Active Projects</p>
                   <CheckCircle className="h-5 w-5 text-cyan-400" />
                 </div>
-                <p className="text-3xl font-bold text-white">{activeProjects}</p>
+                <p className="text-3xl font-bold text-white">
+                  {activeProjects}
+                </p>
               </CardContent>
             </Card>
 
@@ -277,11 +279,13 @@ export default function ClientDashboard() {
               </CardContent>
             </Card>
 
-            <Card className={`bg-gradient-to-br ${
-              overdueInvoices > 0
-                ? "from-red-950/40 to-red-900/20 border-red-500/20"
-                : "from-gray-950/40 to-gray-900/20 border-gray-500/20"
-            }`}>
+            <Card
+              className={`bg-gradient-to-br ${
+                overdueInvoices > 0
+                  ? "from-red-950/40 to-red-900/20 border-red-500/20"
+                  : "from-gray-950/40 to-gray-900/20 border-gray-500/20"
+              }`}
+            >
               <CardContent className="p-6 space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-gray-400">Overdue Invoices</p>
@@ -299,7 +303,11 @@ export default function ClientDashboard() {
           </div>
 
           {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-4 bg-blue-950/30 border border-blue-500/20 p-1">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="projects">Projects</TabsTrigger>
@@ -310,13 +318,12 @@ export default function ClientDashboard() {
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-6 animate-fade-in">
               {/* Active Projects */}
-              {projects.filter((p) => p.status === "in-progress").length > 0 && (
+              {projects.filter((p) => p.status === "in-progress").length >
+                0 && (
                 <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
                   <CardHeader>
                     <CardTitle>Active Projects</CardTitle>
-                    <CardDescription>
-                      Currently in development
-                    </CardDescription>
+                    <CardDescription>Currently in development</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {projects
@@ -373,9 +380,7 @@ export default function ClientDashboard() {
                 <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
                   <CardHeader>
                     <CardTitle>Recent Invoices</CardTitle>
-                    <CardDescription>
-                      Latest billing activity
-                    </CardDescription>
+                    <CardDescription>Latest billing activity</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {invoices.slice(0, 5).map((invoice) => (
@@ -520,7 +525,10 @@ export default function ClientDashboard() {
                           </div>
                         </div>
 
-                        <Progress value={project.progress} className="h-2 mb-4" />
+                        <Progress
+                          value={project.progress}
+                          className="h-2 mb-4"
+                        />
 
                         <Button
                           size="sm"
@@ -537,7 +545,10 @@ export default function ClientDashboard() {
             </TabsContent>
 
             {/* Contracts Tab */}
-            <TabsContent value="contracts" className="space-y-4 animate-fade-in">
+            <TabsContent
+              value="contracts"
+              className="space-y-4 animate-fade-in"
+            >
               {contracts.length === 0 ? (
                 <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
                   <CardContent className="p-12 text-center space-y-4">
@@ -584,7 +595,9 @@ export default function ClientDashboard() {
                               Start
                             </p>
                             <p className="text-sm text-white">
-                              {new Date(contract.start_date).toLocaleDateString()}
+                              {new Date(
+                                contract.start_date,
+                              ).toLocaleDateString()}
                             </p>
                           </div>
                           <div className="space-y-1">

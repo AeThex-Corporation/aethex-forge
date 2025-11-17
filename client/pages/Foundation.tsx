@@ -114,10 +114,11 @@ export default function Foundation() {
                 </h3>
                 <p className="text-gray-300 leading-relaxed">
                   GameForge is the Foundation's flagship "master-apprentice"
-                  mentorship program. It's our "gym" where developers collaborate
-                  on focused, high-impact game projects within 30-day sprints.
-                  Teams of 5 (1 mentor + 4 mentees) tackle real game development
-                  challenges and ship playable games to our community arcade.
+                  mentorship program. It's our "gym" where developers
+                  collaborate on focused, high-impact game projects within
+                  30-day sprints. Teams of 5 (1 mentor + 4 mentees) tackle real
+                  game development challenges and ship playable games to our
+                  community arcade.
                 </p>
               </div>
 
@@ -129,14 +130,19 @@ export default function Foundation() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div className="p-4 bg-black/40 rounded-lg border border-green-500/20 space-y-2">
-                    <p className="font-semibold text-green-300">Role 1: Community</p>
+                    <p className="font-semibold text-green-300">
+                      Role 1: Community
+                    </p>
                     <p className="text-sm text-gray-400">
                       Our "campfire" where developers meet, collaborate, and
-                      build their `aethex.me` passports through real project work.
+                      build their `aethex.me` passports through real project
+                      work.
                     </p>
                   </div>
                   <div className="p-4 bg-black/40 rounded-lg border border-green-500/20 space-y-2">
-                    <p className="font-semibold text-green-300">Role 2: Education</p>
+                    <p className="font-semibold text-green-300">
+                      Role 2: Education
+                    </p>
                     <p className="text-sm text-gray-400">
                       Learn professional development practices: Code Review
                       (SOP-102), Scope Management (KND-001), and shipping
@@ -144,7 +150,9 @@ export default function Foundation() {
                     </p>
                   </div>
                   <div className="p-4 bg-black/40 rounded-lg border border-green-500/20 space-y-2">
-                    <p className="font-semibold text-green-300">Role 3: Pipeline</p>
+                    <p className="font-semibold text-green-300">
+                      Role 3: Pipeline
+                    </p>
                     <p className="text-sm text-gray-400">
                       Top performers become "Architects" ready to work on
                       high-value projects. Your GameForge portfolio proves you

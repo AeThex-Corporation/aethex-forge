@@ -1,7 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import { notifyAccountLinked } from "../../_notifications.js";
 import { getAdminClient } from "../../_supabase.js";
-import { federateOAuthUser, linkProviderToPassport } from "../../_oauth-federation.js";
+import {
+  federateOAuthUser,
+  linkProviderToPassport,
+} from "../../_oauth-federation.js";
 
 export const config = {
   runtime: "nodejs",

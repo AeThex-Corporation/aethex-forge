@@ -113,9 +113,7 @@ export default function LabsDashboard() {
       if (affiliationRes.ok) {
         const data = await affiliationRes.json();
         hasLabsAccess =
-          data.arms?.includes("labs") ||
-          data.role === "admin" ||
-          data.verified;
+          data.arms?.includes("labs") || data.role === "admin" || data.verified;
       }
 
       setIsAccessible(hasLabsAccess);
@@ -238,8 +236,8 @@ export default function LabsDashboard() {
                     What is LABS?
                   </h3>
                   <p className="text-sm text-gray-400">
-                    LABS is our proprietary, for-profit R&D department that takes
-                    the open-source Axiom Protocol and builds competitive,
+                    LABS is our proprietary, for-profit R&D department that
+                    takes the open-source Axiom Protocol and builds competitive,
                     closed-source "secret weapons" on top of it.
                   </p>
                   <p className="text-sm text-gray-400">
@@ -430,7 +428,9 @@ export default function LabsDashboard() {
 
                           <div className="space-y-2">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="text-gray-400">Overall Progress</span>
+                              <span className="text-gray-400">
+                                Overall Progress
+                              </span>
                               <span className="font-mono text-amber-400">
                                 {featured.progress}%
                               </span>
@@ -454,7 +454,8 @@ export default function LabsDashboard() {
               )}
 
               {/* Recent Publications */}
-              {publications.filter((p) => p.status === "published").length > 0 && (
+              {publications.filter((p) => p.status === "published").length >
+                0 && (
                 <Card className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border-orange-500/20">
                   <CardHeader>
                     <CardTitle>Recent Publications</CardTitle>
@@ -482,7 +483,9 @@ export default function LabsDashboard() {
                               </p>
                               <p className="text-xs text-gray-400 mt-1">
                                 By {pub.author} •{" "}
-                                {new Date(pub.published_date).toLocaleDateString()}
+                                {new Date(
+                                  pub.published_date,
+                                ).toLocaleDateString()}
                               </p>
                             </div>
                             <ExternalLink className="h-4 w-4 text-gray-500 flex-shrink-0 group-hover:text-orange-400 transition" />
@@ -621,7 +624,10 @@ export default function LabsDashboard() {
             </TabsContent>
 
             {/* Publications Tab */}
-            <TabsContent value="publications" className="space-y-4 animate-fade-in">
+            <TabsContent
+              value="publications"
+              className="space-y-4 animate-fade-in"
+            >
               {publications.length === 0 ? (
                 <Card className="bg-gradient-to-br from-orange-950/40 to-orange-900/20 border-orange-500/20">
                   <CardContent className="p-12 text-center space-y-4">

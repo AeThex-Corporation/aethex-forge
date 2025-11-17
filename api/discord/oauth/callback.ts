@@ -1,7 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import { notifyAccountLinked } from "../../_notifications.js";
 import { getAdminClient } from "../../_supabase.js";
-import { federateOAuthUser, linkProviderToPassport } from "../../_oauth-federation.js";
+import {
+  federateOAuthUser,
+  linkProviderToPassport,
+} from "../../_oauth-federation.js";
 
 export const config = {
   runtime: "nodejs",
@@ -185,7 +188,9 @@ export default async function handler(req: any, res: any) {
           id: discordUser.id,
           email: discordUser.email,
           username: discordUser.username,
-          avatar: discordUser.avatar ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.webp` : undefined,
+          avatar: discordUser.avatar
+            ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.webp`
+            : undefined,
         });
 
         console.log(
@@ -212,7 +217,9 @@ export default async function handler(req: any, res: any) {
         id: discordUser.id,
         email: discordUser.email,
         username: discordUser.username,
-        avatar: discordUser.avatar ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.webp` : undefined,
+        avatar: discordUser.avatar
+          ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.webp`
+          : undefined,
       });
 
       console.log("[Discord OAuth] Federation result:", {

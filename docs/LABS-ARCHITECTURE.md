@@ -7,6 +7,7 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 ### The Complete Ecosystem Picture
 
 #### `aethex.foundation` (The "Guardian")
+
 - **Type:** Non-Profit
 - **Primary Role:** Identity issuance and open-source research
 - **Key Function:** Guardian of the open-source **Axiom Protocol**
@@ -14,6 +15,7 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 - **Focus:** Community education, mentorship, and open-source development
 
 #### `aethex.dev` (The "Engine")
+
 - **Type:** For-Profit
 - **Primary Role:** Commercial application platform
 - **Research & Development:** The **LABS** (Yellow) Arm
@@ -22,13 +24,13 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 
 ### Research vs. Development
 
-| Aspect | Foundation | LABS |
-|--------|-----------|------|
-| **Entity Type** | Non-Profit | For-Profit |
-| **Focus** | Open-Source Research | Proprietary Development |
-| **Role** | Guardian of Axiom Protocol | Internal R&D Department |
-| **Output** | Community Knowledge | Competitive Advantage |
-| **Access** | Public | A-Corp Employees / Verified Users |
+| Aspect          | Foundation                 | LABS                              |
+| --------------- | -------------------------- | --------------------------------- |
+| **Entity Type** | Non-Profit                 | For-Profit                        |
+| **Focus**       | Open-Source Research       | Proprietary Development           |
+| **Role**        | Guardian of Axiom Protocol | Internal R&D Department           |
+| **Output**      | Community Knowledge        | Competitive Advantage             |
+| **Access**      | Public                     | A-Corp Employees / Verified Users |
 
 ## LABS Dashboard Architecture
 
@@ -45,11 +47,13 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 **Purpose:** High-level Kanban or list of all internal, proprietary R&D projects.
 
 **Sample Data:**
+
 - **"Axiom PCG Engine (for dev-link.me)"** [Status: In Development]
 - **".aethex TLD Smart Contracts"** [Status: In Research]
 - **"QuantumLeap Predictive Model v2"** [Status: Scoping]
 
 **Functionality:**
+
 - Display project status (Scoping → Research → In Development → Testing → Released)
 - Show progress indicators
 - Link to project details and whitepapers
@@ -66,6 +70,7 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 | aethex.me IP | [Secured] | The AeThex Corp |
 
 **Functionality:**
+
 - Track all proprietary IP (Patents, Trademarks, Trade Secrets)
 - Show filing status and dates
 - Indicate which subsidiaries/entities are licensed
@@ -76,10 +81,12 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 **Purpose:** Dashboard for the Marketing Team (SOP-402) to track R&D content and thought leadership.
 
 **Sample Data:**
+
 - "The Tech Behind PCG" [Status: Drafting]
 - "Why We Chose a .aethex TLD" [Status: Published on aethex.blog]
 
 **Functionality:**
+
 - List upcoming technical whitepapers and blog posts
 - Show publication status (Drafting → Review → Published)
 - Link to published content on aethex.blog
@@ -91,6 +98,7 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 **Purpose:** A filtered view of the NEXUS bounty board showing only high-difficulty, high-reward "Research Bounties" that LABS has posted for elite "Architect" community members to help with.
 
 **Functionality:**
+
 - Filter NEXUS bounties by "research" category
 - Show only high-reward opportunities
 - Display difficulty level and required expertise
@@ -105,6 +113,7 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 ## Access Control & Soft-Gating
 
 ### Public Users (Not A-Corp Employees)
+
 - See header: "Research LABS"
 - See "Join Labs?" CTA
 - Can view published whitepapers (Publication Pipeline - published only)
@@ -112,6 +121,7 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 - Navigation: CTA button links to `/labs/join-request` or similar
 
 ### A-Corp Employees / Verified Users
+
 - Full access to all widgets
 - Can see all research tracks and progress
 - Can view IP dashboard (with appropriate role restrictions)
@@ -122,12 +132,14 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
 ## Technical Implementation Notes
 
 1. **Database Tables Needed:**
+
    - `labs_research_tracks` (projects, status, progress, lead_id)
    - `labs_ip_portfolio` (ip_name, type, status, filing_date, licensed_to)
    - `labs_publications` (title, description, status, published_date, content_url)
    - `labs_bounties` (links to nexus opportunities, filtered by category)
 
 2. **API Endpoints:**
+
    - `GET /api/labs/research-tracks` - Fetch all research tracks
    - `GET /api/labs/ip-portfolio` - Fetch IP portfolio (admin + A-Corp)
    - `GET /api/labs/publications` - Fetch publications (public + A-Corp)
@@ -136,6 +148,7 @@ The `LABS` (Yellow) Arm is **100% For-Profit** and remains part of `aethex.dev`.
    - `POST /api/labs/join-request` - Request to join LABS (soft-gating)
 
 3. **Soft-Gating Logic:**
+
    - Check user's `arm_affiliations` table for "labs" affiliation
    - Check if user has A-Corp role or is verified member
    - Return different UI based on access level

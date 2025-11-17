@@ -419,7 +419,10 @@ export default function Login() {
                             window.location.search,
                           ).get("next");
                           if (next && next.startsWith("/"))
-                            u.searchParams.set("state", JSON.stringify({ redirectTo: next }));
+                            u.searchParams.set(
+                              "state",
+                              JSON.stringify({ redirectTo: next }),
+                            );
                           window.location.href = u.toString();
                         }}
                       >

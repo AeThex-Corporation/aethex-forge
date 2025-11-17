@@ -185,9 +185,12 @@ export async function linkProviderToPassport(
  * Generate a unique username from OAuth data
  * Fallback: use provider_username + random suffix
  */
-async function generateUniqueUsername(preferredUsername?: string): Promise<string> {
-  let username = preferredUsername?.toLowerCase().replace(/[^a-z0-9_-]/g, "") || "user";
-  
+async function generateUniqueUsername(
+  preferredUsername?: string,
+): Promise<string> {
+  let username =
+    preferredUsername?.toLowerCase().replace(/[^a-z0-9_-]/g, "") || "user";
+
   // Ensure minimum length
   if (username.length < 3) {
     username = "user" + Math.random().toString(36).substring(7);
