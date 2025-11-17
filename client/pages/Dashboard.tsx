@@ -90,16 +90,6 @@ const ARMS = [
     borderColor: "border-blue-500/30 hover:border-blue-500/60",
   },
   {
-    id: "foundation",
-    label: "Foundation",
-    color: "#EF4444",
-    href: "/dashboard/foundation",
-    icon: Trophy,
-    description: "Education & Mentorship",
-    bgGradient: "from-red-500/20 to-red-900/20",
-    borderColor: "border-red-500/30 hover:border-red-500/60",
-  },
-  {
     id: "devlink",
     label: "Dev-Link",
     color: "#06B6D4",
