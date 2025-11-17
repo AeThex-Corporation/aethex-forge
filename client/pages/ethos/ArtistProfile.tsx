@@ -46,27 +46,45 @@ interface Artist {
 }
 
 export default function ArtistProfile() {
-  const { userId } = useParams<{ userId: string }>();
+  const { userId: identifier } = useParams<{ userId: string }>();
+  const navigate = useNavigate();
   const [artist, setArtist] = useState<Artist | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArtist = async () => {
-      if (!userId) return;
+      if (!identifier) return;
 
       try {
-        const res = await fetch(`${API_BASE}/api/ethos/artists?id=${userId}`);
+        // Support both username and userId
+        let resolvedUserId = identifier;
+
+        if (!isUUID(identifier)) {
+          // If not a UUID, try to resolve username to userId
+          const userId = await resolveIdentifierToUserId(identifier);
+          if (userId) {
+            resolvedUserId = userId;
+          } else {
+            // If resolution failed and it's not a UUID, it's an invalid identifier
+            setArtist(null);
+            setLoading(false);
+            return;
+          }
+        }
+
+        const res = await fetch(`${API_BASE}/api/ethos/artists?id=${resolvedUserId}`);
         const data = await res.json();
         setArtist(data);
       } catch (error) {
         console.error("Failed to fetch artist:", error);
+        setArtist(null);
       } finally {
         setLoading(false);
       }
     };
 
     fetchArtist();
-  }, [userId]);
+  }, [identifier]);
 
   if (loading) {
     return (
