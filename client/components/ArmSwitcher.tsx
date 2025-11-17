@@ -9,6 +9,7 @@ interface Arm {
   bgColor: string;
   textColor: string;
   href: string;
+  external?: boolean;
 }
 
 const ARMS: Arm[] = [
@@ -38,6 +39,16 @@ const ARMS: Arm[] = [
     bgColor: "bg-cyan-500/20",
     textColor: "text-cyan-400",
     href: "/dev-link",
+  },
+  {
+    id: "foundation",
+    name: "AeThex | Foundation",
+    label: "Foundation",
+    color: "#EF4444",
+    bgColor: "bg-red-500/20",
+    textColor: "text-red-400",
+    href: "https://aethex.foundation",
+    external: true,
   },
   {
     id: "corp",
@@ -75,6 +86,8 @@ const LOGO_URLS: Record<string, string> = {
   gameforge:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800",
   corp: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800",
+  foundation:
+    "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
   devlink:
     "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
   nexus:
@@ -84,8 +97,12 @@ const LOGO_URLS: Record<string, string> = {
 export default function ArmSwitcher() {
   const navigate = useNavigate();
 
-  const handleArmClick = (href: string) => {
-    navigate(href);
+  const handleArmClick = (href: string, external?: boolean) => {
+    if (external) {
+      window.open(href, "_blank");
+    } else {
+      navigate(href);
+    }
   };
 
   return (
@@ -95,7 +112,7 @@ export default function ArmSwitcher() {
         {ARMS.map((arm) => (
           <button
             key={arm.id}
-            onClick={() => handleArmClick(arm.href)}
+            onClick={() => handleArmClick(arm.href, arm.external)}
             className="group relative h-12 w-12 flex items-center justify-center rounded-lg hover:scale-120 transition-transform duration-200 flex-shrink-0"
             title={arm.name}
           >
@@ -122,7 +139,7 @@ export default function ArmSwitcher() {
         {ARMS.map((arm) => (
           <button
             key={arm.id}
-            onClick={() => handleArmClick(arm.href)}
+            onClick={() => handleArmClick(arm.href, arm.external)}
             className="group relative h-11 w-11 flex items-center justify-center rounded-lg hover:scale-110 transition-transform duration-200 flex-shrink-0"
             title={arm.name}
           >
