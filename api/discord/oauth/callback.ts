@@ -219,77 +219,37 @@ export default async function handler(req: any, res: any) {
       return res.redirect(redirectTo);
     }
 
-    // LOGIN FLOW: Don't auto-create accounts
-    // Check if Discord user already exists
-    const { data: existingLink } = await supabase
-      .from("discord_links")
-      .select("user_id")
-      .eq("discord_id", discordUser.id)
-      .single();
+    // LOGIN FLOW: OAuth Federation
+    // Federate Discord OAuth to Foundation Passport
+    // Users can login via Discord and it automatically links to their Foundation identity
 
-    let userId: string;
+    try {
+      const federationResult = await federateOAuthUser("discord", {
+        id: discordUser.id,
+        email: discordUser.email,
+        username: discordUser.username,
+        avatar: discordUser.avatar ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.webp` : undefined,
+      });
 
-    if (existingLink) {
-      // Discord ID already linked - use existing user
-      userId = existingLink.user_id;
-      console.log("[Discord OAuth] Discord ID already linked to user:", userId);
-    } else {
-      // Discord not linked yet. Check if email matches existing account.
+      console.log("[Discord OAuth] Federation result:", {
+        user_id: federationResult.user_id,
+        is_new_user: federationResult.is_new_user,
+        provider_linked: federationResult.provider_linked,
+      });
 
-      // Check if email exists in user_profiles
-      const { data: existingUserProfile } = await supabase
-        .from("user_profiles")
-        .select("id")
-        .eq("email", discordUser.email)
-        .single();
-
-      if (existingUserProfile) {
-        // Discord email matches existing user profile - link it
-        userId = existingUserProfile.id;
-        console.log(
-          "[Discord OAuth] Discord email matches existing user profile, linking Discord",
-        );
-      } else {
-        // Discord email doesn't match any existing account
-        // Don't auto-create - ask user to sign in with email first
-        console.log(
-          "[Discord OAuth] Discord email not found in existing accounts, redirecting to sign in",
-          {
-            discord_email: discordUser.email,
-          },
-        );
-        return res.redirect(
-          `/login?error=discord_no_match&message=${encodeURIComponent("Discord email (${discordUser.email}) not found. Please sign in with your email account first, then link Discord from settings.")}`,
-        );
+      // Send notification if this is a new user
+      if (federationResult.is_new_user) {
+        await notifyAccountLinked(federationResult.user_id, "Discord");
       }
+
+      // Redirect to dashboard after successful federation
+      return res.redirect("/dashboard");
+    } catch (federationError) {
+      console.error("[Discord OAuth] Federation error:", federationError);
+      return res.redirect(
+        `/login?error=federation_failed&message=${encodeURIComponent("Failed to link Discord account. Please try again.")}`,
+      );
     }
-
-    // At this point, userId is guaranteed to exist in user_profiles
-    // Create Discord link
-    const { error: linkError } = await supabase.from("discord_links").upsert({
-      discord_id: discordUser.id,
-      user_id: userId,
-      linked_at: new Date().toISOString(),
-    });
-
-    if (linkError) {
-      console.error("[Discord OAuth] Link creation failed:", linkError);
-      return res.redirect("/login?error=link_create");
-    }
-
-    // Send notification if this is a new link (not from existing linking flow)
-    if (!existingLink) {
-      await notifyAccountLinked(userId, "Discord");
-    }
-
-    // Discord is now linked! Redirect to login for user to sign in
-    // The email is passed so they can see which account was linked
-    console.log(
-      "[Discord OAuth] Discord linked successfully, redirecting to login",
-    );
-    return res.redirect(
-      `/login?discord_linked=true&email=${encodeURIComponent(discordUser.email)}`,
-    );
   } catch (error) {
     console.error("[Discord OAuth] Callback error:", error);
     res.redirect("/login?error=unknown");
