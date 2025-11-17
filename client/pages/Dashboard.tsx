@@ -359,7 +359,11 @@ export default function Dashboard() {
                       key={arm.id}
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate(arm.href);
+                        if (arm.external) {
+                          window.open(arm.href, "_blank");
+                        } else {
+                          navigate(arm.href);
+                        }
                       }}
                       className="group relative overflow-hidden"
                     >

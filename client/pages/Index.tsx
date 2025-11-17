@@ -66,6 +66,15 @@ export default function Index() {
       audience: "Enterprise clients",
     },
     {
+      title: "Explore & Learn",
+      description: "Open source projects, educational workshops, and community resources",
+      icon: BookOpen,
+      color: "from-red-500 to-pink-500",
+      link: "https://aethex.foundation",
+      audience: "Developers & learners",
+      external: true,
+    },
+    {
       title: "Join the Network",
       description: "Professional networking, job board, and portfolio showcase for Roblox devs",
       icon: Network,
