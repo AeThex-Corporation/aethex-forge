@@ -49,6 +49,7 @@ export default function Index() {
   type FeatureCard = {
     title: string;
     description: string;
+    external?: boolean;
     icon: any;
     color: string;
     link?: string;
@@ -344,13 +345,25 @@ export default function Index() {
                           />
                           {feature.link ? (
                             <div className="pt-1">
-                              <Link
-                                to={feature.link}
-                                className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200"
-                              >
-                                Explore
-                                <ArrowRight className="h-3 w-3" />
-                              </Link>
+                              {feature.external ? (
+                                <a
+                                  href={feature.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200"
+                                >
+                                  Explore
+                                  <ArrowRight className="h-3 w-3" />
+                                </a>
+                              ) : (
+                                <Link
+                                  to={feature.link}
+                                  className="text-xs inline-flex items-center gap-1 text-aethex-300 hover:text-aethex-200"
+                                >
+                                  Explore
+                                  <ArrowRight className="h-3 w-3" />
+                                </Link>
+                              )}
                             </div>
                           ) : null}
                         </CardContent>
