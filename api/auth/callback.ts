@@ -312,7 +312,9 @@ async function syncUserToLocalDatabase(
   // ONE-WAY SYNC: Upsert Foundation data to local cache
   // Note: This is the ONLY place where user_profiles should be written to
   const now = new Date().toISOString();
-  const cacheValidUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24 hour cache TTL
+  const cacheValidUntil = new Date(
+    Date.now() + 24 * 60 * 60 * 1000,
+  ).toISOString(); // 24 hour cache TTL
 
   const { error } = await supabase.from("user_profiles").upsert({
     id: foundationUser.id,

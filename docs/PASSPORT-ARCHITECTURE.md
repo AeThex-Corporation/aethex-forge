@@ -16,6 +16,7 @@ Each Platform = Read-only cache of Foundation passport data
 ## Architecture
 
 ### 1. Foundation (aethex.foundation)
+
 - **Owner of passport data**
 - Issues and maintains all user identities
 - Provides OAuth endpoints for authentication
@@ -23,6 +24,7 @@ Each Platform = Read-only cache of Foundation passport data
 - Single authority for all identity mutations (updates, deletions)
 
 ### 2. Client Platforms (aethex.dev, etc.)
+
 - **Consumers of Foundation identities**
 - Cache Foundation passport data locally for performance
 - Use cached data for reads (lookups, profile queries)
@@ -112,11 +114,11 @@ CREATE TABLE user_profiles (
   full_name TEXT,                         -- From Foundation
   avatar_url TEXT,                        -- From Foundation
   profile_completed BOOLEAN DEFAULT false,-- From Foundation
-  
+
   -- Sync tracking
   foundation_synced_at TIMESTAMP,         -- When last synced from Foundation
   cache_valid_until TIMESTAMP,            -- When cache expires
-  
+
   -- Local metadata (not from Foundation)
   last_login_at TIMESTAMP,                -- aethex.dev tracking only
   created_at TIMESTAMP,
@@ -130,6 +132,7 @@ CREATE TABLE user_profiles (
 ## Sync Mechanism
 
 ### Initial Sync (On Login)
+
 1. User authenticates with Foundation
 2. aethex.dev receives `access_token` and basic user info
 3. aethex.dev calls Foundation's `/api/oauth/userinfo` endpoint
@@ -137,6 +140,7 @@ CREATE TABLE user_profiles (
 5. `foundation_synced_at` timestamp is updated
 
 ### Periodic Sync (Background)
+
 ```
 Every 24 hours (or on explicit request):
   1. Fetch current user data from Foundation API
@@ -147,6 +151,7 @@ Every 24 hours (or on explicit request):
 ```
 
 ### Cache Expiration
+
 ```
 If (now > cache_valid_until):
   1. Treat cache as stale
@@ -159,16 +164,19 @@ If (now > cache_valid_until):
 ### What if Foundation is unavailable?
 
 **During Login:**
+
 - �� Cannot proceed - user must authenticate through Foundation
 - Return error: "Identity service unavailable"
 
 **For existing users (cache valid):**
+
 - ✅ Can use cached data temporarily
 - Continue serving from cache
 - Log warning about Foundation unavailability
 - Retry sync in background
 
 **For profile updates:**
+
 - ❌ Cannot proceed - updates must go through Foundation
 - Queue update locally, retry when Foundation is available
 - Or fail gracefully: "Identity service unavailable, please try again"
@@ -176,6 +184,7 @@ If (now > cache_valid_until):
 ## Validation Rules
 
 ### On Every Auth Request
+
 ```javascript
 if (!user.foundation_synced_at) {
   throw new Error("User not synced from Foundation");
@@ -190,6 +199,7 @@ if (now > user.cache_valid_until) {
 ```
 
 ### On Every Profile Update Request
+
 ```javascript
 // Forward to Foundation API, never write locally
 const updated = await foundation.api.updateProfile(userId, changes);
