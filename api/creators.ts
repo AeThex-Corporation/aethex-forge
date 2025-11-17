@@ -132,9 +132,15 @@ export async function createCreatorProfile(req: Request, userId: string) {
     } = body;
 
     // Validate required fields
-    if (!username || typeof username !== "string" || username.trim().length === 0) {
+    if (
+      !username ||
+      typeof username !== "string" ||
+      username.trim().length === 0
+    ) {
       return new Response(
-        JSON.stringify({ error: "Username is required and must be a non-empty string" }),
+        JSON.stringify({
+          error: "Username is required and must be a non-empty string",
+        }),
         { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
@@ -234,10 +240,7 @@ export async function updateCreatorProfile(req: Request, userId: string) {
 
       const normalizedUsername = username.trim().toLowerCase();
 
-      if (
-        currentCreator &&
-        currentCreator.username !== normalizedUsername
-      ) {
+      if (currentCreator && currentCreator.username !== normalizedUsername) {
         // Username is being changed, check if new username exists
         const { data: existingCreator } = await supabase
           .from("aethex_creators")
@@ -265,12 +268,17 @@ export async function updateCreatorProfile(req: Request, userId: string) {
     if (bio !== undefined) updateData.bio = bio;
     if (skills !== undefined) updateData.skills = skills;
     if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
-    if (experience_level !== undefined) updateData.experience_level = experience_level;
+    if (experience_level !== undefined)
+      updateData.experience_level = experience_level;
     if (primary_arm !== undefined) updateData.primary_arm = primary_arm;
-    if (arm_affiliations !== undefined) updateData.arm_affiliations = arm_affiliations;
-    if (is_discoverable !== undefined) updateData.is_discoverable = is_discoverable;
-    if (allow_recommendations !== undefined) updateData.allow_recommendations = allow_recommendations;
-    if (spotify_profile_url !== undefined) updateData.spotify_profile_url = spotify_profile_url;
+    if (arm_affiliations !== undefined)
+      updateData.arm_affiliations = arm_affiliations;
+    if (is_discoverable !== undefined)
+      updateData.is_discoverable = is_discoverable;
+    if (allow_recommendations !== undefined)
+      updateData.allow_recommendations = allow_recommendations;
+    if (spotify_profile_url !== undefined)
+      updateData.spotify_profile_url = spotify_profile_url;
 
     const { data, error } = await supabase
       .from("aethex_creators")

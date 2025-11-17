@@ -435,7 +435,9 @@ export function createServer() {
 
       if (error || !project) {
         console.log("[Passport Data API] Project not found:", projectSlug);
-        return res.status(404).json({ error: "Project not found", projectSlug });
+        return res
+          .status(404)
+          .json({ error: "Project not found", projectSlug });
       }
 
       return res.json({
@@ -4446,7 +4448,10 @@ export function createServer() {
         }
 
         // Check if identifier is a UUID (username-first, UUID fallback)
-        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
+        const isUUID =
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+            identifier,
+          );
 
         let query = adminSupabase
           .from("aethex_creators")
@@ -4477,11 +4482,16 @@ export function createServer() {
 
         // If username lookup failed and it's a valid UUID format, try UUID
         if (error && !isUUID) {
-          if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier)) {
-            const { data: creatorByUUID, error: uuidError } = await adminSupabase
-              .from("aethex_creators")
-              .select(
-                `
+          if (
+            /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+              identifier,
+            )
+          ) {
+            const { data: creatorByUUID, error: uuidError } =
+              await adminSupabase
+                .from("aethex_creators")
+                .select(
+                  `
                 id,
                 username,
                 bio,
@@ -4493,10 +4503,10 @@ export function createServer() {
                 created_at,
                 updated_at
                 `,
-              )
-              .eq("is_discoverable", true)
-              .eq("id", identifier)
-              .single();
+                )
+                .eq("is_discoverable", true)
+                .eq("id", identifier)
+                .single();
 
             if (!uuidError && creatorByUUID) {
               // Found by UUID, optionally redirect to username canonical URL

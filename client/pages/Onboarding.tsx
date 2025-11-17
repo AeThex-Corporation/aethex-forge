@@ -321,7 +321,9 @@ export default function Onboarding() {
 
       // Use username from form if provided, otherwise generate from first name
       const usernameFromForm = data.username?.trim().toLowerCase();
-      const generatedUsername = normalizedFirst.replace(/\s+/g, "_").toLowerCase();
+      const generatedUsername = normalizedFirst
+        .replace(/\s+/g, "_")
+        .toLowerCase();
       const finalUsername = usernameFromForm || generatedUsername;
 
       if (!finalUsername) {
@@ -377,23 +379,24 @@ export default function Onboarding() {
       );
 
       // Create creator profile if they provided primary arm
-      const creatorProfilePromise = data.creatorProfile.primaryArm && finalUsername
-        ? fetch(`${API_BASE}/api/creators`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              user_id: user.id,
-              username: finalUsername,
-              bio: data.creatorProfile.bio || null,
-              avatar_url: null, // Can be added later in profile settings
-              experience_level: data.experience.level || "junior",
-              primary_arm: data.creatorProfile.primaryArm,
-              arm_affiliations: [data.creatorProfile.primaryArm],
-              skills: data.creatorProfile.skills || [],
-              is_discoverable: true,
-            }),
-          })
-        : Promise.resolve();
+      const creatorProfilePromise =
+        data.creatorProfile.primaryArm && finalUsername
+          ? fetch(`${API_BASE}/api/creators`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: user.id,
+                username: finalUsername,
+                bio: data.creatorProfile.bio || null,
+                avatar_url: null, // Can be added later in profile settings
+                experience_level: data.experience.level || "junior",
+                primary_arm: data.creatorProfile.primaryArm,
+                arm_affiliations: [data.creatorProfile.primaryArm],
+                skills: data.creatorProfile.skills || [],
+                is_discoverable: true,
+              }),
+            })
+          : Promise.resolve();
 
       // Save followed arms
       const followedArmsPromises = (data.followedArms || []).map((armId) =>
@@ -405,7 +408,7 @@ export default function Onboarding() {
             arm_id: armId,
             action: "follow",
           }),
-        })
+        }),
       );
 
       Promise.allSettled([
@@ -509,7 +512,8 @@ export default function Onboarding() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 text-sm">
                 <div className="px-4 py-2 rounded-full bg-aethex-500/10 border border-aethex-400/40">
                   <p className="text-aethex-300 font-semibold">
-                    Step <span className="text-lg">{currentStep + 1}</span> of <span className="text-lg">{steps.length}</span>
+                    Step <span className="text-lg">{currentStep + 1}</span> of{" "}
+                    <span className="text-lg">{steps.length}</span>
                   </p>
                 </div>
                 <Link
@@ -559,12 +563,14 @@ export default function Onboarding() {
                 </h2>
               </div>
               <p className="text-muted-foreground text-sm pl-4">
-                {currentStep === 0 && "Choose your path and let's begin your journey"}
+                {currentStep === 0 &&
+                  "Choose your path and let's begin your journey"}
                 {currentStep === 1 && "Help us know you better"}
                 {currentStep === 2 && "Tell us about your experience"}
                 {currentStep === 3 && "What are your interests?"}
                 {currentStep === 4 && "Select your primary focus area"}
-                {currentStep === 5 && "Follow the arms you want to see in your feed"}
+                {currentStep === 5 &&
+                  "Follow the arms you want to see in your feed"}
                 {currentStep === 6 && "Set up your creator profile"}
                 {currentStep === 7 && "You're ready to go!"}
               </p>

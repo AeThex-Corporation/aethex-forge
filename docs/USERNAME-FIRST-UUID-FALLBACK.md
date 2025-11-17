@@ -5,6 +5,7 @@
 The entire system now uses **usernames as the primary identifier** with **UUID fallback** for all user/creator lookups across routes and APIs.
 
 This means:
+
 - Users visit `/creators/john-doe` (preferred) or `/creators/<uuid>` (also works)
 - Users visit `/passport/alice-developer` (preferred) or `/passport/<uuid>` (also works)
 - Users visit `/ethos/artists/bob-musician` (preferred) or `/ethos/artists/<uuid>` (also works)
@@ -18,15 +19,16 @@ This means:
 **New file** that provides helper functions:
 
 ```typescript
-isUUID(str)                          // Check if string is UUID format
-resolveIdentifierToCreator(id)      // Resolve username/UUID → creator object
-resolveIdentifierToUserId(id)       // Resolve username/UUID → UUID
-resolveIdentifierToUsername(id)     // Resolve UUID → username
+isUUID(str); // Check if string is UUID format
+resolveIdentifierToCreator(id); // Resolve username/UUID → creator object
+resolveIdentifierToUserId(id); // Resolve username/UUID → UUID
+resolveIdentifierToUsername(id); // Resolve UUID → username
 ```
 
 ### 2. Creators API Endpoint (`code/server/index.ts`)
 
 **Updated** `GET /api/creators/:identifier` to:
+
 - Accept username OR UUID in the `:identifier` parameter
 - Try **username first** (preferred)
 - Fall back to **UUID lookup** if username lookup fails
@@ -41,6 +43,7 @@ GET /api/creators/550e8400-...      // ✅ UUID lookup fallback
 ### 3. Creators Profile Component (`code/client/pages/creators/CreatorProfile.tsx`)
 
 **Updated** to:
+
 - Import UUID/identifier resolver helpers
 - Accept both username and UUID as route parameters
 - Resolve UUID to username for canonical URL redirect (optional)
@@ -49,6 +52,7 @@ GET /api/creators/550e8400-...      // ✅ UUID lookup fallback
 ### 4. Ethos Artist Profile (`code/client/pages/ethos/ArtistProfile.tsx`)
 
 **Updated** to:
+
 - Import identifier resolver helpers
 - Accept both username and userId as route parameters
 - Resolve username → userId before API call
@@ -57,6 +61,7 @@ GET /api/creators/550e8400-...      // ✅ UUID lookup fallback
 ### 5. Passport Profile (`code/client/pages/ProfilePassport.tsx`)
 
 **Already supported** username-first with UUID fallback:
+
 - Has built-in `isUuid()` function
 - Tries `getProfileByUsername()` first
 - Falls back to `getProfileById()` if username lookup fails
@@ -65,6 +70,7 @@ GET /api/creators/550e8400-...      // ✅ UUID lookup fallback
 ### 6. Creator Profile Validation (`code/api/creators.ts`)
 
 **Enforced usernames as required**:
+
 - Username must be provided when creating creator profile
 - Username must be unique (409 Conflict if duplicate)
 - Username is normalized to lowercase
@@ -74,12 +80,12 @@ GET /api/creators/550e8400-...      // ✅ UUID lookup fallback
 
 ## Routes That Support Username-First with UUID Fallback
 
-| Route | Type | Status |
-|-------|------|--------|
-| `/creators/:identifier` | Frontend | ✅ Updated |
-| `/passport/:identifier` | Frontend | ✅ Already working |
-| `/ethos/artists/:identifier` | Frontend | ✅ Updated |
-| `/api/creators/:identifier` | Backend | ✅ Updated |
+| Route                        | Type     | Status             |
+| ---------------------------- | -------- | ------------------ |
+| `/creators/:identifier`      | Frontend | ✅ Updated         |
+| `/passport/:identifier`      | Frontend | ✅ Already working |
+| `/ethos/artists/:identifier` | Frontend | ✅ Updated         |
+| `/api/creators/:identifier`  | Backend  | ✅ Updated         |
 
 ---
 
@@ -156,7 +162,8 @@ Return artist data ✅
 
 ```typescript
 // UUID regex pattern (standard RFC 4122)
-const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const uuidPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function isUUID(str: string): boolean {
   return uuidPattern.test(str);
@@ -166,6 +173,7 @@ function isUUID(str: string): boolean {
 ### Lookup Priority
 
 For any identifier:
+
 1. **If it matches UUID pattern** → Try UUID lookup directly
 2. **If it doesn't match UUID pattern** → Try username lookup first, then UUID fallback
 3. **If both fail** → Return 404 Not Found
@@ -184,12 +192,12 @@ For any identifier:
 ### Using the Resolver Utilities
 
 ```typescript
-import { 
-  isUUID, 
+import {
+  isUUID,
   resolveIdentifierToCreator,
   resolveIdentifierToUserId,
-  resolveIdentifierToUsername 
-} from '@/lib/identifier-resolver';
+  resolveIdentifierToUsername,
+} from "@/lib/identifier-resolver";
 
 // Check if string is UUID
 if (isUUID(userInput)) {
@@ -297,4 +305,3 @@ code/
 ✅ **Username-First with UUID Fallback is now implemented across the entire system.**
 
 All user-facing routes and APIs prefer usernames while maintaining backward compatibility with UUID-based URLs. Users must have a username to create a profile, ensuring consistent, SEO-friendly URLs throughout the AeThex ecosystem.
-

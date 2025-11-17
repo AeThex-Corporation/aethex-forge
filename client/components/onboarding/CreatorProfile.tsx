@@ -81,7 +81,10 @@ export default function CreatorProfile({
   };
 
   const canProceed = useMemo(() => {
-    const hasUsername = data?.username && typeof data.username === 'string' && data.username.trim().length > 0;
+    const hasUsername =
+      data?.username &&
+      typeof data.username === "string" &&
+      data.username.trim().length > 0;
     const hasPrimaryArm = creatorData.primaryArm;
     const hasSkills = creatorData.skills.length > 0;
     return hasUsername && hasPrimaryArm && hasSkills;
@@ -153,7 +156,8 @@ export default function CreatorProfile({
             />
           </div>
           <p className="text-xs text-gray-400 mt-2">
-            {(data?.username || "").length}/32 characters. Lowercase letters, numbers, hyphens, and underscores only.
+            {(data?.username || "").length}/32 characters. Lowercase letters,
+            numbers, hyphens, and underscores only.
           </p>
           {(data?.username?.length || 0) === 0 && (
             <p className="text-xs text-red-400 mt-1">Username is required</p>

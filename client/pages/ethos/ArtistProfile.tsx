@@ -72,7 +72,9 @@ export default function ArtistProfile() {
           }
         }
 
-        const res = await fetch(`${API_BASE}/api/ethos/artists?id=${resolvedUserId}`);
+        const res = await fetch(
+          `${API_BASE}/api/ethos/artists?id=${resolvedUserId}`,
+        );
         const data = await res.json();
         setArtist(data);
       } catch (error) {

@@ -11,7 +11,8 @@ const API_BASE = typeof window !== "undefined" ? window.location.origin : "";
  * Check if a string is a valid UUID
  */
 export function isUUID(str: string): boolean {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(str);
 }
 
@@ -26,14 +27,18 @@ export async function resolveIdentifierToCreator(
 
   try {
     // Try username first (most common case)
-    const usernameResponse = await fetch(`${API_BASE}/api/creators/${identifier}`);
+    const usernameResponse = await fetch(
+      `${API_BASE}/api/creators/${identifier}`,
+    );
     if (usernameResponse.ok) {
       return await usernameResponse.json();
     }
 
     // If username lookup failed and identifier is a UUID, try UUID lookup
     if (isUUID(identifier)) {
-      const uuidResponse = await fetch(`${API_BASE}/api/creators/user/${identifier}`);
+      const uuidResponse = await fetch(
+        `${API_BASE}/api/creators/user/${identifier}`,
+      );
       if (uuidResponse.ok) {
         return await uuidResponse.json();
       }
@@ -49,7 +54,9 @@ export async function resolveIdentifierToCreator(
 /**
  * Resolve an identifier to a user by ID
  */
-export async function resolveIdentifierToUserId(identifier: string): Promise<string | null> {
+export async function resolveIdentifierToUserId(
+  identifier: string,
+): Promise<string | null> {
   if (!identifier) return null;
 
   if (isUUID(identifier)) {
@@ -69,7 +76,9 @@ export async function resolveIdentifierToUserId(identifier: string): Promise<str
 /**
  * Resolve an identifier to a username
  */
-export async function resolveIdentifierToUsername(identifier: string): Promise<string | null> {
+export async function resolveIdentifierToUsername(
+  identifier: string,
+): Promise<string | null> {
   if (!identifier) return null;
 
   if (!isUUID(identifier)) {
