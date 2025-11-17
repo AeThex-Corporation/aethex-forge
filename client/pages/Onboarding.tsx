@@ -316,8 +316,18 @@ export default function Onboarding() {
         user.email?.split("@")[0] ||
         "user";
       const normalizedLast = data.personalInfo.lastName?.trim() || "";
+
+      // Use username from form if provided, otherwise generate from first name
+      const usernameFromForm = data.username?.trim().toLowerCase();
+      const generatedUsername = normalizedFirst.replace(/\s+/g, "_").toLowerCase();
+      const finalUsername = usernameFromForm || generatedUsername;
+
+      if (!finalUsername) {
+        throw new Error("Username is required to complete profile setup");
+      }
+
       const payload = {
-        username: normalizedFirst.replace(/\s+/g, "_"),
+        username: finalUsername,
         full_name: `${normalizedFirst} ${normalizedLast}`.trim(),
         user_type:
           (userTypeMap[data.userType || "member"] as any) || "game_developer",
