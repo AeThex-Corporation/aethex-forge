@@ -231,13 +231,24 @@ async function performTokenExchange(code: string): Promise<{
 
 /**
  * Fetch user information from Foundation using access token
+ *
+ * CRITICAL: This is the ONLY source of truth for passport data.
+ * The returned userInfo is cached locally but never modified except during this sync.
+ *
+ * Security checkpoint:
+ * - accessToken must have been obtained from Foundation's token endpoint
+ * - userInfo response is directly from Foundation OAuth provider
+ * - All data from here is trusted as authoritative identity
  */
 async function fetchUserInfoFromFoundation(
   accessToken: string,
 ): Promise<FoundationUserInfo> {
   const userInfoEndpoint = `${FOUNDATION_URL}/api/oauth/userinfo`;
 
-  console.log("[Foundation OAuth] Fetching user info from:", userInfoEndpoint);
+  console.log(
+    "[Foundation Passport Authority] Fetching user info from Foundation:",
+    userInfoEndpoint,
+  );
 
   const response = await fetch(userInfoEndpoint, {
     method: "GET",
@@ -248,14 +259,32 @@ async function fetchUserInfoFromFoundation(
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch user info: ${response.status}`);
+    throw new Error(
+      `Failed to fetch user passport from Foundation: ${response.status}`,
+    );
   }
 
   const userInfo = (await response.json()) as FoundationUserInfo;
 
+  // Validate we got a real passport from Foundation
   if (!userInfo.id || !userInfo.email) {
-    throw new Error("Invalid user info response from Foundation");
+    console.error(
+      "[Foundation Passport Authority] Invalid passport received from Foundation",
+      userInfo,
+    );
+    throw new Error(
+      "Invalid user passport response from Foundation. Missing required fields.",
+    );
   }
+
+  console.log(
+    "[Foundation Passport Authority] Valid passport received from Foundation:",
+    {
+      user_id: userInfo.id,
+      username: userInfo.username,
+      email: userInfo.email,
+    },
+  );
 
   return userInfo;
 }
