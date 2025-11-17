@@ -65,18 +65,6 @@ const ARMS: Arm[] = [
     glowColor: "rgba(59, 130, 246, 0.3)",
   },
   {
-    id: "foundation",
-    label: "Foundation",
-    color: "#EF4444",
-    bgGradient: "from-red-600 to-red-400",
-    textColor: "text-red-400",
-    href: "/foundation",
-    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
-    tip: "Community & education initiatives",
-    shadowColor: "shadow-red-500/50",
-    glowColor: "rgba(239, 68, 68, 0.3)",
-  },
-  {
     id: "devlink",
     label: "Dev-Link",
     color: "#06B6D4",
