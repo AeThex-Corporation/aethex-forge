@@ -27,6 +27,7 @@ import { aethexToast } from "@/lib/aethex-toast";
 export type UserType = "game-developer" | "client" | "member" | "customer";
 
 export interface OnboardingData {
+  username?: string;
   userType: UserType | null;
   personalInfo: {
     firstName: string;
