@@ -151,8 +151,8 @@ const OAUTH_PROVIDERS: readonly ProviderDescriptor[] = [
     provider: "discord",
     name: "Discord",
     description: "Link your Discord account for community chat",
-    Icon: MessageCircle,
-    gradient: "from-indigo-500 to-purple-600",
+    Icon: DiscordIcon,
+    gradient: "from-indigo-600 to-purple-600",
   },
 ];
 
