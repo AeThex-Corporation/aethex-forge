@@ -1,0 +1,106 @@
+AXIOM MODEL - PHASE 1: CODE MIGRATION CHECKLIST
+================================================
+Mission: Copy all auth code from aethex.dev (Vercel) to aethex.foundation (Replit)
+
+PAGES TO COPY (7 files)
+======================
+□ code/client/pages/Login.tsx
+□ code/client/pages/Onboarding.tsx
+□ code/client/pages/DiscordVerify.tsx
+□ code/client/pages/Dashboard.tsx
+□ code/client/pages/settings/ProfileSettings.tsx (if exists)
+□ code/client/pages/Profile.tsx (if exists)
+□ code/client/pages/SubdomainPassport.tsx
+
+CONTEXTS & STATE (3 files)
+==========================
+□ code/client/contexts/AuthContext.tsx
+□ code/client/contexts/DiscordActivityContext.tsx (optional)
+□ code/client/contexts/ThemeContext.tsx
+
+COMPONENTS (10+ files)
+======================
+□ code/client/components/settings/OAuthConnections.tsx
+□ code/client/components/passport/PassportSummary.tsx
+□ code/client/components/ErrorBoundary.tsx
+□ code/client/components/LoadingScreen.tsx
+□ code/client/components/Layout.tsx
+□ code/client/components/ui/* (ALL - accordion, alert, toast, etc.)
+□ code/client/components/admin/AdminDiscordManagement.tsx (optional)
+
+API ENDPOINTS (7 files)
+=======================
+Discord OAuth:
+□ code/api/discord/oauth/start.ts
+□ code/api/discord/oauth/callback.ts
+□ code/api/discord/verify-code.ts
+□ code/api/discord/link.ts
+□ code/api/discord/sync-roles.ts
+□ code/api/discord/activity-auth.ts
+
+Profile & Passport:
+□ code/api/profile/ensure.ts
+□ code/api/passport/subdomain/[username].ts
+□ code/api/passport/project/[slug].ts
+
+DATABASE MIGRATIONS (1 file)
+============================
+□ code/supabase/migrations/20250107_add_discord_integration.sql
+□ All other user/auth migrations
+
+STYLING & CONFIG (3 files)
+==========================
+□ code/client/global.css
+□ code/tailwind.config.js
+□ code/postcss.config.js
+□ code/tsconfig.json
+
+ENVIRONMENT VARIABLES TO SET
+============================
+VITE_SUPABASE_URL=https://kmdeisowhtsalsekkzqd.supabase.co
+VITE_SUPABASE_ANON_KEY=sb_publishable_DfTB6qME8BkTmHNJ3dCBew_t1NLATEq
+SUPABASE_SERVICE_ROLE=eyJhbGc...
+DISCORD_CLIENT_ID=578971245454950421
+DISCORD_CLIENT_SECRET=JKlilGzcTWgfmt2wEqiHO8wpCel5VEji
+DISCORD_BOT_TOKEN=NTc4OTcx...
+VITE_API_BASE=https://aethex.foundation
+
+NPM PACKAGES TO INSTALL
+=======================
+@supabase/supabase-js@^2.x
+@discord/embedded-app-sdk@^2.x
+react-router-dom@^6.x
+react-hook-form@^7.x
+zod@^3.x
+next-themes@^0.3.x
+lucide-react (latest)
+sonner@^1.x
+All @radix-ui/* packages
+
+CRITICAL ADAPTATIONS
+====================
+1. Update all VITE_API_BASE=https://aethex.foundation (not aethex.dev)
+2. Convert Vercel /api/* functions to Express routes on Replit
+3. Update Discord OAuth app redirect URI to https://aethex.foundation/api/discord/oauth/callback
+4. Fix all import paths for new directory structure
+5. Ensure Supabase environment variables are set on Replit
+
+TESTING CHECKLIST
+=================
+□ Users can log in via Discord
+□ Users can see their profile after login
+□ Users can link additional OAuth providers
+□ Passports display correctly
+□ OAuth callbacks complete without errors
+□ Supabase queries work (user_profiles table accessible)
+
+ESTIMATED TIME: 17-25 hours
+
+NEXT STEPS
+==========
+1. Copy all files listed above to aethex.foundation (Replit)
+2. Update import paths & environment variables
+3. Test login flow end-to-end
+4. Once Phase 1 is complete, proceed to Phase 2 (database permissions)
+
+Questions? See AXIOM-MODEL-PHASE1-SCOPE.md for detailed breakdown.
