@@ -22,7 +22,6 @@ import ResearchLabs from "./pages/ResearchLabs";
 import Labs from "./pages/Labs";
 import GameForge from "./pages/GameForge";
 import Corp from "./pages/Corp";
-import Foundation from "./pages/Foundation";
 import Staff from "./pages/Staff";
 import DevLink from "./pages/DevLink";
 import DevLinkProfiles from "./pages/DevLinkProfiles";
@@ -99,7 +98,6 @@ import MentorProfile from "./pages/community/MentorProfile";
 import Realms from "./pages/Realms";
 import Investors from "./pages/Investors";
 import NexusDashboard from "./pages/dashboards/NexusDashboard";
-import FoundationDashboard from "./pages/dashboards/FoundationDashboard";
 import LabsDashboard from "./pages/dashboards/LabsDashboard";
 import GameForgeDashboard from "./pages/dashboards/GameForgeDashboard";
 import DevLinkDashboard from "./pages/dashboards/DevLinkDashboard";
@@ -136,9 +134,6 @@ import ClientInvoices from "./pages/hub/ClientInvoices";
 import ClientContracts from "./pages/hub/ClientContracts";
 import ClientReports from "./pages/hub/ClientReports";
 import ClientSettings from "./pages/hub/ClientSettings";
-import FoundationCurriculum from "./pages/foundation/FoundationCurriculum";
-import FoundationAchievements from "./pages/foundation/FoundationAchievements";
-import FoundationDownloadCenter from "./pages/FoundationDownloadCenter";
 import Space1Welcome from "./pages/internal-docs/Space1Welcome";
 import Space1AxiomModel from "./pages/internal-docs/Space1AxiomModel";
 import Space1FindYourRole from "./pages/internal-docs/Space1FindYourRole";
@@ -195,10 +190,6 @@ const App = () => (
                         <Route
                           path="/dashboard/nexus"
                           element={<NexusDashboard />}
-                        />
-                        <Route
-                          path="/dashboard/foundation"
-                          element={<FoundationDashboard />}
                         />
                         <Route
                           path="/dashboard/labs"
@@ -458,31 +449,6 @@ const App = () => (
                           element={<CorpContactUs />}
                         />
 
-                        <Route path="/foundation" element={<Foundation />} />
-                        <Route
-                          path="/foundation/curriculum"
-                          element={<FoundationCurriculum />}
-                        />
-                        <Route
-                          path="/foundation/achievements"
-                          element={<FoundationAchievements />}
-                        />
-                        <Route
-                          path="/foundation/contribute"
-                          element={<FoundationContribute />}
-                        />
-                        <Route
-                          path="/foundation/learn-more"
-                          element={<FoundationLearnMore />}
-                        />
-                        <Route
-                          path="/foundation/get-involved"
-                          element={<FoundationGetInvolved />}
-                        />
-                        <Route
-                          path="/foundation/downloads"
-                          element={<FoundationDownloadCenter />}
-                        />
 
                         {/* Staff Arm Routes */}
                         <Route path="/staff" element={<Staff />} />
