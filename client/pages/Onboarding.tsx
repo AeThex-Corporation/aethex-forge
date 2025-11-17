@@ -375,13 +375,13 @@ export default function Onboarding() {
       );
 
       // Create creator profile if they provided primary arm
-      const creatorProfilePromise = data.creatorProfile.primaryArm
+      const creatorProfilePromise = data.creatorProfile.primaryArm && finalUsername
         ? fetch(`${API_BASE}/api/creators`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               user_id: user.id,
-              username: payload.username,
+              username: finalUsername,
               bio: data.creatorProfile.bio || null,
               avatar_url: null, // Can be added later in profile settings
               experience_level: data.experience.level || "junior",
