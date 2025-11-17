@@ -407,6 +407,25 @@ export default function Login() {
                         <Mail className="h-4 w-4" />
                         <span className="hidden sm:inline ml-1">Google</span>
                       </Button>
+                      <Button
+                        variant="outline"
+                        className="w-full hover-lift interactive-scale border-border/50 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-200"
+                        onClick={() => {
+                          const u = new URL(
+                            "/api/discord/oauth/start",
+                            API_BASE,
+                          );
+                          const next = new URLSearchParams(
+                            window.location.search,
+                          ).get("next");
+                          if (next && next.startsWith("/"))
+                            u.searchParams.set("state", JSON.stringify({ redirectTo: next }));
+                          window.location.href = u.toString();
+                        }}
+                      >
+                        <DiscordIcon />
+                        <span className="hidden sm:inline ml-1">Discord</span>
+                      </Button>
                     </div>
                   </div>
 
