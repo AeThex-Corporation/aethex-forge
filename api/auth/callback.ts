@@ -1,8 +1,18 @@
 /**
  * Foundation OAuth Callback Handler
  *
- * Receives authorization code from Foundation, exchanges it for an access token,
- * fetches user information, and establishes a session on aethex.dev.
+ * CRITICAL: This is a READ-ONLY sync from Foundation.
+ * aethex.dev acts as an OAuth client that caches Foundation-issued passports.
+ *
+ * Flow:
+ * 1. User authenticates with Foundation (oauth server)
+ * 2. Foundation redirects to this callback with authorization code
+ * 3. Exchange code for access_token + user info from Foundation
+ * 4. ONE-WAY SYNC: Upsert Foundation user data to local cache
+ * 5. Create session on aethex.dev (Foundation passport is SSOT)
+ *
+ * IMPORTANT: We NEVER write to passport data except during this sync.
+ * All mutations must flow through Foundation's APIs.
  *
  * Endpoint: GET /auth/callback?code=...&state=...
  * Token Exchange: POST /auth/callback/exchange
@@ -251,7 +261,14 @@ async function fetchUserInfoFromFoundation(
 }
 
 /**
- * Sync Foundation user to local database
+ * Sync Foundation user to local database (READ-ONLY CACHE)
+ *
+ * This performs a ONE-WAY sync from Foundation to local cache.
+ * We UPSERT data from Foundation, but NEVER modify the cache independently.
+ * This cache is read-only except during this sync operation.
+ *
+ * If user data changes on Foundation, it syncs on next login.
+ * If user data is modified locally outside this function: ERROR (should not happen)
  */
 async function syncUserToLocalDatabase(
   foundationUser: FoundationUserInfo,
@@ -259,11 +276,15 @@ async function syncUserToLocalDatabase(
   const supabase = getAdminClient();
 
   console.log(
-    "[Foundation OAuth] Syncing user to local database:",
+    "[Foundation Passport Sync] Starting one-way sync from Foundation:",
     foundationUser.id,
   );
 
-  // Upsert user profile
+  // ONE-WAY SYNC: Upsert Foundation data to local cache
+  // Note: This is the ONLY place where user_profiles should be written to
+  const now = new Date().toISOString();
+  const cacheValidUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24 hour cache TTL
+
   const { error } = await supabase.from("user_profiles").upsert({
     id: foundationUser.id,
     email: foundationUser.email,
@@ -271,17 +292,28 @@ async function syncUserToLocalDatabase(
     full_name: foundationUser.full_name || null,
     avatar_url: foundationUser.avatar_url || null,
     profile_completed: foundationUser.profile_complete || false,
-    updated_at: new Date().toISOString(),
+
+    // Sync metadata (critical for cache validation)
+    foundation_synced_at: now,
+    cache_valid_until: cacheValidUntil,
+
+    // Never overwrite local timestamps
+    updated_at: now,
   });
 
   if (error) {
-    console.error("[Foundation OAuth] Failed to sync user profile:", error);
-    throw new Error("Failed to create local user profile");
+    console.error(
+      "[Foundation Passport Sync] Failed to sync user profile:",
+      error,
+    );
+    throw new Error("Failed to cache Foundation passport data locally");
   }
 
   console.log(
-    "[Foundation OAuth] User synced successfully:",
+    "[Foundation Passport Sync] User synced successfully:",
     foundationUser.id,
+    "| Cache valid until:",
+    cacheValidUntil,
   );
 }
 
