@@ -16,6 +16,7 @@ import {
   Music,
 } from "lucide-react";
 import { getCreatorByUsername } from "@/api/creators";
+import { resolveIdentifierToUsername, isUUID } from "@/lib/identifier-resolver";
 import { ArmBadge } from "@/components/creator-network/ArmBadge";
 import type { Creator } from "@/api/creators";
 
@@ -30,7 +31,22 @@ export default function CreatorProfile() {
       if (!username) return;
       setIsLoading(true);
       try {
-        const data = await getCreatorByUsername(username);
+        // Support both username and UUID
+        let resolvedUsername = username;
+
+        if (isUUID(username)) {
+          // If param is UUID, try to resolve to username for canonical redirect
+          const resolved = await resolveIdentifierToUsername(username);
+          if (resolved) {
+            resolvedUsername = resolved;
+            // Optionally redirect to username canonical URL
+            if (resolved !== username) {
+              navigate(`/creators/${resolved}`, { replace: true });
+            }
+          }
+        }
+
+        const data = await getCreatorByUsername(resolvedUsername);
         setCreator(data);
       } catch (error) {
         console.error("Failed to fetch creator:", error);
@@ -41,7 +57,7 @@ export default function CreatorProfile() {
     };
 
     fetchCreator();
-  }, [username]);
+  }, [username, navigate]);
 
   if (isLoading) {
     return (
