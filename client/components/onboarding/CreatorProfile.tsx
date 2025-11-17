@@ -81,8 +81,11 @@ export default function CreatorProfile({
   };
 
   const canProceed = useMemo(() => {
-    return creatorData.primaryArm && creatorData.skills.length > 0;
-  }, [creatorData.primaryArm, creatorData.skills.length]);
+    const hasUsername = data?.username && typeof data.username === 'string' && data.username.trim().length > 0;
+    const hasPrimaryArm = creatorData.primaryArm;
+    const hasSkills = creatorData.skills.length > 0;
+    return hasUsername && hasPrimaryArm && hasSkills;
+  }, [data?.username, creatorData.primaryArm, creatorData.skills.length]);
 
   const handleAddSkill = (skill: string) => {
     if (!creatorData.skills.includes(skill)) {
