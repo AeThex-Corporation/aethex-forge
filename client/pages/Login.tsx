@@ -413,7 +413,30 @@ export default function Login() {
 
                   <div className="space-y-2">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      Connect with
+                      Connect with Foundation
+                    </p>
+                    <div className="space-y-2">
+                      <Button
+                        variant="outline"
+                        className="w-full hover-lift interactive-scale border-border/50 hover:border-aethex-400/50 hover:bg-aethex-500/10 transition-all duration-200"
+                        onClick={() => {
+                          const next = new URLSearchParams(
+                            window.location.search,
+                          ).get("next");
+                          initiateFoundationLogin(
+                            next && next.startsWith("/") ? next : undefined,
+                          );
+                        }}
+                      >
+                        <Shield className="h-4 w-4 mr-2" />
+                        Login with Foundation
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Other Options
                     </p>
                     <div className="space-y-2">
                       <Button
@@ -435,27 +458,6 @@ export default function Login() {
                         <Sparkles className="h-4 w-4 mr-2" />
                         Roblox Account
                       </Button>
-                      {!isActivity && (
-                        <Button
-                          variant="outline"
-                          className="w-full hover-lift interactive-scale border-border/50 hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all duration-200"
-                          onClick={() => {
-                            const u = new URL(
-                              "/api/discord/oauth/start",
-                              API_BASE,
-                            );
-                            const next = new URLSearchParams(
-                              window.location.search,
-                            ).get("next");
-                            if (next && next.startsWith("/"))
-                              u.searchParams.set("state", next);
-                            window.location.href = u.toString();
-                          }}
-                        >
-                          <DiscordIcon />
-                          <span className="ml-2">Discord</span>
-                        </Button>
-                      )}
                       <Button
                         variant="outline"
                         className="w-full hover-lift interactive-scale border-border/50 hover:border-amber-500/50 hover:bg-amber-500/10 transition-all duration-200"
