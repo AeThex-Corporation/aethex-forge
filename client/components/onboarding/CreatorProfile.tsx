@@ -128,6 +128,39 @@ export default function CreatorProfile({
 
   return (
     <div className="space-y-8">
+      {/* Username Section */}
+      <div className="space-y-4">
+        <div>
+          <label className="text-sm font-semibold text-gray-200 block mb-2">
+            Your Creator Username *
+          </label>
+          <div className="relative">
+            <span className="absolute left-4 top-3 text-gray-400 text-sm font-medium">
+              @
+            </span>
+            <Input
+              value={data?.username || ""}
+              onChange={(e) => {
+                const cleanedUsername = e.target.value
+                  .toLowerCase()
+                  .replace(/[^a-z0-9_-]/g, "")
+                  .replace(/^-+|-+$/g, "");
+                updateData({ username: cleanedUsername });
+              }}
+              placeholder="your-creator-name"
+              maxLength={32}
+              className="pl-7 bg-gray-900/50 border-gray-700"
+            />
+          </div>
+          <p className="text-xs text-gray-400 mt-2">
+            {(data?.username || "").length}/32 characters. Lowercase letters, numbers, hyphens, and underscores only.
+          </p>
+          {(data?.username?.length || 0) === 0 && (
+            <p className="text-xs text-red-400 mt-1">Username is required</p>
+          )}
+        </div>
+      </div>
+
       {/* Bio Section */}
       <div className="space-y-4">
         <div>
