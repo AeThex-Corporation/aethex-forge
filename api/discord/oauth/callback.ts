@@ -173,50 +173,34 @@ export default async function handler(req: any, res: any) {
     // Initialize Supabase client with service role
     const supabase = getAdminClient();
 
-    // LINKING FLOW: Link Discord to authenticated user
+    // LINKING FLOW: Link Discord to authenticated user's Foundation Passport
     if (isLinkingFlow && authenticatedUserId) {
       console.log(
         "[Discord OAuth] Linking Discord to user:",
         authenticatedUserId,
       );
 
-      // Check if Discord ID is already linked to someone else
-      const { data: existingLink } = await supabase
-        .from("discord_links")
-        .select("user_id")
-        .eq("discord_id", discordUser.id)
-        .single();
+      try {
+        await linkProviderToPassport(authenticatedUserId, "discord", {
+          id: discordUser.id,
+          email: discordUser.email,
+          username: discordUser.username,
+          avatar: discordUser.avatar ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.webp` : undefined,
+        });
 
-      if (existingLink && existingLink.user_id !== authenticatedUserId) {
-        console.error(
-          "[Discord OAuth] Discord ID already linked to different user",
+        console.log(
+          "[Discord OAuth] Successfully linked Discord to user:",
+          authenticatedUserId,
         );
+
+        await notifyAccountLinked(authenticatedUserId, "Discord");
+        return res.redirect(redirectTo);
+      } catch (linkError: any) {
+        console.error("[Discord OAuth] Linking failed:", linkError);
         return res.redirect(
-          `/dashboard?error=already_linked&message=${encodeURIComponent("This Discord account is already linked to another AeThex account")}`,
+          `/dashboard?error=link_failed&message=${encodeURIComponent(linkError?.message || "Failed to link Discord account")}`,
         );
       }
-
-      // Create or update Discord link
-      const { error: linkError } = await supabase.from("discord_links").upsert({
-        discord_id: discordUser.id,
-        user_id: authenticatedUserId,
-        linked_at: new Date().toISOString(),
-      });
-
-      if (linkError) {
-        console.error("[Discord OAuth] Link creation failed:", linkError);
-        return res.redirect(
-          `/dashboard?error=link_failed&message=${encodeURIComponent("Failed to link Discord account")}`,
-        );
-      }
-
-      console.log(
-        "[Discord OAuth] Successfully linked Discord:",
-        discordUser.id,
-      );
-
-      await notifyAccountLinked(authenticatedUserId, "Discord");
-      return res.redirect(redirectTo);
     }
 
     // LOGIN FLOW: OAuth Federation
