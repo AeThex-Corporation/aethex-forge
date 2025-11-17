@@ -38,14 +38,6 @@ const getArmConfig = (pathname: string): ArmConfig => {
       armLogo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F3772073d5b4b49e688ed02480f4cae43?format=webp&width=800",
     };
   }
-  if (pathname.includes("/foundation")) {
-    return {
-      message: "Connecting Foundation Network...",
-      bootMessage: "Foundation Network Active",
-      accentColor: "from-red-500 to-red-400",
-      armLogo: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800",
-    };
-  }
   if (pathname.includes("/dev-link")) {
     return {
       message: "Loading Dev-Link Platform...",
