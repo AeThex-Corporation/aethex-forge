@@ -55,6 +55,7 @@ export interface OnboardingData {
 }
 
 const initialData: OnboardingData = {
+  username: "",
   userType: null,
   personalInfo: {
     firstName: "",
