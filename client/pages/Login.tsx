@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
+const FOUNDATION_URL = import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { aethexUserService } from "@/lib/aethex-database-adapter";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import { useAethexToast } from "@/hooks/use-aethex-toast";
+import { initiateFoundationLogin } from "@/lib/foundation-oauth";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
