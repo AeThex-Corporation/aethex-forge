@@ -359,6 +359,8 @@ const App = () => (
                           element={<GameForgeJoinGameForge />}
                         />
 
+                        <Route path="/foundation" element={<Foundation />} />
+
                         <Route path="/corp" element={<Corp />} />
                         <Route
                           path="/corp/schedule-consultation"
