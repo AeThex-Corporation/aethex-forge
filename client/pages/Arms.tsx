@@ -13,6 +13,7 @@ interface Arm {
   tip: string;
   shadowColor: string;
   glowColor: string;
+  external?: boolean;
 }
 
 const ARMS: Arm[] = [
