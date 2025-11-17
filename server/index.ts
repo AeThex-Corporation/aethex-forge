@@ -1841,7 +1841,7 @@ export function createServer() {
         </head>
         <body>
           <div class="container">
-            <h1>🤖 Discord Commands Registration</h1>
+            <h1>��� Discord Commands Registration</h1>
             <p>Register all Discord slash commands for AeThex</p>
 
             <div class="commands-list">
@@ -4438,14 +4438,17 @@ export function createServer() {
     });
 
     // Get creator by username
-    app.get("/api/creators/:username", async (req, res) => {
+    app.get("/api/creators/:identifier", async (req, res) => {
       try {
-        const username = String(req.params.username || "").trim();
-        if (!username) {
-          return res.status(400).json({ error: "username required" });
+        const identifier = String(req.params.identifier || "").trim();
+        if (!identifier) {
+          return res.status(400).json({ error: "identifier required" });
         }
 
-        const { data: creator, error } = await adminSupabase
+        // Check if identifier is a UUID (username-first, UUID fallback)
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
+
+        let query = adminSupabase
           .from("aethex_creators")
           .select(
             `
@@ -4461,9 +4464,60 @@ export function createServer() {
             updated_at
             `,
           )
-          .eq("username", username)
-          .eq("is_discoverable", true)
-          .single();
+          .eq("is_discoverable", true);
+
+        // Try username first (preferred), then UUID fallback
+        if (isUUID) {
+          query = query.eq("id", identifier);
+        } else {
+          query = query.eq("username", identifier);
+        }
+
+        const { data: creator, error } = await query.single();
+
+        // If username lookup failed and it's a valid UUID format, try UUID
+        if (error && !isUUID) {
+          if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier)) {
+            const { data: creatorByUUID, error: uuidError } = await adminSupabase
+              .from("aethex_creators")
+              .select(
+                `
+                id,
+                username,
+                bio,
+                skills,
+                avatar_url,
+                experience_level,
+                arm_affiliations,
+                primary_arm,
+                created_at,
+                updated_at
+                `,
+              )
+              .eq("is_discoverable", true)
+              .eq("id", identifier)
+              .single();
+
+            if (!uuidError && creatorByUUID) {
+              // Found by UUID, optionally redirect to username canonical URL
+              const { data: devConnectLink } = await adminSupabase
+                .from("aethex_devconnect_links")
+                .select("devconnect_username, devconnect_profile_url")
+                .eq("aethex_creator_id", creatorByUUID.id)
+                .maybeSingle();
+
+              return res.json({
+                ...creatorByUUID,
+                devconnect_link: devConnectLink,
+              });
+            }
+          }
+
+          if (error.code === "PGRST116") {
+            return res.status(404).json({ error: "Creator not found" });
+          }
+          throw error;
+        }
 
         if (error) {
           if (error.code === "PGRST116") {
