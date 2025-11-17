@@ -724,10 +724,6 @@ const App = () => (
                           element={<ArtistProfile />}
                         />
                         <Route
-                          path="/ethos/artists/:identifier"
-                          element={<ArtistProfile />}
-                        />
-                        <Route
                           path="/ethos/settings"
                           element={<ArtistSettings />}
                         />
