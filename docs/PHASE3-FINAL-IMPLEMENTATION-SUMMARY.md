@@ -58,6 +58,7 @@ Foundation Endpoints:
 ### New Implementation Files
 
 #### Frontend OAuth Client (`code/client/lib/foundation-oauth.ts`)
+
 ✅ **Implements PKCE (Proof Key for Code Exchange)**
 
 - Generates code verifier (64-char random, URL-safe)
@@ -68,14 +69,16 @@ Foundation Endpoints:
 - Stores verifier/state in sessionStorage
 
 **Key Functions:**
+
 ```typescript
-getFoundationAuthorizationUrl()   // Build auth URL
-initiateFoundationLogin()         // Redirect to Foundation
-exchangeCodeForToken()            // Exchange code (called from backend)
-validateState()                   // CSRF validation
+getFoundationAuthorizationUrl(); // Build auth URL
+initiateFoundationLogin(); // Redirect to Foundation
+exchangeCodeForToken(); // Exchange code (called from backend)
+validateState(); // CSRF validation
 ```
 
 #### Token & Cookie Management (`code/client/lib/foundation-auth.ts`)
+
 ✅ **Handles session cookies and authentication state**
 
 - Get/check Foundation access token from cookies
@@ -85,16 +88,18 @@ validateState()                   // CSRF validation
 - Logout notification to Foundation
 
 **Key Functions:**
+
 ```typescript
-getFoundationAccessToken()        // Get JWT from cookie
-getAuthUserId()                   // Get user UUID from cookie
-isFoundationAuthenticated()       // Check auth status
-clearFoundationAuth()             // Logout
-makeAuthenticatedRequest()        // API call with token
-logoutFromFoundation()            // Full logout flow
+getFoundationAccessToken(); // Get JWT from cookie
+getAuthUserId(); // Get user UUID from cookie
+isFoundationAuthenticated(); // Check auth status
+clearFoundationAuth(); // Logout
+makeAuthenticatedRequest(); // API call with token
+logoutFromFoundation(); // Full logout flow
 ```
 
 #### OAuth Callback Hook (`code/client/hooks/use-foundation-auth.ts`)
+
 ✅ **Detects OAuth callback and handles token exchange**
 
 - Detects authorization code in URL
@@ -105,16 +110,20 @@ logoutFromFoundation()            // Full logout flow
 - Error handling with user feedback
 
 **Key Functions:**
+
 ```typescript
-useFoundationAuth()               // Process OAuth callback
-useFoundationAuthStatus()         // Check auth status
+useFoundationAuth(); // Process OAuth callback
+useFoundationAuthStatus(); // Check auth status
 ```
 
 #### OAuth Callback Handler (`code/api/auth/callback.ts`)
+
 ✅ **Backend endpoint for OAuth flow completion**
 
 **Two routes:**
+
 1. `GET /auth/callback?code=...&state=...`
+
    - Receives authorization code from Foundation
    - Validates state (CSRF)
    - Exchanges code for token
@@ -130,15 +139,17 @@ useFoundationAuthStatus()         // Check auth status
    - Sets secure cookies
 
 **Key Functions:**
+
 ```typescript
-handleCallback()                  // GET /auth/callback
-handleTokenExchange()             // POST /auth/callback/exchange
-performTokenExchange()            // Code → token exchange
-fetchUserInfoFromFoundation()     // Fetch user profile
-syncUserToLocalDatabase()         // Upsert to local DB
+handleCallback(); // GET /auth/callback
+handleTokenExchange(); // POST /auth/callback/exchange
+performTokenExchange(); // Code → token exchange
+fetchUserInfoFromFoundation(); // Fetch user profile
+syncUserToLocalDatabase(); // Upsert to local DB
 ```
 
 #### Updated Login Page (`code/client/pages/Login.tsx`)
+
 ✅ **New Foundation OAuth button**
 
 - Added "Login with Foundation" button (primary option)
@@ -147,6 +158,7 @@ syncUserToLocalDatabase()         // Upsert to local DB
 - Discord now managed by Foundation instead
 
 **Changes:**
+
 ```typescript
 // NEW
 <Button onClick={() => initiateFoundationLogin()}>
@@ -160,6 +172,7 @@ syncUserToLocalDatabase()         // Upsert to local DB
 ### Configuration Files
 
 #### Example Environment Variables (`.env.foundation-oauth.example`)
+
 ```bash
 VITE_FOUNDATION_URL=https://aethex.foundation
 FOUNDATION_OAUTH_CLIENT_ID=aethex_corp
@@ -171,6 +184,7 @@ FOUNDATION_OAUTH_CLIENT_SECRET=bcoEtyQVGr6Z4557658eUXpDF5FDni2TGNahH3HT-FtylNrLC
 ✅ **Complete Documentation Provided:**
 
 1. **FOUNDATION-OAUTH-IMPLEMENTATION.md** (601 lines)
+
    - Complete technical guide
    - PKCE explanation
    - All endpoints documented
@@ -268,7 +282,7 @@ FOUNDATION_OAUTH_CLIENT_SECRET=bcoEtyQVGr6Z4557658eUXpDF5FDni2TGNahH3HT-FtylNrLC
     302 /dashboard
     ↓
 17. User appears logged in on aethex.dev dashboard ✅
-    
+
 Session established:
 - foundation_access_token in cookie (HttpOnly, Secure)
 - auth_user_id in cookie (Secure)
@@ -297,7 +311,7 @@ Server stores challenge, issues code
 On token exchange:
   Client sends: code_verifier
   Server verifies: SHA256(verifier) == stored_challenge
-  
+
 Result: Code can't be reused even if intercepted
 ```
 
@@ -335,20 +349,20 @@ document.cookie
 const token = getFoundationAccessToken();
 
 // Make authenticated request
-fetch('/api/user/profile', {
-  headers: { 'Authorization': `Bearer ${token}` },
-  credentials: 'include'  // Include cookies
+fetch("/api/user/profile", {
+  headers: { Authorization: `Bearer ${token}` },
+  credentials: "include", // Include cookies
 });
 
 // Or use helper
-import { makeAuthenticatedRequest } from '@/lib/foundation-auth';
-const response = await makeAuthenticatedRequest('/api/user/profile');
+import { makeAuthenticatedRequest } from "@/lib/foundation-auth";
+const response = await makeAuthenticatedRequest("/api/user/profile");
 ```
 
 ### Logout
 
 ```typescript
-import { logoutFromFoundation } from '@/lib/foundation-auth';
+import { logoutFromFoundation } from "@/lib/foundation-auth";
 
 // Logout button click handler
 await logoutFromFoundation();
@@ -398,13 +412,13 @@ Corp Local Database:
 ```typescript
 // On OAuth callback, sync user:
 await supabase.from("user_profiles").upsert({
-  id: foundationUser.id,              // Use Foundation UUID
+  id: foundationUser.id, // Use Foundation UUID
   email: foundationUser.email,
   username: foundationUser.username,
   full_name: foundationUser.full_name,
   avatar_url: foundationUser.avatar_url,
   profile_completed: foundationUser.profile_complete,
-  updated_at: new Date().toISOString()
+  updated_at: new Date().toISOString(),
 });
 
 // Result:
@@ -494,15 +508,15 @@ Why? Foundation now handles all Discord OAuth
 
 ## Key Differences from Before
 
-| Aspect | Before Phase 3 | After Phase 3 |
-|--------|---|---|
-| **Identity Provider** | aethex.dev (local) | aethex.foundation (remote) |
-| **Discord OAuth** | Handled on aethex.dev | Handled on Foundation |
-| **Session Token** | Supabase JWT | Foundation JWT |
-| **User Profile Owner** | aethex.dev | aethex.foundation |
-| **Login Flow** | Local Discord button | Redirect to Foundation |
-| **Profile Updates** | Direct to Supabase | Sync from Foundation |
-| **Passport Issuer** | Distributed | aethex.foundation (Single source of truth) |
+| Aspect                 | Before Phase 3        | After Phase 3                              |
+| ---------------------- | --------------------- | ------------------------------------------ |
+| **Identity Provider**  | aethex.dev (local)    | aethex.foundation (remote)                 |
+| **Discord OAuth**      | Handled on aethex.dev | Handled on Foundation                      |
+| **Session Token**      | Supabase JWT          | Foundation JWT                             |
+| **User Profile Owner** | aethex.dev            | aethex.foundation                          |
+| **Login Flow**         | Local Discord button  | Redirect to Foundation                     |
+| **Profile Updates**    | Direct to Supabase    | Sync from Foundation                       |
+| **Passport Issuer**    | Distributed           | aethex.foundation (Single source of truth) |
 
 ---
 
@@ -529,7 +543,9 @@ Phase 3 is **successfully deployed when:**
 ## Documentation Provided
 
 ### Implementation Guide
+
 📖 **`FOUNDATION-OAUTH-IMPLEMENTATION.md`** (601 lines)
+
 - Technical deep-dive
 - PKCE explanation
 - All endpoints documented
@@ -538,7 +554,9 @@ Phase 3 is **successfully deployed when:**
 - Troubleshooting guide
 
 ### Deployment Guide
+
 📖 **`DEPLOYMENT-CHECKLIST.md`** (470 lines)
+
 - Step-by-step deployment
 - Environment setup
 - Testing plan
@@ -547,7 +565,9 @@ Phase 3 is **successfully deployed when:**
 - Success criteria
 
 ### Code Documentation
+
 ✅ **Inline code comments**
+
 - `foundation-oauth.ts` - PKCE + auth flow
 - `foundation-auth.ts` - Token management
 - `use-foundation-auth.ts` - React hooks
@@ -558,12 +578,14 @@ Phase 3 is **successfully deployed when:**
 ## Next Steps
 
 ### Immediate (Today)
+
 1. Review implementation
 2. Verify credentials are correct
 3. Set environment variables in deployment platform
 4. Deploy to staging
 
 ### Short-term (This Week)
+
 1. Test complete OAuth flow
 2. Verify user syncing
 3. Monitor logs for errors
@@ -571,6 +593,7 @@ Phase 3 is **successfully deployed when:**
 5. Deploy to production
 
 ### Long-term (Next Week+)
+
 1. Monitor metrics (auth success rate, response times)
 2. Remove old Discord OAuth code
 3. Update user documentation

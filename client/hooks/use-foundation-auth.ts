@@ -72,7 +72,10 @@ export function useFoundationAuth(): UseFoundationAuthReturn {
             throw new Error("Invalid response from token exchange");
           }
 
-          console.log("[Foundation Auth] Token exchange successful for user:", tokenData.user.id);
+          console.log(
+            "[Foundation Auth] Token exchange successful for user:",
+            tokenData.user.id,
+          );
 
           // Clear auth parameters from URL and storage
           const url = new URL(window.location.href);
@@ -95,16 +98,21 @@ export function useFoundationAuth(): UseFoundationAuthReturn {
           // Redirect to dashboard or stored destination
           navigate(redirectTo, { replace: true });
         } catch (exchangeError) {
-          const message = exchangeError instanceof Error 
-            ? exchangeError.message 
-            : "Failed to exchange authorization code";
+          const message =
+            exchangeError instanceof Error
+              ? exchangeError.message
+              : "Failed to exchange authorization code";
 
-          console.error("[Foundation Auth] Token exchange failed:", exchangeError);
+          console.error(
+            "[Foundation Auth] Token exchange failed:",
+            exchangeError,
+          );
 
           throw new Error(message);
         }
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Authentication failed";
+        const message =
+          err instanceof Error ? err.message : "Authentication failed";
         setError(message);
 
         console.error("[Foundation Auth] Callback processing error:", err);
@@ -150,7 +158,9 @@ export function useFoundationAuthStatus(): {
   useEffect(() => {
     // Check for foundation_access_token cookie
     const cookies = document.cookie.split(";").map((c) => c.trim());
-    const tokenCookie = cookies.find((c) => c.startsWith("foundation_access_token="));
+    const tokenCookie = cookies.find((c) =>
+      c.startsWith("foundation_access_token="),
+    );
     const userCookie = cookies.find((c) => c.startsWith("auth_user_id="));
 
     if (tokenCookie && userCookie) {

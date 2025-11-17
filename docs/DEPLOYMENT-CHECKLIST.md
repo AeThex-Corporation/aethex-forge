@@ -20,6 +20,7 @@ FOUNDATION_OAUTH_CLIENT_SECRET=bcoEtyQVGr6Z4557658eUXpDF5FDni2TGNahH3HT-FtylNrLC
 ```
 
 **Important:**
+
 - ✅ Keep `FOUNDATION_OAUTH_CLIENT_SECRET` **secure** (never commit to git)
 - ✅ Use deployment platform's secret management (Vercel > Settings > Environment Variables)
 - ✅ Mark secret variables as "Encrypted"
@@ -30,11 +31,12 @@ Before deploying, confirm:
 
 - [ ] aethex.foundation is running and accessible
 - [ ] `/api/oauth/authorize` endpoint responding
-- [ ] `/api/oauth/token` endpoint responding  
+- [ ] `/api/oauth/token` endpoint responding
 - [ ] `/api/oauth/userinfo` endpoint responding
 - [ ] OAuth credentials valid (client_id, client_secret)
 
 **Quick Test:**
+
 ```bash
 # Test token endpoint
 curl -X POST https://aethex.foundation/api/oauth/token \
@@ -62,6 +64,7 @@ Ask Foundation admin to verify these are registered.
 ### Step 1: Set Environment Variables
 
 **Vercel:**
+
 1. Go to Project Settings > Environment Variables
 2. Add three variables:
    - `VITE_FOUNDATION_URL` = `https://aethex.foundation`
@@ -71,6 +74,7 @@ Ask Foundation admin to verify these are registered.
 4. Save
 
 **Railway/Other:**
+
 - Add to `.env` file in deployment
 - Or configure in platform's settings
 - Restart deployment for changes to take effect
@@ -98,6 +102,7 @@ code/
 ```
 
 **Deploy command:**
+
 ```bash
 # For Vercel
 vercel deploy --prod
@@ -114,22 +119,26 @@ docker push <registry>/aethex-dev
 ### Step 3: Verify Deployment
 
 1. **Check environment variables:**
+
    ```bash
    # On deployed app, check logs for env var loading
    # Should see Foundation URL in console (not secret though!)
    ```
 
 2. **Visit login page:**
+
    - Go to https://aethex.dev/login
    - Should see "Login with Foundation" button
    - No console errors
 
 3. **Test OAuth flow:**
+
    - Click "Login with Foundation"
    - Should redirect to https://aethex.foundation/api/oauth/authorize
    - Page should show Foundation login (or auth screen)
 
 4. **Check callback endpoint:**
+
    - Network tab should show POST to `/auth/callback/exchange`
    - Should return 200 with access_token
 
@@ -162,6 +171,7 @@ ECONNREFUSED                                        ⚠️ Foundation unreachabl
 ### Test 1: Happy Path (Successful Login)
 
 **Steps:**
+
 1. Visit https://aethex.dev/login
 2. Click "Login with Foundation"
 3. Enter test credentials on Foundation
@@ -172,6 +182,7 @@ ECONNREFUSED                                        ⚠️ Foundation unreachabl
 **Expected Result:** ✅ Logged in, cookies set, profile synced
 
 **Check:**
+
 ```bash
 # In browser console:
 document.cookie  # Should show foundation_access_token
@@ -184,6 +195,7 @@ SELECT * FROM user_profiles WHERE email = '<test-user-email>';
 ### Test 2: Error: Invalid Code
 
 **Steps:**
+
 1. Manually modify callback URL: `?code=invalid_code_123`
 2. Press Enter
 
@@ -192,6 +204,7 @@ SELECT * FROM user_profiles WHERE email = '<test-user-email>';
 ### Test 3: Network Error
 
 **Steps:**
+
 1. Stop/pause Foundation service
 2. Attempt login
 3. Foundation redirects back with code
@@ -202,6 +215,7 @@ SELECT * FROM user_profiles WHERE email = '<test-user-email>';
 ### Test 4: Logout and Re-login
 
 **Steps:**
+
 1. Logout from dashboard (if logout button exists)
 2. Check cookies are cleared
 3. Login again with Foundation
@@ -212,6 +226,7 @@ SELECT * FROM user_profiles WHERE email = '<test-user-email>';
 ### Test 5: Multiple Browsers
 
 Test on:
+
 - [ ] Chrome/Chromium
 - [ ] Firefox
 - [ ] Safari
@@ -255,6 +270,7 @@ After 1-2 weeks of successful deployment:
 
 1. Remove old Discord OAuth code (optional)
 2. Delete deprecated files:
+
    - `code/api/discord/oauth/start.ts`
    - `code/api/discord/oauth/callback.ts`
    - `code/api/discord/link.ts`
@@ -273,15 +289,17 @@ If critical issues occur:
 ### Immediate Rollback (< 1 hour)
 
 1. **Revert deployment:**
+
    ```bash
    # Vercel
    vercel rollback
-   
+
    # Railway
    railway rollback <previous-deployment>
    ```
 
 2. **Remove environment variables:**
+
    - Remove VITE_FOUNDATION_URL
    - Remove FOUNDATION_OAUTH_CLIENT_ID
    - Remove FOUNDATION_OAUTH_CLIENT_SECRET
@@ -293,6 +311,7 @@ If critical issues occur:
 ### If Rollback Fails
 
 Contact Foundation admin for assistance with:
+
 - OAuth endpoint status
 - User session validation
 - Database consistency
@@ -304,16 +323,19 @@ Contact Foundation admin for assistance with:
 ### Key Metrics to Monitor
 
 1. **Auth Success Rate**
+
    - Target: >99%
    - Alert threshold: <95%
    - What to check: Logs for "Token exchange" errors
 
 2. **Token Exchange Time**
+
    - Target: <500ms
    - Alert threshold: >2000ms
    - What to check: Network latency to Foundation
 
 3. **Foundation Connectivity**
+
    - Monitor: Foundation endpoint availability
    - Alert on: Connection failures to /api/oauth/token
    - Fallback: Maintenance page if Foundation down
@@ -330,11 +352,11 @@ Contact Foundation admin for assistance with:
 // In application logs/dashboard:
 const metrics = {
   total_login_attempts: 1000,
-  successful_logins: 990,       // 99%
+  successful_logins: 990, // 99%
   failed_token_exchange: 5,
   failed_user_sync: 2,
   failed_state_validation: 3,
-  avg_token_exchange_time_ms: 234
+  avg_token_exchange_time_ms: 234,
 };
 ```
 
@@ -344,13 +366,13 @@ const metrics = {
 
 ### Common Issues During Deployment
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| "Client secret not found" | Missing env var | Add FOUNDATION_OAUTH_CLIENT_SECRET |
-| "Redirect URI mismatch" | URI not registered on Foundation | Ask Foundation admin to register |
-| "Token exchange failed 401" | Invalid credentials | Verify client_id and client_secret |
-| "User sync failed" | Supabase error | Check user_profiles table schema |
-| "Cookies not set" | SameSite policy blocking | Check cookie headers on response |
+| Issue                       | Cause                            | Solution                           |
+| --------------------------- | -------------------------------- | ---------------------------------- |
+| "Client secret not found"   | Missing env var                  | Add FOUNDATION_OAUTH_CLIENT_SECRET |
+| "Redirect URI mismatch"     | URI not registered on Foundation | Ask Foundation admin to register   |
+| "Token exchange failed 401" | Invalid credentials              | Verify client_id and client_secret |
+| "User sync failed"          | Supabase error                   | Check user_profiles table schema   |
+| "Cookies not set"           | SameSite policy blocking         | Check cookie headers on response   |
 
 ### Debug Commands
 
@@ -371,12 +393,14 @@ psql -c "SELECT COUNT(*) FROM user_profiles;"
 ### Getting Help
 
 1. **Check logs:**
+
    - Deployment platform logs (Vercel Dashboard, Railway Dashboard)
    - Application logs (if available)
    - Browser console (F12)
    - Network tab (check requests/responses)
 
 2. **Verify configuration:**
+
    - Environment variables set correctly
    - Foundation endpoints accessible
    - Redirect URI registered

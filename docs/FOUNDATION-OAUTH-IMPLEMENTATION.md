@@ -71,6 +71,7 @@ GET https://aethex.foundation/api/oauth/authorize
 ```
 
 **Parameters:**
+
 - `client_id` - aethex_corp (identifies this app)
 - `redirect_uri` - Where Foundation redirects after auth
 - `response_type` - Always "code" (OAuth 2.0 authorization code flow)
@@ -98,6 +99,7 @@ grant_type=authorization_code
 ```
 
 **Response:**
+
 ```json
 {
   "access_token": "eyJ...",
@@ -143,22 +145,26 @@ See `code/api/auth/callback.ts` → `fetchUserInfoFromFoundation()`
 ### How PKCE Works
 
 1. **Client generates code verifier:**
+
    ```javascript
    verifier = randomString(64 chars, URL-safe)
    // Example: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
    ```
 
 2. **Client generates code challenge:**
+
    ```javascript
-   challenge = base64url(SHA256(verifier))
+   challenge = base64url(SHA256(verifier));
    ```
 
 3. **Client sends challenge with authorization request:**
+
    ```
    GET /api/oauth/authorize?...&code_challenge=...&code_challenge_method=S256
    ```
 
 4. **Server stores challenge, validates with verifier on token exchange:**
+
    ```
    POST /api/oauth/token?...&code_verifier=...
    ```
@@ -169,6 +175,7 @@ See `code/api/auth/callback.ts` → `fetchUserInfoFromFoundation()`
    ```
 
 **Why PKCE?**
+
 - Prevents authorization code interception attacks
 - Secure for mobile apps and single-page applications
 - Required by OAuth 2.1 best practices
@@ -193,6 +200,7 @@ Updated to show Foundation OAuth button:
 ```
 
 Features:
+
 - Initiates Foundation OAuth flow
 - Generates PKCE parameters
 - Stores verifier and state in sessionStorage
@@ -204,16 +212,16 @@ Core OAuth functionality:
 
 ```typescript
 // Generate PKCE parameters
-async function generatePKCEParams(): Promise<{ verifier, challenge }>
+async function generatePKCEParams(): Promise<{ verifier; challenge }>;
 
 // Build authorization URL
-async function getFoundationAuthorizationUrl(options?): Promise<string>
+async function getFoundationAuthorizationUrl(options?): Promise<string>;
 
 // Initiate login
-async function initiateFoundationLogin(redirectTo?: string): Promise<void>
+async function initiateFoundationLogin(redirectTo?: string): Promise<void>;
 
 // Exchange code for token (called from backend)
-async function exchangeCodeForToken(code: string): Promise<TokenResponse>
+async function exchangeCodeForToken(code: string): Promise<TokenResponse>;
 ```
 
 #### 3. useFoundationAuth Hook (`code/client/hooks/use-foundation-auth.ts`)
@@ -235,6 +243,7 @@ useFoundationAuthStatus(): { isAuthenticated, userId }
 **Route:** `GET /auth/callback?code=...&state=...`
 
 **Flow:**
+
 1. Receive authorization code from Foundation
 2. Validate state token (CSRF protection)
 3. Exchange code for access token
@@ -244,29 +253,30 @@ useFoundationAuthStatus(): { isAuthenticated, userId }
 7. Redirect to dashboard
 
 **Code:**
+
 ```typescript
 async function handleCallback(req, res) {
   // 1. Get code from URL
   const { code, state } = req.query;
-  
+
   // 2. Validate state
   validateState(state);
-  
+
   // 3. Exchange for token
   const token = await performTokenExchange(code);
-  
+
   // 4. Fetch user info
   const user = await fetchUserInfoFromFoundation(token);
-  
+
   // 5. Sync to database
   await syncUserToLocalDatabase(user);
-  
+
   // 6. Set cookies
   res.setHeader("Set-Cookie", [
     `foundation_access_token=${token}; ...`,
-    `auth_user_id=${user.id}; ...`
+    `auth_user_id=${user.id}; ...`,
   ]);
-  
+
   // 7. Redirect
   return res.redirect("/dashboard");
 }
@@ -279,7 +289,7 @@ async function handleCallback(req, res) {
 ```typescript
 async function handleTokenExchange(req, res) {
   const { code } = req.body;
-  
+
   // Exchange code with Foundation
   // Fetch user info
   // Sync to database
@@ -314,16 +324,16 @@ For authenticated API requests:
 ```typescript
 // Get token from cookie
 const token = document.cookie
-  .split(';')
-  .find(c => c.trim().startsWith('foundation_access_token='))
-  ?.split('=')[1];
+  .split(";")
+  .find((c) => c.trim().startsWith("foundation_access_token="))
+  ?.split("=")[1];
 
 // Use in requests
-fetch('/api/user/profile', {
+fetch("/api/user/profile", {
   headers: {
-    'Authorization': `Bearer ${token}`
+    Authorization: `Bearer ${token}`,
   },
-  credentials: 'include'
+  credentials: "include",
 });
 ```
 
@@ -333,13 +343,14 @@ On logout:
 
 ```typescript
 // Clear cookies
-document.cookie = 'foundation_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-document.cookie = 'auth_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+document.cookie =
+  "foundation_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+document.cookie = "auth_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
 // Optional: Notify Foundation of logout
 await fetch(`${FOUNDATION_URL}/api/oauth/logout`, {
-  method: 'POST',
-  headers: { 'Authorization': `Bearer ${token}` }
+  method: "POST",
+  headers: { Authorization: `Bearer ${token}` },
 });
 ```
 
@@ -376,13 +387,13 @@ Corp Local Database (user_profiles table):
 
 ```typescript
 await supabase.from("user_profiles").upsert({
-  id: foundationUser.id,              // Match by ID
+  id: foundationUser.id, // Match by ID
   email: foundationUser.email,
   username: foundationUser.username,
   full_name: foundationUser.full_name,
   avatar_url: foundationUser.avatar_url,
   profile_completed: foundationUser.profile_complete,
-  updated_at: new Date().toISOString()
+  updated_at: new Date().toISOString(),
 });
 ```
 
@@ -395,6 +406,7 @@ await supabase.from("user_profiles").upsert({
 ### Local Testing
 
 1. **Set up environment:**
+
    ```bash
    export VITE_FOUNDATION_URL=http://localhost:3001  # Or staging URL
    export FOUNDATION_OAUTH_CLIENT_ID=aethex_corp
@@ -402,6 +414,7 @@ await supabase.from("user_profiles").upsert({
    ```
 
 2. **Test flow:**
+
    - Visit `http://localhost:5173/login`
    - Click "Login with Foundation"
    - Should redirect to Foundation auth page
@@ -417,6 +430,7 @@ await supabase.from("user_profiles").upsert({
 ### Error Scenarios
 
 **Invalid code:**
+
 ```
 GET /auth/callback?code=invalid
 → 400 "Token exchange failed"
@@ -424,6 +438,7 @@ GET /auth/callback?code=invalid
 ```
 
 **Invalid state:**
+
 ```
 GET /auth/callback?code=...&state=wrong_state
 → Error "Invalid state token - possible CSRF attack"
@@ -431,6 +446,7 @@ GET /auth/callback?code=...&state=wrong_state
 ```
 
 **Foundation down:**
+
 ```
 POST /api/oauth/token → ECONNREFUSED
 → Error "Failed to exchange code"
@@ -442,6 +458,7 @@ POST /api/oauth/token → ECONNREFUSED
 ## Files Modified/Created
 
 ### New Files
+
 ```
 code/
 ├── client/
@@ -454,6 +471,7 @@ code/
 ```
 
 ### Modified Files
+
 ```
 code/
 └── client/
@@ -461,7 +479,9 @@ code/
 ```
 
 ### Deprecated Files
+
 These can be removed after testing completes:
+
 ```
 code/api/discord/oauth/start.ts
 code/api/discord/oauth/callback.ts
@@ -492,14 +512,17 @@ code/api/discord/verify-code.ts
 ### Key Metrics
 
 1. **Auth Success Rate**
+
    - Target: >99%
    - Alert if: <95%
 
 2. **Token Exchange Time**
+
    - Target: <500ms
    - Alert if: >2s
 
 3. **Error Categories**
+
    - Track: invalid_code, state_mismatch, timeout, etc.
 
 4. **Foundation Connectivity**
@@ -528,6 +551,7 @@ Key points to log:
 **Cause:** Foundation didn't redirect back properly
 
 **Solutions:**
+
 1. Check `redirect_uri` matches exactly (case-sensitive)
 2. Verify Foundation OAuth settings
 3. Check browser console for JavaScript errors
@@ -537,6 +561,7 @@ Key points to log:
 **Cause:** CSRF validation failed
 
 **Solutions:**
+
 1. Check that state is generated consistently
 2. Verify sessionStorage isn't cleared between redirect
 3. Check for multiple browser tabs (different state per tab)
@@ -546,6 +571,7 @@ Key points to log:
 **Cause:** Foundation token endpoint unavailable or code invalid
 
 **Solutions:**
+
 1. Check Foundation is running and `/api/oauth/token` accessible
 2. Verify `client_id` and `client_secret` are correct
 3. Check code hasn't expired (usually 10 minutes)
@@ -556,6 +582,7 @@ Key points to log:
 **Cause:** Database error during sync
 
 **Solutions:**
+
 1. Check `user_profiles` table exists and has proper schema
 2. Verify Supabase connection and permissions
 3. Check user_id isn't duplicated in database

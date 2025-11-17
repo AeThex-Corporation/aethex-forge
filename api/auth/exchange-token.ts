@@ -1,19 +1,17 @@
 /**
  * Token Exchange Endpoint
- * 
+ *
  * Frontend calls this endpoint after receiving the authorization code from Foundation.
  * It stores the Foundation's access token and returns user information.
  */
 
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
-const FOUNDATION_URL = process.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+const FOUNDATION_URL =
+  process.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
 const API_BASE = process.env.VITE_API_BASE || "https://aethex.dev";
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }

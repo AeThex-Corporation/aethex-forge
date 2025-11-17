@@ -1,22 +1,29 @@
 # Axiom Model - Phase 1 Migration
+
 ## How to Use This Package
 
 You have 3 files to help with the Phase 1 code migration:
 
 ### 1. **PHASE1-CHECKLIST.txt** ← START HERE
+
 Simple, easy-to-read checklist of all files to copy.
+
 - ✅ Just check off items as you copy them
 - 📋 Best for quick reference while working
 - 👥 Share this with your team
 
 ### 2. **PHASE1-FILES.json**
+
 Machine-readable list of all files with metadata.
+
 - 🤖 Use this if you want to script/automate the copy
 - 📊 Includes priority levels, categories, and notes
 - 💻 Parse this in your favorite tool
 
 ### 3. **AXIOM-MODEL-PHASE1-SCOPE.md**
+
 Complete detailed documentation.
+
 - 📖 Full explanation of every file and why it matters
 - 🎯 Includes adaptation notes and potential blockers
 - 🔍 Reference this if you get stuck on something
@@ -43,12 +50,15 @@ Complete detailed documentation.
 ---
 
 ## Estimated Time
+
 **17-25 hours** for complete Phase 1 migration
 
 ---
 
 ## Questions?
+
 Refer to AXIOM-MODEL-PHASE1-SCOPE.md sections:
+
 - **Import issues?** → Section 7: Libraries & Dependencies
 - **What file goes where?** → Sections 1-5: Complete file listing
 - **How do I adapt?** → Section 7: Critical Adaptations
@@ -57,11 +67,14 @@ Refer to AXIOM-MODEL-PHASE1-SCOPE.md sections:
 ---
 
 ## Next: Phase 2
+
 Once Phase 1 is complete, Phase 2 involves:
+
 - Supabase permission migration (Foundation gets full access)
 - `aethex.dev` loses direct write access to user_profiles
 
 Then Phase 3:
+
 - Reroute `aethex.dev` login → `aethex.foundation` (SSO)
 
 **Done!** The Axiom Model is live.

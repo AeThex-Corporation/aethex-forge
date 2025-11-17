@@ -11,7 +11,8 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { getAdminClient } from "../_supabase";
 
-const FOUNDATION_URL = process.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+const FOUNDATION_URL =
+  process.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
 const CLIENT_ID = process.env.FOUNDATION_OAUTH_CLIENT_ID || "aethex_corp";
 const CLIENT_SECRET = process.env.FOUNDATION_OAUTH_CLIENT_SECRET;
 const API_BASE = process.env.VITE_API_BASE || "https://aethex.dev";
@@ -47,14 +48,18 @@ export async function handleCallback(req: VercelRequest, res: VercelResponse) {
 
   // Handle Foundation errors
   if (error) {
-    const message = error_description ? decodeURIComponent(String(error_description)) : String(error);
+    const message = error_description
+      ? decodeURIComponent(String(error_description))
+      : String(error);
     return res.redirect(
       `/login?error=${error}&message=${encodeURIComponent(message)}`,
     );
   }
 
   if (!code) {
-    return res.redirect(`/login?error=no_code&message=${encodeURIComponent("No authorization code received")}`);
+    return res.redirect(
+      `/login?error=no_code&message=${encodeURIComponent("No authorization code received")}`,
+    );
   }
 
   try {
@@ -64,7 +69,9 @@ export async function handleCallback(req: VercelRequest, res: VercelResponse) {
       console.warn("[Foundation OAuth] Missing state parameter");
     }
 
-    console.log("[Foundation OAuth] Received authorization code, initiating token exchange");
+    console.log(
+      "[Foundation OAuth] Received authorization code, initiating token exchange",
+    );
 
     // Store code in a temporary location for the exchange endpoint
     // In a real implementation, you'd use a temporary token or session
@@ -75,7 +82,9 @@ export async function handleCallback(req: VercelRequest, res: VercelResponse) {
     }
 
     // Fetch user information from Foundation
-    const userInfo = await fetchUserInfoFromFoundation(exchangeResult.accessToken);
+    const userInfo = await fetchUserInfoFromFoundation(
+      exchangeResult.accessToken,
+    );
 
     // Sync user to local database
     await syncUserToLocalDatabase(userInfo);
@@ -89,11 +98,12 @@ export async function handleCallback(req: VercelRequest, res: VercelResponse) {
     console.log("[Foundation OAuth] User authenticated:", userInfo.id);
 
     // Redirect to dashboard (or stored destination)
-    const redirectTo = req.query.redirect_to as string || "/dashboard";
+    const redirectTo = (req.query.redirect_to as string) || "/dashboard";
     return res.redirect(redirectTo);
   } catch (error) {
     console.error("[Foundation OAuth] Callback error:", error);
-    const message = error instanceof Error ? error.message : "Authentication failed";
+    const message =
+      error instanceof Error ? error.message : "Authentication failed";
     return res.redirect(
       `/login?error=auth_failed&message=${encodeURIComponent(message)}`,
     );
@@ -105,7 +115,10 @@ export async function handleCallback(req: VercelRequest, res: VercelResponse) {
  * Exchange authorization code for access token
  * Called from frontend
  */
-export async function handleTokenExchange(req: VercelRequest, res: VercelResponse) {
+export async function handleTokenExchange(
+  req: VercelRequest,
+  res: VercelResponse,
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -120,7 +133,9 @@ export async function handleTokenExchange(req: VercelRequest, res: VercelRespons
     const exchangeResult = await performTokenExchange(code);
 
     // Fetch user information from Foundation
-    const userInfo = await fetchUserInfoFromFoundation(exchangeResult.accessToken);
+    const userInfo = await fetchUserInfoFromFoundation(
+      exchangeResult.accessToken,
+    );
 
     // Sync user to local database
     await syncUserToLocalDatabase(userInfo);
@@ -131,7 +146,10 @@ export async function handleTokenExchange(req: VercelRequest, res: VercelRespons
       `auth_user_id=${userInfo.id}; Path=/; Secure; SameSite=Strict; Max-Age=2592000`,
     ]);
 
-    console.log("[Foundation OAuth] Token exchange successful for user:", userInfo.id);
+    console.log(
+      "[Foundation OAuth] Token exchange successful for user:",
+      userInfo.id,
+    );
 
     return res.status(200).json({
       accessToken: exchangeResult.accessToken,
@@ -139,7 +157,8 @@ export async function handleTokenExchange(req: VercelRequest, res: VercelRespons
     });
   } catch (error) {
     console.error("[Foundation OAuth] Token exchange error:", error);
-    const message = error instanceof Error ? error.message : "Token exchange failed";
+    const message =
+      error instanceof Error ? error.message : "Token exchange failed";
     return res.status(400).json({ error: message });
   }
 }
@@ -147,9 +166,7 @@ export async function handleTokenExchange(req: VercelRequest, res: VercelRespons
 /**
  * Exchange authorization code for access token with Foundation
  */
-async function performTokenExchange(
-  code: string,
-): Promise<{
+async function performTokenExchange(code: string): Promise<{
   accessToken: string;
   tokenType: string;
   expiresIn: number;
@@ -205,7 +222,9 @@ async function performTokenExchange(
 /**
  * Fetch user information from Foundation using access token
  */
-async function fetchUserInfoFromFoundation(accessToken: string): Promise<FoundationUserInfo> {
+async function fetchUserInfoFromFoundation(
+  accessToken: string,
+): Promise<FoundationUserInfo> {
   const userInfoEndpoint = `${FOUNDATION_URL}/api/oauth/userinfo`;
 
   console.log("[Foundation OAuth] Fetching user info from:", userInfoEndpoint);
@@ -234,30 +253,36 @@ async function fetchUserInfoFromFoundation(accessToken: string): Promise<Foundat
 /**
  * Sync Foundation user to local database
  */
-async function syncUserToLocalDatabase(foundationUser: FoundationUserInfo): Promise<void> {
+async function syncUserToLocalDatabase(
+  foundationUser: FoundationUserInfo,
+): Promise<void> {
   const supabase = getAdminClient();
 
-  console.log("[Foundation OAuth] Syncing user to local database:", foundationUser.id);
+  console.log(
+    "[Foundation OAuth] Syncing user to local database:",
+    foundationUser.id,
+  );
 
   // Upsert user profile
-  const { error } = await supabase
-    .from("user_profiles")
-    .upsert({
-      id: foundationUser.id,
-      email: foundationUser.email,
-      username: foundationUser.username || null,
-      full_name: foundationUser.full_name || null,
-      avatar_url: foundationUser.avatar_url || null,
-      profile_completed: foundationUser.profile_complete || false,
-      updated_at: new Date().toISOString(),
-    });
+  const { error } = await supabase.from("user_profiles").upsert({
+    id: foundationUser.id,
+    email: foundationUser.email,
+    username: foundationUser.username || null,
+    full_name: foundationUser.full_name || null,
+    avatar_url: foundationUser.avatar_url || null,
+    profile_completed: foundationUser.profile_complete || false,
+    updated_at: new Date().toISOString(),
+  });
 
   if (error) {
     console.error("[Foundation OAuth] Failed to sync user profile:", error);
     throw new Error("Failed to create local user profile");
   }
 
-  console.log("[Foundation OAuth] User synced successfully:", foundationUser.id);
+  console.log(
+    "[Foundation OAuth] User synced successfully:",
+    foundationUser.id,
+  );
 }
 
 /**

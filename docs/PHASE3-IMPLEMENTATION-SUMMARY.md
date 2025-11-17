@@ -11,6 +11,7 @@ This Phase 3 implementation transforms `aethex.dev` from an identity provider in
 ### Client-side OAuth Utilities
 
 1. **`code/client/lib/foundation-oauth.ts`**
+
    - OAuth flow initialization
    - URL generation for Foundation redirect
    - `initiateFoundationLogin(redirectTo?)` - Main entry point for login
@@ -19,6 +20,7 @@ This Phase 3 implementation transforms `aethex.dev` from an identity provider in
    - Storage helpers for redirect destinations
 
 2. **`code/client/lib/foundation-auth.ts`**
+
    - Token and session management
    - Cookie handling (`foundation_access_token`, `auth_user_id`)
    - User profile fetching from Foundation
@@ -37,6 +39,7 @@ This Phase 3 implementation transforms `aethex.dev` from an identity provider in
 ### Backend OAuth Endpoints
 
 4. **`code/api/auth/foundation-callback.ts`**
+
    - Callback endpoint: `GET /api/auth/foundation-callback?code=...&state=...`
    - Validates authorization code from Foundation
    - Exchanges code for access token
@@ -54,6 +57,7 @@ This Phase 3 implementation transforms `aethex.dev` from an identity provider in
 ### Configuration & Documentation
 
 6. **`code/.env.foundation-oauth.example`**
+
    - Example environment variables
    - `VITE_FOUNDATION_URL` - Foundation identity provider URL
    - `FOUNDATION_OAUTH_CLIENT_SECRET` - OAuth credentials
@@ -73,6 +77,7 @@ This Phase 3 implementation transforms `aethex.dev` from an identity provider in
 ### **`code/client/pages/Login.tsx`**
 
 **Changes:**
+
 - Added Foundation URL import
 - Added `initiateFoundationLogin` import
 - Replaced Discord OAuth button with "Login with Foundation" button
@@ -82,14 +87,16 @@ This Phase 3 implementation transforms `aethex.dev` from an identity provider in
   - **Other Options** (Roblox, Ethereum)
 
 **Old button removed:**
+
 ```javascript
 // REMOVED - Discord OAuth now handled by Foundation
-<Button onClick={() => window.location.href = "/api/discord/oauth/start"}>
+<Button onClick={() => (window.location.href = "/api/discord/oauth/start")}>
   Discord
 </Button>
 ```
 
 **New button added:**
+
 ```javascript
 <Button onClick={() => initiateFoundationLogin(redirectTo)}>
   <Shield /> Login with Foundation
@@ -145,6 +152,7 @@ FOUNDATION_OAUTH_CLIENT_SECRET=<secret-from-foundation-setup>
 ```
 
 **Obtain these from Foundation admin:**
+
 1. After Foundation's Phase 1 setup is complete
 2. Request OAuth client secret for `aethex-corp`
 3. Verify Foundation endpoints are operational
@@ -154,26 +162,28 @@ FOUNDATION_OAUTH_CLIENT_SECRET=<secret-from-foundation-setup>
 
 ## Key Differences from Phase 2
 
-| Aspect | Phase 2 | Phase 3 |
-|--------|--------|--------|
-| **Auth Provider** | Supabase (local) | Foundation (remote) |
-| **Identity Issuer** | aethex.dev | aethex.foundation |
-| **Discord OAuth** | Handled locally | Handled by Foundation |
-| **User Source** | Local Supabase | Foundation → synced locally |
-| **Session Tokens** | Supabase JWT | Foundation JWT |
-| **Profile Updates** | Direct to Supabase | Via Foundation sync |
-| **Logout** | Clear local session | Notify Foundation + clear local |
+| Aspect              | Phase 2             | Phase 3                         |
+| ------------------- | ------------------- | ------------------------------- |
+| **Auth Provider**   | Supabase (local)    | Foundation (remote)             |
+| **Identity Issuer** | aethex.dev          | aethex.foundation               |
+| **Discord OAuth**   | Handled locally     | Handled by Foundation           |
+| **User Source**     | Local Supabase      | Foundation → synced locally     |
+| **Session Tokens**  | Supabase JWT        | Foundation JWT                  |
+| **Profile Updates** | Direct to Supabase  | Via Foundation sync             |
+| **Logout**          | Clear local session | Notify Foundation + clear local |
 
 ---
 
 ## What Happens to Discord OAuth?
 
 **Old flow (Phase 2):**
+
 - User clicks Discord button on aethex.dev
 - aethex.dev handles OAuth with Discord
 - Discord connects to aethex.dev's Supabase
 
 **New flow (Phase 3):**
+
 - User clicks "Login with Foundation" on aethex.dev
 - Redirected to aethex.foundation for authentication
 - User connects Discord on Foundation (if needed)
@@ -196,15 +206,15 @@ import { useFoundationAuth } from '@/hooks/use-foundation-auth';
 export function App() {
   // Detects auth code in URL and handles exchange
   const { isProcessing, error } = useFoundationAuth();
-  
+
   if (isProcessing) {
     return <LoadingScreen />; // Show while processing Foundation callback
   }
-  
+
   if (error) {
     // Handle auth error
   }
-  
+
   return <AppContent />;
 }
 ```
@@ -218,11 +228,11 @@ import { useFoundationAuthStatus } from '@/hooks/use-foundation-auth';
 
 function ProtectedRoute() {
   const { isAuthenticated } = useFoundationAuthStatus();
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-  
+
   return <Dashboard />;
 }
 ```
@@ -232,15 +242,15 @@ function ProtectedRoute() {
 Send Foundation token with requests:
 
 ```typescript
-import { getFoundationAccessToken } from '@/lib/foundation-auth';
+import { getFoundationAccessToken } from "@/lib/foundation-auth";
 
 const token = getFoundationAccessToken();
 
-fetch('/api/user/profile', {
+fetch("/api/user/profile", {
   headers: {
-    'Authorization': `Bearer ${token}`
+    Authorization: `Bearer ${token}`,
   },
-  credentials: 'include'
+  credentials: "include",
 });
 ```
 
@@ -266,6 +276,7 @@ fetch('/api/user/profile', {
 ## Next Steps
 
 ### Immediate (Week 1)
+
 1. ✅ Implement Phase 3 code (this document)
 2. ⏳ Set Foundation OAuth credentials
 3. ⏳ Deploy to staging
@@ -273,6 +284,7 @@ fetch('/api/user/profile', {
 5. ⏳ Monitor for errors and issues
 
 ### Short-term (Week 2-3)
+
 1. ⏳ Verify all existing users can re-authenticate
 2. ⏳ Confirm user profile syncing works
 3. ⏳ Test role/permission inheritance from Foundation
@@ -280,6 +292,7 @@ fetch('/api/user/profile', {
 5. ⏳ Update documentation
 
 ### Future (Phase 4+)
+
 1. ⏳ Remove email/password auth from aethex.dev
 2. ⏳ Remove Roblox/Ethereum OAuth (centralize at Foundation)
 3. ⏳ Implement cross-domain SSO

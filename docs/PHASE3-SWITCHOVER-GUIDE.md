@@ -59,6 +59,7 @@ FOUNDATION_OAUTH_CLIENT_SECRET=<secret-from-foundation-setup>
 ```
 
 **Files affected:**
+
 - `.env.foundation-oauth.example` - Example configuration
 
 ---
@@ -68,11 +69,13 @@ FOUNDATION_OAUTH_CLIENT_SECRET=<secret-from-foundation-setup>
 New utility modules for Foundation OAuth:
 
 **Files created:**
+
 - `code/client/lib/foundation-oauth.ts` - OAuth flow helpers
 - `code/client/lib/foundation-auth.ts` - Token/profile management
 - `code/client/hooks/use-foundation-auth.ts` - React hooks for auth handling
 
 **Key functions:**
+
 - `initiateFoundationLogin()` - Redirects to Foundation
 - `exchangeCodeForToken()` - Backend token exchange
 - `fetchUserProfileFromFoundation()` - Get user data from Foundation
@@ -84,10 +87,12 @@ New utility modules for Foundation OAuth:
 ### Step 3: Backend OAuth Endpoints ✅
 
 **Files created:**
+
 - `code/api/auth/foundation-callback.ts` - Handles redirect from Foundation
 - `code/api/auth/exchange-token.ts` - Token exchange endpoint
 
 **Flow:**
+
 1. User clicks "Login with Foundation" on aethex.dev/login
 2. Browser redirected to `aethex.foundation/api/oauth/authorize`
 3. User authenticates on Foundation
@@ -101,14 +106,17 @@ New utility modules for Foundation OAuth:
 ### Step 4: Frontend Login Page Refactoring ✅
 
 **File modified:**
+
 - `code/client/pages/Login.tsx`
 
 **Changes:**
+
 - Replaced local Discord OAuth button with "Login with Foundation" button
 - Uses `initiateFoundationLogin()` to start OAuth flow
 - Removed Discord Activity check for Discord login (now handled by Foundation)
 
 **New UI:**
+
 ```
 ┌─────────────────────────────────────┐
 │ Sign In to AeThex                   │
@@ -133,6 +141,7 @@ New utility modules for Foundation OAuth:
 ### Step 5: Remove Old Authentication Endpoints
 
 **Files to remove or deprecate:**
+
 - `code/api/discord/oauth/start.ts` - Local Discord OAuth start
 - `code/api/discord/oauth/callback.ts` - Local Discord OAuth callback
 - `code/api/discord/link.ts` - Discord linking endpoint
@@ -151,11 +160,11 @@ After Foundation OAuth callback, sessions work as follows:
 
 ```javascript
 // Frontend makes authenticated requests:
-const response = await fetch('/api/user/profile', {
+const response = await fetch("/api/user/profile", {
   headers: {
-    'Authorization': `Bearer ${getFoundationAccessToken()}`
+    Authorization: `Bearer ${getFoundationAccessToken()}`,
   },
-  credentials: 'include' // Send cookies
+  credentials: "include", // Send cookies
 });
 
 // Backend validates token:
@@ -166,6 +175,7 @@ const response = await fetch('/api/user/profile', {
 ```
 
 **Files that need updates:**
+
 - `code/server/index.ts` - Add Foundation token validation middleware
 - `code/api/_supabase.ts` - Support Foundation token context
 
@@ -224,11 +234,13 @@ START: User visits aethex.dev/login
 After Phase 1 (Foundation setup) is complete, you'll receive:
 
 1. **Foundation OAuth Details:**
+
    - OAuth endpoint URLs (authorize, token)
    - Client ID: `aethex-corp`
    - Client Secret: (provide to FOUNDATION_OAUTH_CLIENT_SECRET env var)
 
 2. **Foundation API Endpoints:**
+
    - GET `/api/auth/me` - Get authenticated user profile
    - POST `/api/oauth/authorize` - Authorization endpoint
    - POST `/api/oauth/token` - Token exchange endpoint
@@ -253,12 +265,14 @@ After Phase 1 (Foundation setup) is complete, you'll receive:
 ### Local Testing
 
 1. **Set up environment:**
+
    ```bash
    export VITE_FOUNDATION_URL=http://localhost:3001  # or staging URL
    export FOUNDATION_OAUTH_CLIENT_SECRET=<test-secret>
    ```
 
 2. **Test login flow:**
+
    - Visit `http://localhost:5173/login`
    - Click "Login with Foundation"
    - Should redirect to Foundation auth page
@@ -340,16 +354,19 @@ After Phase 3 stabilizes:
 ### Common Issues
 
 **Issue: "Authorization code not received"**
+
 - Check redirect_uri matches registered value
 - Verify client_id=aethex-corp in Foundation
 - Check Foundation environment is accessible
 
 **Issue: "Token exchange failed"**
+
 - Verify FOUNDATION_OAUTH_CLIENT_SECRET is correct
 - Check Foundation token endpoint is accessible
 - Review Foundation logs for errors
 
 **Issue: "User profile not syncing"**
+
 - Verify Supabase connection
 - Check user_profiles table exists locally
 - Review foundation-callback logs
@@ -365,6 +382,7 @@ After Phase 3 stabilizes:
 ## Code References
 
 **New files:**
+
 - `code/client/lib/foundation-oauth.ts`
 - `code/client/lib/foundation-auth.ts`
 - `code/client/hooks/use-foundation-auth.ts`
@@ -372,9 +390,11 @@ After Phase 3 stabilizes:
 - `code/api/auth/exchange-token.ts`
 
 **Modified files:**
+
 - `code/client/pages/Login.tsx` - OAuth flow updated
 
 **Deprecated (to remove):**
+
 - `code/api/discord/oauth/start.ts`
 - `code/api/discord/oauth/callback.ts`
 - `code/api/discord/link.ts`

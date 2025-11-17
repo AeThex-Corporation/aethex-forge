@@ -157,7 +157,11 @@
         "source": "code/supabase/migrations/20250107_add_discord_integration.sql",
         "type": "migration",
         "priority": "high",
-        "tables": ["discord_links", "discord_verifications", "discord_role_mappings"]
+        "tables": [
+          "discord_links",
+          "discord_verifications",
+          "discord_role_mappings"
+        ]
       }
     ],
     "config": [

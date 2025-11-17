@@ -1,6 +1,6 @@
 /**
  * Foundation OAuth Callback Handler
- * 
+ *
  * This endpoint receives the authorization code from aethex.foundation after user authentication.
  * It exchanges the code for an access token and establishes a session on aethex.dev.
  */
@@ -8,7 +8,8 @@
 import { getAdminClient } from "../_supabase";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
-const FOUNDATION_URL = process.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+const FOUNDATION_URL =
+  process.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
 const API_BASE = process.env.VITE_API_BASE || "https://aethex.dev";
 
 interface FoundationTokenResponse {
@@ -23,10 +24,7 @@ interface FoundationTokenResponse {
   };
 }
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -36,11 +34,15 @@ export default async function handler(
   // Handle Foundation errors
   if (error) {
     const errorDesc = req.query.error_description || error;
-    return res.redirect(`/login?error=${error}&message=${encodeURIComponent(String(errorDesc))}`);
+    return res.redirect(
+      `/login?error=${error}&message=${encodeURIComponent(String(errorDesc))}`,
+    );
   }
 
   if (!code) {
-    return res.redirect("/login?error=no_code&message=Authorization code not received");
+    return res.redirect(
+      "/login?error=no_code&message=Authorization code not received",
+    );
   }
 
   try {
@@ -74,7 +76,7 @@ export default async function handler(
       const errorData = await tokenResponse.json().catch(() => ({}));
       console.error("[Foundation OAuth] Token exchange failed:", errorData);
       return res.redirect(
-        `/login?error=token_exchange&message=${encodeURIComponent("Failed to exchange authorization code")}`
+        `/login?error=token_exchange&message=${encodeURIComponent("Failed to exchange authorization code")}`,
       );
     }
 
@@ -82,7 +84,9 @@ export default async function handler(
 
     if (!tokenData.access_token || !tokenData.user) {
       console.error("[Foundation OAuth] Invalid token response");
-      return res.redirect("/login?error=invalid_token&message=Invalid token response");
+      return res.redirect(
+        "/login?error=invalid_token&message=Invalid token response",
+      );
     }
 
     // Extract user information from Foundation response
@@ -101,25 +105,33 @@ export default async function handler(
 
     if (fetchError && fetchError.code !== "PGRST116") {
       // PGRST116 = no rows found (expected for new users)
-      console.error("[Foundation OAuth] Error fetching user profile:", fetchError);
+      console.error(
+        "[Foundation OAuth] Error fetching user profile:",
+        fetchError,
+      );
     }
 
     if (!existingProfile) {
       // Create user profile from Foundation data
-      const { error: createError } = await supabase.from("user_profiles").insert({
-        id: user.id,
-        email: user.email,
-        username: user.username || null,
-        full_name: user.full_name || null,
-        profile_completed: user.profile_complete || false,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
+      const { error: createError } = await supabase
+        .from("user_profiles")
+        .insert({
+          id: user.id,
+          email: user.email,
+          username: user.username || null,
+          full_name: user.full_name || null,
+          profile_completed: user.profile_complete || false,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
 
       if (createError) {
-        console.error("[Foundation OAuth] Failed to create user profile:", createError);
+        console.error(
+          "[Foundation OAuth] Failed to create user profile:",
+          createError,
+        );
         return res.redirect(
-          `/login?error=profile_create&message=${encodeURIComponent("Failed to create local user profile")}`
+          `/login?error=profile_create&message=${encodeURIComponent("Failed to create local user profile")}`,
         );
       }
     }
@@ -138,7 +150,7 @@ export default async function handler(
   } catch (error) {
     console.error("[Foundation OAuth] Callback error:", error);
     return res.redirect(
-      `/login?error=unknown&message=${encodeURIComponent("An unexpected error occurred")}`
+      `/login?error=unknown&message=${encodeURIComponent("An unexpected error occurred")}`,
     );
   }
 }

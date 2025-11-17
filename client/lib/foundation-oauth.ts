@@ -10,8 +10,10 @@
  * - GET /api/oauth/userinfo - User info endpoint
  */
 
-const FOUNDATION_URL = import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
-const CLIENT_ID = import.meta.env.VITE_FOUNDATION_OAUTH_CLIENT_ID || "aethex_corp";
+const FOUNDATION_URL =
+  import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+const CLIENT_ID =
+  import.meta.env.VITE_FOUNDATION_OAUTH_CLIENT_ID || "aethex_corp";
 const API_BASE = import.meta.env.VITE_API_BASE || "https://aethex.dev";
 
 /**
@@ -19,7 +21,8 @@ const API_BASE = import.meta.env.VITE_API_BASE || "https://aethex.dev";
  * Must be 43-128 characters, URL-safe (A-Z, a-z, 0-9, -, ., _, ~)
  */
 function generateCodeVerifier(): string {
-  const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+  const charset =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
   const length = 64;
   let verifier = "";
   const randomValues = new Uint8Array(length);
@@ -104,7 +107,9 @@ export async function getFoundationAuthorizationUrl(options?: {
 /**
  * Initiate the Foundation OAuth login flow
  */
-export async function initiateFoundationLogin(redirectTo?: string): Promise<void> {
+export async function initiateFoundationLogin(
+  redirectTo?: string,
+): Promise<void> {
   try {
     const authUrl = await getFoundationAuthorizationUrl({ redirectTo });
     window.location.href = authUrl;

@@ -5,6 +5,7 @@
 Before running tests, ensure:
 
 1. **Environment variables are set:**
+
    ```bash
    VITE_FOUNDATION_URL=https://aethex.foundation  # or staging/localhost
    FOUNDATION_OAUTH_CLIENT_SECRET=<received-from-foundation>
@@ -12,6 +13,7 @@ Before running tests, ensure:
    ```
 
 2. **Foundation is operational:**
+
    - aethex.foundation is running
    - OAuth endpoints are accessible
    - Test user accounts exist
@@ -30,11 +32,13 @@ Before running tests, ensure:
 **Objective:** Verify the login page displays Foundation OAuth button
 
 **Steps:**
+
 1. Navigate to `http://localhost:5173/login` (or prod URL)
 2. Look for "Login with Foundation" button
 3. Verify button is visible and clickable
 
 **Expected Result:**
+
 ```
 ✓ Login page displays
 ✓ "Login with Foundation" button visible
@@ -51,11 +55,13 @@ Before running tests, ensure:
 **Objective:** Verify clicking the button redirects to Foundation
 
 **Steps:**
+
 1. On login page, click "Login with Foundation" button
 2. Observe browser URL change
 3. Check redirect parameters
 
 **Expected Result:**
+
 ```
 Redirected to:
 https://aethex.foundation/api/oauth/authorize
@@ -75,12 +81,14 @@ https://aethex.foundation/api/oauth/authorize
 **Objective:** User authenticates on Foundation
 
 **Steps:**
+
 1. You're now on Foundation login page
 2. Enter test credentials
 3. If prompted, grant aethex.dev permissions
 4. Click "Authorize" or similar
 
 **Expected Result:**
+
 ```
 ✓ Foundation accepts credentials
 ✓ Permission screen appears (if configured)
@@ -96,11 +104,13 @@ https://aethex.foundation/api/oauth/authorize
 **Objective:** Verify Foundation redirects back with authorization code
 
 **Steps:**
+
 1. After Foundation authentication completes
 2. Observe browser URL change
 3. Look for authorization code in URL
 
 **Expected Result:**
+
 ```
 Browser redirects to:
 https://aethex.dev/api/auth/foundation-callback
@@ -121,11 +131,13 @@ Check browser console:
 **Objective:** Backend exchanges code for access token
 
 **Steps:**
+
 1. Monitor network requests in browser Dev Tools
 2. Look for POST to `/api/auth/exchange-token`
 3. Check response status
 
 **Expected Result:**
+
 ```
 Network:
 POST /api/auth/exchange-token
@@ -154,11 +166,13 @@ Cookies set:
 **Objective:** Verify user profile created/updated in local database
 
 **Steps:**
+
 1. After successful login, check database
 2. Query user_profiles table
 3. Verify user exists with correct data
 
 **Database Query:**
+
 ```sql
 -- Check user was created/updated
 SELECT id, email, username, profile_completed, updated_at
@@ -184,11 +198,13 @@ LIMIT 1;
 **Objective:** User redirected to dashboard after authentication
 
 **Steps:**
+
 1. After token exchange and profile sync
 2. Browser should automatically redirect
 3. Check final URL
 
 **Expected Result:**
+
 ```
 Browser URL: https://aethex.dev/dashboard
 ✓ Dashboard loads successfully
@@ -205,23 +221,26 @@ Browser URL: https://aethex.dev/dashboard
 **Objective:** User can make authenticated API calls
 
 **Steps:**
+
 1. On authenticated dashboard
 2. Use browser console to test:
+
    ```javascript
    const token = document.cookie
-     .split(';')
-     .find(c => c.trim().startsWith('foundation_access_token='))
-     ?.split('=')[1];
-   
-   fetch('/api/user/profile', {
-     headers: { 'Authorization': `Bearer ${token}` },
-     credentials: 'include'
+     .split(";")
+     .find((c) => c.trim().startsWith("foundation_access_token="))
+     ?.split("=")[1];
+
+   fetch("/api/user/profile", {
+     headers: { Authorization: `Bearer ${token}` },
+     credentials: "include",
    })
-   .then(r => r.json())
-   .then(console.log);
+     .then((r) => r.json())
+     .then(console.log);
    ```
 
 **Expected Result:**
+
 ```javascript
 // Console output:
 {
@@ -241,12 +260,14 @@ Browser URL: https://aethex.dev/dashboard
 **Objective:** Verify logout clears Foundation auth
 
 **Steps:**
+
 1. On authenticated dashboard
 2. Click logout/settings
 3. Trigger logout action
 4. Verify redirect to login
 
 **Expected Result:**
+
 ```
 ✓ Logout triggered
 ✓ Cookies cleared:
@@ -256,11 +277,13 @@ Browser URL: https://aethex.dev/dashboard
 ✓ Previous authenticated state lost
 ```
 
-**Test command (if logout has UI):
+\*\*Test command (if logout has UI):
+
 ```javascript
 // Clear cookies manually in console
-document.cookie = 'foundation_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-document.cookie = 'auth_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+document.cookie =
+  "foundation_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+document.cookie = "auth_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 ```
 
 **Success Criteria:** ✅ Cookies cleared, session terminated
@@ -272,6 +295,7 @@ document.cookie = 'auth_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
 **Objective:** Verify redirect works when accessing protected page first
 
 **Steps:**
+
 1. Logout (or clear cookies)
 2. Visit protected page: `http://localhost:5173/dashboard?next=/admin`
 3. Get redirected to login
@@ -279,6 +303,7 @@ document.cookie = 'auth_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
 5. After auth, should redirect to `/admin` instead of `/dashboard`
 
 **Expected Result:**
+
 ```
 ✓ Initial redirect to /login with ?next=/admin
 ✓ After Foundation auth, redirected to /admin
@@ -293,10 +318,12 @@ document.cookie = 'auth_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
 ### Error 1: Invalid Authorization Code
 
 **How to trigger:**
+
 1. Manually modify URL code parameter: `?code=invalid_code`
 2. Let callback process
 
 **Expected Result:**
+
 ```
 Error: token_exchange
 Message: Failed to exchange authorization code
@@ -310,10 +337,12 @@ Redirect to: /login?error=token_exchange
 ### Error 2: Missing Client Secret
 
 **How to trigger:**
+
 1. Unset `FOUNDATION_OAUTH_CLIENT_SECRET` env var
 2. Attempt login
 
 **Expected Result:**
+
 ```
 Error: 500 or token_exchange error
 Message: Missing environment variables
@@ -327,11 +356,13 @@ Redirect to: /login with error
 ### Error 3: Foundation Unavailable
 
 **How to trigger:**
+
 1. Stop Foundation service
 2. Attempt login
 3. Foundation authorize redirects back
 
 **Expected Result:**
+
 ```
 Error: Token exchange fails
 Message: Failed to connect to Foundation
@@ -345,10 +376,12 @@ Redirect to: /login with error message
 ### Error 4: Expired Authorization Code
 
 **How to trigger:**
+
 1. Wait >10 minutes after Foundation redirect
 2. Complete the callback
 
 **Expected Result:**
+
 ```
 Error: invalid_grant or code_expired
 Message: Authorization code has expired
@@ -371,6 +404,7 @@ Test on multiple browsers:
 - [ ] Mobile Safari
 
 **Checklist for each browser:**
+
 - [ ] Login page renders correctly
 - [ ] Redirect to Foundation works
 - [ ] Cookies are set (check Dev Tools)
@@ -459,18 +493,18 @@ Environment: [Staging/Production]
 
 ## Test Results
 
-| Test | Status | Notes |
-|------|--------|-------|
-| Test 1: Login Page | ✅/❌ | |
-| Test 2: Redirect | ✅/❌ | |
-| Test 3: Foundation Auth | ✅/❌ | |
-| Test 4: Callback | ✅/❌ | |
-| Test 5: Token Exchange | ✅/❌ | |
-| Test 6: Profile Sync | ✅/❌ | |
-| Test 7: Dashboard | ✅/❌ | |
-| Test 8: API Requests | ✅/❌ | |
-| Test 9: Logout | ✅/❌ | |
-| Test 10: Redirects | ✅/❌ | |
+| Test                    | Status | Notes |
+| ----------------------- | ------ | ----- |
+| Test 1: Login Page      | ✅/❌  |       |
+| Test 2: Redirect        | ✅/❌  |       |
+| Test 3: Foundation Auth | ✅/❌  |       |
+| Test 4: Callback        | ✅/❌  |       |
+| Test 5: Token Exchange  | ✅/❌  |       |
+| Test 6: Profile Sync    | ✅/❌  |       |
+| Test 7: Dashboard       | ✅/❌  |       |
+| Test 8: API Requests    | ✅/❌  |       |
+| Test 9: Logout          | ✅/❌  |       |
+| Test 10: Redirects      | ✅/❌  |       |
 
 ## Errors Encountered
 
@@ -503,15 +537,18 @@ Environment: [Staging/Production]
 ### Key Metrics to Monitor
 
 1. **Authentication Success Rate**
+
    - Should be >99%
    - Track failed logins
 
 2. **Error Categories**
+
    - Code exchange failures
    - Token validation failures
    - Profile sync failures
 
 3. **Performance**
+
    - Token exchange time (target <2s)
    - Dashboard load time after auth
    - API request latency
@@ -524,6 +561,7 @@ Environment: [Staging/Production]
 ### Alert Thresholds
 
 Set alerts for:
+
 - Auth failure rate > 5%
 - Token exchange time > 5 seconds
 - Foundation connectivity issues
@@ -534,6 +572,7 @@ Set alerts for:
 ## Rollback Triggers
 
 Immediately rollback if:
+
 - Auth failure rate > 25%
 - Unable to authenticate any new users
 - Data corruption in user_profiles

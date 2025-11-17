@@ -9,11 +9,13 @@ The Phase 3 implementation is **complete and ready for deployment**. aethex.dev 
 ## What You Need To Know
 
 ### Before Foundation Migrate
+
 - **aethex.dev** handled all authentication (Discord OAuth, email/password)
 - User identity was distributed across multiple systems
 - Each application had its own auth logic
 
 ### After Phase 3 Deployed
+
 - **aethex.foundation** is the authoritative identity provider
 - **aethex.dev** redirects users to Foundation for authentication
 - All Discord connections handled by Foundation
@@ -42,12 +44,14 @@ FOUNDATION_OAUTH_CLIENT_SECRET=<secret-provided-by-foundation>
 The following files are new and handle Foundation OAuth:
 
 **Client-side:**
+
 - `code/client/lib/foundation-oauth.ts` - OAuth flow
 - `code/client/lib/foundation-auth.ts` - Token management
 - `code/client/hooks/use-foundation-auth.ts` - React hooks
 - `code/client/pages/Login.tsx` - UPDATED with Foundation button
 
 **Server-side:**
+
 - `code/api/auth/foundation-callback.ts` - OAuth callback handler
 - `code/api/auth/exchange-token.ts` - Token exchange endpoint
 
@@ -64,18 +68,22 @@ The following files are new and handle Foundation OAuth:
 ## Key Changes in This Phase
 
 ### Login Page
+
 - **Old:** Discord button redirected to local `/api/discord/oauth/start`
 - **New:** "Login with Foundation" button redirects to `aethex.foundation`
 
 ### Authentication Flow
+
 - **Old:** Local Supabase auth → Discord OAuth locally → Session on aethex.dev
 - **New:** Redirect to Foundation → User auth on Foundation → Session on aethex.dev with Foundation token
 
 ### User Profile
+
 - **Old:** Stored directly in aethex.dev's Supabase
 - **New:** Synced from Foundation's Supabase to aethex.dev's local copy
 
 ### Discord Management
+
 - **Old:** aethex.dev handled all Discord connections
 - **New:** Foundation handles all Discord connections; aethex.dev consumes the result
 
@@ -84,6 +92,7 @@ The following files are new and handle Foundation OAuth:
 ## Important Files
 
 ### New Components (Phase 3 Specific)
+
 ```
 code/
 ├── client/
@@ -106,6 +115,7 @@ code/
 ```
 
 ### Configuration Files
+
 ```
 code/
 └── .env.foundation-oauth.example  ← Example env vars
@@ -154,6 +164,7 @@ Discord OAuth is now **managed entirely by aethex.foundation**.
 ## User Experience After Phase 3
 
 ### For New Users
+
 1. Visit aethex.dev/login
 2. See "Login with Foundation" button (primary option)
 3. Click it
@@ -162,6 +173,7 @@ Discord OAuth is now **managed entirely by aethex.foundation**.
 6. Complete onboarding with pre-filled Foundation data
 
 ### For Existing Users
+
 1. Existing sessions will be cleared (they had aethex.dev Supabase tokens)
 2. They'll be redirected to login page
 3. They click "Login with Foundation"
@@ -208,15 +220,18 @@ Discord OAuth is now **managed entirely by aethex.foundation**.
 If critical issues arise:
 
 1. **Revert code:**
+
    ```bash
    git revert <Phase3-commit-hash>
    ```
 
 2. **Restore environment:**
+
    - Remove VITE_FOUNDATION_URL
    - Remove FOUNDATION_OAUTH_CLIENT_SECRET
 
 3. **Tell users:**
+
    - "We've temporarily disabled Foundation integration"
    - "Please use local login or Discord OAuth"
 
@@ -229,6 +244,7 @@ If critical issues arise:
 ## Deployment Recommendations
 
 ### Staging Deployment (First)
+
 1. Deploy Phase 3 code to staging
 2. Set Foundation OAuth credentials on staging
 3. Test according to `PHASE3-TESTING-PLAN.md`
@@ -236,6 +252,7 @@ If critical issues arise:
 5. Monitor staging for 24 hours
 
 ### Production Deployment
+
 1. Create backup of current auth system
 2. Deploy Phase 3 code gradually (canary deployment if possible)
 3. Set Foundation OAuth credentials in production
@@ -244,6 +261,7 @@ If critical issues arise:
 6. Communicate with users
 
 ### Monitoring
+
 - Auth success rate (target >99%)
 - Token exchange time (target <2s)
 - Error messages in logs
@@ -280,12 +298,14 @@ A: Users link Discord on Foundation instead. No linking needed on aethex.dev.
 ## Next Steps
 
 ### Week 1: Setup
+
 1. ✅ Code implemented (DONE)
 2. ⏳ Get Foundation OAuth credentials
 3. ⏳ Set environment variables
 4. ⏳ Deploy to staging
 
 ### Week 2: Testing
+
 5. ⏳ Test complete auth flow
 6. ⏳ Test error scenarios
 7. ⏳ Test on multiple browsers
@@ -293,12 +313,14 @@ A: Users link Discord on Foundation instead. No linking needed on aethex.dev.
 9. ⏳ Get team approval
 
 ### Week 3: Deployment
+
 10. ⏳ Deploy to production
 11. ⏳ Monitor closely for issues
 12. ⏳ Document any bugs found
 13. ⏳ Communicate with users
 
 ### Week 4+: Optimization
+
 14. ⏳ Remove old Discord OAuth endpoints
 15. ⏳ Optimize token handling
 16. ⏳ Update documentation
@@ -322,16 +344,19 @@ Detailed documentation available:
 If you encounter issues:
 
 1. **Check logs:**
+
    - Foundation callback logs (Vercel deployment)
    - Token exchange errors
    - Profile sync failures
 
 2. **Verify environment:**
+
    - VITE_FOUNDATION_URL is correct
    - FOUNDATION_OAUTH_CLIENT_SECRET is correct
    - Foundation service is running
 
 3. **Test manually:**
+
    - Use curl to test token endpoint
    - Check database for user profiles
    - Inspect cookies in browser

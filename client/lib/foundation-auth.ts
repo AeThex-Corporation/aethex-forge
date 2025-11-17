@@ -50,8 +50,10 @@ export function clearFoundationAuth(): void {
   if (typeof window === "undefined") return;
 
   // Clear cookies by setting expiration to past
-  document.cookie = "foundation_access_token=; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-  document.cookie = "auth_user_id=; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  document.cookie =
+    "foundation_access_token=; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  document.cookie =
+    "auth_user_id=; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
   // Clear session storage
   sessionStorage.removeItem("oauth_code_verifier");
@@ -89,7 +91,8 @@ export async function makeAuthenticatedRequest(
  * Clears local auth state and optionally notifies Foundation
  */
 export async function logoutFromFoundation(): Promise<void> {
-  const FOUNDATION_URL = import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+  const FOUNDATION_URL =
+    import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
   const token = getFoundationAccessToken();
 
   // Clear local auth
