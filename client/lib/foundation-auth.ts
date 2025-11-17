@@ -1,11 +1,8 @@
 /**
- * Foundation Authentication Integration
- * 
- * Helper functions for integrating with Foundation's identity system
+ * Foundation Authentication Helpers
+ *
+ * Simple utilities for managing Foundation OAuth session cookies and tokens.
  */
-
-import { getAdminClient } from "@supabase/supabase-js";
-import { supabase } from "./supabase";
 
 /**
  * Get Foundation access token from cookies
@@ -13,11 +10,14 @@ import { supabase } from "./supabase";
 export function getFoundationAccessToken(): string | null {
   if (typeof window === "undefined") return null;
 
-  const cookies = document.cookie.split(";").map((c) => c.trim());
-  const tokenCookie = cookies.find((c) => c.startsWith("foundation_access_token="));
-
-  if (!tokenCookie) return null;
-  return tokenCookie.split("=")[1];
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const trimmed = cookie.trim();
+    if (trimmed.startsWith("foundation_access_token=")) {
+      return trimmed.substring("foundation_access_token=".length);
+    }
+  }
+  return null;
 }
 
 /**
@@ -26,122 +26,88 @@ export function getFoundationAccessToken(): string | null {
 export function getAuthUserId(): string | null {
   if (typeof window === "undefined") return null;
 
-  const cookies = document.cookie.split(";").map((c) => c.trim());
-  const userCookie = cookies.find((c) => c.startsWith("auth_user_id="));
-
-  if (!userCookie) return null;
-  return userCookie.split("=")[1];
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const trimmed = cookie.trim();
+    if (trimmed.startsWith("auth_user_id=")) {
+      return trimmed.substring("auth_user_id=".length);
+    }
+  }
+  return null;
 }
 
 /**
- * Check if user is authenticated with Foundation
+ * Check if user has active Foundation authentication
  */
 export function isFoundationAuthenticated(): boolean {
   return !!getFoundationAccessToken() && !!getAuthUserId();
 }
 
 /**
- * Fetch user profile from Foundation using access token
- */
-export async function fetchUserProfileFromFoundation(
-  accessToken: string,
-): Promise<any> {
-  const FOUNDATION_URL = import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
-
-  const response = await fetch(`${FOUNDATION_URL}/api/auth/me`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch user profile from Foundation");
-  }
-
-  return response.json();
-}
-
-/**
- * Sync Foundation user profile to aethex.dev local database
- */
-export async function syncFoundationProfileToLocal(
-  foundationUser: any,
-): Promise<any> {
-  const { data, error } = await supabase
-    .from("user_profiles")
-    .upsert({
-      id: foundationUser.id,
-      email: foundationUser.email,
-      username: foundationUser.username || null,
-      full_name: foundationUser.full_name || null,
-      avatar_url: foundationUser.avatar_url || null,
-      profile_completed: foundationUser.profile_complete || false,
-      updated_at: new Date().toISOString(),
-    })
-    .select()
-    .single();
-
-  if (error) {
-    console.error("[Foundation Sync] Failed to sync profile:", error);
-    throw error;
-  }
-
-  return data;
-}
-
-/**
- * Clear Foundation authentication
+ * Clear Foundation authentication (on logout)
  */
 export function clearFoundationAuth(): void {
   if (typeof window === "undefined") return;
 
-  // Clear cookies
+  // Clear cookies by setting expiration to past
   document.cookie = "foundation_access_token=; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
   document.cookie = "auth_user_id=; Path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
   // Clear session storage
-  sessionStorage.removeItem("auth_redirect_to");
+  sessionStorage.removeItem("oauth_code_verifier");
+  sessionStorage.removeItem("oauth_state");
+  sessionStorage.removeItem("oauth_redirect_to");
 }
 
 /**
- * Redirect to Foundation logout and clear local auth
+ * Make authenticated API request with Foundation token
  */
-export async function logoutWithFoundation(): Promise<void> {
-  const FOUNDATION_URL = import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
-  const accessToken = getFoundationAccessToken();
+export async function makeAuthenticatedRequest(
+  url: string,
+  options?: RequestInit,
+): Promise<Response> {
+  const token = getFoundationAccessToken();
 
-  try {
-    // Notify Foundation of logout
-    if (accessToken) {
-      await fetch(`${FOUNDATION_URL}/api/auth/logout`, {
+  if (!token) {
+    throw new Error("No Foundation access token available");
+  }
+
+  const headers = {
+    ...options?.headers,
+    Authorization: `Bearer ${token}`,
+  };
+
+  return fetch(url, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
+}
+
+/**
+ * Logout from Foundation
+ * Clears local auth state and optionally notifies Foundation
+ */
+export async function logoutFromFoundation(): Promise<void> {
+  const FOUNDATION_URL = import.meta.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+  const token = getFoundationAccessToken();
+
+  // Clear local auth
+  clearFoundationAuth();
+
+  // Optionally notify Foundation of logout
+  if (token) {
+    try {
+      await fetch(`${FOUNDATION_URL}/api/oauth/logout`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
       }).catch(() => {
-        // Ignore errors
+        // Ignore errors - local logout already happened
       });
+    } catch {
+      // Ignore errors
     }
-  } finally {
-    // Always clear local auth
-    clearFoundationAuth();
   }
-}
-
-/**
- * Check if code is in URL (after Foundation redirect)
- */
-export function hasFoundationAuthCode(): boolean {
-  if (typeof window === "undefined") return false;
-  const params = new URLSearchParams(window.location.search);
-  return !!params.get("code");
-}
-
-/**
- * Get authorization code from URL
- */
-export function getFoundationAuthCode(): string | null {
-  if (typeof window === "undefined") return null;
-  const params = new URLSearchParams(window.location.search);
-  return params.get("code");
 }
