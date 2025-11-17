@@ -1,0 +1,222 @@
+{
+  "phase": 1,
+  "mission": "Copy auth code from aethex.dev (Vercel) to aethex.foundation (Replit)",
+  "total_files": 30,
+  "estimated_hours": "17-25",
+  "files": {
+    "pages": [
+      {
+        "source": "code/client/pages/Login.tsx",
+        "category": "auth",
+        "priority": "high",
+        "notes": "Contains Discord OAuth button"
+      },
+      {
+        "source": "code/client/pages/Onboarding.tsx",
+        "category": "auth",
+        "priority": "high",
+        "notes": "Realm/arm selection, profile setup"
+      },
+      {
+        "source": "code/client/pages/DiscordVerify.tsx",
+        "category": "auth",
+        "priority": "high",
+        "notes": "Verification code entry for linking"
+      },
+      {
+        "source": "code/client/pages/Dashboard.tsx",
+        "category": "profile",
+        "priority": "high",
+        "notes": "User dashboard + OAuthConnections"
+      },
+      {
+        "source": "code/client/pages/SubdomainPassport.tsx",
+        "category": "passport",
+        "priority": "medium",
+        "notes": "Creator passport for *.aethex.me"
+      }
+    ],
+    "contexts": [
+      {
+        "source": "code/client/contexts/AuthContext.tsx",
+        "category": "state",
+        "priority": "high",
+        "notes": "Central auth state, linkProvider('discord')"
+      },
+      {
+        "source": "code/client/contexts/DiscordActivityContext.tsx",
+        "category": "state",
+        "priority": "low",
+        "notes": "Optional; only if Activity needed"
+      },
+      {
+        "source": "code/client/contexts/ThemeContext.tsx",
+        "category": "state",
+        "priority": "medium",
+        "notes": "Dependency for theme switching"
+      }
+    ],
+    "components": [
+      {
+        "source": "code/client/components/settings/OAuthConnections.tsx",
+        "category": "oauth",
+        "priority": "high",
+        "notes": "OAuth provider cards (Discord, etc.)"
+      },
+      {
+        "source": "code/client/components/passport/PassportSummary.tsx",
+        "category": "passport",
+        "priority": "medium",
+        "notes": "Renders creator passport"
+      },
+      {
+        "source": "code/client/components/Layout.tsx",
+        "category": "layout",
+        "priority": "high",
+        "notes": "App layout & header"
+      },
+      {
+        "source": "code/client/components/ErrorBoundary.tsx",
+        "category": "util",
+        "priority": "medium",
+        "notes": "Error handling"
+      },
+      {
+        "source": "code/client/components/LoadingScreen.tsx",
+        "category": "util",
+        "priority": "medium",
+        "notes": "Loading UI"
+      },
+      {
+        "source": "code/client/components/ui/*",
+        "category": "ui",
+        "priority": "high",
+        "notes": "All Radix UI components (accordion, alert, toast, etc.)"
+      }
+    ],
+    "api_endpoints": [
+      {
+        "source": "code/api/discord/oauth/start.ts",
+        "endpoint": "GET /api/discord/oauth/start",
+        "category": "oauth",
+        "priority": "high",
+        "notes": "Redirect to Discord authorization"
+      },
+      {
+        "source": "code/api/discord/oauth/callback.ts",
+        "endpoint": "GET /api/discord/oauth/callback",
+        "category": "oauth",
+        "priority": "high",
+        "notes": "Handle Discord callback, link user"
+      },
+      {
+        "source": "code/api/discord/verify-code.ts",
+        "endpoint": "POST /api/discord/verify-code",
+        "category": "oauth",
+        "priority": "high",
+        "notes": "Verify 6-digit code for linking"
+      },
+      {
+        "source": "code/api/discord/link.ts",
+        "endpoint": "POST /api/discord/link",
+        "category": "oauth",
+        "priority": "high",
+        "notes": "Link Discord account by code"
+      },
+      {
+        "source": "code/api/discord/sync-roles.ts",
+        "endpoint": "POST /api/discord/sync-roles",
+        "category": "oauth",
+        "priority": "medium",
+        "notes": "Assign Discord roles after linking"
+      },
+      {
+        "source": "code/api/discord/activity-auth.ts",
+        "endpoint": "POST /api/discord/activity-auth",
+        "category": "oauth",
+        "priority": "low",
+        "notes": "Activity token verification (optional)"
+      },
+      {
+        "source": "code/api/profile/ensure.ts",
+        "endpoint": "POST /api/profile/ensure",
+        "category": "profile",
+        "priority": "high",
+        "notes": "Create or ensure user profile exists"
+      },
+      {
+        "source": "code/api/passport/subdomain/[username].ts",
+        "endpoint": "GET /api/passport/subdomain/:username",
+        "category": "passport",
+        "priority": "medium",
+        "notes": "Creator passport JSON API"
+      }
+    ],
+    "database": [
+      {
+        "source": "code/supabase/migrations/20250107_add_discord_integration.sql",
+        "type": "migration",
+        "priority": "high",
+        "tables": ["discord_links", "discord_verifications", "discord_role_mappings"]
+      }
+    ],
+    "config": [
+      {
+        "source": "code/client/global.css",
+        "type": "styles",
+        "priority": "high"
+      },
+      {
+        "source": "code/tailwind.config.js",
+        "type": "config",
+        "priority": "high"
+      },
+      {
+        "source": "code/tsconfig.json",
+        "type": "config",
+        "priority": "high"
+      }
+    ]
+  },
+  "environment_variables": {
+    "VITE_SUPABASE_URL": "https://kmdeisowhtsalsekkzqd.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "sb_publishable_DfTB6qME8BkTmHNJ3dCBew_t1NLATEq",
+    "SUPABASE_SERVICE_ROLE": "eyJhbGc...",
+    "DISCORD_CLIENT_ID": "578971245454950421",
+    "DISCORD_CLIENT_SECRET": "JKlilGzcTWgfmt2wEqiHO8wpCel5VEji",
+    "DISCORD_BOT_TOKEN": "NTc4OTcx...",
+    "VITE_API_BASE": "https://aethex.foundation"
+  },
+  "npm_packages": [
+    "@supabase/supabase-js@^2.x",
+    "@discord/embedded-app-sdk@^2.x",
+    "react-router-dom@^6.x",
+    "react-hook-form@^7.x",
+    "zod@^3.x",
+    "next-themes@^0.3.x",
+    "lucide-react",
+    "sonner@^1.x",
+    "@radix-ui/*"
+  ],
+  "critical_adaptations": [
+    "Update VITE_API_BASE to https://aethex.foundation (not aethex.dev)",
+    "Convert Vercel /api/* functions to Express routes on Replit",
+    "Update Discord OAuth app redirect URI",
+    "Fix all import paths for new directory structure",
+    "Ensure Supabase environment variables are set on Replit"
+  ],
+  "success_criteria": [
+    "Users can log in via Discord",
+    "Users can see their profile after login",
+    "Users can link additional OAuth providers",
+    "Passports display correctly",
+    "OAuth callbacks complete without errors",
+    "Supabase queries work (user_profiles table accessible)"
+  ],
+  "next_steps": [
+    "Copy all files listed above",
+    "Update import paths & environment variables",
+    "Test login flow end-to-end",
+    "Once Phase 1 is complete, proceed to Phase 2"
+  ]
+}
