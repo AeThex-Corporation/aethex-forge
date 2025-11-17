@@ -131,11 +131,49 @@ export async function createCreatorProfile(req: Request, userId: string) {
       spotify_profile_url,
     } = body;
 
+    // Validate required fields
+    if (!username || typeof username !== "string" || username.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ error: "Username is required and must be a non-empty string" }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    if (!experience_level) {
+      return new Response(
+        JSON.stringify({ error: "Experience level is required" }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    if (!primary_arm) {
+      return new Response(
+        JSON.stringify({ error: "Primary arm is required" }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    const normalizedUsername = username.trim().toLowerCase();
+
+    // Check if username already exists
+    const { data: existingCreator } = await supabase
+      .from("aethex_creators")
+      .select("id")
+      .eq("username", normalizedUsername)
+      .single();
+
+    if (existingCreator) {
+      return new Response(
+        JSON.stringify({ error: "Username is already taken" }),
+        { status: 409, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
     const { data, error } = await supabase
       .from("aethex_creators")
       .insert({
         user_id: userId,
-        username,
+        username: normalizedUsername,
         bio,
         skills: skills || [],
         avatar_url,
