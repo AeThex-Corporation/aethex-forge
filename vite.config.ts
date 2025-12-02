@@ -5,11 +5,15 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
-    port: 8080,
+    host: "0.0.0.0",
+    port: 5000,
+    strictPort: true,
+    hmr: {
+      clientPort: 5000,
+    },
     fs: {
-      allow: ["./client", "./shared"],
-      deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
+      allow: [path.resolve(__dirname, "./client"), path.resolve(__dirname, "./shared"), path.resolve(__dirname, "./node_modules"), path.resolve(__dirname)],
+      deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**", "api/**", "discord-bot/**"],
     },
   },
   build: {
