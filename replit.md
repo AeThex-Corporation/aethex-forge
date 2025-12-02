@@ -78,6 +78,31 @@ npm start           # Start production server
 - **GameForge**: Sprint management, team collaboration
 - **Foundation**: Courses, mentorship programs, achievements
 
+## Discord Bot Integration
+
+### Bot Details
+- **Bot Name**: AeThex#9389
+- **Workflow**: "Discord Bot" runs alongside main application
+- **Health Check**: Port 8044
+
+### Slash Commands
+| Command | Description |
+|---------|-------------|
+| `/verify` | Link Discord account to AeThex |
+| `/profile` | View AeThex profile |
+| `/set-realm` | Set preferred realm |
+| `/unlink` | Unlink Discord from AeThex |
+| `/verify-role` | Verify Discord roles |
+
+### Database Tables
+- `discord_verifications` - Temporary verification codes (15 min expiry)
+- `discord_links` - Permanent Discord-to-AeThex account links
+
+### Required Secrets
+- `DISCORD_BOT_TOKEN` - Bot token from Discord Developer Portal
+- `DISCORD_CLIENT_ID` - Application client ID
+- `SUPABASE_SERVICE_ROLE` - Service role key for database operations
+
 ## Recent Changes (December 2, 2025)
 - ✅ Configured Vite to run on port 5000 for Replit compatibility
 - ✅ Set up proper host configuration (0.0.0.0) for Replit proxy
@@ -87,8 +112,15 @@ npm start           # Start production server
 - ✅ Configured deployment settings for Replit autoscale
 - ✅ Fixed server build to output `dist/server/production.mjs` for deployment
 - ✅ Verified application runs without errors in Replit environment
+- ✅ Discord bot (AeThex#9389) running and connected to 7 servers
+- ✅ Created discord_verifications and discord_links database tables
+- ✅ Registered all 5 slash commands with Discord API
+- ✅ Extended auth loading timeout to 30s for slow networks
+- ✅ Fixed /community route with wildcard for nested tabs
+- ✅ Fixed /developers route showing real user data
 
 ## Notes
 - Supabase credentials must be configured in Replit Secrets for the app to fully function
 - The application integrates an Express backend directly into the Vite dev server for seamless API development
-- Discord bot functionality requires additional Discord API credentials
+- Discord bot runs as a separate workflow on port 8044 (health check only)
+- Main application runs on port 5000
