@@ -119,7 +119,7 @@ export default function DiscordVerify() {
   return (
     <Layout>
       <SEO
-        title="Link Discord Account | AeThex"
+        pageTitle="Link Discord Account | AeThex"
         description="Link your Discord account to your AeThex profile"
       />
 
