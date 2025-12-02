@@ -40,10 +40,11 @@ module.exports = {
         .toUpperCase();
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
 
-      // Store verification code
+      // Store verification code with Discord username
       await supabase.from("discord_verifications").insert({
         discord_id: interaction.user.id,
         verification_code: verificationCode,
+        username: interaction.user.username,
         expires_at: expiresAt.toISOString(),
       });
 
