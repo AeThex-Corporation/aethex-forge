@@ -81,9 +81,11 @@ npm start           # Start production server
 ## Recent Changes (December 2, 2025)
 - ✅ Configured Vite to run on port 5000 for Replit compatibility
 - ✅ Set up proper host configuration (0.0.0.0) for Replit proxy
+- ✅ Added `allowedHosts: true` to allow Replit's dynamic proxy hostnames
 - ✅ Updated .gitignore to properly exclude environment files
 - ✅ Installed all npm dependencies
 - ✅ Configured deployment settings for Replit autoscale
+- ✅ Fixed server build to output `dist/server/production.mjs` for deployment
 - ✅ Verified application runs without errors in Replit environment
 
 ## Notes

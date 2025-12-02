@@ -37,7 +37,11 @@ externalPort = 80
 localPort = 38557
 externalPort = 3000
 
+[[ports]]
+localPort = 40437
+externalPort = 3001
+
 [deployment]
 deploymentTarget = "autoscale"
-run = ["npm", "start"]
+run = ["node", "dist/server/production.mjs"]
 build = ["npm", "run", "build"]
