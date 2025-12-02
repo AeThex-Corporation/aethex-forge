@@ -101,7 +101,16 @@
     { "source": "/corp", "destination": "/index.html" },
     { "source": "/corp/:path*", "destination": "/index.html" },
     { "source": "/devlink", "destination": "/index.html" },
-    { "source": "/devlink/:path*", "destination": "/index.html" }
+    { "source": "/devlink/:path*", "destination": "/index.html" },
+    { "source": "/community", "destination": "/index.html" },
+    { "source": "/community/:path*", "destination": "/index.html" },
+    { "source": "/developers", "destination": "/index.html" },
+    { "source": "/developers/:path*", "destination": "/index.html" },
+    { "source": "/discord-verify", "destination": "/index.html" },
+    { "source": "/discord-verify/:path*", "destination": "/index.html" },
+    { "source": "/ethos", "destination": "/index.html" },
+    { "source": "/ethos/:path*", "destination": "/index.html" },
+    { "source": "/:path*", "destination": "/index.html" }
   ],
   "headers": [
     {
