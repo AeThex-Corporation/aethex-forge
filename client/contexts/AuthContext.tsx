@@ -170,17 +170,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     let sessionRestored = false;
 
     // Add timeout to ensure loading doesn't get stuck
-    // Increased from 3s to 5s to allow more time for session restoration after OAuth
+    // Increased to 30s to allow more time for session restoration on slow networks
     const loadingTimeout = setTimeout(() => {
       console.log("Auth loading timeout - forcing loading to false");
       if (!sessionRestored) {
         setLoading(false);
       }
-    }, 5000);
+    }, 30000);
 
     if (!storageClearedRef.current && typeof window !== "undefined") {
       try {
         // ONLY clear mock/demo data, NOT actual Supabase auth session
+        // NOTE: We no longer clear aethex_onboarding_progress_v1 here to preserve user progress
         [
           "mock_user",
           "mock_profile",
@@ -188,7 +189,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           "demo_profiles",
           "demo_posts",
           "demo_seed_v1",
-          "aethex_onboarding_progress_v1",
         ].forEach((key) => window.localStorage.removeItem(key));
 
         // NOTE: We deliberately DO NOT clear:
@@ -274,26 +274,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setTimeout(() => {
           setLoading(false);
         }, 50);
-      }
-
-      // Handle token refresh failures specifically
-      if (event === "TOKEN_REFRESH_FAILED") {
-        console.warn("Token refresh failed - clearing local session");
-        try {
-          clearClientAuthState();
-        } catch (e) {
-          /* ignore */
-        }
-        try {
-          aethexToast.error({
-            title: "Session expired",
-            description:
-              "Your session could not be refreshed and has been cleared. Please sign in again.",
-          });
-        } catch (e) {
-          /* ignore */
-        }
-        return;
       }
 
       // Show toast notifications for auth events
