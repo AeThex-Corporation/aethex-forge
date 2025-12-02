@@ -587,6 +587,8 @@ const App = () => (
                           />
                         </Route>
                         <Route path="/tutorials" element={<Tutorials />} />
+                        <Route path="/community/*" element={<Community />} />
+                        <Route path="/developers" element={<DevelopersDirectory />} />
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/blog/:slug" element={<BlogPost />} />
 
