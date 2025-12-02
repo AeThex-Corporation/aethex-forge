@@ -59,6 +59,7 @@ npm start           # Start production server
 ### Development
 - The development server runs on **port 5000** (required for Replit's webview)
 - Host is set to `0.0.0.0` to allow Replit proxy access
+- `allowedHosts: true` configured to allow Replit's dynamic proxy hostnames
 - Vite HMR is configured for proper hot reload in Replit environment
 
 ### Deployment
