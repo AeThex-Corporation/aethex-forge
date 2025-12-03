@@ -77,7 +77,11 @@ async function sendPostToDiscord(post, authorInfo = null) {
     }
 
     const authorName = author?.full_name || author?.username || "AeThex User";
-    const authorAvatar = author?.avatar_url || "https://aethex.dev/logo.png";
+    // Discord only accepts HTTP/HTTPS URLs for icons - filter out base64/data URLs
+    const rawAvatar = author?.avatar_url || "";
+    const authorAvatar = rawAvatar.startsWith("http://") || rawAvatar.startsWith("https://") 
+      ? rawAvatar 
+      : "https://aethex.dev/logo.png";
     const arm = post.arm_affiliation || "labs";
 
     const embed = new EmbedBuilder()
