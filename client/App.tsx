@@ -224,7 +224,7 @@ const App = () => (
                         <Route path="/admin/feed" element={<AdminFeed />} />
                         <Route path="/admin/docs-sync" element={<DocsSync />} />
                         <Route path="/arms" element={<Arms />} />
-                        <Route path="/feed" element={<Feed />} />
+                        <Route path="/feed" element={<Navigate to="/community/feed" replace />} />
                         <Route path="/teams" element={<Teams />} />
                         <Route path="/squads" element={<Squads />} />
                         <Route path="/mentee-hub" element={<MenteeHub />} />
