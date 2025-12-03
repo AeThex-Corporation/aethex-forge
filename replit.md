@@ -103,6 +103,36 @@ npm start           # Start production server
 - `DISCORD_CLIENT_ID` - Application client ID
 - `SUPABASE_SERVICE_ROLE` - Service role key for database operations
 
+## Domain Architecture
+
+### Identity Authority
+- **aethex.foundation** - Single Source of Truth (SSOT) for all identity/passport data
+- All platforms are OAuth clients consuming Foundation-issued identities
+
+### Domain Routing
+| Domain | Purpose |
+|--------|---------|
+| `aethex.dev` | Main application platform |
+| `aethex.foundation` | Identity authority, passport API |
+| `*.aethex.me` | Creator Passports (wildcard subdomains) |
+| `*.aethex.space` | Project Passports (wildcard subdomains) |
+| `aethex.app`, `.locker`, `.site` | Redirect to aethex.dev |
+| `aethex.studio` | Redirect to aethex.dev/ethos |
+| `aethex.info` | Redirect to aethex.dev/foundation |
+
+### Passport API Flow
+```
+user.aethex.me → fetches from https://aethex.foundation/api/passport/subdomain/{user}
+project.aethex.space → fetches from https://aethex.foundation/api/passport/project/{slug}
+```
+
+## Recent Changes (December 3, 2025)
+- ✅ Fixed passport subdomain API to call aethex.foundation (identity authority)
+- ✅ Fixed API paths: `subdomain-data` → `subdomain`, `project-data` → `project`
+- ✅ Restored wildcard rewrites in vercel.json for `*.aethex.me` and `*.aethex.space`
+- ✅ Added missing routes to vercel.json: /community/*, /developers/*, /discord-verify/*, /ethos/*
+- ✅ Added catch-all route for future paths
+
 ## Recent Changes (December 2, 2025)
 - ✅ Configured Vite to run on port 5000 for Replit compatibility
 - ✅ Set up proper host configuration (0.0.0.0) for Replit proxy
