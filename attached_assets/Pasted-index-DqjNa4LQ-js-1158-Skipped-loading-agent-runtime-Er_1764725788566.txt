@@ -1,0 +1,135 @@
+index-DqjNa4LQ.js:1158 Skipped loading agent runtime: Error: No agent source configured
+    at E$ (index-DqjNa4LQ.js:1158:2430)
+    at Gte (index-DqjNa4LQ.js:1158:3126)
+    at index-DqjNa4LQ.js:1158:3243
+    at nx (index-DqjNa4LQ.js:40:24688)
+    at xc (index-DqjNa4LQ.js:40:43313)
+    at pC (index-DqjNa4LQ.js:40:37301)
+    at Ii (index-DqjNa4LQ.js:38:3274)
+    at oH (index-DqjNa4LQ.js:40:42097)
+    at Bo (index-DqjNa4LQ.js:40:41060)
+    at mC (index-DqjNa4LQ.js:40:36405)
+E$ @ index-DqjNa4LQ.js:1158Understand this warning
+index-DqjNa4LQ.js:1227 [Discord Activity] Checking for Discord context... Object
+index-DqjNa4LQ.js:1227 [Discord Activity] Not in Discord Activity - skipping SDK load
+index-DqjNa4LQ.js:1158 Skipped loading agent runtime: Error: No agent source configured
+    at E$ (index-DqjNa4LQ.js:1158:2430)
+    at Gte (index-DqjNa4LQ.js:1158:3126)
+    at index-DqjNa4LQ.js:1158:3243
+    at nx (index-DqjNa4LQ.js:40:24688)
+    at xc (index-DqjNa4LQ.js:40:43313)
+    at index-DqjNa4LQ.js:40:41518
+    at C (index-DqjNa4LQ.js:25:1615)
+    at MessagePort.F (index-DqjNa4LQ.js:25:1977)
+E$ @ index-DqjNa4LQ.js:1158Understand this warning
+index-DqjNa4LQ.js:1019 Auth state change: INITIAL_SESSION false
+index-DqjNa4LQ.js:1019 Auth state change: SIGNED_IN true
+index-DqjNa4LQ.js:1158 Skipped loading agent runtime: Error: No agent source configured
+    at E$ (index-DqjNa4LQ.js:1158:2430)
+    at Gte (index-DqjNa4LQ.js:1158:3126)
+    at index-DqjNa4LQ.js:1158:3243
+    at nx (index-DqjNa4LQ.js:40:24688)
+    at xc (index-DqjNa4LQ.js:40:43313)
+    at pC (index-DqjNa4LQ.js:40:37301)
+    at Ii (index-DqjNa4LQ.js:38:3274)
+    at oH (index-DqjNa4LQ.js:40:42097)
+    at Bo (index-DqjNa4LQ.js:40:41060)
+    at mC (index-DqjNa4LQ.js:40:36405)
+E$ @ index-DqjNa4LQ.js:1158Understand this warning
+index-DqjNa4LQ.js:1019 [Rewards] Activating at: https://aethex.dev/api/achievements/activate
+/api/achievements/activate:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+index-DqjNa4LQ.js:1019 [Rewards] Activation failed: 500 {"error":"Could not find the 'earned_at' column of 'user_achievements' in the schema cache"}
+activateCommunityRewards @ index-DqjNa4LQ.js:1019Understand this warning
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+verify-code:1  Failed to load resource: the server responded with a status of 500 ()Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
+j @ index-DqjNa4LQ.js:1421
+(anonymous) @ index-DqjNa4LQ.js:1421
+nx @ index-DqjNa4LQ.js:40
+xc @ index-DqjNa4LQ.js:40
+(anonymous) @ index-DqjNa4LQ.js:40
+C @ index-DqjNa4LQ.js:25
+F @ index-DqjNa4LQ.js:25Understand this error
+index-DqjNa4LQ.js:1421  POST https://aethex.dev/api/discord/verify-code 500 (Internal Server Error)
