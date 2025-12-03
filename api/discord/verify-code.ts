@@ -29,13 +29,15 @@ export default async function handler(req: any, res: any) {
     return res.status(500).json({ message: "Server configuration error" });
   }
 
+  let step = "init";
   try {
+    step = "create_client";
     console.log("[Discord Verify] Creating Supabase client with URL:", supabaseUrl?.substring(0, 30) + "...");
     const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
+    step = "lookup_code";
     console.log("[Discord Verify] Looking up code:", verification_code.trim());
     
-    // Find valid verification code
     const { data: verification, error: verifyError } = await supabase
       .from("discord_verifications")
       .select("*")
@@ -55,63 +57,74 @@ export default async function handler(req: any, res: any) {
         error: verifyError,
       });
       return res.status(400).json({
-        message:
-          "Invalid or expired verification code. Please try /verify again.",
+        message: "Invalid or expired verification code. Please try /verify again.",
         error: verifyError.message,
+        step,
       });
     }
 
     if (!verification) {
       return res.status(400).json({
-        message:
-          "Invalid or expired verification code. Please try /verify again.",
+        message: "Invalid or expired verification code. Please try /verify again.",
+        step,
       });
     }
 
+    step = "check_existing_link";
     const discordId = verification.discord_id;
 
-    // Check if already linked
-    const { data: existingLink } = await supabase
+    const { data: existingLink, error: existingLinkError } = await supabase
       .from("discord_links")
       .select("*")
       .eq("discord_id", discordId)
       .single();
 
-    if (existingLink && existingLink.user_id !== user_id) {
-      return res.status(400).json({
-        message:
-          "This Discord account is already linked to another AeThex account.",
+    if (existingLinkError && existingLinkError.code !== "PGRST116") {
+      console.error("[Discord Verify] Existing link check failed:", existingLinkError);
+      return res.status(500).json({
+        message: "Failed to check existing link",
+        step,
+        error: existingLinkError.message,
       });
     }
 
-    // Create or update link
-    const { error: linkError } = await supabase.from("discord_links").upsert({
-      discord_id: discordId,
-      user_id: user_id,
-      linked_at: new Date().toISOString(),
-    });
+    if (existingLink && existingLink.user_id !== user_id) {
+      return res.status(400).json({
+        message: "This Discord account is already linked to another AeThex account.",
+        step,
+      });
+    }
+
+    step = "create_link";
+    const { error: linkError } = await supabase.from("discord_links").upsert(
+      {
+        discord_id: discordId,
+        user_id: user_id,
+        linked_at: new Date().toISOString(),
+      },
+      { onConflict: "discord_id" }
+    );
 
     if (linkError) {
       console.error("[Discord Verify] Link creation failed:", linkError);
-      return res
-        .status(500)
-        .json({ message: "Failed to link Discord account" });
+      return res.status(500).json({
+        message: "Failed to link Discord account",
+        step,
+        error: linkError.message,
+      });
     }
 
-    // Delete used verification code
+    step = "delete_code";
     const { error: deleteError } = await supabase
       .from("discord_verifications")
       .delete()
       .eq("verification_code", verification_code.trim());
 
     if (deleteError) {
-      console.error(
-        "[Discord Verify] Failed to delete verification code:",
-        deleteError,
-      );
-      // Don't return error - code is already used and link is created
+      console.error("[Discord Verify] Failed to delete verification code:", deleteError);
     }
 
+    step = "success";
     res.status(200).json({
       success: true,
       message: "Discord account linked successfully!",
@@ -122,14 +135,15 @@ export default async function handler(req: any, res: any) {
       },
     });
   } catch (error: any) {
-    console.error("[Discord Verify] Error:", {
+    console.error("[Discord Verify] Error at step:", step, {
       message: error?.message,
       code: error?.code,
       stack: error?.stack?.substring(0, 500),
     });
     res.status(500).json({
       message: "An error occurred. Please try again.",
-      debug: process.env.NODE_ENV === 'development' ? error?.message : undefined,
+      step,
+      error: error?.message,
     });
   }
 }
