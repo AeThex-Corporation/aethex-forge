@@ -1,0 +1,74 @@
+PostComposer.tsx:231 Error submitting post: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at handleSubmit (PostComposer.tsx:222:38)
+handleSubmit @ PostComposer.tsx:231
+await in handleSubmit
+callCallback2 @ chunk-FLMU7I4S.js?v=57e95f4a:3680
+invokeGuardedCallbackDev @ chunk-FLMU7I4S.js?v=57e95f4a:3705
+invokeGuardedCallback @ chunk-FLMU7I4S.js?v=57e95f4a:3739
+invokeGuardedCallbackAndCatchFirstError @ chunk-FLMU7I4S.js?v=57e95f4a:3742
+executeDispatch @ chunk-FLMU7I4S.js?v=57e95f4a:7046
+processDispatchQueueItemsInOrder @ chunk-FLMU7I4S.js?v=57e95f4a:7066
+processDispatchQueue @ chunk-FLMU7I4S.js?v=57e95f4a:7075
+dispatchEventsForPlugins @ chunk-FLMU7I4S.js?v=57e95f4a:7083
+(anonymous) @ chunk-FLMU7I4S.js?v=57e95f4a:7206
+batchedUpdates$1 @ chunk-FLMU7I4S.js?v=57e95f4a:18966
+batchedUpdates @ chunk-FLMU7I4S.js?v=57e95f4a:3585
+dispatchEventForPluginEventSystem @ chunk-FLMU7I4S.js?v=57e95f4a:7205
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-FLMU7I4S.js?v=57e95f4a:5484
+dispatchEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5478
+dispatchDiscreteEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5455
+PostComposer.tsx:175  POST https://7c94b7a0-29c7-4f2e-94ef-44b2153872b7-00-2x189rywzk1ng.kirk.replit.dev/api/community/posts 404 (Not Found)
+handleSubmit @ PostComposer.tsx:175
+callCallback2 @ chunk-FLMU7I4S.js?v=57e95f4a:3680
+invokeGuardedCallbackDev @ chunk-FLMU7I4S.js?v=57e95f4a:3705
+invokeGuardedCallback @ chunk-FLMU7I4S.js?v=57e95f4a:3739
+invokeGuardedCallbackAndCatchFirstError @ chunk-FLMU7I4S.js?v=57e95f4a:3742
+executeDispatch @ chunk-FLMU7I4S.js?v=57e95f4a:7046
+processDispatchQueueItemsInOrder @ chunk-FLMU7I4S.js?v=57e95f4a:7066
+processDispatchQueue @ chunk-FLMU7I4S.js?v=57e95f4a:7075
+dispatchEventsForPlugins @ chunk-FLMU7I4S.js?v=57e95f4a:7083
+(anonymous) @ chunk-FLMU7I4S.js?v=57e95f4a:7206
+batchedUpdates$1 @ chunk-FLMU7I4S.js?v=57e95f4a:18966
+batchedUpdates @ chunk-FLMU7I4S.js?v=57e95f4a:3585
+dispatchEventForPluginEventSystem @ chunk-FLMU7I4S.js?v=57e95f4a:7205
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-FLMU7I4S.js?v=57e95f4a:5484
+dispatchEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5478
+dispatchDiscreteEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5455
+PostComposer.tsx:231 Error submitting post: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at handleSubmit (PostComposer.tsx:222:38)
+handleSubmit @ PostComposer.tsx:231
+await in handleSubmit
+callCallback2 @ chunk-FLMU7I4S.js?v=57e95f4a:3680
+invokeGuardedCallbackDev @ chunk-FLMU7I4S.js?v=57e95f4a:3705
+invokeGuardedCallback @ chunk-FLMU7I4S.js?v=57e95f4a:3739
+invokeGuardedCallbackAndCatchFirstError @ chunk-FLMU7I4S.js?v=57e95f4a:3742
+executeDispatch @ chunk-FLMU7I4S.js?v=57e95f4a:7046
+processDispatchQueueItemsInOrder @ chunk-FLMU7I4S.js?v=57e95f4a:7066
+processDispatchQueue @ chunk-FLMU7I4S.js?v=57e95f4a:7075
+dispatchEventsForPlugins @ chunk-FLMU7I4S.js?v=57e95f4a:7083
+(anonymous) @ chunk-FLMU7I4S.js?v=57e95f4a:7206
+batchedUpdates$1 @ chunk-FLMU7I4S.js?v=57e95f4a:18966
+batchedUpdates @ chunk-FLMU7I4S.js?v=57e95f4a:3585
+dispatchEventForPluginEventSystem @ chunk-FLMU7I4S.js?v=57e95f4a:7205
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-FLMU7I4S.js?v=57e95f4a:5484
+dispatchEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5478
+dispatchDiscreteEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5455
+PostComposer.tsx:175  POST https://7c94b7a0-29c7-4f2e-94ef-44b2153872b7-00-2x189rywzk1ng.kirk.replit.dev/api/community/posts 404 (Not Found)
+handleSubmit @ PostComposer.tsx:175
+callCallback2 @ chunk-FLMU7I4S.js?v=57e95f4a:3680
+invokeGuardedCallbackDev @ chunk-FLMU7I4S.js?v=57e95f4a:3705
+invokeGuardedCallback @ chunk-FLMU7I4S.js?v=57e95f4a:3739
+invokeGuardedCallbackAndCatchFirstError @ chunk-FLMU7I4S.js?v=57e95f4a:3742
+executeDispatch @ chunk-FLMU7I4S.js?v=57e95f4a:7046
+processDispatchQueueItemsInOrder @ chunk-FLMU7I4S.js?v=57e95f4a:7066
+processDispatchQueue @ chunk-FLMU7I4S.js?v=57e95f4a:7075
+dispatchEventsForPlugins @ chunk-FLMU7I4S.js?v=57e95f4a:7083
+(anonymous) @ chunk-FLMU7I4S.js?v=57e95f4a:7206
+batchedUpdates$1 @ chunk-FLMU7I4S.js?v=57e95f4a:18966
+batchedUpdates @ chunk-FLMU7I4S.js?v=57e95f4a:3585
+dispatchEventForPluginEventSystem @ chunk-FLMU7I4S.js?v=57e95f4a:7205
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-FLMU7I4S.js?v=57e95f4a:5484
+dispatchEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5478
+dispatchDiscreteEvent @ chunk-FLMU7I4S.js?v=57e95f4a:5455
+PostComposer.tsx:231 Error submitting post: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at handleSubmit (PostComposer.tsx:222:38)
