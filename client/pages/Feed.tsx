@@ -77,6 +77,9 @@ export interface FeedItem {
   likes: number;
   comments: number;
   arm?: ArmType;
+  source?: "discord" | "web" | null;
+  discordChannelName?: string | null;
+  discordAuthorTag?: string | null;
 }
 
 interface TrendingTopic {
@@ -96,6 +99,9 @@ function parseContent(content: string): {
   text?: string;
   mediaUrl?: string | null;
   mediaType: "video" | "image" | "none";
+  source?: "discord" | "web" | null;
+  discordChannelName?: string | null;
+  discordAuthorTag?: string | null;
 } {
   try {
     const obj = JSON.parse(content || "{}");
@@ -109,9 +115,12 @@ function parseContent(content: string): {
             ? "video"
             : "image"
           : "none"),
+      source: obj.source || null,
+      discordChannelName: obj.discord_channel_name || obj.discord_channel || null,
+      discordAuthorTag: obj.discord_author_tag || null,
     };
   } catch {
-    return { text: content, mediaUrl: null, mediaType: "none" };
+    return { text: content, mediaUrl: null, mediaType: "none", source: null };
   }
 }
 
@@ -147,6 +156,9 @@ export default function Feed() {
           likes: p.likes_count ?? 0,
           comments: p.comments_count ?? 0,
           arm: p.arm_affiliation || "labs",
+          source: meta.source,
+          discordChannelName: meta.discordChannelName,
+          discordAuthorTag: meta.discordAuthorTag,
         };
       }),
     [],

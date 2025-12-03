@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { aethexSocialService } from "@/lib/aethex-social-service";
 import { cn } from "@/lib/utils";
 import { normalizeErrorMessage } from "@/lib/error-utils";
@@ -110,6 +111,9 @@ interface FeedItem {
   likes: number;
   comments: number;
   arm?: ArmType;
+  source?: "discord" | "web" | null;
+  discordChannelName?: string | null;
+  discordAuthorTag?: string | null;
 }
 
 function parseContent(content: string) {
@@ -125,9 +129,12 @@ function parseContent(content: string) {
             ? "video"
             : "image"
           : "none"),
+      source: obj.source || null,
+      discordChannelName: obj.discord_channel_name || obj.discord_channel || null,
+      discordAuthorTag: obj.discord_author_tag || null,
     };
   } catch {
-    return { text: content, mediaUrl: null, mediaType: "none" };
+    return { text: content, mediaUrl: null, mediaType: "none", source: null };
   }
 }
 
@@ -137,7 +144,7 @@ interface ArmFeedProps {
 
 export default function ArmFeed({ arm }: ArmFeedProps) {
   const { user, loading } = useAuth();
-  const { toast } = useAuth().toast || { toast: () => {} };
+  const { toast } = useToast();
 
   const [isLoading, setIsLoading] = useState(true);
   const [following, setFollowing] = useState<string[]>([]);
@@ -160,6 +167,9 @@ export default function ArmFeed({ arm }: ArmFeedProps) {
           likes: p.likes_count ?? 0,
           comments: p.comments_count ?? 0,
           arm: p.arm_affiliation || "labs",
+          source: meta.source,
+          discordChannelName: meta.discordChannelName,
+          discordAuthorTag: meta.discordAuthorTag,
         };
       }),
     [],

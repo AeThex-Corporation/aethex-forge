@@ -15,6 +15,11 @@ const ANNOUNCEMENT_CHANNELS = process.env.DISCORD_ANNOUNCEMENT_CHANNELS
   ? process.env.DISCORD_ANNOUNCEMENT_CHANNELS.split(",").map((id) => id.trim())
   : [];
 
+// Main chat channels - sync ALL messages from these channels to the feed
+const MAIN_CHAT_CHANNELS = process.env.DISCORD_MAIN_CHAT_CHANNELS
+  ? process.env.DISCORD_MAIN_CHAT_CHANNELS.split(",").map((id) => id.trim())
+  : [];
+
 // Helper: Get arm affiliation from message context
 function getArmAffiliation(message) {
   const guildName = message.guild?.name?.toLowerCase() || "";
@@ -30,6 +35,147 @@ function getArmAffiliation(message) {
   if (searchString.includes("staff")) return "staff";
 
   return "labs";
+}
+
+// Handle main chat messages - sync ALL messages to feed
+async function handleMainChatSync(message) {
+  try {
+    console.log(
+      `[Main Chat] Processing from ${message.author.tag} in #${message.channel.name}`,
+    );
+
+    // Check if user has linked account
+    const { data: linkedAccount } = await supabase
+      .from("discord_links")
+      .select("user_id")
+      .eq("discord_id", message.author.id)
+      .single();
+
+    let authorId = linkedAccount?.user_id;
+    let authorInfo = null;
+
+    if (authorId) {
+      // Get linked user's profile
+      const { data: profile } = await supabase
+        .from("user_profiles")
+        .select("id, username, full_name, avatar_url")
+        .eq("id", authorId)
+        .single();
+      authorInfo = profile;
+    }
+
+    // If no linked account, use or create a Discord guest profile
+    if (!authorId) {
+      // Check if we have a discord guest profile for this user
+      const discordUsername = `discord-${message.author.id}`;
+      let { data: guestProfile } = await supabase
+        .from("user_profiles")
+        .select("id, username, full_name, avatar_url")
+        .eq("username", discordUsername)
+        .single();
+
+      if (!guestProfile) {
+        // Create guest profile
+        const { data: newProfile, error: createError } = await supabase
+          .from("user_profiles")
+          .insert({
+            username: discordUsername,
+            full_name: message.author.displayName || message.author.username,
+            avatar_url: message.author.displayAvatarURL({ size: 256 }),
+          })
+          .select("id, username, full_name, avatar_url")
+          .single();
+
+        if (createError) {
+          console.error("[Main Chat] Could not create guest profile:", createError);
+          return;
+        }
+        guestProfile = newProfile;
+      }
+
+      authorId = guestProfile?.id;
+      authorInfo = guestProfile;
+    }
+
+    if (!authorId) {
+      console.error("[Main Chat] Could not get author ID");
+      return;
+    }
+
+    // Prepare content
+    let content = message.content || "Shared a message on Discord";
+    let mediaUrl = null;
+    let mediaType = "none";
+
+    if (message.attachments.size > 0) {
+      const attachment = message.attachments.first();
+      if (attachment) {
+        mediaUrl = attachment.url;
+        const attachmentLower = attachment.name.toLowerCase();
+
+        if (
+          [".jpg", ".jpeg", ".png", ".gif", ".webp"].some((ext) =>
+            attachmentLower.endsWith(ext),
+          )
+        ) {
+          mediaType = "image";
+        } else if (
+          [".mp4", ".webm", ".mov", ".avi"].some((ext) =>
+            attachmentLower.endsWith(ext),
+          )
+        ) {
+          mediaType = "video";
+        }
+      }
+    }
+
+    // Determine arm affiliation
+    const armAffiliation = getArmAffiliation(message);
+
+    // Prepare post content with Discord metadata
+    const postContent = JSON.stringify({
+      text: content,
+      mediaUrl: mediaUrl,
+      mediaType: mediaType,
+      source: "discord",
+      discord_message_id: message.id,
+      discord_channel_id: message.channelId,
+      discord_channel_name: message.channel.name,
+      discord_guild_id: message.guildId,
+      discord_guild_name: message.guild?.name,
+      discord_author_id: message.author.id,
+      discord_author_tag: message.author.tag,
+      discord_author_avatar: message.author.displayAvatarURL({ size: 256 }),
+      is_linked_user: !!linkedAccount,
+    });
+
+    // Create post
+    const { data: createdPost, error: insertError } = await supabase
+      .from("community_posts")
+      .insert({
+        title: content.substring(0, 100) || "Discord Message",
+        content: postContent,
+        arm_affiliation: armAffiliation,
+        author_id: authorId,
+        tags: ["discord", "main-chat"],
+        category: "discord",
+        is_published: true,
+        likes_count: 0,
+        comments_count: 0,
+      })
+      .select("id");
+
+    if (insertError) {
+      console.error("[Main Chat] Post creation failed:", insertError);
+      return;
+    }
+
+    console.log(
+      `[Main Chat] ✅ Synced message from ${message.author.tag} to AeThex feed`,
+    );
+  } catch (error) {
+    console.error("[Main Chat] Error:", error);
+  }
 }
 
 // Handle announcements from designated channels
@@ -169,6 +315,14 @@ module.exports = {
       return handleAnnouncementSync(message);
     }
 
+    // Check if this is a main chat channel - sync ALL messages
+    if (
+      MAIN_CHAT_CHANNELS.length > 0 &&
+      MAIN_CHAT_CHANNELS.includes(message.channelId)
+    ) {
+      return handleMainChatSync(message);
+    }
+
     // Check if this is in the feed channel (for user-generated posts)
     if (FEED_CHANNEL_ID && message.channelId !== FEED_CHANNEL_ID) {
       return;
@@ -183,7 +337,7 @@ module.exports = {
       const { data: linkedAccount, error } = await supabase
         .from("discord_links")
         .select("user_id")
-        .eq("discord_user_id", message.author.id)
+        .eq("discord_id", message.author.id)
         .single();
 
       if (error || !linkedAccount) {
