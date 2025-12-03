@@ -2523,6 +2523,47 @@ export function createServer() {
             .json({ error: error.message || "Failed to create post" });
         }
 
+        // Send post to Discord feed channel (fire and forget)
+        try {
+          const contentParsed = JSON.parse(String(payload.content).trim());
+          // Only sync to Discord if this is NOT a Discord-sourced post
+          if (contentParsed.source !== "discord") {
+            // Get author info for the Discord embed
+            const { data: authorProfile } = await adminSupabase
+              .from("user_profiles")
+              .select("username, full_name, avatar_url")
+              .eq("id", payload.author_id)
+              .single();
+
+            const discordBotPort = process.env.DISCORD_BOT_PORT || "8044";
+            const discordBridgeToken = process.env.DISCORD_BRIDGE_TOKEN || "aethex-bridge";
+            
+            fetch(`http://localhost:${discordBotPort}/send-to-discord`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${discordBridgeToken}`,
+              },
+              body: JSON.stringify({
+                ...data,
+                author: authorProfile,
+              }),
+            }).then(async (resp) => {
+              if (resp.ok) {
+                console.log("[Feed Bridge] ✅ Post sent to Discord");
+              } else {
+                const errText = await resp.text();
+                console.log("[Feed Bridge] Discord sync response:", resp.status, errText);
+              }
+            }).catch((err) => {
+              console.log("[Feed Bridge] Could not sync to Discord:", err.message);
+            });
+          }
+        } catch (syncErr: any) {
+          // Non-blocking - just log it
+          console.log("[Feed Bridge] Sync error:", syncErr?.message);
+        }
+
         res.json(data);
       } catch (e: any) {
         console.error("[API] /api/posts exception:", e?.message || String(e));

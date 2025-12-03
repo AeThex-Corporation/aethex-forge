@@ -12,6 +12,8 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
+const { setupFeedListener, sendPostToDiscord, getFeedChannelId } = require("./listeners/feedSync");
+
 // Validate environment variables
 const requiredEnvVars = [
   "DISCORD_BOT_TOKEN",
@@ -290,6 +292,52 @@ http
       return;
     }
 
+    // POST /send-to-discord - Send a post from AeThex to Discord channel
+    if (req.url === "/send-to-discord" && req.method === "POST") {
+      let body = "";
+      req.on("data", (chunk) => {
+        body += chunk.toString();
+      });
+      req.on("end", async () => {
+        try {
+          // Simple auth check
+          const authHeader = req.headers.authorization;
+          const expectedToken = process.env.DISCORD_BRIDGE_TOKEN || "aethex-bridge";
+          if (authHeader !== `Bearer ${expectedToken}`) {
+            res.writeHead(401);
+            res.end(JSON.stringify({ error: "Unauthorized" }));
+            return;
+          }
+
+          const post = JSON.parse(body);
+          console.log("[API] Received post to send to Discord:", post.id);
+
+          const result = await sendPostToDiscord(post, post.author);
+          res.writeHead(result.success ? 200 : 500);
+          res.end(JSON.stringify(result));
+        } catch (error) {
+          console.error("[API] Error processing send-to-discord:", error);
+          res.writeHead(500);
+          res.end(JSON.stringify({ error: error.message }));
+        }
+      });
+      return;
+    }
+
+    // GET /bridge-status - Check if bridge is configured
+    if (req.url === "/bridge-status") {
+      const channelId = getFeedChannelId();
+      res.writeHead(200);
+      res.end(
+        JSON.stringify({
+          enabled: !!channelId,
+          channelId: channelId,
+          botReady: client.isReady(),
+        }),
+      );
+      return;
+    }
+
     if (req.url === "/register-commands") {
       if (req.method === "GET") {
         // Show HTML form with button
@@ -507,6 +555,9 @@ client.once("ready", () => {
   client.user.setActivity("/verify to link your AeThex account", {
     type: "LISTENING",
   });
+
+  // Setup bidirectional feed bridge (AeThex → Discord)
+  setupFeedListener(client);
 });
 
 // Error handling

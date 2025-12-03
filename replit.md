@@ -143,11 +143,14 @@ https://supabase.aethex.tech/auth/v1/callback
   - `https://supabase.aethex.tech/auth/v1/callback`
 
 ## Recent Changes (December 3, 2025)
-- ✅ **Discord-to-Feed Integration**: Messages from Discord FEED channel sync to AeThex community feed
+- ✅ **Bidirectional Discord-Feed Bridge**: Full two-way sync between Discord and AeThex feed
+  - **Discord → AeThex**: Messages from Discord FEED channel sync to community feed
+  - **AeThex → Discord**: Posts created in AeThex appear in Discord with rich embeds
   - Bot listens to configured channel (DISCORD_MAIN_CHAT_CHANNELS env var)
   - Posts display with purple Discord badge and channel name
-  - Supports images/videos from Discord messages
-  - Real-time updates via Supabase subscriptions
+  - Supports images/videos from both platforms
+  - Loop prevention: Discord-sourced posts don't re-post back to Discord
+  - API endpoint: Discord bot exposes `/send-to-discord` for main server to call
 - ✅ **Moved /feed to /community/feed**: Feed is now a tab within the Community page
   - Old /feed URL redirects to /community/feed
   - Added redirect in vercel.json for production
