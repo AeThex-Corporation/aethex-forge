@@ -400,29 +400,23 @@ export const communityService = {
       "id" | "created_at" | "updated_at" | "likes_count" | "comments_count"
     >,
   ): Promise<CommunityPost> {
-    console.log("[createPost] Starting - calling API at", `${API_BASE}/api/posts`);
     try {
       const resp = await fetch(`${API_BASE}/api/posts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(post),
       });
-      console.log("[createPost] API response status:", resp.status);
       if (resp.ok) {
-        const result = await resp.json();
-        console.log("[createPost] API success - post created via API (Discord sync enabled)");
-        return result as CommunityPost;
+        return (await resp.json()) as CommunityPost;
       }
       if (resp.status >= 400) {
         const payload = await resp.json().catch(() => ({}));
-        console.error("[createPost] API error:", payload);
         throw new Error(payload?.error || `API responded with ${resp.status}`);
       }
     } catch (error) {
-      console.warn("[createPost] API failed, falling back to direct Supabase (NO Discord sync):", error);
+      console.warn("Falling back to Supabase insert for post:", error);
     }
 
-    console.log("[createPost] Using direct Supabase insert (Discord sync SKIPPED)");
     const { data, error } = await supabase
       .from("community_posts")
       .insert(post)
