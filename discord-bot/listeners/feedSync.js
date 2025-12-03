@@ -15,6 +15,8 @@ const POLL_INTERVAL = 5000; // Check every 5 seconds
 let discordClient = null;
 let lastCheckedTime = null;
 let pollInterval = null;
+let isPolling = false; // Concurrency lock to prevent overlapping polls
+const processedPostIds = new Set(); // Track already-processed posts to prevent duplicates
 
 function getArmColor(arm) {
   const colors = {
@@ -138,6 +140,14 @@ async function sendPostToDiscord(post, authorInfo = null) {
 async function checkForNewPosts() {
   if (!discordClient || !FEED_CHANNEL_ID) return;
 
+  // Prevent overlapping polls - if already polling, skip this run
+  if (isPolling) {
+    console.log("[Feed Bridge] Skipping poll - previous poll still in progress");
+    return;
+  }
+
+  isPolling = true;
+
   try {
     const { data: posts, error } = await supabase
       .from("community_posts")
@@ -151,29 +161,46 @@ async function checkForNewPosts() {
     }
 
     if (posts && posts.length > 0) {
-      console.log(`[Feed Bridge] Found ${posts.length} new post(s)`);
-      
-      for (const post of posts) {
-        let content = {};
-        try {
-          content = typeof post.content === "string" ? JSON.parse(post.content) : post.content;
-        } catch {
-          content = { text: post.content };
-        }
-
-        if (content.source === "discord") {
-          console.log(`[Feed Bridge] Skipping Discord-sourced post ${post.id}`);
-          continue;
-        }
-
-        console.log(`[Feed Bridge] Bridging post ${post.id} to Discord...`);
-        await sendPostToDiscord(post);
-      }
-
+      // Update lastCheckedTime IMMEDIATELY after fetching to prevent re-fetching same posts
       lastCheckedTime = new Date(posts[posts.length - 1].created_at);
+      
+      // Filter out already-processed posts (double safety)
+      const newPosts = posts.filter(post => !processedPostIds.has(post.id));
+      
+      if (newPosts.length > 0) {
+        console.log(`[Feed Bridge] Found ${newPosts.length} new post(s)`);
+        
+        for (const post of newPosts) {
+          // Mark as processed BEFORE sending to prevent duplicates
+          processedPostIds.add(post.id);
+          
+          let content = {};
+          try {
+            content = typeof post.content === "string" ? JSON.parse(post.content) : post.content;
+          } catch {
+            content = { text: post.content };
+          }
+
+          if (content.source === "discord") {
+            console.log(`[Feed Bridge] Skipping Discord-sourced post ${post.id}`);
+            continue;
+          }
+
+          console.log(`[Feed Bridge] Bridging post ${post.id} to Discord...`);
+          await sendPostToDiscord(post);
+        }
+      }
+      
+      // Keep processedPostIds from growing indefinitely - trim old entries
+      if (processedPostIds.size > 1000) {
+        const idsArray = Array.from(processedPostIds);
+        idsArray.slice(0, 500).forEach(id => processedPostIds.delete(id));
+      }
     }
   } catch (error) {
     console.error("[Feed Bridge] Poll error:", error);
+  } finally {
+    isPolling = false;
   }
 }
 
