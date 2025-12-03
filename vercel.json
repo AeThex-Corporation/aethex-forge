@@ -53,6 +53,20 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "(?<sub>.+)\\.aethex\\.me" }],
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "(?<sub>.+)\\.aethex\\.space" }],
+      "destination": "/index.html"
+    },
+    {
+      "source": "/api/:path(.*)",
+      "destination": "/api/:path"
+    },
     { "source": "/", "destination": "/index.html" },
     { "source": "/login", "destination": "/index.html" },
     { "source": "/login/:path*", "destination": "/index.html" },
