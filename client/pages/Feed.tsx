@@ -124,7 +124,11 @@ function parseContent(content: string): {
   }
 }
 
-export default function Feed() {
+interface FeedProps {
+  embedded?: boolean;
+}
+
+export default function Feed({ embedded = false }: FeedProps) {
   const { user, loading } = useAuth();
   const { toast } = useToast();
   const composerRef = useRef<HTMLDivElement | null>(null);
@@ -486,9 +490,11 @@ export default function Feed() {
     );
   }
 
-  return (
-    <Layout>
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
+  const content = (
+    <div className={cn(
+      "bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]",
+      !embedded && "min-h-screen"
+    )}>
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 sm:gap-6 lg:gap-8 px-3 sm:px-4 pb-16 pt-6 sm:pt-10 lg:px-6">
           <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border/40 bg-background/80 p-4 sm:p-6 lg:p-8 shadow-2xl backdrop-blur">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(96,189,255,0.18),transparent_60%)]" />
@@ -942,6 +948,11 @@ export default function Feed() {
           </div>
         </div>
       </div>
-    </Layout>
   );
+
+  if (embedded) {
+    return content;
+  }
+
+  return <Layout>{content}</Layout>;
 }

@@ -50,6 +50,11 @@
       "has": [{ "type": "host", "value": "aethex.space" }],
       "destination": "https://aethex.dev/",
       "permanent": true
+    },
+    {
+      "source": "/feed",
+      "destination": "/community/feed",
+      "permanent": true
     }
   ],
   "rewrites": [

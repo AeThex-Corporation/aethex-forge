@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
+import Feed from "@/pages/Feed";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 import { Button } from "@/components/ui/button";
@@ -1255,6 +1256,7 @@ export default function Community() {
 
   const communityTabItems = useMemo(
     () => [
+      { id: "feed", label: "Feed" },
       { id: "new-members", label: "New Members" },
       { id: "knowledge", label: "Knowledge Base" },
       { id: "mentorship", label: "Mentorship" },
@@ -1936,6 +1938,12 @@ export default function Community() {
                 </TabsList>
               </div>
             </div>
+
+            {activeTab === "feed" && (
+              <TabsContent value="feed" className="mt-0">
+                <Feed embedded />
+              </TabsContent>
+            )}
 
             {activeTab === "new-members" && (
               <TabsContent value="new-members" className="mt-0">

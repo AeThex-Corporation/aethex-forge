@@ -143,6 +143,14 @@ https://supabase.aethex.tech/auth/v1/callback
   - `https://supabase.aethex.tech/auth/v1/callback`
 
 ## Recent Changes (December 3, 2025)
+- ✅ **Discord-to-Feed Integration**: Messages from Discord FEED channel sync to AeThex community feed
+  - Bot listens to configured channel (DISCORD_MAIN_CHAT_CHANNELS env var)
+  - Posts display with purple Discord badge and channel name
+  - Supports images/videos from Discord messages
+  - Real-time updates via Supabase subscriptions
+- ✅ **Moved /feed to /community/feed**: Feed is now a tab within the Community page
+  - Old /feed URL redirects to /community/feed
+  - Added redirect in vercel.json for production
 - ✅ Fixed passport subdomain API to call aethex.foundation (identity authority)
 - ✅ Fixed API paths: `subdomain-data` → `subdomain`, `project-data` → `project`
 - ✅ Restored wildcard rewrites in vercel.json for `*.aethex.me` and `*.aethex.space`
