@@ -68,3 +68,8 @@ externalPort = 3002
 deploymentTarget = "autoscale"
 run = ["node", "dist/server/production.mjs"]
 build = ["npm", "run", "build"]
+
+[userenv]
+
+[userenv.shared]
+DISCORD_MAIN_CHAT_CHANNELS = "1425114041021497454"
