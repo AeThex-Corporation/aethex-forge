@@ -218,15 +218,15 @@ export default function DiscordVerify() {
                     <Input
                       id="code"
                       type="text"
-                      placeholder="000000"
+                      placeholder="ABC123"
                       value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                      onChange={(e) => setVerificationCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))}
                       maxLength={6}
                       disabled={isLoading}
                       className="text-center text-3xl font-bold tracking-[0.5em] border-2 border-indigo-500/50 focus:border-indigo-500 bg-background/60 hover:bg-background/80 transition-colors"
                     />
                     <p className="text-xs text-muted-foreground text-center">
-                      Enter the 6-digit code from Discord
+                      Enter the 6-character code from Discord
                     </p>
                   </div>
 
