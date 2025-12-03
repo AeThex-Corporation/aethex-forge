@@ -30,8 +30,11 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
+    console.log("[Discord Verify] Creating Supabase client with URL:", supabaseUrl?.substring(0, 30) + "...");
     const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
+    console.log("[Discord Verify] Looking up code:", verification_code.trim());
+    
     // Find valid verification code
     const { data: verification, error: verifyError } = await supabase
       .from("discord_verifications")
@@ -39,6 +42,12 @@ export default async function handler(req: any, res: any) {
       .eq("verification_code", verification_code.trim())
       .gt("expires_at", new Date().toISOString())
       .single();
+
+    console.log("[Discord Verify] Query result:", { 
+      found: !!verification, 
+      error: verifyError?.message,
+      code: verifyError?.code 
+    });
 
     if (verifyError) {
       console.error("[Discord Verify] Code lookup failed:", {
@@ -112,10 +121,15 @@ export default async function handler(req: any, res: any) {
         discriminator: "0000",
       },
     });
-  } catch (error) {
-    console.error("[Discord Verify] Error:", error);
+  } catch (error: any) {
+    console.error("[Discord Verify] Error:", {
+      message: error?.message,
+      code: error?.code,
+      stack: error?.stack?.substring(0, 500),
+    });
     res.status(500).json({
       message: "An error occurred. Please try again.",
+      debug: process.env.NODE_ENV === 'development' ? error?.message : undefined,
     });
   }
 }
