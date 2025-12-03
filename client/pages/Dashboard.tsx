@@ -180,6 +180,10 @@ export default function Dashboard() {
   const [twitter, setTwitter] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
   const [profileLinkCopied, setProfileLinkCopied] = useState(false);
+  const [selectedRealm, setSelectedRealm] = useState<RealmKey | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState("intermediate");
+  const [realmHasChanges, setRealmHasChanges] = useState(false);
+  const [savingRealm, setSavingRealm] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -189,8 +193,46 @@ export default function Dashboard() {
       setLinkedin(profile.linkedin_url || "");
       setGithub(profile.github_url || "");
       setTwitter(profile.twitter_url || "");
+      setSelectedRealm((profile as any).primary_realm || null);
+      setSelectedExperience((profile as any).experience_level || "intermediate");
     }
   }, [profile]);
+
+  const handleRealmChange = (realm: RealmKey) => {
+    setSelectedRealm(realm);
+    setRealmHasChanges(true);
+  };
+
+  const handleExperienceChange = (value: string) => {
+    setSelectedExperience(value);
+    setRealmHasChanges(true);
+  };
+
+  const handleSaveRealm = async () => {
+    if (!user || !selectedRealm) return;
+    setSavingRealm(true);
+    try {
+      const { error } = await (window as any).supabaseClient
+        .from("user_profiles")
+        .update({
+          primary_realm: selectedRealm,
+          experience_level: selectedExperience,
+        })
+        .eq("id", user.id);
+
+      if (error) throw error;
+      aethexToast.success({
+        description: "Realm preference saved!",
+      });
+      setRealmHasChanges(false);
+    } catch (error: any) {
+      aethexToast.error({
+        description: error?.message || "Failed to save realm preference",
+      });
+    } finally {
+      setSavingRealm(false);
+    }
+  };
 
   const handleSaveProfile = async () => {
     if (!user) return;
@@ -209,14 +251,12 @@ export default function Dashboard() {
         .eq("id", user.id);
 
       if (error) throw error;
-      aethexToast({
-        message: "Profile updated successfully!",
-        type: "success",
+      aethexToast.success({
+        description: "Profile updated successfully!",
       });
     } catch (error: any) {
-      aethexToast({
-        message: error?.message || "Failed to update profile",
-        type: "error",
+      aethexToast.error({
+        description: error?.message || "Failed to update profile",
       });
     } finally {
       setSavingProfile(false);
@@ -607,35 +647,111 @@ export default function Dashboard() {
 
             {/* Settings Tab */}
             <TabsContent value="settings" className="space-y-6 animate-fade-in">
+              {/* Realm Preference - Full Width */}
+              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
+                <CardHeader>
+                  <CardTitle>Realm & Experience</CardTitle>
+                  <CardDescription>
+                    Choose your primary area of focus and experience level
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <RealmSwitcher
+                    selectedRealm={selectedRealm}
+                    onRealmChange={handleRealmChange}
+                    selectedExperience={selectedExperience}
+                    onExperienceChange={handleExperienceChange}
+                    hasChanges={realmHasChanges}
+                    onSave={handleSaveRealm}
+                    saving={savingRealm}
+                  />
+                </CardContent>
+              </Card>
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Realm Preference */}
+                {/* Notifications */}
                 <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
                   <CardHeader>
-                    <CardTitle>Primary Realm</CardTitle>
+                    <CardTitle className="flex items-center gap-2">
+                      <Bell className="h-5 w-5" />
+                      Notifications
+                    </CardTitle>
                     <CardDescription>
-                      Choose your primary area of focus
+                      Manage your notification preferences
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <RealmSwitcher />
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between py-2 border-b border-purple-500/10">
+                      <div>
+                        <p className="text-sm font-medium text-white">Email Notifications</p>
+                        <p className="text-xs text-gray-400">Receive updates via email</p>
+                      </div>
+                      <Badge variant="outline" className="text-purple-300 border-purple-500/30">Coming Soon</Badge>
+                    </div>
+                    <div className="flex items-center justify-between py-2 border-b border-purple-500/10">
+                      <div>
+                        <p className="text-sm font-medium text-white">Community Updates</p>
+                        <p className="text-xs text-gray-400">New posts and mentions</p>
+                      </div>
+                      <Badge variant="outline" className="text-purple-300 border-purple-500/30">Coming Soon</Badge>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <div>
+                        <p className="text-sm font-medium text-white">Project Alerts</p>
+                        <p className="text-xs text-gray-400">Updates on your projects</p>
+                      </div>
+                      <Badge variant="outline" className="text-purple-300 border-purple-500/30">Coming Soon</Badge>
+                    </div>
                   </CardContent>
                 </Card>
 
                 {/* Account Actions */}
                 <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
                   <CardHeader>
-                    <CardTitle>Account Actions</CardTitle>
-                    <CardDescription>Manage your account</CardDescription>
+                    <CardTitle className="flex items-center gap-2">
+                      <Settings className="h-5 w-5" />
+                      Account Actions
+                    </CardTitle>
+                    <CardDescription>Manage your account settings</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button
                       variant="outline"
-                      className="w-full justify-start gap-2 border-red-500/30 text-red-300 hover:bg-red-500/10 h-auto py-2"
-                      onClick={() => signOut()}
+                      className="w-full justify-start gap-2 border-purple-500/30 text-purple-300 hover:bg-purple-500/10 h-auto py-3"
+                      onClick={() => navigate("/creators")}
                     >
-                      <LogOut className="h-4 w-4" />
-                      Sign Out
+                      <Users className="h-4 w-4" />
+                      <div className="text-left">
+                        <p className="font-medium">Creator Profile</p>
+                        <p className="text-xs text-gray-400">Join the creator network</p>
+                      </div>
                     </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start gap-2 border-purple-500/30 text-purple-300 hover:bg-purple-500/10 h-auto py-3"
+                      asChild
+                    >
+                      <Link to="/community">
+                        <Activity className="h-4 w-4" />
+                        <div className="text-left">
+                          <p className="font-medium">Community</p>
+                          <p className="text-xs text-gray-400">Join discussions and connect</p>
+                        </div>
+                      </Link>
+                    </Button>
+                    <div className="pt-3 border-t border-red-500/20">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start gap-2 border-red-500/30 text-red-300 hover:bg-red-500/10 h-auto py-3"
+                        onClick={() => signOut()}
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <div className="text-left">
+                          <p className="font-medium">Sign Out</p>
+                          <p className="text-xs text-red-400/70">Log out of your account</p>
+                        </div>
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
