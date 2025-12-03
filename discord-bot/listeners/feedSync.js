@@ -10,7 +10,11 @@ const FEED_CHANNEL_ID = process.env.DISCORD_MAIN_CHAT_CHANNELS
   ? process.env.DISCORD_MAIN_CHAT_CHANNELS.split(",")[0].trim()
   : null;
 
+const POLL_INTERVAL = 5000; // Check every 5 seconds
+
 let discordClient = null;
+let lastCheckedTime = null;
+let pollInterval = null;
 
 function getArmColor(arm) {
   const colors = {
@@ -59,7 +63,6 @@ async function sendPostToDiscord(post, authorInfo = null) {
     }
 
     if (content.source === "discord") {
-      console.log("[Feed Bridge] Skipping Discord-sourced post to prevent loop");
       return { success: true, skipped: true, reason: "Discord-sourced post" };
     }
 
@@ -128,6 +131,48 @@ async function sendPostToDiscord(post, authorInfo = null) {
   }
 }
 
+async function checkForNewPosts() {
+  if (!discordClient || !FEED_CHANNEL_ID) return;
+
+  try {
+    const { data: posts, error } = await supabase
+      .from("community_posts")
+      .select("*")
+      .gt("created_at", lastCheckedTime.toISOString())
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.error("[Feed Bridge] Error fetching new posts:", error);
+      return;
+    }
+
+    if (posts && posts.length > 0) {
+      console.log(`[Feed Bridge] Found ${posts.length} new post(s)`);
+      
+      for (const post of posts) {
+        let content = {};
+        try {
+          content = typeof post.content === "string" ? JSON.parse(post.content) : post.content;
+        } catch {
+          content = { text: post.content };
+        }
+
+        if (content.source === "discord") {
+          console.log(`[Feed Bridge] Skipping Discord-sourced post ${post.id}`);
+          continue;
+        }
+
+        console.log(`[Feed Bridge] Bridging post ${post.id} to Discord...`);
+        await sendPostToDiscord(post);
+      }
+
+      lastCheckedTime = new Date(posts[posts.length - 1].created_at);
+    }
+  } catch (error) {
+    console.error("[Feed Bridge] Poll error:", error);
+  }
+}
+
 function setupFeedListener(client) {
   discordClient = client;
 
@@ -135,6 +180,12 @@ function setupFeedListener(client) {
     console.log("[Feed Bridge] No DISCORD_MAIN_CHAT_CHANNELS configured - bridge disabled");
     return;
   }
+
+  lastCheckedTime = new Date();
+
+  console.log("[Feed Bridge] Starting polling for new posts (every 5 seconds)...");
+  
+  pollInterval = setInterval(checkForNewPosts, POLL_INTERVAL);
 
   console.log("[Feed Bridge] ✅ Feed bridge ready (channel: " + FEED_CHANNEL_ID + ")");
 }
@@ -147,4 +198,11 @@ function getFeedChannelId() {
   return FEED_CHANNEL_ID;
 }
 
-module.exports = { setupFeedListener, sendPostToDiscord, getDiscordClient, getFeedChannelId };
+function cleanup() {
+  if (pollInterval) {
+    clearInterval(pollInterval);
+    console.log("[Feed Bridge] Stopped polling");
+  }
+}
+
+module.exports = { setupFeedListener, sendPostToDiscord, getDiscordClient, getFeedChannelId, cleanup };
