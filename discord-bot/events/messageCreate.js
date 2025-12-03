@@ -307,6 +307,16 @@ module.exports = {
     if (message.author.bot) return;
     if (!message.content && message.attachments.size === 0) return;
 
+    // Debug: Log channel info for troubleshooting
+    const isMainChat = MAIN_CHAT_CHANNELS.includes(message.channelId);
+    const isAnnouncement = ANNOUNCEMENT_CHANNELS.includes(message.channelId);
+    const isFeedChannel = FEED_CHANNEL_ID && message.channelId === FEED_CHANNEL_ID;
+    
+    // Only log if the message is from a channel we care about
+    if (isMainChat || isAnnouncement || isFeedChannel) {
+      console.log(`[MessageCreate] Channel: ${message.channel.name} (${message.channelId}) | Main: ${isMainChat} | Announcement: ${isAnnouncement} | Feed: ${isFeedChannel}`);
+    }
+
     // Check if this is an announcement to sync
     if (
       ANNOUNCEMENT_CHANNELS.length > 0 &&
@@ -323,8 +333,15 @@ module.exports = {
       return handleMainChatSync(message);
     }
 
-    // Check if this is in the feed channel (for user-generated posts)
-    if (FEED_CHANNEL_ID && message.channelId !== FEED_CHANNEL_ID) {
+    // If no specific channels are configured for sync, exit early
+    // This prevents syncing ALL messages from every channel
+    if (!FEED_CHANNEL_ID) {
+      // No feed channel configured - only process main chat and announcement channels
+      return;
+    }
+
+    // Check if this is in the feed channel (for user-generated posts with linked accounts)
+    if (message.channelId !== FEED_CHANNEL_ID) {
       return;
     }
 
