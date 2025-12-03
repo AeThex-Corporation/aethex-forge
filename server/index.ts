@@ -2451,10 +2451,13 @@ export function createServer() {
     });
 
     app.post("/api/posts", async (req, res) => {
+      console.log("[API] POST /api/posts called");
       const payload = req.body || {};
+      console.log("[API] Payload:", JSON.stringify(payload).slice(0, 200));
 
       // Validation
       if (!payload.author_id) {
+        console.log("[API] Error: author_id is required");
         return res.status(400).json({ error: "author_id is required" });
       }
       if (
@@ -2523,6 +2526,7 @@ export function createServer() {
             .json({ error: error.message || "Failed to create post" });
         }
 
+        console.log("[API] Post created successfully:", data?.id);
         res.json(data);
       } catch (e: any) {
         console.error("[API] /api/posts exception:", e?.message || String(e));
