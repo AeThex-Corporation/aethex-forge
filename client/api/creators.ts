@@ -51,7 +51,7 @@ export interface CreatorsResponse {
   };
 }
 
-const getApiBase = () =>
+const API_BASE =
   typeof window !== "undefined" ? window.location.origin : "";
 
 export async function getCreators(filters?: {
@@ -169,9 +169,7 @@ export async function endorseSkill(
   creatorId: string,
   skill: string,
 ): Promise<void> {
-  const apiBase = getApiBase();
-  if (!apiBase) throw new Error("No API base available");
-  const response = await fetch(`${apiBase}/api/creators/${creatorId}/endorse`, {
+  const response = await fetch(`${API_BASE}/api/creators/${creatorId}/endorse`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ skill }),
