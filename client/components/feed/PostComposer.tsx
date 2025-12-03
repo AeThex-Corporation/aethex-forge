@@ -158,7 +158,7 @@ export default function PostComposer({
 
     setIsSubmitting(true);
     try {
-      const url = `${API_BASE}/api/community/posts`;
+      const url = `${API_BASE}/api/posts`;
       const method = editingPost ? "PUT" : "POST";
 
       const payload = {

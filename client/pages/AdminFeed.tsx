@@ -92,7 +92,7 @@ export default function AdminFeed() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/community/posts", {
+      const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
