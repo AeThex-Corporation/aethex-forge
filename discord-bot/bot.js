@@ -98,17 +98,6 @@ if (fs.existsSync(eventsPath)) {
   }
 }
 
-// Bot ready event
-client.once("ready", () => {
-  console.log(`✅ Bot logged in as ${client.user.tag}`);
-  console.log(`📡 Listening in ${client.guilds.cache.size} server(s)`);
-
-  // Set bot status
-  client.user.setActivity("/verify to link your AeThex account", {
-    type: "LISTENING",
-  });
-});
-
 // Slash command interaction handler
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
