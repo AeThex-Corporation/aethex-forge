@@ -143,6 +143,19 @@ https://supabase.aethex.tech/auth/v1/callback
   - `https://supabase.aethex.tech/auth/v1/callback`
 
 ## Recent Changes (December 3, 2025)
+- ✅ **Discord Feed Bridge Bug Fix**: Fixed critical 14x duplicate post issue with three-layer protection
+  - Added polling lock to prevent overlapping poll cycles
+  - Immediate timestamp updates before sending to Discord
+  - Processed ID tracking to skip already-sent posts
+- ✅ **Creator Directory "Become a Creator" Flow**: Registration modal for new creators
+  - Form validation for username, bio, and primary arm affiliation
+  - Pre-fills data from user profile where available
+  - Integrates with `aethex_creators` table in Supabase
+- ✅ **Dashboard Realm & Settings**: Functional realm switching with persistence
+  - RealmSwitcher component wired with proper state management
+  - Saves realm preference to Supabase database
+  - Profile update functionality in Settings tab
+- ✅ **Toast Notification Fixes**: Migrated all calls to use `description` property
 - ✅ **Bidirectional Discord-Feed Bridge**: Full two-way sync between Discord and AeThex feed
   - **Discord → AeThex**: Messages from Discord FEED channel sync to community feed
   - **AeThex → Discord**: Bot polls Supabase every 5 seconds for new posts (works from production!)
