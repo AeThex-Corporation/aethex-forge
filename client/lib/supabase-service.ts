@@ -400,21 +400,31 @@ export const communityService = {
       "id" | "created_at" | "updated_at" | "likes_count" | "comments_count"
     >,
   ): Promise<CommunityPost> {
+    const apiUrl = `${API_BASE}/api/posts`;
+    console.log("[createPost] Attempting POST to:", apiUrl);
+    console.log("[createPost] Payload:", JSON.stringify(post).slice(0, 200));
+    
     try {
-      const resp = await fetch(`${API_BASE}/api/posts`, {
+      const resp = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(post),
       });
+      console.log("[createPost] Response status:", resp.status, resp.statusText);
+      
       if (resp.ok) {
-        return (await resp.json()) as CommunityPost;
+        const json = await resp.json();
+        console.log("[createPost] Success:", json?.id);
+        return json as CommunityPost;
       }
       if (resp.status >= 400) {
-        const payload = await resp.json().catch(() => ({}));
+        const text = await resp.text();
+        console.error("[createPost] API error response:", text.slice(0, 500));
+        const payload = text ? JSON.parse(text) : {};
         throw new Error(payload?.error || `API responded with ${resp.status}`);
       }
-    } catch (error) {
-      console.warn("Falling back to Supabase insert for post:", error);
+    } catch (error: any) {
+      console.error("[createPost] Fetch error:", error?.message || error);
     }
 
     const { data, error } = await supabase
