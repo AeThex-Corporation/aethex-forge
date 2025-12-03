@@ -126,12 +126,32 @@ user.aethex.me → fetches from https://aethex.foundation/api/passport/subdomain
 project.aethex.space → fetches from https://aethex.foundation/api/passport/project/{slug}
 ```
 
+## Discord OAuth Configuration
+
+### Discord Developer Portal (OAuth2 > Redirects)
+```
+https://aethex.dev/api/discord/oauth/callback
+https://aethex.foundation/api/discord/oauth/callback
+https://supabase.aethex.tech/auth/v1/callback
+```
+
+### Supabase Dashboard (Authentication > URL Configuration)
+- **Site URL**: `https://aethex.foundation`
+- **Redirect URLs**:
+  - `https://aethex.dev/**`
+  - `https://aethex.foundation/**`
+  - `https://supabase.aethex.tech/auth/v1/callback`
+
 ## Recent Changes (December 3, 2025)
 - ✅ Fixed passport subdomain API to call aethex.foundation (identity authority)
 - ✅ Fixed API paths: `subdomain-data` → `subdomain`, `project-data` → `project`
 - ✅ Restored wildcard rewrites in vercel.json for `*.aethex.me` and `*.aethex.space`
 - ✅ Added missing routes to vercel.json: /community/*, /developers/*, /discord-verify/*, /ethos/*
 - ✅ Added catch-all route for future paths
+- ✅ Fixed Discord verification code input to accept alphanumeric codes (was filtering out letters)
+- ✅ Added step-by-step error tracking to verify-code API for debugging
+- ✅ Configured Discord OAuth redirect URLs for multi-domain setup
+- ✅ Discord bot running on Replit (moved from Railway)
 
 ## Recent Changes (December 2, 2025)
 - ✅ Configured Vite to run on port 5000 for Replit compatibility
