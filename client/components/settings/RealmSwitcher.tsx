@@ -16,25 +16,28 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import {
-  GamepadIcon,
-  BriefcaseIcon,
-  UsersIcon,
-  ShoppingCartIcon,
+  Code,
   Rocket,
+  Users,
+  Trophy,
+  Database,
+  Sparkles,
+  Shield,
   Compass,
   ArrowRight,
   Check,
-  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMemo, memo, type ComponentType } from "react";
 
 export type RealmKey =
-  | "game_developer"
-  | "client"
-  | "community_member"
-  | "customer"
+  | "labs"
+  | "gameforge"
+  | "corp"
+  | "foundation"
+  | "devlink"
+  | "nexus"
   | "staff";
 
 export interface RealmOption {
@@ -47,19 +50,36 @@ export interface RealmOption {
   route: string;
   routeLabel: string;
   highlights: string[];
+  staffOnly?: boolean;
 }
 
 export const REALM_OPTIONS: RealmOption[] = [
   {
-    id: "game_developer",
-    name: "Development Forge",
-    title: "Game Development",
+    id: "labs",
+    name: "Research & Development",
+    title: "Labs",
     description:
-      "Build immersive experiences, collaborate with other creators, and unlock our full suite of development tools.",
-    icon: GamepadIcon,
-    gradient: "from-neon-purple to-aethex-500",
+      "Explore cutting-edge research, experimental features, and contribute to the future of AeThex technology.",
+    icon: Code,
+    gradient: "from-amber-400 to-amber-600",
+    route: "/dashboard/labs",
+    routeLabel: "Labs Dashboard",
+    highlights: [
+      "Access experimental features",
+      "Contribute to R&D projects",
+      "Technical deep-dives",
+    ],
+  },
+  {
+    id: "gameforge",
+    name: "Game Development",
+    title: "GameForge",
+    description:
+      "Build immersive experiences, collaborate with other creators, and unlock our full suite of game development tools.",
+    icon: Rocket,
+    gradient: "from-green-400 to-green-600",
     route: "/gameforge",
-    routeLabel: "Game Development",
+    routeLabel: "GameForge",
     highlights: [
       "Advanced tooling and workflows",
       "Collaborative project spaces",
@@ -67,15 +87,15 @@ export const REALM_OPTIONS: RealmOption[] = [
     ],
   },
   {
-    id: "client",
-    name: "Strategist Nexus",
-    title: "Consulting",
+    id: "corp",
+    name: "Business & Consulting",
+    title: "Corp",
     description:
       "Engage AeThex teams for bespoke solutions, product consulting, and strategic execution across every milestone.",
-    icon: BriefcaseIcon,
-    gradient: "from-neon-blue to-aethex-400",
-    route: "/corp",
-    routeLabel: "Consulting",
+    icon: Users,
+    gradient: "from-blue-400 to-blue-600",
+    route: "/hub/client",
+    routeLabel: "Client Hub",
     highlights: [
       "Project leadership & delivery",
       "End-to-end service orchestration",
@@ -83,52 +103,69 @@ export const REALM_OPTIONS: RealmOption[] = [
     ],
   },
   {
-    id: "community_member",
-    name: "Innovation Commons",
-    title: "Community",
+    id: "foundation",
+    name: "Education & Mentorship",
+    title: "Foundation",
     description:
-      "Connect with innovators, share discoveries, and access exclusive research, events, and community resources.",
-    icon: UsersIcon,
-    gradient: "from-neon-green to-aethex-600",
-    route: "/community",
-    routeLabel: "Community",
+      "Access courses, mentorship programs, and educational resources to grow your skills and advance your career.",
+    icon: Trophy,
+    gradient: "from-red-400 to-red-600",
+    route: "/foundation",
+    routeLabel: "Foundation",
     highlights: [
-      "Curated knowledge streams",
-      "Collaborative guilds & events",
-      "Access to experimental features",
+      "Structured learning paths",
+      "Expert mentorship",
+      "Achievement-based progression",
     ],
   },
   {
-    id: "customer",
-    name: "Experience Hub",
-    title: "Get Started",
+    id: "devlink",
+    name: "Developer Network",
+    title: "Dev-Link",
     description:
-      "Discover AeThex products, manage licenses, and access tailored support for every experience you launch.",
-    icon: ShoppingCartIcon,
-    gradient: "from-amber-400 to-aethex-700",
-    route: "/get-started",
-    routeLabel: "Get Started",
+      "Connect with developers, share knowledge, and collaborate on open-source projects across the AeThex ecosystem.",
+    icon: Database,
+    gradient: "from-cyan-400 to-cyan-600",
+    route: "/dashboard/dev-link",
+    routeLabel: "Dev-Link",
     highlights: [
-      "Personalized product journeys",
-      "Priority support & updates",
-      "Insight dashboards",
+      "Developer networking",
+      "Open-source collaboration",
+      "API access and integrations",
+    ],
+  },
+  {
+    id: "nexus",
+    name: "Talent Marketplace",
+    title: "Nexus",
+    description:
+      "Find opportunities, showcase your skills, and connect with projects seeking talented creators and developers.",
+    icon: Sparkles,
+    gradient: "from-purple-400 to-fuchsia-600",
+    route: "/nexus",
+    routeLabel: "Nexus Marketplace",
+    highlights: [
+      "Job and contract opportunities",
+      "Portfolio showcase",
+      "Talent matching",
     ],
   },
   {
     id: "staff",
     name: "Operations Command",
-    title: "Admin Panel",
+    title: "Staff",
     description:
       "Admin realm for site staff and employees: operations dashboards, moderation, and admin tooling.",
     icon: Shield,
-    gradient: "from-sky-600 to-indigo-700",
-    route: "/admin",
-    routeLabel: "Admin",
+    gradient: "from-violet-500 to-purple-700",
+    route: "/staff/dashboard",
+    routeLabel: "Staff Dashboard",
     highlights: [
       "Moderation & triage",
       "Operational dashboards",
       "Internal tools & audits",
     ],
+    staffOnly: true,
   },
 ];
 
@@ -169,7 +206,7 @@ const RealmSwitcher = memo(function RealmSwitcher({
     [roles],
   );
   const visibleOptions = useMemo(
-    () => REALM_OPTIONS.filter((o) => (o.id === "staff" ? canSeeStaff : true)),
+    () => REALM_OPTIONS.filter((o) => (o.staffOnly ? canSeeStaff : true)),
     [canSeeStaff],
   );
   return (
