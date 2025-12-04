@@ -143,6 +143,14 @@ https://supabase.aethex.tech/auth/v1/callback
   - `https://supabase.aethex.tech/auth/v1/callback`
 
 ## Recent Changes (December 4, 2025)
+- ✅ **RealmSwitcher Alignment Fix**: Fixed realm IDs to match ARMS taxonomy
+  - Old IDs (`game_developer`, `client`, `community_member`, `customer`) replaced with ARMS IDs (`labs`, `gameforge`, `corp`, `foundation`, `devlink`, `nexus`, `staff`)
+  - Realm selection now persists correctly and pre-selects on page load
+  - Routes aligned with actual dashboard routes (`/dashboard/labs`, `/gameforge`, `/hub/client`, etc.)
+- ✅ **Profile Update Security**: Added JWT authentication to `/api/profile/update` endpoint
+  - Bearer token authentication required for all profile updates
+  - User can only update their own profile (user_id validation against auth session)
+  - Dashboard now sends auth token with all profile API requests
 - ✅ **Bot Panel** (`/bot-panel`): Comprehensive Discord bot management dashboard
   - Overview tab: Bot info, feed bridge stats, uptime
   - Servers tab: All connected Discord servers with member counts
