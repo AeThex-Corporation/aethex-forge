@@ -161,6 +161,7 @@ export default function Dashboard() {
   const {
     user,
     profile,
+    session,
     loading: authLoading,
     signOut,
     profileComplete,
@@ -209,18 +210,27 @@ export default function Dashboard() {
   };
 
   const handleSaveRealm = async () => {
-    if (!user || !selectedRealm) return;
+    if (!user || !selectedRealm || !session?.access_token) return;
     setSavingRealm(true);
     try {
-      const { error } = await (window as any).supabaseClient
-        .from("user_profiles")
-        .update({
+      const response = await fetch("/api/profile/update", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          user_id: user.id,
           primary_realm: selectedRealm,
           experience_level: selectedExperience,
-        })
-        .eq("id", user.id);
+        }),
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to save realm preference");
+      }
+
       aethexToast.success({
         description: "Realm preference saved!",
       });
@@ -235,26 +245,36 @@ export default function Dashboard() {
   };
 
   const handleSaveProfile = async () => {
-    if (!user) return;
+    if (!user || !session?.access_token) return;
     setSavingProfile(true);
     try {
-      const { error } = await (window as any).supabaseClient
-        .from("user_profiles")
-        .update({
+      const response = await fetch("/api/profile/update", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          user_id: user.id,
           full_name: displayName,
           bio: bio,
           website_url: website,
           linkedin_url: linkedin,
           github_url: github,
           twitter_url: twitter,
-        })
-        .eq("id", user.id);
+        }),
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to update profile");
+      }
+
       aethexToast.success({
         description: "Profile updated successfully!",
       });
     } catch (error: any) {
+      console.error("Failed to update profile", error);
       aethexToast.error({
         description: error?.message || "Failed to update profile",
       });

@@ -78,6 +78,7 @@ export async function getCreatorByUsername(username: string): Promise<Creator> {
 }
 
 export async function createCreatorProfile(data: {
+  user_id: string;
   username: string;
   bio: string;
   skills: string[];
@@ -91,7 +92,10 @@ export async function createCreatorProfile(data: {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error("Failed to create creator profile");
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.error || "Failed to create creator profile");
+  }
   return response.json();
 }
 
