@@ -130,6 +130,7 @@ export default function CreatorDirectory() {
     setIsSubmitting(true);
     try {
       await createCreatorProfile({
+        user_id: user.id,
         username: formData.username,
         bio: formData.bio,
         skills: formData.skills

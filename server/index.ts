@@ -342,13 +342,15 @@ export function createServer() {
       isProjectPassport: domain === "aethex.space",
     };
 
-    console.log("[Subdomain] Detected:", {
-      hostname,
-      subdomain,
-      domain,
-      isCreatorPassport: domain === "aethex.me",
-      isProjectPassport: domain === "aethex.space",
-    });
+    if (subdomain) {
+      console.log("[Subdomain] Detected:", {
+        hostname,
+        subdomain,
+        domain,
+        isCreatorPassport: domain === "aethex.me",
+        isProjectPassport: domain === "aethex.space",
+      });
+    }
 
     next();
   });
@@ -2705,6 +2707,80 @@ export function createServer() {
       }
     });
 
+    // Profile update endpoint - used by Dashboard realm/settings
+    app.patch("/api/profile/update", async (req, res) => {
+      // Authenticate user via Bearer token
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+
+      const token = authHeader.replace("Bearer ", "");
+      const { data: { user: authUser }, error: authError } = await adminSupabase.auth.getUser(token);
+
+      if (authError || !authUser) {
+        return res.status(401).json({ error: "Invalid or expired auth token" });
+      }
+
+      const { user_id, ...updates } = req.body || {};
+
+      // Ensure user can only update their own profile
+      if (user_id && user_id !== authUser.id) {
+        return res.status(403).json({ error: "Cannot update another user's profile" });
+      }
+
+      const targetUserId = user_id || authUser.id;
+
+      // Whitelist allowed fields for security
+      const allowedFields = [
+        "full_name",
+        "bio",
+        "avatar_url",
+        "banner_url",
+        "location",
+        "website_url",
+        "github_url",
+        "linkedin_url",
+        "twitter_url",
+        "primary_realm",
+        "experience_level",
+        "user_type",
+      ];
+
+      const sanitizedUpdates: Record<string, any> = {};
+      for (const key of allowedFields) {
+        if (key in updates) {
+          sanitizedUpdates[key] = updates[key];
+        }
+      }
+
+      if (Object.keys(sanitizedUpdates).length === 0) {
+        return res.status(400).json({ error: "No valid fields to update" });
+      }
+
+      try {
+        const { data, error } = await adminSupabase
+          .from("user_profiles")
+          .update({
+            ...sanitizedUpdates,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", targetUserId)
+          .select()
+          .single();
+
+        if (error) {
+          console.error("[Profile Update] Error:", error);
+          return res.status(500).json({ error: error.message });
+        }
+
+        return res.json(data);
+      } catch (e: any) {
+        console.error("[Profile Update] Exception:", e?.message);
+        return res.status(500).json({ error: e?.message || "Failed to update profile" });
+      }
+    });
+
     // Wallet verification endpoint for Phase 2 Bridge UI
     app.post("/api/profile/wallet-verify", async (req, res) => {
       const { user_id, wallet_address } = req.body || {};
@@ -2988,10 +3064,10 @@ export function createServer() {
                 badge_color: achievement.badge_color,
                 xp_reward: achievement.xp_reward,
               },
-              { onConflict: "id" },
+              { onConflict: "id", ignoreDuplicates: true },
             );
 
-            if (error) {
+            if (error && error.code !== "23505") {
               console.error(
                 `Failed to upsert achievement ${achievement.id}:`,
                 error,
