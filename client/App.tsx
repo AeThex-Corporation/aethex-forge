@@ -121,6 +121,7 @@ import DiscordVerify from "./pages/DiscordVerify";
 import { Analytics } from "@vercel/analytics/react";
 import CreatorDirectory from "./pages/creators/CreatorDirectory";
 import CreatorProfile from "./pages/creators/CreatorProfile";
+import BotPanel from "./pages/BotPanel";
 import OpportunitiesHub from "./pages/opportunities/OpportunitiesHub";
 import OpportunityDetail from "./pages/opportunities/OpportunityDetail";
 import OpportunityPostForm from "./pages/opportunities/OpportunityPostForm";
@@ -273,6 +274,14 @@ const App = () => (
                         <Route
                           path="/discord-verify"
                           element={<DiscordVerify />}
+                        />
+                        <Route
+                          path="/bot-panel"
+                          element={
+                            <RequireAccess>
+                              <BotPanel />
+                            </RequireAccess>
+                          }
                         />
                         <Route path="/activity" element={<Activity />} />
                         <Route path="/discord" element={<DiscordActivity />} />

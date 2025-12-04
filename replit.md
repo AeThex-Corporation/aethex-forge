@@ -142,6 +142,26 @@ https://supabase.aethex.tech/auth/v1/callback
   - `https://aethex.foundation/**`
   - `https://supabase.aethex.tech/auth/v1/callback`
 
+## Recent Changes (December 4, 2025)
+- ✅ **Bot Panel** (`/bot-panel`): Comprehensive Discord bot management dashboard
+  - Overview tab: Bot info, feed bridge stats, uptime
+  - Servers tab: All connected Discord servers with member counts
+  - Commands tab: All slash commands with "Register Commands" button
+  - Linked Users tab: Discord-linked AeThex users (sanitized PII)
+  - Feed tab: Recent feed activity from Discord and website
+  - Protected with admin token authentication
+- ✅ **New Discord Slash Commands**: Added 4 new commands
+  - `/help` - Shows all bot commands with descriptions
+  - `/stats` - View your AeThex statistics (posts, likes, comments)
+  - `/leaderboard` - Top contributors with category filter (posts, likes, creators)
+  - `/post` - Create a post directly from Discord with category and image support
+- ✅ **Bot API Security**: Added authentication and CORS to management endpoints
+  - All management endpoints require admin token
+  - PII sanitized in linked users endpoint
+  - CORS headers added for browser access
+  - Server-side proxy endpoints (`/api/discord/bot-*`) to keep admin token secure
+  - Client uses proxied endpoints - no tokens exposed in frontend bundle
+
 ## Recent Changes (December 3, 2025)
 - ✅ **Discord Feed Bridge Bug Fix**: Fixed critical 14x duplicate post issue with three-layer protection
   - Added polling lock to prevent overlapping poll cycles
