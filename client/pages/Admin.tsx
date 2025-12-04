@@ -19,6 +19,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminStatCard from "@/components/admin/AdminStatCard";
 import AdminMemberManager from "@/components/admin/AdminMemberManager";
