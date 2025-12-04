@@ -2226,6 +2226,95 @@ export function createServer() {
       }
     });
 
+    // Bot Management Proxy Endpoints (session-authenticated)
+    const BOT_ADMIN_TOKEN = process.env.DISCORD_ADMIN_TOKEN || "aethex-bot-admin";
+    const getBotApiUrl = () => {
+      const urls = [
+        process.env.DISCORD_BOT_HEALTH_URL?.replace("/health", ""),
+        "http://localhost:8044",
+      ].filter(Boolean);
+      return urls[0] || "http://localhost:8044";
+    };
+
+    // Proxy to bot-status
+    app.get("/api/discord/bot-status", async (req, res) => {
+      try {
+        const botUrl = getBotApiUrl();
+        const response = await fetch(`${botUrl}/bot-status`, {
+          headers: { Authorization: `Bearer ${BOT_ADMIN_TOKEN}` },
+        });
+        if (!response.ok) throw new Error(`Bot returned ${response.status}`);
+        const data = await response.json();
+        res.json(data);
+      } catch (error: any) {
+        res.status(503).json({ error: error.message, status: "offline" });
+      }
+    });
+
+    // Proxy to linked-users
+    app.get("/api/discord/linked-users", async (req, res) => {
+      try {
+        const botUrl = getBotApiUrl();
+        const response = await fetch(`${botUrl}/linked-users`, {
+          headers: { Authorization: `Bearer ${BOT_ADMIN_TOKEN}` },
+        });
+        if (!response.ok) throw new Error(`Bot returned ${response.status}`);
+        const data = await response.json();
+        res.json(data);
+      } catch (error: any) {
+        res.status(503).json({ error: error.message, success: false });
+      }
+    });
+
+    // Proxy to command-stats
+    app.get("/api/discord/command-stats", async (req, res) => {
+      try {
+        const botUrl = getBotApiUrl();
+        const response = await fetch(`${botUrl}/command-stats`, {
+          headers: { Authorization: `Bearer ${BOT_ADMIN_TOKEN}` },
+        });
+        if (!response.ok) throw new Error(`Bot returned ${response.status}`);
+        const data = await response.json();
+        res.json(data);
+      } catch (error: any) {
+        res.status(503).json({ error: error.message, success: false });
+      }
+    });
+
+    // Proxy to feed-stats
+    app.get("/api/discord/feed-stats", async (req, res) => {
+      try {
+        const botUrl = getBotApiUrl();
+        const response = await fetch(`${botUrl}/feed-stats`, {
+          headers: { Authorization: `Bearer ${BOT_ADMIN_TOKEN}` },
+        });
+        if (!response.ok) throw new Error(`Bot returned ${response.status}`);
+        const data = await response.json();
+        res.json(data);
+      } catch (error: any) {
+        res.status(503).json({ error: error.message, success: false });
+      }
+    });
+
+    // Proxy to register-commands
+    app.post("/api/discord/bot-register-commands", async (req, res) => {
+      try {
+        const botUrl = getBotApiUrl();
+        const response = await fetch(`${botUrl}/register-commands`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${BOT_ADMIN_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) throw new Error(`Bot returned ${response.status}`);
+        const data = await response.json();
+        res.json(data);
+      } catch (error: any) {
+        res.status(503).json({ error: error.message, success: false });
+      }
+    });
+
     // Discord Token Diagnostic Endpoint
     app.get("/api/discord/diagnostic", async (req, res) => {
       try {

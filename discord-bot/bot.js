@@ -172,6 +172,63 @@ const COMMANDS_TO_REGISTER = [
     name: "verify-role",
     description: "Check your assigned Discord roles",
   },
+  {
+    name: "help",
+    description: "View all AeThex bot commands and features",
+  },
+  {
+    name: "stats",
+    description: "View your AeThex statistics and activity",
+  },
+  {
+    name: "leaderboard",
+    description: "View the top AeThex contributors",
+    options: [
+      {
+        name: "category",
+        type: 3,
+        description: "Leaderboard category",
+        required: false,
+        choices: [
+          { name: "Most Active (Posts)", value: "posts" },
+          { name: "Most Liked", value: "likes" },
+          { name: "Top Creators", value: "creators" },
+        ],
+      },
+    ],
+  },
+  {
+    name: "post",
+    description: "Create a post in the AeThex community feed",
+    options: [
+      {
+        name: "content",
+        type: 3,
+        description: "Your post content",
+        required: true,
+        max_length: 500,
+      },
+      {
+        name: "category",
+        type: 3,
+        description: "Post category",
+        required: false,
+        choices: [
+          { name: "General", value: "general" },
+          { name: "Project Update", value: "project_update" },
+          { name: "Question", value: "question" },
+          { name: "Idea", value: "idea" },
+          { name: "Announcement", value: "announcement" },
+        ],
+      },
+      {
+        name: "image",
+        type: 11,
+        description: "Attach an image to your post",
+        required: false,
+      },
+    ],
+  },
 ];
 
 // Function to register commands with Discord
@@ -255,10 +312,19 @@ async function registerDiscordCommands() {
 
 // Start HTTP health check server
 const healthPort = process.env.HEALTH_PORT || 8044;
+const ADMIN_TOKEN = process.env.DISCORD_ADMIN_TOKEN || "aethex-bot-admin";
+
+// Helper to check admin authentication
+const checkAdminAuth = (req) => {
+  const authHeader = req.headers.authorization;
+  return authHeader === `Bearer ${ADMIN_TOKEN}`;
+};
+
 http
   .createServer((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.setHeader("Content-Type", "application/json");
 
     if (req.method === "OPTIONS") {
@@ -278,6 +344,179 @@ http
           timestamp: new Date().toISOString(),
         }),
       );
+      return;
+    }
+
+    // GET /bot-status - Comprehensive bot status for management panel (requires auth)
+    if (req.url === "/bot-status") {
+      if (!checkAdminAuth(req)) {
+        res.writeHead(401);
+        res.end(JSON.stringify({ error: "Unauthorized - Admin token required" }));
+        return;
+      }
+
+      const channelId = getFeedChannelId();
+      const guilds = client.guilds.cache.map((guild) => ({
+        id: guild.id,
+        name: guild.name,
+        memberCount: guild.memberCount,
+        icon: guild.iconURL(),
+      }));
+
+      res.writeHead(200);
+      res.end(
+        JSON.stringify({
+          status: client.isReady() ? "online" : "offline",
+          bot: {
+            tag: client.user?.tag || "Not logged in",
+            id: client.user?.id,
+            avatar: client.user?.displayAvatarURL(),
+          },
+          guilds: guilds,
+          guildCount: client.guilds.cache.size,
+          commands: Array.from(client.commands.keys()),
+          commandCount: client.commands.size,
+          uptime: Math.floor(process.uptime()),
+          feedBridge: {
+            enabled: !!channelId,
+            channelId: channelId,
+          },
+          timestamp: new Date().toISOString(),
+        }),
+      );
+      return;
+    }
+
+    // GET /linked-users - Get all Discord-linked users (requires auth, sanitizes PII)
+    if (req.url === "/linked-users") {
+      if (!checkAdminAuth(req)) {
+        res.writeHead(401);
+        res.end(JSON.stringify({ error: "Unauthorized - Admin token required" }));
+        return;
+      }
+
+      (async () => {
+        try {
+          const { data: links, error } = await supabase
+            .from("discord_links")
+            .select("discord_id, user_id, primary_arm, created_at")
+            .order("created_at", { ascending: false })
+            .limit(50);
+
+          if (error) throw error;
+
+          const enrichedLinks = await Promise.all(
+            (links || []).map(async (link) => {
+              const { data: profile } = await supabase
+                .from("user_profiles")
+                .select("username, avatar_url")
+                .eq("id", link.user_id)
+                .single();
+
+              return {
+                discord_id: link.discord_id.slice(0, 6) + "***",
+                user_id: link.user_id.slice(0, 8) + "...",
+                primary_arm: link.primary_arm,
+                created_at: link.created_at,
+                profile: profile ? {
+                  username: profile.username,
+                  avatar_url: profile.avatar_url,
+                } : null,
+              };
+            })
+          );
+
+          res.writeHead(200);
+          res.end(JSON.stringify({ success: true, links: enrichedLinks, count: enrichedLinks.length }));
+        } catch (error) {
+          res.writeHead(500);
+          res.end(JSON.stringify({ success: false, error: error.message }));
+        }
+      })();
+      return;
+    }
+
+    // GET /command-stats - Get command usage statistics (requires auth)
+    if (req.url === "/command-stats") {
+      if (!checkAdminAuth(req)) {
+        res.writeHead(401);
+        res.end(JSON.stringify({ error: "Unauthorized - Admin token required" }));
+        return;
+      }
+
+      (async () => {
+        try {
+          const stats = {
+            commands: COMMANDS_TO_REGISTER.map((cmd) => ({
+              name: cmd.name,
+              description: cmd.description,
+              options: cmd.options?.length || 0,
+            })),
+            totalCommands: COMMANDS_TO_REGISTER.length,
+          };
+
+          res.writeHead(200);
+          res.end(JSON.stringify({ success: true, stats }));
+        } catch (error) {
+          res.writeHead(500);
+          res.end(JSON.stringify({ success: false, error: error.message }));
+        }
+      })();
+      return;
+    }
+
+    // GET /feed-stats - Get feed bridge statistics (requires auth)
+    if (req.url === "/feed-stats") {
+      if (!checkAdminAuth(req)) {
+        res.writeHead(401);
+        res.end(JSON.stringify({ error: "Unauthorized - Admin token required" }));
+        return;
+      }
+
+      (async () => {
+        try {
+          const { count: totalPosts } = await supabase
+            .from("community_posts")
+            .select("*", { count: "exact", head: true });
+
+          const { count: discordPosts } = await supabase
+            .from("community_posts")
+            .select("*", { count: "exact", head: true })
+            .eq("source", "discord");
+
+          const { count: websitePosts } = await supabase
+            .from("community_posts")
+            .select("*", { count: "exact", head: true })
+            .or("source.is.null,source.neq.discord");
+
+          const { data: recentPosts } = await supabase
+            .from("community_posts")
+            .select("id, content, source, created_at")
+            .order("created_at", { ascending: false })
+            .limit(10);
+
+          res.writeHead(200);
+          res.end(
+            JSON.stringify({
+              success: true,
+              stats: {
+                totalPosts: totalPosts || 0,
+                discordPosts: discordPosts || 0,
+                websitePosts: websitePosts || 0,
+                recentPosts: (recentPosts || []).map(p => ({
+                  id: p.id,
+                  content: p.content?.slice(0, 100) + (p.content?.length > 100 ? "..." : ""),
+                  source: p.source,
+                  created_at: p.created_at,
+                })),
+              },
+            })
+          );
+        } catch (error) {
+          res.writeHead(500);
+          res.end(JSON.stringify({ success: false, error: error.message }));
+        }
+      })();
       return;
     }
 
@@ -329,6 +568,11 @@ http
 
     if (req.url === "/register-commands") {
       if (req.method === "GET") {
+        if (!checkAdminAuth(req)) {
+          res.writeHead(401);
+          res.end(JSON.stringify({ error: "Unauthorized - Admin token required" }));
+          return;
+        }
         // Show HTML form with button
         res.writeHead(200, { "Content-Type": "text/html" });
         res.end(`
@@ -480,13 +724,10 @@ http
       }
 
       if (req.method === "POST") {
-        // Verify admin token if provided
-        const authHeader = req.headers.authorization;
-        const adminToken = process.env.DISCORD_ADMIN_REGISTER_TOKEN;
-
-        if (adminToken && authHeader !== `Bearer ${adminToken}`) {
+        // Verify admin token
+        if (!checkAdminAuth(req)) {
           res.writeHead(401);
-          res.end(JSON.stringify({ error: "Unauthorized" }));
+          res.end(JSON.stringify({ error: "Unauthorized - Admin token required" }));
           return;
         }
 
