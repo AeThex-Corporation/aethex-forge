@@ -1,7 +1,12 @@
 import TitleBar from "./TitleBar";
 import { ReactNode } from "react";
 
-export default function DesktopShell({ children }: { children: ReactNode }) {
+interface DesktopShellProps {
+  children: ReactNode;
+  title?: string;
+}
+
+export default function DesktopShell({ children, title }: DesktopShellProps) {
   return (
     <div
       style={{
@@ -11,11 +16,11 @@ export default function DesktopShell({ children }: { children: ReactNode }) {
         color: "#e5e7eb",
         display: "flex",
         flexDirection: "column",
+        overflow: "hidden",
       }}
     >
-      <TitleBar />
-      <div style={{ flex: 1, overflow: "hidden" }}>{children}</div>
+      <TitleBar title={title} />
+      <div style={{ flex: 1, overflow: "auto" }}>{children}</div>
     </div>
   );
 }
-

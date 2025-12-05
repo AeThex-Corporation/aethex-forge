@@ -15,18 +15,34 @@ AeThex is a full-stack web application built with React, Vite, Express, and Supa
 
 ## Project Structure
 ```
-├── client/           # React frontend code
-│   ├── components/   # React components
-│   ├── pages/        # Page components
-│   ├── lib/          # Utility libraries
-│   ├── hooks/        # Custom React hooks
-│   └── contexts/     # React contexts
-├── server/           # Express backend
-│   └── index.ts      # Main server file with API routes
-├── api/              # API route handlers
-├── discord-bot/      # Discord bot integration
-├── docs/             # Documentation files
-└── shared/           # Shared code between client/server
+├── client/               # React frontend code (web)
+│   ├── components/       # React components
+│   ├── pages/            # Page components
+│   ├── lib/              # Utility libraries
+│   ├── hooks/            # Custom React hooks
+│   ├── contexts/         # React contexts
+│   ├── desktop/          # Desktop-specific React code
+│   │   ├── components/   # TitleBar, DesktopShell, Overlay
+│   │   ├── desktop-main.tsx    # Desktop app entry point
+│   │   └── desktop-overlay.tsx # Overlay window entry point
+│   ├── main.tsx          # Web app entry point
+│   ├── desktop-main.html # Desktop HTML entry
+│   └── desktop-overlay.html # Overlay HTML entry
+├── electron/             # Electron main process
+│   ├── main.js           # Electron entry point
+│   ├── preload.js        # Secure IPC bridge
+│   ├── windows.js        # Window management
+│   ├── ipc.js            # IPC handlers
+│   └── sentinel.js       # Clipboard PII monitoring
+├── server/               # Express backend
+│   └── index.ts          # Main server file with API routes
+├── services/             # Backend services
+│   ├── watcher.js        # File watcher for dev workflow
+│   └── pii-scrub.js      # PII scrubbing utility
+├── api/                  # API route handlers
+├── discord-bot/          # Discord bot integration
+├── docs/                 # Documentation files
+└── shared/               # Shared code between client/server
 
 ```
 

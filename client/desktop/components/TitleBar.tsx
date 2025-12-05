@@ -1,12 +1,25 @@
-import { useState, CSSProperties } from "react";
+import { useState, CSSProperties, useEffect } from "react";
+import type { AeBridge } from "../types/preload";
 
-export default function TitleBar() {
+interface TitleBarProps {
+  title?: string;
+}
+
+export default function TitleBar({ title = "AeThex Terminal" }: TitleBarProps) {
   const [pinned, setPinned] = useState(false);
 
-  const call = async (method: string) => {
-    const api = (window as any)?.aeBridge;
-    if (!api || !api[method]) return;
-    const res = await api[method]();
+  useEffect(() => {
+    const bridge = window.aeBridge;
+    if (bridge?.isPinned) {
+      bridge.isPinned().then(setPinned).catch(() => {});
+    }
+  }, []);
+
+  const call = async (method: keyof AeBridge) => {
+    const api = window.aeBridge;
+    if (!api || typeof api[method] !== "function") return;
+    const fn = api[method] as () => Promise<boolean>;
+    const res = await fn();
     if (method === "togglePin") setPinned(res);
   };
 
@@ -19,20 +32,18 @@ export default function TitleBar() {
         padding: "0 12px",
         background: "#050814",
         color: "#9ca3af",
-        // @ts-ignore - Electron-specific property
         WebkitAppRegion: "drag",
         borderBottom: "1px solid #0f172a",
         letterSpacing: "0.08em",
         fontSize: 12,
       } as CSSProperties}
     >
-      <div style={{ fontFamily: "Space Mono, monospace" }}>AeThex Terminal</div>
+      <div style={{ fontFamily: "Space Mono, monospace" }}>{title}</div>
       <div
         style={{
           marginLeft: "auto",
           display: "flex",
           gap: 8,
-          // @ts-ignore - Electron-specific property
           WebkitAppRegion: "no-drag",
         } as CSSProperties}
       >
@@ -41,14 +52,14 @@ export default function TitleBar() {
           style={btnStyle(pinned ? "#38bdf8" : "#1f2937")}
           title="Pin / Unpin"
         >
-          {pinned ? "Pinned" : "Pin"}
+          {pinned ? "📌" : "Pin"}
         </button>
         <button
           onClick={() => call("minimize")}
           style={btnStyle("#1f2937")}
           title="Minimize"
         >
-          _
+          —
         </button>
         <button
           onClick={() => call("maximize")}
@@ -62,14 +73,14 @@ export default function TitleBar() {
           style={btnStyle("#ef4444")}
           title="Close"
         >
-          X
+          ✕
         </button>
       </div>
     </div>
   );
 }
 
-function btnStyle(bg: string) {
+function btnStyle(bg: string): CSSProperties {
   return {
     border: "1px solid #111827",
     background: bg,
@@ -78,7 +89,9 @@ function btnStyle(bg: string) {
     padding: "4px 8px",
     cursor: "pointer",
     fontSize: 12,
-    minWidth: 46,
-  } as React.CSSProperties;
+    minWidth: 36,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
 }
-

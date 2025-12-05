@@ -8,7 +8,8 @@
   "main": "electron/main.js",
   "pkg": {
     "assets": [
-      "dist/spa/*"
+      "dist/spa/*",
+      "dist/desktop/*"
     ],
     "scripts": [
       "dist/server/**/*.js"
@@ -25,9 +26,10 @@
     "format.fix": "prettier --write .",
     "typecheck": "tsc",
     "desktop:dev": "concurrently -k \"npm:desktop:renderer\" \"npm:desktop:electron\"",
-    "desktop:renderer": "npm run dev -- --host --port 5173",
+    "desktop:renderer": "vite --config vite.desktop.config.ts --host --port 5173",
     "desktop:electron": "cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
-    "desktop:build": "npm run build && electron-builder -c electron-builder.yml"
+    "desktop:build": "npm run build:desktop && electron-builder -c electron-builder.yml",
+    "build:desktop": "vite build --config vite.desktop.config.ts"
   },
   "dependencies": {
     "@builder.io/react": "^8.2.8",
