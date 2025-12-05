@@ -1,17 +1,99 @@
 appId: com.aethex.desktop
 productName: AeThex Desktop Terminal
+copyright: Copyright (c) 2025 AeThex
+artifactName: "${productName}-${version}-${os}-${arch}.${ext}"
+
+directories:
+  output: dist
+  buildResources: build
+
 files:
-  - "dist/**"
+  - "dist/desktop/**"
   - "electron/**"
   - "services/**"
+  - "package.json"
+
+extraResources:
+  - from: "build/icons"
+    to: "icons"
+
 asar: true
 npmRebuild: false
 buildDependenciesFromSource: false
+
 win:
-  target: nsis
+  target:
+    - target: nsis
+      arch:
+        - x64
   icon: build/icons/icon.ico
+  publisherName: AeThex
+  requestedExecutionLevel: asInvoker
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: AeThex Terminal
+  menuCategory: Development
+  installerIcon: build/icons/icon.ico
+  uninstallerIcon: build/icons/icon.ico
+  installerHeaderIcon: build/icons/icon.ico
+  license: LICENSE
+  deleteAppDataOnUninstall: false
+
 mac:
-  target: dmg
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
   category: public.app-category.developer-tools
   icon: build/icons/icon.icns
+  darkModeSupport: true
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
 
+dmg:
+  iconSize: 80
+  contents:
+    - x: 130
+      y: 220
+      type: file
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+  icon: build/icons
+  category: Development
+  maintainer: AeThex <support@aethex.dev>
+  synopsis: AeThex Desktop Terminal
+  description: Desktop terminal application for the AeThex development platform
+
+appImage:
+  artifactName: "${productName}-${version}-${arch}.${ext}"
+
+deb:
+  depends:
+    - libnotify4
+    - libxtst6
+    - libnss3
+
+publish:
+  provider: github
+  owner: aethex
+  repo: aethex-desktop
+  releaseType: release

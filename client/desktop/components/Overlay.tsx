@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "../types/preload";
 
 interface OverlayProps {
   defaultPath?: string;
