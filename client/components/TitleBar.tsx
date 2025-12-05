@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, CSSProperties } from "react";
 
 export default function TitleBar() {
   const [pinned, setPinned] = useState(false);
@@ -19,11 +19,12 @@ export default function TitleBar() {
         padding: "0 12px",
         background: "#050814",
         color: "#9ca3af",
+        // @ts-ignore - Electron-specific property
         WebkitAppRegion: "drag",
         borderBottom: "1px solid #0f172a",
         letterSpacing: "0.08em",
         fontSize: 12,
-      }}
+      } as CSSProperties}
     >
       <div style={{ fontFamily: "Space Mono, monospace" }}>AeThex Terminal</div>
       <div
@@ -31,8 +32,9 @@ export default function TitleBar() {
           marginLeft: "auto",
           display: "flex",
           gap: 8,
+          // @ts-ignore - Electron-specific property
           WebkitAppRegion: "no-drag",
-        }}
+        } as CSSProperties}
       >
         <button
           onClick={() => call("togglePin")}

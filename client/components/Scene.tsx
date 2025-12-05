@@ -1,9 +1,10 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Grid, OrbitControls, Text } from "@react-three/drei";
+import * as THREE from "three";
 import { MathUtils, Vector3 } from "three";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 type Gateway = {
   label: string;
@@ -241,7 +242,145 @@ function SceneContent() {
   );
 }
 
+function FallbackUI() {
+  return (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        background: "linear-gradient(135deg, #030712 0%, #0f172a 50%, #1e1b4b 100%)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Inter, sans-serif",
+        color: "#e5e7eb",
+        padding: 20,
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        style={{ textAlign: "center", marginBottom: 40 }}
+      >
+        <h1 style={{ fontSize: 48, fontWeight: 700, marginBottom: 8, letterSpacing: "0.05em" }}>
+          AeThex OS
+        </h1>
+        <p style={{ fontSize: 16, opacity: 0.7, letterSpacing: "0.1em" }}>
+          Select Your Realm
+        </p>
+      </motion.div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: 16,
+          maxWidth: 900,
+          width: "100%",
+        }}
+      >
+        {gateways.map((gw, i) => (
+          <motion.div
+            key={gw.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: i * 0.1 }}
+          >
+            <Link
+              to={gw.route}
+              style={{
+                display: "block",
+                padding: "24px 20px",
+                borderRadius: 16,
+                border: `2px solid ${gw.color}40`,
+                background: `${gw.color}10`,
+                textDecoration: "none",
+                color: "#e5e7eb",
+                textAlign: "center",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = gw.color;
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = `0 8px 30px ${gw.color}30`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `${gw.color}40`;
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 18,
+                  fontWeight: 600,
+                  letterSpacing: "0.1em",
+                  color: gw.color,
+                }}
+              >
+                {gw.label}
+              </div>
+            </Link>
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        style={{ marginTop: 40 }}
+      >
+        <Link
+          to="/login"
+          style={{
+            padding: "12px 24px",
+            borderRadius: 10,
+            border: "1px solid #38bdf8",
+            background: "rgba(14, 165, 233, 0.12)",
+            color: "#e0f2fe",
+            fontWeight: 600,
+            textDecoration: "none",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          Connect Passport
+        </Link>
+      </motion.div>
+    </div>
+  );
+}
+
+function checkWebGLSupport(): boolean {
+  try {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    return !!gl;
+  } catch {
+    return false;
+  }
+}
+
 export default function Scene() {
+  const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
+  const [webglError, setWebglError] = useState(false);
+
+  useEffect(() => {
+    setWebglSupported(checkWebGLSupport());
+  }, []);
+
+  if (webglSupported === null) {
+    return (
+      <div style={{ width: "100vw", height: "100vh", background: "#030712" }} />
+    );
+  }
+
+  if (!webglSupported || webglError) {
+    return <FallbackUI />;
+  }
+
   return (
     <div
       style={{
@@ -299,6 +438,11 @@ export default function Scene() {
         shadows
         camera={{ position: [0, 3, 12], fov: 50, near: 0.1, far: 100 }}
         gl={{ antialias: true }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener("webglcontextlost", () => {
+            setWebglError(true);
+          });
+        }}
       >
         <SceneContent />
       </Canvas>
