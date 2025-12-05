@@ -164,6 +164,7 @@ import StaffLearningPortal from "./pages/staff/StaffLearningPortal";
 import StaffPerformanceReviews from "./pages/staff/StaffPerformanceReviews";
 import StaffProjectTracking from "./pages/staff/StaffProjectTracking";
 import StaffTeamHandbook from "./pages/staff/StaffTeamHandbook";
+import Overlay from "./pages/Overlay";
 
 const queryClient = new QueryClient();
 
@@ -184,6 +185,7 @@ const App = () => (
                       <Routes>
                         {/* Subdomain Passport (aethex.me and aethex.space) handles its own redirect if not a subdomain */}
                         <Route path="/" element={<SubdomainPassport />} />
+                        <Route path="/overlay" element={<Overlay />} />
                         <Route path="/onboarding" element={<Onboarding />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route

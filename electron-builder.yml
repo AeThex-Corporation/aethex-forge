@@ -1,0 +1,17 @@
+appId: com.aethex.desktop
+productName: AeThex Desktop Terminal
+files:
+  - "dist/**"
+  - "electron/**"
+  - "services/**"
+asar: true
+npmRebuild: false
+buildDependenciesFromSource: false
+win:
+  target: nsis
+  icon: build/icons/icon.ico
+mac:
+  target: dmg
+  category: public.app-category.developer-tools
+  icon: build/icons/icon.icns
+
