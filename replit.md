@@ -159,22 +159,22 @@ https://supabase.aethex.tech/auth/v1/callback
   - `https://supabase.aethex.tech/auth/v1/callback`
 
 ## Recent Changes (December 5, 2025)
+- ✅ **Isometric 2.5D Realm Selector**: Replaced WebGL 3D scene with CSS-based isometric cards
+  - `client/components/IsometricRealmCard.tsx` - Individual card with CSS 3D transforms and parallax layers
+  - `client/components/IsometricRealmSelector.tsx` - Container with responsive grid, ambient particles, and header/footer
+  - Mouse-tracking tilt effect with translateZ parallax on hover
+  - Realm-specific colors, icons, and glow effects
+  - Memoized particle generation to prevent jitter on mouse movement
+  - Throttled mouse position updates (50ms) for better performance
 - ✅ **Electron Desktop App Support**: Added desktop application framework
   - `electron/main.js` - Main Electron process with window management
   - `electron/preload.js` - Secure IPC bridge for frontend communication
   - `electron-builder.yml` - Build configuration for packaging
-  - `client/components/DesktopShell.tsx` - Desktop wrapper with title bar
-  - `client/components/TitleBar.tsx` - Custom title bar with pin/minimize/maximize/close
-  - `client/pages/Overlay.tsx` - File watcher overlay for development tools
-- ✅ **3D Scene Landing Page**: New immersive realm selector
-  - `client/components/Scene.tsx` - Three.js/React Three Fiber 3D scene
-  - Animated gateway meshes for each realm (Nexus, GameForge, Foundation, Labs, Corp)
-  - Camera rig with smooth transitions on realm selection
-  - WebGL fallback UI when 3D rendering isn't available
+  - `client/desktop/components/` - TitleBar, DesktopShell, Overlay
+  - `client/desktop/types/preload.d.ts` - TypeScript declarations for IPC bridge
 - ✅ **Utility Services**: New backend services
   - `services/pii-scrub.js` - PII scrubbing utility for privacy
   - `services/watcher.js` - File watcher for development workflow
-- ✅ **TypeScript Fixes**: Fixed THREE namespace import and WebkitAppRegion typing
 
 ## Recent Changes (December 4, 2025)
 - ✅ **RealmSwitcher Alignment Fix**: Fixed realm IDs to match ARMS taxonomy
