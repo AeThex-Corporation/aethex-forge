@@ -169,9 +169,17 @@ https://supabase.aethex.tech/auth/v1/callback
 - ✅ **Electron Desktop App Support**: Added desktop application framework
   - `electron/main.js` - Main Electron process with window management
   - `electron/preload.js` - Secure IPC bridge for frontend communication
-  - `electron-builder.yml` - Build configuration for packaging
+  - `electron-builder.yml` - Build configuration for Windows/Mac/Linux packaging
   - `client/desktop/components/` - TitleBar, DesktopShell, Overlay
   - `client/desktop/types/preload.d.ts` - TypeScript declarations for IPC bridge
+- ✅ **Desktop App Distribution**: Complete release pipeline
+  - `.github/workflows/desktop-build.yml` - Automated builds on Windows, macOS, Linux runners
+  - Triggers on version tags (v*) or manual dispatch
+  - Uploads artifacts (.exe, .dmg, .AppImage, .deb) to GitHub Releases
+  - `docs/DESKTOP-RELEASE.md` - Comprehensive release guide with code signing instructions
+  - `build/icons/` - App icon assets with conversion instructions
+  - `build/entitlements.mac.plist` - macOS security entitlements for notarization
+  - Auto-updater configured via GitHub Releases
 - ✅ **Utility Services**: New backend services
   - `services/pii-scrub.js` - PII scrubbing utility for privacy
   - `services/watcher.js` - File watcher for development workflow
