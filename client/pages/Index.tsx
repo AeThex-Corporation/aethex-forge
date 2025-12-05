@@ -1,5 +1,5 @@
 import SEO from "@/components/SEO";
-import Scene from "@/components/Scene";
+import IsometricRealmSelector from "@/components/IsometricRealmSelector";
 
 export default function Index() {
   return (
@@ -13,7 +13,7 @@ export default function Index() {
             : (undefined as any)
         }
       />
-      <Scene />
+      <IsometricRealmSelector />
     </>
   );
 }
