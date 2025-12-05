@@ -1,0 +1,38 @@
+~/workspace$ git pull --rebase origin main
+From https://github.com/AeThex-Corporation/aethex-forge
+ * branch            main       -> FETCH_HEAD
+Auto-merging .github/workflows/desktop-build.yml
+CONFLICT (add/add): Merge conflict in .github/workflows/desktop-build.yml
+error: could not apply 0ac2711... Update application to include desktop build and release configurations
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
+Could not apply 0ac2711... # Update application to include desktop build and release configurations
+~/workspace$ git checkout --ours .github/workflows/desktop-build.yml
+Updated 0 paths from the index
+~/workspace$ git add .github/workflows/desktop-build.yml
+~/workspace$ git add .github/workflows/desktop-build.yml
+~/workspace$ git rebase --continue
+fatal: no rebase in progress
+~/workspace$ git status
+On branch main
+Your branch and 'origin/main' have diverged,
+and have 12 and 1 different commits each, respectively.
+  (use "git pull" if you want to integrate the remote branch with yours)
+
+nothing to commit, working tree clean
+~/workspace$ git pull --rebase origin main
+From https://github.com/AeThex-Corporation/aethex-forge
+ * branch            main       -> FETCH_HEAD
+Auto-merging .github/workflows/desktop-build.yml
+CONFLICT (add/add): Merge conflict in .github/workflows/desktop-build.yml
+error: could not apply 0ac2711... Update application to include desktop build and release configurations
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
+Could not apply 0ac2711... # Update application to include desktop build and release configurations
+~/workspace$ 
