@@ -7,6 +7,8 @@ import { emailService } from "./email";
 import { randomUUID, createHash, createVerify, randomBytes } from "crypto";
 import blogIndexHandler from "../api/blog/index";
 import blogSlugHandler from "../api/blog/[slug]";
+import aiChatHandler from "../api/ai/chat";
+import aiTitleHandler from "../api/ai/title";
 
 // Discord Interactions Handler
 const handleDiscordInteractions = async (
@@ -7103,6 +7105,10 @@ export function createServer() {
   app.get("/api/blog/:slug", (req: express.Request, res: express.Response) => {
     return blogSlugHandler(req, res);
   });
+
+  // AI Chat API routes
+  app.post("/api/ai/chat", aiChatHandler);
+  app.post("/api/ai/title", aiTitleHandler);
 
   return app;
 }

@@ -101,12 +101,22 @@ export const AIChat: React.FC<AIChatProps> = ({
     try {
       const history = messages.filter(m => m.role !== 'model' || messages.indexOf(m) > 0);
       
-      const response = await runChat(
-        content,
-        history,
-        currentPersona.systemInstruction,
-        currentPersona.tools
-      );
+      let response: string;
+      try {
+        response = await runChat(
+          content,
+          history,
+          currentPersona.systemInstruction,
+          currentPersona.tools
+        );
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        if (errorMessage.includes('AI service not configured') || errorMessage.includes('not configured')) {
+          response = "The AI service is currently being set up. Please check back soon, or contact the administrator to configure the Gemini API key.";
+        } else {
+          throw err;
+        }
+      }
 
       const modelMessage: ChatMessageType = { 
         role: 'model', 
