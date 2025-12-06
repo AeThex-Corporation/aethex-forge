@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useArmTheme } from "@/contexts/ArmThemeContext";
 import ArmSwitcher from "./ArmSwitcher";
 import NotificationBell from "@/components/notifications/NotificationBell";
+import { AIChatButton } from "@/components/ai";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -1183,6 +1184,9 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
       {/* Supabase Configuration Status */}
       <SupabaseStatus />
+
+      {/* AI Chat Assistant */}
+      <AIChatButton currentRealm={theme.arm} />
 
       <style>{`
         @keyframes spin {
