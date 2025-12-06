@@ -22,7 +22,22 @@ The UI/UX emphasizes an isometric 2.5D realm selector, replacing 3D scenes with 
 
 Domain architecture is centralized around `aethex.foundation` as the Identity Authority (SSOT) for all identity and passport data, with all other platforms acting as OAuth clients. Creator and Project Passports are accessed via wildcard subdomains (`*.aethex.me`, `*.aethex.space`).
 
+## Axiom Model Routing (Legal Entity Separation)
+The monolith (`aethex.dev`) implements split routing to enforce legal separation between For-Profit and Non-Profit arms:
+
+| Route | Destination | Legal Entity | Action |
+|-------|-------------|--------------|--------|
+| `/foundation/*` | `https://aethex.foundation` | Non-Profit (Guardian) | **Redirect** |
+| `/gameforge/*` | `https://aethex.foundation/gameforge` | Non-Profit (Program) | **Redirect** |
+| `/dashboard/gameforge` | `https://aethex.foundation/gameforge/dashboard` | Non-Profit | **Redirect** |
+| `/labs/*` | stays on `aethex.dev` | For-Profit (Skunkworks) | Local |
+| `/nexus/*` | stays on `aethex.dev` | For-Profit (Monetization) | Local |
+| `/corp/*` | stays on `aethex.dev` | For-Profit (Services) | Local |
+
+This ensures the Foundation's user-facing URLs display `aethex.foundation` in the browser, demonstrating operational independence per the Axiom Model.
+
 ## Recent Changes (December 2025)
+- **Axiom Model Routing**: Foundation and GameForge routes redirect to `aethex.foundation` domain for legal entity separation
 - **AI Intelligent Agent Integration**: Added global AI chat with 10 specialized personas (Network Agent, Forge Master, Ethics Sentinel, SBS Architect, Curriculum Weaver, QuantumLeap, Vapor, Apex, Ethos Producer, AeThex Archivist)
 - **Tiered Access Control**: AI personas gated by user tier (Free/Architect/Council) based on roles
 - **Realm-Aware Suggestions**: AI PersonaSelector suggests relevant personas based on current realm context

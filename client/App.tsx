@@ -36,6 +36,7 @@ import LabsGetInvolved from "./pages/labs/LabsGetInvolved";
 import GameForgeStartBuilding from "./pages/gameforge/GameForgeStartBuilding";
 import GameForgeViewPortfolio from "./pages/gameforge/GameForgeViewPortfolio";
 import GameForgeJoinGameForge from "./pages/gameforge/GameForgeJoinGameForge";
+import ExternalRedirect from "./components/ExternalRedirect";
 import CorpScheduleConsultation from "./pages/corp/CorpScheduleConsultation";
 import CorpViewCaseStudies from "./pages/corp/CorpViewCaseStudies";
 import CorpContactUs from "./pages/corp/CorpContactUs";
@@ -195,9 +196,10 @@ const App = () => (
                           path="/dashboard/labs"
                           element={<LabsDashboard />}
                         />
+                        {/* GameForge Dashboard redirects to Foundation (Non-Profit Program) */}
                         <Route
                           path="/dashboard/gameforge"
-                          element={<GameForgeDashboard />}
+                          element={<ExternalRedirect to="https://aethex.foundation/gameforge/dashboard" />}
                         />
                         <Route
                           path="/dashboard/dev-link"
@@ -355,21 +357,13 @@ const App = () => (
                           element={<LabsGetInvolved />}
                         />
 
-                        <Route path="/gameforge" element={<GameForge />} />
-                        <Route
-                          path="/gameforge/start-building"
-                          element={<GameForgeStartBuilding />}
-                        />
-                        <Route
-                          path="/gameforge/view-portfolio"
-                          element={<GameForgeViewPortfolio />}
-                        />
-                        <Route
-                          path="/gameforge/join-gameforge"
-                          element={<GameForgeJoinGameForge />}
-                        />
+                        {/* GameForge redirects to aethex.foundation/gameforge (Non-Profit Program - Axiom Model) */}
+                        <Route path="/gameforge" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
+                        <Route path="/gameforge/*" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
 
-                        <Route path="/foundation" element={<Foundation />} />
+                        {/* Foundation redirects to aethex.foundation (Non-Profit Guardian - Axiom Model) */}
+                        <Route path="/foundation" element={<ExternalRedirect to="https://aethex.foundation" />} />
+                        <Route path="/foundation/*" element={<ExternalRedirect to="https://aethex.foundation" />} />
 
                         <Route path="/corp" element={<Corp />} />
                         <Route
