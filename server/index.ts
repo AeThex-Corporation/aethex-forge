@@ -2991,6 +2991,37 @@ export function createServer() {
       try {
         const { targetEmail, targetUsername } = req.body || {};
 
+        // Verify auth - get the requesting user from their token
+        const authHeader = req.headers.authorization;
+        let requestingUser: any = null;
+        if (authHeader) {
+          const token = authHeader.replace("Bearer ", "");
+          const { data: { user } } = await adminSupabase.auth.getUser(token);
+          requestingUser = user;
+        }
+
+        // Get requester's profile to check if they're an admin
+        let requesterProfile: any = null;
+        if (requestingUser?.id) {
+          const { data: profile } = await adminSupabase
+            .from("user_profiles")
+            .select("id, email, username, role")
+            .eq("id", requestingUser.id)
+            .single();
+          requesterProfile = profile;
+        }
+
+        // Security: If targeting someone other than yourself, you must be an admin
+        const isAdmin = requesterProfile?.role === "admin" || 
+                        requesterProfile?.role === "owner" ||
+                        requesterProfile?.email === "mrpiglr@gmail.com";
+        
+        const isSelfTarget = (targetEmail && requesterProfile?.email === targetEmail) ||
+                             (targetUsername && requesterProfile?.username === targetUsername);
+
+        // If not self-targeting and not admin, only allow seeding (no awards)
+        const canAwardToTarget = isSelfTarget || isAdmin;
+
         const CORE_ACHIEVEMENTS = [
           {
             id: "welcome-to-aethex",
@@ -3072,12 +3103,12 @@ export function createServer() {
 
         console.log("[Achievements] Seeded", Object.keys(seededAchievements).length, "achievements");
 
-        // Step 2: Try to find target user and award achievements
+        // Step 2: Try to find target user and award achievements (only if authorized)
         let targetUserId: string | null = null;
         let godModeAwarded = false;
         const awardedAchievementIds: string[] = [];
 
-        if (targetEmail || targetUsername) {
+        if (canAwardToTarget && (targetEmail || targetUsername)) {
           let query = adminSupabase.from("user_profiles").select("id, email, username");
           if (targetEmail) {
             query = query.eq("email", targetEmail);
@@ -3090,10 +3121,10 @@ export function createServer() {
           if (userProfile?.id) {
             targetUserId = userProfile.id;
 
-            // Check if admin user (mrpiglr)
-            const isAdmin = targetEmail === "mrpiglr@gmail.com" || targetUsername === "mrpiglr";
+            // Check if target user is an admin (for GOD Mode)
+            const isTargetAdmin = userProfile.email === "mrpiglr@gmail.com" || userProfile.username === "mrpiglr";
 
-            // Award Welcome achievement to everyone
+            // Award Welcome achievement to the user
             const welcomeId = seededAchievements["Welcome to AeThex"];
             if (welcomeId) {
               const { error: welcomeError } = await adminSupabase
@@ -3107,8 +3138,8 @@ export function createServer() {
               }
             }
 
-            // Award GOD Mode to admins
-            if (isAdmin) {
+            // Award GOD Mode only to admin users
+            if (isTargetAdmin) {
               const godModeId = seededAchievements["GOD Mode"];
               if (godModeId) {
                 const { error: godError } = await adminSupabase
@@ -6761,6 +6792,27 @@ export function createServer() {
       const limit = parseInt((req.query.limit as string) || "50", 10);
       const offset = parseInt((req.query.offset as string) || "0", 10);
 
+      // First get user's contracts to ensure we only return their payments
+      const { data: userContracts } = await adminSupabase
+        .from("nexus_contracts")
+        .select("id, total_amount, creator_payout_amount, status")
+        .eq("creator_id", user.id);
+
+      if (!userContracts || userContracts.length === 0) {
+        return res.status(200).json({
+          payments: [],
+          summary: {
+            total_earnings: 0,
+            pending_payouts: 0,
+            completed_contracts: 0,
+          },
+          limit,
+          offset,
+        });
+      }
+
+      const contractIds = userContracts.map((c: any) => c.id);
+
       let query = adminSupabase
         .from("nexus_payments")
         .select(`
@@ -6768,6 +6820,7 @@ export function createServer() {
           contract:nexus_contracts(id, title, total_amount, status, client_id, created_at),
           milestone:nexus_milestones(id, description, amount, status)
         `)
+        .in("contract_id", contractIds)
         .order("created_at", { ascending: false });
 
       if (status) {
@@ -6780,14 +6833,9 @@ export function createServer() {
         return res.status(500).json({ error: paymentsError.message });
       }
 
-      // Calculate summary stats
-      const { data: contracts } = await adminSupabase
-        .from("nexus_contracts")
-        .select("total_amount, creator_payout_amount, status")
-        .eq("creator_id", user.id);
-
-      const totalEarnings = (contracts || []).reduce((sum: number, c: any) => sum + (c.creator_payout_amount || 0), 0);
-      const completedContracts = (contracts || []).filter((c: any) => c.status === "completed").length;
+      // Calculate summary stats from already-fetched user contracts
+      const totalEarnings = userContracts.reduce((sum: number, c: any) => sum + (c.creator_payout_amount || 0), 0);
+      const completedContracts = userContracts.filter((c: any) => c.status === "completed").length;
       const pendingPayouts = (payments || [])
         .filter((p: any) => p.payment_status === "pending")
         .reduce((sum: number, p: any) => sum + (p.creator_payout || 0), 0);
@@ -7009,6 +7057,22 @@ export function createServer() {
       const limit = parseInt((req.query.limit as string) || "50", 10);
       const offset = parseInt((req.query.offset as string) || "0", 10);
 
+      // First get user's contracts where they are the client
+      const { data: clientContracts } = await adminSupabase
+        .from("nexus_contracts")
+        .select("id")
+        .eq("client_id", user.id);
+
+      if (!clientContracts || clientContracts.length === 0) {
+        return res.status(200).json({
+          payments: [],
+          limit,
+          offset,
+        });
+      }
+
+      const contractIds = clientContracts.map((c: any) => c.id);
+
       const { data: payments, error: paymentsError } = await adminSupabase
         .from("nexus_payments")
         .select(`
@@ -7016,6 +7080,7 @@ export function createServer() {
           contract:nexus_contracts(id, title, creator_id, total_amount, status),
           milestone:nexus_milestones(id, description, amount)
         `)
+        .in("contract_id", contractIds)
         .order("created_at", { ascending: false })
         .range(offset, offset + limit - 1);
 
@@ -7023,13 +7088,8 @@ export function createServer() {
         return res.status(500).json({ error: paymentsError.message });
       }
 
-      // Filter to only payments for contracts where user is the client
-      const userPayments = (payments || []).filter((p: any) => {
-        return p.contract?.creator_id !== user.id;
-      });
-
       return res.status(200).json({
-        payments: userPayments,
+        payments: payments || [],
         limit,
         offset,
       });

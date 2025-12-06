@@ -23,7 +23,6 @@ import {
   CheckCircle2,
   TimerReset,
 } from "lucide-react";
-import Timeline from "@/components/roadmap/Timeline";
 import GalaxyMap from "@/components/roadmap/GalaxyMap";
 import Achievements from "@/components/roadmap/Achievements";
 import VoteWidget from "@/components/roadmap/VoteWidget";
@@ -294,8 +293,8 @@ export default function Roadmap() {
           </div>
         </section>
 
-        <section className="container mx-auto max-w-6xl px-4">
-          <div className="grid gap-6 md:grid-cols-[1fr_1fr]">
+        <section className="container mx-auto max-w-6xl px-4 mt-8">
+          <div className="space-y-6">
             <GalaxyMap
               phases={["now", "month1", "month2", "month3"].map((id) => ({
                 id: id as Quest["phase"],
@@ -315,23 +314,12 @@ export default function Roadmap() {
               }))}
               onSelect={(id) => setFocusedPhase(id)}
             />
-            <Timeline
-              events={QUESTS.map((q) => ({
-                id: q.id,
-                title: q.title,
-                phase: q.phase,
-                xp: q.xp,
-                claimed: !!claimed[q.id],
-              }))}
-              onSelectPhase={(p) => setFocusedPhase(p)}
-              onToggleClaim={(id) => toggleClaim(id)}
-            />
           </div>
         </section>
 
         {/* Phases */}
-        <section className="container mx-auto max-w-6xl px-4">
-          <div className="grid gap-6 md:grid-cols-2">
+        <section className="container mx-auto max-w-6xl px-4 mt-8">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {(focusedPhase
               ? [focusedPhase]
               : ["now", "month1", "month2", "month3"]
@@ -398,14 +386,14 @@ export default function Roadmap() {
           </div>
         </section>
 
-        <section className="container mx-auto max-w-6xl px-4">
+        <section className="container mx-auto max-w-6xl px-4 mt-10">
           <Achievements earnedXp={earnedXp} phaseClaims={phaseClaims} />
         </section>
 
         {/* Sneak peeks */}
         <section
           id="sneak-peeks"
-          className="container mx-auto max-w-7xl px-4 section-cozy"
+          className="container mx-auto max-w-6xl px-4 mt-10"
         >
           <div className="mb-4">
             <Badge

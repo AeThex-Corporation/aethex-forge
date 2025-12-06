@@ -1079,6 +1079,8 @@ export const aethexAchievementService = {
     username?: string;
   }): Promise<ActivateRewardsResponse | null> {
     try {
+      ensureSupabase();
+      
       const payload = {
         targetEmail: target?.email,
         targetUsername: target?.username,
@@ -1094,12 +1096,21 @@ export const aethexAchievementService = {
         return null;
       }
 
+      // Get auth token for secure endpoint
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
       const url = `${baseUrl}/api/achievements/activate`;
       console.log("[Rewards] Activating at:", url);
 
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(payload),
       });
 
