@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import IsometricRealmCard, { RealmData } from "./IsometricRealmCard";
 
-const REALM_COLORS = ["#a855f7", "#22c55e", "#ef4444", "#eab308", "#3b82f6"];
+const REALM_COLORS = ["#a855f7", "#22c55e", "#ef4444", "#eab308", "#3b82f6", "#7c3aed", "#06b6d4"];
 
 interface ParticleData {
   id: number;
@@ -74,6 +74,24 @@ const realms: RealmData[] = [
     icon: "🏢",
     description: "Enterprise solutions. Managed services for teams and organizations.",
     features: ["Dedicated support", "Custom integrations", "SLA guarantees"],
+  },
+  {
+    id: "staff",
+    label: "STAFF",
+    color: "#7c3aed",
+    route: "/staff",
+    icon: "⚡",
+    description: "Internal operations and team management for AeThex staff members.",
+    features: ["Team coordination", "Admin tools", "Operations hub"],
+  },
+  {
+    id: "devlink",
+    label: "DEV-LINK",
+    color: "#06b6d4",
+    route: "/devlink",
+    icon: "🔗",
+    description: "Developer networking and collaboration. Connect with fellow builders.",
+    features: ["Developer profiles", "Skill matching", "Collaboration tools"],
   },
 ];
 
@@ -188,12 +206,30 @@ export default function IsometricRealmSelector() {
       {/* Main content */}
       <main className="selector-main">
         <motion.div
-          className="hero-text"
+          className="hero-intro"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <h1>Select Your Realm</h1>
+          <p className="tagline">Build the Future</p>
+          <h1 className="main-headline">The Platform for Builders</h1>
+          <p className="sub-headline">
+            AeThex is an advanced development platform and community where creators collaborate, 
+            learn, and bring ideas to life. Join thousands of developers, designers, and innovators.
+          </p>
+          <div className="hero-cta">
+            <Link to="/get-started" className="cta-primary">Get Started Free</Link>
+            <Link to="/downloads" className="cta-secondary">Download Desktop App</Link>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="hero-text"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <h2>Select Your Realm</h2>
           <p>Each realm unlocks a unique experience tailored to your journey</p>
         </motion.div>
 
@@ -210,18 +246,50 @@ export default function IsometricRealmSelector() {
         </div>
 
         <motion.div
-          className="footer-links"
+          className="footer-section"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
         >
-          <Link to="/community">Community</Link>
-          <span className="divider">•</span>
-          <Link to="/developers">Developers</Link>
-          <span className="divider">•</span>
-          <Link to="/roadmap">Roadmap</Link>
-          <span className="divider">•</span>
-          <Link to="/realms">All Realms</Link>
+          <div className="footer-grid">
+            <div className="footer-col">
+              <h4>Platform</h4>
+              <Link to="/downloads">Downloads</Link>
+              <Link to="/roadmap">Roadmap</Link>
+              <Link to="/changelog">Changelog</Link>
+              <Link to="/status">Status</Link>
+            </div>
+            <div className="footer-col">
+              <h4>Community</h4>
+              <Link to="/community">Community Hub</Link>
+              <Link to="/creators">Creators</Link>
+              <Link to="/developers">Developers</Link>
+              <Link to="/blog">Blog</Link>
+            </div>
+            <div className="footer-col">
+              <h4>Company</h4>
+              <Link to="/about">About</Link>
+              <Link to="/careers">Careers</Link>
+              <Link to="/press">Press Kit</Link>
+              <Link to="/contact">Contact</Link>
+            </div>
+            <div className="footer-col">
+              <h4>Legal</h4>
+              <Link to="/privacy">Privacy</Link>
+              <Link to="/terms">Terms</Link>
+              <Link to="/trust">Trust Center</Link>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2024 AeThex. All rights reserved.</p>
+            <div className="footer-links-simple">
+              <a href="https://discord.gg/aethex" target="_blank" rel="noopener noreferrer">Discord</a>
+              <span className="divider">•</span>
+              <a href="https://twitter.com/aethexdev" target="_blank" rel="noopener noreferrer">Twitter</a>
+              <span className="divider">•</span>
+              <a href="https://github.com/aethex" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+          </div>
         </motion.div>
       </main>
 
@@ -319,13 +387,89 @@ export default function IsometricRealmSelector() {
           padding: 20px 40px;
         }
 
+        .hero-intro {
+          text-align: center;
+          margin-bottom: 60px;
+          padding: 40px 0;
+        }
+
+        .tagline {
+          font-size: 14px;
+          font-weight: 600;
+          color: #a855f7;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          margin-bottom: 16px;
+        }
+
+        .main-headline {
+          font-size: clamp(40px, 6vw, 64px);
+          font-weight: 800;
+          margin-bottom: 20px;
+          background: linear-gradient(135deg, #ffffff 0%, #a855f7 50%, #3b82f6 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          line-height: 1.1;
+        }
+
+        .sub-headline {
+          font-size: 18px;
+          color: #94a3b8;
+          max-width: 600px;
+          margin: 0 auto 32px;
+          line-height: 1.6;
+        }
+
+        .hero-cta {
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        .cta-primary {
+          padding: 14px 32px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+          color: white;
+          font-size: 15px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .cta-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(168, 85, 247, 0.4);
+        }
+
+        .cta-secondary {
+          padding: 14px 32px;
+          border-radius: 12px;
+          border: 1px solid #334155;
+          background: rgba(30, 41, 59, 0.5);
+          color: #e5e7eb;
+          font-size: 15px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.3s ease;
+        }
+
+        .cta-secondary:hover {
+          background: rgba(30, 41, 59, 0.8);
+          border-color: #475569;
+          transform: translateY(-2px);
+        }
+
         .hero-text {
           text-align: center;
           margin-bottom: 50px;
         }
 
-        .hero-text h1 {
-          font-size: clamp(32px, 5vw, 48px);
+        .hero-text h2 {
+          font-size: clamp(28px, 4vw, 40px);
           font-weight: 700;
           margin-bottom: 12px;
           background: linear-gradient(135deg, #e5e7eb 0%, #94a3b8 100%);
@@ -343,44 +487,98 @@ export default function IsometricRealmSelector() {
 
         .realms-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 32px;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 24px;
           justify-items: center;
           perspective: 2000px;
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 900px) {
           .realms-grid {
             grid-template-columns: repeat(3, 1fr);
           }
         }
 
-        @media (min-width: 1600px) {
+        @media (min-width: 1200px) {
           .realms-grid {
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
           }
         }
 
-        .footer-links {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 16px;
-          margin-top: 60px;
-          font-size: 14px;
+        @media (min-width: 1600px) {
+          .realms-grid {
+            grid-template-columns: repeat(7, 1fr);
+          }
         }
 
-        .footer-links a {
+        .footer-section {
+          margin-top: 80px;
+          padding-top: 40px;
+          border-top: 1px solid #1e293b;
+        }
+
+        .footer-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: 32px;
+          margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+          font-size: 13px;
+          font-weight: 600;
+          color: #e5e7eb;
+          margin-bottom: 16px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .footer-col a {
+          display: block;
+          font-size: 14px;
+          color: #64748b;
+          text-decoration: none;
+          margin-bottom: 10px;
+          transition: color 0.2s ease;
+        }
+
+        .footer-col a:hover {
+          color: #a855f7;
+        }
+
+        .footer-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 24px;
+          border-top: 1px solid #1e293b;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+
+        .footer-bottom p {
+          font-size: 13px;
+          color: #475569;
+        }
+
+        .footer-links-simple {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 13px;
+        }
+
+        .footer-links-simple a {
           color: #64748b;
           text-decoration: none;
           transition: color 0.2s ease;
         }
 
-        .footer-links a:hover {
+        .footer-links-simple a:hover {
           color: #e5e7eb;
         }
 
-        .footer-links .divider {
+        .footer-links-simple .divider {
           color: #334155;
         }
 
@@ -395,17 +593,46 @@ export default function IsometricRealmSelector() {
             padding: 20px;
           }
 
+          .hero-intro {
+            padding: 20px 0;
+            margin-bottom: 40px;
+          }
+
+          .sub-headline {
+            font-size: 16px;
+          }
+
+          .hero-cta {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .cta-primary, .cta-secondary {
+            width: 100%;
+            max-width: 280px;
+            text-align: center;
+          }
+
           .hero-text {
             margin-bottom: 32px;
           }
 
           .realms-grid {
+            gap: 20px;
+          }
+
+          .footer-section {
+            margin-top: 50px;
+          }
+
+          .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
             gap: 24px;
           }
 
-          .footer-links {
-            flex-wrap: wrap;
-            margin-top: 40px;
+          .footer-bottom {
+            flex-direction: column;
+            text-align: center;
           }
         }
       `}</style>

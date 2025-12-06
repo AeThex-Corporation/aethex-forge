@@ -59,6 +59,13 @@ const QUESTS: Quest[] = [
     description: "Consistent top-level labels, fewer detours.",
   },
   {
+    id: "desktop-app",
+    title: "Desktop App (Beta)",
+    xp: 200,
+    phase: "now",
+    description: "Windows, macOS, Linux builds with file watcher overlay.",
+  },
+  {
     id: "mentor-admin",
     title: "Mentorship admin flows",
     xp: 100,
@@ -128,6 +135,27 @@ const QUESTS: Quest[] = [
     phase: "month3",
     description: "This page—interactive and fun.",
   },
+  {
+    id: "desktop-stable",
+    title: "Desktop App (Stable)",
+    xp: 180,
+    phase: "month2",
+    description: "Auto-updates, crash reporting, performance tuning.",
+  },
+  {
+    id: "mobile-ios",
+    title: "iOS App (Beta)",
+    xp: 250,
+    phase: "month3",
+    description: "Native iOS app with notifications and quick actions.",
+  },
+  {
+    id: "mobile-android",
+    title: "Android App (Beta)",
+    xp: 250,
+    phase: "month3",
+    description: "Native Android app with notifications and quick actions.",
+  },
 ];
 
 const PEEKS: Peek[] = [
@@ -154,6 +182,14 @@ const PEEKS: Peek[] = [
     teaser: "Book sessions, verified tracks, loot drops.",
     image:
       "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1600&auto=format&fit=crop",
+  },
+  {
+    id: "peek-4",
+    title: "Mobile App Preview",
+    phase: "month3",
+    teaser: "Native iOS and Android apps with push notifications.",
+    image:
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1600&auto=format&fit=crop",
   },
 ];
 

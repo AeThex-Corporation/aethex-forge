@@ -103,6 +103,7 @@ import StaffDashboard from "./pages/dashboards/StaffDashboard";
 import Roadmap from "./pages/Roadmap";
 import Trust from "./pages/Trust";
 import PressKit from "./pages/PressKit";
+import Downloads from "./pages/Downloads";
 import Projects from "./pages/Projects";
 import ProjectsAdmin from "./pages/ProjectsAdmin";
 import Directory from "./pages/Directory";
@@ -215,6 +216,7 @@ const App = () => (
                         <Route path="/roadmap" element={<Roadmap />} />
                         <Route path="/trust" element={<Trust />} />
                         <Route path="/press" element={<PressKit />} />
+                        <Route path="/downloads" element={<Downloads />} />
                         <Route path="/projects" element={<Projects />} />
                         <Route
                           path="/projects/admin"
