@@ -240,6 +240,34 @@ export default function IsometricRealmSelector() {
           </div>
         </motion.div>
 
+        {/* Live Stats Strip */}
+        <motion.div
+          className="stats-strip"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <div className="stat-item">
+            <span className="stat-number">12,000+</span>
+            <span className="stat-label">Builders</span>
+          </div>
+          <div className="stat-divider" />
+          <div className="stat-item">
+            <span className="stat-number">500+</span>
+            <span className="stat-label">Projects</span>
+          </div>
+          <div className="stat-divider" />
+          <div className="stat-item">
+            <span className="stat-number">7</span>
+            <span className="stat-label">Realms</span>
+          </div>
+          <div className="stat-divider" />
+          <div className="stat-item">
+            <span className="stat-number pulse-dot">●</span>
+            <span className="stat-label">Live Now</span>
+          </div>
+        </motion.div>
+
         <motion.div
           className="hero-text"
           initial={{ opacity: 0, y: 20 }}
@@ -427,6 +455,60 @@ export default function IsometricRealmSelector() {
           box-shadow: 0 0 20px hsl(var(--neon-blue) / 0.2);
         }
 
+        .stats-strip {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 24px;
+          margin-bottom: 48px;
+          padding: 16px 32px;
+          background: hsl(var(--muted) / 0.4);
+          border: 1px solid hsl(var(--border) / 0.3);
+          border-radius: 12px;
+          backdrop-filter: blur(8px);
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .stat-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .stat-number {
+          font-size: 20px;
+          font-weight: 700;
+          color: hsl(var(--foreground));
+          letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+          font-size: 11px;
+          font-weight: 500;
+          color: hsl(var(--muted-foreground));
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+        }
+
+        .stat-divider {
+          width: 1px;
+          height: 32px;
+          background: hsl(var(--border) / 0.5);
+        }
+
+        .pulse-dot {
+          color: hsl(120, 100%, 50%);
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
+        }
+
         .hero-text {
           text-align: center;
           margin-bottom: 40px;
@@ -499,6 +581,24 @@ export default function IsometricRealmSelector() {
             width: 100%;
             max-width: 260px;
             text-align: center;
+          }
+
+          .stats-strip {
+            gap: 16px;
+            padding: 12px 16px;
+            flex-wrap: wrap;
+          }
+
+          .stat-number {
+            font-size: 16px;
+          }
+
+          .stat-label {
+            font-size: 10px;
+          }
+
+          .stat-divider {
+            height: 24px;
           }
 
           .hero-text {

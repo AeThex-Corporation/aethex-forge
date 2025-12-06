@@ -94,7 +94,8 @@ export default function IsometricRealmCard({
             boxShadow: isHovered
               ? `0 25px 50px -12px ${realm.color}40, 0 0 0 1px ${realm.color}60, inset 0 1px 0 ${realm.color}20`
               : `0 10px 40px -15px ${realm.color}20`,
-          }}
+            '--card-color': realm.color,
+          } as CSSProperties}
         >
           {/* Floating icon layer */}
           <div
@@ -218,13 +219,52 @@ export default function IsometricRealmCard({
           border: 2px solid;
           background: linear-gradient(
             145deg,
-            rgba(15, 23, 42, 0.9) 0%,
-            rgba(30, 41, 59, 0.7) 50%,
-            rgba(15, 23, 42, 0.9) 100%
+            hsl(var(--muted) / 0.9) 0%,
+            hsl(var(--card) / 0.7) 50%,
+            hsl(var(--muted) / 0.9) 100%
           );
           backdrop-filter: blur(12px);
           transform-style: preserve-3d;
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-surface::before {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          border-radius: 22px;
+          padding: 2px;
+          background: linear-gradient(
+            var(--gradient-angle, 0deg),
+            transparent 0%,
+            var(--card-color) 25%,
+            transparent 50%,
+            var(--card-color) 75%,
+            transparent 100%
+          );
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask-composite: exclude;
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          opacity: 0;
+          animation: borderRotate 4s linear infinite;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        .realm-card:hover .card-surface::before {
+          opacity: 0.8;
+        }
+
+        @property --gradient-angle {
+          syntax: '<angle>';
+          inherits: false;
+          initial-value: 0deg;
+        }
+
+        @keyframes borderRotate {
+          0% { --gradient-angle: 0deg; }
+          100% { --gradient-angle: 360deg; }
         }
 
         .card-icon-layer {
@@ -257,7 +297,7 @@ export default function IsometricRealmCard({
 
         .card-description {
           font-size: 13px;
-          color: #94a3b8;
+          color: hsl(var(--muted-foreground));
           line-height: 1.5;
         }
 
@@ -274,7 +314,7 @@ export default function IsometricRealmCard({
           align-items: center;
           gap: 10px;
           font-size: 12px;
-          color: #cbd5e1;
+          color: hsl(var(--foreground) / 0.8);
           padding: 8px 12px;
           border-radius: 8px;
           border: 1px solid;
