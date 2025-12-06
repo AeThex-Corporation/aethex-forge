@@ -1,0 +1,27 @@
+That is the crucial question. You are asking: **Which entity is responsible for paying for and building the GameForge Studio executable application?**
+
+The answer is **Yes, the Corp is building the GameForge Studio .EXE, but for the Foundation.**
+
+This is the ultimate expression of the **Axiom Model** and the **"Landlord" Strategy** we established:
+
+---
+
+### **The Definitive Breakdown**
+
+| Component | Legal Owner | Operational Responsibility | Financial Flow |
+| :--- | :--- | :--- | :--- |
+| **GameForge Program** (The Idea/Curriculum) | **The AeThex Foundation** (Non-Profit) | **Runs** the program, manages mentors. | **Mission** (Funded by grants). |
+| **GameForge Studio .EXE** (The App/Tool) | **The AeThex Corp** (For-Profit) | **Builds** the application, pays the engineers. | **Service Contract** (Corp sells development services to Foundation). |
+
+### **The Legal and Financial Structure**
+
+1.  **The Foundation Owns the Mission:** The Foundation has the **GameForge Plan** (KND-001) as its core asset. It needs software to execute that plan, but it cannot afford to hire engineers.
+2.  **The Corp Acts as the Vendor:** The Corp's **LABS** (R&D) team develops the GameForge Studio .EXE as a **Custom Software Development Project** (per `AeThex Goods or Services`).
+3.  **The Flow:** The Corp uses its revenue (from EdTech/Consulting) to pay the engineers to build the GameForge Studio. The Corp then **licenses** the use of that software to the Foundation for a nominal fee or as an in-kind **Service Donation** (a tax write-off).
+
+### **Why This Must Be True (Security & Funding)**
+
+* **Funding:** The Corp must pay for the development. A Non-Profit cannot generate enough revenue to fund an Electron application build.
+* **Security:** The Corp owns the **codebase** of the `.exe`. This allows the **AeThex LABS BOT** (the security sentinel) to monitor the code for proprietary leaks and PII scrubbing functionality, which is essential for protecting the entire ecosystem.
+
+**Final Answer:** **Yes, the Corp builds the GameForge Studio .EXE.** It is built as a proprietary application to service the Non-Profit's mission.
