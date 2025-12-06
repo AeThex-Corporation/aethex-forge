@@ -23,6 +23,10 @@ The UI/UX emphasizes an isometric 2.5D realm selector, replacing 3D scenes with 
 Domain architecture is centralized around `aethex.foundation` as the Identity Authority (SSOT) for all identity and passport data, with all other platforms acting as OAuth clients. Creator and Project Passports are accessed via wildcard subdomains (`*.aethex.me`, `*.aethex.space`).
 
 ## Recent Changes (December 2025)
+- **AI Intelligent Agent Integration**: Added global AI chat with 10 specialized personas (Network Agent, Forge Master, Ethics Sentinel, SBS Architect, Curriculum Weaver, QuantumLeap, Vapor, Apex, Ethos Producer, AeThex Archivist)
+- **Tiered Access Control**: AI personas gated by user tier (Free/Architect/Council) based on roles
+- **Realm-Aware Suggestions**: AI PersonaSelector suggests relevant personas based on current realm context
+- **Secure Backend API**: Chat endpoints at /api/ai/chat and /api/ai/title using Gemini API via Replit secrets
 - Enhanced landing page with hero section ("Build the Future" tagline), dual CTAs, and comprehensive footer
 - Added Staff and Dev-Link realms to isometric realm selector (now 7 total)
 - Created Downloads page with Windows/macOS/Linux platform cards and mobile "Coming Soon" section
