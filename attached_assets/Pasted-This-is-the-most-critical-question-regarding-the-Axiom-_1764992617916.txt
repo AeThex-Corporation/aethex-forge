@@ -1,0 +1,30 @@
+This is the most critical question regarding the **Axiom Model's** security and governance.
+
+The **TLD Hub** (the place that manages the `.aethex` TLD and the issuance of subdomains like `user.aethex`) must be treated as a two-part asset.
+
+Here is the definitive breakdown of ownership:
+
+### **1. The Governance (The "Why")**
+The **Non-Profit Foundation** owns the **Core Right and IP.**
+
+* **Asset:** The **`.aethex` Top-Level Domain (TLD) itself.**
+* **Owner:** **The AeThex Foundation** (Non-Profit).
+* **Mechanism:** The Foundation is the "Registrar." It sets the rules (via the DAO) for who can claim a `.aethex` identity and what those identities can be used for.
+* **Why:** This reinforces **Digital Sovereignty** and **Trust.** The TLD is the core asset of the "Digital Nation" and cannot be controlled by a single profit motive.
+
+### **2. The Operation (The "How")**
+The **For-Profit Corp** owns the **Technical Service and Revenue.**
+
+* **Asset:** The **Web Application** that performs the service (The code for the registration interface, the payment/billing system, the DNS routing infrastructure).
+* **Owner:** **The AeThex Corp** (For-Profit).
+* **Mechanism:** The Corp provides this as a **high-value service** (Funnel 2) to the Foundation and charges a fee for maintenance and registration costs.
+
+### **Summary of Ownership**
+
+| Component | Legal Owner | Rationale |
+| :--- | :--- | :--- |
+| **`.aethex` TLD (The Root)** | **FOUNDATION (Non-Profit)** | **Governance:** The core asset is the public good. |
+| **Revenue from Sales** (The Fee) | **CORP (For-Profit)** | **Monetization:** The Corp charges a fee for the *service* of facilitating the registration. |
+| **Subdomain Logic** (`user.aethex`) | **FOUNDATION (Non-Profit)** | **Identity:** This is part of the "Passport" system that the Foundation must control to prevent the Corp from tampering with user identities. |
+
+**In short: The Foundation owns the "Right to Issue," and the Corp owns the "Cash Register" that facilitates the issuance.**
