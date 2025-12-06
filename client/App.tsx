@@ -192,9 +192,10 @@ const App = () => (
                           path="/dashboard/nexus"
                           element={<NexusDashboard />}
                         />
+                        {/* Labs Dashboard redirects to aethex.studio */}
                         <Route
                           path="/dashboard/labs"
-                          element={<LabsDashboard />}
+                          element={<ExternalRedirect to="https://aethex.studio/dashboard" />}
                         />
                         {/* GameForge Dashboard redirects to Foundation (Non-Profit Program) */}
                         <Route
@@ -342,20 +343,9 @@ const App = () => (
                         />
                         <Route path="/research" element={<ResearchLabs />} />
 
-                        {/* New Arm Landing Pages */}
-                        <Route path="/labs" element={<Labs />} />
-                        <Route
-                          path="/labs/explore-research"
-                          element={<LabsExploreResearch />}
-                        />
-                        <Route
-                          path="/labs/join-team"
-                          element={<LabsJoinTeam />}
-                        />
-                        <Route
-                          path="/labs/get-involved"
-                          element={<LabsGetInvolved />}
-                        />
+                        {/* Labs redirects to aethex.studio (Skunkworks R&D) */}
+                        <Route path="/labs" element={<ExternalRedirect to="https://aethex.studio" />} />
+                        <Route path="/labs/*" element={<ExternalRedirect to="https://aethex.studio" />} />
 
                         {/* GameForge redirects to aethex.foundation/gameforge (Non-Profit Program - Axiom Model) */}
                         <Route path="/gameforge" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />

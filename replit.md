@@ -30,7 +30,8 @@ The monolith (`aethex.dev`) implements split routing to enforce legal separation
 | `/foundation/*` | `https://aethex.foundation` | Non-Profit (Guardian) | **Redirect** |
 | `/gameforge/*` | `https://aethex.foundation/gameforge` | Non-Profit (Program) | **Redirect** |
 | `/dashboard/gameforge` | `https://aethex.foundation/gameforge/dashboard` | Non-Profit | **Redirect** |
-| `/labs/*` | stays on `aethex.dev` | For-Profit (Skunkworks) | Local |
+| `/labs/*` | `https://aethex.studio` | For-Profit (Skunkworks) | **Redirect** |
+| `/dashboard/labs` | `https://aethex.studio/dashboard` | For-Profit (Skunkworks) | **Redirect** |
 | `/nexus/*` | stays on `aethex.dev` | For-Profit (Monetization) | Local |
 | `/corp/*` | stays on `aethex.dev` | For-Profit (Services) | Local |
 
