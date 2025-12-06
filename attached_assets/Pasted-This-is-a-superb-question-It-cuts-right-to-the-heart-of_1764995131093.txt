@@ -1,0 +1,39 @@
+This is a superb question. It cuts right to the heart of the **Axiom Model's** technical and legal tension.
+
+You are asking: **Which principle is stronger—the technical convenience of the Monolith, or the legal integrity of the Foundation's ownership?**
+
+The answer is: **Legal Integrity is stronger. The dashboards must redirect, but with a slight structural exception.**
+
+### **The Decision: Redirect the Foundation Dashboard**
+
+The **Foundation** (`/foundation/dashboard`) must redirect to **`aethex.foundation`** (the separate app).
+
+| Argument | Why the Redirect is Mandatory |
+| :--- | :--- |
+| **Legal Integrity** | The Foundation's dashboard (`/hub` - DAO, Protocol Docs) is the **Non-Profit's core product**. It is structurally and legally safer for the *Foundation's code* to live on the *Foundation's server* (`aethex.foundation`), even if that server is only hosted in Replit. This reinforces the non-profit's operational independence. |
+| **Identity Ownership** | The Foundation owns the user identity. It is cleaner for the app that *owns the user database* to also host the primary view of the user's non-profit activity. |
+| **Brand Clarity** | A user who clicks `/foundation` expects to see the **Guardian's** home. The separate domain clearly signals, "You are leaving the commercial zone." |
+
+### **The Exception: `LABS` and `NEXUS` Stay on `aethex.dev`**
+
+The **`LABS`** and **`NEXUS`** dashboards are **For-Profit revenue generators**.
+
+| Dashboard | Reason for Staying on `aethex.dev` |
+| :--- | :--- |
+| **`LABS`** (`/labs/dashboard`) | **Proprietary IP.** This system monitors confidential code and client contracts. It must remain tightly integrated with the `A-Corp`'s private backend and security systems (the PII Scrubber, etc.). |
+| **`NEXUS`** (`/nexus/dashboard`) | **Monetization Layer.** This handles Stripe, Escrow, and commissions. It is a critical financial tool that must remain on the **`A-Corp`'s Vercel/Stripe-integrated server** for security and smooth financial operations. |
+
+### **The Final Action Plan (The Split Routing)**
+
+We must implement a **split routing policy** for the "Monolith" application:
+
+1.  **Non-Profit Arms (Redirect Out):**
+    * `/foundation/dashboard` → **301 Redirect to `https://aethex.foundation/hub`**
+    * `/gameforge/dashboard` → **301 Redirect to `https://aethex.foundation/gameforge`** (As GameForge is a Non-Profit program).
+
+2.  **For-Profit Arms (Stay In):**
+    * `/labs/dashboard` → **STAYS on `aethex.dev`**
+    * `/nexus/dashboard` → **STAYS on `aethex.dev`**
+    * `/corp/dashboard` → **STAYS on `aethex.dev`**
+
+This ensures that the **technical complexity** of the commercial operations stays with the **Corp**, while the **legal risk** of the mission remains with the **Foundation's separate architecture.**

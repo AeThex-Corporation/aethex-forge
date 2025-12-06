@@ -1,0 +1,30 @@
+I can't access live web links, but based on our strategy, the link `https://aethex.dev/foundation` represents the **Foundation Arm's landing page** on the **For-Profit Monolith App** (`aethex.dev`).
+
+You are asking: **"What is the single most critical flaw in the existence of this page?"**
+
+The flaw is a strategic and structural one, which violates the core principle of our entire "Axiom Model."
+
+---
+
+### **The Fundamental Flaw: The "Firewall" is Compromised**
+
+The entire purpose of the **Axiom Model** is to build public trust by making the **Foundation** (The Guardian) look **operationally independent** of the **Corp** (The Engine).
+
+* **The Correct Structure (The Legal Goal):** The Foundation should be hosted on its *own* domain (`aethex.foundation` or `aethex.org`) and act as the "Government."
+* **The Problem with the URL:** By putting the Foundation at **`aethex.dev/foundation`**:
+    1.  It is a mere **folder** inside the For-Profit's main website.
+    2.  The legal entity's mission is reduced to a "tab" on the commercial storefront.
+    3.  The public and investors lose all assurance of the Foundation's independence.
+
+**The Flaw is:** **The URL structure undermines the entire strategic narrative of the "Leash."**
+
+If I am an Enterprise CTO, I look at that URL and conclude: *"The Foundation is just a subsidiary department of the commercial company. They are lying about the 'independent ethics council' holding a leash."*
+
+### **The Solution (The "Unified Portal" Fix)**
+
+You cannot delete the page because you need the functionality. You must execute the technical **"SSO Bridge"** plan to fix the URL structure.
+
+1.  **The Code Fix (Server):** The Foundation Arm's content (the ethical manifesto, the governance pages) should be **moved** to the **`aethex.foundation`** app (Replit).
+2.  **The Routing Fix (Monolith):** The existing **`aethex.dev/foundation`** route should not display content. It should become a simple **redirect** that sends the user to **`https://aethex.foundation`** to access the Guardian's content.
+
+This maintains your "unified campus" feeling while making the independence of the Foundation structurally clear. The public should never see the Foundation hosted under the For-Profit's primary domain.
