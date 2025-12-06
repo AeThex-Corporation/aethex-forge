@@ -533,8 +533,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // ignore
       }
 
-      // Return user data for caller to use (e.g., Login.tsx)
-      return { user: data?.user ?? null };
+      // Navigation is handled by AuthContext's useEffect watching user state
     } catch (error: any) {
       console.error("SignIn error details:", error);
 
@@ -662,7 +661,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
 
-      return { emailSent, verificationUrl } as const;
+      // Navigation is handled by AuthContext's useEffect watching user state
     } catch (error: any) {
       aethexToast.error({
         title: "Sign up failed",
@@ -786,7 +785,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
           console.log("[Discord Link] Redirecting to Discord OAuth...");
 
-          const u = new URL("/api/discord/oauth/start", apiBase);
+          const u = new URL("/api/discord/oauth/start", API_BASE);
           u.searchParams.set(
             "state",
             encodeURIComponent(
@@ -812,10 +811,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // For other providers (GitHub, Google), use Supabase's built-in linking
       try {
-        const { data, error } = (await supabase.auth.linkIdentity({
+        const { data, error } = await (supabase.auth.linkIdentity as any)({
           provider,
           redirectTo: `${window.location.origin}/dashboard?tab=connections`,
-        })) as any;
+        });
         if (error) throw error;
         const linkUrl = data?.url;
         if (linkUrl) {
@@ -875,10 +874,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
       try {
-        const { error } = (await supabase.auth.unlinkIdentity({
+        const { error } = await (supabase.auth.unlinkIdentity as any)({
           identity_id: identity.identity_id,
           provider,
-        })) as any;
+        });
         if (error) throw error;
         await refreshAuthState();
         aethexToast.success({

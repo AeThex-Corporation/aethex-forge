@@ -63,9 +63,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [manualVerificationLink, setManualVerificationLink] = useState<
-    string | null
-  >(null);
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [errorFromUrl, setErrorFromUrl] = useState<string | null>(null);
@@ -169,33 +166,19 @@ export default function Login() {
 
     try {
       if (isSignUp) {
-        const result = await signUp(email, password, {
-          data: {
-            full_name: fullName,
-          },
+        await signUp(email, password, {
+          full_name: fullName,
         });
-        if (result?.user) {
-          toastInfo({
-            title: "Account created",
-            description:
-              result?.identities?.length === 0
-                ? "Please verify your email to log in"
-                : "Redirecting to onboarding...",
-          });
-          await aethexUserService.ensureUserProfile(result.user);
-          navigate("/onboarding", { replace: true });
-        }
+        toastInfo({
+          title: "Account created",
+          description: "Redirecting to onboarding...",
+        });
       } else {
-        // Sign in with email/password
-        const result = await signIn(email, password);
-        if (result?.user) {
-          // Don't navigate immediately - let Auth context update and the useEffect below handle redirect
-          // This ensures profile data is fetched and profileComplete is properly calculated
-          toastInfo({
-            title: "Signing you in",
-            description: "Redirecting...",
-          });
-        }
+        await signIn(email, password);
+        toastInfo({
+          title: "Signing you in",
+          description: "Redirecting...",
+        });
       }
     } catch (error: any) {
       console.error("Auth error:", error);
@@ -211,7 +194,7 @@ export default function Login() {
     }
   };
 
-  const handleSocialLogin = async (provider: string) => {
+  const handleSocialLogin = async (provider: "github" | "google" | "discord") => {
     try {
       await signInWithOAuth(provider);
     } catch (error) {
@@ -289,9 +272,8 @@ export default function Login() {
   return (
     <>
       <SEO
-        title="Sign In to AeThex"
+        pageTitle="Sign In to AeThex"
         description="Create or access your AeThex creator account"
-        image={window.location.href ? window.location.href : (undefined as any)}
       />
       <Layout>
         <div className="min-h-screen bg-aethex-gradient py-12 flex items-center justify-center">
@@ -352,36 +334,6 @@ export default function Login() {
                     <Info className="h-4 w-4 text-red-400" />
                     <AlertTitle>Error</AlertTitle>
                     <AlertDescription>{errorFromUrl}</AlertDescription>
-                  </Alert>
-                ) : null}
-                {manualVerificationLink ? (
-                  <Alert className="border-aethex-400/30 bg-aethex-500/10 text-foreground">
-                    <Info className="h-4 w-4 text-aethex-300" />
-                    <AlertTitle>Manual verification required</AlertTitle>
-                    <AlertDescription>
-                      <p>
-                        We couldn't send the verification email automatically.
-                        Use the link below to confirm your account:
-                      </p>
-                      <p className="mt-2 break-all rounded bg-background/60 px-3 py-2 font-mono text-xs text-foreground/90">
-                        {manualVerificationLink}
-                      </p>
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        className="mt-3 border-aethex-400/40"
-                        onClick={() =>
-                          window.open(
-                            manualVerificationLink,
-                            "_blank",
-                            "noopener",
-                          )
-                        }
-                      >
-                        Open verification link
-                      </Button>
-                    </AlertDescription>
                   </Alert>
                 ) : null}
                 {/* Social Login Buttons */}
