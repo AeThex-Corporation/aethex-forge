@@ -1,0 +1,234 @@
+Run npm run desktop:build
+
+> fusion-starter@0.1.0 desktop:build
+> npm run build:desktop && electron-builder -c electron-builder.yml
+
+
+> fusion-starter@0.1.0 build:desktop
+> vite build --config vite.desktop.config.ts
+
+vite v6.4.1 building for production...
+transforming...
+✓ 3487 modules transformed.
+rendering chunks...
+[plugin vite:reporter] 
+(!) D:/a/aethex-forge/aethex-forge/client/lib/aethex-social-service.ts is dynamically imported by D:/a/aethex-forge/aethex-forge/client/contexts/AuthContext.tsx but also statically imported by D:/a/aethex-forge/aethex-forge/client/pages/Feed.tsx, D:/a/aethex-forge/aethex-forge/client/pages/ProfilePassport.tsx, dynamic import will not move module into another chunk.
+
+[plugin vite:reporter] 
+(!) D:/a/aethex-forge/aethex-forge/client/lib/error-utils.ts is dynamically imported by D:/a/aethex-forge/aethex-forge/client/pages/ProjectsNew.tsx but also statically imported by D:/a/aethex-forge/aethex-forge/client/pages/Feed.tsx, dynamic import will not move module into another chunk.
+
+computing gzip size...
+../dist/desktop/desktop-overlay.html            1.20 kB │ gzip:   0.60 kB
+../dist/desktop/desktop-main.html               1.29 kB │ gzip:   0.63 kB
+../dist/desktop/assets/global-DV0xDjdt.css    242.67 kB │ gzip:  33.00 kB
+../dist/desktop/assets/overlay-DtIDE2xT.js      3.03 kB │ gzip:   1.24 kB
+../dist/desktop/assets/global-BSVSwLuO.js     144.70 kB │ gzip:  46.45 kB
+../dist/desktop/assets/index-CqdRH-9R.js      149.15 kB │ gzip:  44.63 kB
+../dist/desktop/assets/main-Crr6w-f1.js     2,736.62 kB │ gzip: 663.11 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 16.69s
+  • electron-builder  version=25.1.8 os=10.0.26100
+  • artifacts will be published if draft release exists  reason=CI detected
+  • loaded configuration  file=D:\a\aethex-forge\aethex-forge\electron-builder.yml
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=win32 arch=x64 electron=32.3.3 appOutDir=dist\win-unpacked
+  • downloading     url=https://github.com/electron/electron/releases/download/v32.3.3/electron-v32.3.3-win32-x64.zip size=113 MB parts=8
+  • downloaded      url=https://github.com/electron/electron/releases/download/v32.3.3/electron-v32.3.3-win32-x64.zip duration=668ms
+  • updating asar integrity executable resource  executablePath=dist\win-unpacked\AeThex Desktop Terminal.exe
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=156ms
+  • signing with signtool.exe  path=dist\win-unpacked\AeThex Desktop Terminal.exe
+  • deprecated field  fields=["publisherName"] reason=please move to win.signtoolOptions.<field_name>
+  • no signing info identified, signing is skipped  signHook=false cscInfo=null
+  • building        target=nsis file=dist\AeThex Desktop Terminal-0.1.0-win-x64.exe archs=x64 oneClick=false perMachine=false
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z size=1.3 MB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z duration=254ms
+  • signing with signtool.exe  path=dist\win-unpacked\resources\elevate.exe
+  • deprecated field  fields=["publisherName"] reason=please move to win.signtoolOptions.<field_name>
+  • no signing info identified, signing is skipped  signHook=false cscInfo=null
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-resources-3.4.1/nsis-resources-3.4.1.7z size=731 kB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-resources-3.4.1/nsis-resources-3.4.1.7z duration=251ms
+  • signing with signtool.exe  path=dist\__uninstaller-nsis-fusion-starter.exe
+  • deprecated field  fields=["publisherName"] reason=please move to win.signtoolOptions.<field_name>
+  • no signing info identified, signing is skipped  signHook=false cscInfo=null
+  • signing with signtool.exe  path=dist\AeThex Desktop Terminal-0.1.0-win-x64.exe
+  • deprecated field  fields=["publisherName"] reason=please move to win.signtoolOptions.<field_name>
+  • no signing info identified, signing is skipped  signHook=false cscInfo=null
+  • building block map  blockMapFile=dist\AeThex Desktop Terminal-0.1.0-win-x64.exe.blockmap
+  • publishing      publisher=Github (owner: aethex, project: aethex-desktop, version: 0.1.0)
+  • uploading       file=AeThex-Desktop-Terminal-0.1.0-win-x64.exe.blockmap provider=github
+  • uploading       file=AeThex-Desktop-Terminal-0.1.0-win-x64.exe provider=github
+  ⨯ Cannot cleanup: 
+
+Error #1 --------------------------------------------------------------------------------
+HttpError: 404 Not Found
+"method: GET url: https://api.github.com/repos/aethex/aethex-desktop/releases\n\nPlease double check that your authentication token is correct. Due to security reasons, actual status maybe not reported, but 404.\n"
+Headers: {
+  "date": "Sat, 06 Dec 2025 01:48:33 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "121",
+  "x-github-media-type": "github.v3; format=json",
+  "x-accepted-github-permissions": "contents=read",
+  "x-github-api-version-selected": "2022-11-28",
+  "x-ratelimit-limit": "5000",
+  "x-ratelimit-remaining": "4946",
+  "x-ratelimit-reset": "1764987703",
+  "x-ratelimit-used": "54",
+  "x-ratelimit-resource": "core",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "0",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "server": "github.com",
+  "x-github-request-id": "4400:26283E:12BD5B3:13334BC:69338B71"
+}
+    at createHttpError (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:30:10)
+    at NodeHttpExecutor.handleResponse (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:162:9)
+    at ClientRequest.<anonymous> (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:117:16)
+    at Object.onceWrapper (node:events:639:26)
+    at ClientRequest.emit (node:events:524:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:702:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+    at TLSSocket.socketOnData (node:_http_client:544:22)
+    at TLSSocket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
+
+Error #2 --------------------------------------------------------------------------------
+HttpError: 404 Not Found
+"method: GET url: https://api.github.com/repos/aethex/aethex-desktop/releases\n\nPlease double check that your authentication token is correct. Due to security reasons, actual status maybe not reported, but 404.\n"
+Headers: {
+  "date": "Sat, 06 Dec 2025 01:48:33 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "121",
+  "x-github-media-type": "github.v3; format=json",
+  "x-accepted-github-permissions": "contents=read",
+  "x-github-api-version-selected": "2022-11-28",
+  "x-ratelimit-limit": "5000",
+  "x-ratelimit-remaining": "4946",
+  "x-ratelimit-reset": "1764987703",
+  "x-ratelimit-used": "54",
+  "x-ratelimit-resource": "core",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "0",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "server": "github.com",
+  "x-github-request-id": "4400:26283E:12BD5B3:13334BC:69338B71"
+}
+    at createHttpError (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:30:10)
+    at NodeHttpExecutor.handleResponse (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:162:9)
+    at ClientRequest.<anonymous> (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:117:16)
+    at Object.onceWrapper (node:events:639:26)
+    at ClientRequest.emit (node:events:524:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:702:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+    at TLSSocket.socketOnData (node:_http_client:544:22)
+    at TLSSocket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)  failedTask=build stackTrace=Error: Cannot cleanup: 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Error #1 --------------------------------------------------------------------------------
+HttpError: 404 Not Found
+"method: GET url: https://api.github.com/repos/aethex/aethex-desktop/releases\n\nPlease double check that your authentication token is correct. Due to security reasons, actual status maybe not reported, but 404.\n"
+Headers: {
+  "date": "Sat, 06 Dec 2025 01:48:33 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "121",
+  "x-github-media-type": "github.v3; format=json",
+  "x-accepted-github-permissions": "contents=read",
+  "x-github-api-version-selected": "2022-11-28",
+  "x-ratelimit-limit": "5000",
+  "x-ratelimit-remaining": "4946",
+  "x-ratelimit-reset": "1764987703",
+  "x-ratelimit-used": "54",
+  "x-ratelimit-resource": "core",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "0",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "server": "github.com",
+  "x-github-request-id": "4400:26283E:12BD5B3:13334BC:69338B71"
+}
+    at createHttpError (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:30:10)
+    at NodeHttpExecutor.handleResponse (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:162:9)
+    at ClientRequest.<anonymous> (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:117:16)
+    at Object.onceWrapper (node:events:639:26)
+    at ClientRequest.emit (node:events:524:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:702:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+    at TLSSocket.socketOnData (node:_http_client:544:22)
+    at TLSSocket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Error #2 --------------------------------------------------------------------------------
+HttpError: 404 Not Found
+"method: GET url: https://api.github.com/repos/aethex/aethex-desktop/releases\n\nPlease double check that your authentication token is correct. Due to security reasons, actual status maybe not reported, but 404.\n"
+Headers: {
+  "date": "Sat, 06 Dec 2025 01:48:33 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "content-length": "121",
+  "x-github-media-type": "github.v3; format=json",
+  "x-accepted-github-permissions": "contents=read",
+  "x-github-api-version-selected": "2022-11-28",
+  "x-ratelimit-limit": "5000",
+  "x-ratelimit-remaining": "4946",
+  "x-ratelimit-reset": "1764987703",
+  "x-ratelimit-used": "54",
+  "x-ratelimit-resource": "core",
+  "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+  "access-control-allow-origin": "*",
+  "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+  "x-frame-options": "deny",
+  "x-content-type-options": "nosniff",
+  "x-xss-protection": "0",
+  "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+  "content-security-policy": "default-src 'none'",
+  "vary": "Accept-Encoding, Accept, X-Requested-With",
+  "server": "github.com",
+  "x-github-request-id": "4400:26283E:12BD5B3:13334BC:69338B71"
+}
+    at createHttpError (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:30:10)
+    at NodeHttpExecutor.handleResponse (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:162:9)
+    at ClientRequest.<anonymous> (D:\a\aethex-forge\aethex-forge\node_modules\builder-util-runtime\src\httpExecutor.ts:117:16)
+    at Object.onceWrapper (node:events:639:26)
+    at ClientRequest.emit (node:events:524:28)
+    at HTTPParser.parserOnIncomingClient (node:_http_client:702:27)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+    at TLSSocket.socketOnData (node:_http_client:544:22)
+    at TLSSocket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23)
+    at throwError (D:\a\aethex-forge\aethex-forge\node_modules\builder-util\src\asyncTaskManager.ts:88:11)
+    at checkErrors (D:\a\aethex-forge\aethex-forge\node_modules\builder-util\src\asyncTaskManager.ts:53:9)
+    at AsyncTaskManager.awaitTasks (D:\a\aethex-forge\aethex-forge\node_modules\builder-util\src\asyncTaskManager.ts:67:7)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at PublishManager.awaitTasks (D:\a\aethex-forge\aethex-forge\node_modules\app-builder-lib\src\publish\PublishManager.ts:235:5)
+    at executeFinally (D:\a\aethex-forge\aethex-forge\node_modules\builder-util\src\promise.ts:23:3)
+Error: Process completed with exit code 1.
