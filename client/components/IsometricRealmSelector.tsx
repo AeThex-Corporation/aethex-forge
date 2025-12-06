@@ -130,12 +130,43 @@ const realms: RealmData[] = [
   },
 ];
 
+// Animated counter component
+function AnimatedCounter({ target, duration = 2000 }: { target: number; duration?: number }) {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    const startTime = Date.now();
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(target * eased));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    const timer = setTimeout(animate, 500);
+    return () => clearTimeout(timer);
+  }, [target, duration]);
+  
+  return <>{count.toLocaleString()}</>;
+}
+
 export default function IsometricRealmSelector() {
   const navigate = useNavigate();
   const [selectedRealm, setSelectedRealm] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
+  const [featuredIndex, setFeaturedIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const particles = useMemo(() => generateParticles(20), []);
+  
+  // Auto-rotate featured realm
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setFeaturedIndex((prev) => (prev + 1) % realms.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   useEffect(() => {
     let rafId: number;
@@ -248,17 +279,17 @@ export default function IsometricRealmSelector() {
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <div className="stat-item">
-            <span className="stat-number">12,000+</span>
+            <span className="stat-number"><AnimatedCounter target={12000} />+</span>
             <span className="stat-label">Builders</span>
           </div>
           <div className="stat-divider" />
           <div className="stat-item">
-            <span className="stat-number">500+</span>
+            <span className="stat-number"><AnimatedCounter target={500} />+</span>
             <span className="stat-label">Projects</span>
           </div>
           <div className="stat-divider" />
           <div className="stat-item">
-            <span className="stat-number">7</span>
+            <span className="stat-number"><AnimatedCounter target={7} duration={1000} /></span>
             <span className="stat-label">Realms</span>
           </div>
           <div className="stat-divider" />
@@ -268,14 +299,89 @@ export default function IsometricRealmSelector() {
           </div>
         </motion.div>
 
+        {/* Featured Realm Spotlight Carousel */}
+        <motion.div
+          className="featured-realm-section"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div className="featured-header">
+            <h2>Featured Realm</h2>
+            <div className="carousel-indicators">
+              {realms.map((realm, index) => (
+                <button
+                  key={realm.id}
+                  className={`indicator ${index === featuredIndex ? 'active' : ''}`}
+                  onClick={() => setFeaturedIndex(index)}
+                  style={{ '--indicator-color': realm.color } as React.CSSProperties}
+                />
+              ))}
+            </div>
+          </div>
+          
+          <div className="featured-carousel">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={realms[featuredIndex].id}
+                className="featured-card"
+                initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                style={{ '--featured-color': realms[featuredIndex].color } as React.CSSProperties}
+              >
+                <div className="featured-glow" />
+                <div className="featured-shimmer" />
+                <div className="featured-content">
+                  <div className="featured-icon-wrapper">
+                    <span className="featured-icon">{realms[featuredIndex].icon}</span>
+                    <div className="featured-particles">
+                      {[...Array(6)].map((_, i) => (
+                        <span key={i} className="featured-particle" style={{ '--i': i } as React.CSSProperties} />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="featured-info">
+                    <div className="featured-badge">
+                      <span className="online-dot" />
+                      <span>{Math.floor(Math.random() * 200 + 50)} online</span>
+                    </div>
+                    <h3 className="featured-title">{realms[featuredIndex].label}</h3>
+                    <p className="featured-description">{realms[featuredIndex].description}</p>
+                    <div className="featured-features">
+                      {realms[featuredIndex].features.map((feature, i) => (
+                        <span key={i} className="featured-feature">{feature}</span>
+                      ))}
+                    </div>
+                    <button 
+                      className="featured-cta"
+                      onClick={() => handleRealmClick(realms[featuredIndex])}
+                    >
+                      Enter {realms[featuredIndex].label}
+                      <span className="cta-arrow">→</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="featured-corner tl" />
+                <div className="featured-corner tr" />
+                <div className="featured-corner bl" />
+                <div className="featured-corner br" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
         <motion.div
           className="hero-text"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <h2>Select Your Realm</h2>
-          <p>Each realm unlocks a unique experience tailored to your journey</p>
+          <h2>All Realms</h2>
+          <p>Explore every realm and find your place in the ecosystem</p>
         </motion.div>
 
         <div className="realms-grid">
@@ -286,6 +392,7 @@ export default function IsometricRealmSelector() {
               index={index}
               onClick={handleRealmClick}
               isSelected={selectedRealm === realm.id}
+              isFeatured={index === featuredIndex}
             />
           ))}
         </div>
@@ -509,6 +616,245 @@ export default function IsometricRealmSelector() {
           50% { opacity: 0.4; }
         }
 
+        /* Featured Realm Carousel */
+        .featured-realm-section {
+          margin-bottom: 60px;
+        }
+
+        .featured-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
+        .featured-header h2 {
+          font-size: 20px;
+          font-weight: 700;
+          color: hsl(var(--foreground));
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+        }
+
+        .carousel-indicators {
+          display: flex;
+          gap: 8px;
+        }
+
+        .indicator {
+          width: 32px;
+          height: 4px;
+          border-radius: 2px;
+          background: hsl(var(--muted));
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+          background: var(--indicator-color);
+          box-shadow: 0 0 10px var(--indicator-color);
+        }
+
+        .indicator:hover {
+          background: var(--indicator-color);
+          opacity: 0.7;
+        }
+
+        .featured-carousel {
+          position: relative;
+          min-height: 280px;
+        }
+
+        .featured-card {
+          position: relative;
+          padding: 32px;
+          border-radius: 20px;
+          background: linear-gradient(145deg, hsl(var(--muted) / 0.8) 0%, hsl(var(--card) / 0.6) 100%);
+          border: 2px solid var(--featured-color, hsl(var(--aethex-500)));
+          backdrop-filter: blur(12px);
+          overflow: hidden;
+        }
+
+        .featured-glow {
+          position: absolute;
+          inset: -100px;
+          background: radial-gradient(ellipse at 30% 30%, var(--featured-color) 0%, transparent 50%);
+          opacity: 0.15;
+          pointer-events: none;
+        }
+
+        .featured-shimmer {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            105deg,
+            transparent 40%,
+            hsl(var(--foreground) / 0.05) 45%,
+            hsl(var(--foreground) / 0.1) 50%,
+            hsl(var(--foreground) / 0.05) 55%,
+            transparent 60%
+          );
+          transform: translateX(-100%);
+          animation: shimmer 3s infinite;
+          pointer-events: none;
+        }
+
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+
+        .featured-content {
+          position: relative;
+          display: flex;
+          gap: 32px;
+          align-items: center;
+          z-index: 1;
+        }
+
+        .featured-icon-wrapper {
+          position: relative;
+          flex-shrink: 0;
+        }
+
+        .featured-icon {
+          font-size: 80px;
+          display: block;
+          filter: drop-shadow(0 0 20px var(--featured-color));
+        }
+
+        .featured-particles {
+          position: absolute;
+          inset: -20px;
+          pointer-events: none;
+        }
+
+        .featured-particle {
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--featured-color);
+          opacity: 0.6;
+          animation: float-particle 3s ease-in-out infinite;
+          animation-delay: calc(var(--i) * 0.5s);
+        }
+
+        .featured-particle:nth-child(1) { top: 0; left: 50%; }
+        .featured-particle:nth-child(2) { top: 25%; right: 0; }
+        .featured-particle:nth-child(3) { bottom: 25%; right: 0; }
+        .featured-particle:nth-child(4) { bottom: 0; left: 50%; }
+        .featured-particle:nth-child(5) { bottom: 25%; left: 0; }
+        .featured-particle:nth-child(6) { top: 25%; left: 0; }
+
+        @keyframes float-particle {
+          0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+          50% { transform: translate(5px, -10px) scale(1.2); opacity: 1; }
+        }
+
+        .featured-info {
+          flex: 1;
+        }
+
+        .featured-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 4px 12px;
+          background: hsl(120, 100%, 50%, 0.15);
+          border: 1px solid hsl(120, 100%, 50%, 0.3);
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 600;
+          color: hsl(120, 100%, 60%);
+          margin-bottom: 12px;
+        }
+
+        .online-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: hsl(120, 100%, 50%);
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        .featured-title {
+          font-size: 32px;
+          font-weight: 800;
+          color: var(--featured-color);
+          margin-bottom: 8px;
+          letter-spacing: 0.05em;
+        }
+
+        .featured-description {
+          font-size: 15px;
+          color: hsl(var(--muted-foreground));
+          margin-bottom: 16px;
+          line-height: 1.6;
+        }
+
+        .featured-features {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 20px;
+        }
+
+        .featured-feature {
+          padding: 6px 12px;
+          background: var(--featured-color, hsl(var(--aethex-500)));
+          background: color-mix(in srgb, var(--featured-color) 15%, transparent);
+          border: 1px solid var(--featured-color);
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 500;
+          color: hsl(var(--foreground));
+        }
+
+        .featured-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 28px;
+          background: var(--featured-color);
+          border: none;
+          border-radius: 10px;
+          font-size: 14px;
+          font-weight: 700;
+          color: hsl(var(--background));
+          cursor: pointer;
+          transition: all 0.2s ease;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .featured-cta:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px color-mix(in srgb, var(--featured-color) 50%, transparent);
+        }
+
+        .featured-cta .cta-arrow {
+          transition: transform 0.2s ease;
+        }
+
+        .featured-cta:hover .cta-arrow {
+          transform: translateX(4px);
+        }
+
+        .featured-corner {
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          border: 2px solid var(--featured-color);
+          opacity: 0.6;
+        }
+
+        .featured-corner.tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+        .featured-corner.tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+        .featured-corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+        .featured-corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
         .hero-text {
           text-align: center;
           margin-bottom: 40px;
@@ -599,6 +945,38 @@ export default function IsometricRealmSelector() {
 
           .stat-divider {
             height: 24px;
+          }
+
+          .featured-realm-section {
+            margin-bottom: 40px;
+          }
+
+          .featured-header {
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+          }
+
+          .featured-content {
+            flex-direction: column;
+            text-align: center;
+          }
+
+          .featured-icon {
+            font-size: 60px;
+          }
+
+          .featured-title {
+            font-size: 24px;
+          }
+
+          .featured-features {
+            justify-content: center;
+          }
+
+          .featured-cta {
+            width: 100%;
+            justify-content: center;
           }
 
           .hero-text {

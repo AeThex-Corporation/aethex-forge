@@ -16,6 +16,7 @@ interface IsometricRealmCardProps {
   index: number;
   onClick: (realm: RealmData) => void;
   isSelected: boolean;
+  isFeatured?: boolean;
 }
 
 export default function IsometricRealmCard({
@@ -23,6 +24,7 @@ export default function IsometricRealmCard({
   index,
   onClick,
   isSelected,
+  isFeatured = false,
 }: IsometricRealmCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -88,7 +90,7 @@ export default function IsometricRealmCard({
 
         {/* Main card surface */}
         <div
-          className="card-surface"
+          className={`card-surface ${isFeatured ? 'is-featured' : ''}`}
           style={{
             borderColor: isHovered || isSelected ? realm.color : `${realm.color}40`,
             boxShadow: isHovered
@@ -97,6 +99,30 @@ export default function IsometricRealmCard({
             '--card-color': realm.color,
           } as CSSProperties}
         >
+          {/* Shimmer effect */}
+          <div className="card-shimmer" />
+          
+          {/* Corner accents */}
+          <div className="corner-accent tl" style={{ borderColor: realm.color }} />
+          <div className="corner-accent tr" style={{ borderColor: realm.color }} />
+          <div className="corner-accent bl" style={{ borderColor: realm.color }} />
+          <div className="corner-accent br" style={{ borderColor: realm.color }} />
+          
+          {/* Ambient particles inside card */}
+          <div className="card-particles">
+            {[...Array(4)].map((_, i) => (
+              <span
+                key={i}
+                className="card-particle"
+                style={{
+                  background: realm.color,
+                  animationDelay: `${i * 0.8}s`,
+                  left: `${20 + i * 20}%`,
+                }}
+              />
+            ))}
+          </div>
+          
           {/* Floating icon layer */}
           <div
             className="card-icon-layer"
@@ -265,6 +291,87 @@ export default function IsometricRealmCard({
         @keyframes borderRotate {
           0% { --gradient-angle: 0deg; }
           100% { --gradient-angle: 360deg; }
+        }
+
+        .card-shimmer {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            105deg,
+            transparent 40%,
+            hsl(var(--foreground) / 0.03) 45%,
+            hsl(var(--foreground) / 0.06) 50%,
+            hsl(var(--foreground) / 0.03) 55%,
+            transparent 60%
+          );
+          transform: translateX(-100%);
+          pointer-events: none;
+          border-radius: 18px;
+        }
+
+        .realm-card:hover .card-shimmer {
+          animation: cardShimmer 2s ease-in-out;
+        }
+
+        @keyframes cardShimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+
+        .corner-accent {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          border: 2px solid;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        .corner-accent.tl { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+        .corner-accent.tr { top: 6px; right: 6px; border-left: none; border-bottom: none; }
+        .corner-accent.bl { bottom: 6px; left: 6px; border-right: none; border-top: none; }
+        .corner-accent.br { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
+        .realm-card:hover .corner-accent {
+          opacity: 0.6;
+        }
+
+        .card-particles {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          pointer-events: none;
+          border-radius: 18px;
+        }
+
+        .card-particle {
+          position: absolute;
+          bottom: -10px;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          opacity: 0;
+        }
+
+        .realm-card:hover .card-particle {
+          animation: floatUp 3s ease-in-out infinite;
+        }
+
+        @keyframes floatUp {
+          0% { transform: translateY(0); opacity: 0; }
+          20% { opacity: 0.6; }
+          80% { opacity: 0.6; }
+          100% { transform: translateY(-200px); opacity: 0; }
+        }
+
+        .card-surface.is-featured {
+          animation: featuredPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes featuredPulse {
+          0%, 100% { box-shadow: 0 0 20px var(--card-color, transparent); }
+          50% { box-shadow: 0 0 40px var(--card-color, transparent); }
         }
 
         .card-icon-layer {
