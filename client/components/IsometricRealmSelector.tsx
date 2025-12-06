@@ -389,99 +389,119 @@ export default function IsometricRealmSelector() {
 
         .hero-intro {
           text-align: center;
-          margin-bottom: 60px;
-          padding: 40px 0;
+          margin-bottom: 48px;
+          padding: 32px 24px;
+          max-width: 720px;
+          margin-left: auto;
+          margin-right: auto;
+          background: rgba(15, 23, 42, 0.6);
+          border: 1px solid rgba(124, 58, 237, 0.2);
+          border-radius: 16px;
+          backdrop-filter: blur(12px);
+          box-shadow: 0 0 40px rgba(124, 58, 237, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .tagline {
-          font-size: 14px;
-          font-weight: 600;
-          color: #a855f7;
+          display: inline-block;
+          font-size: 11px;
+          font-weight: 700;
+          color: #c084fc;
           text-transform: uppercase;
-          letter-spacing: 0.15em;
-          margin-bottom: 16px;
+          letter-spacing: 0.2em;
+          margin-bottom: 12px;
+          padding: 6px 14px;
+          background: rgba(124, 58, 237, 0.15);
+          border: 1px solid rgba(124, 58, 237, 0.3);
+          border-radius: 20px;
         }
 
         .main-headline {
-          font-size: clamp(40px, 6vw, 64px);
+          font-size: clamp(32px, 5vw, 48px);
           font-weight: 800;
-          margin-bottom: 20px;
-          background: linear-gradient(135deg, #ffffff 0%, #a855f7 50%, #3b82f6 100%);
+          margin-bottom: 14px;
+          background: linear-gradient(135deg, #f8fafc 0%, #c084fc 40%, #60a5fa 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          line-height: 1.1;
+          line-height: 1.15;
+          letter-spacing: -0.02em;
         }
 
         .sub-headline {
-          font-size: 18px;
+          font-size: 15px;
           color: #94a3b8;
-          max-width: 600px;
-          margin: 0 auto 32px;
+          max-width: 480px;
+          margin: 0 auto 24px;
           line-height: 1.6;
         }
 
         .hero-cta {
           display: flex;
           justify-content: center;
-          gap: 16px;
+          gap: 12px;
           flex-wrap: wrap;
         }
 
         .cta-primary {
-          padding: 14px 32px;
-          border-radius: 12px;
-          background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+          padding: 12px 28px;
+          border-radius: 10px;
+          background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
           color: white;
-          font-size: 15px;
+          font-size: 13px;
           font-weight: 600;
           text-decoration: none;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
           transition: all 0.3s ease;
-          box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+          box-shadow: 0 0 20px rgba(124, 58, 237, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+          border: 1px solid rgba(168, 85, 247, 0.5);
         }
 
         .cta-primary:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(168, 85, 247, 0.4);
+          box-shadow: 0 0 30px rgba(124, 58, 237, 0.6), 0 8px 20px rgba(0, 0, 0, 0.4);
         }
 
         .cta-secondary {
-          padding: 14px 32px;
-          border-radius: 12px;
-          border: 1px solid #334155;
-          background: rgba(30, 41, 59, 0.5);
-          color: #e5e7eb;
-          font-size: 15px;
+          padding: 12px 28px;
+          border-radius: 10px;
+          border: 1px solid rgba(96, 165, 250, 0.3);
+          background: rgba(15, 23, 42, 0.8);
+          color: #60a5fa;
+          font-size: 13px;
           font-weight: 600;
           text-decoration: none;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
           transition: all 0.3s ease;
+          backdrop-filter: blur(8px);
         }
 
         .cta-secondary:hover {
-          background: rgba(30, 41, 59, 0.8);
-          border-color: #475569;
+          background: rgba(96, 165, 250, 0.1);
+          border-color: rgba(96, 165, 250, 0.5);
           transform: translateY(-2px);
+          box-shadow: 0 0 20px rgba(96, 165, 250, 0.2);
         }
 
         .hero-text {
           text-align: center;
-          margin-bottom: 50px;
+          margin-bottom: 40px;
         }
 
         .hero-text h2 {
-          font-size: clamp(28px, 4vw, 40px);
+          font-size: clamp(20px, 3vw, 28px);
           font-weight: 700;
-          margin-bottom: 12px;
-          background: linear-gradient(135deg, #e5e7eb 0%, #94a3b8 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          margin-bottom: 8px;
+          color: #e5e7eb;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
         }
 
         .hero-text p {
-          font-size: 16px;
+          font-size: 14px;
           color: #64748b;
-          max-width: 500px;
+          max-width: 400px;
           margin: 0 auto;
         }
 
@@ -594,12 +614,14 @@ export default function IsometricRealmSelector() {
           }
 
           .hero-intro {
-            padding: 20px 0;
-            margin-bottom: 40px;
+            padding: 24px 20px;
+            margin-bottom: 32px;
+            margin-left: 0;
+            margin-right: 0;
           }
 
           .sub-headline {
-            font-size: 16px;
+            font-size: 14px;
           }
 
           .hero-cta {
@@ -609,7 +631,7 @@ export default function IsometricRealmSelector() {
 
           .cta-primary, .cta-secondary {
             width: 100%;
-            max-width: 280px;
+            max-width: 260px;
             text-align: center;
           }
 
