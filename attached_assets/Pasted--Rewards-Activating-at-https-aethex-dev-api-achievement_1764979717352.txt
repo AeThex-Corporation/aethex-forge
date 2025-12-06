@@ -1,0 +1,84 @@
+[Rewards] Activating at: https://aethex.dev/api/achievements/activate
+index-SltPHFdZ.js:1029  POST https://aethex.dev/api/achievements/activate 500 (Internal Server Error)
+activateCommunityRewards @ index-SltPHFdZ.js:1029
+(anonymous) @ index-SltPHFdZ.js:1029
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+index-SltPHFdZ.js:1029 [Rewards] Activation failed: 500 {"error":"insert or update on table \"user_achievements\" violates foreign key constraint \"user_achievements_achievement_id_fkey\""}
+activateCommunityRewards @ index-SltPHFdZ.js:1029
+await in activateCommunityRewards
+(anonymous) @ index-SltPHFdZ.js:1029
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this warning
+index-SltPHFdZ.js:1762  GET https://aethex.dev/api/nexus/creator/contracts?limit=10 500 (Internal Server Error)
+G @ index-SltPHFdZ.js:1762
+await in G
+(anonymous) @ index-SltPHFdZ.js:1762
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+index-SltPHFdZ.js:1762  GET https://aethex.dev/api/nexus/creator/contracts?limit=10 500 (Internal Server Error)
+G @ index-SltPHFdZ.js:1762
+await in G
+(anonymous) @ index-SltPHFdZ.js:1762
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+index-SltPHFdZ.js:1762  GET https://aethex.dev/api/nexus/creator/contracts?limit=10 500 (Internal Server Error)
+G @ index-SltPHFdZ.js:1762
+await in G
+(anonymous) @ index-SltPHFdZ.js:1762
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+index-SltPHFdZ.js:1762  GET https://aethex.dev/api/nexus/client/applicants?limit=50 400 (Bad Request)
+G @ index-SltPHFdZ.js:1762
+await in G
+(anonymous) @ index-SltPHFdZ.js:1762
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+index-SltPHFdZ.js:1762 Uncaught (in promise) TypeError: ge is not a function
+    at G (index-SltPHFdZ.js:1762:176575)
+G @ index-SltPHFdZ.js:1762
+await in G
+(anonymous) @ index-SltPHFdZ.js:1762
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+index-SltPHFdZ.js:1762  GET https://aethex.dev/api/nexus/client/applicants?limit=50 400 (Bad Request)
+G @ index-SltPHFdZ.js:1762
+await in G
+(anonymous) @ index-SltPHFdZ.js:1762
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+index-SltPHFdZ.js:1762  GET https://aethex.dev/api/nexus/client/applicants?limit=50 400 (Bad Request)
+G @ index-SltPHFdZ.js:1762
+await in G
+(anonymous) @ index-SltPHFdZ.js:1762
+cf @ index-SltPHFdZ.js:40
+Kc @ index-SltPHFdZ.js:40
+(anonymous) @ index-SltPHFdZ.js:40
+_ @ index-SltPHFdZ.js:25
+F @ index-SltPHFdZ.js:25Understand this error
+2index-SltPHFdZ.js:1762 Uncaught (in promise) TypeError: ge is not a function
+    at G (index-SltPHFdZ.js:1762:176575)

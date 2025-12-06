@@ -2989,6 +2989,8 @@ export function createServer() {
 
     app.post("/api/achievements/activate", async (req, res) => {
       try {
+        const { targetEmail, targetUsername } = req.body || {};
+
         const CORE_ACHIEVEMENTS = [
           {
             id: "welcome-to-aethex",
@@ -3001,8 +3003,7 @@ export function createServer() {
           {
             id: "aethex-explorer",
             name: "AeThex Explorer",
-            description:
-              "Engaged with community initiatives and posted first update.",
+            description: "Engaged with community initiatives and posted first update.",
             icon: "🧭",
             badge_color: "#0EA5E9",
             xp_reward: 400,
@@ -3010,8 +3011,7 @@ export function createServer() {
           {
             id: "community-champion",
             name: "Community Champion",
-            description:
-              "Contributed feedback, resolved bugs, and mentored squads.",
+            description: "Contributed feedback, resolved bugs, and mentored squads.",
             icon: "🏆",
             badge_color: "#22C55E",
             xp_reward: 750,
@@ -3019,69 +3019,119 @@ export function createServer() {
           {
             id: "workshop-architect",
             name: "Workshop Architect",
-            description:
-              "Published a high-impact mod or toolkit adopted by teams.",
-            icon: "��️",
+            description: "Published a high-impact mod or toolkit adopted by teams.",
+            icon: "🛠️",
             badge_color: "#F97316",
             xp_reward: 1200,
           },
           {
             id: "god-mode",
             name: "GOD Mode",
-            description:
-              "Legendary status awarded by AeThex studio leadership.",
+            description: "Legendary status awarded by AeThex studio leadership.",
             icon: "⚡",
             badge_color: "#FACC15",
             xp_reward: 5000,
           },
         ];
 
-        const nowIso = new Date().toISOString();
+        const generateDeterministicUUID = (str: string): string => {
+          const hash = createHash("sha256").update(str).digest("hex");
+          return [
+            hash.slice(0, 8),
+            hash.slice(8, 12),
+            "5" + hash.slice(13, 16),
+            ((parseInt(hash.slice(16, 18), 16) & 0x3f) | 0x80)
+              .toString(16)
+              .padStart(2, "0") + hash.slice(18, 20),
+            hash.slice(20, 32),
+          ].join("-");
+        };
 
-        const achievementResults = await Promise.all(
-          CORE_ACHIEVEMENTS.map(async (achievement) => {
-            const { createHash } = await import("crypto");
-            const generateDeterministicUUID = (str: string): string => {
-              const hash = createHash("sha256").update(str).digest("hex");
-              return [
-                hash.slice(0, 8),
-                hash.slice(8, 12),
-                "5" + hash.slice(13, 16),
-                ((parseInt(hash.slice(16, 18), 16) & 0x3f) | 0x80)
-                  .toString(16)
-                  .padStart(2, "0") + hash.slice(18, 20),
-                hash.slice(20, 32),
-              ].join("-");
-            };
+        // Step 1: Seed all core achievements
+        const seededAchievements: { [key: string]: string } = {};
+        for (const achievement of CORE_ACHIEVEMENTS) {
+          const uuidId = generateDeterministicUUID(achievement.id);
+          const { error } = await adminSupabase.from("achievements").upsert(
+            {
+              id: uuidId,
+              name: achievement.name,
+              description: achievement.description,
+              icon: achievement.icon,
+              badge_color: achievement.badge_color,
+              xp_reward: achievement.xp_reward,
+            },
+            { onConflict: "id", ignoreDuplicates: true },
+          );
 
-            const uuidId = generateDeterministicUUID(achievement.id);
-            const { error } = await adminSupabase.from("achievements").upsert(
-              {
-                id: uuidId,
-                name: achievement.name,
-                description: achievement.description,
-                icon: achievement.icon,
-                badge_color: achievement.badge_color,
-                xp_reward: achievement.xp_reward,
-              },
-              { onConflict: "id", ignoreDuplicates: true },
-            );
+          if (error && error.code !== "23505") {
+            console.error(`Failed to upsert achievement ${achievement.id}:`, error);
+          } else {
+            seededAchievements[achievement.name] = uuidId;
+          }
+        }
 
-            if (error && error.code !== "23505") {
-              console.error(
-                `Failed to upsert achievement ${achievement.id}:`,
-                error,
-              );
-              throw error;
+        console.log("[Achievements] Seeded", Object.keys(seededAchievements).length, "achievements");
+
+        // Step 2: Try to find target user and award achievements
+        let targetUserId: string | null = null;
+        let godModeAwarded = false;
+        const awardedAchievementIds: string[] = [];
+
+        if (targetEmail || targetUsername) {
+          let query = adminSupabase.from("user_profiles").select("id, email, username");
+          if (targetEmail) {
+            query = query.eq("email", targetEmail);
+          } else if (targetUsername) {
+            query = query.eq("username", targetUsername);
+          }
+
+          const { data: userProfile } = await query.single();
+
+          if (userProfile?.id) {
+            targetUserId = userProfile.id;
+
+            // Check if admin user (mrpiglr)
+            const isAdmin = targetEmail === "mrpiglr@gmail.com" || targetUsername === "mrpiglr";
+
+            // Award Welcome achievement to everyone
+            const welcomeId = seededAchievements["Welcome to AeThex"];
+            if (welcomeId) {
+              const { error: welcomeError } = await adminSupabase
+                .from("user_achievements")
+                .upsert(
+                  { user_id: targetUserId, achievement_id: welcomeId },
+                  { onConflict: "user_id,achievement_id" as any }
+                );
+              if (!welcomeError || welcomeError.code === "23505") {
+                awardedAchievementIds.push(welcomeId);
+              }
             }
-            return achievement.id;
-          }),
-        );
+
+            // Award GOD Mode to admins
+            if (isAdmin) {
+              const godModeId = seededAchievements["GOD Mode"];
+              if (godModeId) {
+                const { error: godError } = await adminSupabase
+                  .from("user_achievements")
+                  .upsert(
+                    { user_id: targetUserId, achievement_id: godModeId },
+                    { onConflict: "user_id,achievement_id" as any }
+                  );
+                if (!godError || godError.code === "23505") {
+                  godModeAwarded = true;
+                  awardedAchievementIds.push(godModeId);
+                }
+              }
+            }
+          }
+        }
 
         return res.json({
           ok: true,
-          achievementsSeeded: achievementResults.length,
-          achievements: achievementResults,
+          achievementsSeeded: Object.keys(seededAchievements).length,
+          godModeAwarded,
+          awardedAchievementIds,
+          targetUserId,
         });
       } catch (error: any) {
         console.error("activate achievements error", error);
@@ -6521,6 +6571,472 @@ export function createServer() {
   } catch (e) {
     console.warn("Admin API not initialized:", e);
   }
+
+  // ========================================
+  // NEXUS MARKETPLACE API ENDPOINTS
+  // ========================================
+
+  // Helper function to get user from token
+  const getUserFromToken = async (req: express.Request) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return null;
+    const token = authHeader.replace("Bearer ", "");
+    const { data: { user }, error } = await adminSupabase.auth.getUser(token);
+    if (error || !user) return null;
+    return user;
+  };
+
+  // GET/POST /api/nexus/creator/profile
+  app.get("/api/nexus/creator/profile", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const { data: profile, error: profileError } = await adminSupabase
+        .from("nexus_creator_profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (profileError && profileError.code !== "PGRST116") {
+        return res.status(500).json({ error: profileError.message });
+      }
+
+      if (!profile) {
+        return res.status(200).json({
+          user_id: user.id,
+          headline: "",
+          bio: "",
+          profile_image_url: null,
+          skills: [],
+          experience_level: "intermediate",
+          hourly_rate: null,
+          portfolio_url: null,
+          availability_status: "available",
+          availability_hours_per_week: null,
+          verified: false,
+          total_earnings: 0,
+          rating: null,
+          review_count: 0,
+          created_at: null,
+          updated_at: null,
+        });
+      }
+
+      return res.status(200).json(profile);
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  app.post("/api/nexus/creator/profile", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const {
+        headline, bio, profile_image_url, skills, experience_level,
+        hourly_rate, portfolio_url, availability_status, availability_hours_per_week,
+      } = req.body;
+
+      const { data: profile, error: upsertError } = await adminSupabase
+        .from("nexus_creator_profiles")
+        .upsert({
+          user_id: user.id,
+          headline: headline || null,
+          bio: bio || null,
+          profile_image_url: profile_image_url || null,
+          skills: Array.isArray(skills) ? skills : [],
+          experience_level: experience_level || "intermediate",
+          hourly_rate: hourly_rate || null,
+          portfolio_url: portfolio_url || null,
+          availability_status: availability_status || "available",
+          availability_hours_per_week: availability_hours_per_week || null,
+        }, { onConflict: "user_id" })
+        .select()
+        .single();
+
+      if (upsertError) {
+        return res.status(500).json({ error: upsertError.message });
+      }
+
+      return res.status(200).json(profile);
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  // GET /api/nexus/creator/applications
+  app.get("/api/nexus/creator/applications", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const status = req.query.status as string | undefined;
+      const limit = parseInt((req.query.limit as string) || "50", 10);
+      const offset = parseInt((req.query.offset as string) || "0", 10);
+
+      let query = adminSupabase
+        .from("nexus_applications")
+        .select(`
+          *,
+          opportunity:nexus_opportunities(
+            id, title, description, category, budget_type, budget_min, budget_max,
+            timeline_type, status, posted_by, created_at
+          )
+        `)
+        .eq("creator_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (status) {
+        query = query.eq("status", status);
+      }
+
+      const { data: applications, error: appError } = await query.range(offset, offset + limit - 1);
+
+      if (appError) {
+        return res.status(500).json({ error: appError.message });
+      }
+
+      return res.status(200).json({
+        applications: applications || [],
+        total: applications?.length || 0,
+        limit,
+        offset,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  // GET /api/nexus/creator/contracts
+  app.get("/api/nexus/creator/contracts", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const status = req.query.status as string | undefined;
+      const limit = parseInt((req.query.limit as string) || "50", 10);
+      const offset = parseInt((req.query.offset as string) || "0", 10);
+
+      let query = adminSupabase
+        .from("nexus_contracts")
+        .select(`
+          *,
+          client:user_profiles(id, full_name, avatar_url),
+          milestones:nexus_milestones(*),
+          payments:nexus_payments(*)
+        `)
+        .eq("creator_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (status) {
+        query = query.eq("status", status);
+      }
+
+      const { data: contracts, error: contractsError } = await query.range(offset, offset + limit - 1);
+
+      if (contractsError) {
+        return res.status(500).json({ error: contractsError.message });
+      }
+
+      return res.status(200).json({
+        contracts: contracts || [],
+        total: contracts?.length || 0,
+        limit,
+        offset,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  // GET /api/nexus/creator/payouts
+  app.get("/api/nexus/creator/payouts", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const status = req.query.status as string | undefined;
+      const limit = parseInt((req.query.limit as string) || "50", 10);
+      const offset = parseInt((req.query.offset as string) || "0", 10);
+
+      let query = adminSupabase
+        .from("nexus_payments")
+        .select(`
+          *,
+          contract:nexus_contracts(id, title, total_amount, status, client_id, created_at),
+          milestone:nexus_milestones(id, description, amount, status)
+        `)
+        .order("created_at", { ascending: false });
+
+      if (status) {
+        query = query.eq("payment_status", status);
+      }
+
+      const { data: payments, error: paymentsError } = await query.range(offset, offset + limit - 1);
+
+      if (paymentsError) {
+        return res.status(500).json({ error: paymentsError.message });
+      }
+
+      // Calculate summary stats
+      const { data: contracts } = await adminSupabase
+        .from("nexus_contracts")
+        .select("total_amount, creator_payout_amount, status")
+        .eq("creator_id", user.id);
+
+      const totalEarnings = (contracts || []).reduce((sum: number, c: any) => sum + (c.creator_payout_amount || 0), 0);
+      const completedContracts = (contracts || []).filter((c: any) => c.status === "completed").length;
+      const pendingPayouts = (payments || [])
+        .filter((p: any) => p.payment_status === "pending")
+        .reduce((sum: number, p: any) => sum + (p.creator_payout || 0), 0);
+
+      return res.status(200).json({
+        payments: payments || [],
+        summary: {
+          total_earnings: totalEarnings,
+          pending_payouts: pendingPayouts,
+          completed_contracts: completedContracts,
+        },
+        limit,
+        offset,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  // GET/POST /api/nexus/client/opportunities
+  app.get("/api/nexus/client/opportunities", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const status = req.query.status as string | undefined;
+      const limit = parseInt((req.query.limit as string) || "50", 10);
+      const offset = parseInt((req.query.offset as string) || "0", 10);
+
+      let query = adminSupabase
+        .from("nexus_opportunities")
+        .select(`
+          *,
+          applications:nexus_applications(id, status, creator_id)
+        `)
+        .eq("posted_by", user.id)
+        .order("created_at", { ascending: false });
+
+      if (status) {
+        query = query.eq("status", status);
+      }
+
+      const { data: opportunities, error: oppError } = await query.range(offset, offset + limit - 1);
+
+      if (oppError) {
+        return res.status(500).json({ error: oppError.message });
+      }
+
+      return res.status(200).json({
+        opportunities: opportunities || [],
+        limit,
+        offset,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  app.post("/api/nexus/client/opportunities", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const {
+        title, description, category, required_skills, budget_type,
+        budget_min, budget_max, timeline_type, duration_weeks,
+        location_requirement, required_experience, company_name,
+      } = req.body;
+
+      if (!title || !description || !category || !budget_type) {
+        return res.status(400).json({
+          error: "Missing required fields: title, description, category, budget_type",
+        });
+      }
+
+      const { data: opportunity, error: createError } = await adminSupabase
+        .from("nexus_opportunities")
+        .insert({
+          posted_by: user.id,
+          title,
+          description,
+          category,
+          required_skills: Array.isArray(required_skills) ? required_skills : [],
+          budget_type,
+          budget_min: budget_min || null,
+          budget_max: budget_max || null,
+          timeline_type: timeline_type || "flexible",
+          duration_weeks: duration_weeks || null,
+          location_requirement: location_requirement || "remote",
+          required_experience: required_experience || "any",
+          company_name: company_name || null,
+          status: "open",
+          published_at: new Date().toISOString(),
+        })
+        .select()
+        .single();
+
+      if (createError) {
+        return res.status(500).json({ error: createError.message });
+      }
+
+      return res.status(201).json(opportunity);
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  // GET /api/nexus/client/applicants
+  app.get("/api/nexus/client/applicants", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const opportunityId = req.query.opportunity_id as string | undefined;
+      const status = req.query.status as string | undefined;
+      const limit = parseInt((req.query.limit as string) || "50", 10);
+      const offset = parseInt((req.query.offset as string) || "0", 10);
+
+      // If no opportunity_id, return all applicants across all user's opportunities
+      if (!opportunityId) {
+        // Get all opportunities for this user
+        const { data: userOpps } = await adminSupabase
+          .from("nexus_opportunities")
+          .select("id")
+          .eq("posted_by", user.id);
+
+        if (!userOpps || userOpps.length === 0) {
+          return res.status(200).json({
+            applicants: [],
+            limit,
+            offset,
+            total: 0,
+          });
+        }
+
+        const oppIds = userOpps.map((o: any) => o.id);
+
+        let query = adminSupabase
+          .from("nexus_applications")
+          .select(`
+            *,
+            creator:user_profiles(id, full_name, avatar_url, email),
+            creator_profile:nexus_creator_profiles(skills, experience_level, hourly_rate, rating, review_count),
+            opportunity:nexus_opportunities(id, title)
+          `)
+          .in("opportunity_id", oppIds)
+          .order("created_at", { ascending: false });
+
+        if (status) {
+          query = query.eq("status", status);
+        }
+
+        const { data: applications, error: appError } = await query.range(offset, offset + limit - 1);
+
+        if (appError) {
+          return res.status(500).json({ error: appError.message });
+        }
+
+        return res.status(200).json({
+          applicants: applications || [],
+          limit,
+          offset,
+          total: applications?.length || 0,
+        });
+      }
+
+      // Verify client owns this opportunity
+      const { data: opportunity, error: oppError } = await adminSupabase
+        .from("nexus_opportunities")
+        .select("id, posted_by")
+        .eq("id", opportunityId)
+        .single();
+
+      if (oppError || !opportunity) {
+        return res.status(404).json({ error: "Opportunity not found" });
+      }
+
+      if (opportunity.posted_by !== user.id) {
+        return res.status(403).json({ error: "Unauthorized" });
+      }
+
+      let query = adminSupabase
+        .from("nexus_applications")
+        .select(`
+          *,
+          creator:user_profiles(id, full_name, avatar_url, email),
+          creator_profile:nexus_creator_profiles(skills, experience_level, hourly_rate, rating, review_count)
+        `)
+        .eq("opportunity_id", opportunityId)
+        .order("created_at", { ascending: false });
+
+      if (status) {
+        query = query.eq("status", status);
+      }
+
+      const { data: applications, error: appError } = await query.range(offset, offset + limit - 1);
+
+      if (appError) {
+        return res.status(500).json({ error: appError.message });
+      }
+
+      return res.status(200).json({
+        applicants: applications || [],
+        limit,
+        offset,
+        total: applications?.length || 0,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
+
+  // GET /api/nexus/client/payment-history
+  app.get("/api/nexus/client/payment-history", async (req, res) => {
+    const user = await getUserFromToken(req);
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+      const limit = parseInt((req.query.limit as string) || "50", 10);
+      const offset = parseInt((req.query.offset as string) || "0", 10);
+
+      const { data: payments, error: paymentsError } = await adminSupabase
+        .from("nexus_payments")
+        .select(`
+          *,
+          contract:nexus_contracts(id, title, creator_id, total_amount, status),
+          milestone:nexus_milestones(id, description, amount)
+        `)
+        .order("created_at", { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      if (paymentsError) {
+        return res.status(500).json({ error: paymentsError.message });
+      }
+
+      // Filter to only payments for contracts where user is the client
+      const userPayments = (payments || []).filter((p: any) => {
+        return p.contract?.creator_id !== user.id;
+      });
+
+      return res.status(200).json({
+        payments: userPayments,
+        limit,
+        offset,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error?.message || "Server error" });
+    }
+  });
 
   // Blog API routes
   app.get("/api/blog", blogIndexHandler);
