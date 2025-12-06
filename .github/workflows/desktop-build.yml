@@ -5,159 +5,82 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version tag (e.g., v1.0.0)'
-        required: false
-        default: 'dev'
+
+permissions:
+  contents: write
 
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
-      - name: Install ImageMagick
-        run: choco install imagemagick -y
-
-      - name: Generate Windows icon
-        run: |
-          magick convert -background none -resize 256x256 build/icons/icon.svg build/icons/icon-256.png
-          magick convert build/icons/icon-256.png -define icon:auto-resize=256,128,64,48,32,16 build/icons/icon.ico
-        shell: pwsh
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build desktop app
-        run: npm run desktop:build
+      - run: npm ci
+      - run: npm run build:desktop
+      - run: npx electron-builder --win --config electron-builder.yml
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Windows artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: AeThex-Windows
+          name: windows-build
           path: dist/*.exe
-          if-no-files-found: error
 
   build-macos:
     runs-on: macos-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
-      - name: Install librsvg
-        run: brew install librsvg
-
-      - name: Generate macOS icon
-        run: |
-          mkdir -p build/icons/icon.iconset
-          rsvg-convert -w 16 -h 16 build/icons/icon.svg -o build/icons/icon.iconset/icon_16x16.png
-          rsvg-convert -w 32 -h 32 build/icons/icon.svg -o build/icons/icon.iconset/icon_16x16@2x.png
-          rsvg-convert -w 32 -h 32 build/icons/icon.svg -o build/icons/icon.iconset/icon_32x32.png
-          rsvg-convert -w 64 -h 64 build/icons/icon.svg -o build/icons/icon.iconset/icon_32x32@2x.png
-          rsvg-convert -w 128 -h 128 build/icons/icon.svg -o build/icons/icon.iconset/icon_128x128.png
-          rsvg-convert -w 256 -h 256 build/icons/icon.svg -o build/icons/icon.iconset/icon_128x128@2x.png
-          rsvg-convert -w 256 -h 256 build/icons/icon.svg -o build/icons/icon.iconset/icon_256x256.png
-          rsvg-convert -w 512 -h 512 build/icons/icon.svg -o build/icons/icon.iconset/icon_256x256@2x.png
-          rsvg-convert -w 512 -h 512 build/icons/icon.svg -o build/icons/icon.iconset/icon_512x512.png
-          rsvg-convert -w 1024 -h 1024 build/icons/icon.svg -o build/icons/icon.iconset/icon_512x512@2x.png
-          iconutil -c icns build/icons/icon.iconset -o build/icons/icon.icns
-          rm -rf build/icons/icon.iconset
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build desktop app
-        run: npm run desktop:build
+      - run: npm ci
+      - run: npm run build:desktop
+      - run: npx electron-builder --mac --config electron-builder.yml
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: AeThex-macOS
+          name: macos-build
           path: dist/*.dmg
-          if-no-files-found: error
 
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
-      - name: Install librsvg
-        run: sudo apt-get update && sudo apt-get install -y librsvg2-bin
-
-      - name: Generate Linux icons
-        run: |
-          rsvg-convert -w 512 -h 512 build/icons/icon.svg -o build/icons/icon.png
-          rsvg-convert -w 256 -h 256 build/icons/icon.svg -o build/icons/256x256.png
-          rsvg-convert -w 128 -h 128 build/icons/icon.svg -o build/icons/128x128.png
-          rsvg-convert -w 64 -h 64 build/icons/icon.svg -o build/icons/64x64.png
-          rsvg-convert -w 48 -h 48 build/icons/icon.svg -o build/icons/48x48.png
-          rsvg-convert -w 32 -h 32 build/icons/icon.svg -o build/icons/32x32.png
-          rsvg-convert -w 16 -h 16 build/icons/icon.svg -o build/icons/16x16.png
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build desktop app
-        run: npm run desktop:build
+      - run: npm ci
+      - run: npm run build:desktop
+      - run: npx electron-builder --linux --config electron-builder.yml
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Linux artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: AeThex-Linux
+          name: linux-build
           path: |
             dist/*.AppImage
             dist/*.deb
-          if-no-files-found: warn
 
-  create-release:
+  release:
     needs: [build-windows, build-macos, build-linux]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
-    permissions:
-      contents: write
     steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           path: artifacts
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
-          files: |
-            artifacts/AeThex-Windows/*.exe
-            artifacts/AeThex-macOS/*.dmg
-            artifacts/AeThex-Linux/*.AppImage
-            artifacts/AeThex-Linux/*.deb
-          draft: false
-          prerelease: false
           generate_release_notes: true
+          files: |
+            artifacts/windows-build/*.exe
+            artifacts/macos-build/*.dmg
+            artifacts/linux-build/*.AppImage
+            artifacts/linux-build/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
