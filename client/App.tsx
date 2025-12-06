@@ -138,6 +138,7 @@ import ClientSettings from "./pages/hub/ClientSettings";
 import Space1Welcome from "./pages/internal-docs/Space1Welcome";
 import Space1AxiomModel from "./pages/internal-docs/Space1AxiomModel";
 import Space1FindYourRole from "./pages/internal-docs/Space1FindYourRole";
+import Space1OwnershipFlows from "./pages/internal-docs/Space1OwnershipFlows";
 import Space2CodeOfConduct from "./pages/internal-docs/Space2CodeOfConduct";
 import Space2Communication from "./pages/internal-docs/Space2Communication";
 import Space2MeetingCadence from "./pages/internal-docs/Space2MeetingCadence";
@@ -728,6 +729,10 @@ const App = () => (
                         <Route
                           path="/internal-docs/find-your-role"
                           element={<Space1FindYourRole />}
+                        />
+                        <Route
+                          path="/internal-docs/ownership-flows"
+                          element={<Space1OwnershipFlows />}
                         />
                         <Route
                           path="/internal-docs/code-of-conduct"
