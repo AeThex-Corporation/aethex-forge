@@ -34,6 +34,7 @@
   "dependencies": {
     "@builder.io/react": "^8.2.8",
     "@discord/embedded-app-sdk": "^2.4.0",
+    "@google/genai": "^1.31.0",
     "@supabase/supabase-js": "^2.53.0",
     "@vercel/analytics": "^1.5.0",
     "adm-zip": "^0.5.16",
