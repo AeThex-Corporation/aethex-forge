@@ -16,11 +16,18 @@ Do not make changes to the file `server/index.ts`.
 ## System Architecture
 AeThex is built as a full-stack web application utilizing React 18 with TypeScript for the frontend, Vite 6 as the build tool, and Express.js for the backend. Supabase (PostgreSQL) serves as the primary database. Styling is handled with Tailwind CSS, and UI components leverage Radix UI. TanStack Query is used for state management, and React Router DOM for routing.
 
-The application features a multi-realm system including Labs, GameForge, Corp, Foundation, and Dev-Link, each with specific functionalities. Key capabilities include community features (feed, posts, comments), a Creator Network with profile passports and achievements, and a Nexus Marketplace for opportunities and contracts. A significant component is the Discord Integration, which includes a bot for commands, OAuth, and role management, alongside a bidirectional feed bridge for syncing content between Discord and the platform.
+The application features a multi-realm system including Nexus, GameForge, Foundation, Labs, Corp, Staff, and Dev-Link (7 total), each with specific functionalities. Key capabilities include community features (feed, posts, comments), a Creator Network with profile passports and achievements, and a Nexus Marketplace for opportunities and contracts. A significant component is the Discord Integration, which includes a bot for commands, OAuth, and role management, alongside a bidirectional feed bridge for syncing content between Discord and the platform.
 
 The UI/UX emphasizes an isometric 2.5D realm selector, replacing 3D scenes with CSS-based isometric cards for performance. It features responsive grids, ambient particles, and interactive tilt effects. The platform also supports an Electron desktop application with a secure IPC bridge and an automated build/release pipeline for multi-platform distribution.
 
 Domain architecture is centralized around `aethex.foundation` as the Identity Authority (SSOT) for all identity and passport data, with all other platforms acting as OAuth clients. Creator and Project Passports are accessed via wildcard subdomains (`*.aethex.me`, `*.aethex.space`).
+
+## Recent Changes (December 2025)
+- Enhanced landing page with hero section ("Build the Future" tagline), dual CTAs, and comprehensive footer
+- Added Staff and Dev-Link realms to isometric realm selector (now 7 total)
+- Created Downloads page with Windows/macOS/Linux platform cards and mobile "Coming Soon" section
+- Updated Roadmap with Desktop App milestones (Beta in Now, Stable in Month 2) and Mobile App milestones (iOS/Android in Month 3)
+- Fixed GitHub Actions workflows: icon generation pipeline, deprecated action updates, Vitest test command
 
 ## External Dependencies
 - **Supabase**: Used for database (PostgreSQL), authentication, and real-time features.
