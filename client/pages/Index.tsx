@@ -1,9 +1,10 @@
 import SEO from "@/components/SEO";
+import Layout from "@/components/Layout";
 import IsometricRealmSelector from "@/components/IsometricRealmSelector";
 
 export default function Index() {
   return (
-    <>
+    <Layout>
       <SEO
         pageTitle="AeThex | Immersive OS"
         description="AeThex OS — Cyberpunk Animus command center for Nexus, GameForge, Foundation, Labs, and Corp."
@@ -14,6 +15,6 @@ export default function Index() {
         }
       />
       <IsometricRealmSelector />
-    </>
+    </Layout>
   );
 }

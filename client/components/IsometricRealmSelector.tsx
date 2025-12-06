@@ -149,10 +149,7 @@ export default function IsometricRealmSelector() {
   `;
 
   return (
-    <div
-      className="realm-selector"
-      style={{ background: backgroundGradient }}
-    >
+    <div className="realm-selector">
       {/* Ambient particles */}
       <div className="ambient-layer">
         {particles.map((particle) => (
@@ -181,27 +178,6 @@ export default function IsometricRealmSelector() {
           />
         ))}
       </div>
-
-      {/* Header */}
-      <motion.header
-        className="selector-header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="header-left">
-          <div className="logo">
-            <span className="logo-icon">◆</span>
-            <span className="logo-text">AeThex</span>
-          </div>
-          <span className="version-tag">OS v5.0</span>
-        </div>
-        <div className="header-right">
-          <Link to="/login" className="connect-btn">
-            Connect Passport
-          </Link>
-        </div>
-      </motion.header>
 
       {/* Main content */}
       <main className="selector-main">
@@ -244,53 +220,6 @@ export default function IsometricRealmSelector() {
             />
           ))}
         </div>
-
-        <motion.div
-          className="footer-section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
-          <div className="footer-grid">
-            <div className="footer-col">
-              <h4>Platform</h4>
-              <Link to="/downloads">Downloads</Link>
-              <Link to="/roadmap">Roadmap</Link>
-              <Link to="/changelog">Changelog</Link>
-              <Link to="/status">Status</Link>
-            </div>
-            <div className="footer-col">
-              <h4>Community</h4>
-              <Link to="/community">Community Hub</Link>
-              <Link to="/creators">Creators</Link>
-              <Link to="/developers">Developers</Link>
-              <Link to="/blog">Blog</Link>
-            </div>
-            <div className="footer-col">
-              <h4>Company</h4>
-              <Link to="/about">About</Link>
-              <Link to="/careers">Careers</Link>
-              <Link to="/press">Press Kit</Link>
-              <Link to="/contact">Contact</Link>
-            </div>
-            <div className="footer-col">
-              <h4>Legal</h4>
-              <Link to="/privacy">Privacy</Link>
-              <Link to="/terms">Terms</Link>
-              <Link to="/trust">Trust Center</Link>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2024 AeThex. All rights reserved.</p>
-            <div className="footer-links-simple">
-              <a href="https://discord.gg/aethex" target="_blank" rel="noopener noreferrer">Discord</a>
-              <span className="divider">•</span>
-              <a href="https://twitter.com/aethexdev" target="_blank" rel="noopener noreferrer">Twitter</a>
-              <span className="divider">•</span>
-              <a href="https://github.com/aethex" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </div>
-          </div>
-        </motion.div>
       </main>
 
       <style>{`
