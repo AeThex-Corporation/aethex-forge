@@ -1,0 +1,75 @@
+index-CRtYY8PW.js:1017  GET https://kmdeisowhtsalsekkzqd.supabase.co/rest/v1/user_profiles?select=*%2Cuser_achievements%28achievements%28xp_reward%29%29&order=updated_at.desc&limit=200 400 (Bad Request)
+(anonymous) @ index-CRtYY8PW.js:1017
+(anonymous) @ index-CRtYY8PW.js:1017
+await in (anonymous)
+then @ index-CRtYY8PW.js:992Understand this error
+index-CRtYY8PW.js:2413  GET https://aethex.dev/api/applications?user_id=f2719189-f99f-48b6-aafd-b429b0e2a804 500 (Internal Server Error)
+(anonymous) @ index-CRtYY8PW.js:2413
+(anonymous) @ index-CRtYY8PW.js:2413
+ux @ index-CRtYY8PW.js:40
+Gc @ index-CRtYY8PW.js:40
+tZ @ index-CRtYY8PW.js:40
+fl @ index-CRtYY8PW.js:40
+cE @ index-CRtYY8PW.js:40
+ro @ index-CRtYY8PW.js:38
+(anonymous) @ index-CRtYY8PW.js:40Understand this error
+index-CRtYY8PW.js:1049  POST https://aethex.dev/api/admin/platform/maintenance 403 (Forbidden)
+(anonymous) @ index-CRtYY8PW.js:1049
+await in (anonymous)
+o @ index-CRtYY8PW.js:2345
+(anonymous) @ index-CRtYY8PW.js:40
+(anonymous) @ index-CRtYY8PW.js:2333
+(anonymous) @ index-CRtYY8PW.js:40
+yJ @ index-CRtYY8PW.js:37
+wJ @ index-CRtYY8PW.js:37
+NJ @ index-CRtYY8PW.js:37
+$3 @ index-CRtYY8PW.js:37
+F3 @ index-CRtYY8PW.js:37
+(anonymous) @ index-CRtYY8PW.js:37
+mj @ index-CRtYY8PW.js:40
+W5 @ index-CRtYY8PW.js:37
+my @ index-CRtYY8PW.js:37
+Yv @ index-CRtYY8PW.js:37
+FJ @ index-CRtYY8PW.js:37Understand this error
+index-CRtYY8PW.js:1049 Failed to toggle maintenance mode: Error: Forbidden - Admin access required
+    at index-CRtYY8PW.js:1049:31868
+    at async Object.o (index-CRtYY8PW.js:2345:7537)
+(anonymous) @ index-CRtYY8PW.js:1049
+await in (anonymous)
+o @ index-CRtYY8PW.js:2345
+(anonymous) @ index-CRtYY8PW.js:40
+(anonymous) @ index-CRtYY8PW.js:2333
+(anonymous) @ index-CRtYY8PW.js:40
+yJ @ index-CRtYY8PW.js:37
+wJ @ index-CRtYY8PW.js:37
+NJ @ index-CRtYY8PW.js:37
+$3 @ index-CRtYY8PW.js:37
+F3 @ index-CRtYY8PW.js:37
+(anonymous) @ index-CRtYY8PW.js:37
+mj @ index-CRtYY8PW.js:40
+W5 @ index-CRtYY8PW.js:37
+my @ index-CRtYY8PW.js:37
+Yv @ index-CRtYY8PW.js:37
+FJ @ index-CRtYY8PW.js:37Understand this error
+index-CRtYY8PW.js:1049 Auth loading timeout - forcing loading to false
+index-CRtYY8PW.js:1049  POST https://aethex.dev/api/admin/platform/maintenance 403 (Forbidden)
+(anonymous) @ index-CRtYY8PW.js:1049
+await in (anonymous)
+o @ index-CRtYY8PW.js:2345
+(anonymous) @ index-CRtYY8PW.js:40
+(anonymous) @ index-CRtYY8PW.js:2333
+(anonymous) @ index-CRtYY8PW.js:40
+yJ @ index-CRtYY8PW.js:37
+wJ @ index-CRtYY8PW.js:37
+NJ @ index-CRtYY8PW.js:37
+$3 @ index-CRtYY8PW.js:37
+F3 @ index-CRtYY8PW.js:37
+(anonymous) @ index-CRtYY8PW.js:37
+mj @ index-CRtYY8PW.js:40
+W5 @ index-CRtYY8PW.js:37
+my @ index-CRtYY8PW.js:37
+Yv @ index-CRtYY8PW.js:37
+FJ @ index-CRtYY8PW.js:37Understand this error
+index-CRtYY8PW.js:1049 Failed to toggle maintenance mode: Error: Forbidden - Admin access required
+    at index-CRtYY8PW.js:1049:31868
+    at async Object.o (index-CRtYY8PW.js:2345:7537)
