@@ -1,0 +1,38 @@
+~/workspace$ git fetch origin
+~/workspace$ git reset --soft origin/main
+~/workspace$ git add .
+~/workspace$ git commit -m "Sync local changes"
+[main 577ef68] Sync local changes
+ 18 files changed, 1584 insertions(+), 6 deletions(-)
+ create mode 100644 .github/workflows/desktop-release.yml
+ create mode 100644 attached_assets/Pasted-17s-12s-Run-npx-electron-builder-win-config-electron-bu_1765007431411.txt
+ create mode 100644 attached_assets/Pasted-17s-12s-Run-npx-electron-builder-win-config-electron-bu_1765007500661.txt
+ create mode 100644 attached_assets/Pasted-Run-npx-electron-builder-win-config-electron-builder-ym_1765007031609.txt
+ create mode 100644 attached_assets/Pasted-Run-npx-electron-builder-win-config-electron-builder-ym_1765007959498.txt
+ create mode 100644 attached_assets/image_1765005879621.png
+ create mode 100644 client/components/MaintenanceGuard.tsx
+ create mode 100644 client/components/admin/MaintenanceToggle.tsx
+ create mode 100644 client/contexts/MaintenanceContext.tsx
+ create mode 100644 client/pages/Maintenance.tsx
+~/workspace$ git push origin main
+Enumerating objects: 124, done.
+Counting objects: 100% (70/70), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (28/28), done.
+Writing objects: 100% (29/29), 59.30 KiB | 4.56 MiB/s, done.
+Total 29 (delta 20), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (20/20), completed with 18 local objects.
+To https://github.com/AeThex-Corporation/aethex-forge
+ ! [remote rejected] main -> main (refusing to allow an OAuth App to create or update workflow `.github/workflows/desktop-release.yml` without `workflow` scope)
+error: failed to push some refs to 'https://github.com/AeThex-Corporation/aethex-forge'
+~/workspace$ git push origin main --force
+Enumerating objects: 124, done.
+Counting objects: 100% (70/70), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (28/28), done.
+Writing objects: 100% (29/29), 59.30 KiB | 6.59 MiB/s, done.
+Total 29 (delta 20), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (20/20), completed with 18 local objects.
+To https://github.com/AeThex-Corporation/aethex-forge
+ ! [remote rejected] main -> main (refusing to allow an OAuth App to create or update workflow `.github/workflows/desktop-release.yml` without `workflow` scope)
+error: failed to push some refs to 'https://github.com/AeThex-Corporation/aethex-forge'
