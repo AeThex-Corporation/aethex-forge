@@ -457,6 +457,129 @@ export function createServer() {
     }
   });
 
+  // Health check endpoint - proxies to Discord bot health
+  app.get("/health", async (_req, res) => {
+    try {
+      const botHealthPort = process.env.HEALTH_PORT || 8080;
+      const response = await fetch(`http://localhost:${botHealthPort}/health`);
+      const data = await response.json();
+      res.json({
+        status: "online",
+        platform: "aethex.dev",
+        bot: data,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      res.json({
+        status: "online",
+        platform: "aethex.dev",
+        bot: { status: "offline", error: error?.message || "Bot unreachable" },
+        timestamp: new Date().toISOString(),
+      });
+    }
+  });
+
+  // Maintenance Mode API endpoints
+  const ADMIN_ROLES = ["admin", "super_admin", "staff", "owner"];
+
+  // In-memory maintenance state (fallback when DB table doesn't exist)
+  let maintenanceModeCache: boolean | null = null;
+
+  // Get maintenance status (public)
+  app.get("/api/admin/platform/maintenance", async (_req, res) => {
+    try {
+      // Try database first
+      const { data, error } = await adminSupabase
+        .from("platform_settings")
+        .select("value")
+        .eq("key", "maintenance_mode")
+        .single();
+
+      if (error) {
+        // If table doesn't exist, use env var or in-memory cache
+        if (error.code === "42P01" || error.message?.includes("does not exist")) {
+          const envMaintenance = process.env.MAINTENANCE_MODE === "true";
+          res.json({ maintenance_mode: maintenanceModeCache ?? envMaintenance });
+          return;
+        }
+        // Row not found is OK, means maintenance is off
+        if (error.code !== "PGRST116") {
+          throw error;
+        }
+      }
+
+      const isActive = data?.value === "true" || data?.value === true;
+      maintenanceModeCache = isActive;
+      res.json({ maintenance_mode: isActive });
+    } catch (e: any) {
+      console.error("[Maintenance] Error fetching status:", e?.message);
+      // Fall back to env var or cache
+      const envMaintenance = process.env.MAINTENANCE_MODE === "true";
+      res.json({ maintenance_mode: maintenanceModeCache ?? envMaintenance });
+    }
+  });
+
+  // Toggle maintenance mode (admin only)
+  app.post("/api/admin/platform/maintenance", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader?.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const token = authHeader.substring(7);
+      const { data: { user }, error: authError } = await adminSupabase.auth.getUser(token);
+
+      if (authError || !user) {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+
+      // Check if user has admin role
+      const { data: roles } = await adminSupabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id);
+
+      const userRoles = roles?.map((r: any) => r.role?.toLowerCase()) || [];
+      const isAdmin = userRoles.some((role: string) => ADMIN_ROLES.includes(role));
+
+      if (!isAdmin) {
+        return res.status(403).json({ error: "Admin access required" });
+      }
+
+      const rawValue = req.body?.maintenance_mode;
+      const newMaintenanceMode = rawValue === true || rawValue === "true";
+
+      // Try to upsert in database
+      const { error } = await adminSupabase
+        .from("platform_settings")
+        .upsert({
+          key: "maintenance_mode",
+          value: String(newMaintenanceMode),
+          updated_at: new Date().toISOString(),
+          updated_by: user.id,
+        }, { onConflict: "key" });
+
+      if (error) {
+        // If table doesn't exist, just use in-memory cache
+        if (error.code === "42P01" || error.message?.includes("does not exist")) {
+          maintenanceModeCache = newMaintenanceMode;
+          console.log(`[Maintenance] Mode set to ${newMaintenanceMode} (in-memory) by ${user.email}`);
+          return res.json({ maintenance_mode: newMaintenanceMode });
+        }
+        throw error;
+      }
+
+      maintenanceModeCache = newMaintenanceMode;
+      console.log(`[Maintenance] Mode set to ${newMaintenanceMode} by ${user.email}`);
+
+      res.json({ maintenance_mode: newMaintenanceMode });
+    } catch (e: any) {
+      console.error("[Maintenance] Error toggling:", e?.message);
+      res.status(500).json({ error: e?.message || "Failed to toggle maintenance mode" });
+    }
+  });
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";

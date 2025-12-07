@@ -311,7 +311,7 @@ async function registerDiscordCommands() {
 }
 
 // Start HTTP health check server
-const healthPort = process.env.HEALTH_PORT || 8044;
+const healthPort = process.env.HEALTH_PORT || 8080;
 const ADMIN_TOKEN = process.env.DISCORD_ADMIN_TOKEN || "aethex-bot-admin";
 
 // Helper to check admin authentication

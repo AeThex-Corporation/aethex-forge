@@ -38,6 +38,8 @@ The monolith (`aethex.dev`) implements split routing to enforce legal separation
 This ensures the Foundation's user-facing URLs display `aethex.foundation` in the browser, demonstrating operational independence per the Axiom Model.
 
 ## Recent Changes (December 2025)
+- **Maintenance Mode**: Site-wide maintenance mode with admin bypass. Admins can toggle via Admin Dashboard overview tab. Uses MAINTENANCE_MODE env var for initial state. Allowed paths during maintenance: /login, /staff/login, /reset-password, /health
+- **Health Endpoint**: Added /health endpoint at aethex.dev/health that aggregates platform and Discord bot status
 - **Axiom Model Routing**: Foundation and GameForge routes redirect to `aethex.foundation` domain for legal entity separation
 - **AI Intelligent Agent Integration**: Added global AI chat with 10 specialized personas (Network Agent, Forge Master, Ethics Sentinel, SBS Architect, Curriculum Weaver, QuantumLeap, Vapor, Apex, Ethos Producer, AeThex Archivist)
 - **Tiered Access Control**: AI personas gated by user tier (Free/Architect/Council) based on roles

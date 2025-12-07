@@ -5,6 +5,7 @@ integrations = ["javascript_gemini_ai_integrations:1.0.0"]
 
 [nix]
 channel = "stable-25_05"
+packages = ["imagemagick"]
 
 [workflows]
 runButton = "Project"
@@ -54,6 +55,10 @@ localPort = 8044
 externalPort = 3003
 
 [[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
 localPort = 38557
 externalPort = 3000
 
@@ -70,3 +75,4 @@ build = ["npm", "run", "build"]
 
 [userenv.shared]
 DISCORD_MAIN_CHAT_CHANNELS = "1425114041021497454"
+MAINTENANCE_MODE = "true"

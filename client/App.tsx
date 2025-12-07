@@ -10,6 +10,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { Web3Provider } from "./contexts/Web3Context";
 import { DocsThemeProvider } from "./contexts/DocsThemeContext";
 import { ArmThemeProvider } from "./contexts/ArmThemeContext";
+import { MaintenanceProvider } from "./contexts/MaintenanceContext";
+import MaintenanceGuard from "./components/MaintenanceGuard";
 import PageTransition from "./components/PageTransition";
 import SkipAgentController from "./components/SkipAgentController";
 import Index from "./pages/Index";
@@ -182,9 +184,11 @@ const App = () => (
               <BrowserRouter>
                 <SubdomainPassportProvider>
                   <ArmThemeProvider>
-                    <SkipAgentController />
-                    <PageTransition>
-                      <Routes>
+                    <MaintenanceProvider>
+                      <MaintenanceGuard>
+                        <SkipAgentController />
+                        <PageTransition>
+                          <Routes>
                         {/* Subdomain Passport (aethex.me and aethex.space) handles its own redirect if not a subdomain */}
                         <Route path="/" element={<SubdomainPassport />} />
                         <Route path="/onboarding" element={<Onboarding />} />
@@ -795,8 +799,10 @@ const App = () => (
                         <Route path="/404" element={<FourOhFourPage />} />
                         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                         <Route path="*" element={<FourOhFourPage />} />
-                      </Routes>
-                    </PageTransition>
+                          </Routes>
+                        </PageTransition>
+                      </MaintenanceGuard>
+                    </MaintenanceProvider>
                   </ArmThemeProvider>
                 </SubdomainPassportProvider>
               </BrowserRouter>

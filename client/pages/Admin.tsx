@@ -40,6 +40,7 @@ import AdminStaffChat from "@/components/admin/AdminStaffChat";
 import AdminStaffAdmin from "@/components/admin/AdminStaffAdmin";
 import AdminStaffDocs from "@/components/admin/AdminStaffDocs";
 import AdminStaffAchievements from "@/components/admin/AdminStaffAchievements";
+import MaintenanceToggle from "@/components/admin/MaintenanceToggle";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminEthosVerification from "@/pages/admin/AdminEthosVerification";
 import AdminGameForgeStudio from "@/components/admin/AdminGameForgeStudio";
@@ -393,6 +394,8 @@ export default function Admin() {
                 </TabsList>
 
                 <TabsContent value="overview" className="space-y-6">
+                  <MaintenanceToggle />
+
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Card className="bg-card/60 border-border/40 backdrop-blur">
                       <CardHeader className="pb-3">
