@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDiscordActivity } from "./contexts/DiscordActivityContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Web3Provider } from "./contexts/Web3Context";
 import { DocsThemeProvider } from "./contexts/DocsThemeContext";
@@ -172,6 +173,16 @@ import StaffTeamHandbook from "./pages/staff/StaffTeamHandbook";
 
 const queryClient = new QueryClient();
 
+const DiscordActivityWrapper = ({ children }: { children: React.ReactNode }) => {
+  const { isActivity } = useDiscordActivity();
+  
+  if (isActivity) {
+    return <Activity />;
+  }
+  
+  return <>{children}</>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -182,6 +193,7 @@ const App = () => (
               <Toaster />
               <Analytics />
               <BrowserRouter>
+                <DiscordActivityWrapper>
                 <SubdomainPassportProvider>
                   <ArmThemeProvider>
                     <MaintenanceProvider>
@@ -805,6 +817,7 @@ const App = () => (
                     </MaintenanceProvider>
                   </ArmThemeProvider>
                 </SubdomainPassportProvider>
+                </DiscordActivityWrapper>
               </BrowserRouter>
             </TooltipProvider>
           </DiscordProvider>
