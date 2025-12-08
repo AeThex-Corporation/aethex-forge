@@ -1,0 +1,229 @@
+18:25:17.582 Running build in Washington, D.C., USA (East) – iad1
+18:25:17.582 Build machine configuration: 4 cores, 8 GB
+18:25:17.686 Cloning github.com/AeThex-Corporation/aethex-forge (Branch: main, Commit: d90d678)
+18:25:18.375 Cloning completed: 689.000ms
+18:25:18.503 Found .vercelignore
+18:25:18.508 Removed 1 ignored files defined in .vercelignore
+18:25:18.508   /api/opportunities.ts
+18:25:19.864 Restored build cache from previous deployment (HF3fqGyNRw56JNnaN2Am8CiEDuvm)
+18:25:20.754 Running "vercel build"
+18:25:21.185 Vercel CLI 49.0.0
+18:25:22.257 Installing dependencies...
+18:25:24.715 
+18:25:24.715 up to date in 2s
+18:25:24.715 
+18:25:24.715 148 packages are looking for funding
+18:25:24.715   run `npm fund` for details
+18:25:24.867 
+18:25:24.868 > fusion-starter@0.1.0 build
+18:25:24.868 > npm run build:api && npm run build:client && npm run build:server
+18:25:24.868 
+18:25:24.988 
+18:25:24.988 > fusion-starter@0.1.0 build:api
+18:25:24.988 > node build-api.js
+18:25:24.988 
+18:25:25.033 Validating API setup for Vercel...
+18:25:25.033 ✓ Found API directory with 37 entries
+18:25:25.033 ✓ Vercel will compile TypeScript files automatically
+18:25:25.160 
+18:25:25.160 > fusion-starter@0.1.0 build:client
+18:25:25.160 > vite build
+18:25:25.160 
+18:25:25.820 [36mvite v6.4.1 [32mbuilding for production...[36m[39m
+18:25:26.265 transforming...
+18:25:40.199 [32m✓[39m 3484 modules transformed.
+18:25:41.024 rendering chunks...
+18:25:41.861 [33m[plugin vite:reporter] 
+18:25:41.861 (!) /vercel/path0/client/lib/aethex-social-service.ts is dynamically imported by /vercel/path0/client/contexts/AuthContext.tsx but also statically imported by /vercel/path0/client/pages/Feed.tsx, /vercel/path0/client/pages/ProfilePassport.tsx, dynamic import will not move module into another chunk.
+18:25:41.861 [39m
+18:25:41.861 [33m[plugin vite:reporter] 
+18:25:41.861 (!) /vercel/path0/client/lib/error-utils.ts is dynamically imported by /vercel/path0/client/pages/ProjectsNew.tsx but also statically imported by /vercel/path0/client/pages/Feed.tsx, dynamic import will not move module into another chunk.
+18:25:41.861 [39m
+18:25:41.956 computing gzip size...
+18:25:42.034 [2mdist/spa/[22m[32mindex.html                 [39m[1m[2m    9.66 kB[22m[1m[22m[2m │ gzip:   2.61 kB[22m
+18:25:42.034 [2mdist/spa/[22m[2massets/[22m[35mindex-BuWeH7HD.css  [39m[1m[2m  247.64 kB[22m[1m[22m[2m │ gzip:  33.62 kB[22m
+18:25:42.034 [2mdist/spa/[22m[2massets/[22m[36mindex-CqdRH-9R.js   [39m[1m[2m  149.15 kB[22m[1m[22m[2m │ gzip:  44.63 kB[22m
+18:25:42.035 [2mdist/spa/[22m[2massets/[22m[36mindex-DivVywON.js   [39m[1m[33m2,867.93 kB[39m[22m[2m │ gzip: 715.35 kB[22m
+18:25:42.035 [33m
+18:25:42.035 (!) Some chunks are larger than 500 kB after minification. Consider:
+18:25:42.035 - Using dynamic import() to code-split the application
+18:25:42.035 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+18:25:42.035 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+18:25:42.035 [32m✓ built in 16.18s[39m
+18:25:42.241 
+18:25:42.241 > fusion-starter@0.1.0 build:server
+18:25:42.241 > vite build --config vite.config.server.ts
+18:25:42.241 
+18:25:42.469 [36mvite v6.4.1 [32mbuilding SSR bundle for production...[36m[39m
+18:25:42.700 transforming...
+18:25:43.052 [32m✓[39m 8 modules transformed.
+18:25:43.130 [33m[plugin vite:reporter] 
+18:25:43.130 (!) /vercel/path0/server/email.ts is dynamically imported by /vercel/path0/server/index.ts but also statically imported by /vercel/path0/server/index.ts, dynamic import will not move module into another chunk.
+18:25:43.130 [39m
+18:25:43.131 rendering chunks...
+18:25:43.193 [2mdist/server/[22m[36mproduction.mjs  [39m[1m[2m226.71 kB[22m[1m[22m[2m │ map: 413.68 kB[22m
+18:25:43.194 [32m✓ built in 711ms[39m
+18:25:43.583 Using TypeScript 5.9.3 (local user-provided)
+18:25:47.380 Using TypeScript 5.9.3 (local user-provided)
+18:25:47.780 Using TypeScript 5.9.3 (local user-provided)
+18:25:48.106 Using TypeScript 5.9.3 (local user-provided)
+18:25:48.409 Using TypeScript 5.9.3 (local user-provided)
+18:25:48.720 Using TypeScript 5.9.3 (local user-provided)
+18:25:49.154 Using TypeScript 5.9.3 (local user-provided)
+18:25:49.522 Using TypeScript 5.9.3 (local user-provided)
+18:25:49.799 Using TypeScript 5.9.3 (local user-provided)
+18:25:50.150 Using TypeScript 5.9.3 (local user-provided)
+18:25:50.496 Using TypeScript 5.9.3 (local user-provided)
+18:25:50.841 Using TypeScript 5.9.3 (local user-provided)
+18:25:51.211 Using TypeScript 5.9.3 (local user-provided)
+18:25:51.587 Using TypeScript 5.9.3 (local user-provided)
+18:25:51.899 Using TypeScript 5.9.3 (local user-provided)
+18:25:52.215 Using TypeScript 5.9.3 (local user-provided)
+18:25:52.567 Using TypeScript 5.9.3 (local user-provided)
+18:25:52.934 Using TypeScript 5.9.3 (local user-provided)
+18:25:52.976 Using TypeScript 5.9.3 (local user-provided)
+18:25:53.010 api/github/oauth/callback.ts(183,37): error TS2339: Property 'find' does not exist on type 'unknown'.
+18:25:53.010 
+18:25:53.283 Using TypeScript 5.9.3 (local user-provided)
+18:25:53.324 Using TypeScript 5.9.3 (local user-provided)
+18:25:53.636 Using TypeScript 5.9.3 (local user-provided)
+18:25:53.678 Using TypeScript 5.9.3 (local user-provided)
+18:25:54.028 Using TypeScript 5.9.3 (local user-provided)
+18:25:54.353 Using TypeScript 5.9.3 (local user-provided)
+18:25:54.658 Using TypeScript 5.9.3 (local user-provided)
+18:25:54.997 Using TypeScript 5.9.3 (local user-provided)
+18:25:55.293 Using TypeScript 5.9.3 (local user-provided)
+18:25:55.650 Using TypeScript 5.9.3 (local user-provided)
+18:25:55.938 Using TypeScript 5.9.3 (local user-provided)
+18:25:55.969 api/nexus/payments/confirm-payment.ts(6,3): error TS2322: Type '"2024-11-20"' is not assignable to type '"2024-04-10"'.
+18:25:55.969 
+18:25:56.589 Using TypeScript 5.9.3 (local user-provided)
+18:25:56.621 api/nexus/payments/create-intent.ts(6,3): error TS2322: Type '"2024-11-20"' is not assignable to type '"2024-04-10"'.
+18:25:56.621 
+18:25:57.193 Using TypeScript 5.9.3 (local user-provided)
+18:25:57.220 api/nexus/payments/payout-setup.ts(6,3): error TS2322: Type '"2024-11-20"' is not assignable to type '"2024-04-10"'.
+18:25:57.221 
+18:25:57.786 Using TypeScript 5.9.3 (local user-provided)
+18:25:57.828 api/nexus/payments/webhook.ts(6,3): error TS2322: Type '"2024-11-20"' is not assignable to type '"2024-04-10"'.
+18:25:57.829 
+18:25:58.380 Using TypeScript 5.9.3 (local user-provided)
+18:25:58.451 Using TypeScript 5.9.3 (local user-provided)
+18:25:58.891 Using TypeScript 5.9.3 (local user-provided)
+18:25:59.221 Using TypeScript 5.9.3 (local user-provided)
+18:25:59.648 Using TypeScript 5.9.3 (local user-provided)
+18:26:00.017 Using TypeScript 5.9.3 (local user-provided)
+18:26:00.488 Using TypeScript 5.9.3 (local user-provided)
+18:26:00.865 Using TypeScript 5.9.3 (local user-provided)
+18:26:01.636 Using TypeScript 5.9.3 (local user-provided)
+18:26:02.274 Using TypeScript 5.9.3 (local user-provided)
+18:26:02.600 Using TypeScript 5.9.3 (local user-provided)
+18:26:02.610 api/auth/exchange-token.ts(52,20): error TS2339: Property 'access_token' does not exist on type 'unknown'.
+18:26:02.610 api/auth/exchange-token.ts(58,44): error TS2339: Property 'access_token' does not exist on type 'unknown'.
+18:26:02.610 api/auth/exchange-token.ts(59,33): error TS2339: Property 'user' does not exist on type 'unknown'.
+18:26:02.610 api/auth/exchange-token.ts(63,30): error TS2339: Property 'access_token' does not exist on type 'unknown'.
+18:26:02.610 api/auth/exchange-token.ts(64,23): error TS2339: Property 'user' does not exist on type 'unknown'.
+18:26:02.610 
+18:26:02.644 Using TypeScript 5.9.3 (local user-provided)
+18:26:02.665 api/auth/foundation-callback.ts(122,27): error TS2339: Property 'full_name' does not exist on type '{ id: string; email: string; username: string; profile_complete: boolean; }'.
+18:26:02.666 
+18:26:02.943 Using TypeScript 5.9.3 (local user-provided)
+18:26:03.313 Using TypeScript 5.9.3 (local user-provided)
+18:26:03.647 Using TypeScript 5.9.3 (local user-provided)
+18:26:04.327 Using TypeScript 5.9.3 (local user-provided)
+18:26:04.670 Using TypeScript 5.9.3 (local user-provided)
+18:26:04.995 Using TypeScript 5.9.3 (local user-provided)
+18:26:05.288 Using TypeScript 5.9.3 (local user-provided)
+18:26:05.598 Using TypeScript 5.9.3 (local user-provided)
+18:26:05.902 Using TypeScript 5.9.3 (local user-provided)
+18:26:05.962 Using TypeScript 5.9.3 (local user-provided)
+18:26:06.262 Using TypeScript 5.9.3 (local user-provided)
+18:26:06.621 Using TypeScript 5.9.3 (local user-provided)
+18:26:06.928 Using TypeScript 5.9.3 (local user-provided)
+18:26:07.229 Using TypeScript 5.9.3 (local user-provided)
+18:26:07.513 Using TypeScript 5.9.3 (local user-provided)
+18:26:07.796 Using TypeScript 5.9.3 (local user-provided)
+18:26:07.839 Using TypeScript 5.9.3 (local user-provided)
+18:26:08.131 Using TypeScript 5.9.3 (local user-provided)
+18:26:08.490 Using TypeScript 5.9.3 (local user-provided)
+18:26:08.898 Using TypeScript 5.9.3 (local user-provided)
+18:26:09.238 Using TypeScript 5.9.3 (local user-provided)
+18:26:09.333 api/ethos/licensing-notifications.ts(213,48): error TS2339: Property 'user_profiles' does not exist on type '{ id: any; title: any; user_id: any; user_profiles: { full_name: any; email: any; }[]; }[]'.
+18:26:09.333 api/ethos/licensing-notifications.ts(214,52): error TS2339: Property 'title' does not exist on type '{ id: any; title: any; user_id: any; user_profiles: { full_name: any; email: any; }[]; }[]'.
+18:26:09.333 
+18:26:09.763 Using TypeScript 5.9.3 (local user-provided)
+18:26:10.084 Using TypeScript 5.9.3 (local user-provided)
+18:26:10.445 Using TypeScript 5.9.3 (local user-provided)
+18:26:11.035 Using TypeScript 5.9.3 (local user-provided)
+18:26:11.414 Using TypeScript 5.9.3 (local user-provided)
+18:26:11.864 Using TypeScript 5.9.3 (local user-provided)
+18:26:12.434 Using TypeScript 5.9.3 (local user-provided)
+18:26:12.800 Using TypeScript 5.9.3 (local user-provided)
+18:26:12.881 api/gameforge/builds.ts(135,38): error TS2339: Property 'lead_id' does not exist on type '{ lead_id: any; }[]'.
+18:26:12.881 
+18:26:13.189 Using TypeScript 5.9.3 (local user-provided)
+18:26:13.499 Using TypeScript 5.9.3 (local user-provided)
+18:26:13.887 Using TypeScript 5.9.3 (local user-provided)
+18:26:14.209 Using TypeScript 5.9.3 (local user-provided)
+18:26:14.601 Using TypeScript 5.9.3 (local user-provided)
+18:26:15.015 Using TypeScript 5.9.3 (local user-provided)
+18:26:15.311 Using TypeScript 5.9.3 (local user-provided)
+18:26:15.625 Using TypeScript 5.9.3 (local user-provided)
+18:26:15.644 api/games/roblox-auth.ts(105,26): error TS2339: Property 'username' does not exist on type '{ id: any; auth_id: any; email: any; }'.
+18:26:15.645 
+18:26:15.929 Using TypeScript 5.9.3 (local user-provided)
+18:26:16.249 Using TypeScript 5.9.3 (local user-provided)
+18:26:16.274 api/integrations/fourthwall.ts(140,48): error TS2339: Property 'products' does not exist on type 'unknown'.
+18:26:16.274 
+18:26:16.558 Using TypeScript 5.9.3 (local user-provided)
+18:26:16.872 Using TypeScript 5.9.3 (local user-provided)
+18:26:17.173 Using TypeScript 5.9.3 (local user-provided)
+18:26:17.482 Using TypeScript 5.9.3 (local user-provided)
+18:26:17.818 Using TypeScript 5.9.3 (local user-provided)
+18:26:18.114 Using TypeScript 5.9.3 (local user-provided)
+18:26:18.163 Using TypeScript 5.9.3 (local user-provided)
+18:26:18.484 Using TypeScript 5.9.3 (local user-provided)
+18:26:18.800 Using TypeScript 5.9.3 (local user-provided)
+18:26:19.112 Using TypeScript 5.9.3 (local user-provided)
+18:26:19.396 Using TypeScript 5.9.3 (local user-provided)
+18:26:19.684 Using TypeScript 5.9.3 (local user-provided)
+18:26:20.010 Using TypeScript 5.9.3 (local user-provided)
+18:26:20.023 api/user/arm-affiliations.ts(91,15): error TS2339: Property 'arm' does not exist on type '{}'.
+18:26:20.024 api/user/arm-affiliations.ts(91,20): error TS2339: Property 'affiliation_type' does not exist on type '{}'.
+18:26:20.024 
+18:26:20.302 Using TypeScript 5.9.3 (local user-provided)
+18:26:20.590 Using TypeScript 5.9.3 (local user-provided)
+18:26:20.874 Using TypeScript 5.9.3 (local user-provided)
+18:26:21.153 Using TypeScript 5.9.3 (local user-provided)
+18:26:21.433 Using TypeScript 5.9.3 (local user-provided)
+18:26:21.725 Using TypeScript 5.9.3 (local user-provided)
+18:26:22.018 Using TypeScript 5.9.3 (local user-provided)
+18:26:22.305 Using TypeScript 5.9.3 (local user-provided)
+18:26:23.554 Using TypeScript 5.9.3 (local user-provided)
+18:26:23.868 Using TypeScript 5.9.3 (local user-provided)
+18:26:24.173 Using TypeScript 5.9.3 (local user-provided)
+18:26:24.464 Using TypeScript 5.9.3 (local user-provided)
+18:26:25.616 Using TypeScript 5.9.3 (local user-provided)
+18:26:26.230 Using TypeScript 5.9.3 (local user-provided)
+18:26:26.432 api/applications.ts(233,13): error TS2339: Property 'status' does not exist on type '{}'.
+18:26:26.432 api/applications.ts(233,21): error TS2339: Property 'response_message' does not exist on type '{}'.
+18:26:26.432 
+18:26:26.727 Using TypeScript 5.9.3 (local user-provided)
+18:26:26.920 api/creators.ts(308,13): error TS2339: Property 'title' does not exist on type '{}'.
+18:26:26.921 api/creators.ts(308,20): error TS2339: Property 'description' does not exist on type '{}'.
+18:26:26.921 api/creators.ts(308,33): error TS2339: Property 'url' does not exist on type '{}'.
+18:26:26.921 api/creators.ts(308,38): error TS2339: Property 'image_url' does not exist on type '{}'.
+18:26:26.921 api/creators.ts(308,49): error TS2339: Property 'tags' does not exist on type '{}'.
+18:26:26.921 api/creators.ts(308,55): error TS2339: Property 'is_featured' does not exist on type '{}'.
+18:26:26.921 api/creators.ts(346,13): error TS2339: Property 'skill' does not exist on type '{}'.
+18:26:26.921 
+18:26:27.209 Using TypeScript 5.9.3 (local user-provided)
+18:26:27.237 api/devconnect-links.ts(187,13): error TS2339: Property 'verification_code' does not exist on type '{}'.
+18:26:27.237 
+18:26:27.515 Using TypeScript 5.9.3 (local user-provided)
+18:26:27.814 Using TypeScript 5.9.3 (local user-provided)
+18:26:28.112 Using TypeScript 5.9.3 (local user-provided)
+18:26:28.200 Build Completed in /vercel/output [1m]
+18:26:29.505 Deploying outputs...
+18:26:37.172 Warning: Provided `memory` setting in `vercel.json` is ignored on Active CPU billing. You can safely remove this setting from your configuration. Learn more: https://vercel.com/docs/fluid-compute/pricing
+18:26:44.637 Deployment completed
+18:26:45.301 Creating build cache...
