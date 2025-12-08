@@ -1,0 +1,14 @@
+index-BxFi5MW3.js:2413 Blocked opening 'https://aethex.dev/profile/settings' in a new window because the request was made in a sandboxed frame whose 'allow-popups' permission is not set.
+onClick @ index-BxFi5MW3.js:2413Understand this error
+index-BxFi5MW3.js:2413 Blocked opening 'https://aethex.dev/creators' in a new window because the request was made in a sandboxed frame whose 'allow-popups' permission is not set.
+onClick @ index-BxFi5MW3.js:2413Understand this error
+index-BxFi5MW3.js:2413 Blocked opening 'https://aethex.dev/opportunities' in a new window because the request was made in a sandboxed frame whose 'allow-popups' permission is not set.
+onClick @ index-BxFi5MW3.js:2413Understand this error
+index-BxFi5MW3.js:2413 Blocked opening 'https://aethex.dev/profile/settings' in a new window because the request was made in a sandboxed frame whose 'allow-popups' permission is not set.
+onClick @ index-BxFi5MW3.js:2413Understand this error
+sentry.b2861bd36ab3acf1.js:14 [Spotify] WS Connecting
+api.spotify.com/v1/me/player?additional_types=track%2Cepisode:1  Failed to load resource: net::ERR_CONNECTION_RESETUnderstand this error
+web.24d99a93890ecaa4.js:12 WebSocket connection to 'wss://dealer.spotify.com/?access_token=BQC6ltkoce43rz6h_vlIWecka9xH5U3G2IxxlBSUOoV9qZj8iyx-160a4iMX5cVO5bLLmRaXfGF4OhbBjnCQeF4wSzK-EGQXsqRCLYO2JDk2RZ20pjiknqP1fjlVwLFYtLCpLFbB9VDMHNneMyqE_BVhUZo_9TdumgJ281PlB30Txg1qGpIWMNkgWPbypLWSlJJuiYymfnVLvtjSoEdv-qPkOs_GRM1dbMnFQUTbTw_Jkt-a9UI_BCFiCfRsZOsKvw' failed: 
+(anonymous) @ web.24d99a93890ecaa4.js:12Understand this error
+sentry.b2861bd36ab3acf1.js:14 [Spotify] WS Disconnected. Next retry in 60000ms
+?instance_id=i-1447694626785067009-pc-1040550697697026099&location_id=pc-1040550697697026099&launch…:1 Loading the stylesheet 'https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Merriweather:wght@400;700&family=Roboto+Mono:wght@300;400;500&display=swap' violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' blob:". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked.

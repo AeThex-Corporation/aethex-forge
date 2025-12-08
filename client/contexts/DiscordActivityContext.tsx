@@ -19,6 +19,7 @@ interface DiscordActivityContextType {
   user: DiscordUser | null;
   error: string | null;
   discordSdk: any | null;
+  openExternalLink: (url: string) => Promise<void>;
 }
 
 const DiscordActivityContext = createContext<DiscordActivityContextType>({
@@ -27,6 +28,7 @@ const DiscordActivityContext = createContext<DiscordActivityContextType>({
   user: null,
   error: null,
   discordSdk: null,
+  openExternalLink: async () => {},
 });
 
 export const useDiscordActivity = () => {
@@ -232,6 +234,19 @@ export const DiscordActivityProvider: React.FC<
     initializeActivity();
   }, []);
 
+  const openExternalLink = async (url: string) => {
+    if (discordSdk) {
+      try {
+        await discordSdk.commands.openExternalLink({ url });
+      } catch (err) {
+        console.error("[Discord Activity] Failed to open external link:", err);
+        window.open(url, "_blank");
+      }
+    } else {
+      window.open(url, "_blank");
+    }
+  };
+
   return (
     <DiscordActivityContext.Provider
       value={{
@@ -240,6 +255,7 @@ export const DiscordActivityProvider: React.FC<
         user,
         error,
         discordSdk,
+        openExternalLink,
       }}
     >
       {children}

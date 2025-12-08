@@ -3,7 +3,7 @@ import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import LoadingScreen from "@/components/LoadingScreen";
 
 export default function Activity() {
-  const { isActivity, isLoading, user, error } = useDiscordActivity();
+  const { isActivity, isLoading, user, error, openExternalLink } = useDiscordActivity();
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
@@ -206,9 +206,7 @@ export default function Activity() {
                 realm-specific features.
               </p>
               <button
-                onClick={() =>
-                  window.open(`${appBaseUrl}/profile/settings`, "_blank")
-                }
+                onClick={() => openExternalLink(`${appBaseUrl}/profile/settings`)}
                 className="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
               >
                 Change Realm
@@ -222,23 +220,19 @@ export default function Activity() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
-                onClick={() => window.open(`${appBaseUrl}/creators`, "_blank")}
+                onClick={() => openExternalLink(`${appBaseUrl}/creators`)}
                 className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-center transition-colors font-medium"
               >
                 🎨 Browse Creators
               </button>
               <button
-                onClick={() =>
-                  window.open(`${appBaseUrl}/opportunities`, "_blank")
-                }
+                onClick={() => openExternalLink(`${appBaseUrl}/opportunities`)}
                 className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-center transition-colors font-medium"
               >
                 💼 Find Opportunities
               </button>
               <button
-                onClick={() =>
-                  window.open(`${appBaseUrl}/profile/settings`, "_blank")
-                }
+                onClick={() => openExternalLink(`${appBaseUrl}/profile/settings`)}
                 className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-center transition-colors font-medium"
               >
                 ⚙️ Settings
