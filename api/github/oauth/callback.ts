@@ -179,8 +179,8 @@ export default async function handler(req: any, res: any) {
       });
 
       if (emailResponse.ok) {
-        const emails = await emailResponse.json();
-        const primaryEmail = emails.find((e: any) => e.primary);
+        const emails = (await emailResponse.json()) as Array<{ email: string; primary: boolean }>;
+        const primaryEmail = emails.find((e) => e.primary);
         email = primaryEmail?.email || emails[0]?.email;
       }
     }

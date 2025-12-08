@@ -209,9 +209,9 @@ export default async function handler(req: any, res: any) {
           return res.status(404).json({ error: "Agreement not found" });
         }
 
-        const licensee = agreement.user_profiles?.[0];
-        const artist = agreement.ethos_tracks?.user_profiles?.[0];
-        const trackTitle = agreement.ethos_tracks?.title;
+        const licensee = (agreement as any).user_profiles?.[0];
+        const artist = (agreement as any).ethos_tracks?.user_profiles?.[0];
+        const trackTitle = (agreement as any).ethos_tracks?.title;
 
         if (!licensee?.email) {
           return res.status(400).json({ error: "Licensee email not found" });

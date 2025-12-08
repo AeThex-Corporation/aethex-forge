@@ -20,6 +20,7 @@ interface FoundationTokenResponse {
     id: string;
     email: string;
     username: string;
+    full_name?: string;
     profile_complete: boolean;
   };
 }

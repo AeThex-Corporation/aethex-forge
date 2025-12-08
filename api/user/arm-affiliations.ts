@@ -87,7 +87,7 @@ export default async (req: Request) => {
 
     // DELETE - Remove arm affiliation
     if (req.method === "DELETE") {
-      const body = await req.json();
+      const body = (await req.json()) as { arm: string; affiliation_type?: string };
       const { arm, affiliation_type } = body;
 
       if (!VALID_ARMS.includes(arm)) {

@@ -136,7 +136,7 @@ async function handleSyncProducts(req: any, res: any) {
       throw new Error(`Failed to fetch products: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as { products?: FourthwallProduct[] };
     const products: FourthwallProduct[] = data.products || [];
 
     // Sync products to Supabase

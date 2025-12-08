@@ -132,7 +132,7 @@ export default async function handler(req: any, res: any) {
         .eq("id", id)
         .single();
 
-      if (build?.gameforge_projects?.lead_id !== userId) {
+      if ((build?.gameforge_projects as any)?.lead_id !== userId) {
         return res
           .status(403)
           .json({ error: "Only project lead can update builds" });

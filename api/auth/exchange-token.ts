@@ -47,7 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const tokenData = await tokenResponse.json();
+    const tokenData = (await tokenResponse.json()) as { access_token?: string; user?: { id: string } };
 
     if (!tokenData.access_token) {
       return res.status(400).json({ error: "No access token in response" });
