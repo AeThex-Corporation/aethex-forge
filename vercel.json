@@ -85,6 +85,7 @@
     { "source": "/profile", "destination": "/index.html" },
     { "source": "/profile/:path*", "destination": "/index.html" },
     { "source": "/activity", "destination": "/index.html" },
+    { "source": "/activity/", "destination": "/index.html" },
     { "source": "/activity/:path*", "destination": "/index.html" },
     { "source": "/admin", "destination": "/index.html" },
     { "source": "/admin/:path*", "destination": "/index.html" },
