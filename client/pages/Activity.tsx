@@ -1,12 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import LoadingScreen from "@/components/LoadingScreen";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Heart,
   MessageCircle,
@@ -27,20 +21,21 @@ import {
   CheckCircle,
   AlertCircle,
   Loader2,
+  ChevronRight,
 } from "lucide-react";
 
 const APP_URL = "https://aethex.dev";
 
 type ArmType = "labs" | "gameforge" | "corp" | "foundation" | "devlink" | "nexus" | "staff";
 
-const ARM_CONFIG: Record<ArmType, { label: string; icon: any; color: string; bgClass: string; borderClass: string }> = {
-  labs: { label: "Labs", icon: Zap, color: "text-yellow-400", bgClass: "bg-yellow-500/20", borderClass: "border-yellow-500" },
-  gameforge: { label: "GameForge", icon: Gamepad2, color: "text-green-400", bgClass: "bg-green-500/20", borderClass: "border-green-500" },
-  corp: { label: "Corp", icon: Briefcase, color: "text-blue-400", bgClass: "bg-blue-500/20", borderClass: "border-blue-500" },
-  foundation: { label: "Foundation", icon: BookOpen, color: "text-red-400", bgClass: "bg-red-500/20", borderClass: "border-red-500" },
-  devlink: { label: "Dev-Link", icon: Network, color: "text-cyan-400", bgClass: "bg-cyan-500/20", borderClass: "border-cyan-500" },
-  nexus: { label: "Nexus", icon: Sparkles, color: "text-purple-400", bgClass: "bg-purple-500/20", borderClass: "border-purple-500" },
-  staff: { label: "Staff", icon: Shield, color: "text-indigo-400", bgClass: "bg-indigo-500/20", borderClass: "border-indigo-500" },
+const ARM_CONFIG: Record<ArmType, { label: string; icon: any; color: string; accent: string }> = {
+  labs: { label: "Labs", icon: Zap, color: "#facc15", accent: "bg-yellow-500" },
+  gameforge: { label: "GameForge", icon: Gamepad2, color: "#4ade80", accent: "bg-green-500" },
+  corp: { label: "Corp", icon: Briefcase, color: "#60a5fa", accent: "bg-blue-500" },
+  foundation: { label: "Foundation", icon: BookOpen, color: "#f87171", accent: "bg-red-500" },
+  devlink: { label: "Dev-Link", icon: Network, color: "#22d3ee", accent: "bg-cyan-500" },
+  nexus: { label: "Nexus", icon: Sparkles, color: "#c084fc", accent: "bg-purple-500" },
+  staff: { label: "Staff", icon: Shield, color: "#818cf8", accent: "bg-indigo-500" },
 };
 
 interface Post {
@@ -53,22 +48,7 @@ interface Post {
   likes_count: number;
   comments_count: number;
   tags?: string[];
-  user_profiles?: {
-    id: string;
-    username?: string;
-    full_name?: string;
-    avatar_url?: string;
-  };
-}
-
-interface Opportunity {
-  id: string;
-  title: string;
-  description: string;
-  job_type: string;
-  arm_affiliation: ArmType;
-  salary_min?: number;
-  salary_max?: number;
+  user_profiles?: { id: string; username?: string; full_name?: string; avatar_url?: string };
 }
 
 interface Quest {
@@ -97,262 +77,138 @@ interface LeaderboardEntry {
   rank: number;
   user_id: string;
   username: string;
-  avatar_url?: string;
   xp: number;
   level: number;
   streak?: number;
-}
-
-function ErrorMessage({ message, onRetry }: { message: string; onRetry?: () => void }) {
-  return (
-    <div className="flex flex-col items-center justify-center py-8 text-center">
-      <AlertCircle className="w-8 h-8 text-red-400 mb-2" />
-      <p className="text-red-400 text-sm mb-3">{message}</p>
-      {onRetry && (
-        <Button variant="outline" size="sm" onClick={onRetry}>
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Retry
-        </Button>
-      )}
-    </div>
-  );
-}
-
-function LoadingSpinner() {
-  return (
-    <div className="flex items-center justify-center py-12">
-      <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
-    </div>
-  );
 }
 
 function FeedTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [needsAuth, setNeedsAuth] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     setLoading(true);
     setError(null);
-    setNeedsAuth(false);
     try {
-      const response = await fetch("/api/feed?limit=10");
-      if (response.status === 401 || response.status === 403) {
-        setNeedsAuth(true);
-        return;
-      }
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Failed to fetch posts (${response.status})`);
-      }
+      const response = await fetch("/api/feed?limit=8");
+      if (!response.ok) throw new Error("Failed to load");
       const data = await response.json();
-      setPosts(data.posts || []);
-    } catch (err: any) {
-      console.error("[Activity Feed] Error:", err);
-      setError(err.message || "Failed to load feed");
+      setPosts(data.data || []);
+    } catch {
+      setError("Couldn't load feed");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+  useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
-  if (loading) return <LoadingSpinner />;
-  if (needsAuth) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-gray-400 mb-4">Sign in on the web to view the community feed</p>
-        <Button variant="outline" size="sm" onClick={() => openExternalLink(`${APP_URL}/community/feed`)}>
-          Open Feed
-          <ExternalLink className="w-4 h-4 ml-2" />
-        </Button>
-      </div>
-    );
-  }
-  if (error) return <ErrorMessage message={error} onRetry={fetchPosts} />;
-
-  return (
-    <ScrollArea className="h-[400px]">
-      <div className="space-y-3 pr-2">
-        {posts.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-400 mb-4">No posts yet. Be the first to share!</p>
-            <Button variant="outline" size="sm" onClick={() => openExternalLink(`${APP_URL}/community/feed`)}>
-              Go to Feed
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        ) : (
-          posts.map((post) => {
-            const config = ARM_CONFIG[post.arm_affiliation] || ARM_CONFIG.labs;
-            const Icon = config.icon;
-            return (
-              <Card key={post.id} className={`${config.bgClass} border-l-4 ${config.borderClass} bg-gray-800/50`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    {post.user_profiles?.avatar_url && (
-                      <img src={post.user_profiles.avatar_url} alt="" className="w-8 h-8 rounded-full" />
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-white text-sm truncate">
-                          {post.user_profiles?.full_name || post.user_profiles?.username || "Anonymous"}
-                        </span>
-                        <Badge variant="outline" className={`text-xs ${config.color} border-current`}>
-                          <Icon className="w-3 h-3 mr-1" />
-                          {config.label}
-                        </Badge>
-                      </div>
-                      <h4 className="font-semibold text-white text-sm mb-1 line-clamp-1">{post.title}</h4>
-                      <p className="text-gray-400 text-xs line-clamp-2">{post.content}</p>
-                      <div className="flex items-center gap-4 mt-2">
-                        <span className="flex items-center gap-1 text-gray-400">
-                          <Heart className="w-3.5 h-3.5" />
-                          <span className="text-xs">{post.likes_count || 0}</span>
-                        </span>
-                        <span className="flex items-center gap-1 text-gray-400">
-                          <MessageCircle className="w-3.5 h-3.5" />
-                          <span className="text-xs">{post.comments_count || 0}</span>
-                        </span>
-                        <button
-                          onClick={() => openExternalLink(`${APP_URL}/community/feed`)}
-                          className="flex items-center gap-1 text-gray-400 hover:text-purple-400 transition-colors ml-auto"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })
-        )}
-        {posts.length > 0 && (
-          <Button variant="outline" className="w-full mt-2" onClick={() => openExternalLink(`${APP_URL}/community/feed`)}>
-            View Full Feed
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </Button>
-        )}
-      </div>
-    </ScrollArea>
+  if (loading) return <div className="flex justify-center py-8"><Loader2 className="w-5 h-5 animate-spin text-[#b5bac1]" /></div>;
+  if (error) return (
+    <div className="text-center py-6">
+      <p className="text-[#b5bac1] text-sm mb-3">{error}</p>
+      <button onClick={fetchPosts} className="text-[#00a8fc] text-sm hover:underline">Try again</button>
+    </div>
   );
-}
-
-function RealmSwitcher({
-  currentRealm,
-  openExternalLink,
-}: {
-  currentRealm: ArmType;
-  openExternalLink: (url: string) => Promise<void>;
-}) {
-  const realms = Object.entries(ARM_CONFIG) as [ArmType, typeof ARM_CONFIG.labs][];
 
   return (
-    <div className="space-y-4">
-      <div className="text-center mb-4">
-        <h2 className="text-white font-semibold mb-1">Your Realms</h2>
-        <p className="text-gray-400 text-xs">Explore the different realms of AeThex</p>
-      </div>
-      
-      <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 mb-4">
-        <p className="text-purple-300 text-xs text-center">
-          Your current realm: <strong>{ARM_CONFIG[currentRealm]?.label || "Labs"}</strong>
-        </p>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-3">
-        {realms.map(([key, config]) => {
-          const Icon = config.icon;
-          const isActive = currentRealm === key;
+    <div className="space-y-2">
+      {posts.length === 0 ? (
+        <button onClick={() => openExternalLink(`${APP_URL}/community/feed`)} className="w-full p-4 rounded-lg bg-[#232428] hover:bg-[#2b2d31] transition-colors text-left">
+          <p className="text-[#b5bac1] text-sm">No posts yet</p>
+          <p className="text-[#00a8fc] text-xs mt-1">Open Feed →</p>
+        </button>
+      ) : (
+        posts.map((post) => {
+          const config = ARM_CONFIG[post.arm_affiliation] || ARM_CONFIG.labs;
           return (
-            <button
-              key={key}
-              onClick={() => openExternalLink(`${APP_URL}/${key}`)}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                isActive
-                  ? `${config.bgClass} ${config.borderClass} ring-2 ring-offset-2 ring-offset-gray-900`
-                  : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
-              }`}
-            >
-              <Icon className={`w-6 h-6 mx-auto mb-2 ${isActive ? config.color : "text-gray-400"}`} />
-              <p className={`text-sm font-medium ${isActive ? "text-white" : "text-gray-400"}`}>
-                {config.label}
-              </p>
+            <button key={post.id} onClick={() => openExternalLink(`${APP_URL}/community/feed/${post.id}`)} className="w-full p-3 rounded-lg bg-[#232428] hover:bg-[#2b2d31] transition-colors text-left border-l-2" style={{ borderColor: config.color }}>
+              <div className="flex items-start gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-white text-sm font-medium truncate">{post.title}</p>
+                  <p className="text-[#949ba4] text-xs truncate mt-0.5">{post.content}</p>
+                  <div className="flex items-center gap-3 mt-2 text-[#949ba4] text-xs">
+                    <span className="flex items-center gap-1"><Heart className="w-3 h-3" />{post.likes_count}</span>
+                    <span className="flex items-center gap-1"><MessageCircle className="w-3 h-3" />{post.comments_count}</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#4e5058] shrink-0 mt-1" />
+              </div>
             </button>
           );
-        })}
-      </div>
-      
-      <Button className="w-full mt-4" onClick={() => openExternalLink(`${APP_URL}/profile/settings`)}>
-        Change Primary Realm
-        <ExternalLink className="w-4 h-4 ml-2" />
-      </Button>
+        })
+      )}
+      <button onClick={() => openExternalLink(`${APP_URL}/community/feed`)} className="w-full py-2 text-[#00a8fc] text-sm hover:underline">
+        View all posts →
+      </button>
     </div>
   );
 }
 
-function AchievementsTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
-  const achievements: Achievement[] = [
-    { id: "1", name: "First Post", description: "Create your first community post", icon: "📝", xp_reward: 50, unlocked: true },
-    { id: "2", name: "Social Butterfly", description: "Follow 5 different realms", icon: "🦋", xp_reward: 100, unlocked: true },
-    { id: "3", name: "Realm Explorer", description: "Visit all 7 realms", icon: "🗺️", xp_reward: 150, unlocked: false, progress: 5, total: 7 },
-    { id: "4", name: "Community Leader", description: "Get 100 likes on your posts", icon: "👑", xp_reward: 500, unlocked: false, progress: 42, total: 100 },
-    { id: "5", name: "Mentor", description: "Complete 10 mentorship sessions", icon: "🎓", xp_reward: 300, unlocked: false, progress: 3, total: 10 },
-    { id: "6", name: "Hot Streak", description: "Log in 7 days in a row", icon: "🔥", xp_reward: 200, unlocked: false, progress: 4, total: 7 },
-  ];
-
-  const unlockedCount = achievements.filter((a) => a.unlocked).length;
-
+function RealmsTab({ currentRealm, openExternalLink }: { currentRealm: ArmType; openExternalLink: (url: string) => Promise<void> }) {
+  const realms = Object.entries(ARM_CONFIG) as [ArmType, typeof ARM_CONFIG[ArmType]][];
+  
   return (
-    <ScrollArea className="h-[400px]">
-      <div className="space-y-2 pr-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Trophy className="w-4 h-4 text-yellow-400" />
-            <span className="text-white text-sm font-medium">{unlockedCount}/{achievements.length} Unlocked</span>
-          </div>
-          <span className="text-xs text-amber-400/80">Preview</span>
-        </div>
-        
-        {achievements.slice(0, 5).map((achievement) => (
-          <div key={achievement.id} className={`rounded-lg border p-3 ${achievement.unlocked ? "bg-yellow-900/20 border-yellow-500/40" : "bg-gray-900/80 border-gray-600"}`}>
-            <div className="flex items-center gap-2">
-              <span className={`text-lg ${achievement.unlocked ? "" : "grayscale opacity-50"}`}>{achievement.icon}</span>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <h4 className={`font-medium text-sm ${achievement.unlocked ? "text-white" : "text-gray-400"}`}>{achievement.name}</h4>
-                    {achievement.unlocked && <CheckCircle className="w-3 h-3 text-green-400" />}
-                  </div>
-                  <Badge className="shrink-0 bg-yellow-500/20 text-yellow-300 border-yellow-500/50 text-[10px] px-1.5">+{achievement.xp_reward}</Badge>
-                </div>
-                <p className="text-gray-500 text-xs truncate">{achievement.description}</p>
-              </div>
-            </div>
-            {!achievement.unlocked && achievement.progress !== undefined && (
-              <div className="mt-2 pl-7">
-                <div className="flex items-center gap-2">
-                  <Progress value={(achievement.progress / (achievement.total || 1)) * 100} className="h-2 flex-1 bg-gray-700" />
-                  <span className="text-xs text-gray-400 shrink-0">{achievement.progress}/{achievement.total}</span>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-        <Button variant="outline" size="sm" className="w-full" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
-          View All Achievements
-          <ExternalLink className="w-3 h-3 ml-2" />
-        </Button>
+    <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-2">
+        {realms.map(([key, config]) => {
+          const Icon = config.icon;
+          const isActive = currentRealm === key;
+          return (
+            <button key={key} onClick={() => openExternalLink(`${APP_URL}/${key}`)} className={`p-3 rounded-lg transition-all flex items-center gap-2 ${isActive ? "bg-[#404249] ring-1 ring-[#5865f2]" : "bg-[#232428] hover:bg-[#2b2d31]"}`}>
+              <Icon className="w-5 h-5" style={{ color: config.color }} />
+              <span className={`text-sm ${isActive ? "text-white font-medium" : "text-[#b5bac1]"}`}>{config.label}</span>
+            </button>
+          );
+        })}
       </div>
-    </ScrollArea>
+      <button onClick={() => openExternalLink(`${APP_URL}/profile/settings`)} className="w-full py-2 text-[#00a8fc] text-sm hover:underline">
+        Change primary realm →
+      </button>
+    </div>
   );
 }
 
-function LeaderboardTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
+function BadgesTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
+  const achievements: Achievement[] = [
+    { id: "1", name: "First Post", description: "Create your first post", icon: "📝", xp_reward: 50, unlocked: true },
+    { id: "2", name: "Social Butterfly", description: "Follow 5 realms", icon: "🦋", xp_reward: 100, unlocked: true },
+    { id: "3", name: "Realm Explorer", description: "Visit all 7 realms", icon: "🗺️", xp_reward: 150, unlocked: false, progress: 5, total: 7 },
+    { id: "4", name: "Community Leader", description: "Get 100 likes", icon: "👑", xp_reward: 500, unlocked: false, progress: 42, total: 100 },
+  ];
+
+  return (
+    <div className="space-y-2">
+      {achievements.map((a) => (
+        <div key={a.id} className={`p-3 rounded-lg flex items-center gap-3 ${a.unlocked ? "bg-[#2d4f2d]" : "bg-[#232428]"}`}>
+          <span className={`text-xl ${a.unlocked ? "" : "grayscale opacity-50"}`}>{a.icon}</span>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <span className={`text-sm font-medium ${a.unlocked ? "text-[#57f287]" : "text-[#b5bac1]"}`}>{a.name}</span>
+              <span className="text-xs text-[#faa61a]">+{a.xp_reward} XP</span>
+            </div>
+            <p className="text-[#949ba4] text-xs">{a.description}</p>
+            {!a.unlocked && a.progress !== undefined && (
+              <div className="mt-2 flex items-center gap-2">
+                <div className="flex-1 h-1.5 bg-[#1e1f22] rounded-full overflow-hidden">
+                  <div className="h-full bg-[#5865f2] rounded-full" style={{ width: `${(a.progress / (a.total || 1)) * 100}%` }} />
+                </div>
+                <span className="text-[10px] text-[#949ba4]">{a.progress}/{a.total}</span>
+              </div>
+            )}
+          </div>
+          {a.unlocked && <CheckCircle className="w-4 h-4 text-[#57f287] shrink-0" />}
+        </div>
+      ))}
+      <button onClick={() => openExternalLink(`${APP_URL}/profile`)} className="w-full py-2 text-[#00a8fc] text-sm hover:underline">
+        View all badges →
+      </button>
+    </div>
+  );
+}
+
+function TopTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
   const leaderboard: LeaderboardEntry[] = [
     { rank: 1, user_id: "1", username: "CodeMaster", xp: 12500, level: 25, streak: 14 },
     { rank: 2, user_id: "2", username: "DevNinja", xp: 11200, level: 23, streak: 7 },
@@ -361,266 +217,169 @@ function LeaderboardTab({ openExternalLink }: { openExternalLink: (url: string) 
     { rank: 5, user_id: "5", username: "ForgeHero", xp: 7200, level: 17, streak: 3 },
   ];
 
-  const getRankBadge = (rank: number) => {
-    if (rank === 1) return { color: "text-yellow-400", bg: "bg-yellow-500/20", icon: "🥇" };
-    if (rank === 2) return { color: "text-gray-300", bg: "bg-gray-400/20", icon: "🥈" };
-    if (rank === 3) return { color: "text-orange-400", bg: "bg-orange-500/20", icon: "🥉" };
-    return { color: "text-gray-400", bg: "bg-gray-700/50", icon: null };
-  };
+  const medals = ["🥇", "🥈", "🥉"];
 
   return (
-    <ScrollArea className="h-[400px]">
-      <div className="space-y-2 pr-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Flame className="w-4 h-4 text-orange-400" />
-            <span className="text-white text-sm font-medium">Top Creators This Week</span>
+    <div className="space-y-2">
+      {leaderboard.map((entry) => (
+        <div key={entry.user_id} className={`p-3 rounded-lg flex items-center gap-3 ${entry.rank <= 3 ? "bg-[#232428]" : "bg-[#1e1f22]"}`}>
+          <span className="w-6 text-center text-lg">{medals[entry.rank - 1] || `#${entry.rank}`}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-sm font-medium truncate">{entry.username}</p>
+            <p className="text-[#949ba4] text-xs">Lvl {entry.level} · {entry.xp.toLocaleString()} XP</p>
           </div>
-          <span className="text-xs text-amber-400/80">Preview</span>
+          {entry.streak && entry.streak > 0 && (
+            <span className="flex items-center gap-1 text-[#ed4245] text-xs"><Flame className="w-3 h-3" />{entry.streak}d</span>
+          )}
         </div>
-        {leaderboard.map((entry) => {
-          const badge = getRankBadge(entry.rank);
-          return (
-            <div key={entry.user_id} className={`flex items-center gap-3 p-3 rounded-lg ${badge.bg} border border-gray-700/50`}>
-              <div className={`w-8 h-8 flex items-center justify-center rounded-full ${badge.bg} ${badge.color} font-bold text-sm`}>
-                {badge.icon || `#${entry.rank}`}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-medium text-sm truncate">{entry.username}</p>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
-                  <span>Lvl {entry.level}</span>
-                  {entry.streak && entry.streak > 0 && (
-                    <span className="flex items-center gap-0.5 text-orange-400">
-                      <Flame className="w-3 h-3" />{entry.streak}d
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="text-right">
-                <p className={`font-bold ${badge.color}`}>{entry.xp.toLocaleString()}</p>
-                <p className="text-xs text-gray-500">XP</p>
-              </div>
-            </div>
-          );
-        })}
-        <Button variant="outline" className="w-full mt-2" onClick={() => openExternalLink(`${APP_URL}/creators`)}>
-          View All Creators
-          <ExternalLink className="w-4 h-4 ml-2" />
-        </Button>
-      </div>
-    </ScrollArea>
+      ))}
+      <button onClick={() => openExternalLink(`${APP_URL}/leaderboard`)} className="w-full py-2 text-[#00a8fc] text-sm hover:underline">
+        Full leaderboard →
+      </button>
+    </div>
   );
 }
 
-function OpportunitiesTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
+function JobsTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
+  const categories = [
+    { label: "Full-Time", icon: Briefcase },
+    { label: "Contract", icon: Target },
+    { label: "Freelance", icon: Star },
+  ];
+
   return (
-    <ScrollArea className="h-[400px]">
-      <div className="space-y-3 pr-2">
-        <div className="flex items-center gap-2 mb-4">
-          <Briefcase className="w-5 h-5 text-blue-400" />
-          <span className="text-white font-semibold">Open Opportunities</span>
-        </div>
-        <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-center">
-          <p className="text-blue-300 text-sm mb-3">
-            Browse job opportunities, contracts, and gigs from the AeThex community.
-          </p>
-          <Button onClick={() => openExternalLink(`${APP_URL}/opportunities`)}>
-            View Opportunities
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </Button>
-        </div>
-        
-        <div className="mt-4 space-y-2">
-          <p className="text-gray-400 text-xs text-center">Quick categories:</p>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {[
-              { label: "Full-Time", icon: Briefcase },
-              { label: "Contract", icon: Target },
-              { label: "Freelance", icon: Star },
-            ].map(({ label, icon: Icon }) => (
-              <Button
-                key={label}
-                variant="outline"
-                size="sm"
-                className="text-xs"
-                onClick={() => openExternalLink(`${APP_URL}/opportunities?type=${label.toLowerCase()}`)}
-              >
-                <Icon className="w-3 h-3 mr-1" />
-                {label}
-              </Button>
-            ))}
-          </div>
-        </div>
+    <div className="space-y-3">
+      <p className="text-[#b5bac1] text-sm">Browse opportunities from the AeThex community.</p>
+      <div className="grid grid-cols-3 gap-2">
+        {categories.map(({ label, icon: Icon }) => (
+          <button key={label} onClick={() => openExternalLink(`${APP_URL}/opportunities?type=${label.toLowerCase()}`)} className="p-3 rounded-lg bg-[#232428] hover:bg-[#2b2d31] transition-colors flex flex-col items-center gap-2">
+            <Icon className="w-5 h-5 text-[#5865f2]" />
+            <span className="text-[#b5bac1] text-xs">{label}</span>
+          </button>
+        ))}
       </div>
-    </ScrollArea>
+      <button onClick={() => openExternalLink(`${APP_URL}/opportunities`)} className="w-full py-3 rounded-lg bg-[#5865f2] hover:bg-[#4752c4] transition-colors text-white text-sm font-medium">
+        Browse All Jobs
+      </button>
+    </div>
   );
 }
 
 function QuestsTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
   const quests: Quest[] = [
-    { id: "1", title: "Share Your Work", description: "Post an update to the community feed", xp_reward: 25, completed: false, progress: 0, total: 1, type: "daily" },
-    { id: "2", title: "Engage & Support", description: "Like 5 posts from other creators", xp_reward: 15, completed: false, progress: 3, total: 5, type: "daily" },
-    { id: "3", title: "Realm Hopper", description: "Visit 3 different realm feeds", xp_reward: 20, completed: true, progress: 3, total: 3, type: "daily" },
-    { id: "4", title: "Weekly Contributor", description: "Make 7 posts this week", xp_reward: 150, completed: false, progress: 4, total: 7, type: "weekly" },
+    { id: "1", title: "Share Your Work", description: "Post an update", xp_reward: 25, completed: false, progress: 0, total: 1, type: "daily" },
+    { id: "2", title: "Engage & Support", description: "Like 5 posts", xp_reward: 15, completed: false, progress: 3, total: 5, type: "daily" },
+    { id: "3", title: "Realm Hopper", description: "Visit 3 realms", xp_reward: 20, completed: true, progress: 3, total: 3, type: "daily" },
+    { id: "4", title: "Weekly Contributor", description: "Make 7 posts", xp_reward: 150, completed: false, progress: 4, total: 7, type: "weekly" },
   ];
 
-  const dailyQuests = quests.filter((q) => q.type === "daily");
-  const weeklyQuests = quests.filter((q) => q.type === "weekly");
-
-  const QuestCard = ({ quest }: { quest: Quest }) => (
-    <div className={`rounded-lg border p-3 ${quest.completed ? "bg-green-900/30 border-green-500/50" : "bg-gray-900/80 border-gray-600"}`}>
-      <div className="flex items-center gap-2">
-        <div className={`shrink-0 p-1.5 rounded ${quest.completed ? "bg-green-500/30" : "bg-gray-700"}`}>
-          {quest.completed ? <CheckCircle className="w-4 h-4 text-green-400" /> : <Target className="w-4 h-4 text-gray-400" />}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-2">
-            <h4 className={`font-medium text-sm truncate ${quest.completed ? "text-green-400 line-through" : "text-white"}`}>{quest.title}</h4>
-            <Badge className="shrink-0 bg-yellow-500/20 text-yellow-300 border-yellow-500/50 text-[10px] px-1.5">+{quest.xp_reward} XP</Badge>
-          </div>
-          <p className="text-gray-500 text-xs truncate">{quest.description}</p>
-        </div>
-      </div>
-      {!quest.completed && (
-        <div className="mt-2 pl-8">
-          <div className="flex items-center gap-2">
-            <Progress value={(quest.progress / quest.total) * 100} className="h-2 flex-1 bg-gray-700" />
-            <span className="text-xs text-gray-400 shrink-0">{quest.progress}/{quest.total}</span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
   return (
-    <ScrollArea className="h-[400px]">
-      <div className="space-y-3 pr-2">
-        <div className="flex items-center gap-2 text-xs text-amber-400/80">
-          <Star className="w-3 h-3" />
-          <span>Preview - Quest system coming soon</span>
+    <div className="space-y-2">
+      {quests.map((q) => (
+        <div key={q.id} className={`p-3 rounded-lg ${q.completed ? "bg-[#2d4f2d]" : "bg-[#232428]"}`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {q.completed ? <CheckCircle className="w-4 h-4 text-[#57f287]" /> : <Target className="w-4 h-4 text-[#949ba4]" />}
+              <span className={`text-sm ${q.completed ? "text-[#57f287] line-through" : "text-white"}`}>{q.title}</span>
+            </div>
+            <span className="text-xs text-[#faa61a]">+{q.xp_reward} XP</span>
+          </div>
+          {!q.completed && (
+            <div className="mt-2 ml-6 flex items-center gap-2">
+              <div className="flex-1 h-2 bg-[#1e1f22] rounded-full overflow-hidden">
+                <div className="h-full bg-[#5865f2] rounded-full transition-all" style={{ width: `${(q.progress / q.total) * 100}%` }} />
+              </div>
+              <span className="text-xs text-[#949ba4] w-8">{q.progress}/{q.total}</span>
+            </div>
+          )}
         </div>
-        
-        <div className="space-y-2">
-          {dailyQuests.map((quest) => <QuestCard key={quest.id} quest={quest} />)}
-        </div>
-        
-        <div className="flex items-center gap-2 pt-2">
-          <Gift className="w-4 h-4 text-purple-400" />
-          <span className="text-white text-sm font-medium">Weekly Quests</span>
-        </div>
-        <div className="space-y-2">
-          {weeklyQuests.map((quest) => <QuestCard key={quest.id} quest={quest} />)}
-        </div>
-        
-        <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
-          View Your Progress
-          <ExternalLink className="w-3 h-3 ml-2" />
-        </Button>
-      </div>
-    </ScrollArea>
+      ))}
+      <button onClick={() => openExternalLink(`${APP_URL}/profile`)} className="w-full py-2 text-[#00a8fc] text-sm hover:underline">
+        View progress →
+      </button>
+    </div>
   );
 }
 
 export default function Activity() {
   const { isActivity, isLoading, user, error, openExternalLink } = useDiscordActivity();
-  const [showContent, setShowContent] = useState(false);
   const [activeTab, setActiveTab] = useState("feed");
-
   const currentRealm: ArmType = (user?.primary_arm as ArmType) || "labs";
 
-  useEffect(() => {
-    if (isActivity && !isLoading) {
-      setShowContent(true);
-    }
-  }, [isActivity, isLoading]);
+  if (isLoading) return <LoadingScreen message="Loading..." showProgress={true} duration={3000} />;
 
-  if (isLoading) {
-    return <LoadingScreen message="Initializing Discord Activity..." showProgress={true} duration={5000} />;
-  }
+  if (error) return (
+    <div className="min-h-screen bg-[#313338] flex items-center justify-center p-4">
+      <div className="text-center max-w-xs">
+        <AlertCircle className="w-10 h-10 text-[#ed4245] mx-auto mb-3" />
+        <p className="text-white font-medium mb-2">Something went wrong</p>
+        <p className="text-[#949ba4] text-sm mb-4">{error}</p>
+        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-[#5865f2] hover:bg-[#4752c4] text-white text-sm rounded-lg transition-colors">
+          Retry
+        </button>
+      </div>
+    </div>
+  );
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <div className="text-center max-w-md px-4">
-          <h1 className="text-2xl font-bold text-red-500 mb-4">Activity Error</h1>
-          <p className="text-gray-300 mb-6 text-sm">{error}</p>
-          <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6 text-left">
-            <h3 className="text-white font-semibold mb-2 text-sm">Troubleshooting:</h3>
-            <ol className="text-gray-400 text-xs space-y-1 list-decimal list-inside">
-              <li>Clear your browser cache</li>
-              <li>Close Discord completely</li>
-              <li>Reopen Discord and try again</li>
-            </ol>
+  if (!isActivity) return (
+    <div className="min-h-screen bg-[#313338] flex items-center justify-center p-4">
+      <div className="text-center max-w-xs">
+        <p className="text-white font-medium mb-2">Discord Activity</p>
+        <p className="text-[#949ba4] text-sm mb-4">Open this within Discord to get started.</p>
+        <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="text-[#00a8fc] text-sm hover:underline">
+          Visit aethex.dev
+        </a>
+      </div>
+    </div>
+  );
+
+  const tabs = [
+    { id: "feed", label: "Feed" },
+    { id: "realms", label: "Realms" },
+    { id: "badges", label: "Badges" },
+    { id: "top", label: "Top" },
+    { id: "jobs", label: "Jobs" },
+    { id: "quests", label: "Quests" },
+  ];
+
+  const realmConfig = ARM_CONFIG[currentRealm];
+  const RealmIcon = realmConfig.icon;
+
+  return (
+    <div className="min-h-screen bg-[#313338]">
+      <div className="max-w-md mx-auto">
+        <div className="flex items-center gap-3 px-4 py-3 bg-[#2b2d31] border-b border-[#1e1f22]">
+          {user?.avatar_url && <img src={user.avatar_url} alt="" className="w-8 h-8 rounded-full" />}
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-sm font-medium truncate">{user?.full_name || user?.username}</p>
+            <div className="flex items-center gap-1">
+              <RealmIcon className="w-3 h-3" style={{ color: realmConfig.color }} />
+              <span className="text-xs" style={{ color: realmConfig.color }}>{realmConfig.label}</span>
+            </div>
           </div>
-          <button onClick={() => window.location.reload()} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm">
-            Retry
+          <button onClick={() => openExternalLink(`${APP_URL}/profile`)} className="p-2 hover:bg-[#404249] rounded-lg transition-colors">
+            <ExternalLink className="w-4 h-4 text-[#b5bac1]" />
           </button>
         </div>
-      </div>
-    );
-  }
 
-  if (!isActivity && !isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <div className="text-center max-w-md px-4">
-          <h1 className="text-2xl font-bold text-white mb-4">Discord Activity</h1>
-          <p className="text-gray-300 mb-6">This page is designed to run as a Discord Activity. Open it within Discord to get started!</p>
-          <a href="https://aethex.dev" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline text-sm">
-            Visit aethex.dev
-          </a>
+        <div className="flex bg-[#2b2d31] border-b border-[#1e1f22] px-2">
+          {tabs.map((tab) => (
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`px-3 py-2 text-xs font-medium transition-colors relative ${activeTab === tab.id ? "text-white" : "text-[#949ba4] hover:text-[#dbdee1]"}`}>
+              {tab.label}
+              {activeTab === tab.id && <div className="absolute bottom-0 left-1 right-1 h-0.5 bg-[#5865f2] rounded-full" />}
+            </button>
+          ))}
+        </div>
+
+        <div className="p-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 100px)" }}>
+          {activeTab === "feed" && <FeedTab openExternalLink={openExternalLink} />}
+          {activeTab === "realms" && <RealmsTab currentRealm={currentRealm} openExternalLink={openExternalLink} />}
+          {activeTab === "badges" && <BadgesTab openExternalLink={openExternalLink} />}
+          {activeTab === "top" && <TopTab openExternalLink={openExternalLink} />}
+          {activeTab === "jobs" && <JobsTab openExternalLink={openExternalLink} />}
+          {activeTab === "quests" && <QuestsTab openExternalLink={openExternalLink} />}
         </div>
       </div>
-    );
-  }
-
-  if (user && showContent) {
-    const realmConfig = ARM_CONFIG[currentRealm];
-    const RealmIcon = realmConfig.icon;
-
-    return (
-      <div className="min-h-screen bg-gray-900">
-        <div className="max-w-lg mx-auto">
-          <div className={`${realmConfig.bgClass} border-b ${realmConfig.borderClass} px-3 py-2`}>
-            <div className="flex items-center gap-2">
-              {user.avatar_url && <img src={user.avatar_url} alt="" className="w-8 h-8 rounded-full ring-2 ring-white/20" />}
-              <div className="flex-1 min-w-0">
-                <h1 className="text-white font-semibold text-sm truncate">{user.full_name || user.username}</h1>
-                <Badge variant="outline" className={`${realmConfig.color} border-current text-[10px] px-1.5 py-0`}>
-                  <RealmIcon className="w-2.5 h-2.5 mr-0.5" />{realmConfig.label}
-                </Badge>
-              </div>
-              <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </Button>
-            </div>
-          </div>
-
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="w-full justify-start bg-gray-800/50 border-b border-gray-700 rounded-none px-1 gap-0.5 h-8">
-              <TabsTrigger value="feed" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Feed</TabsTrigger>
-              <TabsTrigger value="realms" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Realms</TabsTrigger>
-              <TabsTrigger value="achievements" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Badges</TabsTrigger>
-              <TabsTrigger value="leaderboard" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Top</TabsTrigger>
-              <TabsTrigger value="opportunities" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Jobs</TabsTrigger>
-              <TabsTrigger value="quests" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Quests</TabsTrigger>
-            </TabsList>
-
-            <div className="p-3">
-              <TabsContent value="feed" className="mt-0"><FeedTab openExternalLink={openExternalLink} /></TabsContent>
-              <TabsContent value="realms" className="mt-0">
-                <RealmSwitcher currentRealm={currentRealm} openExternalLink={openExternalLink} />
-              </TabsContent>
-              <TabsContent value="achievements" className="mt-0"><AchievementsTab openExternalLink={openExternalLink} /></TabsContent>
-              <TabsContent value="leaderboard" className="mt-0"><LeaderboardTab openExternalLink={openExternalLink} /></TabsContent>
-              <TabsContent value="opportunities" className="mt-0"><OpportunitiesTab openExternalLink={openExternalLink} /></TabsContent>
-              <TabsContent value="quests" className="mt-0"><QuestsTab openExternalLink={openExternalLink} /></TabsContent>
-            </div>
-          </Tabs>
-        </div>
-      </div>
-    );
-  }
-
-  return <LoadingScreen message="Loading your profile..." showProgress={true} duration={5000} />;
+    </div>
+  );
 }
