@@ -97,9 +97,7 @@ export const DiscordActivityProvider: React.FC<
             clientId,
           );
 
-          const sdk = new DiscordSDK({
-            clientId,
-          });
+          const sdk = new DiscordSDK(clientId);
 
           setDiscordSdk(sdk);
 
@@ -108,137 +106,106 @@ export const DiscordActivityProvider: React.FC<
           await sdk.ready();
           console.log("[Discord Activity] SDK is ready");
 
-          // Authenticate the session with Discord
-          console.log("[Discord Activity] Authenticating session...");
-          await sdk.authenticate();
-          console.log("[Discord Activity] Session authenticated");
+          // Authorize the user to get an access token
+          console.log("[Discord Activity] Authorizing user...");
+          const { code } = await sdk.commands.authorize({
+            client_id: clientId,
+            response_type: "code",
+            state: "",
+            scope: ["identify", "guilds"],
+            prompt: "none",
+          });
 
-          // Get the current user from the SDK
-          const currentUser = await sdk.user.getUser();
           console.log(
-            "[Discord Activity] Current user:",
-            currentUser ? "exists" : "null",
+            "[Discord Activity] Got authorization code, exchanging for token...",
           );
 
-          if (!currentUser) {
-            // User not authenticated, authorize them
-            console.log("[Discord Activity] Authorizing user...");
-            const { code } = await sdk.commands.authorize({
-              client_id: clientId,
-              response_type: "code",
-              state: "",
-              scope: "identify email guilds",
-              prompt: "none",
-            });
+          // Exchange code for access token via our backend
+          const tokenResponse = await fetch(`${API_BASE}/api/discord/token`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ code }),
+          });
 
-            console.log(
-              "[Discord Activity] Got authorization code, exchanging for token...",
+          if (!tokenResponse.ok) {
+            const errorData = await tokenResponse.json();
+            const errMsg = errorData.error || "Failed to exchange code";
+            console.error(
+              "[Discord Activity] Token exchange failed:",
+              errMsg,
             );
-
-            // Exchange code for access token via our backend
-            const tokenResponse = await fetch(`${API_BASE}/api/discord/token`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ code }),
-            });
-
-            if (!tokenResponse.ok) {
-              const errorData = await tokenResponse.json();
-              const errMsg = errorData.error || "Failed to exchange code";
-              console.error(
-                "[Discord Activity] Token exchange failed:",
-                errMsg,
-              );
-              setError(errMsg);
-              setIsLoading(false);
-              return;
-            }
-
-            const tokenData = await tokenResponse.json();
-            const access_token = tokenData.access_token;
-
-            console.log(
-              "[Discord Activity] Got access token, authenticating with SDK...",
-            );
-
-            // Authenticate with SDK using the access token
-            const authResult = await sdk.commands.authenticate({
-              access_token,
-            });
-
-            if (!authResult) {
-              console.error("[Discord Activity] SDK authentication failed");
-              setError("SDK authentication failed");
-              setIsLoading(false);
-              return;
-            }
-
-            console.log(
-              "[Discord Activity] Authenticated with SDK, fetching user profile...",
-            );
-            setAuth(authResult);
-
-            // Get user info using the access token
-            const userResponse = await fetch(
-              "https://discord.com/api/v10/users/@me",
-              {
-                headers: {
-                  Authorization: `Bearer ${access_token}`,
-                },
-              },
-            );
-
-            if (!userResponse.ok) {
-              console.error("[Discord Activity] Failed to fetch user profile");
-              setError("Failed to fetch user profile");
-              setIsLoading(false);
-              return;
-            }
-
-            const discordUserData = await userResponse.json();
-            console.log(
-              "[Discord Activity] User profile fetched:",
-              discordUserData.username,
-            );
-
-            // Store the user data
-            const userData: DiscordUser = {
-              id: discordUserData.id,
-              discord_id: discordUserData.id,
-              full_name:
-                discordUserData.global_name || discordUserData.username,
-              username: discordUserData.username,
-              avatar_url: discordUserData.avatar
-                ? `https://cdn.discordapp.com/avatars/${discordUserData.id}/${discordUserData.avatar}.png`
-                : null,
-              bio: null,
-              user_type: "community_member",
-              primary_arm: "labs",
-            };
-
-            setUser(userData);
-            setError(null);
-            console.log("[Discord Activity] User authenticated successfully");
-          } else {
-            // User already authenticated
-            console.log("[Discord Activity] User already authenticated");
-            const userData: DiscordUser = {
-              id: currentUser.id,
-              discord_id: currentUser.id,
-              full_name: currentUser.global_name || currentUser.username,
-              username: currentUser.username,
-              avatar_url: currentUser.avatar
-                ? `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png`
-                : null,
-              bio: null,
-              user_type: "community_member",
-              primary_arm: "labs",
-            };
-            setUser(userData);
-            setError(null);
+            setError(errMsg);
+            setIsLoading(false);
+            return;
           }
+
+          const tokenData = await tokenResponse.json();
+          const access_token = tokenData.access_token;
+
+          console.log(
+            "[Discord Activity] Got access token, authenticating with SDK...",
+          );
+
+          // Authenticate with SDK using the access token
+          const authResult = await sdk.commands.authenticate({
+            access_token,
+          });
+
+          if (!authResult) {
+            console.error("[Discord Activity] SDK authentication failed");
+            setError("SDK authentication failed");
+            setIsLoading(false);
+            return;
+          }
+
+          console.log(
+            "[Discord Activity] Authenticated with SDK, fetching user profile...",
+          );
+          setAuth(authResult);
+
+          // Get user info using the access token
+          const userResponse = await fetch(
+            "https://discord.com/api/v10/users/@me",
+            {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            },
+          );
+
+          if (!userResponse.ok) {
+            console.error("[Discord Activity] Failed to fetch user profile");
+            setError("Failed to fetch user profile");
+            setIsLoading(false);
+            return;
+          }
+
+          const discordUserData = await userResponse.json();
+          console.log(
+            "[Discord Activity] User profile fetched:",
+            discordUserData.username,
+          );
+
+          // Store the user data
+          const userData: DiscordUser = {
+            id: discordUserData.id,
+            discord_id: discordUserData.id,
+            full_name:
+              discordUserData.global_name || discordUserData.username,
+            username: discordUserData.username,
+            avatar_url: discordUserData.avatar
+              ? `https://cdn.discordapp.com/avatars/${discordUserData.id}/${discordUserData.avatar}.png`
+              : null,
+            bio: null,
+            user_type: "community_member",
+            primary_arm: "labs",
+          };
+
+          setUser(userData);
+          setError(null);
+          console.log("[Discord Activity] User authenticated successfully");
         } catch (err: any) {
           console.error("Discord Activity initialization error:", err);
           console.error("Error details:", {

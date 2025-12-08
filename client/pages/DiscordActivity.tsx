@@ -10,6 +10,7 @@ interface DiscordSDK {
   commands: {
     authorize: (options: any) => Promise<any>;
   };
+  subscribe: (event: string, callback: (data: any) => void) => void;
 }
 
 export default function DiscordActivity() {
