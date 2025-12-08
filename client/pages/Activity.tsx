@@ -309,50 +309,43 @@ function AchievementsTab({ openExternalLink }: { openExternalLink: (url: string)
 
   return (
     <ScrollArea className="h-[400px]">
-      <div className="space-y-3 pr-2">
-        <div className="flex items-center justify-between mb-4">
+      <div className="space-y-2 pr-2">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-400" />
-            <span className="text-white font-semibold">{unlockedCount}/{achievements.length} Unlocked</span>
+            <Trophy className="w-4 h-4 text-yellow-400" />
+            <span className="text-white text-sm font-medium">{unlockedCount}/{achievements.length} Unlocked</span>
           </div>
-          <Badge variant="outline" className="text-yellow-400 border-yellow-400">
-            +{achievements.filter((a) => a.unlocked).reduce((sum, a) => sum + a.xp_reward, 0)} XP
-          </Badge>
+          <span className="text-xs text-amber-400/80">Preview</span>
         </div>
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-4">
-          <p className="text-amber-300 text-xs text-center">
-            Achievement tracking coming soon! View your full profile for more details.
-          </p>
-        </div>
-        {achievements.slice(0, 4).map((achievement) => (
-          <Card key={achievement.id} className={`${achievement.unlocked ? "bg-yellow-500/10 border-yellow-500/30" : "bg-gray-800/50 border-gray-700"}`}>
-            <CardContent className="p-4">
-              <div className="flex items-start gap-3">
-                <div className={`text-2xl ${achievement.unlocked ? "" : "grayscale opacity-50"}`}>{achievement.icon}</div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h4 className={`font-semibold text-sm ${achievement.unlocked ? "text-white" : "text-gray-400"}`}>{achievement.name}</h4>
-                    {achievement.unlocked && <CheckCircle className="w-4 h-4 text-green-400" />}
+        
+        {achievements.slice(0, 5).map((achievement) => (
+          <div key={achievement.id} className={`rounded-lg border p-3 ${achievement.unlocked ? "bg-yellow-900/20 border-yellow-500/40" : "bg-gray-900/80 border-gray-600"}`}>
+            <div className="flex items-center gap-2">
+              <span className={`text-lg ${achievement.unlocked ? "" : "grayscale opacity-50"}`}>{achievement.icon}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <h4 className={`font-medium text-sm ${achievement.unlocked ? "text-white" : "text-gray-400"}`}>{achievement.name}</h4>
+                    {achievement.unlocked && <CheckCircle className="w-3 h-3 text-green-400" />}
                   </div>
-                  <p className="text-gray-400 text-xs mt-0.5">{achievement.description}</p>
-                  {!achievement.unlocked && achievement.progress !== undefined && (
-                    <div className="mt-2">
-                      <div className="flex justify-between text-xs text-gray-500 mb-1">
-                        <span>Progress</span>
-                        <span>{achievement.progress}/{achievement.total}</span>
-                      </div>
-                      <Progress value={(achievement.progress / (achievement.total || 1)) * 100} className="h-1.5" />
-                    </div>
-                  )}
+                  <Badge className="shrink-0 bg-yellow-500/20 text-yellow-300 border-yellow-500/50 text-[10px] px-1.5">+{achievement.xp_reward}</Badge>
                 </div>
-                <Badge variant="outline" className="text-yellow-400 border-yellow-400/50 text-xs">+{achievement.xp_reward} XP</Badge>
+                <p className="text-gray-500 text-xs truncate">{achievement.description}</p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+            {!achievement.unlocked && achievement.progress !== undefined && (
+              <div className="mt-2 pl-7">
+                <div className="flex items-center gap-2">
+                  <Progress value={(achievement.progress / (achievement.total || 1)) * 100} className="h-2 flex-1 bg-gray-700" />
+                  <span className="text-xs text-gray-400 shrink-0">{achievement.progress}/{achievement.total}</span>
+                </div>
+              </div>
+            )}
+          </div>
         ))}
-        <Button variant="outline" className="w-full" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
+        <Button variant="outline" size="sm" className="w-full" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
           View All Achievements
-          <ExternalLink className="w-4 h-4 ml-2" />
+          <ExternalLink className="w-3 h-3 ml-2" />
         </Button>
       </div>
     </ScrollArea>
@@ -378,14 +371,12 @@ function LeaderboardTab({ openExternalLink }: { openExternalLink: (url: string) 
   return (
     <ScrollArea className="h-[400px]">
       <div className="space-y-2 pr-2">
-        <div className="flex items-center gap-2 mb-4">
-          <Flame className="w-5 h-5 text-orange-400" />
-          <span className="text-white font-semibold">Top Creators This Week</span>
-        </div>
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-4">
-          <p className="text-amber-300 text-xs text-center">
-            Live leaderboard coming soon! Visit the full site for more.
-          </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Flame className="w-4 h-4 text-orange-400" />
+            <span className="text-white text-sm font-medium">Top Creators This Week</span>
+          </div>
+          <span className="text-xs text-amber-400/80">Preview</span>
         </div>
         {leaderboard.map((entry) => {
           const badge = getRankBadge(entry.rank);
@@ -477,62 +468,53 @@ function QuestsTab({ openExternalLink }: { openExternalLink: (url: string) => Pr
   const weeklyQuests = quests.filter((q) => q.type === "weekly");
 
   const QuestCard = ({ quest }: { quest: Quest }) => (
-    <Card className={`${quest.completed ? "bg-green-500/10 border-green-500/30" : "bg-gray-800/50 border-gray-700"}`}>
-      <CardContent className="p-4">
-        <div className="flex items-start gap-3">
-          <div className={`p-2 rounded-lg ${quest.completed ? "bg-green-500/20" : "bg-gray-700/50"}`}>
-            {quest.completed ? <CheckCircle className="w-5 h-5 text-green-400" /> : <Target className="w-5 h-5 text-gray-400" />}
+    <div className={`rounded-lg border p-3 ${quest.completed ? "bg-green-900/30 border-green-500/50" : "bg-gray-900/80 border-gray-600"}`}>
+      <div className="flex items-center gap-2">
+        <div className={`shrink-0 p-1.5 rounded ${quest.completed ? "bg-green-500/30" : "bg-gray-700"}`}>
+          {quest.completed ? <CheckCircle className="w-4 h-4 text-green-400" /> : <Target className="w-4 h-4 text-gray-400" />}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className={`font-medium text-sm truncate ${quest.completed ? "text-green-400 line-through" : "text-white"}`}>{quest.title}</h4>
+            <Badge className="shrink-0 bg-yellow-500/20 text-yellow-300 border-yellow-500/50 text-[10px] px-1.5">+{quest.xp_reward} XP</Badge>
           </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <h4 className={`font-semibold text-sm ${quest.completed ? "text-green-400 line-through" : "text-white"}`}>{quest.title}</h4>
-              <Badge variant="outline" className="text-yellow-400 border-yellow-400/50 text-xs">+{quest.xp_reward} XP</Badge>
-            </div>
-            <p className="text-gray-400 text-xs mt-0.5">{quest.description}</p>
-            {!quest.completed && (
-              <div className="mt-2">
-                <div className="flex justify-between text-xs text-gray-500 mb-1">
-                  <span>Progress</span>
-                  <span>{quest.progress}/{quest.total}</span>
-                </div>
-                <Progress value={(quest.progress / quest.total) * 100} className="h-1.5" />
-              </div>
-            )}
+          <p className="text-gray-500 text-xs truncate">{quest.description}</p>
+        </div>
+      </div>
+      {!quest.completed && (
+        <div className="mt-2 pl-8">
+          <div className="flex items-center gap-2">
+            <Progress value={(quest.progress / quest.total) * 100} className="h-2 flex-1 bg-gray-700" />
+            <span className="text-xs text-gray-400 shrink-0">{quest.progress}/{quest.total}</span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 
   return (
     <ScrollArea className="h-[400px]">
-      <div className="space-y-4 pr-2">
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
-          <p className="text-amber-300 text-xs text-center">
-            Quest system coming soon! These are example quests.
-          </p>
+      <div className="space-y-3 pr-2">
+        <div className="flex items-center gap-2 text-xs text-amber-400/80">
+          <Star className="w-3 h-3" />
+          <span>Preview - Quest system coming soon</span>
         </div>
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Star className="w-5 h-5 text-yellow-400" />
-            <span className="text-white font-semibold">Daily Quests</span>
-          </div>
-          <div className="space-y-2">
-            {dailyQuests.map((quest) => <QuestCard key={quest.id} quest={quest} />)}
-          </div>
+        
+        <div className="space-y-2">
+          {dailyQuests.map((quest) => <QuestCard key={quest.id} quest={quest} />)}
         </div>
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Gift className="w-5 h-5 text-purple-400" />
-            <span className="text-white font-semibold">Weekly Quests</span>
-          </div>
-          <div className="space-y-2">
-            {weeklyQuests.map((quest) => <QuestCard key={quest.id} quest={quest} />)}
-          </div>
+        
+        <div className="flex items-center gap-2 pt-2">
+          <Gift className="w-4 h-4 text-purple-400" />
+          <span className="text-white text-sm font-medium">Weekly Quests</span>
         </div>
-        <Button variant="outline" className="w-full" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
+        <div className="space-y-2">
+          {weeklyQuests.map((quest) => <QuestCard key={quest.id} quest={quest} />)}
+        </div>
+        
+        <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
           View Your Progress
-          <ExternalLink className="w-4 h-4 ml-2" />
+          <ExternalLink className="w-3 h-3 ml-2" />
         </Button>
       </div>
     </ScrollArea>
@@ -599,34 +581,32 @@ export default function Activity() {
     return (
       <div className="min-h-screen bg-gray-900">
         <div className="max-w-lg mx-auto">
-          <div className={`${realmConfig.bgClass} border-b ${realmConfig.borderClass} p-4`}>
-            <div className="flex items-center gap-3">
-              {user.avatar_url && <img src={user.avatar_url} alt="" className="w-10 h-10 rounded-full ring-2 ring-white/20" />}
+          <div className={`${realmConfig.bgClass} border-b ${realmConfig.borderClass} px-3 py-2`}>
+            <div className="flex items-center gap-2">
+              {user.avatar_url && <img src={user.avatar_url} alt="" className="w-8 h-8 rounded-full ring-2 ring-white/20" />}
               <div className="flex-1 min-w-0">
-                <h1 className="text-white font-bold truncate">{user.full_name || user.username}</h1>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className={`${realmConfig.color} border-current text-xs`}>
-                    <RealmIcon className="w-3 h-3 mr-1" />{realmConfig.label}
-                  </Badge>
-                </div>
+                <h1 className="text-white font-semibold text-sm truncate">{user.full_name || user.username}</h1>
+                <Badge variant="outline" className={`${realmConfig.color} border-current text-[10px] px-1.5 py-0`}>
+                  <RealmIcon className="w-2.5 h-2.5 mr-0.5" />{realmConfig.label}
+                </Badge>
               </div>
-              <Button size="sm" variant="ghost" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
-                <ExternalLink className="w-4 h-4" />
+              <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => openExternalLink(`${APP_URL}/profile`)}>
+                <ExternalLink className="w-3.5 h-3.5" />
               </Button>
             </div>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="w-full justify-start bg-gray-800/50 border-b border-gray-700 rounded-none px-2 gap-1 h-auto py-1">
-              <TabsTrigger value="feed" className="text-xs data-[state=active]:bg-gray-700 px-3 py-1.5">Feed</TabsTrigger>
-              <TabsTrigger value="realms" className="text-xs data-[state=active]:bg-gray-700 px-3 py-1.5">Realms</TabsTrigger>
-              <TabsTrigger value="achievements" className="text-xs data-[state=active]:bg-gray-700 px-3 py-1.5">Badges</TabsTrigger>
-              <TabsTrigger value="leaderboard" className="text-xs data-[state=active]:bg-gray-700 px-3 py-1.5">Top</TabsTrigger>
-              <TabsTrigger value="opportunities" className="text-xs data-[state=active]:bg-gray-700 px-3 py-1.5">Jobs</TabsTrigger>
-              <TabsTrigger value="quests" className="text-xs data-[state=active]:bg-gray-700 px-3 py-1.5">Quests</TabsTrigger>
+            <TabsList className="w-full justify-start bg-gray-800/50 border-b border-gray-700 rounded-none px-1 gap-0.5 h-8">
+              <TabsTrigger value="feed" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Feed</TabsTrigger>
+              <TabsTrigger value="realms" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Realms</TabsTrigger>
+              <TabsTrigger value="achievements" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Badges</TabsTrigger>
+              <TabsTrigger value="leaderboard" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Top</TabsTrigger>
+              <TabsTrigger value="opportunities" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Jobs</TabsTrigger>
+              <TabsTrigger value="quests" className="text-[11px] data-[state=active]:bg-gray-700 px-2 py-1 h-6">Quests</TabsTrigger>
             </TabsList>
 
-            <div className="p-4">
+            <div className="p-3">
               <TabsContent value="feed" className="mt-0"><FeedTab openExternalLink={openExternalLink} /></TabsContent>
               <TabsContent value="realms" className="mt-0">
                 <RealmSwitcher currentRealm={currentRealm} openExternalLink={openExternalLink} />
