@@ -133,7 +133,7 @@
       "headers": [{ "key": "Cache-Control", "value": "no-store" }]
     },
     {
-      "source": "/activity",
+      "source": "/activity(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         {
