@@ -60,6 +60,11 @@
   "rewrites": [
     {
       "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "(?<proxy>.+)\\.discordsays\\.com" }],
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "(?<sub>.+)\\.aethex\\.me" }],
       "destination": "/index.html"
     },
