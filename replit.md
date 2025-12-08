@@ -48,6 +48,8 @@ The monolith (`aethex.dev`) implements split routing to enforce legal separation
 This ensures the Foundation's user-facing URLs display `aethex.foundation` in the browser, demonstrating operational independence per the Axiom Model.
 
 ## Recent Changes (December 2025)
+- **Discord Activity UI Improvements**: Comprehensive tabbed dashboard with Feed (live posts), Realms (visual selector linking to main site), Achievements (example badges), Leaderboard (example rankings), Opportunities (live jobs), and Quests (example daily/weekly). Uses relative API paths for Discord CSP compliance. Realm/profile changes link to main site due to Activity auth isolation.
+- **Set Realm API**: Added `/api/user/set-realm` endpoint for updating user's primary_arm (requires Supabase auth token)
 - **Maintenance Mode**: Site-wide maintenance mode with admin bypass. Admins can toggle via Admin Dashboard overview tab. Uses MAINTENANCE_MODE env var for initial state. Allowed paths during maintenance: /login, /staff/login, /reset-password, /health
 - **Health Endpoint**: Added /health endpoint at aethex.dev/health that aggregates platform and Discord bot status
 - **Axiom Model Routing**: Foundation and GameForge routes redirect to `aethex.foundation` domain for legal entity separation
