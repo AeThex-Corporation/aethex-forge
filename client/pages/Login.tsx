@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const API_BASE = import.meta.env.VITE_API_BASE || window.location.origin;
 
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { aethexUserService } from "@/lib/aethex-database-adapter";
@@ -567,10 +567,7 @@ export default function Login() {
                       ? "Already have an account?"
                       : "Don't have an account?"}{" "}
                     <button
-                      onClick={() => {
-                        setIsSignUp((prev) => !prev);
-                        setManualVerificationLink(null);
-                      }}
+                      onClick={() => setIsSignUp((prev) => !prev)}
                       className="text-aethex-400 hover:underline font-medium"
                     >
                       {isSignUp ? "Sign In" : "Join AeThex"}
