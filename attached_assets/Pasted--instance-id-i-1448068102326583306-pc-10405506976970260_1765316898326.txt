@@ -1,0 +1,56 @@
+
+?instance_id=i-1448068102326583306-pc-1040550697697026099&location_id=pc-1040550697697026099&launch…:1 Loading the stylesheet 'https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Merriweather:wght@400;700&family=Roboto+Mono:wght@300;400;500&display=swap' violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' blob:". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked.Understand this error
+sentry.b2861bd36ab3acf1.js:14 JANK loaded src https://cdn.discordapp.com/app-icons/578971245454950421/a9e07b403c5b6157f1fee0959857d0b5.png?size=28&keep_aspect_ratio=false as data URI or isImageLoaded
+index-DxygJsfb.js:992 [Discord Activity] Checking for Discord context... {frameId: 'a1e9b918-e98e-49a4-9d1e-bb5870ea56f4', isInDiscordActivity: true}
+index-DxygJsfb.js:1049 Auth state change: INITIAL_SESSION false
+index-DxygJsfb.js:992 [Discord Activity] Creating SDK with clientId: 578971245454950421
+index-DxygJsfb.js:992 [Discord Activity] Waiting for SDK to be ready...
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Opened: 13803
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Emit: 13803 {cmd: 'DISPATCH', data: {…}, evt: 'READY', nonce: null}
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Validated: 13803
+index-CqdRH-9R.js:1 [Discord Activity] SDK is ready
+index-CqdRH-9R.js:1 [Discord Activity] Authorizing user...
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Message: 13803 {cmd: 'CAPTURE_LOG', args: {…}, transfer: undefined, nonce: 'c89fd166-5321-4699-9341-08a7eccc568d'}
+sentry.b2861bd36ab3acf1.js:14 [RpcApplicationLogger] 578971245454950421 - [Discord Activity] SDK is ready
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Emit: 13803 {cmd: 'CAPTURE_LOG', data: null, evt: null, nonce: 'c89fd166-5321-4699-9341-08a7eccc568d'}
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Message: 13803 {cmd: 'CAPTURE_LOG', args: {…}, transfer: undefined, nonce: '142098d1-c807-40aa-89af-bd07a206c3ab'}
+sentry.b2861bd36ab3acf1.js:14 [RpcApplicationLogger] 578971245454950421 - [Discord Activity] Authorizing user...
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Emit: 13803 {cmd: 'CAPTURE_LOG', data: null, evt: null, nonce: '142098d1-c807-40aa-89af-bd07a206c3ab'}
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Message: 13803 {cmd: 'AUTHORIZE', args: {…}, transfer: undefined, nonce: '8d6f6e9f-e603-4fc7-8d08-18af95f1d4c0'}
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Emit: 13803 {cmd: 'AUTHORIZE', data: {…}, evt: null, nonce: '8d6f6e9f-e603-4fc7-8d08-18af95f1d4c0'}
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Message: 13803 {cmd: 'CAPTURE_LOG', args: {…}, transfer: undefined, nonce: 'd64d10ce-50d2-4e9c-9afe-0fe7ec2055d0'}
+sentry.b2861bd36ab3acf1.js:14 [RpcApplicationLogger] 578971245454950421 - [Discord Activity] Got authorization code, exchanging for token...
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Emit: 13803 {cmd: 'CAPTURE_LOG', data: null, evt: null, nonce: 'd64d10ce-50d2-4e9c-9afe-0fe7ec2055d0'}
+index-CqdRH-9R.js:1 [Discord Activity] Got authorization code, exchanging for token...
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Message: 13803 {cmd: 'CAPTURE_LOG', args: {…}, transfer: undefined, nonce: '8d878eb1-dc0c-46ec-873f-b07c0871a32c'}
+index-DxygJsfb.js:992  POST https://578971245454950421.discordsays.com/api/discord/token 400 (Bad Request)
+(anonymous) @ index-DxygJsfb.js:992
+await in (anonymous)
+(anonymous) @ index-DxygJsfb.js:992
+hx @ index-DxygJsfb.js:40
+Kc @ index-DxygJsfb.js:40
+mE @ index-DxygJsfb.js:40
+so @ index-DxygJsfb.js:38
+sZ @ index-DxygJsfb.js:40
+bl @ index-DxygJsfb.js:40
+hE @ index-DxygJsfb.js:40
+C @ index-DxygJsfb.js:25
+B @ index-DxygJsfb.js:25Understand this error
+sentry.b2861bd36ab3acf1.js:14 [RpcApplicationLogger] 578971245454950421 - [Discord Activity] Token exchange failed: Failed to exchange code for token
+(anonymous) @ sentry.b2861bd36ab3acf1.js:14
+u @ web.24d99a93890ecaa4.js:12
+(anonymous) @ web.24d99a93890ecaa4.js:12
+(anonymous) @ web.24d99a93890ecaa4.js:12
+handler @ 9740a17746907b43.js:1
+(anonymous) @ web.24d99a93890ecaa4.js:12
+Promise.then
+handleRequest @ web.24d99a93890ecaa4.js:12
+(anonymous) @ web.24d99a93890ecaa4.js:12
+(anonymous) @ web.24d99a93890ecaa4.js:1
+(anonymous) @ 9740a17746907b43.js:1
+routeEvent @ 9740a17746907b43.js:1
+(anonymous) @ 9740a17746907b43.js:1
+(anonymous) @ 9740a17746907b43.js:1
+s @ sentry.b2861bd36ab3acf1.js:1Understand this error
+sentry.b2861bd36ab3acf1.js:14 [RPCServer:PostMessage] Socket Emit: 13803 {cmd: 'CAPTURE_LOG', data: null, evt: null, nonce: '8d878eb1-dc0c-46ec-873f-b07c0871a32c'}
+index-CqdRH-9R.js:1 [Discord Activity] Token exchange failed: Failed to exchange code for token
