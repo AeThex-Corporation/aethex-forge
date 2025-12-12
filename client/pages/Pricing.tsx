@@ -9,9 +9,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import { aethexToast } from "@/lib/aethex-toast";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   BadgeDollarSign,
   Briefcase,
@@ -28,7 +29,16 @@ import {
   Sparkles,
   Stars,
   Users,
+  Crown,
+  Zap,
+  Bot,
+  Lock,
+  Check,
+  Loader2,
+  ExternalLink,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 type ServiceBundle = {
   id: string;
@@ -256,9 +266,183 @@ const faqs = [
   },
 ];
 
+type MembershipTier = {
+  id: "free" | "pro" | "council";
+  name: string;
+  price: string;
+  priceNote?: string;
+  description: string;
+  features: string[];
+  aiPersonas: string[];
+  highlight?: boolean;
+  badge?: string;
+};
+
+const membershipTiers: MembershipTier[] = [
+  {
+    id: "free",
+    name: "Free",
+    price: "$0",
+    priceNote: "forever",
+    description: "Essential access to the AeThex ecosystem with core AI assistants.",
+    features: [
+      "Community feed & discussions",
+      "Basic profile & passport",
+      "Opportunity browsing",
+      "2 AI personas included",
+    ],
+    aiPersonas: ["Network Agent", "Ethics Sentinel"],
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    price: "$9",
+    priceNote: "/month",
+    description: "Unlock advanced AI personas and enhanced platform features.",
+    features: [
+      "Everything in Free",
+      "Priority support",
+      "Advanced analytics",
+      "8 AI personas total",
+      "Badge unlocks via achievements",
+    ],
+    aiPersonas: [
+      "Network Agent",
+      "Ethics Sentinel",
+      "Forge Master",
+      "SBS Architect",
+      "Curriculum Weaver",
+      "QuantumLeap",
+      "Vapor",
+      "Apex",
+    ],
+    highlight: true,
+    badge: "Most Popular",
+  },
+  {
+    id: "council",
+    name: "Council",
+    price: "$29",
+    priceNote: "/month",
+    description: "Full access to all AI personas and exclusive Council benefits.",
+    features: [
+      "Everything in Pro",
+      "All 10 AI personas",
+      "Council-only Discord channels",
+      "Early feature access",
+      "Direct team communication",
+      "Governance participation",
+    ],
+    aiPersonas: [
+      "All Pro personas",
+      "Ethos Producer",
+      "AeThex Archivist",
+    ],
+    badge: "Elite",
+  },
+];
+
 export default function Engage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+  const [userTier, setUserTier] = useState<string | null>(null);
   const toastShownRef = useRef(false);
+  const [searchParams] = useSearchParams();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchUserTier = async () => {
+      if (!user) {
+        setUserTier(null);
+        return;
+      }
+      
+      const { data } = await supabase
+        .from("user_profiles")
+        .select("tier")
+        .eq("id", user.id)
+        .single();
+      
+      setUserTier(data?.tier || "free");
+    };
+    
+    fetchUserTier();
+  }, [user]);
+
+  useEffect(() => {
+    const subscriptionStatus = searchParams.get("subscription");
+    if (subscriptionStatus === "success") {
+      aethexToast.success({ title: "Subscription Activated", description: "Welcome to your new tier!" });
+    } else if (subscriptionStatus === "cancelled") {
+      aethexToast.info({ title: "Checkout Cancelled", description: "No changes were made." });
+    }
+  }, [searchParams]);
+
+  const handleCheckout = async (tier: "pro" | "council") => {
+    if (!user) {
+      aethexToast.error({ title: "Sign In Required", description: "Please sign in to subscribe" });
+      return;
+    }
+    
+    setCheckoutLoading(tier);
+    
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const response = await fetch("/api/subscriptions/create-checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session?.access_token}`,
+        },
+        body: JSON.stringify({
+          tier,
+          successUrl: `${window.location.origin}/pricing?subscription=success`,
+          cancelUrl: `${window.location.origin}/pricing?subscription=cancelled`,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
+      
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      aethexToast.error({ title: "Checkout Error", description: error.message || "Failed to start checkout" });
+    } finally {
+      setCheckoutLoading(null);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    if (!user) return;
+    
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const response = await fetch("/api/subscriptions/manage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session?.access_token}`,
+        },
+        body: JSON.stringify({ action: "portal" }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.url) {
+        window.open(data.url, "_blank");
+      }
+    } catch (error) {
+      aethexToast.error({ title: "Billing Portal Error", description: "Failed to open billing portal" });
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -333,10 +517,10 @@ export default function Engage() {
                   size="lg"
                   className="bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90 text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
-                  <Link to="#bundles" className="flex items-center gap-2">
-                    <BadgeDollarSign className="h-5 w-5" />
-                    Explore Engagement Bundles
-                  </Link>
+                  <a href="#membership" className="flex items-center gap-2">
+                    <Crown className="h-5 w-5" />
+                    View Membership Tiers
+                  </a>
                 </Button>
                 <Button
                   asChild
@@ -344,10 +528,10 @@ export default function Engage() {
                   size="lg"
                   className="border-aethex-400/60 text-aethex-100 hover:bg-aethex-500/10 text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6"
                 >
-                  <Link to="/contact" className="flex items-center gap-2">
-                    <Rocket className="h-5 w-5" />
-                    Book a Scoping Call
-                  </Link>
+                  <a href="#bundles" className="flex items-center gap-2">
+                    <BadgeDollarSign className="h-5 w-5" />
+                    Explore Engagement Bundles
+                  </a>
                 </Button>
               </div>
 
@@ -369,8 +553,182 @@ export default function Engage() {
           </div>
         </section>
 
+        {/* Membership Tiers */}
+        <section id="membership" className="bg-background/30 py-16 sm:py-20">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="text-center mb-12">
+              <Badge
+                variant="outline"
+                className="border-aethex-400/50 text-aethex-300 backdrop-blur-sm mb-4"
+              >
+                <Bot className="mr-2 h-3 w-3" />
+                AI-Powered Membership
+              </Badge>
+              <h2 className="text-3xl font-bold text-gradient mb-4 sm:text-4xl">
+                Membership Tiers
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Unlock advanced AI personas and exclusive platform features.
+                Choose the tier that matches your creative ambitions.
+              </p>
+              {userTier && userTier !== "free" && (
+                <Button
+                  variant="outline"
+                  className="mt-4 border-aethex-400/60 text-aethex-100 hover:bg-aethex-500/10"
+                  onClick={handleManageSubscription}
+                >
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Manage Subscription
+                </Button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {membershipTiers.map((tier) => {
+                const isCurrentTier = userTier === tier.id;
+                const tierOrder = { free: 0, pro: 1, council: 2 };
+                const canUpgrade = !userTier || tierOrder[tier.id] > tierOrder[userTier as keyof typeof tierOrder];
+                
+                return (
+                  <Card
+                    key={tier.id}
+                    className={`relative overflow-hidden border-border/50 transition-all duration-500 hover:-translate-y-1 ${
+                      tier.highlight
+                        ? "border-aethex-400/70 bg-gradient-to-b from-aethex-950/50 to-background shadow-lg shadow-aethex-500/10"
+                        : "hover:border-aethex-400/50"
+                    } ${isCurrentTier ? "ring-2 ring-aethex-400" : ""}`}
+                  >
+                    {tier.badge && (
+                      <div className="absolute top-0 right-0">
+                        <div className={`px-3 py-1 text-xs font-bold uppercase tracking-wider ${
+                          tier.badge === "Elite" 
+                            ? "bg-gradient-to-r from-amber-500 to-yellow-400 text-black"
+                            : "bg-gradient-to-r from-aethex-500 to-neon-blue text-white"
+                        }`}>
+                          {tier.badge}
+                        </div>
+                      </div>
+                    )}
+
+                    <CardHeader className="space-y-4 pb-2">
+                      <div className="flex items-center gap-2">
+                        {tier.id === "free" && <Zap className="h-6 w-6 text-muted-foreground" />}
+                        {tier.id === "pro" && <Sparkles className="h-6 w-6 text-aethex-400" />}
+                        {tier.id === "council" && <Crown className="h-6 w-6 text-amber-400" />}
+                        <CardTitle className="text-2xl">{tier.name}</CardTitle>
+                        {isCurrentTier && (
+                          <Badge variant="outline" className="ml-auto border-aethex-400 text-aethex-300">
+                            Current
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-bold text-foreground">{tier.price}</span>
+                        {tier.priceNote && (
+                          <span className="text-muted-foreground">{tier.priceNote}</span>
+                        )}
+                      </div>
+                      <CardDescription>{tier.description}</CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        {tier.features.map((feature) => (
+                          <div key={feature} className="flex items-start gap-2 text-sm">
+                            <Check className="mt-0.5 h-4 w-4 text-aethex-400 flex-shrink-0" />
+                            <span className="text-muted-foreground">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-4 border-t border-border/50">
+                        <div className="text-xs uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1">
+                          <Bot className="h-3 w-3" />
+                          AI Personas Included
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {tier.aiPersonas.map((persona) => (
+                            <Badge
+                              key={persona}
+                              variant="secondary"
+                              className="text-xs bg-background/60"
+                            >
+                              {persona}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+
+                    <CardFooter className="pt-0">
+                      {tier.id === "free" ? (
+                        <Button
+                          asChild
+                          variant="outline"
+                          className="w-full border-border/60 text-muted-foreground"
+                        >
+                          <Link to={user ? "/dashboard" : "/login"}>
+                            {user ? "Go to Dashboard" : "Sign Up Free"}
+                          </Link>
+                        </Button>
+                      ) : isCurrentTier ? (
+                        <Button
+                          variant="outline"
+                          className="w-full border-aethex-400/60 text-aethex-300"
+                          disabled
+                        >
+                          <Check className="mr-2 h-4 w-4" />
+                          Current Plan
+                        </Button>
+                      ) : !canUpgrade ? (
+                        <Button
+                          variant="outline"
+                          className="w-full border-border/60 text-muted-foreground"
+                          disabled
+                        >
+                          <Lock className="mr-2 h-4 w-4" />
+                          Included in Current Plan
+                        </Button>
+                      ) : (
+                        <Button
+                          className={`w-full ${
+                            tier.id === "council"
+                              ? "bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black"
+                              : "bg-gradient-to-r from-aethex-500 to-neon-blue hover:from-aethex-600 hover:to-neon-blue/90"
+                          }`}
+                          onClick={() => handleCheckout(tier.id as "pro" | "council")}
+                          disabled={checkoutLoading !== null}
+                        >
+                          {checkoutLoading === tier.id ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              Upgrade to {tier.name}
+                            </>
+                          )}
+                        </Button>
+                      )}
+                    </CardFooter>
+                  </Card>
+                );
+              })}
+            </div>
+
+            <div className="mt-8 text-center text-sm text-muted-foreground">
+              <p>
+                All subscriptions are billed monthly. Cancel anytime from your billing portal.
+                <br />
+                Badges earned through achievements can unlock personas without a paid subscription.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Service Bundles */}
-        <section id="bundles" className="bg-background/30 py-16 sm:py-20">
+        <section id="bundles" className="py-16 sm:py-20">
           <div className="container mx-auto max-w-6xl px-4">
             <div className="text-center">
               <h2 className="text-3xl font-bold text-gradient mb-4 sm:text-4xl">
