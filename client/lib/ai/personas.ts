@@ -1,5 +1,6 @@
 import { Type } from '@google/genai';
-import type { Persona } from './types';
+import type { Persona, UserTier, UserBadgeInfo } from './types';
+import { canAccessPersona } from './types';
 import type { FunctionDeclaration } from '@google/genai';
 
 export const AETHEX_TOOLS: FunctionDeclaration[] = [
@@ -158,7 +159,8 @@ Tone: Stern but encouraging. Focus on "shipping," not "dreaming."`,
       "May reject creative but complex ideas",
       "Tone is intentionally strict/stern"
     ],
-    requiredTier: 'Architect',
+    requiredTier: 'Pro',
+    unlockBadgeSlug: 'forge_apprentice',
     realm: 'gameforge'
   },
   {
@@ -198,7 +200,8 @@ Constraint: Do not hallucinate certifications (like 8(a) or HUBZone) if the user
       "Cannot verify official certifications (8(a), HUBZone)",
       "Does not guarantee contract awards"
     ],
-    requiredTier: 'Architect',
+    requiredTier: 'Pro',
+    unlockBadgeSlug: 'sbs_scholar',
     realm: 'corp'
   },
   {
@@ -238,7 +241,8 @@ Constraint: Keep language appropriate for a classroom setting.`,
       "Lesson plans are theoretical structures",
       "Cannot grade student work"
     ],
-    requiredTier: 'Architect',
+    requiredTier: 'Pro',
+    unlockBadgeSlug: 'curriculum_creator',
     realm: 'labs'
   },
   {
@@ -276,7 +280,8 @@ Tone: Concise, data-driven, executive. No fluff.`,
       "Analysis depends on user-provided data accuracy",
       "No financial liability for advice"
     ],
-    requiredTier: 'Architect',
+    requiredTier: 'Pro',
+    unlockBadgeSlug: 'data_pioneer',
     realm: 'corp'
   },
   {
@@ -314,6 +319,7 @@ Your Job: Output a structured "Audio Brief" for a composer:
       "Subjective artistic interpretation"
     ],
     requiredTier: 'Council',
+    unlockBadgeSlug: 'sound_designer',
     realm: 'gameforge'
   },
   {
@@ -352,6 +358,7 @@ Tone: Dark, mysterious, neon-soaked.`,
       "Restricted to Cyberpunk/Sci-Fi themes"
     ],
     requiredTier: 'Council',
+    unlockBadgeSlug: 'lore_master',
     realm: 'gameforge'
   },
   {
@@ -386,7 +393,8 @@ Your Job:
       "Lyrics are text-only output",
       "Mood is locked to Retrowave aesthetics"
     ],
-    requiredTier: 'Architect',
+    requiredTier: 'Pro',
+    unlockBadgeSlug: 'synthwave_artist',
     realm: 'labs'
   },
   {
@@ -423,7 +431,8 @@ Your Job:
       "Advice is satirical/entertainment focused",
       "Does not actually invest money"
     ],
-    requiredTier: 'Architect',
+    requiredTier: 'Pro',
+    unlockBadgeSlug: 'pitch_survivor',
     realm: 'corp'
   }
 ];
@@ -432,10 +441,14 @@ export const getPersonasByRealm = (realm: string): Persona[] => {
   return PERSONAS.filter(p => p.realm === realm);
 };
 
-export const getPersonasByTier = (tier: 'Free' | 'Architect' | 'Council'): Persona[] => {
-  const tierOrder = { 'Free': 0, 'Architect': 1, 'Council': 2 };
+export const getPersonasByTier = (tier: UserTier): Persona[] => {
+  const tierOrder: Record<UserTier, number> = { 'Free': 0, 'Pro': 1, 'Council': 2 };
   const userTierLevel = tierOrder[tier];
   return PERSONAS.filter(p => tierOrder[p.requiredTier] <= userTierLevel);
+};
+
+export const getAccessiblePersonas = (tier: UserTier, badges: UserBadgeInfo[]): Persona[] => {
+  return PERSONAS.filter(p => canAccessPersona(tier, p.requiredTier, badges, p.unlockBadgeSlug));
 };
 
 export const getDefaultPersona = (): Persona => {

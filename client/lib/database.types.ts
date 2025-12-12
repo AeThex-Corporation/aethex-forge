@@ -396,6 +396,9 @@ export type Database = {
           longest_streak: number | null;
           last_streak_at: string | null;
           total_xp: number | null;
+          tier: Database["public"]["Enums"]["subscription_tier_enum"] | null;
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
           twitter_url: string | null;
           updated_at: string;
           user_type: Database["public"]["Enums"]["user_type_enum"];
@@ -420,6 +423,9 @@ export type Database = {
           longest_streak?: number | null;
           last_streak_at?: string | null;
           total_xp?: number | null;
+          tier?: Database["public"]["Enums"]["subscription_tier_enum"] | null;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
           twitter_url?: string | null;
           updated_at?: string;
           user_type: Database["public"]["Enums"]["user_type_enum"];
@@ -444,6 +450,9 @@ export type Database = {
           longest_streak?: number | null;
           last_streak_at?: string | null;
           total_xp?: number | null;
+          tier?: Database["public"]["Enums"]["subscription_tier_enum"] | null;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
           twitter_url?: string | null;
           updated_at?: string;
           user_type?: Database["public"]["Enums"]["user_type_enum"];
@@ -456,6 +465,75 @@ export type Database = {
             columns: ["id"];
             isOneToOne: true;
             referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      badges: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+          description: string | null;
+          icon: string | null;
+          unlock_criteria: string | null;
+          unlocks_persona: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
+          description?: string | null;
+          icon?: string | null;
+          unlock_criteria?: string | null;
+          unlocks_persona?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          slug?: string;
+          description?: string | null;
+          icon?: string | null;
+          unlock_criteria?: string | null;
+          unlocks_persona?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      user_badges: {
+        Row: {
+          id: string;
+          user_id: string;
+          badge_id: string;
+          earned_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          badge_id: string;
+          earned_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          badge_id?: string;
+          earned_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user_profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_badges_badge_id_fkey";
+            columns: ["badge_id"];
+            isOneToOne: false;
+            referencedRelation: "badges";
             referencedColumns: ["id"];
           },
         ];
@@ -474,6 +552,7 @@ export type Database = {
         | "advanced"
         | "expert";
       project_status_enum: "planning" | "in_progress" | "completed" | "on_hold";
+      subscription_tier_enum: "free" | "pro" | "council";
       user_type_enum:
         | "game_developer"
         | "client"
@@ -498,3 +577,6 @@ export type UserType = Database["public"]["Enums"]["user_type_enum"];
 export type ExperienceLevel =
   Database["public"]["Enums"]["experience_level_enum"];
 export type ProjectStatus = Database["public"]["Enums"]["project_status_enum"];
+export type SubscriptionTier = Database["public"]["Enums"]["subscription_tier_enum"];
+export type Badge = Database["public"]["Tables"]["badges"]["Row"];
+export type UserBadge = Database["public"]["Tables"]["user_badges"]["Row"];

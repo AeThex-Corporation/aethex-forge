@@ -1,4 +1,5 @@
 import type { FunctionDeclaration } from '@google/genai';
+import type { SubscriptionTier } from '../database.types';
 
 export interface ChatMessage {
   role: 'user' | 'model';
@@ -24,7 +25,8 @@ export interface Persona {
   theme: PersonaTheme;
   capabilities: string[];
   limitations: string[];
-  requiredTier: 'Free' | 'Architect' | 'Council';
+  requiredTier: UserTier;
+  unlockBadgeSlug?: string;
   realm?: string;
 }
 
@@ -51,14 +53,75 @@ export interface ChatSession {
   timestamp: number;
 }
 
-export type UserTier = 'Free' | 'Architect' | 'Council';
+export type UserTier = 'Free' | 'Pro' | 'Council';
 
 export const TIER_HIERARCHY: Record<UserTier, number> = {
   'Free': 0,
-  'Architect': 1,
+  'Pro': 1,
   'Council': 2,
 };
 
-export const canAccessPersona = (userTier: UserTier, requiredTier: UserTier): boolean => {
-  return TIER_HIERARCHY[userTier] >= TIER_HIERARCHY[requiredTier];
+export const dbTierToUserTier = (dbTier: SubscriptionTier | null | undefined): UserTier => {
+  if (!dbTier) return 'Free';
+  switch (dbTier) {
+    case 'council': return 'Council';
+    case 'pro': return 'Pro';
+    default: return 'Free';
+  }
+};
+
+export const userTierToDbTier = (userTier: UserTier): SubscriptionTier => {
+  switch (userTier) {
+    case 'Council': return 'council';
+    case 'Pro': return 'pro';
+    default: return 'free';
+  }
+};
+
+export interface UserBadgeInfo {
+  slug: string;
+  name: string;
+  earnedAt: string;
+}
+
+export interface PersonaAccessContext {
+  tier: UserTier;
+  badges: UserBadgeInfo[];
+}
+
+export const canAccessPersona = (
+  userTier: UserTier, 
+  requiredTier: UserTier,
+  userBadges?: UserBadgeInfo[],
+  unlockBadgeSlug?: string
+): boolean => {
+  if (TIER_HIERARCHY[userTier] >= TIER_HIERARCHY[requiredTier]) {
+    return true;
+  }
+  
+  if (unlockBadgeSlug && userBadges) {
+    return userBadges.some(badge => badge.slug === unlockBadgeSlug);
+  }
+  
+  return false;
+};
+
+export const getPersonaAccessReason = (
+  userTier: UserTier,
+  requiredTier: UserTier,
+  userBadges?: UserBadgeInfo[],
+  unlockBadgeSlug?: string
+): { hasAccess: boolean; reason: 'tier' | 'badge' | 'none'; badgeName?: string } => {
+  if (TIER_HIERARCHY[userTier] >= TIER_HIERARCHY[requiredTier]) {
+    return { hasAccess: true, reason: 'tier' };
+  }
+  
+  if (unlockBadgeSlug && userBadges) {
+    const badge = userBadges.find(b => b.slug === unlockBadgeSlug);
+    if (badge) {
+      return { hasAccess: true, reason: 'badge', badgeName: badge.name };
+    }
+  }
+  
+  return { hasAccess: false, reason: 'none' };
 };
