@@ -114,18 +114,47 @@ const ensureDailyStreakForProfile = async (
   }
 
   if (needsUpdate) {
+    // Calculate XP for daily login: 25 base + 10 per streak day (capped at 30 days)
+    const streakBonus = Math.min(current, 30) * 10;
+    const dailyLoginXp = 25 + streakBonus;
+    const currentTotalXp = Number((profile as any).total_xp) || 0;
+    const newTotalXp = currentTotalXp + dailyLoginXp;
+    const newLevel = Math.max(1, Math.floor(newTotalXp / 1000) + 1);
+    const previousLevel = Number((profile as any).level) || Math.max(1, Math.floor(currentTotalXp / 1000) + 1);
+    const leveledUp = newLevel > previousLevel;
+
     const { data, error } = await supabase
       .from("user_profiles")
       .update({
         current_streak: current,
         longest_streak: longest,
         last_streak_at: isoToday,
+        total_xp: newTotalXp,
+        level: newLevel,
       })
       .eq("id", profile.id)
       .select()
       .single();
 
     if (!error && data) {
+      // Create notification for daily login XP (async, don't await)
+      aethexNotificationService.createNotification(
+        profile.id,
+        "success",
+        `🌟 Daily Login: +${dailyLoginXp} XP`,
+        `Day ${current} streak! Keep it up for more bonus XP.`,
+      ).catch(() => {});
+
+      // If leveled up, create level-up notification
+      if (leveledUp) {
+        aethexNotificationService.createNotification(
+          profile.id,
+          "success",
+          `🎉 Level Up! You're now Level ${newLevel}!`,
+          `Congratulations! You've reached level ${newLevel}. Keep up the great work!`,
+        ).catch(() => {});
+      }
+
       return normalizeProfile(data, profile.email);
     }
 
@@ -592,8 +621,34 @@ export const aethexUserService = {
               userId,
               "success",
               "🎉 Welcome to AeThex!",
-              "You've completed your profile setup. Let's get started!",
+              "You've completed your profile setup. Let's get started! +100 XP",
             );
+            // Award XP for completing profile (100 XP) and check for level-up
+            const currentXp = Number((upserted as any).total_xp) || 0;
+            const previousLevel = Number((upserted as any).level) || Math.max(1, Math.floor(currentXp / 1000) + 1);
+            const newXp = currentXp + 100;
+            const newLevel = Math.max(1, Math.floor(newXp / 1000) + 1);
+            
+            const { data: updatedProfile } = await supabase
+              .from("user_profiles")
+              .update({ total_xp: newXp, level: newLevel })
+              .eq("id", userId)
+              .select()
+              .single();
+            
+            // Level-up notification if leveled up
+            if (newLevel > previousLevel) {
+              await aethexNotificationService.createNotification(
+                userId,
+                "success",
+                `🎉 Level Up! You're now Level ${newLevel}!`,
+                `Congratulations! You've reached level ${newLevel}. Keep up the great work!`,
+              );
+            }
+            
+            if (updatedProfile) {
+              return normalizeProfile(updatedProfile);
+            }
           } catch (notifError) {
             console.warn(
               "Failed to create onboarding notification:",
@@ -602,7 +657,7 @@ export const aethexUserService = {
           }
         }
 
-        return upserted as AethexUserProfile;
+        return normalizeProfile(upserted);
       }
 
       if (isTableMissing(error)) {
@@ -620,8 +675,34 @@ export const aethexUserService = {
           userId,
           "success",
           "🎉 Welcome to AeThex!",
-          "You've completed your profile setup. Let's get started!",
+          "You've completed your profile setup. Let's get started! +100 XP",
         );
+        // Award XP for completing profile (100 XP) and check for level-up
+        const currentXp = Number((data as any).total_xp) || 0;
+        const previousLevel = Number((data as any).level) || Math.max(1, Math.floor(currentXp / 1000) + 1);
+        const newXp = currentXp + 100;
+        const newLevel = Math.max(1, Math.floor(newXp / 1000) + 1);
+        
+        const { data: updatedProfile } = await supabase
+          .from("user_profiles")
+          .update({ total_xp: newXp, level: newLevel })
+          .eq("id", userId)
+          .select()
+          .single();
+        
+        // Level-up notification if leveled up
+        if (newLevel > previousLevel) {
+          await aethexNotificationService.createNotification(
+            userId,
+            "success",
+            `🎉 Level Up! You're now Level ${newLevel}!`,
+            `Congratulations! You've reached level ${newLevel}. Keep up the great work!`,
+          );
+        }
+        
+        if (updatedProfile) {
+          return normalizeProfile(updatedProfile);
+        }
       } catch (notifError) {
         console.warn("Failed to create onboarding notification:", notifError);
       }
@@ -1518,10 +1599,43 @@ export const aethexBadgeService = {
           userId,
           "success",
           `🏆 Badge Earned: ${badge.name}`,
-          `Congratulations! You've earned the "${badge.name}" badge.`,
+          `Congratulations! You've earned the "${badge.name}" badge. +200 XP`,
         );
       } catch (notifErr) {
         console.warn("Failed to create badge notification:", notifErr);
+      }
+
+      // Award XP for earning badge (200 XP)
+      try {
+        const { data: profile } = await supabase
+          .from("user_profiles")
+          .select("total_xp, level")
+          .eq("id", userId)
+          .single();
+        
+        if (profile) {
+          const currentXp = Number(profile.total_xp) || 0;
+          const newXp = currentXp + 200;
+          const newLevel = Math.max(1, Math.floor(newXp / 1000) + 1);
+          const previousLevel = Number(profile.level) || 1;
+          
+          await supabase
+            .from("user_profiles")
+            .update({ total_xp: newXp, level: newLevel })
+            .eq("id", userId);
+
+          // Create level-up notification if leveled up
+          if (newLevel > previousLevel) {
+            await aethexNotificationService.createNotification(
+              userId,
+              "success",
+              `🎉 Level Up! You're now Level ${newLevel}!`,
+              `Congratulations! You've reached level ${newLevel}. Keep up the great work!`,
+            );
+          }
+        }
+      } catch (xpErr) {
+        console.warn("Failed to award badge XP:", xpErr);
       }
 
       return true;
@@ -1658,6 +1772,308 @@ export const aethexTierService = {
       };
     } catch {
       return { customerId: null, subscriptionId: null };
+    }
+  },
+};
+
+// XP Events and Rewards
+export type XPEventType =
+  | "daily_login"
+  | "profile_complete"
+  | "first_post"
+  | "create_post"
+  | "receive_like"
+  | "create_comment"
+  | "create_project"
+  | "complete_project"
+  | "earn_achievement"
+  | "earn_badge"
+  | "streak_bonus"
+  | "referral";
+
+export const XP_REWARDS: Record<XPEventType, number> = {
+  daily_login: 25,
+  profile_complete: 100,
+  first_post: 50,
+  create_post: 20,
+  receive_like: 5,
+  create_comment: 10,
+  create_project: 75,
+  complete_project: 150,
+  earn_achievement: 100,
+  earn_badge: 200,
+  streak_bonus: 10, // Per day of streak
+  referral: 250,
+};
+
+// Calculate level from XP (1000 XP per level, level 1 starts at 0)
+export const calculateLevel = (totalXp: number): number => {
+  return Math.max(1, Math.floor(totalXp / 1000) + 1);
+};
+
+// Calculate XP needed for next level
+export const xpForNextLevel = (currentLevel: number): number => {
+  return currentLevel * 1000;
+};
+
+// Calculate progress to next level (0-100%)
+export const levelProgress = (totalXp: number): number => {
+  const xpInCurrentLevel = totalXp % 1000;
+  return Math.min(100, Math.round((xpInCurrentLevel / 1000) * 100));
+};
+
+export interface XPAwardResult {
+  success: boolean;
+  xpAwarded: number;
+  newTotalXp: number;
+  previousLevel: number;
+  newLevel: number;
+  leveledUp: boolean;
+  error?: string;
+}
+
+// XP Service
+export const aethexXPService = {
+  async getUserXP(userId: string): Promise<{ totalXp: number; level: number } | null> {
+    if (!userId) return null;
+    try {
+      ensureSupabase();
+      const { data, error } = await supabase
+        .from("user_profiles")
+        .select("total_xp, level")
+        .eq("id", userId)
+        .single();
+
+      if (error || !data) return null;
+      const totalXp = Number(data.total_xp) || 0;
+      const level = Number(data.level) || calculateLevel(totalXp);
+      return { totalXp, level };
+    } catch {
+      return null;
+    }
+  },
+
+  async awardXP(
+    userId: string,
+    eventType: XPEventType,
+    multiplier: number = 1
+  ): Promise<XPAwardResult> {
+    if (!userId) {
+      return {
+        success: false,
+        xpAwarded: 0,
+        newTotalXp: 0,
+        previousLevel: 1,
+        newLevel: 1,
+        leveledUp: false,
+        error: "No user ID provided",
+      };
+    }
+
+    try {
+      ensureSupabase();
+
+      // Get current XP and level
+      const { data: profile, error: fetchError } = await supabase
+        .from("user_profiles")
+        .select("total_xp, level")
+        .eq("id", userId)
+        .single();
+
+      if (fetchError) {
+        return {
+          success: false,
+          xpAwarded: 0,
+          newTotalXp: 0,
+          previousLevel: 1,
+          newLevel: 1,
+          leveledUp: false,
+          error: fetchError.message,
+        };
+      }
+
+      const currentXp = Number(profile?.total_xp) || 0;
+      const previousLevel = Number(profile?.level) || calculateLevel(currentXp);
+
+      // Calculate XP to award
+      const baseXp = XP_REWARDS[eventType] || 0;
+      const xpAwarded = Math.round(baseXp * multiplier);
+      const newTotalXp = currentXp + xpAwarded;
+      const newLevel = calculateLevel(newTotalXp);
+      const leveledUp = newLevel > previousLevel;
+
+      // Update user profile
+      const { error: updateError } = await supabase
+        .from("user_profiles")
+        .update({
+          total_xp: newTotalXp,
+          level: newLevel,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", userId);
+
+      if (updateError) {
+        return {
+          success: false,
+          xpAwarded: 0,
+          newTotalXp: currentXp,
+          previousLevel,
+          newLevel: previousLevel,
+          leveledUp: false,
+          error: updateError.message,
+        };
+      }
+
+      // Create level-up notification if leveled up
+      if (leveledUp) {
+        try {
+          await aethexNotificationService.createNotification(
+            userId,
+            "success",
+            `🎉 Level Up! You're now Level ${newLevel}!`,
+            `Congratulations! You've earned ${xpAwarded} XP and reached level ${newLevel}. Keep up the great work!`,
+          );
+        } catch (notifErr) {
+          console.warn("Failed to create level-up notification:", notifErr);
+        }
+      }
+
+      return {
+        success: true,
+        xpAwarded,
+        newTotalXp,
+        previousLevel,
+        newLevel,
+        leveledUp,
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        xpAwarded: 0,
+        newTotalXp: 0,
+        previousLevel: 1,
+        newLevel: 1,
+        leveledUp: false,
+        error: err?.message || "Unknown error",
+      };
+    }
+  },
+
+  async awardStreakBonus(userId: string, streakDays: number): Promise<XPAwardResult> {
+    // Award bonus XP based on streak length (10 XP per day of streak)
+    const multiplier = Math.min(streakDays, 30); // Cap at 30 days
+    return this.awardXP(userId, "streak_bonus", multiplier);
+  },
+
+  async awardCustomXP(
+    userId: string,
+    amount: number,
+    reason?: string
+  ): Promise<XPAwardResult> {
+    if (!userId || amount <= 0) {
+      return {
+        success: false,
+        xpAwarded: 0,
+        newTotalXp: 0,
+        previousLevel: 1,
+        newLevel: 1,
+        leveledUp: false,
+        error: "Invalid user ID or amount",
+      };
+    }
+
+    try {
+      ensureSupabase();
+
+      // Get current XP and level
+      const { data: profile, error: fetchError } = await supabase
+        .from("user_profiles")
+        .select("total_xp, level")
+        .eq("id", userId)
+        .single();
+
+      if (fetchError) {
+        return {
+          success: false,
+          xpAwarded: 0,
+          newTotalXp: 0,
+          previousLevel: 1,
+          newLevel: 1,
+          leveledUp: false,
+          error: fetchError.message,
+        };
+      }
+
+      const currentXp = Number(profile?.total_xp) || 0;
+      const previousLevel = Number(profile?.level) || calculateLevel(currentXp);
+      const newTotalXp = currentXp + amount;
+      const newLevel = calculateLevel(newTotalXp);
+      const leveledUp = newLevel > previousLevel;
+
+      // Update user profile
+      const { error: updateError } = await supabase
+        .from("user_profiles")
+        .update({
+          total_xp: newTotalXp,
+          level: newLevel,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", userId);
+
+      if (updateError) {
+        return {
+          success: false,
+          xpAwarded: 0,
+          newTotalXp: currentXp,
+          previousLevel,
+          newLevel: previousLevel,
+          leveledUp: false,
+          error: updateError.message,
+        };
+      }
+
+      // Create notification for custom XP
+      try {
+        await aethexNotificationService.createNotification(
+          userId,
+          "success",
+          `⭐ +${amount} XP Earned!`,
+          reason || `You've earned ${amount} XP!`,
+        );
+      } catch {}
+
+      // Create level-up notification if leveled up
+      if (leveledUp) {
+        try {
+          await aethexNotificationService.createNotification(
+            userId,
+            "success",
+            `🎉 Level Up! You're now Level ${newLevel}!`,
+            `Congratulations! You've reached level ${newLevel}. Keep up the great work!`,
+          );
+        } catch (notifErr) {
+          console.warn("Failed to create level-up notification:", notifErr);
+        }
+      }
+
+      return {
+        success: true,
+        xpAwarded: amount,
+        newTotalXp,
+        previousLevel,
+        newLevel,
+        leveledUp,
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        xpAwarded: 0,
+        newTotalXp: 0,
+        previousLevel: 1,
+        newLevel: 1,
+        leveledUp: false,
+        error: err?.message || "Unknown error",
+      };
     }
   },
 };

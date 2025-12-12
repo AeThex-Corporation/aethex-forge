@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { communityService } from "@/lib/supabase-service";
 import { storage } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { useXP } from "@/hooks/use-xp";
 
 function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -26,6 +27,7 @@ export default function PostComposer({
 }) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { awardXP } = useXP();
   const [text, setText] = useState("");
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaUrlInput, setMediaUrlInput] = useState("");
@@ -136,6 +138,10 @@ export default function PostComposer({
       } as any);
 
       toast({ title: "Posted", description: "Your update is live" });
+      
+      // Award XP for creating a post
+      awardXP("create_post").catch(() => {});
+      
       reset();
       onPosted?.();
     } catch (e: any) {
