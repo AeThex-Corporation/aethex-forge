@@ -46,6 +46,7 @@ import AdminEthosVerification from "@/pages/admin/AdminEthosVerification";
 import AdminGameForgeStudio from "@/components/admin/AdminGameForgeStudio";
 import AdminFoundationManager from "@/components/admin/AdminFoundationManager";
 import AdminNexusManager from "@/components/admin/AdminNexusManager";
+import AdminTierBadgeManager from "@/components/admin/AdminTierBadgeManager";
 import { changelogEntries } from "@/pages/Changelog";
 import { blogSeedPosts } from "@/data/blogSeed";
 import {
@@ -391,6 +392,7 @@ export default function Admin() {
                   <TabsTrigger value="ethos">Ethos</TabsTrigger>
                   <TabsTrigger value="discord">Discord</TabsTrigger>
                   <TabsTrigger value="operations">Operations</TabsTrigger>
+                  <TabsTrigger value="tiers-badges">Tiers & Badges</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="overview" className="space-y-6">
@@ -786,6 +788,13 @@ export default function Admin() {
                       </div>
                     </CardContent>
                   </Card>
+                </TabsContent>
+
+                <TabsContent value="tiers-badges" className="space-y-6">
+                  <AdminTierBadgeManager
+                    profiles={managedProfiles}
+                    onProfilesChange={loadProfiles}
+                  />
                 </TabsContent>
               </Tabs>
             </div>

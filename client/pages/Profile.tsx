@@ -5,7 +5,10 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   aethexAchievementService,
+  aethexBadgeService,
+  aethexTierService,
   type AethexAchievement,
+  type AethexUserBadge,
 } from "@/lib/aethex-database-adapter";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +34,9 @@ import {
   Code2,
   Globe,
   Award,
+  Star,
+  Crown,
+  Sparkles,
 } from "lucide-react";
 
 interface ProfileStat {
@@ -65,6 +71,9 @@ const Profile = () => {
   const { user, profile, loading: authLoading } = useAuth();
   const [achievements, setAchievements] = useState<AethexAchievement[]>([]);
   const [loadingAchievements, setLoadingAchievements] = useState(false);
+  const [userTier, setUserTier] = useState<"free" | "pro" | "council">("free");
+  const [userBadges, setUserBadges] = useState<AethexUserBadge[]>([]);
+  const [loadingTierBadges, setLoadingTierBadges] = useState(false);
 
   const username = profile?.username || user?.email?.split("@")[0] || "creator";
   const passportHref = `/passport/${encodeURIComponent(username)}`;
@@ -94,6 +103,27 @@ const Profile = () => {
     };
 
     loadAchievements().catch(() => undefined);
+  }, [user?.id]);
+
+  useEffect(() => {
+    const loadTierAndBadges = async () => {
+      if (!user?.id) return;
+      setLoadingTierBadges(true);
+      try {
+        const [tier, badges] = await Promise.all([
+          aethexTierService.getUserTier(user.id),
+          aethexBadgeService.getUserBadges(user.id),
+        ]);
+        setUserTier(tier);
+        setUserBadges(badges);
+      } catch (error) {
+        console.warn("Failed to load tier/badges for profile", error);
+      } finally {
+        setLoadingTierBadges(false);
+      }
+    };
+
+    loadTierAndBadges().catch(() => undefined);
   }, [user?.id]);
 
   const stats = useMemo<ProfileStat[]>(() => {
@@ -285,6 +315,124 @@ const Profile = () => {
                         ) : null}
                       </div>
                     ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* MEMBERSHIP TIER & BADGES */}
+              <Card className="border-border/40 bg-background/60 backdrop-blur">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Crown className="h-5 w-5 text-amber-300" />
+                    Membership & Badges
+                  </CardTitle>
+                  <CardDescription>
+                    Your subscription tier and earned badges unlock AI personas and features.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Membership Tier */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-foreground/80">
+                      Current Tier
+                    </h3>
+                    {loadingTierBadges ? (
+                      <div className="flex items-center gap-3 rounded-lg border border-border/40 bg-background/50 p-4 text-sm text-muted-foreground">
+                        <div className="h-3 w-3 animate-ping rounded-full bg-aethex-400/80" />
+                        Loading membership info...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`flex items-center gap-3 rounded-lg border p-4 transition ${
+                            userTier === "council"
+                              ? "border-amber-500/60 bg-gradient-to-r from-amber-500/20 to-orange-500/20"
+                              : userTier === "pro"
+                              ? "border-purple-500/60 bg-gradient-to-r from-purple-500/20 to-indigo-500/20"
+                              : "border-border/40 bg-background/50"
+                          }`}
+                        >
+                          {userTier === "council" ? (
+                            <Crown className="h-6 w-6 text-amber-400" />
+                          ) : userTier === "pro" ? (
+                            <Star className="h-6 w-6 text-purple-400" />
+                          ) : (
+                            <Sparkles className="h-6 w-6 text-slate-400" />
+                          )}
+                          <div>
+                            <p className="font-semibold text-white capitalize">
+                              {userTier === "council"
+                                ? "Council Member"
+                                : userTier === "pro"
+                                ? "Pro Member"
+                                : "Free Tier"}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {userTier === "council"
+                                ? "Full access to all AI personas"
+                                : userTier === "pro"
+                                ? "Access to Pro-tier AI personas"
+                                : "Basic AI persona access"}
+                            </p>
+                          </div>
+                        </div>
+                        {userTier === "free" && (
+                          <Button
+                            asChild
+                            size="sm"
+                            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
+                          >
+                            <Link to="/pricing">Upgrade</Link>
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Earned Badges */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-foreground/80">
+                      Earned Badges
+                    </h3>
+                    {loadingTierBadges ? (
+                      <div className="flex items-center gap-3 rounded-lg border border-border/40 bg-background/50 p-4 text-sm text-muted-foreground">
+                        <div className="h-3 w-3 animate-ping rounded-full bg-aethex-400/80" />
+                        Loading badges...
+                      </div>
+                    ) : userBadges.length > 0 ? (
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {userBadges.map((ub) => (
+                          <div
+                            key={ub.id}
+                            className="flex items-center gap-3 rounded-lg border border-border/40 bg-background/50 p-3 transition hover:border-aethex-400/60"
+                          >
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-aethex-500/30 to-neon-blue/30 text-lg">
+                              {ub.badge?.icon || "🏆"}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-foreground truncate">
+                                {ub.badge?.name || "Badge"}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate">
+                                {ub.badge?.description || `Earned ${new Date(ub.earned_at).toLocaleDateString()}`}
+                              </p>
+                            </div>
+                            {ub.badge?.unlocks_persona && (
+                              <Badge
+                                variant="outline"
+                                className="border-green-500/60 text-green-300 text-xs shrink-0"
+                              >
+                                Unlocks AI
+                              </Badge>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="rounded border border-dashed border-border/40 bg-background/40 p-4 text-sm text-muted-foreground">
+                        Complete activities and challenges to earn badges that unlock exclusive features and AI personas.
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
