@@ -1382,3 +1382,282 @@ export const aethexRoleService = {
     }
   },
 };
+
+// Badge Types
+export interface AethexBadge {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  icon: string | null;
+  unlock_criteria: string | null;
+  unlocks_persona: string | null;
+  created_at: string;
+}
+
+export interface AethexUserBadge {
+  id: string;
+  user_id: string;
+  badge_id: string;
+  earned_at: string;
+  badge?: AethexBadge;
+}
+
+// Badge Services
+export const aethexBadgeService = {
+  async getAllBadges(): Promise<AethexBadge[]> {
+    try {
+      ensureSupabase();
+      const { data, error } = await supabase
+        .from("badges")
+        .select("*")
+        .order("name", { ascending: true });
+
+      if (error) {
+        if (isTableMissing(error)) return [];
+        throw error;
+      }
+      return (data as AethexBadge[]) || [];
+    } catch (err) {
+      console.warn("Failed to fetch badges:", err);
+      return [];
+    }
+  },
+
+  async getUserBadges(userId: string): Promise<AethexUserBadge[]> {
+    if (!userId) return [];
+    try {
+      ensureSupabase();
+      const { data, error } = await supabase
+        .from("user_badges")
+        .select(`
+          *,
+          badge:badges(*)
+        `)
+        .eq("user_id", userId)
+        .order("earned_at", { ascending: false });
+
+      if (error) {
+        if (isTableMissing(error)) return [];
+        // Try fallback without join
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from("user_badges")
+          .select("*")
+          .eq("user_id", userId);
+        if (fallbackError) throw fallbackError;
+        return (fallbackData as AethexUserBadge[]) || [];
+      }
+      
+      // Transform the joined data
+      return ((data as any[]) || []).map((row) => ({
+        id: row.id,
+        user_id: row.user_id,
+        badge_id: row.badge_id,
+        earned_at: row.earned_at,
+        badge: row.badge || undefined,
+      }));
+    } catch (err) {
+      console.warn("Failed to fetch user badges:", err);
+      return [];
+    }
+  },
+
+  async getUserBadgeSlugs(userId: string): Promise<string[]> {
+    const userBadges = await this.getUserBadges(userId);
+    return userBadges
+      .filter((ub) => ub.badge?.slug)
+      .map((ub) => ub.badge!.slug);
+  },
+
+  async awardBadge(userId: string, badgeSlug: string): Promise<boolean> {
+    if (!userId || !badgeSlug) return false;
+    try {
+      ensureSupabase();
+      
+      // Find badge by slug
+      const { data: badge, error: badgeError } = await supabase
+        .from("badges")
+        .select("id, name")
+        .eq("slug", badgeSlug)
+        .single();
+
+      if (badgeError || !badge) {
+        console.warn(`Badge not found: ${badgeSlug}`);
+        return false;
+      }
+
+      // Check if already awarded
+      const { data: existing } = await supabase
+        .from("user_badges")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("badge_id", badge.id)
+        .maybeSingle();
+
+      if (existing) {
+        return true; // Already has badge
+      }
+
+      // Award the badge
+      const { error: insertError } = await supabase
+        .from("user_badges")
+        .insert({
+          user_id: userId,
+          badge_id: badge.id,
+          earned_at: new Date().toISOString(),
+        });
+
+      if (insertError) {
+        console.warn("Failed to award badge:", insertError);
+        return false;
+      }
+
+      // Create notification
+      try {
+        await aethexNotificationService.createNotification(
+          userId,
+          "success",
+          `🏆 Badge Earned: ${badge.name}`,
+          `Congratulations! You've earned the "${badge.name}" badge.`,
+        );
+      } catch (notifErr) {
+        console.warn("Failed to create badge notification:", notifErr);
+      }
+
+      return true;
+    } catch (err) {
+      console.warn("Failed to award badge:", err);
+      return false;
+    }
+  },
+
+  async revokeBadge(userId: string, badgeSlug: string): Promise<boolean> {
+    if (!userId || !badgeSlug) return false;
+    try {
+      ensureSupabase();
+
+      // Find badge by slug
+      const { data: badge } = await supabase
+        .from("badges")
+        .select("id")
+        .eq("slug", badgeSlug)
+        .single();
+
+      if (!badge) return false;
+
+      const { error } = await supabase
+        .from("user_badges")
+        .delete()
+        .eq("user_id", userId)
+        .eq("badge_id", badge.id);
+
+      if (error) {
+        console.warn("Failed to revoke badge:", error);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.warn("Failed to revoke badge:", err);
+      return false;
+    }
+  },
+
+  async getBadgeBySlug(slug: string): Promise<AethexBadge | null> {
+    if (!slug) return null;
+    try {
+      ensureSupabase();
+      const { data, error } = await supabase
+        .from("badges")
+        .select("*")
+        .eq("slug", slug)
+        .single();
+
+      if (error) return null;
+      return data as AethexBadge;
+    } catch {
+      return null;
+    }
+  },
+};
+
+// Tier Service
+export const aethexTierService = {
+  async getUserTier(userId: string): Promise<"free" | "pro" | "council"> {
+    if (!userId) return "free";
+    try {
+      ensureSupabase();
+      const { data, error } = await supabase
+        .from("user_profiles")
+        .select("tier")
+        .eq("id", userId)
+        .single();
+
+      if (error || !data) return "free";
+      return (data.tier as "free" | "pro" | "council") || "free";
+    } catch {
+      return "free";
+    }
+  },
+
+  async setUserTier(
+    userId: string,
+    tier: "free" | "pro" | "council",
+    stripeCustomerId?: string,
+    stripeSubscriptionId?: string,
+  ): Promise<boolean> {
+    if (!userId) return false;
+    try {
+      ensureSupabase();
+      const updates: Record<string, any> = { tier };
+      if (stripeCustomerId !== undefined) updates.stripe_customer_id = stripeCustomerId;
+      if (stripeSubscriptionId !== undefined) updates.stripe_subscription_id = stripeSubscriptionId;
+
+      const { error } = await supabase
+        .from("user_profiles")
+        .update(updates)
+        .eq("id", userId);
+
+      if (error) {
+        console.warn("Failed to update tier:", error);
+        return false;
+      }
+
+      // Notify on upgrade
+      if (tier !== "free") {
+        try {
+          await aethexNotificationService.createNotification(
+            userId,
+            "success",
+            `⭐ Welcome to ${tier === "council" ? "Council" : "Pro"}!`,
+            `Your subscription is now active. Enjoy access to premium AI personas!`,
+          );
+        } catch {}
+      }
+
+      return true;
+    } catch (err) {
+      console.warn("Failed to set tier:", err);
+      return false;
+    }
+  },
+
+  async getStripeInfo(userId: string): Promise<{ customerId: string | null; subscriptionId: string | null }> {
+    if (!userId) return { customerId: null, subscriptionId: null };
+    try {
+      ensureSupabase();
+      const { data, error } = await supabase
+        .from("user_profiles")
+        .select("stripe_customer_id, stripe_subscription_id")
+        .eq("id", userId)
+        .single();
+
+      if (error || !data) return { customerId: null, subscriptionId: null };
+      return {
+        customerId: data.stripe_customer_id || null,
+        subscriptionId: data.stripe_subscription_id || null,
+      };
+    } catch {
+      return { customerId: null, subscriptionId: null };
+    }
+  },
+};

@@ -1,9 +1,9 @@
 import React from 'react';
-import type { Persona, UserTier } from '@/lib/ai/types';
-import { canAccessPersona } from '@/lib/ai/types';
+import type { Persona, UserTier, UserBadgeInfo } from '@/lib/ai/types';
+import { canAccessPersona, getPersonaAccessReason } from '@/lib/ai/types';
 import { PERSONAS, getPersonasByRealm } from '@/lib/ai/personas';
 import { getPersonaIcon, ChevronDownIcon } from './Icons';
-import { Lock } from 'lucide-react';
+import { Lock, Award } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +12,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PersonaSelectorProps {
   currentPersona: Persona;
   onSelectPersona: (persona: Persona) => void;
   userTier: UserTier;
+  userBadges?: UserBadgeInfo[];
   currentRealm?: string;
 }
 
@@ -24,6 +31,7 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
   currentPersona,
   onSelectPersona,
   userTier,
+  userBadges = [],
   currentRealm
 }) => {
   const CurrentIcon = getPersonaIcon(currentPersona.icon);
@@ -33,8 +41,20 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
 
   const renderPersonaItem = (persona: Persona) => {
     const Icon = getPersonaIcon(persona.icon);
-    const hasAccess = canAccessPersona(userTier, persona.requiredTier);
+    const accessInfo = getPersonaAccessReason(userTier, persona.requiredTier, userBadges, persona.unlockBadgeSlug);
+    const hasAccess = accessInfo.hasAccess;
     const isSelected = persona.id === currentPersona.id;
+
+    const tierBadgeContent = (
+      <span className={`text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 ${
+        persona.requiredTier === 'Council' 
+          ? 'bg-purple-500/20 text-purple-400' 
+          : 'bg-blue-500/20 text-blue-400'
+      }`}>
+        {accessInfo.reason === 'badge' && <Award className="w-2.5 h-2.5" />}
+        {persona.requiredTier}
+      </span>
+    );
 
     return (
       <DropdownMenuItem
@@ -51,19 +71,37 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm truncate">{persona.name}</span>
-            {!hasAccess && <Lock className="w-3 h-3 text-muted-foreground" />}
+            {!hasAccess && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Lock className="w-3 h-3 text-muted-foreground" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-xs">
+                      Requires {persona.requiredTier} tier
+                      {persona.unlockBadgeSlug && ` or "${persona.unlockBadgeSlug.replace(/_/g, ' ')}" badge`}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            {accessInfo.reason === 'badge' && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Award className="w-3 h-3 text-amber-400" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-xs">Unlocked with {accessInfo.badgeName} badge</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </div>
           <p className="text-xs text-muted-foreground truncate">{persona.description}</p>
         </div>
-        {persona.requiredTier !== 'Free' && (
-          <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-            persona.requiredTier === 'Council' 
-              ? 'bg-purple-500/20 text-purple-400' 
-              : 'bg-blue-500/20 text-blue-400'
-          }`}>
-            {persona.requiredTier}
-          </span>
-        )}
+        {persona.requiredTier !== 'Free' && tierBadgeContent}
       </DropdownMenuItem>
     );
   };

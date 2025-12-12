@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { ChatMessage as ChatMessageType, Persona, ChatSession, UserTier } from '@/lib/ai/types';
+import type { ChatMessage as ChatMessageType, Persona, ChatSession, UserTier, UserBadgeInfo } from '@/lib/ai/types';
 import { canAccessPersona } from '@/lib/ai/types';
 import { PERSONAS, getDefaultPersona } from '@/lib/ai/personas';
 import { runChat, generateTitle } from '@/lib/ai/gemini-service';
@@ -11,6 +11,7 @@ import { getPersonaIcon, CloseIcon, TrashIcon, SparklesIcon, ChatIcon } from './
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/contexts/AuthContext';
+import { aethexBadgeService } from '@/lib/aethex-database-adapter';
 
 interface AIChatProps {
   isOpen: boolean;
@@ -25,8 +26,8 @@ const getUserTier = (roles: string[]): UserTier => {
   if (roles.includes('council') || roles.includes('admin') || roles.includes('owner')) {
     return 'Council';
   }
-  if (roles.includes('architect') || roles.includes('staff') || roles.includes('premium')) {
-    return 'Architect';
+  if (roles.includes('architect') || roles.includes('staff') || roles.includes('premium') || roles.includes('pro')) {
+    return 'Pro';
   }
   return 'Free';
 };
@@ -53,9 +54,35 @@ export const AIChat: React.FC<AIChatProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
+  const [userBadges, setUserBadges] = useState<UserBadgeInfo[]>([]);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const hasAccess = canAccessPersona(userTier, currentPersona.requiredTier);
+  const hasAccess = canAccessPersona(userTier, currentPersona.requiredTier, userBadges, currentPersona.unlockBadgeSlug);
+
+  // Fetch user badges
+  useEffect(() => {
+    const fetchBadges = async () => {
+      if (!user?.id) {
+        setUserBadges([]);
+        return;
+      }
+      try {
+        const badges = await aethexBadgeService.getUserBadges(user.id);
+        const badgeInfos: UserBadgeInfo[] = badges
+          .filter(ub => ub.badge?.slug)
+          .map(ub => ({
+            slug: ub.badge!.slug,
+            name: ub.badge!.name,
+            earnedAt: ub.earned_at,
+          }));
+        setUserBadges(badgeInfos);
+      } catch (err) {
+        console.warn('[AIChat] Failed to fetch user badges:', err);
+        setUserBadges([]);
+      }
+    };
+    fetchBadges();
+  }, [user?.id]);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -190,6 +217,7 @@ export const AIChat: React.FC<AIChatProps> = ({
                 onSelectPersona={handlePersonaChange}
                 userTier={userTier}
                 currentRealm={currentRealm}
+                userBadges={userBadges}
               />
               <div className="flex items-center gap-2">
                 {messages.length > 1 && !isLoading && (
