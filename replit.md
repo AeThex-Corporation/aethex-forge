@@ -48,6 +48,11 @@ The monolith (`aethex.dev`) implements split routing to enforce legal separation
 This ensures the Foundation's user-facing URLs display `aethex.foundation` in the browser, demonstrating operational independence per the Axiom Model.
 
 ## Recent Changes (December 2025)
+- **XP & Leveling System**: Complete XP earning logic with 12 event types (daily_login, profile_complete, create_post, earn_badge, etc.). 1000 XP per level, automatic level-up notifications. Integrated with daily login streak (25 XP + 10 per streak day), profile completion (100 XP), badge earning (200 XP), and post creation (20 XP). Services: `aethexXPService` in database adapter, `useXP` React hook.
+- **Unified Role/Tier System**: Combines paid subscriptions (Stripe) with earned badges for AI persona access. Tiers: Free/Pro ($9/mo)/Council ($29/mo). Badges unlock specific AI personas.
+- **Stripe Integration**: Checkout endpoints for subscriptions, webhook handler for subscription events, manage endpoint for cancel/resume/portal.
+- **Profile Membership Display**: User profile shows tier, upgrade button, and earned badges grid.
+- **Admin Tier/Badge Manager**: Admin panel tab for managing user tiers and awarding/revoking badges.
 - **Discord Activity UI Improvements**: Comprehensive tabbed dashboard with Feed (live posts), Realms (visual selector linking to main site), Achievements (example badges), Leaderboard (example rankings), Opportunities (live jobs), and Quests (example daily/weekly). Uses relative API paths for Discord CSP compliance. Realm/profile changes link to main site due to Activity auth isolation.
 - **Set Realm API**: Added `/api/user/set-realm` endpoint for updating user's primary_arm (requires Supabase auth token)
 - **Maintenance Mode**: Site-wide maintenance mode with admin bypass. Admins can toggle via Admin Dashboard overview tab. Uses MAINTENANCE_MODE env var for initial state. Allowed paths during maintenance: /login, /staff/login, /reset-password, /health
