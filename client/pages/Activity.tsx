@@ -832,15 +832,70 @@ function JobsTab({ openExternalLink, userId }: { openExternalLink: (url: string)
   );
 }
 
+interface Badge {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  unlocked: boolean;
+  progress?: number;
+  total?: number;
+}
+
 function BadgesTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
-  const displayBadges = [
-    { id: "1", name: "Early Adopter", icon: "🚀", description: "Joined during beta", unlocked: true },
-    { id: "2", name: "First Post", icon: "✨", description: "Created your first post", unlocked: true },
-    { id: "3", name: "Realm Explorer", icon: "🗺️", description: "Visited all 6 realms", unlocked: false, progress: 4, total: 6 },
-    { id: "4", name: "Social Butterfly", icon: "🦋", description: "Made 10 connections", unlocked: false, progress: 6, total: 10 },
-    { id: "5", name: "Top Contributor", icon: "👑", description: "Reach top 10 leaderboard", unlocked: false },
-    { id: "6", name: "Week Warrior", icon: "⚔️", description: "7-day login streak", unlocked: false, progress: 3, total: 7 },
-  ];
+  const [badges, setBadges] = useState<Badge[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBadges = async () => {
+      try {
+        const endpoint = userId ? `/api/activity/badges/${userId}` : '/api/activity/badges';
+        const response = await fetch(endpoint);
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((b: any) => ({
+            id: b.id || b.badge_id,
+            name: b.name || b.badge_name,
+            icon: b.icon || b.emoji || '🏆',
+            description: b.description || '',
+            unlocked: b.unlocked || b.earned || false,
+            progress: b.progress,
+            total: b.total || b.requirement,
+          }));
+          setBadges(mapped);
+        }
+      } catch {
+        setBadges([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBadges();
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
+      </div>
+    );
+  }
+
+  if (badges.length === 0) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="text-center py-8"
+      >
+        <Award className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+        <p className="text-[#949ba4] text-sm">No badges available yet</p>
+        <p className="text-[#4e5058] text-xs mt-1">Complete activities to earn badges!</p>
+      </motion.div>
+    );
+  }
+
+  const displayBadges = badges;
 
   return (
     <motion.div 
@@ -1642,35 +1697,83 @@ interface SpotlightCreator {
 }
 
 function CreatorSpotlightTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
-  const [votedCreators, setVotedCreators] = useState<Set<string>>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_spotlight_votes');
-      return new Set(saved ? JSON.parse(saved) : []);
-    } catch {
-      return new Set();
-    }
-  });
-  const [creators, setCreators] = useState<SpotlightCreator[]>([
-    { id: 'c1', username: 'PixelMaster', displayName: 'Pixel Master', bio: 'Creating stunning pixel art games and tools', realm: 'gameforge', followers: 2340, projects: 12, votes: 892, featured: true },
-    { id: 'c2', username: 'CodeNinja', displayName: 'Code Ninja', bio: 'Full-stack developer building innovative web apps', realm: 'labs', followers: 1890, projects: 8, votes: 654, featured: false },
-    { id: 'c3', username: 'SoundWizard', displayName: 'Sound Wizard', bio: 'Composer and audio engineer for games', realm: 'nexus', followers: 1560, projects: 15, votes: 543, featured: false },
-    { id: 'c4', username: 'ArtistX', displayName: 'Artist X', bio: 'Digital artist and UI designer', realm: 'gameforge', followers: 3210, projects: 22, votes: 1203, featured: false },
-  ]);
+  const [creators, setCreators] = useState<SpotlightCreator[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [votedCreators, setVotedCreators] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    localStorage.setItem('aethex_spotlight_votes', JSON.stringify(Array.from(votedCreators)));
-  }, [votedCreators]);
+    const fetchSpotlight = async () => {
+      try {
+        const response = await fetch('/api/activity/spotlight');
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((c: any) => ({
+            id: c.id || c.user_id,
+            username: c.username,
+            displayName: c.display_name || c.full_name || c.username,
+            avatar: c.avatar_url,
+            bio: c.bio || '',
+            realm: (c.realm || c.primary_arm || 'nexus') as ArmType,
+            followers: c.followers_count || c.followers || 0,
+            projects: c.projects_count || c.projects || 0,
+            votes: c.votes_count || c.votes || 0,
+            featured: c.featured || false,
+          }));
+          setCreators(mapped);
+          
+          const voted = (data.user_votes || []);
+          setVotedCreators(new Set(voted));
+        }
+      } catch {
+        setCreators([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSpotlight();
+  }, []);
 
-  const voteCreator = (creatorId: string) => {
+  const voteCreator = async (creatorId: string) => {
     if (!userId || votedCreators.has(creatorId)) return;
+    
     setVotedCreators(prev => new Set(prev).add(creatorId));
     setCreators(prev => prev.map(c => 
       c.id === creatorId ? { ...c, votes: c.votes + 1 } : c
     ));
+    
+    try {
+      await fetch(`/api/activity/spotlight/${creatorId}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId }),
+      });
+    } catch {}
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
+      </div>
+    );
+  }
 
   const featuredCreator = creators.find(c => c.featured);
   const otherCreators = creators.filter(c => !c.featured).sort((a, b) => b.votes - a.votes);
+
+  if (creators.length === 0) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="text-center py-8"
+      >
+        <Crown className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+        <p className="text-[#949ba4] text-sm">No spotlight creators yet</p>
+        <p className="text-[#4e5058] text-xs mt-1">Featured creators will appear here</p>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div 
@@ -2031,53 +2134,47 @@ interface Challenge {
 }
 
 function ChallengesTab({ userId, onXPGain }: { userId?: string; onXPGain: (amount: number) => void }) {
-  const [claimedChallenges, setClaimedChallenges] = useState<Set<string>>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_claimed_challenges');
-      const parsed = saved ? JSON.parse(saved) : { claimed: [], lastReset: 0 };
-      const now = Date.now();
-      const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
-      if (parsed.lastReset < weekStart) {
-        return new Set();
-      }
-      return new Set(parsed.claimed);
-    } catch {
-      return new Set();
-    }
-  });
-  const [progress, setProgress] = useState<Record<string, number>>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_challenge_progress');
-      const parsed = saved ? JSON.parse(saved) : { data: {}, lastReset: 0 };
-      const now = Date.now();
-      const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
-      if (parsed.lastReset < weekStart) {
-        return {};
-      }
-      return parsed.data || parsed;
-    } catch {
-      return {};
-    }
-  });
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [claimedChallenges, setClaimedChallenges] = useState<Set<string>>(new Set());
+  const [progress, setProgress] = useState<Record<string, number>>({});
   const [claiming, setClaiming] = useState<string | null>(null);
 
   useEffect(() => {
-    const now = Date.now();
-    const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
-    localStorage.setItem('aethex_claimed_challenges', JSON.stringify({
-      claimed: Array.from(claimedChallenges),
-      lastReset: weekStart
-    }));
-  }, [claimedChallenges]);
-
-  useEffect(() => {
-    const now = Date.now();
-    const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
-    localStorage.setItem('aethex_challenge_progress', JSON.stringify({
-      data: progress,
-      lastReset: weekStart
-    }));
-  }, [progress]);
+    const fetchChallenges = async () => {
+      try {
+        const response = await fetch('/api/activity/challenges');
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((c: any) => ({
+            id: c.id,
+            title: c.title,
+            description: c.description,
+            xpReward: c.xp_reward || c.xpReward || 100,
+            type: c.type || 'weekly',
+            requirement: c.requirement || 1,
+            icon: c.icon || '🎯',
+            endsAt: new Date(c.ends_at || c.endsAt).getTime(),
+          }));
+          setChallenges(mapped.filter((c: Challenge) => c.endsAt > Date.now()));
+          
+          const progressData: Record<string, number> = {};
+          const claimedData: string[] = [];
+          mapped.forEach((c: any) => {
+            if (c.user_progress) progressData[c.id] = c.user_progress;
+            if (c.claimed) claimedData.push(c.id);
+          });
+          setProgress(progressData);
+          setClaimedChallenges(new Set(claimedData));
+        }
+      } catch {
+        setChallenges([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchChallenges();
+  }, []);
 
   const getWeekEnd = () => {
     const now = new Date();
@@ -2098,35 +2195,33 @@ function ChallengesTab({ userId, onXPGain }: { userId?: string; onXPGain: (amoun
     return `${hours}h left`;
   };
 
-  const challenges: Challenge[] = [
-    { id: 'wc1', title: 'Social Butterfly', description: 'Like 20 posts this week', xpReward: 100, type: 'weekly', requirement: 20, icon: '🦋', endsAt: getWeekEnd() },
-    { id: 'wc2', title: 'Realm Hopper', description: 'Visit all 6 realms', xpReward: 150, type: 'weekly', requirement: 6, icon: '🌀', endsAt: getWeekEnd() },
-    { id: 'wc3', title: 'Pollster', description: 'Create 3 polls', xpReward: 75, type: 'weekly', requirement: 3, icon: '📊', endsAt: getWeekEnd() },
-    { id: 'wc4', title: 'Chatterbox', description: 'Send 50 messages in Activity', xpReward: 80, type: 'weekly', requirement: 50, icon: '💬', endsAt: getWeekEnd() },
-    { id: 'wc5', title: 'Streak Master', description: 'Maintain a 7-day login streak', xpReward: 200, type: 'weekly', requirement: 7, icon: '🔥', endsAt: getWeekEnd() },
-  ];
-
-  const simulateProgress = (challengeId: string) => {
-    const challenge = challenges.find(c => c.id === challengeId);
-    if (!challenge) return;
-    
-    const current = progress[challengeId] || 0;
-    const mockProgress = Math.min(current + Math.floor(Math.random() * 3) + 1, challenge.requirement);
-    setProgress(prev => ({ ...prev, [challengeId]: mockProgress }));
-  };
-
-  const claimReward = (challenge: Challenge) => {
+  const claimReward = async (challenge: Challenge) => {
     if (!userId || claimedChallenges.has(challenge.id) || claiming) return;
     const currentProgress = progress[challenge.id] || 0;
     if (currentProgress < challenge.requirement) return;
     
     setClaiming(challenge.id);
-    setTimeout(() => {
-      setClaimedChallenges(prev => new Set(prev).add(challenge.id));
-      onXPGain(challenge.xpReward);
-      setClaiming(null);
-    }, 500);
+    setClaimedChallenges(prev => new Set(prev).add(challenge.id));
+    onXPGain(challenge.xpReward);
+    
+    try {
+      await fetch(`/api/activity/challenges/${challenge.id}/claim`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId }),
+      });
+    } catch {}
+    
+    setClaiming(null);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -2152,6 +2247,14 @@ function ChallengesTab({ userId, onXPGain }: { userId?: string; onXPGain: (amoun
           </div>
         </div>
       </div>
+
+      {challenges.length === 0 && (
+        <div className="text-center py-6">
+          <Target className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+          <p className="text-[#949ba4] text-sm">No active challenges</p>
+          <p className="text-[#4e5058] text-xs mt-1">Check back soon!</p>
+        </div>
+      )}
 
       {challenges.map((challenge, index) => {
         const currentProgress = progress[challenge.id] ?? 0;
@@ -2451,30 +2554,43 @@ function ChatTab({
   avatar?: string | null;
   participants: any[];
 }) {
-  const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_activity_chat');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [loading, setLoading] = useState(true);
   const [inputValue, setInputValue] = useState('');
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch('/api/activity/chat');
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((m: any) => ({
+            id: m.id,
+            userId: m.user_id || m.userId,
+            username: m.username || m.user_name || 'Anonymous',
+            avatar: m.avatar_url || m.avatar || null,
+            content: m.content || m.message,
+            timestamp: new Date(m.created_at || m.timestamp).getTime(),
+          }));
+          setMessages(mapped);
+        }
+      } catch {
+        setMessages([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMessages();
+  }, []);
   
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
   
-  useEffect(() => {
-    try {
-      localStorage.setItem('aethex_activity_chat', JSON.stringify(messages.slice(-50)));
-    } catch {}
-  }, [messages]);
-  
-  const sendMessage = useCallback(() => {
+  const sendMessage = useCallback(async () => {
     if (!inputValue.trim() || !userId || sending) return;
     
     setSending(true);
@@ -2489,6 +2605,20 @@ function ChatTab({
     
     setMessages(prev => [...prev, newMessage]);
     setInputValue('');
+    
+    try {
+      await fetch('/api/activity/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          username: username || 'Anonymous',
+          avatar_url: avatar,
+          content: inputValue.trim(),
+        }),
+      });
+    } catch {}
+    
     setSending(false);
     inputRef.current?.focus();
   }, [inputValue, userId, username, avatar, sending]);
@@ -2503,14 +2633,16 @@ function ChatTab({
   const formatTime = (timestamp: number) => {
     return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
+      </div>
+    );
+  }
   
-  const mockMessages: ChatMessage[] = [
-    { id: '1', userId: 'bot', username: 'AeThex Bot', avatar: null, content: 'Welcome to Activity Chat! Say hi to your fellow builders.', timestamp: Date.now() - 300000 },
-    { id: '2', userId: 'user1', username: 'GameDevPro', avatar: null, content: 'Hey everyone! Working on a new GameForge project 🎮', timestamp: Date.now() - 180000 },
-    { id: '3', userId: 'user2', username: 'PixelArtist', avatar: null, content: 'Nice! What genre?', timestamp: Date.now() - 120000 },
-  ];
-  
-  const displayMessages = messages.length > 0 ? messages : mockMessages;
+  const displayMessages = messages;
   
   return (
     <motion.div 
@@ -2527,6 +2659,14 @@ function ChatTab({
           </div>
         )}
         
+        {displayMessages.length === 0 && (
+          <div className="text-center py-8">
+            <MessagesSquare className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+            <p className="text-[#949ba4] text-sm">No messages yet</p>
+            <p className="text-[#4e5058] text-xs mt-1">Be the first to say hi!</p>
+          </div>
+        )}
+
         {displayMessages.map((msg, index) => {
           const isOwn = msg.userId === userId;
           const showAvatar = index === 0 || displayMessages[index - 1]?.userId !== msg.userId;
@@ -2604,7 +2744,7 @@ function ChatTab({
           </motion.button>
         </div>
         <p className="text-center text-[10px] text-[#4e5058] mt-2">
-          Messages are local to this session
+          Chat with the community
         </p>
       </div>
     </motion.div>
