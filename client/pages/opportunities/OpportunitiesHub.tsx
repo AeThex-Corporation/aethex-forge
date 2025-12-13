@@ -48,13 +48,30 @@ export default function OpportunitiesHub() {
         setOpportunities(result.data);
         setTotalPages(result.pagination.pages);
 
-        // Update URL params
-        const params = new URLSearchParams();
-        if (selectedArm) params.set("arm", selectedArm);
-        if (selectedEcosystem && selectedEcosystem !== "all") params.set("ecosystem", selectedEcosystem);
-        if (search) params.set("search", search);
-        if (page > 1) params.set("page", String(page));
-        setSearchParams(params);
+        // Update URL params (preserve other params like UTM tracking)
+        const params = new URLSearchParams(searchParams);
+        // Update known filter params
+        if (selectedArm) {
+          params.set("arm", selectedArm);
+        } else {
+          params.delete("arm");
+        }
+        if (selectedEcosystem && selectedEcosystem !== "all") {
+          params.set("ecosystem", selectedEcosystem);
+        } else {
+          params.delete("ecosystem");
+        }
+        if (search) {
+          params.set("search", search);
+        } else {
+          params.delete("search");
+        }
+        if (page > 1) {
+          params.set("page", String(page));
+        } else {
+          params.delete("page");
+        }
+        setSearchParams(params, { replace: true });
       } catch (error) {
         console.error("Failed to fetch opportunities:", error);
         setOpportunities([]);

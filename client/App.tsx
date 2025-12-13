@@ -503,7 +503,7 @@ const App = () => (
                         {/* Dev-Link routes - now redirect to Nexus Opportunities with ecosystem filter */}
                         <Route path="/dev-link" element={<Navigate to="/opportunities?ecosystem=roblox" replace />} />
                         <Route
-                          path="/dev-link/waitlist"
+                          path="/dev-link/*"
                           element={<Navigate to="/opportunities?ecosystem=roblox" replace />}
                         />
 

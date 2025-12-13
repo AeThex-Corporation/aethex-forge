@@ -15,7 +15,7 @@ Do not make changes to the file `server/index.ts`.
 ## System Architecture
 AeThex is built as a full-stack web application utilizing React 18 with TypeScript for the frontend, Vite 6 as the build tool, and Express.js for the backend. Supabase (PostgreSQL) serves as the primary database. Styling is handled with Tailwind CSS, and UI components leverage Radix UI. TanStack Query is used for state management, and React Router DOM for routing.
 
-The application features a multi-realm system including Nexus, GameForge, Foundation, Labs, Corp, Staff, and Dev-Link (7 total), each with specific functionalities. Key capabilities include community features (feed, posts, comments), a Creator Network with profile passports and achievements, and a Nexus Marketplace for opportunities and contracts.
+The application features a multi-realm system including Nexus, GameForge, Foundation, Labs, Corp, and Staff (6 realms), each with specific functionalities. Dev-Link has been merged into Nexus as an ecosystem filter. Key capabilities include community features (feed, posts, comments), a Creator Network with profile passports and achievements, and a Nexus Marketplace for opportunities and contracts.
 
 ### Discord Integration Architecture
 Discord functionality is split between two deployments:
@@ -70,6 +70,7 @@ This ensures the Foundation's user-facing URLs display `aethex.foundation` in th
 - **Landing Page Styling Alignment**: Updated hero CTAs and featured realm button to use shared Button component with asChild prop for consistent styling and ripple effects. Fixed Button component to support ripple animation for both native buttons and asChild elements. Removed unused backgroundGradient variable. Custom landing page cards (featured-card, stats-strip, hero-intro) intentionally use advanced CSS effects while still leveraging design tokens (--aethex-*, --foreground, --background, --muted, etc.).
 - **Get Started Page Enhancement**: Comprehensive onboarding page (`/get-started`) with: Stats/Social Proof section (animated counters: 12k+ builders, 500+ projects, 7 realms, 10 AI agents), Video Demo placeholder, 3-step guided signup flow, Platform Features section (6 cards: XP & Leveling, AI Agents, Creator Passports, Community, Badges, Security), Realms Overview (all 7 realms with descriptions and feature tags), Testimonials section (4 community quotes), and FAQ section (6 expandable questions). AnimatedCounter uses proper useRef cleanup for requestAnimationFrame.
 - **Axiom Model Code Cleanup**: Removed orphaned page files in `foundation/`, `gameforge/`, and `labs/` folders (20+ files) that were dead code since all routes redirect to external domains. Cleaned up unused imports from App.tsx. Routes continue to redirect: `/foundation/*` → aethex.foundation, `/gameforge/*` → aethex.foundation/gameforge, `/labs/*` → aethex.studio.
+- **Dev-Link Merged into Nexus**: Dev-Link realm eliminated as standalone. Roblox and other platform communities now accessible via ecosystem filter tabs in Nexus Opportunities Hub. Filter tabs: [All] [Roblox] [Unity] [Web] [Audio] [Design]. Routes `/dev-link/*` redirect to `/opportunities?ecosystem=roblox`. Deleted 8 Dev-Link page files and updated App.tsx routes.
 
 ## External Dependencies
 - **Supabase**: Used for database (PostgreSQL), authentication, and real-time features.
