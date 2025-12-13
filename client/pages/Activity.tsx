@@ -416,41 +416,40 @@ function LeaderboardTab({ openExternalLink, currentUserId }: { openExternalLink:
       )}
       
       {leaderboard.map((entry, index) => (
-          <motion.div 
-            key={entry.user_id} 
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.05 }}
-            className={`p-3 rounded-xl flex items-center gap-3 border ${
-              index < 3 
-                ? "bg-gradient-to-r from-[#232428] to-[#2b2d31] border-[#4e5058]" 
-                : "bg-[#1e1f22] border-[#3f4147]"
-            }`}
-          >
-            <span className="w-8 text-center text-lg">{medals[index] || `#${index + 1}`}</span>
-            {entry.avatar_url ? (
-              <img src={entry.avatar_url} alt="" className="w-8 h-8 rounded-full" />
-            ) : (
-              <div className="w-8 h-8 rounded-full bg-[#5865f2] flex items-center justify-center text-white text-xs font-bold">
-                {entry.username?.[0]?.toUpperCase() || "?"}
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-medium truncate">{entry.username}</p>
-              <p className="text-[#949ba4] text-xs">Lvl {entry.level} · {entry.total_xp.toLocaleString()} XP</p>
+        <motion.div 
+          key={entry.user_id} 
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className={`p-3 rounded-xl flex items-center gap-3 border ${
+            index < 3 
+              ? "bg-gradient-to-r from-[#232428] to-[#2b2d31] border-[#4e5058]" 
+              : "bg-[#1e1f22] border-[#3f4147]"
+          }`}
+        >
+          <span className="w-8 text-center text-lg">{medals[index] || `#${index + 1}`}</span>
+          {entry.avatar_url ? (
+            <img src={entry.avatar_url} alt="" className="w-8 h-8 rounded-full" />
+          ) : (
+            <div className="w-8 h-8 rounded-full bg-[#5865f2] flex items-center justify-center text-white text-xs font-bold">
+              {entry.username?.[0]?.toUpperCase() || "?"}
             </div>
-            {entry.current_streak && entry.current_streak > 0 && (
-              <motion.span 
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-                className="flex items-center gap-1 text-orange-400 text-xs font-medium"
-              >
-                <Flame className="w-3.5 h-3.5" />{entry.current_streak}
-              </motion.span>
-            )}
-          </motion.div>
-        )
-      )}
+          )}
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-sm font-medium truncate">{entry.username}</p>
+            <p className="text-[#949ba4] text-xs">Lvl {entry.level} · {entry.total_xp.toLocaleString()} XP</p>
+          </div>
+          {entry.current_streak && entry.current_streak > 0 && (
+            <motion.span 
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="flex items-center gap-1 text-orange-400 text-xs font-medium"
+            >
+              <Flame className="w-3.5 h-3.5" />{entry.current_streak}
+            </motion.span>
+          )}
+        </motion.div>
+      ))}
       <button onClick={() => openExternalLink(`${APP_URL}/leaderboard`)} className="w-full py-2 text-purple-400 text-sm hover:underline flex items-center justify-center gap-1">
         Full leaderboard <ExternalLink className="w-3 h-3" />
       </button>
