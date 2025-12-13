@@ -8,9 +8,6 @@ I prefer detailed explanations.
 I want iterative development.
 Ask before making major changes.
 Do not make changes to the folder `electron/`.
-Do not make changes to the folder `services/`.
-Do not make changes to the folder `api/`.
-Do not make changes to the file `server/index.ts`.
 
 ## System Architecture
 AeThex is built as a full-stack web application utilizing React 18 with TypeScript for the frontend, Vite 6 as the build tool, and Express.js for the backend. Supabase (PostgreSQL) serves as the primary database. Styling is handled with Tailwind CSS, and UI components leverage Radix UI. TanStack Query is used for state management, and React Router DOM for routing.

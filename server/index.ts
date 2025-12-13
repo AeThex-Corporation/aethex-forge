@@ -3415,6 +3415,463 @@ export function createServer() {
       }
     });
 
+    // ===== DISCORD ACTIVITY API ENDPOINTS =====
+
+    // Activity Events
+    app.get("/api/activity/events", async (req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_events")
+          .select("*, activity_event_rsvps(count)")
+          .gte("start_time", new Date().toISOString())
+          .order("start_time", { ascending: true })
+          .limit(20);
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/events", async (req, res) => {
+      const { title, description, event_type, start_time, end_time, host_id, host_name, realm, max_attendees, image_url, external_url } = req.body || {};
+      if (!title || !start_time) return res.status(400).json({ error: "title and start_time required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_events")
+          .insert({ title, description, event_type, start_time, end_time, host_id, host_name, realm, max_attendees, image_url, external_url })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/events/:id/rsvp", async (req, res) => {
+      const eventId = req.params.id;
+      const { user_id, status } = req.body || {};
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_event_rsvps")
+          .upsert({ event_id: eventId, user_id, status: status || "going" }, { onConflict: "event_id,user_id" })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.delete("/api/activity/events/:id/rsvp", async (req, res) => {
+      const eventId = req.params.id;
+      const user_id = req.query.user_id as string;
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      try {
+        const { error } = await adminSupabase
+          .from("activity_event_rsvps")
+          .delete()
+          .eq("event_id", eventId)
+          .eq("user_id", user_id);
+        if (error) return res.status(500).json({ error: error.message });
+        res.json({ ok: true });
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Activity Teams
+    app.get("/api/activity/teams", async (req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_teams")
+          .select("*")
+          .eq("is_active", true)
+          .order("created_at", { ascending: false })
+          .limit(20);
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/teams", async (req, res) => {
+      const { title, description, owner_id, owner_name, realm, roles_needed, max_team, project_type } = req.body || {};
+      if (!title) return res.status(400).json({ error: "title required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_teams")
+          .insert({ title, description, owner_id, owner_name, realm, roles_needed, max_team, project_type })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/teams/:id/apply", async (req, res) => {
+      const teamId = req.params.id;
+      const { user_id, role_applied, message } = req.body || {};
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_team_applications")
+          .upsert({ team_id: teamId, user_id, role_applied, message }, { onConflict: "team_id,user_id" })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Activity Projects
+    app.get("/api/activity/projects", async (req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_projects")
+          .select("*")
+          .order("upvotes", { ascending: false })
+          .limit(20);
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/projects", async (req, res) => {
+      const { title, description, owner_id, owner_name, realm, image_url, project_url, tags } = req.body || {};
+      if (!title) return res.status(400).json({ error: "title required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_projects")
+          .insert({ title, description, owner_id, owner_name, realm, image_url, project_url, tags })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/projects/:id/upvote", async (req, res) => {
+      const projectId = req.params.id;
+      const { user_id } = req.body || {};
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      try {
+        const { data: existing } = await adminSupabase
+          .from("activity_project_upvotes")
+          .select("id")
+          .eq("project_id", projectId)
+          .eq("user_id", user_id)
+          .maybeSingle();
+        if (existing) return res.status(400).json({ error: "Already upvoted" });
+
+        const { error: insertError } = await adminSupabase
+          .from("activity_project_upvotes")
+          .insert({ project_id: projectId, user_id });
+        if (insertError) return res.status(500).json({ error: insertError.message });
+
+        await adminSupabase.rpc("increment_project_upvotes", { project_id: projectId }).catch(() => {
+          adminSupabase.from("activity_projects").update({ upvotes: adminSupabase.rpc("get_upvote_count", { pid: projectId }) }).eq("id", projectId);
+        });
+
+        res.json({ ok: true });
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Activity Polls
+    app.get("/api/activity/polls", async (req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_polls")
+          .select("*")
+          .eq("is_active", true)
+          .order("created_at", { ascending: false })
+          .limit(10);
+        if (error) return res.status(500).json({ error: error.message });
+
+        const pollsWithVotes = await Promise.all((data || []).map(async (poll: any) => {
+          const { data: votes } = await adminSupabase
+            .from("activity_poll_votes")
+            .select("option_index")
+            .eq("poll_id", poll.id);
+          const voteCounts: Record<number, number> = {};
+          (votes || []).forEach((v: any) => {
+            voteCounts[v.option_index] = (voteCounts[v.option_index] || 0) + 1;
+          });
+          return { ...poll, vote_counts: voteCounts, total_votes: votes?.length || 0 };
+        }));
+
+        res.json(pollsWithVotes);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/polls", async (req, res) => {
+      const { question, options, creator_id, creator_name, expires_at } = req.body || {};
+      if (!question || !options || !Array.isArray(options)) return res.status(400).json({ error: "question and options array required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_polls")
+          .insert({ question, options, creator_id, creator_name, expires_at })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/polls/:id/vote", async (req, res) => {
+      const pollId = req.params.id;
+      const { user_id, option_index } = req.body || {};
+      if (!user_id || option_index === undefined) return res.status(400).json({ error: "user_id and option_index required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_poll_votes")
+          .upsert({ poll_id: pollId, user_id, option_index }, { onConflict: "poll_id,user_id" })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Activity Chat
+    app.get("/api/activity/chat", async (req, res) => {
+      const limit = Math.min(100, Number(req.query.limit) || 50);
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_chat_messages")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(limit);
+        if (error) return res.status(500).json({ error: error.message });
+        res.json((data || []).reverse());
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/chat", async (req, res) => {
+      const { user_id, username, avatar_url, content } = req.body || {};
+      if (!user_id || !content) return res.status(400).json({ error: "user_id and content required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_chat_messages")
+          .insert({ user_id, username, avatar_url, content })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Activity Challenges
+    app.get("/api/activity/challenges", async (req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_challenges")
+          .select("*")
+          .eq("is_active", true)
+          .order("ends_at", { ascending: true });
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/challenges", async (req, res) => {
+      const { title, description, xp_reward, challenge_type, target_count, starts_at, ends_at } = req.body || {};
+      if (!title) return res.status(400).json({ error: "title required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_challenges")
+          .insert({ title, description, xp_reward, challenge_type, target_count, starts_at, ends_at })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.get("/api/activity/challenges/:id/progress", async (req, res) => {
+      const challengeId = req.params.id;
+      const user_id = req.query.user_id as string;
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_challenge_progress")
+          .select("*")
+          .eq("challenge_id", challengeId)
+          .eq("user_id", user_id)
+          .maybeSingle();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || { progress: 0, completed: false });
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/challenges/:id/progress", async (req, res) => {
+      const challengeId = req.params.id;
+      const { user_id, progress, completed } = req.body || {};
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_challenge_progress")
+          .upsert({ 
+            challenge_id: challengeId, 
+            user_id, 
+            progress: progress || 0, 
+            completed: completed || false,
+            completed_at: completed ? new Date().toISOString() : null
+          }, { onConflict: "challenge_id,user_id" })
+          .select()
+          .single();
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Creator Spotlight
+    app.get("/api/activity/spotlight", async (req, res) => {
+      try {
+        const { data, error } = await adminSupabase
+          .from("activity_spotlight")
+          .select("*")
+          .order("votes", { ascending: false })
+          .limit(10);
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    app.post("/api/activity/spotlight/:id/vote", async (req, res) => {
+      const spotlightId = req.params.id;
+      const { voter_id } = req.body || {};
+      if (!voter_id) return res.status(400).json({ error: "voter_id required" });
+      try {
+        const { data: existing } = await adminSupabase
+          .from("activity_spotlight_votes")
+          .select("id")
+          .eq("spotlight_id", spotlightId)
+          .eq("voter_id", voter_id)
+          .maybeSingle();
+        if (existing) return res.status(400).json({ error: "Already voted" });
+
+        const { error: insertError } = await adminSupabase
+          .from("activity_spotlight_votes")
+          .insert({ spotlight_id: spotlightId, voter_id });
+        if (insertError) return res.status(500).json({ error: insertError.message });
+
+        await adminSupabase
+          .from("activity_spotlight")
+          .update({ votes: adminSupabase.rpc("get_spotlight_votes", { sid: spotlightId }) })
+          .eq("id", spotlightId)
+          .catch(() => {});
+
+        res.json({ ok: true });
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // Leaderboard (real XP data)
+    app.get("/api/activity/leaderboard", async (req, res) => {
+      const limit = Math.min(50, Number(req.query.limit) || 20);
+      try {
+        const { data, error } = await adminSupabase
+          .from("user_profiles")
+          .select("id, username, full_name, avatar_url, total_xp, level, current_streak")
+          .order("total_xp", { ascending: false })
+          .limit(limit);
+        if (error) return res.status(500).json({ error: error.message });
+        const ranked = (data || []).map((user: any, index: number) => ({
+          rank: index + 1,
+          user_id: user.id,
+          username: user.username || user.full_name || "Anonymous",
+          avatar_url: user.avatar_url,
+          total_xp: user.total_xp || 0,
+          level: user.level || 1,
+          current_streak: user.current_streak || 0
+        }));
+        res.json(ranked);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // User Badges (real data)
+    app.get("/api/activity/badges/:userId", async (req, res) => {
+      const userId = req.params.userId;
+      try {
+        const { data, error } = await adminSupabase
+          .from("user_badges")
+          .select("*, badges(*)")
+          .eq("user_id", userId);
+        if (error) {
+          if (error.code === "42P01" || error.message?.includes("does not exist")) {
+            return res.json([]);
+          }
+          return res.status(500).json({ error: error.message });
+        }
+        res.json(data || []);
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // User Stats for Activity
+    app.get("/api/activity/user-stats/:userId", async (req, res) => {
+      const userId = req.params.userId;
+      try {
+        const { data, error } = await adminSupabase
+          .from("user_profiles")
+          .select("total_xp, level, current_streak, longest_streak")
+          .eq("id", userId)
+          .maybeSingle();
+        if (error) return res.status(500).json({ error: error.message });
+        if (!data) return res.json({ total_xp: 0, level: 1, current_streak: 0, longest_streak: 0 });
+        
+        const { count } = await adminSupabase
+          .from("user_profiles")
+          .select("*", { count: "exact", head: true })
+          .gt("total_xp", data.total_xp || 0);
+        
+        res.json({ ...data, rank: (count || 0) + 1 });
+      } catch (e: any) {
+        res.status(500).json({ error: e?.message || String(e) });
+      }
+    });
+
+    // ===== END DISCORD ACTIVITY API ENDPOINTS =====
+
     app.get("/api/applications-old", async (req, res) => {
       const owner = String(req.query.owner || "");
       if (!owner) return res.status(400).json({ error: "owner required" });
