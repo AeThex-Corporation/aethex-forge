@@ -542,7 +542,7 @@ export default function GetStarted() {
               Explore the Ecosystem
             </Badge>
             <h2 className="text-2xl sm:text-3xl font-bold">
-              <span className="text-gradient">7 Realms</span> for Every Builder
+              <span className="text-gradient">6 Realms</span> for Every Builder
             </h2>
             <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
               Each realm is designed for different aspects of building and collaboration

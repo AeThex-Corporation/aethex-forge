@@ -1501,6 +1501,15 @@ export function createServer() {
       }
 
       try {
+        // Cleanup expired verification codes (opportunistic cleanup)
+        adminSupabase
+          .from("discord_verifications")
+          .delete()
+          .lt("expires_at", new Date().toISOString())
+          .then(({ error }) => {
+            if (error) console.warn("[Discord Verify] Cleanup error:", error.message);
+          });
+
         // Find valid verification code
         const { data: verification, error: verifyError } = await adminSupabase
           .from("discord_verifications")
@@ -1597,6 +1606,21 @@ export function createServer() {
           .delete()
           .eq("verification_code", verification_code.trim());
 
+        // Notify bot about successful verification (fire and forget)
+        const botWebhookUrl = process.env.DISCORD_BOT_WEBHOOK_URL || "https://aethex-bot-master.replit.app/api/verify-success";
+        fetch(botWebhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            discord_id: discordId,
+            user_id: user_id,
+            success: true,
+            timestamp: new Date().toISOString(),
+          }),
+        }).catch((err) => {
+          console.warn("[Discord Verify] Failed to notify bot:", err.message);
+        });
+
         res.status(200).json({
           success: true,
           message: "Discord account linked successfully!",
@@ -1610,6 +1634,60 @@ export function createServer() {
         res.status(500).json({
           message: "An error occurred. Please try again: " + error?.message,
         });
+      }
+    });
+
+    // Discord Verify Callback: Webhook for bot to receive verification confirmation
+    // Bot calls this after aethex.dev successfully links the Discord account
+    app.post("/api/discord/verify-callback", async (req, res) => {
+      const { discord_id, user_id, success, bot_secret } = req.body || {};
+
+      // Simple secret validation (bot sends shared secret)
+      const expectedSecret = process.env.DISCORD_BOT_WEBHOOK_SECRET || "aethex_bot_webhook_2025";
+      if (bot_secret !== expectedSecret) {
+        console.warn("[Discord Callback] Invalid bot secret provided");
+        return res.status(403).json({ error: "Invalid authorization" });
+      }
+
+      if (!discord_id) {
+        return res.status(400).json({ error: "Missing discord_id" });
+      }
+
+      console.log("[Discord Callback] Verification callback received:", {
+        discord_id,
+        user_id: user_id || "not provided",
+        success,
+      });
+
+      // This endpoint exists for the bot to know verification succeeded
+      // The bot can then assign the Verified role in Discord
+      res.status(200).json({
+        received: true,
+        discord_id,
+        message: success ? "Verification confirmed" : "Verification status received",
+      });
+    });
+
+    // Discord Cleanup: Remove expired verification codes (called periodically or on verify-code)
+    app.post("/api/discord/cleanup-expired-codes", async (req, res) => {
+      try {
+        const { deleted, error } = await adminSupabase
+          .from("discord_verifications")
+          .delete()
+          .lt("expires_at", new Date().toISOString())
+          .select();
+
+        if (error) {
+          console.error("[Discord Cleanup] Error cleaning expired codes:", error);
+          return res.status(500).json({ error: error.message });
+        }
+
+        const count = deleted?.length || 0;
+        console.log(`[Discord Cleanup] Removed ${count} expired verification codes`);
+        res.status(200).json({ success: true, removed: count });
+      } catch (error: any) {
+        console.error("[Discord Cleanup] Unexpected error:", error);
+        res.status(500).json({ error: error.message });
       }
     });
 
