@@ -14,6 +14,7 @@ export interface Opportunity {
   salary_max: number;
   experience_level: string;
   arm_affiliation: string;
+  ecosystem?: string;
   posted_by_id: string;
   aethex_creators: OpportunityPoster;
   status: string;
@@ -40,12 +41,14 @@ export interface CreateOpportunityData {
   salary_max?: number;
   experience_level?: string;
   arm_affiliation: string;
+  ecosystem?: string;
 }
 
 const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 export async function getOpportunities(filters?: {
   arm?: string;
+  ecosystem?: string;
   search?: string;
   jobType?: string;
   experienceLevel?: string;
@@ -55,6 +58,7 @@ export async function getOpportunities(filters?: {
 }): Promise<OpportunitiesResponse> {
   const params = new URLSearchParams();
   if (filters?.arm) params.append("arm", filters.arm);
+  if (filters?.ecosystem) params.append("ecosystem", filters.ecosystem);
   if (filters?.search) params.append("search", filters.search);
   if (filters?.jobType) params.append("jobType", filters.jobType);
   if (filters?.experienceLevel)

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,13 +9,26 @@ import { OpportunityCard } from "@/components/creator-network/OpportunityCard";
 import { ArmFilter } from "@/components/creator-network/ArmFilter";
 import type { Opportunity } from "@/api/opportunities";
 
+const ECOSYSTEMS = [
+  { value: "all", label: "All" },
+  { value: "roblox", label: "Roblox" },
+  { value: "unity", label: "Unity" },
+  { value: "web", label: "Web" },
+  { value: "audio", label: "Audio" },
+  { value: "design", label: "Design" },
+];
+
 export default function OpportunitiesHub() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [selectedArm, setSelectedArm] = useState<string | undefined>(
     searchParams.get("arm") || undefined,
+  );
+  const [selectedEcosystem, setSelectedEcosystem] = useState<string>(
+    searchParams.get("ecosystem") || "all",
   );
   const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
   const [totalPages, setTotalPages] = useState(0);
@@ -26,6 +39,7 @@ export default function OpportunitiesHub() {
       try {
         const result = await getOpportunities({
           arm: selectedArm,
+          ecosystem: selectedEcosystem !== "all" ? selectedEcosystem : undefined,
           search: search || undefined,
           page,
           limit: 12,
@@ -37,6 +51,7 @@ export default function OpportunitiesHub() {
         // Update URL params
         const params = new URLSearchParams();
         if (selectedArm) params.set("arm", selectedArm);
+        if (selectedEcosystem && selectedEcosystem !== "all") params.set("ecosystem", selectedEcosystem);
         if (search) params.set("search", search);
         if (page > 1) params.set("page", String(page));
         setSearchParams(params);
@@ -49,7 +64,7 @@ export default function OpportunitiesHub() {
     };
 
     fetchOpportunities();
-  }, [selectedArm, search, page, setSearchParams]);
+  }, [selectedArm, selectedEcosystem, search, page, setSearchParams]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +73,11 @@ export default function OpportunitiesHub() {
 
   const handleArmChange = (arm: string | undefined) => {
     setSelectedArm(arm);
+    setPage(1);
+  };
+
+  const handleEcosystemChange = (ecosystem: string) => {
+    setSelectedEcosystem(ecosystem);
     setPage(1);
   };
 
@@ -98,7 +118,7 @@ export default function OpportunitiesHub() {
               </div>
 
               {/* Search Bar */}
-              <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+              <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-6">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <Input
@@ -115,6 +135,25 @@ export default function OpportunitiesHub() {
                   </Button>
                 </div>
               </form>
+
+              {/* Ecosystem Filter Tabs */}
+              <div className="flex flex-wrap justify-center gap-2">
+                {ECOSYSTEMS.map((eco) => (
+                  <Button
+                    key={eco.value}
+                    variant={selectedEcosystem === eco.value ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handleEcosystemChange(eco.value)}
+                    className={
+                      selectedEcosystem === eco.value
+                        ? "bg-cyan-500 text-black hover:bg-cyan-400"
+                        : "border-slate-600 text-slate-300 hover:bg-slate-800"
+                    }
+                  >
+                    {eco.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -151,6 +190,7 @@ export default function OpportunitiesHub() {
                         onClick={() => {
                           setSearch("");
                           setSelectedArm(undefined);
+                          setSelectedEcosystem("all");
                           setPage(1);
                         }}
                         variant="outline"

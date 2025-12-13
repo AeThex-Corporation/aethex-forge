@@ -37,6 +37,15 @@ const ARMS = [
   { value: "nexus", label: "Nexus (Talent Marketplace)" },
 ];
 
+const ECOSYSTEMS = [
+  { value: "roblox", label: "Roblox" },
+  { value: "unity", label: "Unity" },
+  { value: "web", label: "Web Development" },
+  { value: "audio", label: "Audio / Music" },
+  { value: "design", label: "Design / Art" },
+  { value: "other", label: "Other" },
+];
+
 export default function OpportunityPostForm() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -52,6 +61,7 @@ export default function OpportunityPostForm() {
     salary_max: undefined,
     experience_level: "Mid",
     arm_affiliation: "nexus",
+    ecosystem: "web",
   });
 
   if (!user) {
@@ -265,6 +275,30 @@ export default function OpportunityPostForm() {
                           {errors.arm_affiliation}
                         </p>
                       )}
+                    </div>
+
+                    {/* Ecosystem */}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-white">
+                        Ecosystem / Platform
+                      </label>
+                      <Select
+                        value={formData.ecosystem || "web"}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, ecosystem: value })
+                        }
+                      >
+                        <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                          <SelectValue placeholder="Select ecosystem" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                          {ECOSYSTEMS.map((eco) => (
+                            <SelectItem key={eco.value} value={eco.value}>
+                              {eco.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     {/* Job Type */}
