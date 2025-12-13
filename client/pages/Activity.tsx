@@ -346,17 +346,49 @@ function RealmsTab({ currentRealm, openExternalLink }: { currentRealm: ArmType; 
 }
 
 function LeaderboardTab({ openExternalLink, currentUserId }: { openExternalLink: (url: string) => Promise<void>; currentUserId?: string }) {
-  const leaderboard: LeaderboardEntry[] = [
-    { rank: 1, user_id: "1", username: "PixelMaster", total_xp: 15420, level: 16, current_streak: 21 },
-    { rank: 2, user_id: "2", username: "CodeNinja", total_xp: 12800, level: 13, current_streak: 14 },
-    { rank: 3, user_id: "3", username: "BuilderX", total_xp: 11250, level: 12, current_streak: 7 },
-    { rank: 4, user_id: "4", username: "GameDev_Pro", total_xp: 9800, level: 10, current_streak: 5 },
-    { rank: 5, user_id: "5", username: "ForgeHero", total_xp: 8500, level: 9, current_streak: 12 },
-    { rank: 6, user_id: "6", username: "NexusCreator", total_xp: 7200, level: 8, current_streak: 3 },
-    { rank: 7, user_id: "7", username: "LabsExplorer", total_xp: 6100, level: 7 },
-  ];
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userRank, setUserRank] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await fetch('/api/activity/leaderboard');
+        if (response.ok) {
+          const data = await response.json();
+          const entries = (data.data || data || []).map((e: any, i: number) => ({
+            rank: i + 1,
+            user_id: e.user_id || e.id,
+            username: e.username || e.full_name || 'Anonymous',
+            avatar_url: e.avatar_url,
+            total_xp: e.total_xp || 0,
+            level: e.level || Math.floor((e.total_xp || 0) / 1000) + 1,
+            current_streak: e.current_streak || 0,
+          }));
+          setLeaderboard(entries);
+          if (currentUserId) {
+            const userIdx = entries.findIndex((e: any) => e.user_id === currentUserId);
+            if (userIdx >= 0) setUserRank(userIdx + 1);
+          }
+        }
+      } catch {
+        setLeaderboard([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLeaderboard();
+  }, [currentUserId]);
 
   const medals = ["🥇", "🥈", "🥉"];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -371,13 +403,19 @@ function LeaderboardTab({ openExternalLink, currentUserId }: { openExternalLink:
       >
         <div className="flex items-center justify-between">
           <span className="text-white text-sm font-medium">Your Rank</span>
-          <span className="text-purple-300 font-bold">#12</span>
+          <span className="text-purple-300 font-bold">{userRank ? `#${userRank}` : 'Unranked'}</span>
         </div>
         <p className="text-[#949ba4] text-xs mt-1">Keep earning XP to climb!</p>
       </motion.div>
+
+      {leaderboard.length === 0 && (
+        <div className="text-center py-6">
+          <Trophy className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+          <p className="text-[#949ba4] text-sm">No leaderboard data yet</p>
+        </div>
+      )}
       
-      {(
-        leaderboard.map((entry, index) => (
+      {leaderboard.map((entry, index) => (
           <motion.div 
             key={entry.user_id} 
             initial={{ opacity: 0, x: -10 }}
@@ -1153,42 +1191,80 @@ interface AethexEvent {
 }
 
 function EventCalendarTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
-  const [rsvpEvents, setRsvpEvents] = useState<Set<string>>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_event_rsvps');
-      return new Set(saved ? JSON.parse(saved) : []);
-    } catch {
-      return new Set();
-    }
-  });
-
-  useEffect(() => {
-    localStorage.setItem('aethex_event_rsvps', JSON.stringify(Array.from(rsvpEvents)));
-  }, [rsvpEvents]);
+  const [events, setEvents] = useState<AethexEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [rsvpEvents, setRsvpEvents] = useState<Set<string>>(new Set());
+  const [rsvping, setRsvping] = useState<string | null>(null);
 
   const now = Date.now();
   const hour = 60 * 60 * 1000;
   const day = 24 * hour;
 
-  const events: AethexEvent[] = [
-    { id: 'e1', title: 'GameForge Weekly Showcase', description: 'Present your latest game projects', type: 'stream', startTime: now + 2 * hour, endTime: now + 4 * hour, host: 'AeThex Team', realm: 'gameforge', attendees: 45, maxAttendees: 100 },
-    { id: 'e2', title: 'Unity Workshop: VFX Basics', description: 'Learn to create stunning visual effects', type: 'workshop', startTime: now + 1 * day, endTime: now + 1 * day + 2 * hour, host: 'PixelMaster', realm: 'gameforge', attendees: 28, maxAttendees: 50 },
-    { id: 'e3', title: 'Labs Demo Day', description: 'R&D team demos experimental features', type: 'stream', startTime: now + 2 * day, endTime: now + 2 * day + 3 * hour, host: 'Labs Team', realm: 'labs', attendees: 62 },
-    { id: 'e4', title: 'Community AMA', description: 'Ask us anything about AeThex platform', type: 'ama', startTime: now + 3 * day, endTime: now + 3 * day + hour, host: 'Founders', realm: 'foundation', attendees: 89 },
-    { id: 'e5', title: 'Pixel Art Tournament', description: 'Create the best pixel art in 2 hours', type: 'tournament', startTime: now + 4 * day, endTime: now + 4 * day + 2 * hour, host: 'ArtistX', realm: 'nexus', attendees: 34, maxAttendees: 64 },
-  ];
-
-  const toggleRsvp = (eventId: string) => {
-    if (!userId) return;
-    setRsvpEvents(prev => {
-      const next = new Set(prev);
-      if (next.has(eventId)) {
-        next.delete(eventId);
-      } else {
-        next.add(eventId);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/activity/events');
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((e: any) => ({
+            id: e.id,
+            title: e.title,
+            description: e.description || '',
+            type: e.event_type || 'stream',
+            startTime: new Date(e.start_time).getTime(),
+            endTime: new Date(e.end_time).getTime(),
+            host: e.host_name || 'AeThex',
+            realm: e.realm || 'nexus',
+            attendees: e.attendee_count || 0,
+            maxAttendees: e.max_attendees,
+          }));
+          setEvents(mapped);
+          const userRsvps = (data.data || data || [])
+            .filter((e: any) => e.user_rsvp)
+            .map((e: any) => e.id);
+          setRsvpEvents(new Set(userRsvps));
+        }
+      } catch {
+        setEvents([]);
+      } finally {
+        setLoading(false);
       }
-      return next;
-    });
+    };
+    fetchEvents();
+  }, []);
+
+  const toggleRsvp = async (eventId: string) => {
+    if (!userId || rsvping) return;
+    setRsvping(eventId);
+    const hasRsvp = rsvpEvents.has(eventId);
+    
+    try {
+      const response = await fetch(`/api/activity/events/${eventId}/rsvp`, {
+        method: hasRsvp ? 'DELETE' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      
+      if (response.ok) {
+        setRsvpEvents(prev => {
+          const next = new Set(prev);
+          if (hasRsvp) {
+            next.delete(eventId);
+          } else {
+            next.add(eventId);
+          }
+          return next;
+        });
+        setEvents(prev => prev.map(e => 
+          e.id === eventId 
+            ? { ...e, attendees: e.attendees + (hasRsvp ? -1 : 1) } 
+            : e
+        ));
+      }
+    } catch {
+    } finally {
+      setRsvping(null);
+    }
   };
 
   const formatEventTime = (startTime: number) => {
@@ -1209,6 +1285,14 @@ function EventCalendarTab({ userId, openExternalLink }: { userId?: string; openE
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-blue-400" />
+      </div>
+    );
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -1226,6 +1310,14 @@ function EventCalendarTab({ userId, openExternalLink }: { userId?: string; openE
           </div>
         </div>
       </div>
+
+      {events.length === 0 && (
+        <div className="text-center py-6">
+          <Calendar className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+          <p className="text-[#949ba4] text-sm">No upcoming events</p>
+          <p className="text-[#4e5058] text-xs mt-1">Check back later for new events!</p>
+        </div>
+      )}
 
       {events.map((event, index) => {
         const config = ARM_CONFIG[event.realm];
@@ -1316,30 +1408,62 @@ interface TeamListing {
 }
 
 function TeamFinderTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
-  const [appliedTeams, setAppliedTeams] = useState<Set<string>>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_team_applications');
-      return new Set(saved ? JSON.parse(saved) : []);
-    } catch {
-      return new Set();
-    }
-  });
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [listings, setListings] = useState<TeamListing[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [appliedTeams, setAppliedTeams] = useState<Set<string>>(new Set());
+  const [applying, setApplying] = useState<string | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('aethex_team_applications', JSON.stringify(Array.from(appliedTeams)));
-  }, [appliedTeams]);
+    const fetchTeams = async () => {
+      try {
+        const response = await fetch('/api/activity/teams');
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((t: any) => ({
+            id: t.id,
+            projectTitle: t.project_title || t.title,
+            description: t.description || '',
+            creator: t.creator_name || 'Unknown',
+            creatorAvatar: t.creator_avatar,
+            realm: t.realm || 'gameforge',
+            rolesNeeded: t.roles_needed || [],
+            teamSize: t.team_size || 1,
+            maxTeam: t.max_team || 5,
+            createdAt: new Date(t.created_at).getTime(),
+          }));
+          setListings(mapped);
+          const userApps = (data.data || data || [])
+            .filter((t: any) => t.user_applied)
+            .map((t: any) => t.id);
+          setAppliedTeams(new Set(userApps));
+        }
+      } catch {
+        setListings([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeams();
+  }, []);
 
-  const listings: TeamListing[] = [
-    { id: 't1', projectTitle: 'Neon Runners', description: 'Looking for 2D animator and sound designer for cyberpunk runner game', creator: 'GameDev_Pro', realm: 'gameforge', rolesNeeded: ['2D Animator', 'Sound Designer'], teamSize: 3, maxTeam: 5, createdAt: Date.now() - 2 * 60 * 60 * 1000 },
-    { id: 't2', projectTitle: 'EcoSim', description: 'Need backend dev for environmental simulation game', creator: 'GreenCoder', realm: 'gameforge', rolesNeeded: ['Backend Dev'], teamSize: 2, maxTeam: 4, createdAt: Date.now() - 5 * 60 * 60 * 1000 },
-    { id: 't3', projectTitle: 'AI Art Tool', description: 'Building an AI-powered pixel art generator, need ML engineer', creator: 'PixelMaster', realm: 'labs', rolesNeeded: ['ML Engineer', 'UI Designer'], teamSize: 1, maxTeam: 3, createdAt: Date.now() - 12 * 60 * 60 * 1000 },
-    { id: 't4', projectTitle: 'SoundBoard Pro', description: 'Audio production tool needs React developer', creator: 'BeatMaker', realm: 'nexus', rolesNeeded: ['React Dev', 'Audio Engineer'], teamSize: 2, maxTeam: 4, createdAt: Date.now() - 1 * 24 * 60 * 60 * 1000 },
-  ];
-
-  const applyToTeam = (teamId: string) => {
-    if (!userId || appliedTeams.has(teamId)) return;
-    setAppliedTeams(prev => new Set(prev).add(teamId));
+  const applyToTeam = async (teamId: string) => {
+    if (!userId || appliedTeams.has(teamId) || applying) return;
+    setApplying(teamId);
+    
+    try {
+      const response = await fetch(`/api/activity/teams/${teamId}/apply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      
+      if (response.ok) {
+        setAppliedTeams(prev => new Set(prev).add(teamId));
+      }
+    } catch {
+    } finally {
+      setApplying(null);
+    }
   };
 
   const formatTime = (timestamp: number) => {
@@ -1349,6 +1473,14 @@ function TeamFinderTab({ userId, openExternalLink }: { userId?: string; openExte
     if (hours < 24) return `${hours}h ago`;
     return `${Math.floor(hours / 24)}d ago`;
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-green-400" />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -1375,6 +1507,14 @@ function TeamFinderTab({ userId, openExternalLink }: { userId?: string; openExte
           </button>
         </div>
       </div>
+
+      {listings.length === 0 && (
+        <div className="text-center py-6">
+          <UserPlus className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+          <p className="text-[#949ba4] text-sm">No teams looking for members</p>
+          <p className="text-[#4e5058] text-xs mt-1">Be the first to post a team listing!</p>
+        </div>
+      )}
 
       {listings.map((listing, index) => {
         const config = ARM_CONFIG[listing.realm];
@@ -2062,34 +2202,66 @@ interface Project {
 }
 
 function ProjectsTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
-  const [votedProjects, setVotedProjects] = useState<Set<string>>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_voted_projects');
-      return new Set(saved ? JSON.parse(saved) : []);
-    } catch {
-      return new Set();
-    }
-  });
-  const [projects, setProjects] = useState<Project[]>([
-    { id: 'p1', title: 'Neon Racer', description: 'A cyberpunk racing game with stunning visuals', author: 'PixelDev', realm: 'gameforge', thumbnail: '🏎️', votes: 142, views: 890, tags: ['Game', 'Racing'] },
-    { id: 'p2', title: 'DevFlow', description: 'AI-powered code review and workflow tool', author: 'CodeMaster', realm: 'labs', thumbnail: '🔮', votes: 98, views: 654, tags: ['Tool', 'AI'] },
-    { id: 'p3', title: 'EcoTrack', description: 'Track and reduce your carbon footprint', author: 'GreenCoder', realm: 'foundation', thumbnail: '🌱', votes: 76, views: 432, tags: ['Social', 'Environment'] },
-    { id: 'p4', title: 'SoundWave', description: 'Collaborative music production platform', author: 'BeatMaker', realm: 'nexus', thumbnail: '🎵', votes: 112, views: 780, tags: ['Music', 'Collaboration'] },
-    { id: 'p5', title: 'PixelForge', description: '2D game asset generator using AI', author: 'ArtistX', realm: 'gameforge', thumbnail: '🎨', votes: 89, views: 567, tags: ['Tool', 'Art'] },
-  ]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [votedProjects, setVotedProjects] = useState<Set<string>>(new Set());
+  const [voting, setVoting] = useState<string | null>(null);
   const [filter, setFilter] = useState<ArmType | 'all'>('all');
 
   useEffect(() => {
-    localStorage.setItem('aethex_voted_projects', JSON.stringify(Array.from(votedProjects)));
-  }, [votedProjects]);
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/activity/projects');
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((p: any) => ({
+            id: p.id,
+            title: p.title || p.name,
+            description: p.description || '',
+            author: p.author_name || p.creator_name || 'Anonymous',
+            authorAvatar: p.author_avatar,
+            realm: p.realm || 'nexus',
+            thumbnail: p.thumbnail || p.image_url || '🚀',
+            votes: p.upvote_count || p.votes || 0,
+            views: p.view_count || p.views || 0,
+            tags: p.tags || [],
+          }));
+          setProjects(mapped);
+          const userVotes = (data.data || data || [])
+            .filter((p: any) => p.user_voted)
+            .map((p: any) => p.id);
+          setVotedProjects(new Set(userVotes));
+        }
+      } catch {
+        setProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
 
-  const voteProject = (projectId: string) => {
-    if (!userId || votedProjects.has(projectId)) return;
+  const voteProject = async (projectId: string) => {
+    if (!userId || votedProjects.has(projectId) || voting) return;
+    setVoting(projectId);
     
-    setVotedProjects(prev => new Set(prev).add(projectId));
-    setProjects(prev => prev.map(p => 
-      p.id === projectId ? { ...p, votes: p.votes + 1 } : p
-    ));
+    try {
+      const response = await fetch(`/api/activity/projects/${projectId}/upvote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      
+      if (response.ok) {
+        setVotedProjects(prev => new Set(prev).add(projectId));
+        setProjects(prev => prev.map(p => 
+          p.id === projectId ? { ...p, votes: p.votes + 1 } : p
+        ));
+      }
+    } catch {
+    } finally {
+      setVoting(null);
+    }
   };
 
   const filteredProjects = filter === 'all' 
