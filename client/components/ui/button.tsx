@@ -44,32 +44,34 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Create ripple effect
-      const button = e.currentTarget;
-      const rect = button.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+      const target = e.currentTarget;
+      if (target instanceof HTMLElement) {
+        const rect = target.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-      const ripple = document.createElement("span");
-      ripple.style.position = "absolute";
-      ripple.style.borderRadius = "50%";
-      ripple.style.transform = "scale(0)";
-      ripple.style.animation = "ripple 0.6s linear";
-      ripple.style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        const ripple = document.createElement("span");
+        ripple.style.position = "absolute";
+        ripple.style.borderRadius = "50%";
+        ripple.style.transform = "scale(0)";
+        ripple.style.animation = "ripple 0.6s linear";
+        ripple.style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        ripple.style.pointerEvents = "none";
 
-      const size = Math.max(rect.width, rect.height);
-      ripple.style.width = ripple.style.height = size + "px";
-      ripple.style.left = x - size / 2 + "px";
-      ripple.style.top = y - size / 2 + "px";
+        const rippleSize = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = rippleSize + "px";
+        ripple.style.left = x - rippleSize / 2 + "px";
+        ripple.style.top = y - rippleSize / 2 + "px";
 
-      button.appendChild(ripple);
+        target.appendChild(ripple);
 
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      }
 
-      if (onClick) onClick(e);
+      if (onClick) onClick(e as React.MouseEvent<HTMLButtonElement>);
     };
 
     return (
@@ -85,7 +87,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <Comp
           className={cn(buttonVariants({ variant, size, className }))}
           ref={ref}
-          onClick={asChild ? onClick : handleClick}
+          onClick={handleClick}
           {...props}
         />
       </>

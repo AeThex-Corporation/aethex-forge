@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import IsometricRealmCard, { RealmData } from "./IsometricRealmCard";
+import { Button } from "./ui/button";
 
 function TypeWriter({ text, delay = 0 }: { text: string; delay?: number }) {
   const [displayText, setDisplayText] = useState("");
@@ -200,20 +201,6 @@ export default function IsometricRealmSelector() {
     [navigate]
   );
 
-  const backgroundGradient = `
-    radial-gradient(
-      ellipse 80% 50% at ${mousePosition.x * 100}% ${mousePosition.y * 100}%,
-      rgba(59, 130, 246, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at ${100 - mousePosition.x * 100}% ${100 - mousePosition.y * 100}%,
-      rgba(168, 85, 247, 0.06) 0%,
-      transparent 50%
-    ),
-    linear-gradient(180deg, #030712 0%, #0f172a 50%, #030712 100%)
-  `;
-
   return (
     <div className="realm-selector">
       {/* Scanline overlay */}
@@ -266,8 +253,12 @@ export default function IsometricRealmSelector() {
             learn, and bring ideas to life. Join thousands of developers, designers, and innovators.
           </p>
           <div className="hero-cta">
-            <Link to="/get-started" className="cta-primary">Get Started Free</Link>
-            <Link to="/downloads" className="cta-secondary">Download Desktop App</Link>
+            <Button size="lg" className="cta-primary" asChild>
+              <Link to="/get-started">Get Started Free</Link>
+            </Button>
+            <Button variant="outline" size="lg" className="cta-secondary" asChild>
+              <Link to="/downloads">Download Desktop App</Link>
+            </Button>
           </div>
         </motion.div>
 
@@ -356,13 +347,13 @@ export default function IsometricRealmSelector() {
                         <span key={i} className="featured-feature">{feature}</span>
                       ))}
                     </div>
-                    <button 
+                    <Button 
                       className="featured-cta"
                       onClick={() => handleRealmClick(realms[featuredIndex])}
                     >
                       Enter {realms[featuredIndex].label}
                       <span className="cta-arrow">→</span>
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 <div className="featured-corner tl" />
