@@ -449,7 +449,7 @@ function LeaderboardTab({ openExternalLink, currentUserId }: { openExternalLink:
               </motion.span>
             )}
           </motion.div>
-        ))
+        )
       )}
       <button onClick={() => openExternalLink(`${APP_URL}/leaderboard`)} className="w-full py-2 text-purple-400 text-sm hover:underline flex items-center justify-center gap-1">
         Full leaderboard <ExternalLink className="w-3 h-3" />
@@ -2313,14 +2313,7 @@ function ChallengesTab({ userId, onXPGain }: { userId?: string; onXPGain: (amoun
                 >
                   {isClaiming ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Claim'}
                 </motion.button>
-              ) : (
-                <button
-                  onClick={() => simulateProgress(challenge.id)}
-                  className="px-2 py-1 rounded-lg bg-[#3f4147] hover:bg-[#4e5058] text-[#949ba4] text-xs transition-colors shrink-0"
-                >
-                  +
-                </button>
-              )}
+              ) : null}
             </div>
           </motion.div>
         );
