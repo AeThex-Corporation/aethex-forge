@@ -911,69 +911,121 @@ interface Poll {
 }
 
 function PollsTab({ userId, username }: { userId?: string; username?: string }) {
-  const [polls, setPolls] = useState<Poll[]>(() => {
-    try {
-      const saved = localStorage.getItem('aethex_activity_polls');
-      const parsed = saved ? JSON.parse(saved) : [];
-      return parsed.filter((p: Poll) => p.expiresAt > Date.now());
-    } catch {
-      return [];
-    }
-  });
+  const [polls, setPolls] = useState<Poll[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [newQuestion, setNewQuestion] = useState('');
   const [newOptions, setNewOptions] = useState(['', '']);
   const [creating, setCreating] = useState(false);
 
   useEffect(() => {
-    try {
-      localStorage.setItem('aethex_activity_polls', JSON.stringify(polls));
-    } catch {}
-  }, [polls]);
+    const fetchPolls = async () => {
+      try {
+        const response = await fetch('/api/activity/polls');
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = (data.data || data || []).map((p: any) => ({
+            id: p.id,
+            question: p.question,
+            options: (p.options || []).map((opt: any, i: number) => ({
+              id: opt.id || `opt-${i}`,
+              text: opt.text || opt.option_text,
+              votes: opt.votes || opt.vote_count || 0,
+            })),
+            createdBy: p.creator_id || p.created_by || 'system',
+            createdByName: p.creator_name || 'Anonymous',
+            createdAt: new Date(p.created_at).getTime(),
+            expiresAt: new Date(p.expires_at).getTime(),
+            votedUsers: p.voted_users || [],
+          }));
+          setPolls(mapped.filter((p: Poll) => p.expiresAt > Date.now()));
+        }
+      } catch {
+        setPolls([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPolls();
+  }, []);
 
-  const createPoll = () => {
+  const createPoll = async () => {
     if (!userId || !newQuestion.trim() || newOptions.filter(o => o.trim()).length < 2) return;
     
     setCreating(true);
-    const poll: Poll = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-      question: newQuestion.trim(),
-      options: newOptions.filter(o => o.trim()).map((text, i) => ({
-        id: `opt-${i}`,
-        text: text.trim(),
-        votes: 0
-      })),
-      createdBy: userId,
-      createdByName: username || 'Anonymous',
-      createdAt: Date.now(),
-      expiresAt: Date.now() + 24 * 60 * 60 * 1000,
-      votedUsers: []
-    };
+    try {
+      const response = await fetch('/api/activity/polls', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: newQuestion.trim(),
+          options: newOptions.filter(o => o.trim()),
+          creator_id: userId,
+          creator_name: username || 'Anonymous',
+        }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const newPoll: Poll = {
+          id: data.id || `${Date.now()}`,
+          question: newQuestion.trim(),
+          options: newOptions.filter(o => o.trim()).map((text, i) => ({
+            id: `opt-${i}`,
+            text: text.trim(),
+            votes: 0
+          })),
+          createdBy: userId,
+          createdByName: username || 'Anonymous',
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+          votedUsers: []
+        };
+        setPolls(prev => [newPoll, ...prev]);
+      }
+    } catch {}
     
-    setPolls(prev => [poll, ...prev]);
     setNewQuestion('');
     setNewOptions(['', '']);
     setShowCreate(false);
     setCreating(false);
   };
 
-  const vote = (pollId: string, optionId: string) => {
+  const vote = async (pollId: string, optionId: string) => {
     if (!userId) return;
     
-    setPolls(prev => prev.map(poll => {
-      if (poll.id !== pollId || poll.votedUsers.includes(userId)) return poll;
+    const poll = polls.find(p => p.id === pollId);
+    if (!poll || poll.votedUsers.includes(userId)) return;
+    
+    setPolls(prev => prev.map(p => {
+      if (p.id !== pollId) return p;
       return {
-        ...poll,
-        options: poll.options.map(opt => 
+        ...p,
+        options: p.options.map(opt => 
           opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
         ),
-        votedUsers: [...poll.votedUsers, userId]
+        votedUsers: [...p.votedUsers, userId]
       };
     }));
+    
+    try {
+      await fetch(`/api/activity/polls/${pollId}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, option_id: optionId }),
+      });
+    } catch {}
   };
 
-  const deletePoll = (pollId: string) => {
+  const deletePoll = async (pollId: string) => {
     setPolls(prev => prev.filter(p => p.id !== pollId));
+    try {
+      await fetch(`/api/activity/polls/${pollId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId }),
+      });
+    } catch {}
   };
 
   const formatTimeRemaining = (expiresAt: number) => {
@@ -985,25 +1037,13 @@ function PollsTab({ userId, username }: { userId?: string; username?: string }) 
     return `${minutes}m left`;
   };
 
-  const samplePolls: Poll[] = [
-    {
-      id: 'sample1',
-      question: 'What realm are you most excited about?',
-      options: [
-        { id: 'opt-1', text: 'GameForge', votes: 12 },
-        { id: 'opt-2', text: 'Labs', votes: 8 },
-        { id: 'opt-3', text: 'Nexus', votes: 15 },
-        { id: 'opt-4', text: 'Foundation', votes: 5 },
-      ],
-      createdBy: 'system',
-      createdByName: 'AeThex',
-      createdAt: Date.now() - 3600000,
-      expiresAt: Date.now() + 20 * 60 * 60 * 1000,
-      votedUsers: []
-    }
-  ];
-
-  const displayPolls = polls.length > 0 ? polls : samplePolls;
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -1094,7 +1134,15 @@ function PollsTab({ userId, username }: { userId?: string; username?: string }) 
         </motion.button>
       )}
 
-      {displayPolls.map((poll, pollIndex) => {
+      {polls.length === 0 && (
+        <div className="text-center py-6">
+          <Vote className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
+          <p className="text-[#949ba4] text-sm">No active polls</p>
+          <p className="text-[#4e5058] text-xs mt-1">Be the first to create one!</p>
+        </div>
+      )}
+
+      {polls.map((poll, pollIndex) => {
         const totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
         const hasVoted = userId && poll.votedUsers.includes(userId);
         const isOwner = userId === poll.createdBy;
@@ -1166,12 +1214,6 @@ function PollsTab({ userId, username }: { userId?: string; username?: string }) 
           </motion.div>
         );
       })}
-      
-      {polls.length === 0 && (
-        <p className="text-center text-[#949ba4] text-xs mt-2">
-          Polls expire after 24 hours. Create one to get opinions!
-        </p>
-      )}
     </motion.div>
   );
 }
