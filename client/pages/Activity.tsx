@@ -543,9 +543,21 @@ function QuestsTab({ userId, onXPGain }: { userId?: string; onXPGain: (amount: n
   );
 }
 
-function JobsTab({ openExternalLink }: { openExternalLink: (url: string) => Promise<void> }) {
+function JobsTab({ openExternalLink, userId }: { openExternalLink: (url: string) => Promise<void>; userId?: string }) {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [appliedJobs, setAppliedJobs] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_job_applications');
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+  const [applyingTo, setApplyingTo] = useState<string | null>(null);
+  const [showApplyModal, setShowApplyModal] = useState<string | null>(null);
+  const [applyMessage, setApplyMessage] = useState("");
+  const [applySuccess, setApplySuccess] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -564,6 +576,33 @@ function JobsTab({ openExternalLink }: { openExternalLink: (url: string) => Prom
     fetchJobs();
   }, []);
 
+  const handleQuickApply = (jobId: string, e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!userId) return;
+    setShowApplyModal(jobId);
+    setApplyMessage("");
+  };
+
+  const submitApplication = () => {
+    if (!showApplyModal || !userId) return;
+    setApplyingTo(showApplyModal);
+    
+    setTimeout(() => {
+      const newApplied = new Set(appliedJobs).add(showApplyModal);
+      setAppliedJobs(newApplied);
+      try {
+        localStorage.setItem('aethex_job_applications', JSON.stringify([...newApplied]));
+      } catch {}
+      
+      setApplySuccess(showApplyModal);
+      setApplyingTo(null);
+      setShowApplyModal(null);
+      setApplyMessage("");
+      
+      setTimeout(() => setApplySuccess(null), 3000);
+    }, 800);
+  };
+
   const categories = [
     { label: "Full-Time", icon: Briefcase, color: "#60a5fa" },
     { label: "Contract", icon: Target, color: "#4ade80" },
@@ -576,12 +615,101 @@ function JobsTab({ openExternalLink }: { openExternalLink: (url: string) => Prom
     </div>
   );
 
+  const selectedJob = jobs.find(j => j.id === showApplyModal);
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="space-y-4"
     >
+      <AnimatePresence>
+        {applySuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="p-3 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center gap-2"
+          >
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            <span className="text-green-300 text-sm">Application submitted!</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showApplyModal && selectedJob && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
+            onClick={() => setShowApplyModal(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#2b2d31] rounded-2xl p-5 w-full max-w-sm border border-[#3f4147] shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-white font-semibold">Quick Apply</h3>
+                <button onClick={() => setShowApplyModal(null)} className="text-[#949ba4] hover:text-white">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="p-3 rounded-xl bg-[#1e1f22] mb-4">
+                <p className="text-white text-sm font-medium">{selectedJob.title}</p>
+                <p className="text-[#949ba4] text-xs">{selectedJob.company_name || "Remote Opportunity"}</p>
+              </div>
+
+              <div className="mb-4">
+                <label className="text-[#b5bac1] text-xs block mb-2">Quick message (optional)</label>
+                <textarea
+                  value={applyMessage}
+                  onChange={(e) => setApplyMessage(e.target.value)}
+                  placeholder="Introduce yourself briefly..."
+                  className="w-full p-3 rounded-xl bg-[#1e1f22] border border-[#3f4147] text-white text-sm placeholder-[#949ba4] resize-none focus:outline-none focus:border-purple-500"
+                  rows={3}
+                />
+              </div>
+
+              <p className="text-[#949ba4] text-xs mb-4 flex items-center gap-1">
+                <FileText className="w-3 h-3" />
+                Your profile and portfolio will be shared
+              </p>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowApplyModal(null)}
+                  className="flex-1 py-2.5 rounded-xl bg-[#1e1f22] text-[#b5bac1] text-sm hover:bg-[#232428] transition-colors"
+                >
+                  Cancel
+                </button>
+                <motion.button
+                  onClick={submitApplication}
+                  disabled={applyingTo === showApplyModal}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium flex items-center justify-center gap-2"
+                >
+                  {applyingTo === showApplyModal ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Apply Now
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="grid grid-cols-3 gap-2">
         {categories.map(({ label, icon: Icon, color }, index) => (
           <motion.button 
@@ -603,19 +731,54 @@ function JobsTab({ openExternalLink }: { openExternalLink: (url: string) => Prom
       {jobs.length > 0 && (
         <div className="space-y-2">
           <p className="text-[#949ba4] text-xs font-medium">Latest Opportunities</p>
-          {jobs.slice(0, 3).map((job, index) => (
-            <motion.button
-              key={job.id}
-              onClick={() => openExternalLink(`${APP_URL}/opportunities/${job.id}`)}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.15 + index * 0.05 }}
-              className="w-full p-3 rounded-xl bg-[#232428] hover:bg-[#2b2d31] transition-all text-left border border-[#3f4147] group"
-            >
-              <p className="text-white text-sm font-medium truncate group-hover:text-purple-300">{job.title}</p>
-              <p className="text-[#949ba4] text-xs truncate">{job.company_name || "Remote"}</p>
-            </motion.button>
-          ))}
+          {jobs.slice(0, 5).map((job, index) => {
+            const hasApplied = appliedJobs.has(job.id);
+            return (
+              <motion.div
+                key={job.id}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15 + index * 0.05 }}
+                className="p-3 rounded-xl bg-[#232428] hover:bg-[#2b2d31] transition-all border border-[#3f4147] group"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <button 
+                    onClick={() => openExternalLink(`${APP_URL}/opportunities/${job.id}`)}
+                    className="flex-1 text-left min-w-0"
+                  >
+                    <p className="text-white text-sm font-medium truncate group-hover:text-purple-300">{job.title}</p>
+                    <p className="text-[#949ba4] text-xs truncate">{job.company_name || "Remote"}</p>
+                  </button>
+                  
+                  {userId ? (
+                    hasApplied ? (
+                      <span className="flex items-center gap-1 text-green-400 text-xs shrink-0">
+                        <CheckCircle className="w-4 h-4" />
+                        Applied
+                      </span>
+                    ) : (
+                      <motion.button
+                        onClick={(e) => handleQuickApply(job.id, e)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-300 text-xs font-medium hover:bg-purple-500/30 transition-colors shrink-0 flex items-center gap-1"
+                      >
+                        <Zap className="w-3 h-3" />
+                        Quick Apply
+                      </motion.button>
+                    )
+                  ) : (
+                    <button
+                      onClick={() => openExternalLink(`${APP_URL}/opportunities/${job.id}`)}
+                      className="px-3 py-1.5 rounded-lg bg-[#1e1f22] text-[#949ba4] text-xs shrink-0"
+                    >
+                      View
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       )}
       
@@ -2635,7 +2798,7 @@ export default function Activity() {
           {activeTab === "realms" && <RealmsTab key="realms" currentRealm={currentRealm} openExternalLink={openExternalLink} />}
           {activeTab === "quests" && <QuestsTab key="quests" userId={user?.id} onXPGain={handleXPGain} />}
           {activeTab === "top" && <LeaderboardTab key="top" openExternalLink={openExternalLink} currentUserId={user?.id} />}
-          {activeTab === "jobs" && <JobsTab key="jobs" openExternalLink={openExternalLink} />}
+          {activeTab === "jobs" && <JobsTab key="jobs" openExternalLink={openExternalLink} userId={user?.id} />}
           {activeTab === "badges" && <BadgesTab key="badges" userId={user?.id} openExternalLink={openExternalLink} />}
         </AnimatePresence>
       </div>
