@@ -97,6 +97,20 @@ See `client/lib/nexus-core-types.ts` for all NEXUS Core type definitions.
 - **Profile Membership Display**: User profile shows tier, upgrade button, and earned badges grid.
 - **Admin Tier/Badge Manager**: Admin panel tab for managing user tiers and awarding/revoking badges.
 - **Discord Activity UI Improvements**: Comprehensive tabbed dashboard with Feed (live posts with quick-like), Realms (visual selector linking to main site), Badges (progress tracking), Leaderboard (rankings with streak display), Opportunities (live jobs), and Quests (daily XP claims with localStorage). Features include: dynamic gradient header based on current realm, animated XP ring with level display (framer-motion), tab icons with smooth animations, confetti celebration on level-up, XP gain toast notifications (+25 XP), streak fire animations, and optimistic UI for post likes. Uses relative API paths for Discord CSP compliance and mock data for user stats to avoid server modifications.
+- **Discord Activity Enhanced Tabs (December 2025)**: 12 new interactive features added to the Discord Activity:
+  1. **Live Presence System**: Participant avatars in header with real-time updates
+  2. **Voice Indicators**: Speaking/muted status next to participant avatars
+  3. **Profile Previews**: Modal showing user passport/badges on click
+  4. **Activity Chat**: In-activity messaging with localStorage persistence (`aethex_activity_chat`)
+  5. **Quick Polls**: Create/vote on polls with live results (`aethex_polls`)
+  6. **Weekly Challenges**: Time-limited bonus XP challenges (`aethex_challenge_progress`)
+  7. **Project Showcase**: Browse/upvote community projects (`aethex_project_votes`)
+  8. **Event Calendar**: RSVP to upcoming events/streams (`aethex_event_rsvps`)
+  9. **Team Finder**: Find GameForge teammates (`aethex_team_applications`)
+  10. **Quick Apply**: Apply to opportunities without leaving Discord (`aethex_job_applications`)
+  11. **Creator Spotlight**: Featured creator with community voting (`aethex_spotlight_votes`)
+  12. **Mini-Games**: Trivia and Typing Race games (`aethex_trivia_streak`)
+  All features use localStorage for persistence and follow Discord CSP-compliant patterns.
 - **Set Realm API**: Added `/api/user/set-realm` endpoint for updating user's primary_arm (requires Supabase auth token)
 - **Maintenance Mode**: Site-wide maintenance mode with admin bypass. Admins can toggle via Admin Dashboard overview tab. Uses MAINTENANCE_MODE env var for initial state. Allowed paths during maintenance: /login, /staff/login, /reset-password, /health
 - **Health Endpoint**: Added /health endpoint at aethex.dev/health that aggregates platform and Discord bot status
