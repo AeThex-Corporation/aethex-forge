@@ -47,6 +47,42 @@ The monolith (`aethex.dev`) implements split routing to enforce legal separation
 
 This ensures the Foundation's user-facing URLs display `aethex.foundation` in the browser, demonstrating operational independence per the Axiom Model.
 
+## NEXUS Core Architecture (Universal Data Layer)
+The NEXUS Core serves as the Single Source of Truth for all talent/contract metadata, supporting AZ Tax Commission reporting and legal entity separation.
+
+### Layer Architecture
+| Layer | Function | Legal Significance |
+|-------|----------|-------------------|
+| **NEXUS Core** (Universal Data Layer) | Single Source of Truth for all talent/contract metadata | Submits verifiable Time Logs to AZ Tax Commission |
+| **aethex.dev** (FULL Access UI) | Manages Client Billing, Escrow, and Payroll | The Financial Nexus that claims the Tax Credit and pays the Corp employees |
+| **aethex.foundation** (READ-ONLY UI) | Displays "Gig Radar" for student placement | The Legal Firewall—prevents the Non-Profit from seeing Corp client financials |
+| **.studio** (API Calls Only) | Secure, direct reporting of employee/contractor hours | Proof of AZ Activity required for the AIC Grant and Tax Credit eligibility |
+
+### Database Schema (NEXUS Core Tables)
+- `nexus_talent_profiles` - Legal/tax info, encrypted PII, compliance status, AZ eligibility
+- `nexus_time_logs` - Hour tracking with location, AZ-eligible hours calculation
+- `nexus_time_log_audits` - Review decisions, AZ Tax Commission submission tracking
+- `nexus_compliance_events` - Cross-entity audit trail for legal separation
+- `nexus_escrow_ledger` - Escrow account tracking per contract
+- `nexus_payouts` - Payout records with tax form tracking
+- `foundation_gig_radar` - Read-only view for Foundation (no financial data exposed)
+
+### API Endpoints
+| Endpoint | Layer | Purpose |
+|----------|-------|---------|
+| `/api/nexus-core/talent-profiles` | NEXUS Core | Talent legal/tax profile management |
+| `/api/nexus-core/time-logs` | NEXUS Core | Time log CRUD operations |
+| `/api/nexus-core/time-logs-submit` | NEXUS Core | Batch submit time logs for review |
+| `/api/nexus-core/time-logs-approve` | NEXUS Core | Client/admin approval workflow |
+| `/api/foundation/gig-radar` | Foundation | Read-only opportunity listings |
+| `/api/studio/time-logs` | Studio | Service-to-service hour reporting |
+| `/api/studio/contracts` | Studio | Contract status lookup |
+| `/api/corp/escrow` | Corp | Escrow funding and management |
+| `/api/corp/payroll` | Corp | Payroll processing (admin only) |
+
+### TypeScript Types
+See `client/lib/nexus-core-types.ts` for all NEXUS Core type definitions.
+
 ## Recent Changes (December 2025)
 - **XP & Leveling System**: Complete XP earning logic with 12 event types (daily_login, profile_complete, create_post, earn_badge, etc.). 1000 XP per level, automatic level-up notifications. Integrated with daily login streak (25 XP + 10 per streak day), profile completion (100 XP), badge earning (200 XP), and post creation (20 XP). Services: `aethexXPService` in database adapter, `useXP` React hook.
 - **Unified Role/Tier System**: Combines paid subscriptions (Stripe) with earned badges for AI persona access. Tiers: Free/Pro ($9/mo)/Council ($29/mo). Badges unlock specific AI personas.
