@@ -13,12 +13,38 @@ interface DiscordUser {
   primary_arm: string | null;
 }
 
+interface Participant {
+  id: string;
+  username: string;
+  discriminator: string;
+  avatar: string | null;
+  bot: boolean;
+  flags: number;
+  global_name: string | null;
+}
+
+interface VoiceState {
+  mute: boolean;
+  deaf: boolean;
+  self_mute: boolean;
+  self_deaf: boolean;
+  suppress: boolean;
+}
+
+interface ParticipantWithVoice extends Participant {
+  voice_state?: VoiceState;
+  speaking?: boolean;
+}
+
 interface DiscordActivityContextType {
   isActivity: boolean;
   isLoading: boolean;
   user: DiscordUser | null;
   error: string | null;
   discordSdk: any | null;
+  participants: ParticipantWithVoice[];
+  channelId: string | null;
+  guildId: string | null;
   openExternalLink: (url: string) => Promise<void>;
 }
 
@@ -28,6 +54,9 @@ const DiscordActivityContext = createContext<DiscordActivityContextType>({
   user: null,
   error: null,
   discordSdk: null,
+  participants: [],
+  channelId: null,
+  guildId: null,
   openExternalLink: async () => {},
 });
 
@@ -54,6 +83,10 @@ export const DiscordActivityProvider: React.FC<
   const [error, setError] = useState<string | null>(null);
   const [discordSdk, setDiscordSdk] = useState<any>(null);
   const [auth, setAuth] = useState<any>(null);
+  const [participants, setParticipants] = useState<ParticipantWithVoice[]>([]);
+  const [channelId, setChannelId] = useState<string | null>(null);
+  const [guildId, setGuildId] = useState<string | null>(null);
+  const [speakingUsers, setSpeakingUsers] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const initializeActivity = async () => {
@@ -208,6 +241,81 @@ export const DiscordActivityProvider: React.FC<
           setUser(userData);
           setError(null);
           console.log("[Discord Activity] User authenticated successfully");
+
+          // Store channel and guild info
+          setChannelId(sdk.channelId);
+          setGuildId(sdk.guildId);
+
+          // Fetch initial participants
+          try {
+            console.log("[Discord Activity] Fetching participants...");
+            const participantsResult = await sdk.commands.getInstanceConnectedParticipants();
+            if (participantsResult?.participants) {
+              const participantList = participantsResult.participants.map((p: any) => ({
+                id: p.id,
+                username: p.username,
+                discriminator: p.discriminator || "0",
+                avatar: p.avatar,
+                bot: p.bot || false,
+                flags: p.flags || 0,
+                global_name: p.global_name,
+              }));
+              setParticipants(participantList);
+              console.log("[Discord Activity] Initial participants:", participantList.length);
+            }
+
+            // Subscribe to participant updates
+            sdk.subscribe("ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE", (data: any) => {
+              console.log("[Discord Activity] Participants updated:", data);
+              if (data?.participants) {
+                const updatedList = data.participants.map((p: any) => ({
+                  id: p.id,
+                  username: p.username,
+                  discriminator: p.discriminator || "0",
+                  avatar: p.avatar,
+                  bot: p.bot || false,
+                  flags: p.flags || 0,
+                  global_name: p.global_name,
+                }));
+                setParticipants(updatedList);
+              }
+            });
+
+            // Subscribe to speaking updates if in voice channel
+            if (sdk.channelId) {
+              try {
+                sdk.subscribe("SPEAKING_START", (data: any) => {
+                  console.log("[Discord Activity] Speaking start:", data);
+                  if (data?.user_id) {
+                    setSpeakingUsers(prev => new Set(prev).add(data.user_id));
+                    setParticipants(prev => prev.map(p => 
+                      p.id === data.user_id ? { ...p, speaking: true } : p
+                    ));
+                  }
+                }, { channel_id: sdk.channelId });
+
+                sdk.subscribe("SPEAKING_STOP", (data: any) => {
+                  console.log("[Discord Activity] Speaking stop:", data);
+                  if (data?.user_id) {
+                    setSpeakingUsers(prev => {
+                      const next = new Set(prev);
+                      next.delete(data.user_id);
+                      return next;
+                    });
+                    setParticipants(prev => prev.map(p => 
+                      p.id === data.user_id ? { ...p, speaking: false } : p
+                    ));
+                  }
+                }, { channel_id: sdk.channelId });
+
+                console.log("[Discord Activity] Voice subscriptions active");
+              } catch (voiceErr) {
+                console.log("[Discord Activity] Voice subscription not available:", voiceErr);
+              }
+            }
+          } catch (participantErr) {
+            console.log("[Discord Activity] Could not fetch participants:", participantErr);
+          }
         } catch (err: any) {
           console.error("Discord Activity initialization error:", err);
           console.error("Error details:", {
@@ -255,6 +363,9 @@ export const DiscordActivityProvider: React.FC<
         user,
         error,
         discordSdk,
+        participants,
+        channelId,
+        guildId,
         openExternalLink,
       }}
     >

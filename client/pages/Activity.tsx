@@ -679,8 +679,59 @@ function BadgesTab({ userId, openExternalLink }: { userId?: string; openExternal
   );
 }
 
+function ParticipantsBar({ participants, currentUserId }: { participants: any[]; currentUserId?: string }) {
+  const otherParticipants = participants.filter(p => p.id !== currentUserId);
+  
+  if (otherParticipants.length === 0) return null;
+  
+  return (
+    <div className="flex items-center gap-2 px-4 py-2 bg-[#2b2d31] border-b border-[#1e1f22]">
+      <Users className="w-4 h-4 text-[#949ba4]" />
+      <span className="text-xs text-[#949ba4]">{otherParticipants.length} here</span>
+      <div className="flex -space-x-2 ml-2">
+        {otherParticipants.slice(0, 8).map((p) => (
+          <motion.div
+            key={p.id}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="relative"
+          >
+            {p.avatar ? (
+              <img 
+                src={`https://cdn.discordapp.com/avatars/${p.id}/${p.avatar}.png?size=32`}
+                alt={p.global_name || p.username}
+                className={`w-7 h-7 rounded-full border-2 border-[#2b2d31] ${p.speaking ? 'ring-2 ring-green-400' : ''}`}
+                title={p.global_name || p.username}
+              />
+            ) : (
+              <div 
+                className={`w-7 h-7 rounded-full bg-[#5865f2] flex items-center justify-center text-white text-xs font-bold border-2 border-[#2b2d31] ${p.speaking ? 'ring-2 ring-green-400' : ''}`}
+                title={p.global_name || p.username}
+              >
+                {(p.global_name || p.username)?.[0]?.toUpperCase() || "?"}
+              </div>
+            )}
+            {p.speaking && (
+              <motion.div 
+                className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border border-[#2b2d31]"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ repeat: Infinity, duration: 0.5 }}
+              />
+            )}
+          </motion.div>
+        ))}
+        {otherParticipants.length > 8 && (
+          <div className="w-7 h-7 rounded-full bg-[#4e5058] flex items-center justify-center text-white text-xs font-bold border-2 border-[#2b2d31]">
+            +{otherParticipants.length - 8}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Activity() {
-  const { isActivity, isLoading, user, error, openExternalLink } = useDiscordActivity();
+  const { isActivity, isLoading, user, error, openExternalLink, participants } = useDiscordActivity();
   const [activeTab, setActiveTab] = useState("feed");
   const [xpGain, setXpGain] = useState<number | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -817,6 +868,9 @@ export default function Activity() {
           </div>
         </div>
       </motion.div>
+
+      {/* Participants Bar */}
+      <ParticipantsBar participants={participants} currentUserId={user?.id} />
 
       {/* Tab Navigation */}
       <div className="flex bg-[#2b2d31] border-b border-[#1e1f22] px-2 overflow-x-auto scrollbar-hide flex-shrink-0">
