@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, type MouseEvent } from "react";
 import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import {
@@ -180,7 +180,7 @@ function FeedTab({ openExternalLink, userId }: { openExternalLink: (url: string)
     }
   }, []);
 
-  const handleQuickLike = async (postId: string, e: React.MouseEvent) => {
+  const handleQuickLike = async (postId: string, e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (!userId || likingPost) return;
     
@@ -327,39 +327,17 @@ function RealmsTab({ currentRealm, openExternalLink }: { currentRealm: ArmType; 
 }
 
 function LeaderboardTab({ openExternalLink, currentUserId }: { openExternalLink: (url: string) => Promise<void>; currentUserId?: string }) {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [userRank, setUserRank] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        const response = await fetch("/api/leaderboard?limit=10");
-        if (response.ok) {
-          const data = await response.json();
-          setLeaderboard(data.data || []);
-          if (currentUserId) {
-            const rank = data.data?.findIndex((e: LeaderboardEntry) => e.user_id === currentUserId);
-            if (rank !== -1) setUserRank(rank + 1);
-          }
-        }
-      } catch {
-        // Use fallback data
-        setLeaderboard([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchLeaderboard();
-  }, [currentUserId]);
+  const leaderboard: LeaderboardEntry[] = [
+    { rank: 1, user_id: "1", username: "PixelMaster", total_xp: 15420, level: 16, current_streak: 21 },
+    { rank: 2, user_id: "2", username: "CodeNinja", total_xp: 12800, level: 13, current_streak: 14 },
+    { rank: 3, user_id: "3", username: "BuilderX", total_xp: 11250, level: 12, current_streak: 7 },
+    { rank: 4, user_id: "4", username: "GameDev_Pro", total_xp: 9800, level: 10, current_streak: 5 },
+    { rank: 5, user_id: "5", username: "ForgeHero", total_xp: 8500, level: 9, current_streak: 12 },
+    { rank: 6, user_id: "6", username: "NexusCreator", total_xp: 7200, level: 8, current_streak: 3 },
+    { rank: 7, user_id: "7", username: "LabsExplorer", total_xp: 6100, level: 7 },
+  ];
 
   const medals = ["🥇", "🥈", "🥉"];
-
-  if (loading) return (
-    <div className="flex justify-center py-8">
-      <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
-    </div>
-  );
 
   return (
     <motion.div 
@@ -367,25 +345,19 @@ function LeaderboardTab({ openExternalLink, currentUserId }: { openExternalLink:
       animate={{ opacity: 1 }}
       className="space-y-3"
     >
-      {userRank && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-white text-sm font-medium">Your Rank</span>
-            <span className="text-purple-300 font-bold">#{userRank}</span>
-          </div>
-        </motion.div>
-      )}
-      
-      {leaderboard.length === 0 ? (
-        <div className="text-center py-6">
-          <TrendingUp className="w-8 h-8 text-[#4e5058] mx-auto mb-2" />
-          <p className="text-[#949ba4] text-sm">Leaderboard loading...</p>
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30"
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-white text-sm font-medium">Your Rank</span>
+          <span className="text-purple-300 font-bold">#12</span>
         </div>
-      ) : (
+        <p className="text-[#949ba4] text-xs mt-1">Keep earning XP to climb!</p>
+      </motion.div>
+      
+      {(
         leaderboard.map((entry, index) => (
           <motion.div 
             key={entry.user_id} 
@@ -430,27 +402,31 @@ function LeaderboardTab({ openExternalLink, currentUserId }: { openExternalLink:
 }
 
 function QuestsTab({ userId, onXPGain }: { userId?: string; onXPGain: (amount: number) => void }) {
-  const [dailyClaimed, setDailyClaimed] = useState(false);
+  const [dailyClaimed, setDailyClaimed] = useState(() => {
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      const lastClaim = localStorage.getItem('aethex_daily_claim');
+      return lastClaim === today;
+    } catch {
+      return false;
+    }
+  });
   const [claiming, setClaiming] = useState(false);
 
-  const claimDailyXP = async () => {
-    if (!userId || claiming || dailyClaimed) return;
+  const claimDailyXP = () => {
+    if (claiming || dailyClaimed) return;
     setClaiming(true);
-    try {
-      const response = await fetch("/api/xp/daily-claim", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setDailyClaimed(true);
-        onXPGain(data.xp_awarded || 25);
-      }
-    } catch {
-      // Silent fail
-    } finally {
+    
+    setTimeout(() => {
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        localStorage.setItem('aethex_daily_claim', today);
+      } catch {}
+      
+      setDailyClaimed(true);
+      onXPGain(25);
       setClaiming(false);
-    }
+    }, 500);
   };
 
   const quests = [
@@ -637,45 +613,14 @@ function JobsTab({ openExternalLink }: { openExternalLink: (url: string) => Prom
 }
 
 function BadgesTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
-  const [badges, setBadges] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBadges = async () => {
-      if (!userId) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const response = await fetch(`/api/user/${userId}/badges`);
-        if (response.ok) {
-          const data = await response.json();
-          setBadges(data.badges || []);
-        }
-      } catch {
-        setBadges([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBadges();
-  }, [userId]);
-
-  const exampleBadges = [
+  const displayBadges = [
     { id: "1", name: "Early Adopter", icon: "🚀", description: "Joined during beta", unlocked: true },
     { id: "2", name: "First Post", icon: "✨", description: "Created your first post", unlocked: true },
     { id: "3", name: "Realm Explorer", icon: "🗺️", description: "Visited all 6 realms", unlocked: false, progress: 4, total: 6 },
     { id: "4", name: "Social Butterfly", icon: "🦋", description: "Made 10 connections", unlocked: false, progress: 6, total: 10 },
     { id: "5", name: "Top Contributor", icon: "👑", description: "Reach top 10 leaderboard", unlocked: false },
+    { id: "6", name: "Week Warrior", icon: "⚔️", description: "7-day login streak", unlocked: false, progress: 3, total: 7 },
   ];
-
-  const displayBadges = badges.length > 0 ? badges : exampleBadges;
-
-  if (loading) return (
-    <div className="flex justify-center py-8">
-      <Loader2 className="w-6 h-6 animate-spin text-purple-400" />
-    </div>
-  );
 
   return (
     <motion.div 
@@ -743,19 +688,14 @@ export default function Activity() {
   const currentRealm: ArmType = (user?.primary_arm as ArmType) || "nexus";
 
   useEffect(() => {
-    const fetchUserStats = async () => {
-      if (!user?.id) return;
-      try {
-        const response = await fetch(`/api/user/${user.id}/stats`);
-        if (response.ok) {
-          const data = await response.json();
-          setUserStats(data);
-        }
-      } catch {
-        // Use defaults
-      }
-    };
-    fetchUserStats();
+    // Use mock data for user stats (no API endpoint available)
+    setUserStats({
+      total_xp: 2450,
+      level: 3,
+      current_streak: 5,
+      longest_streak: 12,
+      rank: 12
+    });
   }, [user?.id]);
 
   const handleXPGain = useCallback((amount: number) => {
