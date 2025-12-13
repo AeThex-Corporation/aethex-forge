@@ -1,29 +1,33 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { getAdminClient, getUserClient, logComplianceEvent } from "../_auth";
 
 const STUDIO_API_KEY = process.env.STUDIO_API_KEY;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const supabase = getAdminClient();
-  
-  const apiKey = req.headers['x-studio-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
-  
+  const apiKey = req.headers['x-studio-api-key'];
   const authHeader = req.headers.authorization;
+  
   let userId: string | null = null;
   let isServiceAuth = false;
+  let supabase: any;
 
   if (apiKey === STUDIO_API_KEY && STUDIO_API_KEY) {
     isServiceAuth = true;
+    supabase = getAdminClient();
   } else if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.split(' ')[1];
-    const { data: { user }, error } = await supabase.auth.getUser(token);
+    const adminClient = getAdminClient();
+    const { data: { user }, error } = await adminClient.auth.getUser(token);
     if (error || !user) {
       return res.status(401).json({ error: 'Invalid token' });
     }
     userId = user.id;
+    supabase = getUserClient(token);
   } else {
     return res.status(401).json({ error: 'Unauthorized - requires Bearer token or X-Studio-API-Key' });
   }
+
+  const adminClient = getAdminClient();
 
   if (req.method === 'POST') {
     const body = req.body;
@@ -34,7 +38,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const targetUserId = body.user_id || userId;
 
-    const { data: talentProfile } = await supabase
+    const { data: talentProfile } = await adminClient
       .from('nexus_talent_profiles')
       .select('id, az_eligible')
       .eq('user_id', targetUserId)
@@ -48,7 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ? body.hours_worked
       : 0;
 
-    const { data, error } = await supabase
+    const { data, error } = await adminClient
       .from('nexus_time_logs')
       .insert({
         talent_profile_id: talentProfile.id,
@@ -77,12 +81,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: error.message });
     }
 
-    await supabase.from('nexus_compliance_events').insert({
+    await logComplianceEvent(adminClient, {
       entity_type: 'time_log',
       entity_id: data.id,
       event_type: 'studio_time_log_created',
       event_category: 'compliance',
-      actor_id: isServiceAuth ? null : userId,
+      actor_id: isServiceAuth ? undefined : userId || undefined,
       actor_role: isServiceAuth ? 'api' : 'talent',
       realm_context: 'studio',
       description: 'Time log submitted via Studio API',
@@ -91,7 +95,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         location_verified: data.location_verified,
         az_eligible_hours: azEligibleHours
       }
-    });
+    }, req);
 
     return res.status(201).json({ data });
   }
@@ -114,7 +118,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       `);
 
     if (targetUserId) {
-      const { data: talentProfile } = await supabase
+      const { data: talentProfile } = await adminClient
         .from('nexus_talent_profiles')
         .select('id')
         .eq('user_id', targetUserId)

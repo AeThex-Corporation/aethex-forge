@@ -1,30 +1,15 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { authenticateRequest, requireAuth, logComplianceEvent } from "../_auth";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const supabase = getAdminClient();
-  
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
+  const auth = await authenticateRequest(req);
+  if (!requireAuth(auth, res)) return;
 
-  const { data: userProfile } = await supabase
-    .from('user_profiles')
-    .select('user_type')
-    .eq('id', user.id)
-    .single();
+  const { userClient, adminClient, user } = auth;
 
   const { time_log_id, decision, notes } = req.body;
 
@@ -36,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Invalid decision. Must be: approved, rejected, or needs_correction' });
   }
 
-  const { data: timeLog } = await supabase
+  const { data: timeLog } = await adminClient
     .from('nexus_time_logs')
     .select('*, nexus_contracts!inner(client_id)')
     .eq('id', time_log_id)
@@ -47,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const isClient = timeLog.nexus_contracts?.client_id === user.id;
-  const isAdmin = userProfile?.user_type === 'admin';
+  const isAdmin = user.user_type === 'admin';
 
   if (!isClient && !isAdmin) {
     return res.status(403).json({ error: 'Only the contract client or admin can approve time logs' });
@@ -60,7 +45,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const newStatus = decision === 'approved' ? 'approved' : 
                     decision === 'rejected' ? 'rejected' : 'rejected';
 
-  const { data, error } = await supabase
+  const { data, error } = await adminClient
     .from('nexus_time_logs')
     .update({
       submission_status: newStatus,
@@ -76,17 +61,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: error.message });
   }
 
-  await supabase.from('nexus_time_log_audits').insert({
+  await adminClient.from('nexus_time_log_audits').insert({
     time_log_id: time_log_id,
     reviewer_id: user.id,
     audit_type: decision === 'approved' ? 'approval' : 'rejection',
     decision: decision,
     notes: notes,
-    ip_address: req.headers['x-forwarded-for']?.toString() || req.socket.remoteAddress,
+    ip_address: req.headers['x-forwarded-for']?.toString() || req.socket?.remoteAddress,
     user_agent: req.headers['user-agent']
   });
 
-  await supabase.from('nexus_compliance_events').insert({
+  await logComplianceEvent(adminClient, {
     entity_type: 'time_log',
     entity_id: time_log_id,
     event_type: `time_log_${decision}`,
@@ -96,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     realm_context: 'nexus',
     description: `Time log ${decision} by ${isAdmin ? 'admin' : 'client'}`,
     payload: { decision, notes }
-  });
+  }, req);
 
   return res.status(200).json({ data });
 }

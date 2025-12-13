@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { getAdminClient, getUserClient } from "../_auth";
 
 const STUDIO_API_KEY = process.env.STUDIO_API_KEY;
 
@@ -8,23 +8,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const supabase = getAdminClient();
-  
-  const apiKey = req.headers['x-studio-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
-  
+  const apiKey = req.headers['x-studio-api-key'];
   const authHeader = req.headers.authorization;
+  
   let userId: string | null = null;
   let isServiceAuth = false;
+  let supabase: any;
 
   if (apiKey === STUDIO_API_KEY && STUDIO_API_KEY) {
     isServiceAuth = true;
+    supabase = getAdminClient();
   } else if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.split(' ')[1];
-    const { data: { user }, error } = await supabase.auth.getUser(token);
+    const adminClient = getAdminClient();
+    const { data: { user }, error } = await adminClient.auth.getUser(token);
     if (error || !user) {
       return res.status(401).json({ error: 'Invalid token' });
     }
     userId = user.id;
+    supabase = getUserClient(token);
   } else {
     return res.status(401).json({ error: 'Unauthorized' });
   }

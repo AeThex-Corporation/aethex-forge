@@ -1,26 +1,17 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { authenticateRequest, requireAuth, logComplianceEvent } from "../_auth";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const supabase = getAdminClient();
-  
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
+  const auth = await authenticateRequest(req);
+  if (!requireAuth(auth, res)) return;
 
-  const { data: talentProfile } = await supabase
+  const { userClient, adminClient, user } = auth;
+
+  const { data: talentProfile } = await userClient
     .from('nexus_talent_profiles')
     .select('id')
     .eq('user_id', user.id)
@@ -36,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'time_log_ids array required' });
   }
 
-  const { data: logs, error: fetchError } = await supabase
+  const { data: logs, error: fetchError } = await userClient
     .from('nexus_time_logs')
     .select('id, submission_status')
     .in('id', time_log_ids)
@@ -59,7 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'No valid time logs found' });
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await userClient
     .from('nexus_time_logs')
     .update({
       submission_status: 'submitted',
@@ -74,18 +65,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   for (const log of data || []) {
-    await supabase.from('nexus_time_log_audits').insert({
+    await adminClient.from('nexus_time_log_audits').insert({
       time_log_id: log.id,
       reviewer_id: null,
       audit_type: 'review',
       decision: 'submitted',
       notes: 'Time log submitted for review',
-      ip_address: req.headers['x-forwarded-for']?.toString() || req.socket.remoteAddress,
+      ip_address: req.headers['x-forwarded-for']?.toString() || req.socket?.remoteAddress,
       user_agent: req.headers['user-agent']
     });
   }
 
-  await supabase.from('nexus_compliance_events').insert({
+  await logComplianceEvent(adminClient, {
     entity_type: 'time_log',
     entity_id: talentProfile.id,
     event_type: 'batch_submitted',
@@ -95,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     realm_context: 'nexus',
     description: `Submitted ${data?.length} time logs for review`,
     payload: { time_log_ids: validIds }
-  });
+  }, req);
 
   return res.status(200).json({ 
     data,

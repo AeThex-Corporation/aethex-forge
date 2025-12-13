@@ -1,35 +1,16 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { authenticateRequest, requireAdmin, logComplianceEvent } from "../_auth";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const supabase = getAdminClient();
-  
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
+  const auth = await authenticateRequest(req);
+  if (!requireAdmin(auth, res)) return;
 
-  const { data: userProfile } = await supabase
-    .from('user_profiles')
-    .select('user_type')
-    .eq('id', user.id)
-    .single();
-
-  if (userProfile?.user_type !== 'admin') {
-    return res.status(403).json({ error: 'Admin access required' });
-  }
+  const { adminClient, user } = auth;
 
   if (req.method === 'GET') {
     const { status, start_date, end_date, tax_year } = req.query;
 
-    let query = supabase
+    let query = adminClient
       .from('nexus_payouts')
       .select(`
         *,
@@ -74,7 +55,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'payout_ids array required' });
     }
 
-    const { data: payouts } = await supabase
+    const { data: payouts } = await adminClient
       .from('nexus_payouts')
       .select('*')
       .in('id', payout_ids)
@@ -84,7 +65,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'No pending payouts found' });
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await adminClient
       .from('nexus_payouts')
       .update({
         status: 'processing',
@@ -97,18 +78,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: error.message });
     }
 
-    await supabase.from('nexus_compliance_events').insert({
+    await logComplianceEvent(adminClient, {
       entity_type: 'payroll',
-      entity_id: user.id,
+      entity_id: user!.id,
       event_type: 'payroll_batch_processing',
       event_category: 'financial',
-      actor_id: user.id,
+      actor_id: user!.id,
       actor_role: 'admin',
       realm_context: 'corp',
       description: `Processing ${data?.length} payouts`,
       payload: { payout_ids, total_amount: data?.reduce((sum, p) => sum + Number(p.net_amount), 0) },
       legal_entity: 'for_profit'
-    });
+    }, req);
 
     return res.status(200).json({ 
       data,
@@ -119,12 +100,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'GET' && req.query.action === 'summary') {
     const currentYear = new Date().getFullYear();
 
-    const { data: yearPayouts } = await supabase
+    const { data: yearPayouts } = await adminClient
       .from('nexus_payouts')
       .select('net_amount, status, tax_year')
       .eq('tax_year', currentYear);
 
-    const { data: azHours } = await supabase
+    const { data: azHours } = await adminClient
       .from('nexus_time_logs')
       .select('az_eligible_hours')
       .eq('submission_status', 'approved')

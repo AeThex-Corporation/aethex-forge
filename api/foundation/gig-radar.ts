@@ -1,28 +1,19 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { authenticateRequest, requireAuth, logComplianceEvent } from "../_auth";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const supabase = getAdminClient();
-  
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
+  const auth = await authenticateRequest(req);
+  if (!requireAuth(auth, res)) return;
+
+  const { userClient, adminClient, user } = auth;
 
   const { category, skills, experience, limit = 20, offset = 0 } = req.query;
 
-  const { data, error } = await supabase
+  const { data, error } = await userClient
     .from('foundation_gig_radar')
     .select('*')
     .order('published_at', { ascending: false })
@@ -49,7 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     filteredData = filteredData.filter(d => d.required_experience === experience);
   }
 
-  await supabase.from('nexus_compliance_events').insert({
+  await logComplianceEvent(adminClient, {
     entity_type: 'gig_radar',
     entity_id: user.id,
     event_type: 'gig_radar_accessed',
@@ -65,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     sensitive_data_accessed: false,
     cross_entity_access: true,
     legal_entity: 'non_profit'
-  });
+  }, req);
 
   return res.status(200).json({ 
     data: filteredData,

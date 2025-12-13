@@ -1,23 +1,14 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { authenticateRequest, requireAuth, logComplianceEvent } from "../_auth";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const supabase = getAdminClient();
-  
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
+  const auth = await authenticateRequest(req);
+  if (!requireAuth(auth, res)) return;
+
+  const { userClient, adminClient, user } = auth;
 
   if (req.method === 'GET') {
-    const { data, error } = await supabase
+    const { data, error } = await userClient
       .from('nexus_talent_profiles')
       .select('*')
       .eq('user_id', user.id)
@@ -33,7 +24,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'POST') {
     const body = req.body;
     
-    const { data, error } = await supabase
+    const { data, error } = await userClient
       .from('nexus_talent_profiles')
       .upsert({
         user_id: user.id,
@@ -54,7 +45,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: error.message });
     }
 
-    await supabase.from('nexus_compliance_events').insert({
+    await logComplianceEvent(adminClient, {
       entity_type: 'talent',
       entity_id: data.id,
       event_type: 'profile_updated',
@@ -64,13 +55,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       realm_context: 'nexus',
       description: 'Talent profile updated',
       payload: { fields_updated: Object.keys(body) }
-    });
+    }, req);
 
     return res.status(200).json({ data });
   }
 
   if (req.method === 'GET' && req.query.action === 'compliance-summary') {
-    const { data, error } = await supabase
+    const { data, error } = await userClient
       .rpc('get_talent_compliance_summary', { p_user_id: user.id });
 
     if (error) {

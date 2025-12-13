@@ -1,22 +1,13 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getAdminClient } from "../_supabase";
+import { authenticateRequest, requireAuth } from "../_auth";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const supabase = getAdminClient();
-  
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
+  const auth = await authenticateRequest(req);
+  if (!requireAuth(auth, res)) return;
 
-  const { data: talentProfile } = await supabase
+  const { userClient, user } = auth;
+
+  const { data: talentProfile } = await userClient
     .from('nexus_talent_profiles')
     .select('id, az_eligible')
     .eq('user_id', user.id)
@@ -29,7 +20,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'GET') {
     const { contract_id, start_date, end_date, status } = req.query;
     
-    let query = supabase
+    let query = userClient
       .from('nexus_time_logs')
       .select('*')
       .eq('talent_profile_id', talentProfile.id)
@@ -56,7 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ? body.hours_worked
       : 0;
 
-    const { data, error } = await supabase
+    const { data, error } = await userClient
       .from('nexus_time_logs')
       .insert({
         talent_profile_id: talentProfile.id,
@@ -95,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Time log ID required' });
     }
 
-    const { data: existingLog } = await supabase
+    const { data: existingLog } = await userClient
       .from('nexus_time_logs')
       .select('*')
       .eq('id', id)
@@ -114,7 +105,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ? (body.hours_worked || existingLog.hours_worked)
       : 0;
 
-    const { data, error } = await supabase
+    const { data, error } = await userClient
       .from('nexus_time_logs')
       .update({
         ...body,
@@ -139,7 +130,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Time log ID required' });
     }
 
-    const { data: existingLog } = await supabase
+    const { data: existingLog } = await userClient
       .from('nexus_time_logs')
       .select('submission_status')
       .eq('id', id)
@@ -154,7 +145,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Can only delete draft time logs' });
     }
 
-    const { error } = await supabase
+    const { error } = await userClient
       .from('nexus_time_logs')
       .delete()
       .eq('id', id);
