@@ -27,8 +27,6 @@ import GameForge from "./pages/GameForge";
 import Foundation from "./pages/Foundation";
 import Corp from "./pages/Corp";
 import Staff from "./pages/Staff";
-import DevLink from "./pages/DevLink";
-import DevLinkProfiles from "./pages/DevLinkProfiles";
 import Nexus from "./pages/Nexus";
 import Arms from "./pages/Arms";
 import ExternalRedirect from "./components/ExternalRedirect";
@@ -94,7 +92,6 @@ import Investors from "./pages/Investors";
 import NexusDashboard from "./pages/dashboards/NexusDashboard";
 import LabsDashboard from "./pages/dashboards/LabsDashboard";
 import GameForgeDashboard from "./pages/dashboards/GameForgeDashboard";
-import DevLinkDashboard from "./pages/dashboards/DevLinkDashboard";
 import StaffDashboard from "./pages/dashboards/StaffDashboard";
 import Roadmap from "./pages/Roadmap";
 import Trust from "./pages/Trust";
@@ -211,9 +208,10 @@ const App = () => (
                           path="/dashboard/gameforge"
                           element={<ExternalRedirect to="https://aethex.foundation/gameforge/dashboard" />}
                         />
+                        {/* Dev-Link dashboard redirects to Nexus dashboard */}
                         <Route
                           path="/dashboard/dev-link"
-                          element={<DevLinkDashboard />}
+                          element={<Navigate to="/dashboard/nexus" replace />}
                         />
                         <Route
                           path="/hub/client"
@@ -502,11 +500,11 @@ const App = () => (
                           }
                         />
 
-                        {/* Dev-Link routes */}
-                        <Route path="/dev-link" element={<DevLink />} />
+                        {/* Dev-Link routes - now redirect to Nexus Opportunities with ecosystem filter */}
+                        <Route path="/dev-link" element={<Navigate to="/opportunities?ecosystem=roblox" replace />} />
                         <Route
                           path="/dev-link/waitlist"
-                          element={<DevLinkProfiles />}
+                          element={<Navigate to="/opportunities?ecosystem=roblox" replace />}
                         />
 
                         {/* Client Hub routes */}
