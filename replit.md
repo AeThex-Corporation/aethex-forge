@@ -68,6 +68,7 @@ This ensures the Foundation's user-facing URLs display `aethex.foundation` in th
 - Updated Roadmap with Desktop App milestones (Beta in Now, Stable in Month 2) and Mobile App milestones (iOS/Android in Month 3)
 - Fixed GitHub Actions workflows: icon generation pipeline, deprecated action updates, Vitest test command
 - **Landing Page Styling Alignment**: Updated hero CTAs and featured realm button to use shared Button component with asChild prop for consistent styling and ripple effects. Fixed Button component to support ripple animation for both native buttons and asChild elements. Removed unused backgroundGradient variable. Custom landing page cards (featured-card, stats-strip, hero-intro) intentionally use advanced CSS effects while still leveraging design tokens (--aethex-*, --foreground, --background, --muted, etc.).
+- **Get Started Page Enhancement**: Comprehensive onboarding page (`/get-started`) with: Stats/Social Proof section (animated counters: 12k+ builders, 500+ projects, 7 realms, 10 AI agents), Video Demo placeholder, 3-step guided signup flow, Platform Features section (6 cards: XP & Leveling, AI Agents, Creator Passports, Community, Badges, Security), Realms Overview (all 7 realms with descriptions and feature tags), Testimonials section (4 community quotes), and FAQ section (6 expandable questions). AnimatedCounter uses proper useRef cleanup for requestAnimationFrame.
 
 ## External Dependencies
 - **Supabase**: Used for database (PostgreSQL), authentication, and real-time features.
