@@ -26,6 +26,14 @@ import {
   X,
   Send,
   MessagesSquare,
+  BarChart3,
+  Plus,
+  Vote,
+  Trophy,
+  Clock,
+  ThumbsUp,
+  Layers,
+  Eye,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -682,6 +690,663 @@ function BadgesTab({ userId, openExternalLink }: { userId?: string; openExternal
   );
 }
 
+interface Poll {
+  id: string;
+  question: string;
+  options: { id: string; text: string; votes: number }[];
+  createdBy: string;
+  createdByName: string;
+  createdAt: number;
+  expiresAt: number;
+  votedUsers: string[];
+}
+
+function PollsTab({ userId, username }: { userId?: string; username?: string }) {
+  const [polls, setPolls] = useState<Poll[]>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_activity_polls');
+      const parsed = saved ? JSON.parse(saved) : [];
+      return parsed.filter((p: Poll) => p.expiresAt > Date.now());
+    } catch {
+      return [];
+    }
+  });
+  const [showCreate, setShowCreate] = useState(false);
+  const [newQuestion, setNewQuestion] = useState('');
+  const [newOptions, setNewOptions] = useState(['', '']);
+  const [creating, setCreating] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('aethex_activity_polls', JSON.stringify(polls));
+    } catch {}
+  }, [polls]);
+
+  const createPoll = () => {
+    if (!userId || !newQuestion.trim() || newOptions.filter(o => o.trim()).length < 2) return;
+    
+    setCreating(true);
+    const poll: Poll = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      question: newQuestion.trim(),
+      options: newOptions.filter(o => o.trim()).map((text, i) => ({
+        id: `opt-${i}`,
+        text: text.trim(),
+        votes: 0
+      })),
+      createdBy: userId,
+      createdByName: username || 'Anonymous',
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+      votedUsers: []
+    };
+    
+    setPolls(prev => [poll, ...prev]);
+    setNewQuestion('');
+    setNewOptions(['', '']);
+    setShowCreate(false);
+    setCreating(false);
+  };
+
+  const vote = (pollId: string, optionId: string) => {
+    if (!userId) return;
+    
+    setPolls(prev => prev.map(poll => {
+      if (poll.id !== pollId || poll.votedUsers.includes(userId)) return poll;
+      return {
+        ...poll,
+        options: poll.options.map(opt => 
+          opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
+        ),
+        votedUsers: [...poll.votedUsers, userId]
+      };
+    }));
+  };
+
+  const deletePoll = (pollId: string) => {
+    setPolls(prev => prev.filter(p => p.id !== pollId));
+  };
+
+  const formatTimeRemaining = (expiresAt: number) => {
+    const remaining = expiresAt - Date.now();
+    if (remaining <= 0) return 'Expired';
+    const hours = Math.floor(remaining / (1000 * 60 * 60));
+    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    if (hours > 0) return `${hours}h ${minutes}m left`;
+    return `${minutes}m left`;
+  };
+
+  const samplePolls: Poll[] = [
+    {
+      id: 'sample1',
+      question: 'What realm are you most excited about?',
+      options: [
+        { id: 'opt-1', text: 'GameForge', votes: 12 },
+        { id: 'opt-2', text: 'Labs', votes: 8 },
+        { id: 'opt-3', text: 'Nexus', votes: 15 },
+        { id: 'opt-4', text: 'Foundation', votes: 5 },
+      ],
+      createdBy: 'system',
+      createdByName: 'AeThex',
+      createdAt: Date.now() - 3600000,
+      expiresAt: Date.now() + 20 * 60 * 60 * 1000,
+      votedUsers: []
+    }
+  ];
+
+  const displayPolls = polls.length > 0 ? polls : samplePolls;
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-4"
+    >
+      <AnimatePresence>
+        {showCreate && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="p-4 rounded-xl bg-[#232428] border border-[#3f4147] space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-white text-sm font-medium">Create Poll</span>
+                <button onClick={() => setShowCreate(false)} className="p-1 hover:bg-[#3f4147] rounded-lg transition-colors">
+                  <X className="w-4 h-4 text-[#949ba4]" />
+                </button>
+              </div>
+              
+              <input
+                type="text"
+                value={newQuestion}
+                onChange={(e) => setNewQuestion(e.target.value)}
+                placeholder="Ask a question..."
+                className="w-full bg-[#1e1f22] text-white placeholder-[#949ba4] px-3 py-2 rounded-lg border border-[#3f4147] focus:border-purple-500 focus:outline-none text-sm"
+              />
+              
+              <div className="space-y-2">
+                {newOptions.map((opt, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={opt}
+                      onChange={(e) => {
+                        const updated = [...newOptions];
+                        updated[i] = e.target.value;
+                        setNewOptions(updated);
+                      }}
+                      placeholder={`Option ${i + 1}`}
+                      className="flex-1 bg-[#1e1f22] text-white placeholder-[#949ba4] px-3 py-2 rounded-lg border border-[#3f4147] focus:border-purple-500 focus:outline-none text-sm"
+                    />
+                    {newOptions.length > 2 && (
+                      <button 
+                        onClick={() => setNewOptions(prev => prev.filter((_, idx) => idx !== i))}
+                        className="p-2 hover:bg-[#3f4147] rounded-lg transition-colors"
+                      >
+                        <X className="w-4 h-4 text-[#949ba4]" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {newOptions.length < 5 && (
+                  <button 
+                    onClick={() => setNewOptions(prev => [...prev, ''])}
+                    className="w-full py-2 text-purple-400 text-sm hover:underline flex items-center justify-center gap-1"
+                  >
+                    <Plus className="w-4 h-4" /> Add option
+                  </button>
+                )}
+              </div>
+              
+              <motion.button
+                onClick={createPoll}
+                disabled={!newQuestion.trim() || newOptions.filter(o => o.trim()).length < 2 || creating}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="w-full py-2.5 rounded-xl bg-purple-500 hover:bg-purple-600 disabled:bg-[#3f4147] disabled:opacity-50 text-white text-sm font-medium transition-colors"
+              >
+                {creating ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : 'Create Poll'}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!showCreate && userId && (
+        <motion.button
+          onClick={() => setShowCreate(true)}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          className="w-full py-3 rounded-xl bg-[#232428] hover:bg-[#2b2d31] border border-[#3f4147] text-[#b5bac1] text-sm font-medium flex items-center justify-center gap-2 transition-colors"
+        >
+          <Plus className="w-4 h-4" /> Create a Poll
+        </motion.button>
+      )}
+
+      {displayPolls.map((poll, pollIndex) => {
+        const totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
+        const hasVoted = userId && poll.votedUsers.includes(userId);
+        const isOwner = userId === poll.createdBy;
+        
+        return (
+          <motion.div
+            key={poll.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: pollIndex * 0.05 }}
+            className="p-4 rounded-xl bg-[#232428] border border-[#3f4147]"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <p className="text-white text-sm font-medium">{poll.question}</p>
+                <p className="text-[#949ba4] text-xs mt-0.5">
+                  by {poll.createdByName} · {totalVotes} vote{totalVotes !== 1 ? 's' : ''} · {formatTimeRemaining(poll.expiresAt)}
+                </p>
+              </div>
+              {isOwner && (
+                <button 
+                  onClick={() => deletePoll(poll.id)}
+                  className="p-1.5 hover:bg-[#3f4147] rounded-lg transition-colors"
+                >
+                  <X className="w-4 h-4 text-[#949ba4]" />
+                </button>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              {poll.options.map((option) => {
+                const percentage = totalVotes > 0 ? Math.round((option.votes / totalVotes) * 100) : 0;
+                
+                return (
+                  <motion.button
+                    key={option.id}
+                    onClick={() => vote(poll.id, option.id)}
+                    disabled={!userId || hasVoted}
+                    whileHover={!hasVoted && userId ? { scale: 1.01 } : {}}
+                    whileTap={!hasVoted && userId ? { scale: 0.99 } : {}}
+                    className={`w-full relative overflow-hidden rounded-lg text-left transition-all ${
+                      hasVoted 
+                        ? 'bg-[#1e1f22] cursor-default' 
+                        : 'bg-[#1e1f22] hover:bg-[#2b2d31] cursor-pointer'
+                    }`}
+                  >
+                    {hasVoted && (
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${percentage}%` }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute inset-y-0 left-0 bg-purple-500/20"
+                      />
+                    )}
+                    <div className="relative px-3 py-2.5 flex items-center justify-between">
+                      <span className={`text-sm ${hasVoted ? 'text-white' : 'text-[#b5bac1]'}`}>{option.text}</span>
+                      {hasVoted && (
+                        <span className="text-sm text-purple-400 font-medium">{percentage}%</span>
+                      )}
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+            
+            {!userId && (
+              <p className="text-center text-[#4e5058] text-xs mt-3">Sign in to vote</p>
+            )}
+          </motion.div>
+        );
+      })}
+      
+      {polls.length === 0 && (
+        <p className="text-center text-[#949ba4] text-xs mt-2">
+          Polls expire after 24 hours. Create one to get opinions!
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
+interface Challenge {
+  id: string;
+  title: string;
+  description: string;
+  xpReward: number;
+  type: 'daily' | 'weekly';
+  requirement: number;
+  icon: string;
+  endsAt: number;
+}
+
+function ChallengesTab({ userId, onXPGain }: { userId?: string; onXPGain: (amount: number) => void }) {
+  const [claimedChallenges, setClaimedChallenges] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_claimed_challenges');
+      const parsed = saved ? JSON.parse(saved) : { claimed: [], lastReset: 0 };
+      const now = Date.now();
+      const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
+      if (parsed.lastReset < weekStart) {
+        return new Set();
+      }
+      return new Set(parsed.claimed);
+    } catch {
+      return new Set();
+    }
+  });
+  const [progress, setProgress] = useState<Record<string, number>>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_challenge_progress');
+      const parsed = saved ? JSON.parse(saved) : { data: {}, lastReset: 0 };
+      const now = Date.now();
+      const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
+      if (parsed.lastReset < weekStart) {
+        return {};
+      }
+      return parsed.data || parsed;
+    } catch {
+      return {};
+    }
+  });
+  const [claiming, setClaiming] = useState<string | null>(null);
+
+  useEffect(() => {
+    const now = Date.now();
+    const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
+    localStorage.setItem('aethex_claimed_challenges', JSON.stringify({
+      claimed: Array.from(claimedChallenges),
+      lastReset: weekStart
+    }));
+  }, [claimedChallenges]);
+
+  useEffect(() => {
+    const now = Date.now();
+    const weekStart = now - (now % (7 * 24 * 60 * 60 * 1000));
+    localStorage.setItem('aethex_challenge_progress', JSON.stringify({
+      data: progress,
+      lastReset: weekStart
+    }));
+  }, [progress]);
+
+  const getWeekEnd = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const daysUntilSunday = 7 - dayOfWeek;
+    const endOfWeek = new Date(now);
+    endOfWeek.setDate(now.getDate() + daysUntilSunday);
+    endOfWeek.setHours(23, 59, 59, 999);
+    return endOfWeek.getTime();
+  };
+
+  const formatTimeRemaining = (endsAt: number) => {
+    const remaining = endsAt - Date.now();
+    if (remaining <= 0) return 'Ended';
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    if (days > 0) return `${days}d ${hours}h left`;
+    return `${hours}h left`;
+  };
+
+  const challenges: Challenge[] = [
+    { id: 'wc1', title: 'Social Butterfly', description: 'Like 20 posts this week', xpReward: 100, type: 'weekly', requirement: 20, icon: '🦋', endsAt: getWeekEnd() },
+    { id: 'wc2', title: 'Realm Hopper', description: 'Visit all 6 realms', xpReward: 150, type: 'weekly', requirement: 6, icon: '🌀', endsAt: getWeekEnd() },
+    { id: 'wc3', title: 'Pollster', description: 'Create 3 polls', xpReward: 75, type: 'weekly', requirement: 3, icon: '📊', endsAt: getWeekEnd() },
+    { id: 'wc4', title: 'Chatterbox', description: 'Send 50 messages in Activity', xpReward: 80, type: 'weekly', requirement: 50, icon: '💬', endsAt: getWeekEnd() },
+    { id: 'wc5', title: 'Streak Master', description: 'Maintain a 7-day login streak', xpReward: 200, type: 'weekly', requirement: 7, icon: '🔥', endsAt: getWeekEnd() },
+  ];
+
+  const simulateProgress = (challengeId: string) => {
+    const challenge = challenges.find(c => c.id === challengeId);
+    if (!challenge) return;
+    
+    const current = progress[challengeId] || 0;
+    const mockProgress = Math.min(current + Math.floor(Math.random() * 3) + 1, challenge.requirement);
+    setProgress(prev => ({ ...prev, [challengeId]: mockProgress }));
+  };
+
+  const claimReward = (challenge: Challenge) => {
+    if (!userId || claimedChallenges.has(challenge.id) || claiming) return;
+    const currentProgress = progress[challenge.id] || 0;
+    if (currentProgress < challenge.requirement) return;
+    
+    setClaiming(challenge.id);
+    setTimeout(() => {
+      setClaimedChallenges(prev => new Set(prev).add(challenge.id));
+      onXPGain(challenge.xpReward);
+      setClaiming(null);
+    }, 500);
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-4"
+    >
+      <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-amber-500/20">
+            <Trophy className="w-6 h-6 text-amber-400" />
+          </div>
+          <div className="flex-1">
+            <p className="text-white text-sm font-medium">Weekly Challenges</p>
+            <p className="text-[#949ba4] text-xs flex items-center gap-1">
+              <Clock className="w-3 h-3" />
+              {formatTimeRemaining(getWeekEnd())}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-amber-400 font-bold">{challenges.filter(c => claimedChallenges.has(c.id)).length}/{challenges.length}</p>
+            <p className="text-[#949ba4] text-xs">Completed</p>
+          </div>
+        </div>
+      </div>
+
+      {challenges.map((challenge, index) => {
+        const currentProgress = progress[challenge.id] ?? 0;
+        const isCompleted = currentProgress >= challenge.requirement;
+        const isClaimed = claimedChallenges.has(challenge.id);
+        const isClaiming = claiming === challenge.id;
+        const progressPercent = Math.min((currentProgress / challenge.requirement) * 100, 100);
+        
+        return (
+          <motion.div
+            key={challenge.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className={`p-4 rounded-xl border transition-all ${
+              isClaimed 
+                ? 'bg-green-500/10 border-green-500/30' 
+                : isCompleted
+                ? 'bg-amber-500/10 border-amber-500/30'
+                : 'bg-[#232428] border-[#3f4147]'
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <span className={`text-2xl ${isClaimed ? '' : 'grayscale-0'}`}>{challenge.icon}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className={`text-sm font-medium ${isClaimed ? 'text-green-300' : 'text-white'}`}>
+                    {challenge.title}
+                  </span>
+                  <span className="text-amber-400 text-xs font-medium">+{challenge.xpReward} XP</span>
+                </div>
+                <p className="text-[#949ba4] text-xs mt-0.5">{challenge.description}</p>
+                
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-[#1e1f22] rounded-full overflow-hidden">
+                    <motion.div 
+                      className={`h-full rounded-full ${isClaimed ? 'bg-green-500' : isCompleted ? 'bg-amber-500' : 'bg-purple-500'}`}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progressPercent}%` }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    />
+                  </div>
+                  <span className="text-[11px] text-[#949ba4] shrink-0">{currentProgress}/{challenge.requirement}</span>
+                </div>
+              </div>
+              
+              {isClaimed ? (
+                <CheckCircle className="w-6 h-6 text-green-400 shrink-0" />
+              ) : isCompleted ? (
+                <motion.button
+                  onClick={() => claimReward(challenge)}
+                  disabled={isClaiming}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors shrink-0"
+                >
+                  {isClaiming ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Claim'}
+                </motion.button>
+              ) : (
+                <button
+                  onClick={() => simulateProgress(challenge.id)}
+                  className="px-2 py-1 rounded-lg bg-[#3f4147] hover:bg-[#4e5058] text-[#949ba4] text-xs transition-colors shrink-0"
+                >
+                  +
+                </button>
+              )}
+            </div>
+          </motion.div>
+        );
+      })}
+      
+      <p className="text-center text-[#949ba4] text-xs">
+        Complete challenges to earn bonus XP and exclusive badges!
+      </p>
+    </motion.div>
+  );
+}
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  author: string;
+  authorAvatar?: string;
+  realm: ArmType;
+  thumbnail: string;
+  votes: number;
+  views: number;
+  tags: string[];
+}
+
+function ProjectsTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
+  const [votedProjects, setVotedProjects] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_voted_projects');
+      return new Set(saved ? JSON.parse(saved) : []);
+    } catch {
+      return new Set();
+    }
+  });
+  const [projects, setProjects] = useState<Project[]>([
+    { id: 'p1', title: 'Neon Racer', description: 'A cyberpunk racing game with stunning visuals', author: 'PixelDev', realm: 'gameforge', thumbnail: '🏎️', votes: 142, views: 890, tags: ['Game', 'Racing'] },
+    { id: 'p2', title: 'DevFlow', description: 'AI-powered code review and workflow tool', author: 'CodeMaster', realm: 'labs', thumbnail: '🔮', votes: 98, views: 654, tags: ['Tool', 'AI'] },
+    { id: 'p3', title: 'EcoTrack', description: 'Track and reduce your carbon footprint', author: 'GreenCoder', realm: 'foundation', thumbnail: '🌱', votes: 76, views: 432, tags: ['Social', 'Environment'] },
+    { id: 'p4', title: 'SoundWave', description: 'Collaborative music production platform', author: 'BeatMaker', realm: 'nexus', thumbnail: '🎵', votes: 112, views: 780, tags: ['Music', 'Collaboration'] },
+    { id: 'p5', title: 'PixelForge', description: '2D game asset generator using AI', author: 'ArtistX', realm: 'gameforge', thumbnail: '🎨', votes: 89, views: 567, tags: ['Tool', 'Art'] },
+  ]);
+  const [filter, setFilter] = useState<ArmType | 'all'>('all');
+
+  useEffect(() => {
+    localStorage.setItem('aethex_voted_projects', JSON.stringify(Array.from(votedProjects)));
+  }, [votedProjects]);
+
+  const voteProject = (projectId: string) => {
+    if (!userId || votedProjects.has(projectId)) return;
+    
+    setVotedProjects(prev => new Set(prev).add(projectId));
+    setProjects(prev => prev.map(p => 
+      p.id === projectId ? { ...p, votes: p.votes + 1 } : p
+    ));
+  };
+
+  const filteredProjects = filter === 'all' 
+    ? projects 
+    : projects.filter(p => p.realm === filter);
+
+  const sortedProjects = [...filteredProjects].sort((a, b) => b.votes - a.votes);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-4"
+    >
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
+        <button
+          onClick={() => setFilter('all')}
+          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap ${
+            filter === 'all' ? 'bg-purple-500 text-white' : 'bg-[#232428] text-[#b5bac1] hover:bg-[#2b2d31]'
+          }`}
+        >
+          All
+        </button>
+        {(Object.keys(ARM_CONFIG) as ArmType[]).map(realm => {
+          const config = ARM_CONFIG[realm];
+          return (
+            <button
+              key={realm}
+              onClick={() => setFilter(realm)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+                filter === realm 
+                  ? 'text-white' 
+                  : 'bg-[#232428] text-[#b5bac1] hover:bg-[#2b2d31]'
+              }`}
+              style={filter === realm ? { backgroundColor: config.color } : {}}
+            >
+              <config.icon className="w-3 h-3" />
+              {config.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {sortedProjects.map((project, index) => {
+        const config = ARM_CONFIG[project.realm];
+        const hasVoted = votedProjects.has(project.id);
+        
+        return (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className="p-4 rounded-xl bg-[#232428] border border-[#3f4147] group"
+          >
+            <div className="flex items-start gap-3">
+              <div 
+                className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl shrink-0"
+                style={{ backgroundColor: `${config.color}20` }}
+              >
+                {project.thumbnail}
+              </div>
+              
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => openExternalLink(`${APP_URL}/projects/${project.id}`)}
+                    className="text-white text-sm font-medium truncate hover:text-purple-300 transition-colors"
+                  >
+                    {project.title}
+                  </button>
+                  <div 
+                    className="px-1.5 py-0.5 rounded text-[10px] font-medium"
+                    style={{ backgroundColor: `${config.color}20`, color: config.color }}
+                  >
+                    {config.label}
+                  </div>
+                </div>
+                <p className="text-[#949ba4] text-xs line-clamp-2 mt-0.5">{project.description}</p>
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="text-[#4e5058] text-xs">by {project.author}</span>
+                  <span className="flex items-center gap-1 text-[#4e5058] text-xs">
+                    <Eye className="w-3 h-3" /> {project.views}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {project.tags.map(tag => (
+                    <span key={tag} className="px-2 py-0.5 rounded-full bg-[#1e1f22] text-[#949ba4] text-[10px]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-center gap-1 shrink-0">
+                <motion.button
+                  onClick={() => voteProject(project.id)}
+                  disabled={!userId || hasVoted}
+                  whileHover={!hasVoted && userId ? { scale: 1.1 } : {}}
+                  whileTap={!hasVoted && userId ? { scale: 0.9 } : {}}
+                  className={`p-2 rounded-lg transition-colors ${
+                    hasVoted 
+                      ? 'bg-green-500/20 text-green-400' 
+                      : 'bg-[#1e1f22] text-[#949ba4] hover:text-white hover:bg-[#3f4147]'
+                  }`}
+                >
+                  <ThumbsUp className={`w-5 h-5 ${hasVoted ? 'fill-current' : ''}`} />
+                </motion.button>
+                <span className={`text-sm font-medium ${hasVoted ? 'text-green-400' : 'text-white'}`}>
+                  {project.votes}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
+      
+      <button 
+        onClick={() => openExternalLink(`${APP_URL}/projects`)} 
+        className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-sm font-medium transition-colors flex items-center justify-center gap-2"
+      >
+        <Layers className="w-4 h-4" /> Browse All Projects
+      </button>
+    </motion.div>
+  );
+}
+
 interface ChatMessage {
   id: string;
   userId: string;
@@ -1147,6 +1812,9 @@ export default function Activity() {
   const tabs = [
     { id: "feed", label: "Feed", icon: MessageCircle },
     { id: "chat", label: "Chat", icon: MessagesSquare },
+    { id: "polls", label: "Polls", icon: BarChart3 },
+    { id: "challenges", label: "Challenges", icon: Trophy },
+    { id: "projects", label: "Projects", icon: Layers },
     { id: "realms", label: "Realms", icon: Sparkles },
     { id: "quests", label: "Quests", icon: Target },
     { id: "top", label: "Top", icon: TrendingUp },
@@ -1246,6 +1914,9 @@ export default function Activity() {
         <AnimatePresence mode="wait">
           {activeTab === "feed" && <FeedTab key="feed" openExternalLink={openExternalLink} userId={user?.id} />}
           {activeTab === "chat" && <ChatTab key="chat" userId={user?.id} username={user?.username || undefined} avatar={user?.avatar_url} participants={participants} />}
+          {activeTab === "polls" && <PollsTab key="polls" userId={user?.id} username={user?.username || undefined} />}
+          {activeTab === "challenges" && <ChallengesTab key="challenges" userId={user?.id} onXPGain={handleXPGain} />}
+          {activeTab === "projects" && <ProjectsTab key="projects" userId={user?.id} openExternalLink={openExternalLink} />}
           {activeTab === "realms" && <RealmsTab key="realms" currentRealm={currentRealm} openExternalLink={openExternalLink} />}
           {activeTab === "quests" && <QuestsTab key="quests" userId={user?.id} onXPGain={handleXPGain} />}
           {activeTab === "top" && <LeaderboardTab key="top" openExternalLink={openExternalLink} currentUserId={user?.id} />}
