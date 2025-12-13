@@ -21,7 +21,6 @@ const ARMS = [
   { id: "gameforge", label: "GameForge", color: "bg-green-500" },
   { id: "corp", label: "Corp", color: "bg-blue-500" },
   { id: "foundation", label: "Foundation", color: "bg-red-500" },
-  { id: "devlink", label: "Dev-Link", color: "bg-cyan-500" },
   { id: "nexus", label: "Nexus", color: "bg-purple-500" },
   { id: "staff", label: "Staff", color: "bg-indigo-500" },
 ];

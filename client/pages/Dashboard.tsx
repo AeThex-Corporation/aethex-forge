@@ -111,16 +111,6 @@ const ARMS = [
     external: true,
   },
   {
-    id: "devlink",
-    label: "Dev-Link",
-    color: "#06B6D4",
-    href: "/dashboard/dev-link",
-    icon: Database,
-    description: "Developer Network",
-    bgGradient: "from-cyan-500/20 to-cyan-900/20",
-    borderColor: "border-cyan-500/30 hover:border-cyan-500/60",
-  },
-  {
     id: "nexus",
     label: "Nexus",
     color: "#A855F7",

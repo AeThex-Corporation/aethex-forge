@@ -121,7 +121,7 @@ const detectArmFromPath = (pathname: string): ArmType => {
   if (pathname.includes("/gameforge")) return "gameforge";
   if (pathname.includes("/corp")) return "corp";
   if (pathname.includes("/foundation")) return "foundation";
-  if (pathname.includes("/dev-link")) return "devlink";
+  if (pathname.includes("/dev-link")) return "nexus"; // Dev-Link merged into Nexus
   if (pathname.includes("/staff")) return "staff";
   if (pathname.includes("/nexus")) return "nexus";
   return "default";

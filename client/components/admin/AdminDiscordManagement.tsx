@@ -41,7 +41,6 @@ const ARMS = [
   { value: "gameforge", label: "GameForge", color: "bg-green-500/20" },
   { value: "corp", label: "Corp", color: "bg-blue-500/20" },
   { value: "foundation", label: "Foundation", color: "bg-red-500/20" },
-  { value: "devlink", label: "Dev-Link", color: "bg-cyan-500/20" },
 ];
 
 export function AdminDiscordManagement() {

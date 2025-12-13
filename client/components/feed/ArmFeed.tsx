@@ -78,13 +78,6 @@ const ARMS: {
     description: "Education and mentorship",
   },
   {
-    id: "devlink",
-    label: "Dev-Link",
-    icon: Network,
-    color: "text-cyan-400",
-    description: "Developer networking",
-  },
-  {
     id: "nexus",
     label: "Nexus",
     icon: Sparkles,

@@ -218,14 +218,6 @@ export default function GetStarted() {
       color: "from-purple-500 to-violet-600",
       features: ["Admin", "Ops", "Tools"],
     },
-    {
-      id: "devlink",
-      label: "DEV-LINK",
-      description: "Developer networking and collaboration for fellow builders.",
-      icon: Link2,
-      color: "from-teal-500 to-cyan-600",
-      features: ["Profiles", "Matching", "Collab"],
-    },
   ];
 
   const testimonials = [
@@ -266,7 +258,7 @@ export default function GetStarted() {
     },
     {
       question: "What are Realms and how do they work?",
-      answer: "Realms are specialized areas of the platform, each designed for different aspects of building and collaboration. You can explore all 7 realms freely, but you'll set a primary realm during onboarding that personalizes your dashboard and recommendations.",
+      answer: "Realms are specialized areas of the platform, each designed for different aspects of building and collaboration. You can explore all 6 realms freely, but you'll set a primary realm during onboarding that personalizes your dashboard and recommendations.",
     },
     {
       question: "How does the XP system work?",
@@ -274,7 +266,7 @@ export default function GetStarted() {
     },
     {
       question: "Can I use AeThex for my team or studio?",
-      answer: "Absolutely! The Corp realm offers enterprise solutions with dedicated support, custom integrations, and SLA guarantees. Teams can also collaborate freely in GameForge for game development or Dev-Link for general projects.",
+      answer: "Absolutely! The Corp realm offers enterprise solutions with dedicated support, custom integrations, and SLA guarantees. Teams can also collaborate freely in GameForge for game development or Nexus for general projects.",
     },
     {
       question: "What are AI Intelligent Agents?",
@@ -379,7 +371,7 @@ export default function GetStarted() {
             <div className="hidden sm:block w-px h-10 bg-border/50" />
             <div className="text-center">
               <div className="text-3xl font-bold text-foreground">
-                <AnimatedCounter target={7} duration={1000} />
+                <AnimatedCounter target={6} duration={1000} />
               </div>
               <div className="text-sm text-muted-foreground">Realms</div>
             </div>

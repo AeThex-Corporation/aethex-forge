@@ -58,15 +58,6 @@ const ARMS = [
     description: "Education, mentorship, and community building",
   },
   {
-    id: "devlink",
-    name: "Dev-Link",
-    icon: Network,
-    color: "text-cyan-400",
-    bgColor: "bg-cyan-500/10",
-    borderColor: "border-cyan-500/30",
-    description: "Professional networking and opportunities",
-  },
-  {
     id: "nexus",
     name: "NEXUS",
     icon: Sparkles,

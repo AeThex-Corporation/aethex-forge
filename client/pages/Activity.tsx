@@ -33,7 +33,6 @@ const ARM_CONFIG: Record<ArmType, { label: string; icon: any; color: string; acc
   gameforge: { label: "GameForge", icon: Gamepad2, color: "#4ade80", accent: "bg-green-500" },
   corp: { label: "Corp", icon: Briefcase, color: "#60a5fa", accent: "bg-blue-500" },
   foundation: { label: "Foundation", icon: BookOpen, color: "#f87171", accent: "bg-red-500" },
-  devlink: { label: "Dev-Link", icon: Network, color: "#22d3ee", accent: "bg-cyan-500" },
   nexus: { label: "Nexus", icon: Sparkles, color: "#c084fc", accent: "bg-purple-500" },
   staff: { label: "Staff", icon: Shield, color: "#818cf8", accent: "bg-indigo-500" },
 };

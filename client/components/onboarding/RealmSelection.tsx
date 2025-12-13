@@ -44,13 +44,6 @@ const REALMS = [
     color: "from-red-500/20 to-red-600/20",
     borderColor: "border-red-400",
   },
-  {
-    id: "devlink",
-    title: "💻 Dev-Link",
-    description: "Professional Networking - Career development platform",
-    color: "from-cyan-500/20 to-cyan-600/20",
-    borderColor: "border-cyan-400",
-  },
 ];
 
 export default function RealmSelection({

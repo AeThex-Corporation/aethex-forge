@@ -30,7 +30,6 @@ const ARM_OPTIONS: { id: ArmType; label: string }[] = [
   { id: "gameforge", label: "GameForge" },
   { id: "corp", label: "Corp" },
   { id: "foundation", label: "Foundation" },
-  { id: "devlink", label: "Dev-Link" },
   { id: "nexus", label: "Nexus" },
   { id: "staff", label: "Staff" },
 ];

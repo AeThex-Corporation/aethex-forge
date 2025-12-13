@@ -65,23 +65,6 @@ export default function About() {
       function:
         "Goodwill moat, specialized talent pipeline, and ecosystem growth",
     },
-    {
-      id: "devlink",
-      name: "Dev-Link",
-      color: "from-cyan-500 to-blue-500",
-      icon: Network,
-      tagline: "Talent Network",
-      description:
-        "B2B SaaS platform for specialized professional networking and recruitment",
-      focus: [
-        "Recruitment Platform",
-        "Talent Matching",
-        "Professional Network",
-        "Career Development",
-      ],
-      function:
-        "Access-based moat and lock-in effect for specialized human capital",
-    },
   ];
 
   const moats = [

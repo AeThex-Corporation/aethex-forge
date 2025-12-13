@@ -61,7 +61,6 @@ const ARMS: { id: ArmType; label: string; icon: any; color: string }[] = [
     icon: BookOpen,
     color: "text-red-400",
   },
-  { id: "devlink", label: "Dev-Link", icon: Network, color: "text-cyan-400" },
   { id: "nexus", label: "Nexus", icon: Sparkles, color: "text-purple-400" },
   { id: "staff", label: "Staff", icon: Shield, color: "text-indigo-400" },
 ];

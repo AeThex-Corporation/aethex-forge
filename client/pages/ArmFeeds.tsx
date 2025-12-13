@@ -8,7 +8,6 @@ const ARM_MAP: Record<string, ArmType> = {
   gameforge: "gameforge",
   corp: "corp",
   foundation: "foundation",
-  devlink: "devlink",
   nexus: "nexus",
   staff: "staff",
 };
@@ -29,9 +28,6 @@ export function FoundationFeed() {
   return <ArmFeed arm="foundation" />;
 }
 
-export function DevLinkFeed() {
-  return <ArmFeed arm="devlink" />;
-}
 
 export function NexusFeed() {
   return <ArmFeed arm="nexus" />;

@@ -36,7 +36,6 @@ export type RealmKey =
   | "gameforge"
   | "corp"
   | "foundation"
-  | "devlink"
   | "nexus"
   | "staff";
 
@@ -116,22 +115,6 @@ export const REALM_OPTIONS: RealmOption[] = [
       "Structured learning paths",
       "Expert mentorship",
       "Achievement-based progression",
-    ],
-  },
-  {
-    id: "devlink",
-    name: "Developer Network",
-    title: "Dev-Link",
-    description:
-      "Connect with developers, share knowledge, and collaborate on open-source projects across the AeThex ecosystem.",
-    icon: Database,
-    gradient: "from-cyan-400 to-cyan-600",
-    route: "/dashboard/dev-link",
-    routeLabel: "Dev-Link",
-    highlights: [
-      "Developer networking",
-      "Open-source collaboration",
-      "API access and integrations",
     ],
   },
   {

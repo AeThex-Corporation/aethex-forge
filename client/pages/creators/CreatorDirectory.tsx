@@ -33,7 +33,6 @@ const ARMS = [
   { value: "gameforge", label: "GameForge - Game Development" },
   { value: "corp", label: "Corp - Business & Consulting" },
   { value: "foundation", label: "Foundation - Education" },
-  { value: "devlink", label: "Dev-Link - Developer Network" },
   { value: "nexus", label: "Nexus - Talent Marketplace" },
 ];
 

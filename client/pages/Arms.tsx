@@ -79,18 +79,6 @@ const ARMS: Arm[] = [
     external: true,
   },
   {
-    id: "devlink",
-    label: "Dev-Link",
-    color: "#06B6D4",
-    bgGradient: "from-cyan-600 to-cyan-400",
-    textColor: "text-cyan-400",
-    href: "/dev-link",
-    icon: "https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2F9a96b43cbd7b49bb9d5434580319c793?format=webp&width=800",
-    tip: "Professional network for creators",
-    shadowColor: "shadow-cyan-500/50",
-    glowColor: "rgba(6, 182, 212, 0.3)",
-  },
-  {
     id: "nexus",
     label: "Nexus",
     color: "#A855F7",

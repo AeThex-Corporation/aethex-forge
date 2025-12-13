@@ -120,15 +120,6 @@ const realms: RealmData[] = [
     description: "Internal operations and team management for AeThex staff members.",
     features: ["Team coordination", "Admin tools", "Operations hub"],
   },
-  {
-    id: "devlink",
-    label: "DEV-LINK",
-    color: "hsl(180, 100%, 60%)",
-    route: "/devlink",
-    icon: "🔗",
-    description: "Developer networking and collaboration. Connect with fellow builders.",
-    features: ["Developer profiles", "Skill matching", "Collaboration tools"],
-  },
 ];
 
 // Animated counter component

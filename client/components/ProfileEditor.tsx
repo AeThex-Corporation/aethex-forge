@@ -55,7 +55,6 @@ const ARMS = [
   { id: "gameforge", label: "GameForge", color: "bg-green-500" },
   { id: "labs", label: "Labs", color: "bg-yellow-500" },
   { id: "corp", label: "Corp", color: "bg-blue-500" },
-  { id: "devlink", label: "Dev-Link", color: "bg-cyan-500" },
 ];
 
 export function ProfileEditor({

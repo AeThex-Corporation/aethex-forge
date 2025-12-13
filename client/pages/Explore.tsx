@@ -70,14 +70,6 @@ const ARMS = [
     focus: "Education, Mentorship, Guidance",
   },
   {
-    id: "devlink",
-    label: "Dev-Link",
-    icon: Network,
-    color: "from-cyan-500 to-blue-600",
-    description: "Developer community & connections",
-    focus: "Community, Networking, Resources",
-  },
-  {
     id: "nexus",
     label: "Nexus",
     icon: Sparkles,
