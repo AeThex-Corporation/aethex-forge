@@ -67,6 +67,7 @@ This ensures the Foundation's user-facing URLs display `aethex.foundation` in th
 - Created Downloads page with Windows/macOS/Linux platform cards and mobile "Coming Soon" section
 - Updated Roadmap with Desktop App milestones (Beta in Now, Stable in Month 2) and Mobile App milestones (iOS/Android in Month 3)
 - Fixed GitHub Actions workflows: icon generation pipeline, deprecated action updates, Vitest test command
+- **Landing Page Styling Alignment**: Updated hero CTAs and featured realm button to use shared Button component with asChild prop for consistent styling and ripple effects. Fixed Button component to support ripple animation for both native buttons and asChild elements. Removed unused backgroundGradient variable. Custom landing page cards (featured-card, stats-strip, hero-intro) intentionally use advanced CSS effects while still leveraging design tokens (--aethex-*, --foreground, --background, --muted, etc.).
 
 ## External Dependencies
 - **Supabase**: Used for database (PostgreSQL), authentication, and real-time features.
