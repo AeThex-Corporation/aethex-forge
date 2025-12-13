@@ -35,17 +35,24 @@ Domain architecture is centralized around `aethex.foundation` as the Identity Au
 ## Axiom Model Routing (Legal Entity Separation)
 The monolith (`aethex.dev`) implements split routing to enforce legal separation between For-Profit and Non-Profit arms:
 
-| Route | Destination | Legal Entity | Action |
-|-------|-------------|--------------|--------|
-| `/foundation/*` | `https://aethex.foundation` | Non-Profit (Guardian) | **Redirect** |
-| `/gameforge/*` | `https://aethex.foundation/gameforge` | Non-Profit (Program) | **Redirect** |
-| `/dashboard/gameforge` | `https://aethex.foundation/gameforge/dashboard` | Non-Profit | **Redirect** |
-| `/labs/*` | `https://aethex.studio` | For-Profit (Skunkworks) | **Redirect** |
-| `/dashboard/labs` | `https://aethex.studio/dashboard` | For-Profit (Skunkworks) | **Redirect** |
-| `/nexus/*` | stays on `aethex.dev` | For-Profit (Monetization) | Local |
-| `/corp/*` | stays on `aethex.dev` | For-Profit (Services) | Local |
+| Route | Destination | Legal Entity | Action | Purpose |
+|-------|-------------|--------------|--------|---------|
+| `/foundation/*` | `https://aethex.foundation` | Non-Profit (Guardian) | **Redirect** | Public showcase |
+| `/gameforge` | `https://aethex.foundation/gameforge` | Non-Profit (Program) | **Redirect** | Public showcase (GET/Read-Only) |
+| `/gameforge/*` (public) | `https://aethex.foundation/gameforge` | Non-Profit (Program) | **Redirect** | Browse/apply |
+| `/dashboard/gameforge` | stays on `aethex.dev` | For-Profit (Management) | **Local** | Management Hub (POST/PUT/DELETE) |
+| `/gameforge/manage/*` | stays on `aethex.dev` | For-Profit (Management) | **Local** | Management routes |
+| `/labs/*` | `https://aethex.studio` | For-Profit (Skunkworks) | **Redirect** | R&D |
+| `/dashboard/labs` | `https://aethex.studio/dashboard` | For-Profit (Skunkworks) | **Redirect** | Labs dashboard |
+| `/nexus/*` | stays on `aethex.dev` | For-Profit (Monetization) | **Local** | Marketplace |
+| `/corp/*` | stays on `aethex.dev` | For-Profit (Services) | **Local** | Services |
 
-This ensures the Foundation's user-facing URLs display `aethex.foundation` in the browser, demonstrating operational independence per the Axiom Model.
+### GameForge Routing Mandate
+Per the Axiom Model, GameForge routes are split by ownership/function:
+- **aethex.foundation/gameforge** = The Mission (Public Showcase) - GET only, read-only
+- **aethex.dev/gameforge** = The Money (Management Hub) - POST, PUT, DELETE operations
+
+This ensures the Foundation's user-facing URLs display `aethex.foundation` in the browser for public content, while management operations remain on the for-profit platform.
 
 ## NEXUS Core Architecture (Universal Data Layer)
 The NEXUS Core serves as the Single Source of Truth for all talent/contract metadata, supporting AZ Tax Commission reporting and legal entity separation.

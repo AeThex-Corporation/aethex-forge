@@ -203,10 +203,14 @@ const App = () => (
                           path="/dashboard/labs"
                           element={<ExternalRedirect to="https://aethex.studio/dashboard" />}
                         />
-                        {/* GameForge Dashboard redirects to Foundation (Non-Profit Program) */}
+                        {/* GameForge Dashboard stays local on aethex.dev (Management Hub per Axiom Model) */}
                         <Route
                           path="/dashboard/gameforge"
-                          element={<ExternalRedirect to="https://aethex.foundation/gameforge/dashboard" />}
+                          element={
+                            <RequireAccess>
+                              <GameForgeDashboard />
+                            </RequireAccess>
+                          }
                         />
                         {/* Dev-Link dashboard redirects to Nexus dashboard */}
                         <Route
@@ -354,7 +358,25 @@ const App = () => (
                         <Route path="/labs" element={<ExternalRedirect to="https://aethex.studio" />} />
                         <Route path="/labs/*" element={<ExternalRedirect to="https://aethex.studio" />} />
 
-                        {/* GameForge redirects to aethex.foundation/gameforge (Non-Profit Program - Axiom Model) */}
+                        {/* GameForge Management routes stay local on aethex.dev (Axiom Model - Write/Control) */}
+                        <Route
+                          path="/gameforge/manage"
+                          element={
+                            <RequireAccess>
+                              <GameForgeDashboard />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/gameforge/manage/*"
+                          element={
+                            <RequireAccess>
+                              <GameForgeDashboard />
+                            </RequireAccess>
+                          }
+                        />
+                        
+                        {/* GameForge public routes redirect to aethex.foundation/gameforge (Axiom Model - Read-Only Showcase) */}
                         <Route path="/gameforge" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
                         <Route path="/gameforge/*" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
 
