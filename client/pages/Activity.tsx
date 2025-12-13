@@ -34,6 +34,14 @@ import {
   ThumbsUp,
   Layers,
   Eye,
+  UserPlus,
+  Crosshair,
+  Crown,
+  Dice6,
+  Video,
+  Mic,
+  MapPin,
+  FileText,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -967,6 +975,705 @@ function PollsTab({ userId, username }: { userId?: string; username?: string }) 
   );
 }
 
+interface AethexEvent {
+  id: string;
+  title: string;
+  description: string;
+  type: 'stream' | 'workshop' | 'tournament' | 'ama' | 'meetup';
+  startTime: number;
+  endTime: number;
+  host: string;
+  hostAvatar?: string;
+  realm: ArmType;
+  attendees: number;
+  maxAttendees?: number;
+}
+
+function EventCalendarTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
+  const [rsvpEvents, setRsvpEvents] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_event_rsvps');
+      return new Set(saved ? JSON.parse(saved) : []);
+    } catch {
+      return new Set();
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('aethex_event_rsvps', JSON.stringify(Array.from(rsvpEvents)));
+  }, [rsvpEvents]);
+
+  const now = Date.now();
+  const hour = 60 * 60 * 1000;
+  const day = 24 * hour;
+
+  const events: AethexEvent[] = [
+    { id: 'e1', title: 'GameForge Weekly Showcase', description: 'Present your latest game projects', type: 'stream', startTime: now + 2 * hour, endTime: now + 4 * hour, host: 'AeThex Team', realm: 'gameforge', attendees: 45, maxAttendees: 100 },
+    { id: 'e2', title: 'Unity Workshop: VFX Basics', description: 'Learn to create stunning visual effects', type: 'workshop', startTime: now + 1 * day, endTime: now + 1 * day + 2 * hour, host: 'PixelMaster', realm: 'gameforge', attendees: 28, maxAttendees: 50 },
+    { id: 'e3', title: 'Labs Demo Day', description: 'R&D team demos experimental features', type: 'stream', startTime: now + 2 * day, endTime: now + 2 * day + 3 * hour, host: 'Labs Team', realm: 'labs', attendees: 62 },
+    { id: 'e4', title: 'Community AMA', description: 'Ask us anything about AeThex platform', type: 'ama', startTime: now + 3 * day, endTime: now + 3 * day + hour, host: 'Founders', realm: 'foundation', attendees: 89 },
+    { id: 'e5', title: 'Pixel Art Tournament', description: 'Create the best pixel art in 2 hours', type: 'tournament', startTime: now + 4 * day, endTime: now + 4 * day + 2 * hour, host: 'ArtistX', realm: 'nexus', attendees: 34, maxAttendees: 64 },
+  ];
+
+  const toggleRsvp = (eventId: string) => {
+    if (!userId) return;
+    setRsvpEvents(prev => {
+      const next = new Set(prev);
+      if (next.has(eventId)) {
+        next.delete(eventId);
+      } else {
+        next.add(eventId);
+      }
+      return next;
+    });
+  };
+
+  const formatEventTime = (startTime: number) => {
+    const diff = startTime - now;
+    if (diff < hour) return 'Starting soon';
+    if (diff < day) return `In ${Math.floor(diff / hour)}h`;
+    return `In ${Math.floor(diff / day)}d`;
+  };
+
+  const getEventIcon = (type: AethexEvent['type']) => {
+    switch (type) {
+      case 'stream': return Video;
+      case 'workshop': return BookOpen;
+      case 'tournament': return Trophy;
+      case 'ama': return Mic;
+      case 'meetup': return MapPin;
+      default: return Calendar;
+    }
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-4"
+    >
+      <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-blue-500/20">
+            <Calendar className="w-6 h-6 text-blue-400" />
+          </div>
+          <div>
+            <p className="text-white text-sm font-medium">Upcoming Events</p>
+            <p className="text-[#949ba4] text-xs">{events.length} events this week</p>
+          </div>
+        </div>
+      </div>
+
+      {events.map((event, index) => {
+        const config = ARM_CONFIG[event.realm];
+        const EventIcon = getEventIcon(event.type);
+        const hasRsvp = rsvpEvents.has(event.id);
+        const isFull = event.maxAttendees && event.attendees >= event.maxAttendees;
+
+        return (
+          <motion.div
+            key={event.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className="p-4 rounded-xl bg-[#232428] border border-[#3f4147]"
+          >
+            <div className="flex items-start gap-3">
+              <div 
+                className="p-2 rounded-lg shrink-0"
+                style={{ backgroundColor: `${config.color}20` }}
+              >
+                <EventIcon className="w-5 h-5" style={{ color: config.color }} />
+              </div>
+              
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-white text-sm font-medium truncate">{event.title}</span>
+                  <span 
+                    className="px-1.5 py-0.5 rounded text-[10px] font-medium capitalize"
+                    style={{ backgroundColor: `${config.color}20`, color: config.color }}
+                  >
+                    {event.type}
+                  </span>
+                </div>
+                <p className="text-[#949ba4] text-xs line-clamp-1 mt-0.5">{event.description}</p>
+                
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="flex items-center gap-1 text-[#4e5058] text-xs">
+                    <Clock className="w-3 h-3" /> {formatEventTime(event.startTime)}
+                  </span>
+                  <span className="flex items-center gap-1 text-[#4e5058] text-xs">
+                    <Users className="w-3 h-3" /> {event.attendees}{event.maxAttendees ? `/${event.maxAttendees}` : ''}
+                  </span>
+                  <span className="text-[#4e5058] text-xs">by {event.host}</span>
+                </div>
+              </div>
+              
+              <motion.button
+                onClick={() => toggleRsvp(event.id)}
+                disabled={!userId || (isFull && !hasRsvp)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors shrink-0 ${
+                  hasRsvp 
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                    : isFull
+                    ? 'bg-[#3f4147] text-[#4e5058] cursor-not-allowed'
+                    : 'bg-blue-500 hover:bg-blue-600 text-white'
+                }`}
+              >
+                {hasRsvp ? 'Going' : isFull ? 'Full' : 'RSVP'}
+              </motion.button>
+            </div>
+          </motion.div>
+        );
+      })}
+      
+      <button 
+        onClick={() => openExternalLink(`${APP_URL}/events`)} 
+        className="w-full py-2 text-blue-400 text-sm hover:underline flex items-center justify-center gap-1"
+      >
+        View all events <ExternalLink className="w-3 h-3" />
+      </button>
+    </motion.div>
+  );
+}
+
+interface TeamListing {
+  id: string;
+  projectTitle: string;
+  description: string;
+  creator: string;
+  creatorAvatar?: string;
+  realm: ArmType;
+  rolesNeeded: string[];
+  teamSize: number;
+  maxTeam: number;
+  createdAt: number;
+}
+
+function TeamFinderTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
+  const [appliedTeams, setAppliedTeams] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_team_applications');
+      return new Set(saved ? JSON.parse(saved) : []);
+    } catch {
+      return new Set();
+    }
+  });
+  const [showCreateForm, setShowCreateForm] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('aethex_team_applications', JSON.stringify(Array.from(appliedTeams)));
+  }, [appliedTeams]);
+
+  const listings: TeamListing[] = [
+    { id: 't1', projectTitle: 'Neon Runners', description: 'Looking for 2D animator and sound designer for cyberpunk runner game', creator: 'GameDev_Pro', realm: 'gameforge', rolesNeeded: ['2D Animator', 'Sound Designer'], teamSize: 3, maxTeam: 5, createdAt: Date.now() - 2 * 60 * 60 * 1000 },
+    { id: 't2', projectTitle: 'EcoSim', description: 'Need backend dev for environmental simulation game', creator: 'GreenCoder', realm: 'gameforge', rolesNeeded: ['Backend Dev'], teamSize: 2, maxTeam: 4, createdAt: Date.now() - 5 * 60 * 60 * 1000 },
+    { id: 't3', projectTitle: 'AI Art Tool', description: 'Building an AI-powered pixel art generator, need ML engineer', creator: 'PixelMaster', realm: 'labs', rolesNeeded: ['ML Engineer', 'UI Designer'], teamSize: 1, maxTeam: 3, createdAt: Date.now() - 12 * 60 * 60 * 1000 },
+    { id: 't4', projectTitle: 'SoundBoard Pro', description: 'Audio production tool needs React developer', creator: 'BeatMaker', realm: 'nexus', rolesNeeded: ['React Dev', 'Audio Engineer'], teamSize: 2, maxTeam: 4, createdAt: Date.now() - 1 * 24 * 60 * 60 * 1000 },
+  ];
+
+  const applyToTeam = (teamId: string) => {
+    if (!userId || appliedTeams.has(teamId)) return;
+    setAppliedTeams(prev => new Set(prev).add(teamId));
+  };
+
+  const formatTime = (timestamp: number) => {
+    const diff = Date.now() - timestamp;
+    const hours = Math.floor(diff / (60 * 60 * 1000));
+    if (hours < 1) return 'Just now';
+    if (hours < 24) return `${hours}h ago`;
+    return `${Math.floor(hours / 24)}d ago`;
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-4"
+    >
+      <div className="p-4 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-green-500/20">
+              <UserPlus className="w-6 h-6 text-green-400" />
+            </div>
+            <div>
+              <p className="text-white text-sm font-medium">Team Finder</p>
+              <p className="text-[#949ba4] text-xs">{listings.length} teams looking for members</p>
+            </div>
+          </div>
+          <button
+            onClick={() => openExternalLink(`${APP_URL}/gameforge/teams/create`)}
+            className="px-3 py-1.5 rounded-lg bg-green-500 hover:bg-green-600 text-white text-xs font-medium transition-colors flex items-center gap-1"
+          >
+            <Plus className="w-4 h-4" /> Create Team
+          </button>
+        </div>
+      </div>
+
+      {listings.map((listing, index) => {
+        const config = ARM_CONFIG[listing.realm];
+        const hasApplied = appliedTeams.has(listing.id);
+        const isFull = listing.teamSize >= listing.maxTeam;
+
+        return (
+          <motion.div
+            key={listing.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className="p-4 rounded-xl bg-[#232428] border border-[#3f4147]"
+          >
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-white text-sm font-medium">{listing.projectTitle}</span>
+                  <config.icon className="w-4 h-4" style={{ color: config.color }} />
+                </div>
+                <p className="text-[#949ba4] text-xs mt-0.5">{listing.description}</p>
+              </div>
+              <span className="text-[#4e5058] text-xs">{formatTime(listing.createdAt)}</span>
+            </div>
+            
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {listing.rolesNeeded.map(role => (
+                <span key={role} className="px-2 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs">
+                  {role}
+                </span>
+              ))}
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1 text-[#4e5058] text-xs">
+                  <Users className="w-3 h-3" /> {listing.teamSize}/{listing.maxTeam} members
+                </span>
+                <span className="text-[#4e5058] text-xs">by {listing.creator}</span>
+              </div>
+              
+              <motion.button
+                onClick={() => applyToTeam(listing.id)}
+                disabled={!userId || hasApplied || isFull}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  hasApplied 
+                    ? 'bg-green-500/20 text-green-400'
+                    : isFull
+                    ? 'bg-[#3f4147] text-[#4e5058] cursor-not-allowed'
+                    : 'bg-purple-500 hover:bg-purple-600 text-white'
+                }`}
+              >
+                {hasApplied ? 'Applied' : isFull ? 'Full' : 'Apply'}
+              </motion.button>
+            </div>
+          </motion.div>
+        );
+      })}
+      
+      <button 
+        onClick={() => openExternalLink(`${APP_URL}/gameforge/teams`)} 
+        className="w-full py-2 text-green-400 text-sm hover:underline flex items-center justify-center gap-1"
+      >
+        Browse all teams <ExternalLink className="w-3 h-3" />
+      </button>
+    </motion.div>
+  );
+}
+
+interface SpotlightCreator {
+  id: string;
+  username: string;
+  displayName: string;
+  avatar?: string;
+  bio: string;
+  realm: ArmType;
+  followers: number;
+  projects: number;
+  votes: number;
+  featured: boolean;
+}
+
+function CreatorSpotlightTab({ userId, openExternalLink }: { userId?: string; openExternalLink: (url: string) => Promise<void> }) {
+  const [votedCreators, setVotedCreators] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_spotlight_votes');
+      return new Set(saved ? JSON.parse(saved) : []);
+    } catch {
+      return new Set();
+    }
+  });
+  const [creators, setCreators] = useState<SpotlightCreator[]>([
+    { id: 'c1', username: 'PixelMaster', displayName: 'Pixel Master', bio: 'Creating stunning pixel art games and tools', realm: 'gameforge', followers: 2340, projects: 12, votes: 892, featured: true },
+    { id: 'c2', username: 'CodeNinja', displayName: 'Code Ninja', bio: 'Full-stack developer building innovative web apps', realm: 'labs', followers: 1890, projects: 8, votes: 654, featured: false },
+    { id: 'c3', username: 'SoundWizard', displayName: 'Sound Wizard', bio: 'Composer and audio engineer for games', realm: 'nexus', followers: 1560, projects: 15, votes: 543, featured: false },
+    { id: 'c4', username: 'ArtistX', displayName: 'Artist X', bio: 'Digital artist and UI designer', realm: 'gameforge', followers: 3210, projects: 22, votes: 1203, featured: false },
+  ]);
+
+  useEffect(() => {
+    localStorage.setItem('aethex_spotlight_votes', JSON.stringify(Array.from(votedCreators)));
+  }, [votedCreators]);
+
+  const voteCreator = (creatorId: string) => {
+    if (!userId || votedCreators.has(creatorId)) return;
+    setVotedCreators(prev => new Set(prev).add(creatorId));
+    setCreators(prev => prev.map(c => 
+      c.id === creatorId ? { ...c, votes: c.votes + 1 } : c
+    ));
+  };
+
+  const featuredCreator = creators.find(c => c.featured);
+  const otherCreators = creators.filter(c => !c.featured).sort((a, b) => b.votes - a.votes);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-4"
+    >
+      {featuredCreator && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-4 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <Crown className="w-5 h-5 text-amber-400" />
+            <span className="text-amber-400 text-sm font-medium">Featured Creator of the Week</span>
+          </div>
+          
+          <div className="flex items-start gap-4">
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-2xl font-bold shrink-0">
+              {featuredCreator.displayName[0]}
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <button 
+                onClick={() => openExternalLink(`${APP_URL}/profile/${featuredCreator.username}`)}
+                className="text-white text-lg font-semibold hover:text-amber-300 transition-colors"
+              >
+                {featuredCreator.displayName}
+              </button>
+              <p className="text-[#949ba4] text-sm mt-1">{featuredCreator.bio}</p>
+              
+              <div className="flex items-center gap-4 mt-3">
+                <span className="text-[#4e5058] text-xs">{featuredCreator.followers.toLocaleString()} followers</span>
+                <span className="text-[#4e5058] text-xs">{featuredCreator.projects} projects</span>
+                <span className="flex items-center gap-1 text-amber-400 text-xs font-medium">
+                  <Star className="w-3 h-3 fill-current" /> {featuredCreator.votes} votes
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      <div className="flex items-center justify-between">
+        <span className="text-white text-sm font-medium">Vote for Next Week's Spotlight</span>
+        <span className="text-[#949ba4] text-xs">Resets Sunday</span>
+      </div>
+
+      {otherCreators.map((creator, index) => {
+        const config = ARM_CONFIG[creator.realm];
+        const hasVoted = votedCreators.has(creator.id);
+
+        return (
+          <motion.div
+            key={creator.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className="p-4 rounded-xl bg-[#232428] border border-[#3f4147] flex items-center gap-3"
+          >
+            <span className="text-[#4e5058] text-lg font-bold w-6 text-center">#{index + 1}</span>
+            
+            <div className="w-10 h-10 rounded-full bg-[#5865f2] flex items-center justify-center text-white font-bold shrink-0">
+              {creator.displayName[0]}
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => openExternalLink(`${APP_URL}/profile/${creator.username}`)}
+                  className="text-white text-sm font-medium hover:text-purple-300 transition-colors truncate"
+                >
+                  {creator.displayName}
+                </button>
+                <config.icon className="w-3.5 h-3.5 shrink-0" style={{ color: config.color }} />
+              </div>
+              <p className="text-[#949ba4] text-xs truncate">{creator.bio}</p>
+            </div>
+            
+            <div className="flex items-center gap-2 shrink-0">
+              <span className={`text-sm font-medium ${hasVoted ? 'text-amber-400' : 'text-[#949ba4]'}`}>
+                {creator.votes}
+              </span>
+              <motion.button
+                onClick={() => voteCreator(creator.id)}
+                disabled={!userId || hasVoted}
+                whileHover={!hasVoted && userId ? { scale: 1.1 } : {}}
+                whileTap={!hasVoted && userId ? { scale: 0.9 } : {}}
+                className={`p-2 rounded-lg transition-colors ${
+                  hasVoted 
+                    ? 'bg-amber-500/20 text-amber-400'
+                    : 'bg-[#1e1f22] text-[#949ba4] hover:text-amber-400 hover:bg-[#3f4147]'
+                }`}
+              >
+                <Star className={`w-5 h-5 ${hasVoted ? 'fill-current' : ''}`} />
+              </motion.button>
+            </div>
+          </motion.div>
+        );
+      })}
+    </motion.div>
+  );
+}
+
+interface MiniGameScore {
+  game: string;
+  score: number;
+  playedAt: number;
+}
+
+function MiniGamesTab({ userId }: { userId?: string }) {
+  const [triviaIndex, setTriviaIndex] = useState(0);
+  const [triviaAnswer, setTriviaAnswer] = useState<number | null>(null);
+  const [triviaCorrect, setTriviaCorrect] = useState<boolean | null>(null);
+  const [triviaStreak, setTriviaStreak] = useState(() => {
+    try {
+      return parseInt(localStorage.getItem('aethex_trivia_streak') || '0');
+    } catch {
+      return 0;
+    }
+  });
+  const [typingRace, setTypingRace] = useState<{ text: string; startTime: number; input: string } | null>(null);
+  const [typingWPM, setTypingWPM] = useState<number | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const triviaQuestions = [
+    { question: "How many realms are there in AeThex?", options: ["4", "5", "6", "7"], correct: 2 },
+    { question: "What is the GameForge realm focused on?", options: ["Business", "Game Development", "Research", "Education"], correct: 1 },
+    { question: "What does XP stand for?", options: ["Extra Points", "Experience Points", "Exchange Points", "Expansion Points"], correct: 1 },
+    { question: "Which realm handles R&D projects?", options: ["Nexus", "Labs", "Corp", "Foundation"], correct: 1 },
+    { question: "What's the color associated with the Labs realm?", options: ["Green", "Blue", "Yellow", "Purple"], correct: 2 },
+  ];
+
+  const typingTexts = [
+    "Build the future with AeThex platform",
+    "Create amazing games in GameForge",
+    "Explore experimental features in Labs",
+    "Join the creator community today",
+    "Level up your skills and earn XP",
+  ];
+
+  const handleTriviaAnswer = (answerIndex: number) => {
+    if (triviaAnswer !== null) return;
+    setTriviaAnswer(answerIndex);
+    const isCorrect = answerIndex === triviaQuestions[triviaIndex].correct;
+    setTriviaCorrect(isCorrect);
+    
+    if (isCorrect) {
+      const newStreak = triviaStreak + 1;
+      setTriviaStreak(newStreak);
+      localStorage.setItem('aethex_trivia_streak', String(newStreak));
+    } else {
+      setTriviaStreak(0);
+      localStorage.setItem('aethex_trivia_streak', '0');
+    }
+  };
+
+  const nextTrivia = () => {
+    setTriviaIndex((prev) => (prev + 1) % triviaQuestions.length);
+    setTriviaAnswer(null);
+    setTriviaCorrect(null);
+  };
+
+  const startTypingRace = () => {
+    const text = typingTexts[Math.floor(Math.random() * typingTexts.length)];
+    setTypingRace({ text, startTime: Date.now(), input: '' });
+    setTypingWPM(null);
+    setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
+  const handleTypingInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!typingRace) return;
+    const input = e.target.value;
+    setTypingRace({ ...typingRace, input });
+    
+    if (input === typingRace.text) {
+      const timeTaken = (Date.now() - typingRace.startTime) / 1000 / 60;
+      const words = typingRace.text.split(' ').length;
+      const wpm = Math.round(words / timeTaken);
+      setTypingWPM(wpm);
+    }
+  };
+
+  const currentQuestion = triviaQuestions[triviaIndex];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-4"
+    >
+      <div className="p-4 rounded-xl bg-gradient-to-r from-pink-500/20 to-rose-500/20 border border-pink-500/30">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-pink-500/20">
+            <Dice6 className="w-6 h-6 text-pink-400" />
+          </div>
+          <div>
+            <p className="text-white text-sm font-medium">Mini-Games</p>
+            <p className="text-[#949ba4] text-xs">Play games, earn bragging rights</p>
+          </div>
+        </div>
+      </div>
+
+      {/* AeThex Trivia */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-4 rounded-xl bg-[#232428] border border-[#3f4147]"
+      >
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-white text-sm font-medium flex items-center gap-2">
+            <Crosshair className="w-4 h-4 text-purple-400" /> AeThex Trivia
+          </span>
+          {triviaStreak > 0 && (
+            <span className="flex items-center gap-1 text-amber-400 text-xs font-medium">
+              <Flame className="w-3.5 h-3.5" /> {triviaStreak} streak
+            </span>
+          )}
+        </div>
+        
+        <p className="text-white text-sm mb-3">{currentQuestion.question}</p>
+        
+        <div className="space-y-2">
+          {currentQuestion.options.map((option, index) => {
+            const isSelected = triviaAnswer === index;
+            const isCorrect = index === currentQuestion.correct;
+            const showResult = triviaAnswer !== null;
+            
+            return (
+              <motion.button
+                key={index}
+                onClick={() => handleTriviaAnswer(index)}
+                disabled={triviaAnswer !== null}
+                whileHover={triviaAnswer === null ? { scale: 1.02 } : {}}
+                whileTap={triviaAnswer === null ? { scale: 0.98 } : {}}
+                className={`w-full p-3 rounded-lg text-sm text-left transition-all ${
+                  showResult
+                    ? isCorrect
+                      ? 'bg-green-500/20 border border-green-500/50 text-green-300'
+                      : isSelected
+                      ? 'bg-red-500/20 border border-red-500/50 text-red-300'
+                      : 'bg-[#1e1f22] border border-transparent text-[#949ba4]'
+                    : 'bg-[#1e1f22] hover:bg-[#2b2d31] border border-transparent text-white'
+                }`}
+              >
+                {option}
+              </motion.button>
+            );
+          })}
+        </div>
+        
+        {triviaAnswer !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-3 flex items-center justify-between"
+          >
+            <span className={`text-sm font-medium ${triviaCorrect ? 'text-green-400' : 'text-red-400'}`}>
+              {triviaCorrect ? '🎉 Correct!' : '❌ Wrong!'}
+            </span>
+            <button
+              onClick={nextTrivia}
+              className="px-3 py-1.5 rounded-lg bg-purple-500 hover:bg-purple-600 text-white text-xs font-medium transition-colors"
+            >
+              Next Question
+            </button>
+          </motion.div>
+        )}
+      </motion.div>
+
+      {/* Typing Race */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="p-4 rounded-xl bg-[#232428] border border-[#3f4147]"
+      >
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-white text-sm font-medium flex items-center gap-2">
+            <Zap className="w-4 h-4 text-yellow-400" /> Typing Race
+          </span>
+          {typingWPM !== null && (
+            <span className="text-amber-400 text-sm font-medium">{typingWPM} WPM</span>
+          )}
+        </div>
+        
+        {!typingRace ? (
+          <button
+            onClick={startTypingRace}
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white font-medium transition-colors"
+          >
+            Start Race
+          </button>
+        ) : typingWPM !== null ? (
+          <div className="text-center py-4">
+            <p className="text-green-400 text-lg font-bold mb-2">🏆 {typingWPM} WPM</p>
+            <p className="text-[#949ba4] text-sm mb-3">Great typing!</p>
+            <button
+              onClick={startTypingRace}
+              className="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium transition-colors"
+            >
+              Race Again
+            </button>
+          </div>
+        ) : (
+          <div>
+            <p className="text-[#949ba4] text-sm mb-3 font-mono bg-[#1e1f22] p-3 rounded-lg">
+              {typingRace.text.split('').map((char, i) => {
+                const inputChar = typingRace.input[i];
+                const isCorrect = inputChar === char;
+                const isTyped = i < typingRace.input.length;
+                
+                return (
+                  <span
+                    key={i}
+                    className={
+                      isTyped
+                        ? isCorrect
+                          ? 'text-green-400'
+                          : 'text-red-400 bg-red-500/20'
+                        : 'text-[#949ba4]'
+                    }
+                  >
+                    {char}
+                  </span>
+                );
+              })}
+            </p>
+            <input
+              ref={inputRef}
+              type="text"
+              value={typingRace.input}
+              onChange={handleTypingInput}
+              placeholder="Start typing..."
+              className="w-full bg-[#1e1f22] text-white placeholder-[#949ba4] px-4 py-3 rounded-lg border border-[#3f4147] focus:border-yellow-500 focus:outline-none transition-colors text-sm"
+            />
+          </div>
+        )}
+      </motion.div>
+      
+      <p className="text-center text-[#949ba4] text-xs">
+        More mini-games coming soon!
+      </p>
+    </motion.div>
+  );
+}
+
 interface Challenge {
   id: string;
   title: string;
@@ -1815,6 +2522,10 @@ export default function Activity() {
     { id: "polls", label: "Polls", icon: BarChart3 },
     { id: "challenges", label: "Challenges", icon: Trophy },
     { id: "projects", label: "Projects", icon: Layers },
+    { id: "events", label: "Events", icon: Calendar },
+    { id: "teams", label: "Teams", icon: UserPlus },
+    { id: "spotlight", label: "Spotlight", icon: Crown },
+    { id: "games", label: "Games", icon: Dice6 },
     { id: "realms", label: "Realms", icon: Sparkles },
     { id: "quests", label: "Quests", icon: Target },
     { id: "top", label: "Top", icon: TrendingUp },
@@ -1917,6 +2628,10 @@ export default function Activity() {
           {activeTab === "polls" && <PollsTab key="polls" userId={user?.id} username={user?.username || undefined} />}
           {activeTab === "challenges" && <ChallengesTab key="challenges" userId={user?.id} onXPGain={handleXPGain} />}
           {activeTab === "projects" && <ProjectsTab key="projects" userId={user?.id} openExternalLink={openExternalLink} />}
+          {activeTab === "events" && <EventCalendarTab key="events" userId={user?.id} openExternalLink={openExternalLink} />}
+          {activeTab === "teams" && <TeamFinderTab key="teams" userId={user?.id} openExternalLink={openExternalLink} />}
+          {activeTab === "spotlight" && <CreatorSpotlightTab key="spotlight" userId={user?.id} openExternalLink={openExternalLink} />}
+          {activeTab === "games" && <MiniGamesTab key="games" userId={user?.id} />}
           {activeTab === "realms" && <RealmsTab key="realms" currentRealm={currentRealm} openExternalLink={openExternalLink} />}
           {activeTab === "quests" && <QuestsTab key="quests" userId={user?.id} onXPGain={handleXPGain} />}
           {activeTab === "top" && <LeaderboardTab key="top" openExternalLink={openExternalLink} currentUserId={user?.id} />}
