@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef, type MouseEvent } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo, type MouseEvent } from "react";
 import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import {
@@ -23,6 +23,9 @@ import {
   TrendingUp,
   Calendar,
   Award,
+  X,
+  Send,
+  MessagesSquare,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -679,54 +682,393 @@ function BadgesTab({ userId, openExternalLink }: { userId?: string; openExternal
   );
 }
 
-function ParticipantsBar({ participants, currentUserId }: { participants: any[]; currentUserId?: string }) {
+interface ChatMessage {
+  id: string;
+  userId: string;
+  username: string;
+  avatar: string | null;
+  content: string;
+  timestamp: number;
+}
+
+function ChatTab({ 
+  userId, 
+  username, 
+  avatar,
+  participants 
+}: { 
+  userId?: string; 
+  username?: string;
+  avatar?: string | null;
+  participants: any[];
+}) {
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    try {
+      const saved = localStorage.getItem('aethex_activity_chat');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [inputValue, setInputValue] = useState('');
+  const [sending, setSending] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+  
+  useEffect(() => {
+    try {
+      localStorage.setItem('aethex_activity_chat', JSON.stringify(messages.slice(-50)));
+    } catch {}
+  }, [messages]);
+  
+  const sendMessage = useCallback(() => {
+    if (!inputValue.trim() || !userId || sending) return;
+    
+    setSending(true);
+    const newMessage: ChatMessage = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      userId,
+      username: username || 'Anonymous',
+      avatar: avatar || null,
+      content: inputValue.trim(),
+      timestamp: Date.now(),
+    };
+    
+    setMessages(prev => [...prev, newMessage]);
+    setInputValue('');
+    setSending(false);
+    inputRef.current?.focus();
+  }, [inputValue, userId, username, avatar, sending]);
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+  
+  const formatTime = (timestamp: number) => {
+    return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+  
+  const mockMessages: ChatMessage[] = [
+    { id: '1', userId: 'bot', username: 'AeThex Bot', avatar: null, content: 'Welcome to Activity Chat! Say hi to your fellow builders.', timestamp: Date.now() - 300000 },
+    { id: '2', userId: 'user1', username: 'GameDevPro', avatar: null, content: 'Hey everyone! Working on a new GameForge project 🎮', timestamp: Date.now() - 180000 },
+    { id: '3', userId: 'user2', username: 'PixelArtist', avatar: null, content: 'Nice! What genre?', timestamp: Date.now() - 120000 },
+  ];
+  
+  const displayMessages = messages.length > 0 ? messages : mockMessages;
+  
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="flex flex-col h-full -m-4"
+    >
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {participants.length > 0 && (
+          <div className="text-center py-2">
+            <span className="text-xs text-[#949ba4] bg-[#232428] px-3 py-1 rounded-full">
+              {participants.length} {participants.length === 1 ? 'person' : 'people'} in this Activity
+            </span>
+          </div>
+        )}
+        
+        {displayMessages.map((msg, index) => {
+          const isOwn = msg.userId === userId;
+          const showAvatar = index === 0 || displayMessages[index - 1]?.userId !== msg.userId;
+          
+          return (
+            <motion.div
+              key={msg.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex items-start gap-2 ${isOwn ? 'flex-row-reverse' : ''}`}
+            >
+              {showAvatar ? (
+                msg.avatar ? (
+                  <img 
+                    src={msg.avatar}
+                    alt={msg.username}
+                    className="w-8 h-8 rounded-full shrink-0"
+                  />
+                ) : (
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 ${
+                    msg.userId === 'bot' ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 'bg-[#5865f2]'
+                  }`}>
+                    {msg.username?.[0]?.toUpperCase() || '?'}
+                  </div>
+                )
+              ) : (
+                <div className="w-8 shrink-0" />
+              )}
+              
+              <div className={`max-w-[75%] ${isOwn ? 'items-end' : 'items-start'}`}>
+                {showAvatar && (
+                  <div className={`flex items-center gap-2 mb-0.5 ${isOwn ? 'flex-row-reverse' : ''}`}>
+                    <span className={`text-xs font-medium ${msg.userId === 'bot' ? 'text-purple-400' : 'text-white'}`}>
+                      {msg.username}
+                    </span>
+                    <span className="text-[10px] text-[#949ba4]">{formatTime(msg.timestamp)}</span>
+                  </div>
+                )}
+                <div className={`px-3 py-2 rounded-2xl text-sm ${
+                  isOwn 
+                    ? 'bg-purple-500 text-white rounded-tr-sm' 
+                    : msg.userId === 'bot'
+                    ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30 rounded-tl-sm'
+                    : 'bg-[#232428] text-white rounded-tl-sm'
+                }`}>
+                  {msg.content}
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+        <div ref={messagesEndRef} />
+      </div>
+      
+      <div className="p-4 bg-[#2b2d31] border-t border-[#1e1f22]">
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Type a message..."
+            disabled={!userId}
+            className="flex-1 bg-[#1e1f22] text-white placeholder-[#949ba4] px-4 py-2.5 rounded-xl border border-[#3f4147] focus:border-purple-500 focus:outline-none transition-colors text-sm disabled:opacity-50"
+          />
+          <motion.button
+            onClick={sendMessage}
+            disabled={!inputValue.trim() || !userId || sending}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="p-2.5 bg-purple-500 hover:bg-purple-600 disabled:bg-[#3f4147] disabled:opacity-50 rounded-xl transition-colors"
+          >
+            <Send className="w-5 h-5 text-white" />
+          </motion.button>
+        </div>
+        <p className="text-center text-[10px] text-[#4e5058] mt-2">
+          Messages are local to this session
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+interface ParticipantProfile {
+  id: string;
+  username: string;
+  global_name: string | null;
+  avatar: string | null;
+  speaking?: boolean;
+}
+
+function ProfilePreviewModal({ 
+  participant, 
+  onClose, 
+  openExternalLink 
+}: { 
+  participant: ParticipantProfile; 
+  onClose: () => void; 
+  openExternalLink: (url: string) => Promise<void>;
+}) {
+  const { mockBadges, mockLevel, mockXP } = useMemo(() => {
+    const hash = participant.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    const level = (hash % 15) + 1;
+    return {
+      mockBadges: [
+        { icon: "🚀", name: "Early Adopter", unlocked: hash % 2 === 0 },
+        { icon: "⚔️", name: "Realm Explorer", unlocked: hash % 3 === 0 },
+        { icon: "🎮", name: "GameForge Member", unlocked: hash % 4 !== 0 },
+        { icon: "✨", name: "First Post", unlocked: hash % 5 !== 0 },
+      ],
+      mockLevel: level,
+      mockXP: level * 1000 - (hash % 800),
+    };
+  }, [participant.id]);
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-[#2b2d31] rounded-2xl w-full max-w-sm overflow-hidden border border-[#3f4147] shadow-xl"
+      >
+        <div className="relative bg-gradient-to-br from-purple-600/30 to-pink-600/30 p-6 pb-12">
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 p-1.5 rounded-lg bg-black/20 hover:bg-black/40 transition-colors"
+          >
+            <X className="w-4 h-4 text-white/70" />
+          </button>
+          
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2">
+            {participant.avatar ? (
+              <img 
+                src={`https://cdn.discordapp.com/avatars/${participant.id}/${participant.avatar}.png?size=128`}
+                alt={participant.global_name || participant.username}
+                className={`w-20 h-20 rounded-full border-4 border-[#2b2d31] ${participant.speaking ? 'ring-3 ring-green-400' : ''}`}
+              />
+            ) : (
+              <div className={`w-20 h-20 rounded-full bg-[#5865f2] flex items-center justify-center text-white text-2xl font-bold border-4 border-[#2b2d31] ${participant.speaking ? 'ring-3 ring-green-400' : ''}`}>
+                {(participant.global_name || participant.username)?.[0]?.toUpperCase() || "?"}
+              </div>
+            )}
+            {participant.speaking && (
+              <motion.div 
+                className="absolute bottom-0 right-0 w-5 h-5 bg-green-400 rounded-full border-2 border-[#2b2d31] flex items-center justify-center"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ repeat: Infinity, duration: 0.5 }}
+              >
+                <span className="text-[8px]">🎤</span>
+              </motion.div>
+            )}
+          </div>
+        </div>
+        
+        <div className="pt-12 pb-4 px-4 text-center">
+          <h3 className="text-white font-semibold text-lg">{participant.global_name || participant.username}</h3>
+          <p className="text-[#949ba4] text-sm">@{participant.username}</p>
+          
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <div className="text-center">
+              <p className="text-white font-bold text-lg">{mockLevel}</p>
+              <p className="text-[#949ba4] text-xs">Level</p>
+            </div>
+            <div className="w-px h-8 bg-[#3f4147]" />
+            <div className="text-center">
+              <p className="text-white font-bold text-lg">{mockXP.toLocaleString()}</p>
+              <p className="text-[#949ba4] text-xs">XP</p>
+            </div>
+            <div className="w-px h-8 bg-[#3f4147]" />
+            <div className="text-center">
+              <p className="text-white font-bold text-lg">{mockBadges.filter(b => b.unlocked).length}</p>
+              <p className="text-[#949ba4] text-xs">Badges</p>
+            </div>
+          </div>
+          
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {mockBadges.map((badge, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: i * 0.05 }}
+                className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5 ${
+                  badge.unlocked 
+                    ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
+                    : 'bg-[#1e1f22] text-[#4e5058] grayscale'
+                }`}
+              >
+                <span>{badge.icon}</span>
+                <span className="text-xs">{badge.name}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="p-4 pt-0">
+          <motion.button
+            onClick={() => openExternalLink(`${APP_URL}/passport/${participant.id}`)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all text-white text-sm font-medium flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20"
+          >
+            View Full Passport <ExternalLink className="w-4 h-4" />
+          </motion.button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function ParticipantsBar({ 
+  participants, 
+  currentUserId,
+  openExternalLink 
+}: { 
+  participants: any[]; 
+  currentUserId?: string;
+  openExternalLink: (url: string) => Promise<void>;
+}) {
+  const [selectedParticipant, setSelectedParticipant] = useState<ParticipantProfile | null>(null);
   const otherParticipants = participants.filter(p => p.id !== currentUserId);
   
   if (otherParticipants.length === 0) return null;
   
   return (
-    <div className="flex items-center gap-2 px-4 py-2 bg-[#2b2d31] border-b border-[#1e1f22]">
-      <Users className="w-4 h-4 text-[#949ba4]" />
-      <span className="text-xs text-[#949ba4]">{otherParticipants.length} here</span>
-      <div className="flex -space-x-2 ml-2">
-        {otherParticipants.slice(0, 8).map((p) => (
-          <motion.div
-            key={p.id}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="relative"
-          >
-            {p.avatar ? (
-              <img 
-                src={`https://cdn.discordapp.com/avatars/${p.id}/${p.avatar}.png?size=32`}
-                alt={p.global_name || p.username}
-                className={`w-7 h-7 rounded-full border-2 border-[#2b2d31] ${p.speaking ? 'ring-2 ring-green-400' : ''}`}
-                title={p.global_name || p.username}
-              />
-            ) : (
-              <div 
-                className={`w-7 h-7 rounded-full bg-[#5865f2] flex items-center justify-center text-white text-xs font-bold border-2 border-[#2b2d31] ${p.speaking ? 'ring-2 ring-green-400' : ''}`}
-                title={p.global_name || p.username}
-              >
-                {(p.global_name || p.username)?.[0]?.toUpperCase() || "?"}
-              </div>
-            )}
-            {p.speaking && (
-              <motion.div 
-                className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border border-[#2b2d31]"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 0.5 }}
-              />
-            )}
-          </motion.div>
-        ))}
-        {otherParticipants.length > 8 && (
-          <div className="w-7 h-7 rounded-full bg-[#4e5058] flex items-center justify-center text-white text-xs font-bold border-2 border-[#2b2d31]">
-            +{otherParticipants.length - 8}
-          </div>
+    <>
+      <AnimatePresence>
+        {selectedParticipant && (
+          <ProfilePreviewModal
+            participant={selectedParticipant}
+            onClose={() => setSelectedParticipant(null)}
+            openExternalLink={openExternalLink}
+          />
         )}
+      </AnimatePresence>
+      
+      <div className="flex items-center gap-2 px-4 py-2 bg-[#2b2d31] border-b border-[#1e1f22]">
+        <Users className="w-4 h-4 text-[#949ba4]" />
+        <span className="text-xs text-[#949ba4]">{otherParticipants.length} here</span>
+        <div className="flex -space-x-2 ml-2">
+          {otherParticipants.slice(0, 8).map((p) => (
+            <motion.button
+              key={p.id}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              whileHover={{ scale: 1.1, zIndex: 10 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedParticipant(p)}
+              className="relative cursor-pointer"
+            >
+              {p.avatar ? (
+                <img 
+                  src={`https://cdn.discordapp.com/avatars/${p.id}/${p.avatar}.png?size=32`}
+                  alt={p.global_name || p.username}
+                  className={`w-7 h-7 rounded-full border-2 border-[#2b2d31] ${p.speaking ? 'ring-2 ring-green-400' : ''}`}
+                  title={p.global_name || p.username}
+                />
+              ) : (
+                <div 
+                  className={`w-7 h-7 rounded-full bg-[#5865f2] flex items-center justify-center text-white text-xs font-bold border-2 border-[#2b2d31] ${p.speaking ? 'ring-2 ring-green-400' : ''}`}
+                  title={p.global_name || p.username}
+                >
+                  {(p.global_name || p.username)?.[0]?.toUpperCase() || "?"}
+                </div>
+              )}
+              {p.speaking && (
+                <motion.div 
+                  className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border border-[#2b2d31]"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ repeat: Infinity, duration: 0.5 }}
+                />
+              )}
+            </motion.button>
+          ))}
+          {otherParticipants.length > 8 && (
+            <div className="w-7 h-7 rounded-full bg-[#4e5058] flex items-center justify-center text-white text-xs font-bold border-2 border-[#2b2d31]">
+              +{otherParticipants.length - 8}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -804,6 +1146,7 @@ export default function Activity() {
 
   const tabs = [
     { id: "feed", label: "Feed", icon: MessageCircle },
+    { id: "chat", label: "Chat", icon: MessagesSquare },
     { id: "realms", label: "Realms", icon: Sparkles },
     { id: "quests", label: "Quests", icon: Target },
     { id: "top", label: "Top", icon: TrendingUp },
@@ -870,7 +1213,7 @@ export default function Activity() {
       </motion.div>
 
       {/* Participants Bar */}
-      <ParticipantsBar participants={participants} currentUserId={user?.id} />
+      <ParticipantsBar participants={participants} currentUserId={user?.id} openExternalLink={openExternalLink} />
 
       {/* Tab Navigation */}
       <div className="flex bg-[#2b2d31] border-b border-[#1e1f22] px-2 overflow-x-auto scrollbar-hide flex-shrink-0">
@@ -902,6 +1245,7 @@ export default function Activity() {
       <div className="flex-1 overflow-y-auto p-4">
         <AnimatePresence mode="wait">
           {activeTab === "feed" && <FeedTab key="feed" openExternalLink={openExternalLink} userId={user?.id} />}
+          {activeTab === "chat" && <ChatTab key="chat" userId={user?.id} username={user?.username || undefined} avatar={user?.avatar_url} participants={participants} />}
           {activeTab === "realms" && <RealmsTab key="realms" currentRealm={currentRealm} openExternalLink={openExternalLink} />}
           {activeTab === "quests" && <QuestsTab key="quests" userId={user?.id} onXPGain={handleXPGain} />}
           {activeTab === "top" && <LeaderboardTab key="top" openExternalLink={openExternalLink} currentUserId={user?.id} />}
