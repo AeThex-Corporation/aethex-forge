@@ -764,98 +764,96 @@ export default function Activity() {
   const RealmIcon = realmConfig.icon;
 
   return (
-    <div className="min-h-screen bg-[#313338]">
+    <div className="h-screen w-screen flex flex-col bg-[#313338] overflow-hidden">
       <AnimatePresence>
         {showConfetti && <ConfettiEffect />}
         {xpGain && <XPGainAnimation amount={xpGain} onComplete={() => setXpGain(null)} />}
       </AnimatePresence>
       
-      <div className="max-w-md mx-auto">
-        {/* Dynamic Gradient Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`relative overflow-hidden bg-gradient-to-br ${realmConfig.gradient} border-b border-[#1e1f22]`}
-        >
-          <div className="absolute inset-0 bg-[#2b2d31]/80" />
-          <div className="relative px-4 py-4">
-            <div className="flex items-center gap-3">
-              {user?.avatar_url ? (
-                <img src={user.avatar_url} alt="" className="w-12 h-12 rounded-full ring-2 ring-white/10" />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
-                  {user?.username?.[0]?.toUpperCase() || "?"}
-                </div>
-              )}
-              
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold truncate">{user?.full_name || user?.username || "Builder"}</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/20" style={{ borderColor: realmConfig.color }}>
-                    <RealmIcon className="w-3 h-3" style={{ color: realmConfig.color }} />
-                    <span className="text-xs font-medium" style={{ color: realmConfig.color }}>{realmConfig.label}</span>
-                  </div>
-                  {userStats.current_streak > 0 && (
-                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-500/20">
-                      <Flame className="w-3 h-3 text-orange-400" />
-                      <span className="text-xs font-medium text-orange-400">{userStats.current_streak}d</span>
-                    </div>
-                  )}
-                </div>
+      {/* Dynamic Gradient Header */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`relative overflow-hidden bg-gradient-to-br ${realmConfig.gradient} border-b border-[#1e1f22] flex-shrink-0`}
+      >
+        <div className="absolute inset-0 bg-[#2b2d31]/80" />
+        <div className="relative px-6 py-4">
+          <div className="flex items-center gap-4">
+            {user?.avatar_url ? (
+              <img src={user.avatar_url} alt="" className="w-14 h-14 rounded-full ring-2 ring-white/10" />
+            ) : (
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg">
+                {user?.username?.[0]?.toUpperCase() || "?"}
               </div>
-              
-              <div className="flex items-center gap-3">
-                <XPRing xp={userStats.total_xp} level={userStats.level} size={48} strokeWidth={3} color={realmConfig.color} />
-                <button onClick={() => openExternalLink(`${APP_URL}/profile`)} className="p-2 hover:bg-black/20 rounded-xl transition-colors">
-                  <ExternalLink className="w-4 h-4 text-[#b5bac1]" />
-                </button>
+            )}
+            
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-semibold text-lg truncate">{user?.full_name || user?.username || "Builder"}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/20" style={{ borderColor: realmConfig.color }}>
+                  <RealmIcon className="w-4 h-4" style={{ color: realmConfig.color }} />
+                  <span className="text-sm font-medium" style={{ color: realmConfig.color }}>{realmConfig.label}</span>
+                </div>
+                {userStats.current_streak > 0 && (
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/20">
+                    <Flame className="w-4 h-4 text-orange-400" />
+                    <span className="text-sm font-medium text-orange-400">{userStats.current_streak}d</span>
+                  </div>
+                )}
               </div>
             </div>
             
-            <div className="mt-3 flex items-center justify-between text-xs">
-              <span className="text-[#949ba4]">{userStats.total_xp.toLocaleString()} XP</span>
-              <span className="text-[#949ba4]">{1000 - (userStats.total_xp % 1000)} XP to Level {userStats.level + 1}</span>
+            <div className="flex items-center gap-4">
+              <XPRing xp={userStats.total_xp} level={userStats.level} size={56} strokeWidth={4} color={realmConfig.color} />
+              <button onClick={() => openExternalLink(`${APP_URL}/profile`)} className="p-2.5 hover:bg-black/20 rounded-xl transition-colors">
+                <ExternalLink className="w-5 h-5 text-[#b5bac1]" />
+              </button>
             </div>
           </div>
-        </motion.div>
-
-        {/* Tab Navigation */}
-        <div className="flex bg-[#2b2d31] border-b border-[#1e1f22] px-1 overflow-x-auto scrollbar-hide">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button 
-                key={tab.id} 
-                onClick={() => setActiveTab(tab.id)} 
-                className={`flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium transition-all relative whitespace-nowrap ${
-                  isActive ? "text-white" : "text-[#949ba4] hover:text-[#dbdee1]"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {tab.label}
-                {isActive && (
-                  <motion.div 
-                    layoutId="activeTab"
-                    className="absolute bottom-0 left-1 right-1 h-0.5 bg-purple-500 rounded-full" 
-                  />
-                )}
-              </button>
-            );
-          })}
+          
+          <div className="mt-4 flex items-center justify-between text-sm">
+            <span className="text-[#949ba4]">{userStats.total_xp.toLocaleString()} XP</span>
+            <span className="text-[#949ba4]">{1000 - (userStats.total_xp % 1000)} XP to Level {userStats.level + 1}</span>
+          </div>
         </div>
+      </motion.div>
 
-        {/* Tab Content */}
-        <div className="p-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 160px)" }}>
-          <AnimatePresence mode="wait">
-            {activeTab === "feed" && <FeedTab key="feed" openExternalLink={openExternalLink} userId={user?.id} />}
-            {activeTab === "realms" && <RealmsTab key="realms" currentRealm={currentRealm} openExternalLink={openExternalLink} />}
-            {activeTab === "quests" && <QuestsTab key="quests" userId={user?.id} onXPGain={handleXPGain} />}
-            {activeTab === "top" && <LeaderboardTab key="top" openExternalLink={openExternalLink} currentUserId={user?.id} />}
-            {activeTab === "jobs" && <JobsTab key="jobs" openExternalLink={openExternalLink} />}
-            {activeTab === "badges" && <BadgesTab key="badges" userId={user?.id} openExternalLink={openExternalLink} />}
-          </AnimatePresence>
-        </div>
+      {/* Tab Navigation */}
+      <div className="flex bg-[#2b2d31] border-b border-[#1e1f22] px-2 overflow-x-auto scrollbar-hide flex-shrink-0">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button 
+              key={tab.id} 
+              onClick={() => setActiveTab(tab.id)} 
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all relative whitespace-nowrap ${
+                isActive ? "text-white" : "text-[#949ba4] hover:text-[#dbdee1]"
+              }`}
+            >
+              <Icon className="w-5 h-5" />
+              {tab.label}
+              {isActive && (
+                <motion.div 
+                  layoutId="activeTab"
+                  className="absolute bottom-0 left-2 right-2 h-0.5 bg-purple-500 rounded-full" 
+                />
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Tab Content - fills remaining space */}
+      <div className="flex-1 overflow-y-auto p-4">
+        <AnimatePresence mode="wait">
+          {activeTab === "feed" && <FeedTab key="feed" openExternalLink={openExternalLink} userId={user?.id} />}
+          {activeTab === "realms" && <RealmsTab key="realms" currentRealm={currentRealm} openExternalLink={openExternalLink} />}
+          {activeTab === "quests" && <QuestsTab key="quests" userId={user?.id} onXPGain={handleXPGain} />}
+          {activeTab === "top" && <LeaderboardTab key="top" openExternalLink={openExternalLink} currentUserId={user?.id} />}
+          {activeTab === "jobs" && <JobsTab key="jobs" openExternalLink={openExternalLink} />}
+          {activeTab === "badges" && <BadgesTab key="badges" userId={user?.id} openExternalLink={openExternalLink} />}
+        </AnimatePresence>
       </div>
     </div>
   );
