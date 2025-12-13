@@ -1642,10 +1642,14 @@ export function createServer() {
     app.post("/api/discord/verify-callback", async (req, res) => {
       const { discord_id, user_id, success, bot_secret } = req.body || {};
 
-      // Simple secret validation (bot sends shared secret)
-      const expectedSecret = process.env.DISCORD_BOT_WEBHOOK_SECRET || "aethex_bot_webhook_2025";
-      if (bot_secret !== expectedSecret) {
-        console.warn("[Discord Callback] Invalid bot secret provided");
+      // Require environment secret - no fallback for security
+      const expectedSecret = process.env.DISCORD_BOT_WEBHOOK_SECRET;
+      if (!expectedSecret) {
+        console.error("[Discord Callback] DISCORD_BOT_WEBHOOK_SECRET not configured");
+        return res.status(503).json({ error: "Service not configured" });
+      }
+      if (!bot_secret || bot_secret !== expectedSecret) {
+        console.warn("[Discord Callback] Invalid or missing bot secret");
         return res.status(403).json({ error: "Invalid authorization" });
       }
 
