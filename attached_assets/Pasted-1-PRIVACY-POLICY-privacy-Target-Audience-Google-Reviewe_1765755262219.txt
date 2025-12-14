@@ -1,0 +1,100 @@
+1. PRIVACY POLICY (/privacy)
+Target Audience: Google Reviewer & Corporate Clients. Goal: Explain why you scan passwords/credit cards without sounding like spyware.
+
+Copy/Paste into your Privacy Page:
+
+Markdown
+
+# Privacy Policy for AeThex Sentinel & Warden
+
+**Last Updated:** [Date]
+
+## 1. Introduction
+AeThex Inc. ("we," "our," or "us") provides the Warden Shield extension and Sentinel platform (the "Service"). This policy describes how we collect, use, and process your data. Our core mission is **Data Loss Prevention (DLP)**. We process your data solely to protect it from unauthorized exposure.
+
+## 2. Data We Collect
+To provide real-time security scanning, the Service processes the following:
+* **User Input & Website Content:** We scan text entered into input fields (e.g., forms, chat boxes) on the websites you visit to detect sensitive information (passwords, API keys, PII).
+* **Authentication Information:** We store your session token (JWT) to verify your identity and sync your security settings.
+* **Financial & Personal Information:** We temporarily process patterns resembling credit card numbers, social security numbers, and other PII solely to redact or block them.
+* **User Activity:** We monitor specific browser events (paste, submit) to prevent data leakage.
+* **Device Data:** We collect your IP address to enforce location-based security policies (e.g., geofencing).
+
+## 3. How We Use Your Data
+**We do not sell your data.** We use the data strictly for:
+1.  **Real-Time Scrubbing:** Detecting and masking sensitive data before it leaves your browser.
+2.  **Security Alerting:** Notifying you if your credentials have been compromised or if you are visiting a flagged phishing site.
+3.  **Policy Enforcement:** Verifying your "Passport" status to grant access to specific communities or tools.
+
+## 4. Data Retention
+* **Scanned Text:** Text input is processed in volatile memory and is **not stored** on our servers unless a security violation (e.g., attempting to leak a ban word) is triggered.
+* **Violation Logs:** If a violation occurs, we store a redacted log of the event (User ID, Timestamp, Rule Broken) for audit purposes.
+* **Account Data:** Your profile data is retained as long as your account is active.
+
+## 5. Third-Party Sharing
+We do not share data with third parties except:
+* To comply with valid legal processes (e.g., subpoenas).
+* To protect the security and integrity of the AeThex ecosystem (e.g., reporting abuse).
+
+## 6. Contact Us
+For privacy concerns, contact our Data Protection Officer at: **legal@aethex.dev**
+2. TERMS OF SERVICE (/terms)
+Target Audience: Users & Lawyers. Goal: Protect Anderson Gladney from being sued if the bot bans someone or the extension breaks a website.
+
+Copy/Paste into your Terms Page:
+
+Markdown
+
+# Terms of Service
+
+**Last Updated:** [Date]
+
+## 1. Acceptance of Terms
+By installing the AeThex Sentinel extension or using the Warden bot, you agree to be bound by these terms. If you use our tools on behalf of an organization, you agree to these terms for that organization.
+
+## 2. The Service ("As Is")
+The Service is provided "AS IS" and "AS AVAILABLE." AeThex Inc. makes no warranties, expressed or implied, that the Service will be error-free or uninterrupted. We are not responsible for any data loss resulting from the use of our scrubbing tools.
+
+## 3. Acceptable Use
+You agree NOT to use the Service to:
+* Reverse engineer, decompile, or attempt to derive the source code of the Extension or API.
+* Harass, abuse, or harm other users or communities.
+* Bypass or tamper with the security controls (Passport) of the Service.
+
+**Violation of these terms will result in an immediate, permanent ban from the AeThex ecosystem.**
+
+## 4. Limitation of Liability
+To the maximum extent permitted by law, AeThex Inc. (and its officers, directors, and employees) shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly.
+
+## 5. Governing Law
+These Terms are governed by the laws of the **State of Arizona**.
+
+## 6. Contact
+For legal inquiries: **legal@aethex.dev**
+3. SUPPORT (/support)
+Target Audience: Confused Users. Goal: Filter the noise so you don't get 1,000 emails.
+
+Copy/Paste into your Support Page:
+
+Markdown
+
+# AeThex Support Center
+
+## Status System
+Check the live status of NEXUS, Warden, and Sentinel:
+👉 **[status.aethex.dev](https://status.aethex.dev)** (Link this if you have a status page, otherwise link to Discord)
+
+## How to Get Help
+
+### 1. Community Support (Fastest)
+Join our official Discord for real-time help from the community and moderators.
+**[Join the Discord](YOUR_DISCORD_INVITE_LINK)**
+
+### 2. Submit a Ticket
+For billing issues, ban appeals, or bug reports, email us directly. Please include your **User ID** and **Extension Version**.
+**Email:** support@aethex.dev
+
+### 3. Documentation & Guides
+Read the official manuals for Warden and Sentinel:
+* **[Warden Setup Guide](https://aethex.dev/docs/warden)**
+* **[Sentinel User Manual](https://aethex.dev/docs/sentinel)**

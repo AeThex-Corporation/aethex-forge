@@ -115,6 +115,63 @@ export default function Privacy() {
           </section>
 
           <section className="space-y-3">
+            <h2 className="font-semibold">
+              AeThex Sentinel & Warden (Browser Extension)
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Our browser extension provides real-time Data Loss Prevention (DLP)
+              security scanning. To provide this protection, the extension processes:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1 mt-2">
+              <li>
+                <strong>User Input & Website Content:</strong> We scan text entered
+                into input fields (forms, chat boxes) to detect sensitive information
+                (passwords, API keys, PII patterns).
+              </li>
+              <li>
+                <strong>Financial & Personal Information:</strong> We temporarily
+                process patterns resembling credit card numbers, social security
+                numbers, and other PII solely to redact or block them before
+                transmission.
+              </li>
+              <li>
+                <strong>Browser Events:</strong> We monitor specific events (paste,
+                form submit) to prevent accidental data leakage.
+              </li>
+              <li>
+                <strong>Device Data:</strong> IP address for location-based security
+                policies (geofencing).
+              </li>
+            </ul>
+            <p className="text-sm text-muted-foreground mt-3">
+              <strong>Important:</strong> Scanned text is processed locally in your
+              browser's memory and is NOT transmitted to our servers unless a
+              security policy violation is triggered. If a violation occurs, we
+              store only a redacted audit log (User ID, timestamp, rule broken) -
+              never the sensitive data itself.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="font-semibold">Chrome Web Store Limited Use Disclosure</h2>
+            <p className="text-sm text-muted-foreground">
+              The AeThex Warden extension's use of information received from Google
+              APIs adheres to the{" "}
+              <a
+                href="https://developer.chrome.com/docs/webstore/program-policies/limited-use/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-aethex-400 hover:underline"
+              >
+                Chrome Web Store User Data Policy
+              </a>
+              , including the Limited Use requirements. We only request permissions
+              necessary for DLP functionality and do not use this data for advertising,
+              creditworthiness assessment, or sale to third parties.
+            </p>
+          </section>
+
+          <section className="space-y-3">
             <h2 className="font-semibold">OAuth Providers</h2>
             <p className="text-sm text-muted-foreground">
               We support multiple OAuth providers including GitHub, Google,
@@ -209,8 +266,8 @@ export default function Privacy() {
           <section className="space-y-3">
             <h2 className="font-semibold">Contact</h2>
             <p className="text-sm text-muted-foreground">
-              For privacy inquiries: privacy@aethex.biz. For support:
-              support@aethex.biz.
+              For privacy inquiries: privacy@aethex.dev. For support:
+              support@aethex.dev. For security issues: security@aethex.dev.
             </p>
           </section>
         </div>

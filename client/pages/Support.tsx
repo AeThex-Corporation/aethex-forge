@@ -140,6 +140,29 @@ export default function Support() {
         },
       ],
     },
+    {
+      category: "Sentinel & Warden",
+      questions: [
+        {
+          question: "Why is the Sentinel extension blocking a website?",
+          answer:
+            "Sentinel may block websites that match your security policy rules. Check your extension settings to whitelist trusted domains. If you believe this is an error, contact support with the website URL.",
+          helpful: 86,
+        },
+        {
+          question: "What data does the Sentinel extension collect?",
+          answer:
+            "Sentinel processes text locally in your browser to detect sensitive data patterns. Data is NOT sent to our servers unless a security violation is triggered. See our Privacy Policy for full details.",
+          helpful: 92,
+        },
+        {
+          question: "How do I link my Discord account?",
+          answer:
+            "Go to any Discord server with the AeThex bot, type /verify, and follow the link provided. Enter the 6-digit code on our verification page while logged into your AeThex account.",
+          helpful: 89,
+        },
+      ],
+    },
   ];
 
   const resources = [
@@ -179,6 +202,7 @@ export default function Support() {
     "technical",
     "billing",
     "account",
+    "sentinel-warden",
   ];
 
   const filteredFaqs =

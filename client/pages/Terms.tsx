@@ -171,10 +171,56 @@ export default function Terms() {
           </section>
 
           <section className="space-y-3">
+            <h2 className="font-semibold">
+              Browser Extension Disclaimer (Sentinel & Warden)
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              The AeThex Sentinel extension and Warden bot are provided for data loss
+              prevention purposes. You acknowledge that:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1 mt-2">
+              <li>
+                The extension may interfere with website functionality on certain sites.
+                AeThex is not responsible for any website breakage or data loss resulting
+                from extension use.
+              </li>
+              <li>
+                No security tool is 100% effective. AeThex does not guarantee prevention
+                of all data leaks or security incidents.
+              </li>
+              <li>
+                You are solely responsible for configuring security policies appropriate
+                for your organization's needs.
+              </li>
+              <li>
+                The extension requires certain browser permissions to function. You consent
+                to granting these permissions when you install the extension.
+              </li>
+            </ul>
+          </section>
+
+          <section className="space-y-3">
             <h2 className="font-semibold">Indemnification</h2>
             <p className="text-sm text-muted-foreground">
-              You agree to indemnify and hold AeThex harmless from claims
-              arising out of your content or misuse of the Services.
+              You agree to indemnify, defend, and hold harmless AeThex Inc., its
+              officers, directors, employees, agents, and affiliates from and against
+              any claims, liabilities, damages, losses, and expenses (including
+              reasonable attorneys' fees) arising out of or related to: (a) your use
+              or misuse of the Services, (b) your violation of these Terms, (c) your
+              content or data, or (d) your violation of any rights of another party.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="font-semibold">Dispute Resolution & Arbitration</h2>
+            <p className="text-sm text-muted-foreground">
+              Any dispute arising from these Terms or the Services shall be resolved
+              through binding arbitration in accordance with the rules of the American
+              Arbitration Association. The arbitration shall take place in Arizona, USA.
+              You agree to waive any right to participate in a class action lawsuit or
+              class-wide arbitration against AeThex Inc. This arbitration agreement does
+              not preclude you from bringing issues to the attention of federal, state,
+              or local agencies who may seek relief on your behalf.
             </p>
           </section>
 
@@ -190,8 +236,9 @@ export default function Terms() {
           <section className="space-y-3">
             <h2 className="font-semibold">Governing Law & Contact</h2>
             <p className="text-sm text-muted-foreground">
-              These Terms are governed by applicable laws of the United States.
-              For questions, contact legal@aethex.biz.
+              These Terms are governed by the laws of the State of Arizona, United States,
+              without regard to conflict of law principles. For legal inquiries, contact
+              legal@aethex.dev. For general support, contact support@aethex.dev.
             </p>
           </section>
         </div>
