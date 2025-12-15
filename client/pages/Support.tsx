@@ -476,8 +476,168 @@ export default function Support() {
           </div>
         </section>
 
-        {/* Emergency Support */}
+        {/* Security & Abuse Reporting */}
         <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16 animate-slide-up">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gradient mb-4">
+                Security & Abuse Reporting
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Report security vulnerabilities, abuse, or policy violations
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              <Card className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 animate-scale-in">
+                <CardHeader>
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 rounded-lg bg-gradient-to-r from-red-500 to-orange-600">
+                      <Shield className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl">Report Security Vulnerability</CardTitle>
+                      <CardDescription>
+                        Found a security issue? Let us know responsibly.
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    If you've discovered a security vulnerability in AeThex services,
+                    please report it to our security team. We take all reports seriously
+                    and will respond promptly.
+                  </p>
+                  <Button asChild className="w-full bg-red-500 hover:bg-red-600">
+                    <a href="mailto:security@aethex.dev">
+                      <Mail className="h-4 w-4 mr-2" />
+                      security@aethex.dev
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/50 hover:border-aethex-400/50 transition-all duration-300 animate-scale-in">
+                <CardHeader>
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 rounded-lg bg-gradient-to-r from-yellow-500 to-amber-600">
+                      <Bug className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl">Report Abuse or Violations</CardTitle>
+                      <CardDescription>
+                        Report harassment, spam, or policy violations.
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    If you've encountered abuse, harassment, spam, or Terms of Service
+                    violations, report them to our Trust & Safety team.
+                  </p>
+                  <Button asChild className="w-full bg-yellow-500 hover:bg-yellow-600 text-black">
+                    <a href="mailto:abuse@aethex.dev">
+                      <Mail className="h-4 w-4 mr-2" />
+                      abuse@aethex.dev
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="max-w-5xl mx-auto mt-8 border-border/50 animate-slide-up">
+              <CardHeader>
+                <CardTitle className="text-xl text-gradient">Incident Response Process</CardTitle>
+                <CardDescription>
+                  What happens after you report a security issue or abuse
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  <div className="text-center space-y-2">
+                    <div className="mx-auto w-12 h-12 rounded-full bg-aethex-400/20 flex items-center justify-center">
+                      <span className="text-xl font-bold text-aethex-400">1</span>
+                    </div>
+                    <h4 className="font-semibold">Acknowledgment</h4>
+                    <p className="text-sm text-muted-foreground">
+                      We acknowledge receipt within 24 hours for security reports,
+                      48 hours for abuse reports.
+                    </p>
+                  </div>
+                  <div className="text-center space-y-2">
+                    <div className="mx-auto w-12 h-12 rounded-full bg-aethex-400/20 flex items-center justify-center">
+                      <span className="text-xl font-bold text-aethex-400">2</span>
+                    </div>
+                    <h4 className="font-semibold">Investigation</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Our team investigates the report, gathers evidence, and
+                      assesses severity.
+                    </p>
+                  </div>
+                  <div className="text-center space-y-2">
+                    <div className="mx-auto w-12 h-12 rounded-full bg-aethex-400/20 flex items-center justify-center">
+                      <span className="text-xl font-bold text-aethex-400">3</span>
+                    </div>
+                    <h4 className="font-semibold">Resolution</h4>
+                    <p className="text-sm text-muted-foreground">
+                      We take appropriate action - patching vulnerabilities or
+                      enforcing policies against violators.
+                    </p>
+                  </div>
+                  <div className="text-center space-y-2">
+                    <div className="mx-auto w-12 h-12 rounded-full bg-aethex-400/20 flex items-center justify-center">
+                      <span className="text-xl font-bold text-aethex-400">4</span>
+                    </div>
+                    <h4 className="font-semibold">Follow-Up</h4>
+                    <p className="text-sm text-muted-foreground">
+                      We notify you of the outcome and any actions taken (where
+                      appropriate).
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="max-w-5xl mx-auto mt-8 border-border/50 animate-slide-up">
+              <CardHeader>
+                <CardTitle className="text-xl text-gradient">Escalation Steps</CardTitle>
+                <CardDescription>
+                  If your report isn't addressed or you disagree with the outcome
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ol className="space-y-4 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-aethex-400/20 flex items-center justify-center text-xs font-bold text-aethex-400">1</span>
+                    <div>
+                      <strong className="text-foreground">Reply to your original report</strong>
+                      <p>Reference your ticket number and explain why you believe further action is needed.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-aethex-400/20 flex items-center justify-center text-xs font-bold text-aethex-400">2</span>
+                    <div>
+                      <strong className="text-foreground">Contact escalations@aethex.dev</strong>
+                      <p>For unresolved issues, escalate to our senior Trust & Safety team with your ticket number.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-aethex-400/20 flex items-center justify-center text-xs font-bold text-aethex-400">3</span>
+                    <div>
+                      <strong className="text-foreground">Executive Review</strong>
+                      <p>For serious unresolved matters, contact legal@aethex.dev for executive review.</p>
+                    </div>
+                  </li>
+                </ol>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Emergency Support */}
+        <section className="py-20 bg-background/30">
           <div className="container mx-auto px-4">
             <Card className="max-w-4xl mx-auto bg-gradient-to-r from-red-500/10 to-orange-500/10 border-red-500/30 animate-scale-in">
               <CardContent className="p-8 text-center">

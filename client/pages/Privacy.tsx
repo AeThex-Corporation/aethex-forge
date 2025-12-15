@@ -165,10 +165,31 @@ export default function Privacy() {
               >
                 Chrome Web Store User Data Policy
               </a>
-              , including the Limited Use requirements. We only request permissions
-              necessary for DLP functionality and do not use this data for advertising,
-              creditworthiness assessment, or sale to third parties.
+              , including the Limited Use requirements.
             </p>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1 mt-2">
+              <li>
+                <strong>Minimal Permissions:</strong> We only request browser permissions
+                strictly necessary for DLP security scanning functionality. We do not
+                request access to browsing history, bookmarks, or other unrelated data.
+              </li>
+              <li>
+                <strong>No Human Review of Personal Data:</strong> User data processed
+                by the extension is NOT subject to human review except in cases of:
+                (a) explicit user consent, (b) security investigations for abuse/fraud
+                prevention, or (c) legal compliance requirements.
+              </li>
+              <li>
+                <strong>No Advertising or Profiling:</strong> We do not use extension
+                data for advertising, user profiling, creditworthiness assessment,
+                or sale to third parties.
+              </li>
+              <li>
+                <strong>Automated Processing Only:</strong> DLP pattern matching is
+                performed by automated systems. Human operators only access aggregated,
+                anonymized audit logs for security purposes.
+              </li>
+            </ul>
           </section>
 
           <section className="space-y-3">
@@ -181,6 +202,22 @@ export default function Privacy() {
               accounts in your profile settings and unlink them at any time.
               Each provider has its own privacy policy governing how they handle
               your data.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="font-semibold">Data Controller & Data Protection Officer</h2>
+            <p className="text-sm text-muted-foreground">
+              <strong>Data Controller:</strong> AeThex Inc., 123 Innovation Drive,
+              Phoenix, AZ 85001, United States. We are responsible for deciding how
+              we collect, hold, and use your personal information.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Data Protection Officer (DPO):</strong> For questions about
+              data protection or to exercise your rights, contact our DPO at{" "}
+              <a href="mailto:dpo@aethex.dev" className="text-aethex-400 hover:underline">
+                dpo@aethex.dev
+              </a>.
             </p>
           </section>
 
@@ -214,11 +251,37 @@ export default function Privacy() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-semibold">Data Retention</h2>
+            <h2 className="font-semibold">Data Retention Schedule</h2>
             <p className="text-sm text-muted-foreground">
               We retain data for as long as needed to provide Services, comply
-              with law, resolve disputes, and enforce agreements. You may
-              request deletion of your account data, subject to legal holds.
+              with law, resolve disputes, and enforce agreements. Specific retention
+              periods include:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1 mt-2">
+              <li>
+                <strong>Account Data:</strong> Retained while your account is active
+                and for 30 days after deletion request to allow recovery.
+              </li>
+              <li>
+                <strong>Server Logs & Analytics:</strong> Retained for 90 days, then
+                aggregated or deleted.
+              </li>
+              <li>
+                <strong>Security Violation Records:</strong> Retained for 2 years for
+                abuse prevention and legal compliance.
+              </li>
+              <li>
+                <strong>Backups:</strong> Retained for 30 days in encrypted form,
+                then permanently deleted.
+              </li>
+              <li>
+                <strong>Financial/Transaction Records:</strong> Retained for 7 years
+                as required by tax and accounting regulations.
+              </li>
+            </ul>
+            <p className="text-sm text-muted-foreground mt-2">
+              You may request deletion of your account data, subject to legal holds
+              and regulatory requirements.
             </p>
           </section>
 
@@ -234,6 +297,85 @@ export default function Privacy() {
               </li>
               <li>Manage notifications and email preferences in-app.</li>
             </ul>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="font-semibold">California Privacy Rights (CCPA/CPRA)</h2>
+            <p className="text-sm text-muted-foreground">
+              If you are a California resident, you have additional rights under
+              the California Consumer Privacy Act (CCPA) and California Privacy
+              Rights Act (CPRA):
+            </p>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1 mt-2">
+              <li>
+                <strong>Right to Know:</strong> Request disclosure of personal
+                information we collect, use, disclose, and sell.
+              </li>
+              <li>
+                <strong>Right to Delete:</strong> Request deletion of your personal
+                information, subject to certain exceptions.
+              </li>
+              <li>
+                <strong>Right to Correct:</strong> Request correction of inaccurate
+                personal information.
+              </li>
+              <li>
+                <strong>Right to Opt-Out of Sale/Sharing:</strong> We do not sell
+                or share your personal information for cross-context behavioral
+                advertising. If this changes, you will have the right to opt out.
+              </li>
+              <li>
+                <strong>Right to Limit Use of Sensitive Data:</strong> Request
+                limitations on processing of sensitive personal information.
+              </li>
+              <li>
+                <strong>Right to Non-Discrimination:</strong> You will not receive
+                discriminatory treatment for exercising your rights.
+              </li>
+            </ul>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Do Not Sell or Share My Personal Information:</strong> AeThex
+              does not sell personal information and does not share personal information
+              for cross-context behavioral advertising purposes.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              To exercise any of these rights, contact us at{" "}
+              <a href="mailto:privacy@aethex.dev" className="text-aethex-400 hover:underline">
+                privacy@aethex.dev
+              </a>{" "}
+              or submit a request through your account settings. We will verify your
+              identity before processing your request.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="font-semibold">Right to Appeal</h2>
+            <p className="text-sm text-muted-foreground">
+              If we deny your data rights request (such as access, deletion, or
+              correction), you have the right to appeal our decision. To appeal:
+            </p>
+            <ol className="list-decimal pl-5 text-sm text-muted-foreground space-y-1 mt-2">
+              <li>
+                Email{" "}
+                <a href="mailto:dpo@aethex.dev" className="text-aethex-400 hover:underline">
+                  dpo@aethex.dev
+                </a>{" "}
+                with the subject line "Privacy Appeal".
+              </li>
+              <li>
+                Include your original request reference number and explain why you
+                believe our decision was incorrect.
+              </li>
+              <li>
+                We will review your appeal within 45 days and provide a written
+                response explaining our final decision.
+              </li>
+              <li>
+                If you are unsatisfied with our appeal decision, you may file a
+                complaint with your local data protection authority (for EEA/UK
+                residents) or the California Attorney General (for California residents).
+              </li>
+            </ol>
           </section>
 
           <section className="space-y-3">

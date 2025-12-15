@@ -176,25 +176,51 @@ export default function Terms() {
             </h2>
             <p className="text-sm text-muted-foreground">
               The AeThex Sentinel extension and Warden bot are provided for data loss
-              prevention purposes. You acknowledge that:
+              prevention purposes. By installing or using the extension, you acknowledge
+              and agree to the following:
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1 mt-2">
               <li>
-                The extension may interfere with website functionality on certain sites.
-                AeThex is not responsible for any website breakage or data loss resulting
+                <strong>Website Interference:</strong> The extension may interfere with
+                website functionality on certain sites. AeThex is not responsible for
+                any website breakage, form submission failures, or data loss resulting
                 from extension use.
               </li>
               <li>
-                No security tool is 100% effective. AeThex does not guarantee prevention
-                of all data leaks or security incidents.
+                <strong>False Positives:</strong> The DLP scanning system may generate
+                false positives, blocking legitimate content that resembles sensitive
+                data patterns. AeThex is not liable for any business disruption, lost
+                transactions, or inconvenience caused by false positive detections.
               </li>
               <li>
-                You are solely responsible for configuring security policies appropriate
-                for your organization's needs.
+                <strong>No Absolute Security Guarantee:</strong> No security tool is
+                100% effective. AeThex does not guarantee prevention of all data leaks,
+                security incidents, or breaches. The extension is one layer of defense
+                and should not be your sole security measure.
               </li>
               <li>
-                The extension requires certain browser permissions to function. You consent
-                to granting these permissions when you install the extension.
+                <strong>Data Interception Liability:</strong> While the extension scans
+                text for security purposes, AeThex is not liable for any claims arising
+                from the interception, analysis, or processing of data passing through
+                the extension. You are responsible for ensuring compliance with applicable
+                privacy laws in your jurisdiction.
+              </li>
+              <li>
+                <strong>Policy Configuration Responsibility:</strong> You are solely
+                responsible for configuring security policies appropriate for your
+                organization's needs. Misconfigured policies may result in over-blocking
+                or under-protection.
+              </li>
+              <li>
+                <strong>Policy Updates:</strong> You are responsible for staying informed
+                about extension policy updates. We will notify you of material changes,
+                but continued use after notification constitutes acceptance.
+              </li>
+              <li>
+                <strong>Browser Permissions:</strong> The extension requires certain
+                browser permissions to function. You consent to granting these permissions
+                when you install the extension and acknowledge that revoking permissions
+                will disable extension functionality.
               </li>
             </ul>
           </section>
@@ -214,13 +240,56 @@ export default function Terms() {
           <section className="space-y-3">
             <h2 className="font-semibold">Dispute Resolution & Arbitration</h2>
             <p className="text-sm text-muted-foreground">
-              Any dispute arising from these Terms or the Services shall be resolved
+              <strong>Mutual Agreement:</strong> Both you and AeThex Inc. agree that
+              any dispute arising from these Terms or the Services shall be resolved
               through binding arbitration in accordance with the rules of the American
               Arbitration Association. The arbitration shall take place in Arizona, USA.
-              You agree to waive any right to participate in a class action lawsuit or
-              class-wide arbitration against AeThex Inc. This arbitration agreement does
-              not preclude you from bringing issues to the attention of federal, state,
-              or local agencies who may seek relief on your behalf.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Class Action Waiver:</strong> You agree to waive any right to
+              participate in a class action lawsuit or class-wide arbitration against
+              AeThex Inc.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Small Claims Court Exception:</strong> Notwithstanding the above,
+              either party may bring an individual action in small claims court for
+              disputes within the court's jurisdictional limits.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Injunctive Relief Exception:</strong> Either party may seek
+              emergency injunctive relief from a court of competent jurisdiction to
+              prevent irreparable harm pending arbitration, including protection of
+              intellectual property rights, confidential information, or to stop
+              ongoing violations of these Terms.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              <strong>Government Agency Complaints:</strong> This arbitration agreement
+              does not preclude you from bringing issues to the attention of federal,
+              state, or local agencies who may seek relief on your behalf.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="font-semibold">Arbitration Opt-Out</h2>
+            <p className="text-sm text-muted-foreground">
+              You have the right to opt out of binding arbitration within 30 days of
+              creating your account or accepting these Terms (whichever is later). To
+              opt out, you must send a written notice to{" "}
+              <a href="mailto:legal@aethex.dev" className="text-aethex-400 hover:underline">
+                legal@aethex.dev
+              </a>{" "}
+              with the subject line "Arbitration Opt-Out" that includes:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1 mt-2">
+              <li>Your full legal name</li>
+              <li>Your AeThex account email address</li>
+              <li>A clear statement that you wish to opt out of binding arbitration</li>
+              <li>The date of your opt-out request</li>
+            </ul>
+            <p className="text-sm text-muted-foreground mt-2">
+              If you opt out, disputes will be resolved in the state or federal courts
+              located in Maricopa County, Arizona. Opting out will not affect your
+              ability to use the Services.
             </p>
           </section>
 
