@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef, useMemo, type MouseEvent } from "react";
 import { useDiscordActivity } from "@/contexts/DiscordActivityContext";
 import LoadingScreen from "@/components/LoadingScreen";
+import { supabase } from "@/lib/supabase";
 import {
   Heart,
   MessageCircle,
@@ -972,36 +973,80 @@ function PollsTab({ userId, username }: { userId?: string; username?: string }) 
   const [newOptions, setNewOptions] = useState(['', '']);
   const [creating, setCreating] = useState(false);
 
-  useEffect(() => {
-    const fetchPolls = async () => {
-      try {
-        const response = await fetch('/api/activity/polls');
-        if (response.ok) {
-          const data = await response.json();
-          const mapped = (data.data || data || []).map((p: any) => ({
+  const fetchPolls = useCallback(async () => {
+    try {
+      const response = await fetch('/api/activity/polls');
+      if (response.ok) {
+        const data = await response.json();
+        const mapped = (data.data || data || []).map((p: any) => {
+          const voteCounts = p.vote_counts || {};
+          const options = (p.options || []).map((opt: any, i: number) => ({
+            id: opt.id || `opt-${i}`,
+            text: opt.text || opt.option_text || String(opt),
+            votes: voteCounts[i] || 0,
+          }));
+          const expiresAt = p.expires_at ? new Date(p.expires_at).getTime() : Date.now() + 24 * 60 * 60 * 1000;
+          return {
             id: p.id,
             question: p.question,
-            options: (p.options || []).map((opt: any, i: number) => ({
-              id: opt.id || `opt-${i}`,
-              text: opt.text || opt.option_text,
-              votes: opt.votes || opt.vote_count || 0,
-            })),
+            options,
             createdBy: p.creator_id || p.created_by || 'system',
             createdByName: p.creator_name || 'Anonymous',
-            createdAt: new Date(p.created_at).getTime(),
-            expiresAt: new Date(p.expires_at).getTime(),
+            createdAt: new Date(p.created_at || Date.now()).getTime(),
+            expiresAt,
             votedUsers: p.voted_users || [],
-          }));
-          setPolls(mapped.filter((p: Poll) => p.expiresAt > Date.now()));
-        }
-      } catch {
-        setPolls([]);
-      } finally {
-        setLoading(false);
+          } as Poll;
+        });
+        setPolls(mapped.filter((p: Poll) => p.expiresAt > Date.now()));
       }
-    };
-    fetchPolls();
+    } catch {
+      setPolls([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchPolls();
+
+    const channel = supabase.channel("activity-polls");
+
+    channel.on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "activity_polls" },
+      () => {
+        fetchPolls();
+      },
+    );
+
+    channel.on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "activity_poll_votes" },
+      (payload) => {
+        const vote = payload.new as any;
+        if (!vote?.poll_id || vote.option_index === undefined) return;
+        setPolls((prev) => {
+          const exists = prev.some((p) => p.id === vote.poll_id);
+          if (!exists) return prev;
+          return prev.map((p) => {
+            if (p.id !== vote.poll_id) return p;
+            const options = p.options.map((opt, idx) =>
+              idx === vote.option_index ? { ...opt, votes: opt.votes + 1 } : opt,
+            );
+            const votedUsers = p.votedUsers.includes(vote.user_id)
+              ? p.votedUsers
+              : [...p.votedUsers, vote.user_id];
+            return { ...p, options, votedUsers };
+          });
+        });
+      },
+    );
+
+    channel.subscribe().catch(() => {});
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchPolls]);
 
   const createPoll = async () => {
     if (!userId || !newQuestion.trim() || newOptions.filter(o => o.trim()).length < 2) return;
@@ -1050,6 +1095,8 @@ function PollsTab({ userId, username }: { userId?: string; username?: string }) 
     
     const poll = polls.find(p => p.id === pollId);
     if (!poll || poll.votedUsers.includes(userId)) return;
+    const optionIndex = poll.options.findIndex(opt => opt.id === optionId);
+    if (optionIndex === -1) return;
     
     setPolls(prev => prev.map(p => {
       if (p.id !== pollId) return p;
@@ -1066,7 +1113,7 @@ function PollsTab({ userId, username }: { userId?: string; username?: string }) 
       await fetch(`/api/activity/polls/${pollId}/vote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, option_id: optionId }),
+        body: JSON.stringify({ user_id: userId, option_index: optionIndex }),
       });
     } catch {}
   };
@@ -2548,35 +2595,75 @@ function ChatTab({
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const response = await fetch('/api/activity/chat');
-        if (response.ok) {
-          const data = await response.json();
-          const mapped = (data.data || data || []).map((m: any) => ({
-            id: m.id,
-            userId: m.user_id || m.userId,
-            username: m.username || m.user_name || 'Anonymous',
-            avatar: m.avatar_url || m.avatar || null,
-            content: m.content || m.message,
-            timestamp: new Date(m.created_at || m.timestamp).getTime(),
-          }));
-          setMessages(mapped);
-        }
-      } catch {
-        setMessages([]);
-      } finally {
-        setLoading(false);
+  const fetchMessages = useCallback(async () => {
+    if (!hasLoaded) setLoading(true);
+    try {
+      const response = await fetch('/api/activity/chat');
+      if (response.ok) {
+        const data = await response.json();
+        const mapped = (data.data || data || []).map((m: any) => ({
+          id: m.id,
+          userId: m.user_id || m.userId,
+          username: m.username || m.user_name || 'Anonymous',
+          avatar: m.avatar_url || m.avatar || null,
+          content: m.content || m.message,
+          timestamp: new Date(m.created_at || m.timestamp).getTime(),
+        }));
+        setMessages(mapped);
       }
-    };
+    } catch {
+      setMessages([]);
+    } finally {
+      setLoading(false);
+      setHasLoaded(true);
+    }
+  }, [hasLoaded]);
+
+  useEffect(() => {
     fetchMessages();
-  }, []);
+    const interval = setInterval(fetchMessages, 5000);
+    const channel = supabase.channel("activity-chat");
+
+    channel.on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "activity_chat_messages",
+      },
+      (payload) => {
+        const m: any = payload.new || {};
+        const incoming: ChatMessage = {
+          id: m.id || `${Date.now()}`,
+          userId: m.user_id || m.userId,
+          username: m.username || m.user_name || "Anonymous",
+          avatar: m.avatar_url || m.avatar || null,
+          content: m.content || m.message,
+          timestamp: new Date(m.created_at || m.timestamp || Date.now()).getTime(),
+        };
+        setMessages((prev) => {
+          if (prev.some((p) => p.id === incoming.id)) return prev;
+          const next = [...prev, incoming].sort((a, b) => a.timestamp - b.timestamp);
+          return next.slice(-200);
+        });
+        setHasLoaded(true);
+        setLoading(false);
+      },
+    );
+
+    channel.subscribe().catch(() => {});
+
+    return () => {
+      clearInterval(interval);
+      supabase.removeChannel(channel);
+    };
+  }, [fetchMessages]);
   
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -2609,11 +2696,13 @@ function ChatTab({
           content: inputValue.trim(),
         }),
       });
+      // Refresh from server to keep order aligned
+      await fetchMessages();
     } catch {}
     
     setSending(false);
     inputRef.current?.focus();
-  }, [inputValue, userId, username, avatar, sending]);
+  }, [inputValue, userId, username, avatar, sending, fetchMessages]);
   
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
