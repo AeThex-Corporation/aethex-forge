@@ -1,4 +1,5 @@
 import { useState } from "react";
+import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -269,7 +270,7 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
             {excerpt && (
               <p className="text-muted-foreground italic">{excerpt}</p>
             )}
-            <div dangerouslySetInnerHTML={{ __html: html }} />
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }} />
           </CardContent>
         </Card>
       )}

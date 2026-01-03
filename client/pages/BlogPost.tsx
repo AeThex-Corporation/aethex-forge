@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import DOMPurify from "dompurify";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
 import {
@@ -135,7 +136,7 @@ export default function BlogPost() {
               </CardHeader>
               <CardContent className="prose max-w-none mt-6">
                 {post.body ? (
-                  <div dangerouslySetInnerHTML={{ __html: post.body }} />
+                  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.body) }} />
                 ) : (
                   <p>{post.excerpt}</p>
                 )}
