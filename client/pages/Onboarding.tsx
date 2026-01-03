@@ -192,11 +192,27 @@ export default function Onboarding() {
       };
       let nextStep = 0;
 
-      // Do not restore from localStorage; clear any legacy key
+      // Restore from localStorage if available (allows users to continue where they left off)
       if (typeof window !== "undefined") {
         try {
+          const saved = window.localStorage.getItem(ONBOARDING_STORAGE_KEY);
+          if (saved) {
+            const { currentStep: savedStep, data: savedData, timestamp } = JSON.parse(saved);
+            // Only restore if saved within last 7 days
+            const MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
+            if (timestamp && Date.now() - timestamp < MAX_AGE) {
+              nextData = savedData;
+              nextStep = savedStep;
+            } else {
+              // Clear expired data
+              window.localStorage.removeItem(ONBOARDING_STORAGE_KEY);
+            }
+          }
+        } catch (error) {
+          console.warn("Failed to restore onboarding progress:", error);
+          // Clear corrupted data
           window.localStorage.removeItem(ONBOARDING_STORAGE_KEY);
-        } catch {}
+        }
       }
 
       if (user?.id) {
@@ -235,13 +251,20 @@ export default function Onboarding() {
     };
   }, [user, steps.length, mapProfileToOnboardingData]);
 
+  // Save onboarding progress to localStorage after each change
   useEffect(() => {
-    // Disable local persistence for onboarding (but not while finishing)
-    if (typeof window === "undefined" || isFinishing) return;
+    if (typeof window === "undefined" || !hydrated || isFinishing) return;
     try {
-      window.localStorage.removeItem(ONBOARDING_STORAGE_KEY);
-    } catch {}
-  }, [hydrated, isFinishing]);
+      const progressData = {
+        currentStep,
+        data,
+        timestamp: Date.now(),
+      };
+      window.localStorage.setItem(ONBOARDING_STORAGE_KEY, JSON.stringify(progressData));
+    } catch (error) {
+      console.warn("Failed to save onboarding progress:", error);
+    }
+  }, [currentStep, data, hydrated, isFinishing, ONBOARDING_STORAGE_KEY]);
 
   const updateData = useCallback((newData: Partial<OnboardingData>) => {
     setData((prev) => ({
