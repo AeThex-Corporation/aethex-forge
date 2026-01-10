@@ -364,9 +364,8 @@ const App = () => (
                         />
                         <Route path="/research" element={<ResearchLabs />} />
 
-                        {/* Labs redirects to aethex.studio (Skunkworks R&D) */}
-                        <Route path="/labs" element={<ExternalRedirect to="https://aethex.studio" />} />
-                        <Route path="/labs/*" element={<ExternalRedirect to="https://aethex.studio" />} />
+                        {/* Labs page with auto-redirect to aethex.studio (Skunkworks R&D) */}
+                        <Route path="/labs" element={<Labs />} />
 
                         {/* GameForge Management routes stay local on aethex.dev (Axiom Model - Write/Control) */}
                         <Route
@@ -386,13 +385,11 @@ const App = () => (
                           }
                         />
                         
-                        {/* GameForge public routes redirect to aethex.foundation/gameforge (Axiom Model - Read-Only Showcase) */}
-                        <Route path="/gameforge" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
-                        <Route path="/gameforge/*" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
+                        {/* GameForge public route with auto-redirect to aethex.foundation/gameforge (Axiom Model - Read-Only Showcase) */}
+                        <Route path="/gameforge" element={<GameForge />} />
 
-                        {/* Foundation redirects to aethex.foundation (Non-Profit Guardian - Axiom Model) */}
-                        <Route path="/foundation" element={<ExternalRedirect to="https://aethex.foundation" />} />
-                        <Route path="/foundation/*" element={<ExternalRedirect to="https://aethex.foundation" />} />
+                        {/* Foundation page with auto-redirect to aethex.foundation (Non-Profit Guardian - Axiom Model) */}
+                        <Route path="/foundation" element={<Foundation />} />
 
                         <Route path="/corp" element={<Corp />} />
                         <Route

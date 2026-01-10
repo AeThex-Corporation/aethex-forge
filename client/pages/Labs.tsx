@@ -23,6 +23,7 @@ export default function Labs() {
   const { theme } = useArmTheme();
   const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [countdown, setCountdown] = useState(5);
   const toastShownRef = useRef(false);
 
   useEffect(() => {
@@ -36,6 +37,18 @@ export default function Labs() {
 
     return () => clearTimeout(timer);
   }, [armToast]);
+
+  // Auto-redirect countdown
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      window.location.href = 'https://aethex.studio';
+    }
+  }, [countdown, isLoading]);
 
   if (isLoading) {
     return (
@@ -112,14 +125,14 @@ export default function Labs() {
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
-        {/* Informational Banner */}
+        {/* Informational Banner with Countdown */}
         <div className="bg-yellow-500/10 border-b border-yellow-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
           <div className="container mx-auto max-w-7xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
-                <ExternalLink className="h-5 w-5 text-yellow-400" />
+                <ExternalLink className="h-5 w-5 text-yellow-400 animate-pulse" />
                 <p className="text-sm text-yellow-200">
-                  <strong>External Platform:</strong> Labs is hosted at{" "}
+                  <strong>Redirecting in {countdown}s...</strong> Labs is hosted at{" "}
                   <a href="https://aethex.studio" className="underline font-semibold hover:text-yellow-300">
                     aethex.studio
                   </a>
@@ -131,7 +144,7 @@ export default function Labs() {
                 onClick={() => window.location.href = 'https://aethex.studio'}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Visit Studio
+                Go Now
               </Button>
             </div>
           </div>

@@ -27,6 +27,7 @@ export default function Foundation() {
   const { theme } = useArmTheme();
   const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [countdown, setCountdown] = useState(5);
   const toastShownRef = useRef(false);
 
   useEffect(() => {
@@ -40,6 +41,18 @@ export default function Foundation() {
 
     return () => clearTimeout(timer);
   }, [armToast]);
+
+  // Auto-redirect countdown
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      window.location.href = 'https://aethex.foundation';
+    }
+  }, [countdown, isLoading]);
 
   if (isLoading) {
     return (
@@ -56,14 +69,14 @@ export default function Foundation() {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-black via-red-950/20 to-black">
-        {/* Informational Banner */}
+        {/* Informational Banner with Countdown */}
         <div className="bg-red-500/10 border-b border-red-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
           <div className="container mx-auto max-w-7xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
-                <ExternalLink className="h-5 w-5 text-red-400" />
+                <ExternalLink className="h-5 w-5 text-red-400 animate-pulse" />
                 <p className="text-sm text-red-200">
-                  <strong>External Platform:</strong> Foundation is hosted at{" "}
+                  <strong>Redirecting in {countdown}s...</strong> Foundation is hosted at{" "}
                   <a href="https://aethex.foundation" className="underline font-semibold hover:text-red-300">
                     aethex.foundation
                   </a>
@@ -75,7 +88,7 @@ export default function Foundation() {
                 onClick={() => window.location.href = 'https://aethex.foundation'}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Visit Platform
+                Go Now
               </Button>
             </div>
           </div>
