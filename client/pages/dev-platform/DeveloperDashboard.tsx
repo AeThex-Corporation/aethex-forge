@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
+import { Breadcrumbs } from "@/components/dev-platform/Breadcrumbs";
 import { StatCard } from "@/components/dev-platform/ui/StatCard";
 import { ApiKeyCard } from "@/components/dev-platform/ApiKeyCard";
 import { CreateApiKeyDialog } from "@/components/dev-platform/CreateApiKeyDialog";
@@ -215,6 +216,7 @@ export default function DeveloperDashboard() {
   return (
     <Layout>
       <SEO pageTitle="Developer Dashboard" description="Manage your API keys and monitor usage" />
+      <Breadcrumbs className="mb-6" />
       <div className="space-y-8">
         {/* Warning for expiring keys */}
         {expiringSoon.length > 0 && (

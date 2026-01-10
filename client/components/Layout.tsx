@@ -88,6 +88,8 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     { name: "Templates", href: "/dev-platform/templates" },
     { name: "Marketplace", href: "/dev-platform/marketplace" },
     { name: "Examples", href: "/dev-platform/examples" },
+    { name: "divider", href: "#" },
+    { name: "Main Dashboard", href: "/dashboard" },
     { name: "Exit Dev Mode", href: "/" },
   ];
 
