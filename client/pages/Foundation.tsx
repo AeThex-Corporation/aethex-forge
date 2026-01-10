@@ -27,7 +27,8 @@ export default function Foundation() {
   const { theme } = useArmTheme();
   const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [countdown, setCountdown] = useState(5);
+  const [showTldr, setShowTldr] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
   const toastShownRef = useRef(false);
 
   useEffect(() => {
@@ -42,17 +43,17 @@ export default function Foundation() {
     return () => clearTimeout(timer);
   }, [armToast]);
 
-  // Auto-redirect countdown
+  // Exit intent detection
   useEffect(() => {
-    if (isLoading) return;
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !showExitModal) {
+        setShowExitModal(true);
+      }
+    };
 
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      window.location.href = 'https://aethex.foundation';
-    }
-  }, [countdown, isLoading]);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [showExitModal]);
 
   if (isLoading) {
     return (
@@ -69,14 +70,14 @@ export default function Foundation() {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-black via-red-950/20 to-black">
-        {/* Informational Banner with Countdown */}
+        {/* Persistent Info Banner */}
         <div className="bg-red-500/10 border-b border-red-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
           <div className="container mx-auto max-w-7xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
-                <ExternalLink className="h-5 w-5 text-red-400 animate-pulse" />
+                <ExternalLink className="h-5 w-5 text-red-400" />
                 <p className="text-sm text-red-200">
-                  <strong>Redirecting in {countdown}s...</strong> Foundation is hosted at{" "}
+                  Foundation is hosted at{" "}
                   <a href="https://aethex.foundation" className="underline font-semibold hover:text-red-300">
                     aethex.foundation
                   </a>
@@ -88,7 +89,7 @@ export default function Foundation() {
                 onClick={() => window.location.href = 'https://aethex.foundation'}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Go Now
+                Visit Foundation
               </Button>
             </div>
           </div>
@@ -118,6 +119,30 @@ export default function Foundation() {
               <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
                 Building community, empowering developers, and advancing game development through open-source innovation and mentorship.
               </p>
+
+              {/* TL;DR Section */}
+              <div className="max-w-3xl mx-auto">
+                <button
+                  onClick={() => setShowTldr(!showTldr)}
+                  className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors mx-auto"
+                >
+                  <Zap className="h-5 w-5" />
+                  <span className="font-semibold">{showTldr ? 'Hide' : 'Show'} Quick Summary</span>
+                  <ArrowRight className={`h-4 w-4 transition-transform ${showTldr ? 'rotate-90' : ''}`} />
+                </button>
+                {showTldr && (
+                  <div className="mt-4 p-6 bg-red-950/40 border border-red-400/30 rounded-lg text-left space-y-3 animate-slide-down">
+                    <h3 className="text-lg font-bold text-red-300">TL;DR</h3>
+                    <ul className="space-y-2 text-red-100/90">
+                      <li className="flex gap-3"><span className="text-red-400">✦</span> <span>501(c)(3) non-profit focused on game development</span></li>
+                      <li className="flex gap-3"><span className="text-red-400">✦</span> <span>GameForge flagship program (30-day sprints)</span></li>
+                      <li className="flex gap-3"><span className="text-red-400">✦</span> <span>Open-source Axiom Protocol for game dev</span></li>
+                      <li className="flex gap-3"><span className="text-red-400">✦</span> <span>Master-apprentice mentorship model</span></li>
+                      <li className="flex gap-3"><span className="text-red-400">✦</span> <span>Community hub at aethex.foundation</span></li>
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
@@ -463,6 +488,45 @@ export default function Foundation() {
           </Card>
         </div>
       </div>
+
+      {/* Exit Intent Modal */}
+      {showExitModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-gradient-to-br from-red-950 to-black border-2 border-red-400/50 rounded-xl p-8 max-w-lg mx-4 shadow-2xl shadow-red-500/20 animate-slide-up">
+            <div className="text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="w-20 h-20 rounded-full bg-red-400/20 flex items-center justify-center">
+                  <Heart className="h-10 w-10 text-red-400" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-black text-red-300">Join Our Community</h3>
+                <p className="text-red-100/80">
+                  Be part of the AeThex Foundation 501(c)(3) - where developers learn, grow, and ship together.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 h-12"
+                  onClick={() => window.location.href = 'https://aethex.foundation'}
+                >
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Visit Foundation
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 border-red-400/50 text-red-300 hover:bg-red-500/10 h-12"
+                  onClick={() => setShowExitModal(false)}
+                >
+                  Keep Reading
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

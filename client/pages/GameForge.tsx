@@ -27,7 +27,8 @@ export default function GameForge() {
   const { theme } = useArmTheme();
   const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [countdown, setCountdown] = useState(5);
+  const [showTldr, setShowTldr] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
   const toastShownRef = useRef(false);
 
   useEffect(() => {
@@ -42,17 +43,17 @@ export default function GameForge() {
     return () => clearTimeout(timer);
   }, [armToast]);
 
-  // Auto-redirect countdown
+  // Exit intent detection
   useEffect(() => {
-    if (isLoading) return;
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !showExitModal) {
+        setShowExitModal(true);
+      }
+    };
 
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      window.location.href = 'https://aethex.foundation/gameforge';
-    }
-  }, [countdown, isLoading]);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [showExitModal]);
 
   if (isLoading) {
     return (
@@ -103,14 +104,14 @@ export default function GameForge() {
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
-        {/* Informational Banner with Countdown */}
+        {/* Persistent Info Banner */}
         <div className="bg-green-500/10 border-b border-green-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
           <div className="container mx-auto max-w-7xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
-                <ExternalLink className="h-5 w-5 text-green-400 animate-pulse" />
+                <ExternalLink className="h-5 w-5 text-green-400" />
                 <p className="text-sm text-green-200">
-                  <strong>Redirecting in {countdown}s...</strong> GameForge is hosted at{" "}
+                  GameForge is hosted at{" "}
                   <a href="https://aethex.foundation/gameforge" className="underline font-semibold hover:text-green-300">
                     aethex.foundation/gameforge
                   </a>
@@ -122,7 +123,7 @@ export default function GameForge() {
                 onClick={() => window.location.href = 'https://aethex.foundation/gameforge'}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Go Now
+                Visit Platform
               </Button>
             </div>
           </div>
@@ -160,6 +161,30 @@ export default function GameForge() {
                   <p className="text-xl md:text-2xl text-green-100/80 max-w-3xl mx-auto leading-relaxed">
                     AeThex GameForge is a master-apprentice mentorship program where teams of 5 developers ship real games in 30-day sprints.
                   </p>
+
+                  {/* TL;DR Section */}
+                  <div className="max-w-3xl mx-auto">
+                    <button
+                      onClick={() => setShowTldr(!showTldr)}
+                      className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors mx-auto"
+                    >
+                      <Zap className="h-5 w-5" />
+                      <span className="font-semibold">{showTldr ? 'Hide' : 'Show'} Quick Summary</span>
+                      <ArrowRight className={`h-4 w-4 transition-transform ${showTldr ? 'rotate-90' : ''}`} />
+                    </button>
+                    {showTldr && (
+                      <div className="mt-4 p-6 bg-green-950/40 border border-green-400/30 rounded-lg text-left space-y-3 animate-slide-down">
+                        <h3 className="text-lg font-bold text-green-300">TL;DR</h3>
+                        <ul className="space-y-2 text-green-100/90">
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>30-day game development sprints</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>5-person teams (1 mentor + 4 developers)</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>Ship real games to aethex.fun</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>Build your portfolio on aethex.me passport</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>Part of AeThex Foundation (501c3 non-profit)</span></li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
@@ -414,6 +439,45 @@ export default function GameForge() {
           </section>
         </main>
       </div>
+
+      {/* Exit Intent Modal */}
+      {showExitModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-gradient-to-br from-green-950 to-black border-2 border-green-400/50 rounded-xl p-8 max-w-lg mx-4 shadow-2xl shadow-green-500/20 animate-slide-up">
+            <div className="text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="w-20 h-20 rounded-full bg-green-400/20 flex items-center justify-center">
+                  <Rocket className="h-10 w-10 text-green-400" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-black text-green-300">Ready to Ship Games?</h3>
+                <p className="text-green-100/80">
+                  Join GameForge and start building your portfolio with real, shipped games in 30-day sprints.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1 bg-green-400 text-black hover:bg-green-300 h-12"
+                  onClick={() => window.location.href = 'https://aethex.foundation/gameforge'}
+                >
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Visit GameForge
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 border-green-400/50 text-green-300 hover:bg-green-500/10 h-12"
+                  onClick={() => setShowExitModal(false)}
+                >
+                  Keep Reading
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

@@ -23,7 +23,8 @@ export default function Labs() {
   const { theme } = useArmTheme();
   const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [countdown, setCountdown] = useState(5);
+  const [showTldr, setShowTldr] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
   const toastShownRef = useRef(false);
 
   useEffect(() => {
@@ -38,17 +39,17 @@ export default function Labs() {
     return () => clearTimeout(timer);
   }, [armToast]);
 
-  // Auto-redirect countdown
+  // Exit intent detection
   useEffect(() => {
-    if (isLoading) return;
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !showExitModal) {
+        setShowExitModal(true);
+      }
+    };
 
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      window.location.href = 'https://aethex.studio';
-    }
-  }, [countdown, isLoading]);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [showExitModal]);
 
   if (isLoading) {
     return (
@@ -125,14 +126,14 @@ export default function Labs() {
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
-        {/* Informational Banner with Countdown */}
+        {/* Persistent Info Banner */}
         <div className="bg-yellow-500/10 border-b border-yellow-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
           <div className="container mx-auto max-w-7xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
-                <ExternalLink className="h-5 w-5 text-yellow-400 animate-pulse" />
+                <ExternalLink className="h-5 w-5 text-yellow-400" />
                 <p className="text-sm text-yellow-200">
-                  <strong>Redirecting in {countdown}s...</strong> Labs is hosted at{" "}
+                  Labs is hosted at{" "}
                   <a href="https://aethex.studio" className="underline font-semibold hover:text-yellow-300">
                     aethex.studio
                   </a>
@@ -144,7 +145,7 @@ export default function Labs() {
                 onClick={() => window.location.href = 'https://aethex.studio'}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Go Now
+                Visit Studio
               </Button>
             </div>
           </div>
@@ -183,6 +184,30 @@ export default function Labs() {
                   <p className="text-xl md:text-2xl text-yellow-100/80 max-w-3xl mx-auto leading-relaxed">
                     Breakthrough R&D pushing the boundaries of what's possible in software, AI, games, and digital experiences.
                   </p>
+
+                  {/* TL;DR Section */}
+                  <div className="max-w-3xl mx-auto">
+                    <button
+                      onClick={() => setShowTldr(!showTldr)}
+                      className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors mx-auto"
+                    >
+                      <Zap className="h-5 w-5" />
+                      <span className="font-semibold">{showTldr ? 'Hide' : 'Show'} Quick Summary</span>
+                      <ArrowRight className={`h-4 w-4 transition-transform ${showTldr ? 'rotate-90' : ''}`} />
+                    </button>
+                    {showTldr && (
+                      <div className="mt-4 p-6 bg-yellow-950/40 border border-yellow-400/30 rounded-lg text-left space-y-3 animate-slide-down">
+                        <h3 className="text-lg font-bold text-yellow-300">TL;DR</h3>
+                        <ul className="space-y-2 text-yellow-100/90">
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Cutting-edge R&D across AI, games, and web tech</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>PhD-level researchers and innovative engineers</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Published research and open-source contributions</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Technology powering GameForge and platform tools</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Visit aethex.studio for research papers & demos</span></li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
@@ -423,6 +448,45 @@ export default function Labs() {
           </section>
         </main>
       </div>
+
+      {/* Exit Intent Modal */}
+      {showExitModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-gradient-to-br from-yellow-950 to-black border-2 border-yellow-400/50 rounded-xl p-8 max-w-lg mx-4 shadow-2xl shadow-yellow-500/20 animate-slide-up">
+            <div className="text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="w-20 h-20 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                  <Sparkles className="h-10 w-10 text-yellow-400" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-black text-yellow-300">Explore Labs Research</h3>
+                <p className="text-yellow-100/80">
+                  Dive into cutting-edge research, technical papers, and innovation demos at AeThex Labs Studio.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1 bg-yellow-400 text-black hover:bg-yellow-300 h-12"
+                  onClick={() => window.location.href = 'https://aethex.studio'}
+                >
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Visit Labs Studio
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 border-yellow-400/50 text-yellow-300 hover:bg-yellow-500/10 h-12"
+                  onClick={() => setShowExitModal(false)}
+                >
+                  Keep Reading
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }
