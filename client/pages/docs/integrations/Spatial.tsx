@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Globe, Code2, Rocket, ExternalLink, CheckCircle2, AlertTriangle, Package } from "lucide-react";
-import CodeBlock from "@/components/dev-platform/CodeBlock";
+import { CodeBlock } from "@/components/dev-platform/ui/CodeBlock";
 
 export default function SpatialIntegration() {
   return (
