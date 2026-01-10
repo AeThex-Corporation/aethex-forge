@@ -101,8 +101,8 @@ export default function Teams() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)] py-10">
-        <div className="mx-auto w-full max-w-6xl px-4 lg:px-6 space-y-6">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-7xl space-y-8">
           <section className="rounded-3xl border border-border/40 bg-background/80 p-6 shadow-2xl backdrop-blur">
             <h1 className="text-3xl font-semibold text-foreground">Teams</h1>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -110,7 +110,7 @@ export default function Teams() {
             </p>
           </section>
 
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+          <div className="grid lg:grid-cols-[2fr,1fr] gap-8">
             <div className="space-y-6">
               <Card className="rounded-3xl border-border/40 bg-background/70 shadow-xl backdrop-blur-lg">
                 <CardHeader>

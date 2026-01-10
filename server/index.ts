@@ -10,6 +10,17 @@ import blogSlugHandler from "../api/blog/[slug]";
 import aiChatHandler from "../api/ai/chat";
 import aiTitleHandler from "../api/ai/title";
 
+// Developer API Keys handlers
+import {
+  listKeys,
+  createKey,
+  deleteKey,
+  updateKey,
+  getKeyStats,
+  getProfile,
+  updateProfile,
+} from "../api/developer/keys";
+
 // Discord Interactions Handler
 const handleDiscordInteractions = async (
   req: express.Request,
@@ -512,8 +523,7 @@ export function createServer() {
       maintenanceModeCache = isActive;
       res.json({ maintenance_mode: isActive });
     } catch (e: any) {
-      console.error("[Maintenance] Error fetching status:", e?.message);
-      // Fall back to env var or cache
+      // Silently fall back to env var or cache (error is expected if table doesn't exist yet)
       const envMaintenance = process.env.MAINTENANCE_MODE === "true";
       res.json({ maintenance_mode: maintenanceModeCache ?? envMaintenance });
     }
@@ -2639,6 +2649,21 @@ export function createServer() {
         });
       }
     });
+
+    // ===== DEVELOPER API ENDPOINTS =====
+    
+    // Developer API Keys Management
+    app.get("/api/developer/keys", listKeys);
+    app.post("/api/developer/keys", createKey);
+    app.delete("/api/developer/keys/:id", deleteKey);
+    app.patch("/api/developer/keys/:id", updateKey);
+    app.get("/api/developer/keys/:id/stats", getKeyStats);
+    
+    // Developer Profile Management
+    app.get("/api/developer/profile", getProfile);
+    app.patch("/api/developer/profile", updateProfile);
+
+    // ===== END DEVELOPER API ENDPOINTS =====
 
     // Site settings (admin-managed)
     app.get("/api/site-settings", async (req, res) => {
