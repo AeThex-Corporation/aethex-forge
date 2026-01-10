@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
+import { Breadcrumbs } from "@/components/dev-platform/Breadcrumbs";
 import { ThreeColumnLayout } from "@/components/dev-platform/layouts/ThreeColumnLayout";
 import { ApiEndpointCard } from "@/components/dev-platform/ui/ApiEndpointCard";
 import { CodeTabs } from "@/components/dev-platform/CodeTabs";
@@ -68,6 +69,7 @@ export default function ApiReference() {
   return (
     <Layout>
       <SEO pageTitle="API Reference" description="Complete documentation for the AeThex Developer API" />
+      <Breadcrumbs className="mb-6" />
       <ThreeColumnLayout
         sidebar={sidebarContent}
         aside={asideContent}

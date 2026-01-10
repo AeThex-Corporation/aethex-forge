@@ -411,6 +411,41 @@ export default function Dashboard() {
 
             {/* Realms Tab */}
             <TabsContent value="realms" className="space-y-6 animate-fade-in">
+              {/* Developer CTA Card */}
+              {user && (
+                <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:border-primary/40 transition-all">
+                  <div className="flex flex-col md:flex-row items-start gap-4">
+                    <div className="p-3 bg-primary/20 rounded-lg shrink-0">
+                      <Code className="w-6 h-6 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold mb-2">Building with AeThex?</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Get API keys, access comprehensive documentation, and explore developer tools to integrate AeThex into your applications.
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        <Link to="/dev-platform/dashboard">
+                          <Button size="sm">
+                            <Rocket className="w-4 h-4 mr-2" />
+                            Get API Keys
+                          </Button>
+                        </Link>
+                        <Link to="/dev-platform/api-reference">
+                          <Button size="sm" variant="outline">
+                            View API Docs
+                          </Button>
+                        </Link>
+                        <Link to="/dev-platform/templates">
+                          <Button size="sm" variant="outline">
+                            Browse Templates
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              )}
+              
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {ARMS.map((arm) => {
                   const IconComponent = arm.icon;

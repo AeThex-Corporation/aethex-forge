@@ -831,7 +831,14 @@ const App = () => (
 
                         {/* Developer Platform Routes */}
                         <Route path="/dev-platform" element={<DeveloperPlatform />} />
-                        <Route path="/dev-platform/dashboard" element={<DeveloperDashboard />} />
+                        <Route 
+                          path="/dev-platform/dashboard" 
+                          element={
+                            <RequireAccess>
+                              <DeveloperDashboard />
+                            </RequireAccess>
+                          } 
+                        />
                         <Route path="/dev-platform/api-reference" element={<ApiReference />} />
                         <Route path="/dev-platform/quick-start" element={<QuickStart />} />
                         <Route path="/dev-platform/templates" element={<Templates />} />

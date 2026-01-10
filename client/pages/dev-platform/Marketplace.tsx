@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
+import { Breadcrumbs } from "@/components/dev-platform/Breadcrumbs";
 import { MarketplaceCard } from "@/components/dev-platform/MarketplaceCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

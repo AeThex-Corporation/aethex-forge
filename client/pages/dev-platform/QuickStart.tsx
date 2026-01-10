@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
+import { Breadcrumbs } from "@/components/dev-platform/Breadcrumbs";
 import { ThreeColumnLayout } from "@/components/dev-platform/layouts/ThreeColumnLayout";
 import { CodeTabs } from "@/components/dev-platform/CodeTabs";
 import { Callout } from "@/components/dev-platform/ui/Callout";
@@ -85,6 +86,7 @@ export default function QuickStart() {
   return (
     <Layout>
       <SEO pageTitle="Quick Start Guide" description="Get up and running with the AeThex API in minutes" />
+      <Breadcrumbs className="mb-6" />
       <ThreeColumnLayout sidebar={sidebarContent} aside={asideContent}>
         <div className="space-y-12">
           {/* Introduction */}
