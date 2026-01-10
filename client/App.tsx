@@ -49,6 +49,10 @@ import RecRoomIntegration from "./pages/docs/integrations/RecRoom";
 import SpatialIntegration from "./pages/docs/integrations/Spatial";
 import DecentralandIntegration from "./pages/docs/integrations/Decentraland";
 import TheSandboxIntegration from "./pages/docs/integrations/TheSandbox";
+import GodotIntegration from "./pages/docs/integrations/Godot";
+import GameMakerIntegration from "./pages/docs/integrations/GameMaker";
+import GameJoltIntegration from "./pages/docs/integrations/GameJolt";
+import ItchIoIntegration from "./pages/docs/integrations/ItchIo";
 import DocsCurriculum from "./pages/docs/DocsCurriculum";
 import DocsCurriculumEthos from "./pages/docs/DocsCurriculumEthos";
 import EthosGuild from "./pages/community/EthosGuild";
@@ -640,6 +644,22 @@ const App = () => (
                           <Route
                             path="integrations/thesandbox"
                             element={<TheSandboxIntegration />}
+                          />
+                          <Route
+                            path="integrations/godot"
+                            element={<GodotIntegration />}
+                          />
+                          <Route
+                            path="integrations/gamemaker"
+                            element={<GameMakerIntegration />}
+                          />
+                          <Route
+                            path="integrations/gamejolt"
+                            element={<GameJoltIntegration />}
+                          />
+                          <Route
+                            path="integrations/itchio"
+                            element={<ItchIoIntegration />}
                           />
                         </Route>
                         <Route path="/tutorials" element={<Tutorials />} />
