@@ -31,6 +31,9 @@ import {
   Headset,
   Gamepad2,
   Boxes,
+  Globe,
+  Cuboid,
+  Box,
 } from "lucide-react";
 
 const connectorFields = [
@@ -170,24 +173,77 @@ export default function DocsIntegrations() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-slate-900/80 to-slate-800/50 border-slate-600/30 hover:border-slate-500/60 transition-colors">
+            </CardContent>cyan-950/50 to-blue-950/50 border-cyan-500/30 hover:border-cyan-400/60 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-white">
-                <Boxes className="h-6 w-6 text-gray-400" />
-                More Platforms
+                <Globe className="h-6 w-6 text-cyan-400" />
+                Spatial
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <CardDescription className="text-gray-300">
-                Roblox, Fortnite, Minecraft, Unity, Unreal, and more coming soon
+                Build browser-based 3D experiences for VR, desktop, and mobile devices
               </CardDescription>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="secondary" className="bg-gray-500/20 text-gray-200">Roblox</Badge>
-                <Badge variant="secondary" className="bg-gray-500/20 text-gray-200">Unity</Badge>
-                <Badge variant="secondary" className="bg-gray-500/20 text-gray-200">Unreal</Badge>
+                <Badge variant="secondary" className="bg-cyan-500/20 text-cyan-200">TypeScript</Badge>
+                <Badge variant="secondary" className="bg-cyan-500/20 text-cyan-200">Web3</Badge>
+                <Badge variant="secondary" className="bg-cyan-500/20 text-cyan-200">No Install</Badge>
+              </div>
+              <Button variant="outline" className="w-full border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/10" asChild>
+                <Link to="/docs/integrations/spatial">
+                  View Documentation
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-red-950/50 to-orange-950/50 border-red-500/30 hover:border-red-400/60 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-white">
+                <Cuboid className="h-6 w-6 text-red-400" />
+                Decentraland
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <CardDescription className="text-gray-300">
+                Create Ethereum-powered metaverse experiences with NFT integration
+              </CardDescription>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="bg-red-500/20 text-red-200">Ethereum</Badge>
+                <Badge variant="secondary" className="bg-red-500/20 text-red-200">LAND</Badge>
+                <Badge variant="secondary" className="bg-red-500/20 text-red-200">DAO</Badge>
+              </div>
+              <Button variant="outline" className="w-full border-red-400/50 text-red-300 hover:bg-red-500/10" asChild>
+                <Link to="/docs/integrations/decentraland">
+                  View Documentation
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-amber-950/50 to-yellow-950/50 border-amber-500/30 hover:border-amber-400/60 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-white">
+                <Box className="h-6 w-6 text-amber-400" />
+                The Sandbox
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <CardDescription className="text-gray-300">
+                Build voxel games with visual editor and Polygon NFT rewards
+              </CardDescription>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="bg-amber-500/20 text-amber-200">Polygon</Badge>
+                <Badge variant="secondary" className="bg-amber-500/20 text-amber-200">Voxels</Badge>
+                <Badge variant="secondary" className="bg-amber-500/20 text-amber-200">NFTs</Badge>
+              </div>
+              <Button variant="outline" className="w-full border-amber-400/50 text-amber-300 hover:bg-amber-500/10" asChild>
+                <Link to="/docs/integrations/thesandbox">
+                  View Documentation
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>ant="secondary" className="bg-gray-500/20 text-gray-200">Unreal</Badge>
               </div>
               <Button variant="outline" className="w-full border-gray-400/50 text-gray-300 hover:bg-gray-500/10" disabled>
                 Coming Soon

@@ -46,6 +46,9 @@ import DocsExamples from "./pages/docs/DocsExamples";
 import DocsIntegrations from "./pages/docs/DocsIntegrations";
 import VRChatIntegration from "./pages/docs/integrations/VRChat";
 import RecRoomIntegration from "./pages/docs/integrations/RecRoom";
+import SpatialIntegration from "./pages/docs/integrations/Spatial";
+import DecentralandIntegration from "./pages/docs/integrations/Decentraland";
+import TheSandboxIntegration from "./pages/docs/integrations/TheSandbox";
 import DocsCurriculum from "./pages/docs/DocsCurriculum";
 import DocsCurriculumEthos from "./pages/docs/DocsCurriculumEthos";
 import EthosGuild from "./pages/community/EthosGuild";
@@ -625,6 +628,18 @@ const App = () => (
                           <Route
                             path="integrations/recroom"
                             element={<RecRoomIntegration />}
+                          />
+                          <Route
+                            path="integrations/spatial"
+                            element={<SpatialIntegration />}
+                          />
+                          <Route
+                            path="integrations/decentraland"
+                            element={<DecentralandIntegration />}
+                          />
+                          <Route
+                            path="integrations/thesandbox"
+                            element={<TheSandboxIntegration />}
                           />
                         </Route>
                         <Route path="/tutorials" element={<Tutorials />} />
