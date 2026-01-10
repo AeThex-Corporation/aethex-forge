@@ -139,7 +139,7 @@ export default function AdminFeed() {
   return (
     <Layout>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 sm:gap-6 lg:gap-8 px-3 sm:px-4 pb-16 pt-6 sm:pt-10 lg:px-6">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-4xl space-y-8">
           {/* Header */}
           <div className="space-y-1 sm:space-y-2">
             <div className="flex items-center gap-2">
@@ -297,7 +297,7 @@ export default function AdminFeed() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-4 lg:p-6">
-              <div className="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
                 {ARMS.map((arm) => (
                   <div
                     key={arm.id}

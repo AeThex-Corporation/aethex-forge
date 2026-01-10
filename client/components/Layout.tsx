@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import SupabaseStatus from "./SupabaseStatus";
 import { useAuth } from "@/contexts/AuthContext";
@@ -75,6 +76,21 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
   const { user, profile, signOut, loading, profileComplete } = useAuth();
   const { theme } = useArmTheme();
 
+  // Detect if we're in developer platform section
+  const isDevMode = location.pathname.startsWith('/dev-platform');
+
+  // Developer Platform Navigation
+  const devNavigation = [
+    { name: "Home", href: "/dev-platform" },
+    { name: "Dashboard", href: "/dev-platform/dashboard" },
+    { name: "API Reference", href: "/dev-platform/api-reference" },
+    { name: "Quick Start", href: "/dev-platform/quick-start" },
+    { name: "Templates", href: "/dev-platform/templates" },
+    { name: "Marketplace", href: "/dev-platform/marketplace" },
+    { name: "Examples", href: "/dev-platform/examples" },
+    { name: "Exit Dev Mode", href: "/" },
+  ];
+
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Realms", href: "/realms" },
@@ -86,7 +102,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     { name: "Squads", href: "/squads" },
     { name: "Mentee Hub", href: "/mentee-hub" },
     { name: "Directory", href: "/directory" },
-    { name: "Developers", href: "/developers" },
+    { name: "Developer Platform", href: "/dev-platform" },
     { name: "Creators", href: "/creators" },
     { name: "Opportunities", href: "/opportunities" },
     { name: "About", href: "/about" },
@@ -102,7 +118,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     { name: "Documentation", href: "/docs" },
   ];
 
-  const userNavigation = [
+  const userNavigation = isDevMode ? devNavigation : [
     { name: "Dashboard", href: "/dashboard" },
     { name: "Realms", href: "/realms" },
     { name: "Teams", href: "/teams" },
@@ -112,7 +128,7 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
     { name: "Engage", href: "/engage" },
     { name: "Roadmap", href: "/roadmap" },
     { name: "Projects", href: "/projects" },
-    { name: "Developers", href: "/developers" },
+    { name: "Developer Platform", href: "/dev-platform" },
     { name: "Creators", href: "/creators" },
     { name: "Opportunities", href: "/opportunities" },
     { name: "My Applications", href: "/profile/applications" },
@@ -395,6 +411,13 @@ export default function CodeLayout({ children, hideFooter }: LayoutProps) {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center mx-3" />
+
+          {/* Developer Mode Badge */}
+          {isDevMode && (
+            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/40 animate-pulse">
+              🔧 Developer Mode
+            </Badge>
+          )}
 
           {/* Animated Arm Switcher */}
           <div className="flex items-center shrink-0">

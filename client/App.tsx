@@ -159,6 +159,16 @@ import StaffLearningPortal from "./pages/staff/StaffLearningPortal";
 import StaffPerformanceReviews from "./pages/staff/StaffPerformanceReviews";
 import StaffProjectTracking from "./pages/staff/StaffProjectTracking";
 import StaffTeamHandbook from "./pages/staff/StaffTeamHandbook";
+import DeveloperDashboard from "./pages/dev-platform/DeveloperDashboard";
+import ApiReference from "./pages/dev-platform/ApiReference";
+import QuickStart from "./pages/dev-platform/QuickStart";
+import Templates from "./pages/dev-platform/Templates";
+import TemplateDetail from "./pages/dev-platform/TemplateDetail";
+import Marketplace from "./pages/dev-platform/Marketplace";
+import MarketplaceItemDetail from "./pages/dev-platform/MarketplaceItemDetail";
+import CodeExamples from "./pages/dev-platform/CodeExamples";
+import ExampleDetail from "./pages/dev-platform/ExampleDetail";
+import DeveloperPlatform from "./pages/dev-platform/DeveloperPlatform";
 
 const queryClient = new QueryClient();
 
@@ -818,6 +828,18 @@ const App = () => (
                           path="/internal-docs/finance"
                           element={<Space5Finance />}
                         />
+
+                        {/* Developer Platform Routes */}
+                        <Route path="/dev-platform" element={<DeveloperPlatform />} />
+                        <Route path="/dev-platform/dashboard" element={<DeveloperDashboard />} />
+                        <Route path="/dev-platform/api-reference" element={<ApiReference />} />
+                        <Route path="/dev-platform/quick-start" element={<QuickStart />} />
+                        <Route path="/dev-platform/templates" element={<Templates />} />
+                        <Route path="/dev-platform/templates/:id" element={<TemplateDetail />} />
+                        <Route path="/dev-platform/marketplace" element={<Marketplace />} />
+                        <Route path="/dev-platform/marketplace/:id" element={<MarketplaceItemDetail />} />
+                        <Route path="/dev-platform/examples" element={<CodeExamples />} />
+                        <Route path="/dev-platform/examples/:id" element={<ExampleDetail />} />
 
                         {/* Explicit 404 route for static hosting fallbacks */}
                         <Route path="/404" element={<FourOhFourPage />} />

@@ -18,8 +18,8 @@ interface PlaceholderProps {
 export default function Placeholder({ title, description }: PlaceholderProps) {
   return (
     <Layout>
-      <div className="min-h-screen bg-aethex-gradient py-20">
-        <div className="container mx-auto px-4 max-w-2xl">
+      <div className="min-h-screen bg-aethex-gradient">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 max-w-2xl">
           <Card className="bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
             <CardHeader className="text-center space-y-4">
               <div className="flex justify-center">
