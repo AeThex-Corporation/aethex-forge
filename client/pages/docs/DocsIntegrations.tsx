@@ -303,7 +303,10 @@ export default function DocsIntegrations() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-            </CardContent>cyan-950/50 to-blue-950/50 border-cyan-500/30 hover:border-cyan-400/60 transition-colors">
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-cyan-950/50 to-blue-950/50 border-cyan-500/30 hover:border-cyan-400/60 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-white">
                 <Globe className="h-6 w-6 text-cyan-400" />
