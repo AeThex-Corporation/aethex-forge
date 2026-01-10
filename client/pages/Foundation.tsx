@@ -15,6 +15,7 @@ import {
   Sparkles,
   Trophy,
   Compass,
+  ExternalLink,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
@@ -54,31 +55,76 @@ export default function Foundation() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-red-950/20 to-black py-8">
-        <div className="container mx-auto px-4 max-w-7xl space-y-12">
-          {/* Hero Section */}
-          <div className="space-y-6 animate-slide-down">
-            <div className="space-y-2">
-              <Badge className="w-fit bg-red-600/50 text-red-100">
-                Non-Profit Guardian
+      <div className="min-h-screen bg-gradient-to-b from-black via-red-950/20 to-black">
+        {/* Informational Banner */}
+        <div className="bg-red-500/10 border-b border-red-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
+          <div className="container mx-auto max-w-7xl px-4">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <ExternalLink className="h-5 w-5 text-red-400" />
+                <p className="text-sm text-red-200">
+                  <strong>External Platform:</strong> Foundation is hosted at{" "}
+                  <a href="https://aethex.foundation" className="underline font-semibold hover:text-red-300">
+                    aethex.foundation
+                  </a>
+                </p>
+              </div>
+              <Button
+                size="sm"
+                className="bg-red-400 text-black hover:bg-red-300"
+                onClick={() => window.location.href = 'https://aethex.foundation'}
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Visit Platform
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 max-w-7xl space-y-20 py-16 lg:py-24">{/* Hero Section */}
+          <div className="text-center space-y-8 animate-slide-down">
+            <div className="flex justify-center mb-6">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fc02cb1bf5056479bbb3ea4bd91f0d472?format=webp&width=800"
+                alt="Foundation Logo"
+                className="h-32 w-32 object-contain drop-shadow-[0_0_50px_rgba(239,68,68,0.5)]"
+              />
+            </div>
+
+            <div className="space-y-6 max-w-5xl mx-auto">
+              <Badge className="border-red-400/50 bg-red-500/10 text-red-100 text-base px-4 py-1.5">
+                <Heart className="h-5 w-5 mr-2" />
+                501(c)(3) Non-Profit Organization
               </Badge>
-              <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-red-300 via-pink-300 to-red-300 bg-clip-text text-transparent">
+
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-red-300 via-pink-300 to-red-300 bg-clip-text text-transparent">
                 AeThex Foundation
               </h1>
+
+              <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Building community, empowering developers, and advancing game development through open-source innovation and mentorship.
+              </p>
             </div>
-            <p className="text-xl text-gray-300 max-w-2xl leading-relaxed">
-              The heart of our ecosystem. We believe in building community,
-              empowering developers, and advancing game development through
-              open-source innovation and mentorship.
-            </p>
-            <div className="flex flex-wrap gap-3">
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Button
-                onClick={() => navigate("/gameforge")}
-                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 h-12 text-base"
+                size="lg"
+                className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 shadow-[0_0_40px_rgba(239,68,68,0.3)] h-14 px-8 text-lg"
+                onClick={() => window.location.href = 'https://aethex.foundation'}
+              >
+                <ExternalLink className="h-5 w-5 mr-2" />
+                Visit Foundation Platform
+              </Button>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 h-14 px-8 text-lg"
+                onClick={() => window.location.href = 'https://aethex.foundation/gameforge'}
               >
                 <Gamepad2 className="h-5 w-5 mr-2" />
                 Join GameForge
               </Button>
+            </div>
+          </div>
               <Button
                 onClick={() => navigate("/mentorship")}
                 variant="outline"
