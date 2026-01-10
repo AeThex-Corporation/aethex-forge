@@ -373,10 +373,7 @@ export default function DocsIntegrations() {
                 <Link to="/docs/integrations/thesandbox">
                   View Documentation
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>ant="secondary" className="bg-gray-500/20 text-gray-200">Unreal</Badge>
-              </div>
-              <Button variant="outline" className="w-full border-gray-400/50 text-gray-300 hover:bg-gray-500/10" disabled>
-                Coming Soon
+                </Link>
               </Button>
             </CardContent>
           </Card>
