@@ -94,7 +94,8 @@ export default function Foundation() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 max-w-7xl space-y-20 py-16 lg:py-24">{/* Hero Section */}
+        <div className="container mx-auto px-4 max-w-7xl space-y-20 py-16 lg:py-24">
+          {/* Hero Section */}
           <div className="text-center space-y-8 animate-slide-down">
             <div className="flex justify-center mb-6">
               <img
@@ -135,16 +136,6 @@ export default function Foundation() {
               >
                 <Gamepad2 className="h-5 w-5 mr-2" />
                 Join GameForge
-              </Button>
-            </div>
-          </div>
-              <Button
-                onClick={() => navigate("/mentorship")}
-                variant="outline"
-                className="border-red-500/30 text-red-300 hover:bg-red-500/10 h-12 text-base"
-              >
-                <GraduationCap className="h-5 w-5 mr-2" />
-                Explore Programs
               </Button>
             </div>
           </div>
