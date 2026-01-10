@@ -28,6 +28,9 @@ import {
   Palette,
   AlertTriangle,
   FileText,
+  Headset,
+  Gamepad2,
+  Boxes,
 } from "lucide-react";
 
 const connectorFields = [
@@ -105,6 +108,93 @@ export default function DocsIntegrations() {
           partner UI in product flows, and automate data exchange without
           hand-rolled plumbing.
         </p>
+      </section>
+
+      {/* Platform Integrations Showcase */}
+      <section id="platforms" className="space-y-6">
+        <div className="flex items-center gap-3">
+          <Boxes className="h-6 w-6 text-indigo-300" />
+          <h3 className="text-2xl font-semibold text-white">
+            Platform Integrations
+          </h3>
+        </div>
+        <p className="text-gray-400">
+          Deploy your games and apps across multiple platforms using AeThex's unified API.
+        </p>
+        
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="bg-gradient-to-br from-purple-950/50 to-indigo-950/50 border-purple-500/30 hover:border-purple-400/60 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-white">
+                <Headset className="h-6 w-6 text-purple-400" />
+                VRChat
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <CardDescription className="text-gray-300">
+                Build immersive VR worlds with Udon scripting and cross-platform authentication
+              </CardDescription>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="bg-purple-500/20 text-purple-200">Unity</Badge>
+                <Badge variant="secondary" className="bg-purple-500/20 text-purple-200">Udon C#</Badge>
+                <Badge variant="secondary" className="bg-purple-500/20 text-purple-200">VR</Badge>
+              </div>
+              <Button variant="outline" className="w-full border-purple-400/50 text-purple-300 hover:bg-purple-500/10" asChild>
+                <Link to="/docs/integrations/vrchat">
+                  View Documentation
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-blue-950/50 to-cyan-950/50 border-blue-500/30 hover:border-blue-400/60 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-white">
+                <Gamepad2 className="h-6 w-6 text-blue-400" />
+                RecRoom
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <CardDescription className="text-gray-300">
+                Create social games using Circuits visual scripting for VR and mobile
+              </CardDescription>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="bg-blue-500/20 text-blue-200">Circuits</Badge>
+                <Badge variant="secondary" className="bg-blue-500/20 text-blue-200">VR + Mobile</Badge>
+                <Badge variant="secondary" className="bg-blue-500/20 text-blue-200">Social</Badge>
+              </div>
+              <Button variant="outline" className="w-full border-blue-400/50 text-blue-300 hover:bg-blue-500/10" asChild>
+                <Link to="/docs/integrations/recroom">
+                  View Documentation
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-slate-900/80 to-slate-800/50 border-slate-600/30 hover:border-slate-500/60 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-white">
+                <Boxes className="h-6 w-6 text-gray-400" />
+                More Platforms
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <CardDescription className="text-gray-300">
+                Roblox, Fortnite, Minecraft, Unity, Unreal, and more coming soon
+              </CardDescription>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="bg-gray-500/20 text-gray-200">Roblox</Badge>
+                <Badge variant="secondary" className="bg-gray-500/20 text-gray-200">Unity</Badge>
+                <Badge variant="secondary" className="bg-gray-500/20 text-gray-200">Unreal</Badge>
+              </div>
+              <Button variant="outline" className="w-full border-gray-400/50 text-gray-300 hover:bg-gray-500/10" disabled>
+                Coming Soon
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </section>
 
       <section id="architecture" className="grid gap-6 lg:grid-cols-2">

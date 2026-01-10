@@ -85,7 +85,7 @@ const features = [
   {
     icon: Layers,
     title: "Cross-Platform Integration Layer",
-    description: "One unified API to build across Roblox, Minecraft, Meta Horizon, Fortnite, Zepeto, and more—no more managing separate platform SDKs or gated gardens",
+    description: "One unified API to build across Roblox, VRChat, RecRoom, Minecraft, Meta Horizon, Fortnite, and Zepeto—no more managing separate platform SDKs or gated gardens",
   },
   {
     icon: Code2,
@@ -110,7 +110,7 @@ const features = [
   {
     icon: Rocket,
     title: "Ship Everywhere, Fast",
-    description: "150+ cross-platform code examples, pre-built templates, OAuth integration, Supabase backend, and one-command deployment to every metaverse",
+    description: "150+ cross-platform code examples, pre-built templates for VRChat, RecRoom, Roblox, and more—OAuth integration, Supabase backend, and one-command deployment to every metaverse",
   },
 ];
 

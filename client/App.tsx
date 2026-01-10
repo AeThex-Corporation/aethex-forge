@@ -44,6 +44,8 @@ import DocsApiReference from "./pages/docs/DocsApiReference";
 import DocsCli from "./pages/docs/DocsCli";
 import DocsExamples from "./pages/docs/DocsExamples";
 import DocsIntegrations from "./pages/docs/DocsIntegrations";
+import VRChatIntegration from "./pages/docs/integrations/VRChat";
+import RecRoomIntegration from "./pages/docs/integrations/RecRoom";
 import DocsCurriculum from "./pages/docs/DocsCurriculum";
 import DocsCurriculumEthos from "./pages/docs/DocsCurriculumEthos";
 import EthosGuild from "./pages/community/EthosGuild";
@@ -615,6 +617,14 @@ const App = () => (
                           <Route
                             path="integrations"
                             element={<DocsIntegrations />}
+                          />
+                          <Route
+                            path="integrations/vrchat"
+                            element={<VRChatIntegration />}
+                          />
+                          <Route
+                            path="integrations/recroom"
+                            element={<RecRoomIntegration />}
                           />
                         </Route>
                         <Route path="/tutorials" element={<Tutorials />} />
