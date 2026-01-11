@@ -19,6 +19,7 @@ import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import Link from "./pages/Link";
 import GameDevelopment from "./pages/GameDevelopment";
 import MentorshipPrograms from "./pages/MentorshipPrograms";
 import ResearchLabs from "./pages/ResearchLabs";
@@ -293,6 +294,7 @@ const App = () => (
                           element={<ProfilePassport />}
                         />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/link" element={<Link />} />
                         <Route path="/signup" element={<SignupRedirect />} />
                         <Route
                           path="/reset-password"
