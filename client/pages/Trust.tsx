@@ -30,12 +30,11 @@ export default function Trust() {
             <Badge variant="outline" className="mx-auto">
               Transparency
             </Badge>
-            <h1 className="text-4xl font-bold text-gradient-purple">
+            <h1 className="text-3xl font-bold text-gradient-purple">
               Company & Governance
             </h1>
             <p className="text-muted-foreground max-w-3xl mx-auto">
-              Clear, verifiable information about AeThex: leadership, legal
-              entity, jurisdiction, policies, and status.
+              Leadership, legal entity, jurisdiction, policies, and status.
             </p>
           </div>
 
@@ -91,17 +90,13 @@ export default function Trust() {
               <CardContent className="text-sm text-muted-foreground space-y-2">
                 <ul className="list-disc pl-5 space-y-1">
                   <li>
-                    Phased disclosures cadence: Phase 1 (executive roster +
-                    roles), Phase 2 (board/advisor bios and affiliations), Phase
-                    3 (jurisdictional filings & compliance references).
+                    Phase 1: executive roster & roles | Phase 2: board/advisor profiles | Phase 3: compliance filings.
                   </li>
                   <li>
-                    Operational policies and escalation paths are documented in
-                    the Transparency hub.
+                    Policies and escalation paths in Transparency hub.
                   </li>
                   <li>
-                    Verified channels: website, docs, and official social
-                    accounts noted below.
+                    Verified channels: website, docs, and social accounts.
                   </li>
                 </ul>
                 <div className="text-xs text-muted-foreground/80">

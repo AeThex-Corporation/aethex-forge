@@ -84,12 +84,11 @@ export default function Downloads() {
             <Badge variant="outline" className="mb-4 border-purple-500/50 text-purple-400">
               Version {CURRENT_VERSION}
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white via-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-purple-400 to-blue-400 bg-clip-text text-transparent">
               Download AeThex Desktop
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The AeThex Desktop Terminal brings the full power of the platform to your computer. 
-              Access realms, manage projects, and stay connected with your community.
+              Desktop Terminal brings full platform access to your computer. Manage projects and stay connected.
             </p>
           </div>
 

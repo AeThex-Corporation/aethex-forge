@@ -22,25 +22,25 @@ export default function Careers() {
       icon: <Microscope className="h-6 w-6" />,
       title: "Innovation First",
       description:
-        "We push boundaries and explore cutting-edge technologies daily",
+        "Push boundaries and explore cutting-edge technologies",
     },
     {
       icon: <Heart className="h-6 w-6" />,
       title: "People Matter",
       description:
-        "We invest in our team's growth, health, and work-life balance",
+        "Invest in team growth, health, and work-life balance",
     },
     {
       icon: <Zap className="h-6 w-6" />,
       title: "Ship It",
       description:
-        "We believe in execution over perfection—iterate and learn fast",
+        "Execute over perfection—iterate and learn fast",
     },
     {
       icon: <Users className="h-6 w-6" />,
       title: "Collaboration",
       description:
-        "Great ideas come from diverse teams working together openly",
+        "Great ideas come from diverse teams working openly",
     },
   ];
 
@@ -49,8 +49,8 @@ export default function Careers() {
     "Comprehensive health insurance (medical, dental, vision)",
     "Unlimited PTO",
     "Remote-first, work from anywhere",
-    "Equipment budget for your home office",
-    "Professional development fund ($5k/year)",
+    "Equipment budget",
+    "Professional development ($5k/year)",
     "Team offsites & retreats",
     "Stock options",
     "Parental leave",
@@ -67,7 +67,7 @@ export default function Careers() {
       level: "Senior",
       type: "Full-time",
       description:
-        "Lead architecture and implementation of next-generation platform systems",
+        "Lead platform architecture and implementation",
     },
     {
       title: "Game Developer",
@@ -75,7 +75,7 @@ export default function Careers() {
       location: "Remote",
       level: "Mid-level",
       type: "Full-time",
-      description: "Ship games monthly with our world-class production team",
+      description: "Ship games monthly with world-class team",
     },
     {
       title: "Research Scientist",
@@ -84,7 +84,7 @@ export default function Careers() {
       level: "Senior",
       type: "Full-time",
       description:
-        "Explore AI/ML applications in game development and interactive experiences",
+        "Explore AI/ML in game development and interactive experiences",
     },
     {
       title: "Product Manager",
@@ -93,7 +93,7 @@ export default function Careers() {
       level: "Mid-level",
       type: "Full-time",
       description:
-        "Shape the future of our developer tools and platforms",
+        "Shape the future of developer tools and platforms",
     },
     {
       title: "UX/UI Designer",
@@ -102,7 +102,7 @@ export default function Careers() {
       level: "Mid-level",
       type: "Full-time",
       description:
-        "Design beautiful, intuitive interfaces for millions of developers",
+        "Design beautiful interfaces for developers",
     },
     {
       title: "DevOps Engineer",
@@ -110,7 +110,7 @@ export default function Careers() {
       location: "Remote",
       level: "Senior",
       type: "Full-time",
-      description: "Build the infrastructure that powers AeThex at scale",
+      description: "Build infrastructure that powers AeThex at scale",
     },
   ];
 
