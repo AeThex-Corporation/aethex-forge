@@ -95,17 +95,17 @@ export default function Investors() {
     {
       icon: <Layers className="h-5 w-5" />,
       title: "Three Engines",
-      desc: "Studios (services), Platform (community), and Labs (R&D) compound value together.",
+      desc: "Studios, Platform, and Labs compound value.",
     },
     {
       icon: <Shield className="h-5 w-5" />,
       title: "Trust & Quality",
-      desc: "Security-first engineering and measurable delivery keep churn low and NPS high.",
+      desc: "Security-first engineering with measurable delivery.",
     },
     {
       icon: <Target className="h-5 w-5" />,
       title: "Focused Markets",
-      desc: "High-signal segments: games, real-time apps, and experience platforms.",
+      desc: "Games, real-time apps, and experience platforms.",
     },
   ];
 
@@ -134,13 +134,11 @@ export default function Investors() {
                   <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-red-300" />
                   Investor Relations
                 </Badge>
-                <h1 className="text-4xl font-black tracking-tight text-red-300 sm:text-5xl lg:text-6xl">
+                <h1 className="text-3xl font-black tracking-tight text-red-300 sm:text-4xl lg:text-5xl">
                   AeThex | Building With Conviction
                 </h1>
                 <p className="text-lg text-red-100/90 sm:text-xl">
-                  We craft reliable, loved software and the platform that powers
-                  creators. Explore our thesis, traction, and how to participate
-                  in compliant offerings.
+                  Reliable software and the platform powering creators. Explore our thesis and participation options.
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row">
                   <Button
