@@ -177,11 +177,11 @@ export default function Labs() {
                     Advanced Research & Development
                   </Badge>
 
-                  <h1 className={`text-5xl md:text-6xl lg:text-7xl font-black text-yellow-300 leading-tight ${theme.fontClass}`}>
+                  <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold text-yellow-300 leading-tight ${theme.fontClass}`}>
                     The Innovation Engine
                   </h1>
 
-                  <p className="text-xl md:text-2xl text-yellow-100/80 max-w-3xl mx-auto leading-relaxed">
+                  <p className="text-lg md:text-xl text-yellow-100/80 max-w-3xl mx-auto leading-relaxed">
                     Breakthrough R&D in software, AI, and games
                   </p>
 

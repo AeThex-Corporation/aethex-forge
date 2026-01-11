@@ -304,14 +304,14 @@ export default function Dashboard() {
             </div>
             <Button
               onClick={() => navigate("/login")}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white text-lg py-6"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-6"
             >
               Sign In to Dashboard
             </Button>
             <Button
               onClick={() => navigate("/onboarding")}
               variant="outline"
-              className="w-full text-lg py-6 border-purple-500/30 text-purple-300 hover:bg-purple-500/10"
+              className="w-full py-6 border-purple-500/30 text-purple-300 hover:bg-purple-500/10"
             >
               Create New Account
             </Button>
@@ -331,10 +331,10 @@ export default function Dashboard() {
           <div className="space-y-4 animate-slide-down">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="space-y-2">
-                <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
+                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
                   Dashboard
                 </h1>
-                <p className="text-gray-400 text-lg">
+                <p className="text-gray-400">
                   Welcome back,{" "}
                   <span className="text-purple-300 font-semibold">
                     {profile?.full_name || user.email?.split("@")[0]}

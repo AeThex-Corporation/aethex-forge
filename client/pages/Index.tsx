@@ -237,7 +237,7 @@ export default function Index() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-none">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-none">
                 Build on
                 <br />
                 <span className="relative inline-block mt-4">
@@ -264,7 +264,7 @@ export default function Index() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-2xl md:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-light"
+              className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-light"
             >
               The <span className="text-primary font-bold">integration layer</span> connecting all metaverse platforms.
               <br className="hidden md:block" />
@@ -313,19 +313,19 @@ export default function Index() {
               <Link to="/dev-platform/quick-start">
                 <Button 
                   size="lg" 
-                  className="text-xl px-10 h-16 bg-primary hover:bg-primary/90 shadow-[0_0_40px_rgba(168,85,247,0.6)] hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] hover:scale-105 transition-all duration-300 font-black uppercase tracking-wide border-2 border-primary/50"
+                  className="text-base px-8 h-12 bg-primary hover:bg-primary/90 shadow-[0_0_40px_rgba(168,85,247,0.6)] hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] hover:scale-105 transition-all duration-300 font-bold uppercase tracking-wide border-2 border-primary/50"
                 >
                   Start Building
-                  <Rocket className="w-6 h-6 ml-3" />
+                  <Rocket className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link to="/dev-platform/api-reference">
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="text-xl px-10 h-16 backdrop-blur-xl bg-background/50 border-2 border-primary/40 hover:bg-primary/10 hover:border-primary/60 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)] hover:scale-105 transition-all duration-300 font-black uppercase tracking-wide"
+                  className="text-base px-8 h-12 backdrop-blur-xl bg-background/50 border-2 border-primary/40 hover:bg-primary/10 hover:border-primary/60 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)] hover:scale-105 transition-all duration-300 font-bold uppercase tracking-wide"
                 >
-                  <BookOpen className="w-6 h-6 mr-3" />
+                  <BookOpen className="w-5 h-5 mr-2" />
                   Explore APIs
                 </Button>
               </Link>
@@ -572,20 +572,20 @@ export default function Index() {
                 <Link to="/dev-platform/dashboard">
                   <Button 
                     size="lg" 
-                    className="text-xl px-10 h-16 bg-primary hover:bg-primary/90 shadow-[0_0_40px_rgba(168,85,247,0.6)] hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] hover:scale-105 transition-all duration-300 font-black uppercase tracking-wide border-2 border-primary/50"
+                    className="text-base px-8 h-12 bg-primary hover:bg-primary/90 shadow-[0_0_40px_rgba(168,85,247,0.6)] hover:shadow-[0_0_60px_rgba(168,85,247,0.8)] hover:scale-105 transition-all duration-300 font-bold uppercase tracking-wide border-2 border-primary/50"
                   >
                     Get Your API Key
-                    <ArrowRight className="w-6 h-6 ml-3" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
                 <Link to="/realms">
                   <Button 
                     size="lg" 
                     variant="outline" 
-                    className="text-xl px-10 h-16 backdrop-blur-xl bg-background/50 border-2 border-primary/40 hover:bg-primary/10 hover:border-primary/60 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)] hover:scale-105 transition-all duration-300 font-black uppercase tracking-wide"
+                    className="text-base px-8 h-12 backdrop-blur-xl bg-background/50 border-2 border-primary/40 hover:bg-primary/10 hover:border-primary/60 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)] hover:scale-105 transition-all duration-300 font-bold uppercase tracking-wide"
                   >
                     Explore Realms
-                    <Boxes className="w-6 h-6 ml-3" />
+                    <Boxes className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
               </motion.div>

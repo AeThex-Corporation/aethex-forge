@@ -91,7 +91,7 @@ export default function Realms() {
             Choose Your{" "}
             <span className="text-primary drop-shadow-[0_0_25px_rgba(168,85,247,0.8)]">Realm</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-light">
             Unique tools and communities for every role
           </p>
         </motion.div>

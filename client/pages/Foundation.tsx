@@ -112,11 +112,11 @@ export default function Foundation() {
                 501(c)(3) Non-Profit Organization
               </Badge>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-red-300 via-pink-300 to-red-300 bg-clip-text text-transparent">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-red-300 via-pink-300 to-red-300 bg-clip-text text-transparent">
                 AeThex Foundation
               </h1>
 
-              <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
                 501(c)(3) non-profit advancing game development
               </p>
 

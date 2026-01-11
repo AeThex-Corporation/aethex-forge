@@ -154,11 +154,11 @@ export default function GameForge() {
                     Foundation's Game Production Studio
                   </Badge>
 
-                  <h1 className={`text-5xl md:text-6xl lg:text-7xl font-black text-green-300 leading-tight ${theme.fontClass}`}>
+                  <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold text-green-300 leading-tight ${theme.fontClass}`}>
                     Ship Games Every Month
                   </h1>
 
-                  <p className="text-xl md:text-2xl text-green-100/80 max-w-3xl mx-auto leading-relaxed">
+                  <p className="text-lg md:text-xl text-green-100/80 max-w-3xl mx-auto leading-relaxed">
                     Ship real games in 30-day sprints
                   </p>
 
