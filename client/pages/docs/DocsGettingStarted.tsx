@@ -58,14 +58,14 @@ const prerequisites = [
   {
     title: "AeThex Account",
     description:
-      "You will need an active AeThex account to access the dashboard, API console, and deployment tools.",
+      "Active account required for dashboard and API access.",
     actionLabel: "Create account",
     actionHref: "/onboarding",
   },
   {
     title: "Node.js 18+ & npm",
     description:
-      "The AeThex CLI relies on modern Node runtimes. Verify your local toolchain before continuing.",
+      "Modern Node runtime required for CLI.",
     actionLabel: "Verify environment",
     actionHref: "https://nodejs.org/en/download",
   },
@@ -82,13 +82,13 @@ const setupSteps = [
   {
     title: "Install the CLI",
     description:
-      "The CLI bootstraps local projects, provisions cloud environments, and manages deployments.",
+      "Bootstrap projects and manage deployments.",
     command: "npm install -g aethex",
   },
   {
     title: "Authenticate",
     description:
-      "Log in with your AeThex credentials or paste a personal access token from the dashboard.",
+      "Log in with credentials or access token.",
     command: "aethex login",
   },
   {
@@ -196,8 +196,8 @@ export default function DocsGettingStarted() {
           <Rocket className="mr-2 h-3 w-3" />
           Getting Started
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">
-          Launch your first AeThex project in under 30 minutes
+        <h2 className="text-2xl font-semibold text-white">
+          Launch your first project in 30 minutes
         </h2>
         <p className="text-gray-300 max-w-3xl">
           This guide walks through the minimum setup required to ship a

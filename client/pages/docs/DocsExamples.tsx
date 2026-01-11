@@ -22,7 +22,7 @@ const exampleSnippets = [
   {
     title: "Server-side matchmaking",
     description:
-      "Quickly assemble a matchmaking service that uses AeThex queues, weighting rules, and player telemetry streams.",
+      "Build matchmaking with queues, weighting rules, and telemetry.",
     language: "TypeScript",
     href: "https://github.com/aethex/examples/tree/main/matchmaking-service",
     code: `import { createQueue, matchPlayers } from "@aethex/matchmaking";
@@ -54,7 +54,7 @@ export async function enqueuePlayer(player) {
   {
     title: "Realtime activity overlays",
     description:
-      "Broadcast live deployment and incident updates to your in-game HUD or operations dashboard using AeThex events.",
+      "Broadcast deployment updates to in-game HUD or dashboards.",
     language: "React",
     href: "https://github.com/aethex/examples/tree/main/realtime-overlay",
     code: `import { useEffect, useState } from "react";
@@ -142,13 +142,11 @@ export default function DocsExamples() {
           <Blocks className="mr-2 h-3 w-3" />
           Examples & Templates
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">
-          Production-ready patterns you can copy
+        <h2 className="text-2xl font-semibold text-white">
+          Code examples and starter templates
         </h2>
         <p className="text-gray-300 max-w-3xl">
-          Explore curated examples covering backend services, realtime overlays,
-          automation scripts, and workflow integrations. Each project includes
-          detailed READMEs, infrastructure diagrams, and deployment runbooks.
+          Production-ready examples for backend services, real-time overlays, automation, and integrations.
         </p>
       </section>
 

@@ -101,15 +101,11 @@ export default function DocsIntegrations() {
           <Puzzle className="mr-2 h-3 w-3" />
           Integrations
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">
-          Connecting partner services to AeThex
+        <h2 className="text-2xl font-semibold text-white">
+          Third-party integrations and connectors
         </h2>
         <p className="text-gray-300 max-w-3xl">
-          AeThex Integrations wrap third-party analytics, identity, payments,
-          and live-ops tooling behind a consistent runtime, security model, and
-          visual system. Use this guide to register new connectors, surface
-          partner UI in product flows, and automate data exchange without
-          hand-rolled plumbing.
+          Connect analytics, identity, payments, and live-ops tools with unified security and data exchange.
         </p>
       </section>
 
@@ -135,7 +131,7 @@ export default function DocsIntegrations() {
             </CardHeader>
             <CardContent className="space-y-4">
               <CardDescription className="text-gray-300">
-                Open-source MIT-licensed engine with GDScript and C# support
+                MIT-licensed engine with GDScript and C# support
               </CardDescription>
               <div className="flex flex-wrap gap-2">
                 <Badge variant="secondary" className="bg-blue-500/20 text-blue-200">GDScript</Badge>
@@ -160,7 +156,7 @@ export default function DocsIntegrations() {
             </CardHeader>
             <CardContent className="space-y-4">
               <CardDescription className="text-gray-300">
-                Powerful 2D engine with GML scripting for rapid game development
+                2D engine with GML scripting for rapid development
               </CardDescription>
               <div className="flex flex-wrap gap-2">
                 <Badge variant="secondary" className="bg-green-500/20 text-green-200">GML</Badge>

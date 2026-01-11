@@ -28,7 +28,7 @@ const platformPillars = [
   {
     title: "Unified dashboard",
     description:
-      "Monitor deployments, live metrics, and release health from a single control surface. Jump into incidents, approvals, and audit trails without leaving the workspace.",
+      "Monitor deployments, metrics, and incidents from a unified dashboard.",
     icon: LayoutDashboard,
     href: "/dashboard",
     cta: "Visit dashboard",
@@ -36,7 +36,7 @@ const platformPillars = [
   {
     title: "AeThex Passport",
     description:
-      "Give builders portable identity with verified skills, achievements, and cross-product progress synced to their Passport profile.",
+      "Portable identity with verified skills and achievements.",
     icon: IdCard,
     href: "/passport/me",
     cta: "Open passport",
@@ -169,14 +169,11 @@ export default function DocsPlatform() {
           <Sparkles className="mr-2 h-3 w-3" />
           Platform Experience
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">
-          Deliver cohesive player and builder journeys on AeThex
+        <h2 className="text-2xl font-semibold text-white">
+          Platform overview and core features
         </h2>
         <p className="text-gray-300 max-w-3xl">
-          Beyond deployment pipelines and CLI tooling, AeThex bundles
-          collaboration, identity, and live-ops systems so teams can craft
-          unforgettable experiences. Use this guide to orient new stakeholders
-          and plan end-to-end platform rollouts.
+          AeThex combines deployment pipelines, collaboration tools, identity systems, and live-ops features for building complete experiences.
         </p>
       </section>
 

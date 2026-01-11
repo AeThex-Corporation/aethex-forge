@@ -88,14 +88,11 @@ export default function DocsCli() {
           <Terminal className="mr-2 h-3 w-3" />
           CLI Tools
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">
-          Operate AeThex from the command line
+        <h2 className="text-2xl font-semibold text-white">
+          Command-line tools for development and deployment
         </h2>
         <p className="text-gray-300 max-w-3xl">
-          The AeThex CLI automates local development, environment management,
-          and production deployments. It is built with stability in mind,
-          featuring transactional deploys, shell-friendly output, and native
-          support for Linux, macOS, and Windows.
+          Automate local development, environment management, and production deployments with cross-platform support.
         </p>
       </section>
 

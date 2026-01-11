@@ -110,13 +110,11 @@ export default function DocsApiReference() {
           <ServerCog className="mr-2 h-3 w-3" />
           API Reference
         </Badge>
-        <h2 className="text-3xl font-semibold text-white">
-          Integrate programmatically with the AeThex API
+        <h2 className="text-2xl font-semibold text-white">
+          REST API reference and integration guide
         </h2>
         <p className="text-gray-300 max-w-3xl">
-          The REST API exposes every core capability of the AeThex platform.
-          Authenticate with OAuth 2.1 or personal access tokens, call idempotent
-          endpoints, and subscribe to webhooks to react to changes in real time.
+          Authenticate with OAuth or access tokens, call idempotent endpoints, and subscribe to webhooks for real-time updates.
         </p>
       </section>
 

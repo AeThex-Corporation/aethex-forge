@@ -70,7 +70,7 @@ const curriculumModules: CurriculumModule[] = [
     id: "foundations",
     title: "AeThex Foundations",
     description:
-      "Establish core mastery of the AeThex platform, from environment setup to shipping your first interactive experience.",
+      "Master platform basics from setup to deployment.",
     duration: "2.5 hrs",
     level: "foundation",
     focus: [
@@ -129,7 +129,7 @@ const curriculumModules: CurriculumModule[] = [
     id: "builder",
     title: "Product Builder Track",
     description:
-      "Design and scale collaborative communities with AeThex real-time tooling, automations, and membership flows.",
+      "Build collaborative communities with real-time tools and automations.",
     duration: "3 hrs",
     level: "builder",
     focus: ["Community feed", "Workflow automations", "Admin control center"],
@@ -184,7 +184,7 @@ const curriculumModules: CurriculumModule[] = [
     id: "advanced",
     title: "Advanced Ops & Ecosystems",
     description:
-      "Engineer large-scale AeThex deployments that blend AI-guided creation, marketplace integrations, and monetization.",
+      "Scale deployments with AI, marketplace, and monetization features.",
     duration: "3.5 hrs",
     level: "advanced",
     focus: ["AI pipelines", "Marketplace", "Monetization"],
