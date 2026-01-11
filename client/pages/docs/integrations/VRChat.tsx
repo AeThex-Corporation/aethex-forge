@@ -232,7 +232,7 @@ public class VRChatLeaderboard : UdonSharpBehaviour
               </li>
               <li className="flex gap-3">
                 <span className="text-purple-400 font-bold">3.</span>
-                <span>Player visits <code className="bg-purple-950/50 px-2 py-1 rounded">aethex.dev/link</code> and enters code</span>
+                <span>Player visits <code className="bg-purple-950/50 px-2 py-1 rounded">aethex.dev/dashboard?tab=link-device</code> and enters code</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-purple-400 font-bold">4.</span>
@@ -252,7 +252,7 @@ public void OnAuthButtonPressed()
     {
         // Display 6-digit code to player in-world
         authCodeText.text = $"Code: {response.code}";
-        Debug.Log($"Player should visit: aethex.dev/link?code={response.code}");
+        Debug.Log($"Player should visit: aethex.dev/dashboard?tab=link-device&code={response.code}");
         
         // Poll for authentication completion
         StartCoroutine(PollAuthStatus(response.code));

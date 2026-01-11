@@ -338,7 +338,7 @@ export async function updateScore(req, res) {
                 <div>
                   <h4 className="text-white font-semibold mb-1">Player Links Account</h4>
                   <p className="text-gray-400 text-sm">
-                    Player visits <code className="bg-blue-950/50 px-1 rounded">aethex.dev/link</code>, enters code, 
+                    Player visits <code className="bg-blue-950/50 px-1 rounded">aethex.dev/dashboard?tab=link-device</code>, enters code, 
                     RecRoom receives webhook with Passport ID
                   </p>
                 </div>
