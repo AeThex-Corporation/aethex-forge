@@ -123,14 +123,12 @@ export default function Nexus() {
                   AeThex Nexus
                 </Badge>
 
-                <h1 className="text-4xl font-black tracking-tight text-purple-300 sm:text-5xl lg:text-6xl">
+                <h1 className="text-4xl font-bold tracking-tight text-purple-300 sm:text-5xl">
                   The Talent Nexus
                 </h1>
 
-                <p className="text-lg text-purple-100/90 sm:text-xl">
-                  Connect creators with opportunities across all AeThex arms.
-                  Find talent, post jobs, and build amazing teams in a unified
-                  marketplace powered by both AeThex and DevConnect.
+                <p className="text-base text-purple-100/90">
+                  Connect creators with opportunities across all AeThex arms
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">

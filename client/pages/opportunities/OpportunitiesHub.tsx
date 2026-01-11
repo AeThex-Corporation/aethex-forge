@@ -115,13 +115,12 @@ export default function OpportunitiesHub() {
               <div className="text-center mb-8">
                 <div className="inline-flex items-center justify-center gap-2 mb-4">
                   <Briefcase className="h-8 w-8 text-cyan-400" />
-                  <h1 className="text-4xl lg:text-5xl font-black text-white">
+                  <h1 className="text-4xl font-bold text-white">
                     Opportunities
                   </h1>
                 </div>
-                <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6">
-                  Find jobs, collaborations, and research opportunities across
-                  all AeThex arms.
+                <p className="text-base text-gray-300 max-w-2xl mx-auto mb-6">
+                  Find jobs and collaborations across AeThex
                 </p>
                 <div className="flex justify-center gap-3">
                   <Button

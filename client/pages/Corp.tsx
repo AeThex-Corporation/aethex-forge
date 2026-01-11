@@ -78,8 +78,8 @@ export default function Corp() {
 
   const services = [
     {
-      title: "Custom Software Development",
-      description: "Bespoke applications built for enterprise scale",
+      title: "Custom Software",
+      description: "Enterprise applications",
       icon: Code,
       examples: [
         "Web & mobile applications",
@@ -90,8 +90,8 @@ export default function Corp() {
       color: "from-blue-500 to-cyan-500",
     },
     {
-      title: "Technology Consulting",
-      description: "Strategic guidance for digital transformation",
+      title: "Tech Consulting",
+      description: "Digital transformation",
       icon: Briefcase,
       examples: [
         "Architecture design",
@@ -102,8 +102,8 @@ export default function Corp() {
       color: "from-purple-500 to-pink-500",
     },
     {
-      title: "Game Development Services",
-      description: "Specialized expertise for gaming companies",
+      title: "Game Development",
+      description: "Metaverse & gaming",
       icon: Rocket,
       examples: [
         "Full game production",

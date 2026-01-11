@@ -124,18 +124,14 @@ export default function About() {
         {/* Hero */}
         <section className="py-16 lg:py-24 border-b border-gray-800">
           <div className="container mx-auto max-w-6xl px-4">
-            <h1 className="text-5xl lg:text-7xl font-black mb-6">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-6">
               Building an Integrated{" "}
               <span className="bg-gradient-to-r from-yellow-300 via-blue-300 to-red-300 bg-clip-text text-transparent">
                 Ecosystem
               </span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl">
-              AeThex operates as a unified four-pillar organization that
-              combines speculative innovation, profitable operations, community
-              impact, and specialized talent acquisition. This structure creates
-              multiple reinforcing competitive moats while managing risk and
-              maintaining investor confidence.
+            <p className="text-lg text-gray-300 max-w-3xl">
+              Four-pillar ecosystem combining innovation, operations, community, and talent
             </p>
           </div>
         </section>

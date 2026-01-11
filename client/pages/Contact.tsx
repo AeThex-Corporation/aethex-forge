@@ -66,12 +66,11 @@ export default function Contact() {
         <div className="container mx-auto px-4 max-w-5xl space-y-10">
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <div className="space-y-3">
-              <h1 className="text-4xl font-bold text-gradient-purple">
+              <h1 className="text-3xl font-bold text-gradient-purple">
                 Contact Us
               </h1>
               <p className="text-muted-foreground">
-                Have a project or question? We typically respond within 1–2
-                business days.
+                We respond within 1–2 business days
               </p>
               <Card className="bg-card/50 border-border/50">
                 <CardContent className="p-6 space-y-3">

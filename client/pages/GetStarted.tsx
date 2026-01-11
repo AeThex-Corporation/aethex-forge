@@ -132,20 +132,20 @@ export default function GetStarted() {
 
   const platformFeatures = [
     {
-      title: "XP & Leveling System",
-      description: "Earn XP for daily logins, completing your profile, creating posts, and earning badges. Level up to unlock new features and recognition.",
+      title: "XP & Leveling",
+      description: "Earn XP and level up to unlock features",
       icon: Trophy,
       color: "from-yellow-500 to-amber-600",
     },
     {
-      title: "AI Intelligent Agents",
-      description: "Access 10 specialized AI personas for guidance on networking, game development, ethics, architecture, and more.",
+      title: "AI Agents",
+      description: "10 specialized AI personas for guidance",
       icon: Bot,
       color: "from-purple-500 to-violet-600",
     },
     {
       title: "Creator Passports",
-      description: "Build a portable profile that aggregates your achievements, verified skills, project history, and mentorship contributions.",
+      description: "Portable profile with achievements and skills",
       icon: IdCard,
       color: "from-cyan-500 to-blue-600",
     },
