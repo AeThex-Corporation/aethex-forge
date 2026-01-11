@@ -27,7 +27,7 @@ const ecosystemPillars = [
   {
     icon: Boxes,
     title: "Six Realms",
-    description: "Nexus, GameForge, Foundation, Labs, Corp, and Staff—each with unique APIs and capabilities",
+    description: "Specialized APIs for every use case",
     href: "/realms",
     gradient: "from-purple-500 via-purple-600 to-indigo-600",
     accentColor: "hsl(var(--primary))",
@@ -35,7 +35,7 @@ const ecosystemPillars = [
   {
     icon: Database,
     title: "Developer APIs",
-    description: "Comprehensive REST APIs for users, content, achievements, and more",
+    description: "REST APIs for all platforms",
     href: "/dev-platform/api-reference",
     gradient: "from-blue-500 via-blue-600 to-cyan-600",
     accentColor: "hsl(var(--primary))",
@@ -43,7 +43,7 @@ const ecosystemPillars = [
   {
     icon: Terminal,
     title: "SDK & Tools",
-    description: "TypeScript SDK, CLI tools, and pre-built templates to ship faster",
+    description: "Ship faster with TypeScript SDK",
     href: "/dev-platform/quick-start",
     gradient: "from-cyan-500 via-teal-600 to-emerald-600",
     accentColor: "hsl(var(--primary))",
@@ -51,7 +51,7 @@ const ecosystemPillars = [
   {
     icon: Layers,
     title: "Marketplace",
-    description: "Premium integrations, plugins, and components from the community",
+    description: "Premium plugins & integrations",
     href: "/dev-platform/marketplace",
     gradient: "from-emerald-500 via-green-600 to-lime-600",
     accentColor: "hsl(var(--primary))",
@@ -59,7 +59,7 @@ const ecosystemPillars = [
   {
     icon: Users,
     title: "Community",
-    description: "Join 12,000+ developers building on AeThex",
+    description: "12K+ developers building together",
     href: "/community",
     gradient: "from-amber-500 via-orange-600 to-red-600",
     accentColor: "hsl(var(--primary))",
@@ -67,7 +67,7 @@ const ecosystemPillars = [
   {
     icon: Trophy,
     title: "Opportunities",
-    description: "Get paid to build—contracts, bounties, and commissions",
+    description: "Get paid to build",
     href: "/opportunities",
     gradient: "from-pink-500 via-rose-600 to-red-600",
     accentColor: "hsl(var(--primary))",
@@ -84,33 +84,33 @@ const stats = [
 const features = [
   {
     icon: Layers,
-    title: "Cross-Platform Integration Layer",
-    description: "One unified API to build across Roblox, VRChat, RecRoom, Spatial, Decentraland, The Sandbox, Minecraft, Meta Horizon, Fortnite, and Zepeto—no more managing separate platform SDKs or gated gardens",
+    title: "Cross-Platform Integration",
+    description: "One API for all metaverse platforms",
   },
   {
     icon: Code2,
-    title: "Enterprise-Grade Developer Tools",
-    description: "TypeScript SDK, REST APIs, unified authentication, cross-platform achievements, content delivery, and CLI tools—all integrated and production-ready",
+    title: "Enterprise Developer Tools",
+    description: "Production-ready SDK and APIs",
   },
   {
     icon: Gamepad2,
     title: "Six Specialized Realms",
-    description: "Nexus (social hub), GameForge (games), Foundation (education), Labs (AI/innovation), Corp (business), Staff (governance)—each with unique APIs and tools",
+    description: "Unique APIs for every use case",
   },
   {
     icon: Trophy,
     title: "Monetize Your Skills",
-    description: "Get paid to build—access contracts, bounties, and commissions. 12K+ developers earning while creating cross-platform games, apps, and integrations",
+    description: "12K+ developers earning on AeThex",
   },
   {
     icon: Users,
-    title: "Thriving Creator Economy",
-    description: "Join squads, collaborate on projects, share assets in the marketplace that work across all platforms, and grow your reputation across all six realms",
+    title: "Creator Economy",
+    description: "Collaborate and grow your reputation",
   },
   {
     icon: Rocket,
-    title: "Ship Everywhere, Fast",
-    description: "150+ cross-platform code examples, pre-built templates for VRChat, RecRoom, Spatial, Decentraland, The Sandbox, Roblox, and more—OAuth integration, Supabase backend, and one-command deployment to every metaverse",
+    title: "Ship Fast",
+    description: "150+ examples and one-click deployment",
   },
 ];
 
@@ -216,7 +216,7 @@ export default function Index() {
         <div className="absolute bottom-0 right-0 w-64 h-64 border-b-2 border-r-2 border-primary/30" />
       </div>
 
-      <div className="relative space-y-32 pb-32">
+      <div className="relative space-y-40 pb-40">
         <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
           <div className="relative text-center max-w-6xl mx-auto space-y-10 px-4">
             <motion.div
@@ -376,19 +376,19 @@ export default function Index() {
           </motion.div>
         </section>
 
-        <section className="space-y-12 px-4">
+        <section className="space-y-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center space-y-4"
+            className="text-center space-y-6"
           >
             <h2 className="text-5xl md:text-6xl font-black text-primary">
               The AeThex Ecosystem
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Six interconnected realms, each with unique capabilities and APIs to power your applications
+              Six interconnected realms with unique APIs
             </p>
           </motion.div>
 
@@ -449,23 +449,23 @@ export default function Index() {
           </div>
         </section>
 
-        <section className="space-y-12 px-4">
+        <section className="space-y-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center space-y-4"
+            className="text-center space-y-6"
           >
             <h2 className="text-5xl md:text-6xl font-black text-primary">
               Why Build on AeThex?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Join a growing ecosystem designed for creators, developers, and entrepreneurs
+              Built for creators and developers
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
@@ -474,13 +474,13 @@ export default function Index() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
               >
-                <Card className="p-8 space-y-6 backdrop-blur-xl bg-background/50 border-primary/20 hover:border-primary/40 hover:scale-105 transition-all duration-300 h-full">
+                <Card className="p-10 space-y-8 backdrop-blur-xl bg-background/50 border-primary/20 hover:border-primary/40 hover:scale-105 transition-all duration-300 h-full">
                   <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-2xl shadow-primary/50">
                     <feature.icon className="w-8 h-8 text-primary-foreground" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <h3 className="text-2xl font-bold">{feature.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-lg text-muted-foreground">
                       {feature.description}
                     </p>
                   </div>

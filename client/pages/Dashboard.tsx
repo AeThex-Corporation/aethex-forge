@@ -326,7 +326,7 @@ export default function Dashboard() {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl space-y-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl space-y-12">
           {/* Header Section */}
           <div className="space-y-4 animate-slide-down">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -413,15 +413,15 @@ export default function Dashboard() {
             <TabsContent value="realms" className="space-y-6 animate-fade-in">
               {/* Developer CTA Card */}
               {user && (
-                <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:border-primary/40 transition-all">
-                  <div className="flex flex-col md:flex-row items-start gap-4">
-                    <div className="p-3 bg-primary/20 rounded-lg shrink-0">
+                <Card className="p-8 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:border-primary/40 transition-all">
+                  <div className="flex flex-col md:flex-row items-start gap-6">
+                    <div className="p-4 bg-primary/20 rounded-lg shrink-0">
                       <Code className="w-6 h-6 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold mb-2">Building with AeThex?</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Get API keys, access comprehensive documentation, and explore developer tools to integrate AeThex into your applications.
+                      <h3 className="text-xl font-semibold mb-3">Building with AeThex?</h3>
+                      <p className="text-base text-muted-foreground mb-6">
+                        Get API keys and access developer tools
                       </p>
                       <div className="flex flex-wrap gap-3">
                         <Link to="/dev-platform/dashboard">
@@ -432,12 +432,7 @@ export default function Dashboard() {
                         </Link>
                         <Link to="/dev-platform/api-reference">
                           <Button size="sm" variant="outline">
-                            View API Docs
-                          </Button>
-                        </Link>
-                        <Link to="/dev-platform/templates">
-                          <Button size="sm" variant="outline">
-                            Browse Templates
+                            View Docs
                           </Button>
                         </Link>
                       </div>
@@ -446,7 +441,7 @@ export default function Dashboard() {
                 </Card>
               )}
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {ARMS.map((arm) => {
                   const IconComponent = arm.icon;
                   return (
@@ -465,7 +460,7 @@ export default function Dashboard() {
                       <Card
                         className={`bg-gradient-to-br ${arm.bgGradient} border transition-all duration-300 h-full hover:shadow-lg hover:shadow-purple-500/20 ${arm.borderColor} cursor-pointer`}
                       >
-                        <CardContent className="p-6 space-y-4">
+                        <CardContent className="p-8 space-y-6">
                           <div className="flex items-start justify-between">
                             <div className="space-y-1">
                               <div className="flex items-center gap-3">
