@@ -159,7 +159,7 @@ export default function GameForge() {
                   </h1>
 
                   <p className="text-xl md:text-2xl text-green-100/80 max-w-3xl mx-auto leading-relaxed">
-                    AeThex GameForge is a master-apprentice mentorship program where teams of 5 developers ship real games in 30-day sprints.
+                    Ship real games in 30-day sprints
                   </p>
 
                   {/* TL;DR Section */}

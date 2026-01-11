@@ -102,11 +102,11 @@ export default function Teams() {
   return (
     <Layout>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl space-y-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl space-y-12">
           <section className="rounded-3xl border border-border/40 bg-background/80 p-6 shadow-2xl backdrop-blur">
             <h1 className="text-3xl font-semibold text-foreground">Teams</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Create a team and collaborate with members across projects.
+              Collaborate across projects
             </p>
           </section>
 

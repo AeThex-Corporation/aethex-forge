@@ -75,7 +75,7 @@ export default function Realms() {
         />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl relative space-y-20">
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -92,9 +92,7 @@ export default function Realms() {
             <span className="text-primary drop-shadow-[0_0_25px_rgba(168,85,247,0.8)]">Realm</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light">
-            Each realm has unique tools, communities, and opportunities.
-            <br className="hidden md:block" />
-            Your dashboard adapts to your choice.
+            Unique tools and communities for every role
           </p>
         </motion.div>
 

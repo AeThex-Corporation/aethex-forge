@@ -67,9 +67,7 @@ await game.deploy(['roblox', 'fortnite', 'web']);`;
             <span className="text-primary">Deploy Everywhere.</span>
           </h1>
           <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-            The complete developer platform for building cross-platform games
-            with AeThex. Ship to Roblox, Fortnite, Web, and Mobile from a
-            single codebase.
+            Ship to Roblox, Fortnite, Web, and Mobile from one codebase
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link to="/docs/getting-started">
@@ -118,9 +116,7 @@ await game.deploy(['roblox', 'fortnite', 'web']);`;
                   Simple. Powerful. Universal.
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  Write your game logic once using the AeThex SDK, then deploy
-                  to all major platforms with a single command. No
-                  platform-specific code required.
+                  Write once, deploy everywhere. No platform-specific code.
                 </p>
                 <ul className="space-y-3">
                   {[
@@ -160,7 +156,7 @@ await game.deploy(['roblox', 'fortnite', 'web']);`;
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold">Everything You Need</h2>
             <p className="text-lg text-muted-foreground mt-4">
-              Build production-ready games with enterprise-grade infrastructure
+              Enterprise-grade infrastructure
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2">
@@ -185,7 +181,7 @@ await game.deploy(['roblox', 'fortnite', 'web']);`;
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold">Developer Tools</h2>
               <p className="text-lg text-muted-foreground mt-4">
-                Everything you need to build, test, and deploy your games
+                Build, test, and deploy
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">

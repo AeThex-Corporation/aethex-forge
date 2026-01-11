@@ -71,7 +71,7 @@ export default function Projects() {
                 Projects & Testimonials
               </h1>
               <p className="text-muted-foreground max-w-2xl mt-1">
-                Studio initiatives across AeThex Platform, Labs, and Studio.
+                AeThex showcase portfolio
               </p>
             </div>
             {isOwner && (

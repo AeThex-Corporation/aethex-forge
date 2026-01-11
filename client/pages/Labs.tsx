@@ -182,7 +182,7 @@ export default function Labs() {
                   </h1>
 
                   <p className="text-xl md:text-2xl text-yellow-100/80 max-w-3xl mx-auto leading-relaxed">
-                    Breakthrough R&D pushing the boundaries of what's possible in software, AI, games, and digital experiences.
+                    Breakthrough R&D in software, AI, and games
                   </p>
 
                   {/* TL;DR Section */}
