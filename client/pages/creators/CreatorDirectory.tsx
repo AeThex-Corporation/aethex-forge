@@ -352,7 +352,7 @@ export default function CreatorDirectory() {
           </section>
 
           <section className="py-12 lg:py-20">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 <div className="lg:col-span-1">
                   <div className="sticky top-24 space-y-4">

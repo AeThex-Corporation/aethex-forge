@@ -121,7 +121,7 @@ export default function Network() {
   return (
     <Layout>
       <div className="min-h-screen bg-aethex-gradient py-8">
-        <div className="container mx-auto px-4 max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="container mx-auto px-4 max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Public Profile */}
           <div className="lg:col-span-4 space-y-6">
             <Card className="bg-card/50 border-border/50">

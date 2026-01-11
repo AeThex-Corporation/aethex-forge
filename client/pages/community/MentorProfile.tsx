@@ -66,7 +66,7 @@ export default function MentorProfile() {
 
   return (
     <Layout>
-      <div className="container mx-auto max-w-7xl px-4 py-12">
+      <div className="container mx-auto max-w-6xl px-4 py-12">
         <div className="mb-6">
           <Badge variant="outline" className="mb-2">
             Mentorship

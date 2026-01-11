@@ -14,7 +14,7 @@ export default function ClientInvoices() {
 
         <main className="relative z-10">
           <section className="border-b border-slate-800 py-8">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <Button
                 variant="ghost"
                 size="sm"
@@ -32,7 +32,7 @@ export default function ClientInvoices() {
           </section>
 
           <section className="py-12">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <Card className="bg-slate-800/30 border-slate-700">
                 <CardContent className="p-12 text-center">
                   <FileText className="h-12 w-12 text-slate-600 mx-auto mb-4" />

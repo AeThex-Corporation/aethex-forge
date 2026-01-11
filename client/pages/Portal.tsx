@@ -41,7 +41,7 @@ export default function Portal() {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl">
         <div className="mb-8">
           <Badge variant="outline" className="mb-2">
             Portal

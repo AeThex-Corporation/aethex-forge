@@ -87,7 +87,7 @@ export default function Projects() {
           </div>
         </section>
 
-        <section className="container mx-auto max-w-7xl px-4 mt-6">
+        <section className="container mx-auto max-w-6xl px-4 mt-6">
           {hasProjects ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {items.map((p) => (
