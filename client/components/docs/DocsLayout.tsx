@@ -276,13 +276,13 @@ function DocsLayoutContent({
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 px-6 md:px-8 py-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 px-6 md:px-8 py-8 max-w-6xl mx-auto">
           {/* Content */}
           <div className="lg:col-span-3">
             {title && (
               <div className="mb-8">
                 <h1
-                  className={`text-5xl font-bold ${colors.headingColor} mb-3`}
+                  className={`text-4xl font-bold ${colors.headingColor} mb-3`}
                 >
                   {title}
                 </h1>

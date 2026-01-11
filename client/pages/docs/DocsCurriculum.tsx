@@ -301,18 +301,18 @@ const supplementalResources = [
 
 export default function DocsCurriculum() {
   return (
-    <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-3xl border border-slate-800/60 bg-slate-900/80 p-8">
+    <div className="space-y-8 max-w-5xl">
+      <section className="relative overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-900/80 p-6 md:p-8">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.2),transparent_60%)]" />
         <div className="relative z-10 flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <Badge className="w-fit bg-purple-600/80 text-white">
               AeThex Curriculum
             </Badge>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="text-2xl font-semibold text-white sm:text-3xl">
               Structured learning paths for builders, operators, and labs teams
             </h1>
-            <p className="max-w-3xl text-base text-slate-200 sm:text-lg">
+            <p className="max-w-2xl text-sm text-slate-200 sm:text-base">
               Progress through sequenced modules that combine documentation,
               interactive labs, and project-based assignments. Graduate with
               deployment-ready AeThex experiences and certification badges.
@@ -344,7 +344,7 @@ export default function DocsCurriculum() {
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
+      <section className="grid gap-6 lg:grid-cols-1">
         <Card className="border-slate-800 bg-slate-900/70 shadow-xl backdrop-blur">
           <CardHeader className="space-y-4">
             <CardTitle className="flex items-center gap-3 text-2xl text-white">
