@@ -106,7 +106,7 @@ export default function GameForge() {
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
         {/* Persistent Info Banner */}
         <div className="bg-green-500/10 border-b border-green-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
-          <div className="container mx-auto max-w-7xl px-4">
+          <div className="container mx-auto max-w-6xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <ExternalLink className="h-5 w-5 text-green-400" />
@@ -138,7 +138,7 @@ export default function GameForge() {
         <main className="relative z-10">
           {/* Hero Section */}
           <section className="py-20 lg:py-32">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <div className="text-center space-y-8">
                 <div className="flex justify-center mb-6">
                   <img
@@ -211,7 +211,7 @@ export default function GameForge() {
 
           {/* Stats Section */}
           <section className="py-16 border-y border-green-400/10 bg-black/40 backdrop-blur-sm">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {productionStats.map((stat, idx) => {
                   const Icon = stat.icon;
@@ -234,7 +234,7 @@ export default function GameForge() {
 
           {/* Features Grid */}
           <section className="py-20 lg:py-28">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-black text-green-300 mb-4">
                   Why Join GameForge?
@@ -352,7 +352,7 @@ export default function GameForge() {
 
           {/* Team Roles */}
           <section className="py-20 lg:py-28">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-black text-green-300 mb-4">
                   Squad Structure

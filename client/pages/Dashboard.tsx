@@ -326,7 +326,7 @@ export default function Dashboard() {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-7xl space-y-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl space-y-8">
           {/* Header Section */}
           <div className="space-y-4 animate-slide-down">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
