@@ -44,6 +44,15 @@ import DocsApiReference from "./pages/docs/DocsApiReference";
 import DocsCli from "./pages/docs/DocsCli";
 import DocsExamples from "./pages/docs/DocsExamples";
 import DocsIntegrations from "./pages/docs/DocsIntegrations";
+import VRChatIntegration from "./pages/docs/integrations/VRChat";
+import RecRoomIntegration from "./pages/docs/integrations/RecRoom";
+import SpatialIntegration from "./pages/docs/integrations/Spatial";
+import DecentralandIntegration from "./pages/docs/integrations/Decentraland";
+import TheSandboxIntegration from "./pages/docs/integrations/TheSandbox";
+import GodotIntegration from "./pages/docs/integrations/Godot";
+import GameMakerIntegration from "./pages/docs/integrations/GameMaker";
+import GameJoltIntegration from "./pages/docs/integrations/GameJolt";
+import ItchIoIntegration from "./pages/docs/integrations/ItchIo";
 import DocsCurriculum from "./pages/docs/DocsCurriculum";
 import DocsCurriculumEthos from "./pages/docs/DocsCurriculumEthos";
 import EthosGuild from "./pages/community/EthosGuild";
@@ -364,9 +373,8 @@ const App = () => (
                         />
                         <Route path="/research" element={<ResearchLabs />} />
 
-                        {/* Labs redirects to aethex.studio (Skunkworks R&D) */}
-                        <Route path="/labs" element={<ExternalRedirect to="https://aethex.studio" />} />
-                        <Route path="/labs/*" element={<ExternalRedirect to="https://aethex.studio" />} />
+                        {/* Labs page with auto-redirect to aethex.studio (Skunkworks R&D) */}
+                        <Route path="/labs" element={<Labs />} />
 
                         {/* GameForge Management routes stay local on aethex.dev (Axiom Model - Write/Control) */}
                         <Route
@@ -386,13 +394,11 @@ const App = () => (
                           }
                         />
                         
-                        {/* GameForge public routes redirect to aethex.foundation/gameforge (Axiom Model - Read-Only Showcase) */}
-                        <Route path="/gameforge" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
-                        <Route path="/gameforge/*" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
+                        {/* GameForge public route with auto-redirect to aethex.foundation/gameforge (Axiom Model - Read-Only Showcase) */}
+                        <Route path="/gameforge" element={<GameForge />} />
 
-                        {/* Foundation redirects to aethex.foundation (Non-Profit Guardian - Axiom Model) */}
-                        <Route path="/foundation" element={<ExternalRedirect to="https://aethex.foundation" />} />
-                        <Route path="/foundation/*" element={<ExternalRedirect to="https://aethex.foundation" />} />
+                        {/* Foundation page with auto-redirect to aethex.foundation (Non-Profit Guardian - Axiom Model) */}
+                        <Route path="/foundation" element={<Foundation />} />
 
                         <Route path="/corp" element={<Corp />} />
                         <Route
@@ -618,6 +624,42 @@ const App = () => (
                           <Route
                             path="integrations"
                             element={<DocsIntegrations />}
+                          />
+                          <Route
+                            path="integrations/vrchat"
+                            element={<VRChatIntegration />}
+                          />
+                          <Route
+                            path="integrations/recroom"
+                            element={<RecRoomIntegration />}
+                          />
+                          <Route
+                            path="integrations/spatial"
+                            element={<SpatialIntegration />}
+                          />
+                          <Route
+                            path="integrations/decentraland"
+                            element={<DecentralandIntegration />}
+                          />
+                          <Route
+                            path="integrations/thesandbox"
+                            element={<TheSandboxIntegration />}
+                          />
+                          <Route
+                            path="integrations/godot"
+                            element={<GodotIntegration />}
+                          />
+                          <Route
+                            path="integrations/gamemaker"
+                            element={<GameMakerIntegration />}
+                          />
+                          <Route
+                            path="integrations/gamejolt"
+                            element={<GameJoltIntegration />}
+                          />
+                          <Route
+                            path="integrations/itchio"
+                            element={<ItchIoIntegration />}
                           />
                         </Route>
                         <Route path="/tutorials" element={<Tutorials />} />
