@@ -72,7 +72,7 @@ export default function Foundation() {
       <div className="min-h-screen bg-gradient-to-b from-black via-red-950/20 to-black">
         {/* Persistent Info Banner */}
         <div className="bg-red-500/10 border-b border-red-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
-          <div className="container mx-auto max-w-7xl px-4">
+          <div className="container mx-auto max-w-6xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <ExternalLink className="h-5 w-5 text-red-400" />
@@ -95,7 +95,7 @@ export default function Foundation() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 max-w-7xl space-y-20 py-16 lg:py-24">
+        <div className="container mx-auto px-4 max-w-6xl space-y-20 py-16 lg:py-24">
           {/* Hero Section */}
           <div className="text-center space-y-8 animate-slide-down">
             <div className="flex justify-center mb-6">

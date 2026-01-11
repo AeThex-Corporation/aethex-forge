@@ -167,7 +167,7 @@ export default function Templates() {
   return (
     <Layout>
       <SEO pageTitle="Templates Gallery" description="Pre-built templates and starter kits to accelerate your development" />
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Search & Filters */}
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">

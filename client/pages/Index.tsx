@@ -392,7 +392,7 @@ export default function Index() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {ecosystemPillars.map((pillar, index) => (
               <motion.div
                 key={pillar.title}
@@ -545,7 +545,7 @@ export default function Index() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-5xl md:text-7xl font-black leading-tight"
+                className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight"
               >
                 Ready to Build Something
                 <br />

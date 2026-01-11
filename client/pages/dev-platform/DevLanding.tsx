@@ -62,7 +62,7 @@ await game.deploy(['roblox', 'fortnite', 'web']);`;
       {/* Hero Section */}
       <section className="container py-20 md:py-32">
         <div className="mx-auto max-w-5xl text-center">
-          <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Build Once.{" "}
             <span className="text-primary">Deploy Everywhere.</span>
           </h1>

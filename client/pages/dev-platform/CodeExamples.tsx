@@ -167,7 +167,7 @@ export default function CodeExamples() {
   return (
     <Layout>
       <SEO pageTitle="Code Examples Repository" description="Production-ready code examples for common use cases and integrations" />
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Hero Section */}
         <div className="grid md:grid-cols-3 gap-4">
           <Card className="p-6">

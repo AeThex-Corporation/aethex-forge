@@ -128,7 +128,7 @@ export default function Labs() {
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
         {/* Persistent Info Banner */}
         <div className="bg-yellow-500/10 border-b border-yellow-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
-          <div className="container mx-auto max-w-7xl px-4">
+          <div className="container mx-auto max-w-6xl px-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <ExternalLink className="h-5 w-5 text-yellow-400" />
@@ -161,7 +161,7 @@ export default function Labs() {
         <main className="relative z-10">
           {/* Hero Section */}
           <section className="relative overflow-hidden py-20 lg:py-32">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <div className="text-center space-y-8">
                 <div className="flex justify-center mb-6">
                   <img

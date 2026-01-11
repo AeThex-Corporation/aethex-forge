@@ -177,7 +177,7 @@ export default function Marketplace() {
   return (
     <Layout>
       <SEO pageTitle="Developer Marketplace" description="Premium integrations, plugins, and tools to supercharge your projects" />
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Hero Section */}
         <div className="grid md:grid-cols-3 gap-4">
           <Card className="p-6 border-primary/20 bg-primary/5">

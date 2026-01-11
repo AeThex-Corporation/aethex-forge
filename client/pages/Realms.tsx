@@ -75,7 +75,7 @@ export default function Realms() {
         />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-7xl relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl relative">
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -87,7 +87,7 @@ export default function Realms() {
             <Sparkles className="w-4 h-4 mr-2 inline animate-pulse" />
             Six Specialized Realms
           </Badge>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">
             Choose Your{" "}
             <span className="text-primary drop-shadow-[0_0_25px_rgba(168,85,247,0.8)]">Realm</span>
           </h1>
