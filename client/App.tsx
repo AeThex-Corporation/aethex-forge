@@ -161,6 +161,10 @@ import StaffProjectTracking from "./pages/staff/StaffProjectTracking";
 import StaffTeamHandbook from "./pages/staff/StaffTeamHandbook";
 import StaffOnboarding from "./pages/staff/StaffOnboarding";
 import StaffOnboardingChecklist from "./pages/staff/StaffOnboardingChecklist";
+import CandidatePortal from "./pages/candidate/CandidatePortal";
+import CandidateProfile from "./pages/candidate/CandidateProfile";
+import CandidateInterviews from "./pages/candidate/CandidateInterviews";
+import CandidateOffers from "./pages/candidate/CandidateOffers";
 
 const queryClient = new QueryClient();
 
@@ -538,6 +542,40 @@ const App = () => (
                           element={
                             <RequireAccess>
                               <StaffTeamHandbook />
+                            </RequireAccess>
+                          }
+                        />
+
+                        {/* Candidate Portal Routes */}
+                        <Route
+                          path="/candidate"
+                          element={
+                            <RequireAccess>
+                              <CandidatePortal />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/candidate/profile"
+                          element={
+                            <RequireAccess>
+                              <CandidateProfile />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/candidate/interviews"
+                          element={
+                            <RequireAccess>
+                              <CandidateInterviews />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/candidate/offers"
+                          element={
+                            <RequireAccess>
+                              <CandidateOffers />
                             </RequireAccess>
                           }
                         />
