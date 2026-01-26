@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -11,94 +12,88 @@ import {
 import { Badge } from "@/components/ui/badge";
 import {
   Heart,
-  DollarSign,
   Calendar,
   MapPin,
   Users,
   Shield,
   Zap,
   Award,
+  Loader2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { aethexToast } from "@/components/ui/aethex-toast";
 
 interface HandbookSection {
   id: string;
+  category: string;
   title: string;
-  icon: React.ReactNode;
   content: string;
-  subsections: string[];
+  order_index: number;
 }
 
-const sections: HandbookSection[] = [
-  {
-    id: "1",
-    title: "Benefits & Compensation",
-    icon: <Heart className="h-6 w-6" />,
-    content: "Comprehensive benefits package including health, dental, vision",
-    subsections: [
-      "Health Insurance",
-      "Retirement Plans",
-      "Stock Options",
-      "Flexible PTO",
-    ],
-  },
-  {
-    id: "2",
-    title: "Company Policies",
-    icon: <Shield className="h-6 w-6" />,
-    content: "Core policies governing workplace conduct and expectations",
-    subsections: [
-      "Code of Conduct",
-      "Harassment Policy",
-      "Confidentiality",
-      "Data Security",
-    ],
-  },
-  {
-    id: "3",
-    title: "Time Off & Leave",
-    icon: <Calendar className="h-6 w-6" />,
-    content: "Vacation, sick leave, parental leave, and special circumstances",
-    subsections: [
-      "Paid Time Off",
-      "Sick Leave",
-      "Parental Leave",
-      "Sabbatical",
-    ],
-  },
-  {
-    id: "4",
-    title: "Remote Work & Flexibility",
-    icon: <MapPin className="h-6 w-6" />,
-    content: "Work from home policies, office hours, and location flexibility",
-    subsections: ["WFH Policy", "Core Hours", "Office Access", "Equipment"],
-  },
-  {
-    id: "5",
-    title: "Professional Development",
-    icon: <Zap className="h-6 w-6" />,
-    content: "Learning opportunities, training budgets, and career growth",
-    subsections: [
-      "Training Budget",
-      "Conference Attendance",
-      "Internal Training",
-      "Mentorship",
-    ],
-  },
-  {
-    id: "6",
-    title: "Recognition & Awards",
-    icon: <Award className="h-6 w-6" />,
-    content: "Employee recognition programs and performance incentives",
-    subsections: [
-      "Spot Bonuses",
-      "Team Awards",
-      "Anniversary Recognition",
-      "Excellence Awards",
-    ],
-  },
-];
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case "Benefits":
+      return <Heart className="h-6 w-6" />;
+    case "Policies":
+      return <Shield className="h-6 w-6" />;
+    case "Time Off":
+      return <Calendar className="h-6 w-6" />;
+    case "Remote Work":
+      return <MapPin className="h-6 w-6" />;
+    case "Development":
+      return <Zap className="h-6 w-6" />;
+    case "Recognition":
+      return <Award className="h-6 w-6" />;
+    default:
+      return <Users className="h-6 w-6" />;
+  }
+};
 
 export default function StaffTeamHandbook() {
+  const { session } = useAuth();
+  const [sections, setSections] = useState<HandbookSection[]>([]);
+  const [grouped, setGrouped] = useState<Record<string, HandbookSection[]>>({});
+  const [categories, setCategories] = useState<string[]>([]);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (session?.access_token) {
+      fetchHandbook();
+    }
+  }, [session?.access_token]);
+
+  const fetchHandbook = async () => {
+    try {
+      const res = await fetch("/api/staff/handbook", {
+        headers: { Authorization: `Bearer ${session?.access_token}` },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSections(data.sections || []);
+        setGrouped(data.grouped || {});
+        setCategories(data.categories || []);
+      }
+    } catch (err) {
+      aethexToast.error("Failed to load handbook");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <SEO
@@ -158,49 +153,66 @@ export default function StaffTeamHandbook() {
               </Card>
             </div>
 
-            {/* Handbook Sections */}
+            {/* Handbook Sections by Category */}
             <div className="space-y-6">
-              {sections.map((section) => (
+              {categories.map((category) => (
                 <Card
-                  key={section.id}
+                  key={category}
                   className="bg-slate-800/50 border-slate-700/50 hover:border-blue-500/50 transition-all"
                 >
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
+                  <CardHeader
+                    className="cursor-pointer"
+                    onClick={() => setExpandedCategory(expandedCategory === category ? null : category)}
+                  >
+                    <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-blue-500/20 text-blue-400">
-                          {section.icon}
+                          {getCategoryIcon(category)}
                         </div>
                         <div>
                           <CardTitle className="text-blue-100">
-                            {section.title}
+                            {category}
                           </CardTitle>
                           <CardDescription className="text-slate-400">
-                            {section.content}
+                            {grouped[category]?.length || 0} sections
                           </CardDescription>
                         </div>
                       </div>
+                      {expandedCategory === category ? (
+                        <ChevronUp className="h-5 w-5 text-blue-400" />
+                      ) : (
+                        <ChevronDown className="h-5 w-5 text-blue-400" />
+                      )}
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {section.subsections.map((subsection) => (
-                        <Badge
-                          key={subsection}
-                          variant="secondary"
-                          className="bg-slate-700/50 text-slate-300"
-                        >
-                          {subsection}
-                        </Badge>
-                      ))}
-                    </div>
-                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                      View Details
-                    </Button>
-                  </CardContent>
+                  {expandedCategory === category && (
+                    <CardContent className="pt-0">
+                      <div className="space-y-4 pl-14">
+                        {grouped[category]?.map((section) => (
+                          <div
+                            key={section.id}
+                            className="p-4 bg-slate-700/30 rounded-lg"
+                          >
+                            <h4 className="font-semibold text-blue-100 mb-2">
+                              {section.title}
+                            </h4>
+                            <p className="text-slate-300 text-sm whitespace-pre-line">
+                              {section.content}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  )}
                 </Card>
               ))}
             </div>
+
+            {categories.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-400">No handbook sections found</p>
+              </div>
+            )}
 
             {/* Additional Resources */}
             <div className="mt-12 p-6 rounded-lg bg-slate-800/50 border border-blue-500/30">
