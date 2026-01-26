@@ -167,6 +167,8 @@ import CandidateInterviews from "./pages/candidate/CandidateInterviews";
 import CandidateOffers from "./pages/candidate/CandidateOffers";
 import StaffOKRs from "./pages/staff/StaffOKRs";
 import StaffTimeTracking from "./pages/staff/StaffTimeTracking";
+import AdminModeration from "./pages/admin/AdminModeration";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -248,6 +250,22 @@ const App = () => (
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/admin/feed" element={<AdminFeed />} />
                         <Route path="/admin/docs-sync" element={<DocsSync />} />
+                        <Route
+                          path="/admin/moderation"
+                          element={
+                            <RequireAccess>
+                              <AdminModeration />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/admin/analytics"
+                          element={
+                            <RequireAccess>
+                              <AdminAnalytics />
+                            </RequireAccess>
+                          }
+                        />
                         <Route path="/arms" element={<Arms />} />
                         <Route path="/feed" element={<Navigate to="/community/feed" replace />} />
                         <Route path="/teams" element={<Teams />} />
