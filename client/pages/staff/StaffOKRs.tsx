@@ -266,18 +266,18 @@ export default function StaffOKRs() {
         <div className="relative z-10">
           <div className="container mx-auto max-w-6xl px-4 py-16">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 rounded-lg bg-emerald-500/20 border border-emerald-500/30">
                   <Target className="h-6 w-6 text-emerald-400" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold text-emerald-100">OKRs</h1>
-                  <p className="text-emerald-200/70">Objectives and Key Results</p>
+                  <h1 className="text-2xl sm:text-4xl font-bold text-emerald-100">OKRs</h1>
+                  <p className="text-emerald-200/70 text-sm sm:text-base">Objectives and Key Results</p>
                 </div>
               </div>
               <Button
-                className="bg-emerald-600 hover:bg-emerald-700"
+                className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto"
                 onClick={() => setCreateOkrDialog(true)}
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -334,9 +334,9 @@ export default function StaffOKRs() {
             </div>
 
             {/* Filters */}
-            <div className="flex gap-4 mb-8">
+            <div className="flex flex-wrap gap-4 mb-8">
               <Select value={selectedQuarter} onValueChange={setSelectedQuarter}>
-                <SelectTrigger className="w-32 bg-slate-800 border-slate-700 text-slate-100">
+                <SelectTrigger className="w-full sm:w-32 bg-slate-800 border-slate-700 text-slate-100">
                   <SelectValue placeholder="Quarter" />
                 </SelectTrigger>
                 <SelectContent>
@@ -348,7 +348,7 @@ export default function StaffOKRs() {
                 </SelectContent>
               </Select>
               <Select value={selectedYear} onValueChange={setSelectedYear}>
-                <SelectTrigger className="w-32 bg-slate-800 border-slate-700 text-slate-100">
+                <SelectTrigger className="w-full sm:w-32 bg-slate-800 border-slate-700 text-slate-100">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
                 <SelectContent>
@@ -510,7 +510,7 @@ export default function StaffOKRs() {
               onChange={(e) => setNewOkr({ ...newOkr, description: e.target.value })}
               className="bg-slate-700 border-slate-600 text-slate-100"
             />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Select
                 value={newOkr.quarter.toString()}
                 onValueChange={(v) => setNewOkr({ ...newOkr, quarter: parseInt(v) })}
@@ -570,7 +570,7 @@ export default function StaffOKRs() {
               onChange={(e) => setNewKr({ ...newKr, description: e.target.value })}
               className="bg-slate-700 border-slate-600 text-slate-100"
             />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm text-slate-400 mb-1 block">Target Value</label>
                 <Input

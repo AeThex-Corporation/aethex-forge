@@ -132,18 +132,18 @@ export default function AdminAnalytics() {
         <div className="relative z-10">
           <div className="container mx-auto max-w-7xl px-4 py-16">
             {/* Header */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
               <div className="flex items-center gap-3">
                 <div className="p-3 rounded-lg bg-cyan-500/20 border border-cyan-500/30">
                   <BarChart3 className="h-6 w-6 text-cyan-400" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold text-cyan-100">Analytics</h1>
-                  <p className="text-cyan-200/70">Platform insights and metrics</p>
+                  <h1 className="text-2xl sm:text-4xl font-bold text-cyan-100">Analytics</h1>
+                  <p className="text-cyan-200/70 text-sm sm:text-base">Platform insights and metrics</p>
                 </div>
               </div>
               <Select value={period} onValueChange={setPeriod}>
-                <SelectTrigger className="w-40 bg-slate-800 border-slate-700 text-slate-100">
+                <SelectTrigger className="w-full sm:w-40 bg-slate-800 border-slate-700 text-slate-100">
                   <SelectValue placeholder="Period" />
                 </SelectTrigger>
                 <SelectContent>

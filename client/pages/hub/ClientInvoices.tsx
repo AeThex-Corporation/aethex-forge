@@ -284,8 +284,8 @@ export default function ClientInvoices() {
                 {selectedInvoice.line_items?.length > 0 && (
                   <div className="space-y-3">
                     <h3 className="text-lg font-semibold text-white">Line Items</h3>
-                    <div className="bg-black/30 rounded-lg border border-cyan-500/20 overflow-hidden">
-                      <table className="w-full">
+                    <div className="bg-black/30 rounded-lg border border-cyan-500/20 overflow-x-auto">
+                      <table className="w-full min-w-[500px]">
                         <thead className="bg-cyan-500/10">
                           <tr className="text-left text-xs text-gray-400 uppercase">
                             <th className="p-4">Description</th>

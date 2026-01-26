@@ -264,18 +264,18 @@ export default function AdminModeration() {
         <div className="relative z-10">
           <div className="container mx-auto max-w-7xl px-4 py-16">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 rounded-lg bg-red-500/20 border border-red-500/30">
                   <Shield className="h-6 w-6 text-red-400" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold text-red-100">Moderation</h1>
-                  <p className="text-red-200/70">Content moderation and user management</p>
+                  <h1 className="text-2xl sm:text-4xl font-bold text-red-100">Moderation</h1>
+                  <p className="text-red-200/70 text-sm sm:text-base">Content moderation and user management</p>
                 </div>
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-40 bg-slate-800 border-slate-700 text-slate-100">
+                <SelectTrigger className="w-full sm:w-40 bg-slate-800 border-slate-700 text-slate-100">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>

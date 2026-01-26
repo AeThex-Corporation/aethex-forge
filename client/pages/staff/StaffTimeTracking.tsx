@@ -276,20 +276,20 @@ export default function StaffTimeTracking() {
         <div className="relative z-10">
           <div className="container mx-auto max-w-6xl px-4 py-16">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
                 <div className="p-3 rounded-lg bg-blue-500/20 border border-blue-500/30">
                   <Clock className="h-6 w-6 text-blue-400" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold text-blue-100">Time Tracking</h1>
-                  <p className="text-blue-200/70">Track your work hours and projects</p>
+                  <h1 className="text-2xl sm:text-4xl font-bold text-blue-100">Time Tracking</h1>
+                  <p className="text-blue-200/70 text-sm sm:text-base">Track your work hours and projects</p>
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {activeTimer ? (
                   <Button
-                    className="bg-red-600 hover:bg-red-700"
+                    className="bg-red-600 hover:bg-red-700 flex-1 sm:flex-none"
                     onClick={stopTimer}
                   >
                     <Square className="h-4 w-4 mr-2" />
@@ -297,7 +297,7 @@ export default function StaffTimeTracking() {
                   </Button>
                 ) : (
                   <Button
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none"
                     onClick={startTimer}
                   >
                     <Play className="h-4 w-4 mr-2" />
@@ -305,7 +305,7 @@ export default function StaffTimeTracking() {
                   </Button>
                 )}
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-none"
                   onClick={() => setCreateDialog(true)}
                 >
                   <Plus className="h-4 w-4 mr-2" />

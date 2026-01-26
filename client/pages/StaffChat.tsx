@@ -71,7 +71,7 @@ export default function StaffChat() {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[600px]">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-200px)] sm:h-[600px] min-h-[400px]">
             {/* Channels Sidebar */}
             <Card className="bg-slate-900/50 border-purple-500/20 lg:col-span-1">
               <CardHeader>

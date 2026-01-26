@@ -108,7 +108,7 @@ export default function MaintenancePage() {
 
               <div className="h-px bg-border" />
 
-              <div className="grid grid-cols-3 gap-4 text-center text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center text-xs">
                 <div className="space-y-1">
                   <div className="text-muted-foreground">STATUS</div>
                   <div className="text-blue-400 font-semibold flex items-center justify-center gap-1">
