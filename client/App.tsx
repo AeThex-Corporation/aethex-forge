@@ -19,6 +19,7 @@ import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import Link from "./pages/Link";
 import GameDevelopment from "./pages/GameDevelopment";
 import MentorshipPrograms from "./pages/MentorshipPrograms";
 import ResearchLabs from "./pages/ResearchLabs";
@@ -44,6 +45,15 @@ import DocsApiReference from "./pages/docs/DocsApiReference";
 import DocsCli from "./pages/docs/DocsCli";
 import DocsExamples from "./pages/docs/DocsExamples";
 import DocsIntegrations from "./pages/docs/DocsIntegrations";
+import VRChatIntegration from "./pages/docs/integrations/VRChat";
+import RecRoomIntegration from "./pages/docs/integrations/RecRoom";
+import SpatialIntegration from "./pages/docs/integrations/Spatial";
+import DecentralandIntegration from "./pages/docs/integrations/Decentraland";
+import TheSandboxIntegration from "./pages/docs/integrations/TheSandbox";
+import GodotIntegration from "./pages/docs/integrations/Godot";
+import GameMakerIntegration from "./pages/docs/integrations/GameMaker";
+import GameJoltIntegration from "./pages/docs/integrations/GameJolt";
+import ItchIoIntegration from "./pages/docs/integrations/ItchIo";
 import DocsCurriculum from "./pages/docs/DocsCurriculum";
 import DocsCurriculumEthos from "./pages/docs/DocsCurriculumEthos";
 import EthosGuild from "./pages/community/EthosGuild";
@@ -159,16 +169,16 @@ import StaffLearningPortal from "./pages/staff/StaffLearningPortal";
 import StaffPerformanceReviews from "./pages/staff/StaffPerformanceReviews";
 import StaffProjectTracking from "./pages/staff/StaffProjectTracking";
 import StaffTeamHandbook from "./pages/staff/StaffTeamHandbook";
-import StaffOnboarding from "./pages/staff/StaffOnboarding";
-import StaffOnboardingChecklist from "./pages/staff/StaffOnboardingChecklist";
-import CandidatePortal from "./pages/candidate/CandidatePortal";
-import CandidateProfile from "./pages/candidate/CandidateProfile";
-import CandidateInterviews from "./pages/candidate/CandidateInterviews";
-import CandidateOffers from "./pages/candidate/CandidateOffers";
-import StaffOKRs from "./pages/staff/StaffOKRs";
-import StaffTimeTracking from "./pages/staff/StaffTimeTracking";
-import AdminModeration from "./pages/admin/AdminModeration";
-import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import DeveloperDashboard from "./pages/dev-platform/DeveloperDashboard";
+import ApiReference from "./pages/dev-platform/ApiReference";
+import QuickStart from "./pages/dev-platform/QuickStart";
+import Templates from "./pages/dev-platform/Templates";
+import TemplateDetail from "./pages/dev-platform/TemplateDetail";
+import Marketplace from "./pages/dev-platform/Marketplace";
+import MarketplaceItemDetail from "./pages/dev-platform/MarketplaceItemDetail";
+import CodeExamples from "./pages/dev-platform/CodeExamples";
+import ExampleDetail from "./pages/dev-platform/ExampleDetail";
+import DeveloperPlatform from "./pages/dev-platform/DeveloperPlatform";
 
 const queryClient = new QueryClient();
 
@@ -300,6 +310,7 @@ const App = () => (
                           element={<ProfilePassport />}
                         />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/link" element={<Link />} />
                         <Route path="/signup" element={<SignupRedirect />} />
                         <Route
                           path="/reset-password"
@@ -380,9 +391,8 @@ const App = () => (
                         />
                         <Route path="/research" element={<ResearchLabs />} />
 
-                        {/* Labs redirects to aethex.studio (Skunkworks R&D) */}
-                        <Route path="/labs" element={<ExternalRedirect to="https://aethex.studio" />} />
-                        <Route path="/labs/*" element={<ExternalRedirect to="https://aethex.studio" />} />
+                        {/* Labs page with auto-redirect to aethex.studio (Skunkworks R&D) */}
+                        <Route path="/labs" element={<Labs />} />
 
                         {/* GameForge Management routes stay local on aethex.dev (Axiom Model - Write/Control) */}
                         <Route
@@ -402,13 +412,11 @@ const App = () => (
                           }
                         />
                         
-                        {/* GameForge public routes redirect to aethex.foundation/gameforge (Axiom Model - Read-Only Showcase) */}
-                        <Route path="/gameforge" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
-                        <Route path="/gameforge/*" element={<ExternalRedirect to="https://aethex.foundation/gameforge" />} />
+                        {/* GameForge public route with auto-redirect to aethex.foundation/gameforge (Axiom Model - Read-Only Showcase) */}
+                        <Route path="/gameforge" element={<GameForge />} />
 
-                        {/* Foundation redirects to aethex.foundation (Non-Profit Guardian - Axiom Model) */}
-                        <Route path="/foundation" element={<ExternalRedirect to="https://aethex.foundation" />} />
-                        <Route path="/foundation/*" element={<ExternalRedirect to="https://aethex.foundation" />} />
+                        {/* Foundation page with auto-redirect to aethex.foundation (Non-Profit Guardian - Axiom Model) */}
+                        <Route path="/foundation" element={<Foundation />} />
 
                         <Route path="/corp" element={<Corp />} />
                         <Route
@@ -703,6 +711,42 @@ const App = () => (
                             path="integrations"
                             element={<DocsIntegrations />}
                           />
+                          <Route
+                            path="integrations/vrchat"
+                            element={<VRChatIntegration />}
+                          />
+                          <Route
+                            path="integrations/recroom"
+                            element={<RecRoomIntegration />}
+                          />
+                          <Route
+                            path="integrations/spatial"
+                            element={<SpatialIntegration />}
+                          />
+                          <Route
+                            path="integrations/decentraland"
+                            element={<DecentralandIntegration />}
+                          />
+                          <Route
+                            path="integrations/thesandbox"
+                            element={<TheSandboxIntegration />}
+                          />
+                          <Route
+                            path="integrations/godot"
+                            element={<GodotIntegration />}
+                          />
+                          <Route
+                            path="integrations/gamemaker"
+                            element={<GameMakerIntegration />}
+                          />
+                          <Route
+                            path="integrations/gamejolt"
+                            element={<GameJoltIntegration />}
+                          />
+                          <Route
+                            path="integrations/itchio"
+                            element={<ItchIoIntegration />}
+                          />
                         </Route>
                         <Route path="/tutorials" element={<Tutorials />} />
                         <Route path="/community/*" element={<Community />} />
@@ -912,6 +956,25 @@ const App = () => (
                           path="/internal-docs/finance"
                           element={<Space5Finance />}
                         />
+
+                        {/* Developer Platform Routes */}
+                        <Route path="/dev-platform" element={<DeveloperPlatform />} />
+                        <Route 
+                          path="/dev-platform/dashboard" 
+                          element={
+                            <RequireAccess>
+                              <DeveloperDashboard />
+                            </RequireAccess>
+                          } 
+                        />
+                        <Route path="/dev-platform/api-reference" element={<ApiReference />} />
+                        <Route path="/dev-platform/quick-start" element={<QuickStart />} />
+                        <Route path="/dev-platform/templates" element={<Templates />} />
+                        <Route path="/dev-platform/templates/:id" element={<TemplateDetail />} />
+                        <Route path="/dev-platform/marketplace" element={<Marketplace />} />
+                        <Route path="/dev-platform/marketplace/:id" element={<MarketplaceItemDetail />} />
+                        <Route path="/dev-platform/examples" element={<CodeExamples />} />
+                        <Route path="/dev-platform/examples/:id" element={<ExampleDetail />} />
 
                         {/* Explicit 404 route for static hosting fallbacks */}
                         <Route path="/404" element={<FourOhFourPage />} />

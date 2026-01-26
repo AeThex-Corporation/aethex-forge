@@ -437,7 +437,7 @@ export default function Directory() {
           </div>
         </section>
 
-        <section className="container mx-auto max-w-7xl px-4 mt-6">
+        <section className="container mx-auto max-w-6xl px-4 mt-6">
           <Tabs defaultValue="devs">
             <TabsList>
               <TabsTrigger value="devs">Developers</TabsTrigger>

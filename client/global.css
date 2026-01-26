@@ -9,6 +9,13 @@
    * Tailwind CSS theme
    * tailwind.config.ts expects the following color variables to be expressed as HSL values.
    * A different format will require also updating the theme in tailwind.config.ts.
+   * 
+   * SPACING SYSTEM:
+   * Container: container mx-auto px-4 sm:px-6 lg:px-8
+   * Page Container: + py-8 lg:py-12
+   * Max Widths: max-w-7xl (app), max-w-6xl (content), max-w-4xl (articles)
+   * Vertical Spacing: space-y-8 (sections), space-y-6 (cards), space-y-4 (content)
+   * Gaps: gap-6 (cards), gap-4 (buttons/forms), gap-2 (tags)
   */
   :root {
     --background: 222 84% 4.9%;

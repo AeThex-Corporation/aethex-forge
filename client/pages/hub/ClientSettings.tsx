@@ -260,174 +260,41 @@ export default function ClientSettings() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-slate-950/50 to-black py-8">
-        <div className="container mx-auto px-4 max-w-5xl space-y-6">
-          {/* Header */}
-          <div className="space-y-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/hub/client")}
-              className="text-slate-400 hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Portal
-            </Button>
-            <div className="flex items-center gap-3">
-              <Settings className="h-10 w-10 text-slate-400" />
-              <div>
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent">
-                  Settings
-                </h1>
-                <p className="text-gray-400">Manage your account and preferences</p>
+      <div className="relative min-h-screen bg-black text-white overflow-hidden pb-12">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#3b82f6_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+
+        <main className="relative z-10">
+          <section className="border-b border-slate-800 py-8">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/hub/client")}
+                className="mb-4 text-slate-400"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Portal
+              </Button>
+              <div className="flex items-center gap-3">
+                <Settings className="h-8 w-8 text-blue-400" />
+                <h1 className="text-3xl font-bold">Settings</h1>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="bg-slate-800/50 border border-slate-700">
-              <TabsTrigger value="company">
-                <Building2 className="h-4 w-4 mr-2" />
-                Company
-              </TabsTrigger>
-              <TabsTrigger value="team">
-                <Users className="h-4 w-4 mr-2" />
-                Team
-              </TabsTrigger>
-              <TabsTrigger value="notifications">
-                <Bell className="h-4 w-4 mr-2" />
-                Notifications
-              </TabsTrigger>
-              <TabsTrigger value="billing">
-                <CreditCard className="h-4 w-4 mr-2" />
-                Billing
-              </TabsTrigger>
-              <TabsTrigger value="security">
-                <Shield className="h-4 w-4 mr-2" />
-                Security
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Company Tab */}
-            <TabsContent value="company" className="space-y-6">
-              <Card className="bg-slate-900/50 border-slate-700">
-                <CardHeader>
-                  <CardTitle>Company Profile</CardTitle>
-                  <CardDescription>Update your organization's information</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>Company Name</Label>
-                      <Input
-                        value={company.name}
-                        onChange={(e) => setCompany({ ...company, name: e.target.value })}
-                        className="bg-slate-800/50 border-slate-700"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Industry</Label>
-                      <Input
-                        value={company.industry}
-                        onChange={(e) => setCompany({ ...company, industry: e.target.value })}
-                        className="bg-slate-800/50 border-slate-700"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Website</Label>
-                      <div className="relative">
-                        <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                        <Input
-                          value={company.website}
-                          onChange={(e) => setCompany({ ...company, website: e.target.value })}
-                          className="pl-10 bg-slate-800/50 border-slate-700"
-                          placeholder="https://"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Phone</Label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                        <Input
-                          value={company.phone}
-                          onChange={(e) => setCompany({ ...company, phone: e.target.value })}
-                          className="pl-10 bg-slate-800/50 border-slate-700"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator className="bg-slate-700" />
-
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold flex items-center gap-2">
-                      <MapPin className="h-5 w-5 text-slate-400" />
-                      Address
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="md:col-span-2 space-y-2">
-                        <Label>Street Address</Label>
-                        <Input
-                          value={company.address.street}
-                          onChange={(e) => setCompany({
-                            ...company,
-                            address: { ...company.address, street: e.target.value }
-                          })}
-                          className="bg-slate-800/50 border-slate-700"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>City</Label>
-                        <Input
-                          value={company.address.city}
-                          onChange={(e) => setCompany({
-                            ...company,
-                            address: { ...company.address, city: e.target.value }
-                          })}
-                          className="bg-slate-800/50 border-slate-700"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>State/Province</Label>
-                        <Input
-                          value={company.address.state}
-                          onChange={(e) => setCompany({
-                            ...company,
-                            address: { ...company.address, state: e.target.value }
-                          })}
-                          className="bg-slate-800/50 border-slate-700"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>ZIP/Postal Code</Label>
-                        <Input
-                          value={company.address.zip}
-                          onChange={(e) => setCompany({
-                            ...company,
-                            address: { ...company.address, zip: e.target.value }
-                          })}
-                          className="bg-slate-800/50 border-slate-700"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Country</Label>
-                        <Input
-                          value={company.address.country}
-                          onChange={(e) => setCompany({
-                            ...company,
-                            address: { ...company.address, country: e.target.value }
-                          })}
-                          className="bg-slate-800/50 border-slate-700"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <Button onClick={handleSaveCompany} disabled={saving}>
-                    <Save className="h-4 w-4 mr-2" />
-                    {saving ? "Saving..." : "Save Changes"}
+          <section className="py-12">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-12 text-center">
+                  <Settings className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-400 mb-6">
+                    Account settings and preferences coming soon
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/hub/client")}
+                  >
+                    Back to Portal
                   </Button>
                 </CardContent>
               </Card>

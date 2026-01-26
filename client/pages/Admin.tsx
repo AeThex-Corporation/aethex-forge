@@ -343,7 +343,7 @@ export default function Admin() {
         <div className="min-h-screen bg-aethex-gradient flex">
           <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
           <div className="flex-1 overflow-y-auto py-8">
-            <div className="container mx-auto px-4 max-w-7xl">
+            <div className="container mx-auto px-4 max-w-6xl">
               <div className="mb-8 animate-slide-down">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                   <div className="space-y-3 flex-1">

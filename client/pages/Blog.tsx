@@ -232,7 +232,7 @@ const Blog = () => {
           />
 
           <section className="border-b border-border/30 bg-background/60 py-12">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="space-y-2">
                   <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
@@ -264,7 +264,7 @@ const Blog = () => {
           <BlogTrendingRail posts={trendingPosts} />
 
           <section className="border-b border-border/30 bg-background/80 py-16">
-            <div className="container mx-auto grid gap-6 px-4 md:grid-cols-3">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl grid gap-6 md:grid-cols-3">
               {insights.map((insight) => (
                 <Card
                   key={insight.label}
@@ -292,7 +292,7 @@ const Blog = () => {
           </section>
 
           <section className="py-20">
-            <div className="container mx-auto space-y-12 px-4">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl space-y-12">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-2">
                   <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
@@ -323,7 +323,7 @@ const Blog = () => {
           <BlogCTASection variant="both" />
 
           <section className="bg-background/70 py-16">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
               <div className="rounded-2xl border border-border/40 bg-background/80 p-8">
                 <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                   <div className="space-y-2">

@@ -10,6 +10,12 @@ import {
   TrendingUp,
   Rocket,
   ArrowRight,
+  ExternalLink,
+  Zap,
+  Target,
+  Code,
+  Palette,
+  Music,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
@@ -21,6 +27,8 @@ export default function GameForge() {
   const { theme } = useArmTheme();
   const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [showTldr, setShowTldr] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
   const toastShownRef = useRef(false);
 
   useEffect(() => {
@@ -35,6 +43,18 @@ export default function GameForge() {
     return () => clearTimeout(timer);
   }, [armToast]);
 
+  // Exit intent detection
+  useEffect(() => {
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !showExitModal) {
+        setShowExitModal(true);
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [showExitModal]);
+
   if (isLoading) {
     return (
       <LoadingScreen
@@ -47,300 +67,281 @@ export default function GameForge() {
     );
   }
 
-  const monthlyReleases = [
-    {
-      month: "January 2025",
-      title: "Pixel Quest: Reckoning",
-      genre: "Action-Adventure",
-      team: "Green Squadron",
-      status: "Shipping Now",
-      highlights: "New combat system, 50 levels, multiplayer beta",
-    },
-    {
-      month: "February 2025",
-      title: "Logic Master Pro",
-      genre: "Puzzle",
-      team: "Logic Lab",
-      status: "Pre-Production",
-      highlights: "Daily challenges, leaderboards, cross-platform",
-    },
-    {
-      month: "March 2025",
-      title: "Mystic Realms: Awakening",
-      genre: "RPG",
-      team: "Adventure Wing",
-      status: "Development",
-      highlights: "Story driven, 100+ hours, procedural dungeons",
-    },
-  ];
-
-  const pastReleases = [
-    {
-      title: "Battle Royale X",
-      genre: "Action",
-      releaseDate: "Dec 2024",
-      players: "50K+",
-      rating: 4.7,
-    },
-    {
-      title: "Casual Match",
-      genre: "Puzzle",
-      releaseDate: "Nov 2024",
-      players: "100K+",
-      rating: 4.5,
-    },
-    {
-      title: "Speedrun Challenge",
-      genre: "Action",
-      releaseDate: "Oct 2024",
-      players: "35K+",
-      rating: 4.8,
-    },
-  ];
-
   const productionStats = [
-    { label: "Games Shipped", value: "15+" },
-    { label: "Monthly Cycle", value: "32 days" },
-    { label: "Total Players", value: "200K+" },
-    { label: "Team Size", value: "25 devs" },
+    { label: "Games Shipped", value: "15+", icon: Rocket },
+    { label: "Active Players", value: "200K+", icon: Users },
+    { label: "Team Members", value: "25", icon: Users },
+    { label: "Avg Development", value: "32 days", icon: Calendar },
+  ];
+
+  const features = [
+    {
+      icon: Zap,
+      title: "30-Day Production Cycle",
+      description: "Ship complete games from concept to live in under a month using proven development pipelines.",
+      gradient: "from-green-500 to-emerald-500"
+    },
+    {
+      icon: Users,
+      title: "Collaborative Teams",
+      description: "Work alongside designers, developers, artists, and musicians in cross-functional squads.",
+      gradient: "from-cyan-500 to-blue-500"
+    },
+    {
+      icon: Target,
+      title: "Real Portfolio Projects",
+      description: "Build your aethex.me passport with shipped games that prove your ability to execute.",
+      gradient: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: TrendingUp,
+      title: "Proven Technology",
+      description: "Use cutting-edge tools and frameworks developed by AeThex Labs for rapid game development.",
+      gradient: "from-orange-500 to-red-500"
+    },
   ];
 
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
-        {/* Background */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#22c55e_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+        {/* Persistent Info Banner */}
+        <div className="bg-green-500/10 border-b border-green-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <ExternalLink className="h-5 w-5 text-green-400" />
+                <p className="text-sm text-green-200">
+                  GameForge is hosted at{" "}
+                  <a href="https://aethex.foundation/gameforge" className="underline font-semibold hover:text-green-300">
+                    aethex.foundation/gameforge
+                  </a>
+                </p>
+              </div>
+              <Button
+                size="sm"
+                className="bg-green-400 text-black hover:bg-green-300"
+                onClick={() => window.location.href = 'https://aethex.foundation/gameforge'}
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Visit Platform
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Background Effects */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.15] [background-image:radial-gradient(circle_at_top,#22c55e_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(34,197,94,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(34,197,94,0.1)_1px,transparent_1px),linear-gradient(0deg,rgba(34,197,94,0.1)_1px,transparent_1px)] [background-size:50px_50px] animate-pulse" />
-        <div className="pointer-events-none absolute top-20 left-10 w-72 h-72 bg-green-500/20 rounded-full blur-3xl animate-blob" />
-        <div className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 bg-green-600/10 rounded-full blur-3xl animate-blob animation-delay-2000" />
+        <div className="pointer-events-none absolute top-20 left-10 w-96 h-96 bg-green-500/20 rounded-full blur-3xl animate-blob" />
+        <div className="pointer-events-none absolute bottom-20 right-10 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl animate-blob animation-delay-2000" />
 
         <main className="relative z-10">
           {/* Hero Section */}
-          <section className="py-16 lg:py-24">
+          <section className="py-20 lg:py-32">
             <div className="container mx-auto max-w-6xl px-4">
-              <div className="mb-8 flex justify-center">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800"
-                  alt="GameForge Logo"
-                  className="h-24 w-24 object-contain drop-shadow-lg"
-                />
-              </div>
-              <Badge className="border-green-400/40 bg-green-500/10 text-green-300 shadow-[0_0_20px_rgba(34,197,94,0.2)] mb-6">
-                <Gamepad2 className="h-4 w-4 mr-2" />
-                GameForge Production
-              </Badge>
+              <div className="text-center space-y-8">
+                <div className="flex justify-center mb-6">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fcd3534c1caa0497abfd44224040c6059?format=webp&width=800"
+                    alt="GameForge Logo"
+                    className="h-32 w-32 object-contain drop-shadow-[0_0_40px_rgba(34,197,94,0.5)]"
+                  />
+                </div>
 
-              <div className="space-y-6 mb-12">
-                <h1 className={`text-4xl lg:text-6xl font-black text-green-300 leading-tight ${theme.fontClass}`}>
-                  Shipping Games Monthly
-                </h1>
-                <p className="text-xl text-green-100/70 max-w-3xl">
-                  AeThex GameForge is our internal production studio that
-                  demonstrates disciplined, efficient development. We ship a new
-                  game every month using proprietary development pipelines and
-                  tools from Labs, proving our technology's real-world impact
-                  while maintaining controlled burn rates.
-                </p>
-              </div>
+                <div className="space-y-6 max-w-5xl mx-auto">
+                  <Badge className="border-green-400/50 bg-green-500/10 text-green-300 text-base px-4 py-1.5">
+                    <Gamepad2 className="h-5 w-5 mr-2" />
+                    Foundation's Game Production Studio
+                  </Badge>
 
-              <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
-                <Button
-                  className="bg-green-400 text-black hover:bg-green-300"
-                  onClick={() => navigate("/gameforge/view-portfolio")}
-                >
-                  View Recent Releases
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-green-400/40 text-green-300 hover:bg-green-500/10"
-                  onClick={() => navigate("/gameforge/join-gameforge")}
-                >
-                  Meet the Team
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-green-400/40 text-green-300 hover:bg-green-500/10"
-                  onClick={() => navigate("/creators?arm=gameforge")}
-                >
-                  Browse GameForge Creators
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-green-400/40 text-green-300 hover:bg-green-500/10"
-                  onClick={() => navigate("/opportunities?arm=gameforge")}
-                >
-                  Find GameDev Jobs
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                  <h1 className={`text-5xl md:text-6xl lg:text-7xl font-black text-green-300 leading-tight ${theme.fontClass}`}>
+                    Ship Games Every Month
+                  </h1>
+
+                  <p className="text-xl md:text-2xl text-green-100/80 max-w-3xl mx-auto leading-relaxed">
+                    AeThex GameForge is a master-apprentice mentorship program where teams of 5 developers ship real games in 30-day sprints.
+                  </p>
+
+                  {/* TL;DR Section */}
+                  <div className="max-w-3xl mx-auto">
+                    <button
+                      onClick={() => setShowTldr(!showTldr)}
+                      className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors mx-auto"
+                    >
+                      <Zap className="h-5 w-5" />
+                      <span className="font-semibold">{showTldr ? 'Hide' : 'Show'} Quick Summary</span>
+                      <ArrowRight className={`h-4 w-4 transition-transform ${showTldr ? 'rotate-90' : ''}`} />
+                    </button>
+                    {showTldr && (
+                      <div className="mt-4 p-6 bg-green-950/40 border border-green-400/30 rounded-lg text-left space-y-3 animate-slide-down">
+                        <h3 className="text-lg font-bold text-green-300">TL;DR</h3>
+                        <ul className="space-y-2 text-green-100/90">
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>30-day game development sprints</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>5-person teams (1 mentor + 4 developers)</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>Ship real games to aethex.fun</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>Build your portfolio on aethex.me passport</span></li>
+                          <li className="flex gap-3"><span className="text-green-400">✦</span> <span>Part of AeThex Foundation (501c3 non-profit)</span></li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+                  <Button
+                    size="lg"
+                    className="bg-green-400 text-black hover:bg-green-300 shadow-[0_0_40px_rgba(34,197,94,0.3)] h-14 px-8 text-lg"
+                    onClick={() => window.location.href = 'https://aethex.foundation/gameforge'}
+                  >
+                    <ExternalLink className="mr-2 h-5 w-5" />
+                    Visit GameForge Platform
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-green-400/50 text-green-300 hover:bg-green-500/10 h-14 px-8 text-lg"
+                    onClick={() => window.location.href = 'https://aethex.foundation'}
+                  >
+                    About Foundation
+                  </Button>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Production Stats */}
-          <section className="py-12 border-t border-green-400/10 bg-black/40">
+          {/* Stats Section */}
+          <section className="py-16 border-y border-green-400/10 bg-black/40 backdrop-blur-sm">
             <div className="container mx-auto max-w-6xl px-4">
-              <div className="grid md:grid-cols-4 gap-6">
-                {productionStats.map((stat, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-green-950/30 border-green-400/40"
-                  >
-                    <CardContent className="pt-6 text-center">
-                      <p className="text-3xl font-black text-green-400 mb-2">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {productionStats.map((stat, idx) => {
+                  const Icon = stat.icon;
+                  return (
+                    <div
+                      key={idx}
+                      className="text-center space-y-3 p-6 rounded-lg bg-green-950/30 border border-green-400/20 hover:border-green-400/40 transition-all hover:scale-105"
+                    >
+                      <Icon className="h-8 w-8 text-green-400 mx-auto" />
+                      <p className="text-4xl md:text-5xl font-black text-green-400">
                         {stat.value}
                       </p>
                       <p className="text-sm text-green-200/70">{stat.label}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </section>
 
-          {/* Upcoming Releases */}
-          <section className="py-16">
+          {/* Features Grid */}
+          <section className="py-20 lg:py-28">
             <div className="container mx-auto max-w-6xl px-4">
-              <h2 className="text-3xl font-bold text-green-300 mb-12 flex items-center gap-2">
-                <Calendar className="h-8 w-8" />
-                Upcoming Releases
-              </h2>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-black text-green-300 mb-4">
+                  Why Join GameForge?
+                </h2>
+                <p className="text-xl text-green-100/70 max-w-3xl mx-auto">
+                  The fastest way to build a real game development portfolio and prove you can ship.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {features.map((feature, idx) => {
+                  const Icon = feature.icon;
+                  return (
+                    <Card
+                      key={idx}
+                      className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-all hover:scale-105 group"
+                    >
+                      <CardHeader>
+                        <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                          <Icon className="h-7 w-7 text-white" />
+                        </div>
+                        <CardTitle className="text-2xl text-green-300">
+                          {feature.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-green-200/80 leading-relaxed">
+                          {feature.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* How It Works */}
+          <section className="py-20 lg:py-28 border-t border-green-400/10 bg-black/40">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-black text-green-300 mb-4">
+                  The 30-Day Sprint
+                </h2>
+                <p className="text-xl text-green-100/70">
+                  From concept to shipped game in one month
+                </p>
+              </div>
+
               <div className="space-y-6">
-                {monthlyReleases.map((release, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-all"
-                  >
-                    <CardContent className="pt-6">
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                          <Badge className="bg-green-500/20 text-green-300 border border-green-400/40 mb-3">
-                            {release.month}
-                          </Badge>
-                          <h3 className="text-xl font-bold text-green-300 mb-2">
-                            {release.title}
-                          </h3>
-                          <p className="text-sm text-green-200/70 mb-3">
-                            {release.genre}
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <Users className="h-4 w-4 text-green-400" />
-                            <span className="text-sm text-green-200/70">
-                              {release.team}
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <Badge className="bg-green-500/30 text-green-200 border border-green-400/60 mb-3">
-                            {release.status}
-                          </Badge>
-                          <p className="text-sm text-green-200/80">
-                            {release.highlights}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Past Releases */}
-          <section className="py-16 border-t border-green-400/10 bg-black/40">
-            <div className="container mx-auto max-w-6xl px-4">
-              <h2 className="text-3xl font-bold text-green-300 mb-12">
-                Shipped This Year
-              </h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                {pastReleases.map((game, idx) => (
-                  <Card
-                    key={idx}
-                    className="bg-green-950/20 border-green-400/30"
-                  >
-                    <CardContent className="pt-6 space-y-4">
-                      <div>
-                        <h3 className="text-lg font-bold text-green-300 mb-1">
-                          {game.title}
-                        </h3>
-                        <Badge className="bg-green-500/20 text-green-300 border border-green-400/40 text-xs">
-                          {game.genre}
-                        </Badge>
-                      </div>
-
-                      <div className="space-y-2 text-sm text-green-200/70">
-                        <p>Released: {game.releaseDate}</p>
-                        <p>{game.players} active players</p>
-                        <div className="flex items-center gap-2">
-                          <span>⭐ {game.rating}/5</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Production Process */}
-          <section className="py-16">
-            <div className="container mx-auto max-w-6xl px-4">
-              <h2 className="text-3xl font-bold text-green-300 mb-12">
-                Our Process
-              </h2>
-              <div className="space-y-4">
                 {[
                   {
-                    phase: "Ideation",
-                    duration: "1 week",
-                    description: "Brainstorm and validate game concepts",
+                    week: "Week 1",
+                    title: "Ideation & Prototyping",
+                    description: "Define game concept, create GDD, build playable prototype",
+                    tasks: ["Team formation", "Concept validation", "Core mechanics test"]
                   },
                   {
-                    phase: "Prototyping",
-                    duration: "1 week",
-                    description:
-                      "Build playable prototype to test core mechanics",
+                    week: "Week 2",
+                    title: "Development Sprint",
+                    description: "Parallel production: code, art, sound, narrative",
+                    tasks: ["Feature implementation", "Asset creation", "Level design"]
                   },
                   {
-                    phase: "Development",
-                    duration: "3 weeks",
-                    description:
-                      "Full production with parallel art, code, and design",
+                    week: "Week 3",
+                    title: "Polish & Integration",
+                    description: "Integrate assets, refine gameplay, balance mechanics",
+                    tasks: ["Bug fixing", "Playtesting", "Performance optimization"]
                   },
                   {
-                    phase: "Polish & QA",
-                    duration: "1 week",
-                    description: "Bug fixes, optimization, and player testing",
+                    week: "Week 4",
+                    title: "QA & Launch",
+                    description: "Final testing, deployment, and post-launch monitoring",
+                    tasks: ["Final QA", "Ship to aethex.fun", "Community showcase"]
                   },
-                  {
-                    phase: "Launch",
-                    duration: "1 day",
-                    description:
-                      "Ship to production and monitor for first 24 hours",
-                  },
-                ].map((item, idx) => (
+                ].map((phase, idx) => (
                   <Card
                     key={idx}
-                    className="bg-green-950/20 border-green-400/30"
+                    className="bg-green-950/20 border-green-400/30 hover:border-green-400/50 transition-all"
                   >
-                    <CardContent className="pt-6">
-                      <div className="flex items-center gap-6">
-                        <div className="h-12 w-12 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                          {idx + 1}
+                    <CardContent className="p-8">
+                      <div className="flex gap-6 items-start">
+                        <div className="flex-shrink-0">
+                          <div className="h-16 w-16 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-2xl font-black text-white shadow-lg">
+                            {idx + 1}
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-green-300 mb-1">
-                            {item.phase}
-                          </h3>
-                          <p className="text-sm text-green-200/70">
-                            {item.description}
-                          </p>
+                        <div className="flex-1 space-y-3">
+                          <div>
+                            <Badge className="bg-green-500/20 text-green-300 border border-green-400/40 mb-2">
+                              {phase.week}
+                            </Badge>
+                            <h3 className="text-2xl font-bold text-green-300 mb-2">
+                              {phase.title}
+                            </h3>
+                            <p className="text-green-200/80 text-lg">
+                              {phase.description}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {phase.tasks.map((task, taskIdx) => (
+                              <Badge key={taskIdx} variant="outline" className="border-green-400/30 text-green-300 text-sm">
+                                {task}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                        <Badge className="bg-green-500/20 text-green-300 border border-green-400/40">
-                          {item.duration}
-                        </Badge>
                       </div>
                     </CardContent>
                   </Card>
@@ -349,27 +350,134 @@ export default function GameForge() {
             </div>
           </section>
 
-          {/* Team CTA */}
-          <section className="py-16 border-t border-green-400/10">
-            <div className="container mx-auto max-w-4xl px-4 text-center">
-              <h2 className="text-3xl font-bold text-green-300 mb-4">
-                Part of Our Shipping Culture
-              </h2>
-              <p className="text-lg text-green-100/80 mb-8">
-                Our team represents the best of game development talent. Meet
-                the people who make monthly shipping possible.
-              </p>
-              <Button
-                className="bg-green-400 text-black shadow-[0_0_30px_rgba(34,197,94,0.35)] hover:bg-green-300"
-                onClick={() => navigate("/gameforge/join-gameforge")}
-              >
-                Meet the Team
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+          {/* Team Roles */}
+          <section className="py-20 lg:py-28">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-black text-green-300 mb-4">
+                  Squad Structure
+                </h2>
+                <p className="text-xl text-green-100/70">
+                  Every team has 5 members with specialized roles
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                {[
+                  { role: "Forge Master", icon: Target, description: "Mentor & Lead", color: "from-green-500 to-emerald-500" },
+                  { role: "Scripter", icon: Code, description: "Programming", color: "from-blue-500 to-cyan-500" },
+                  { role: "Builder", icon: Palette, description: "Art & Design", color: "from-purple-500 to-pink-500" },
+                  { role: "Sound Designer", icon: Music, description: "Audio & Music", color: "from-orange-500 to-red-500" },
+                  { role: "Narrative", icon: Users, description: "Story & UX", color: "from-yellow-500 to-amber-500" },
+                ].map((member, idx) => {
+                  const Icon = member.icon;
+                  return (
+                    <Card
+                      key={idx}
+                      className="bg-green-950/20 border-green-400/30 hover:border-green-400/60 transition-all hover:scale-105 text-center"
+                    >
+                      <CardContent className="pt-8 pb-6 space-y-4">
+                        <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${member.color} flex items-center justify-center mx-auto shadow-lg`}>
+                          <Icon className="h-8 w-8 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-green-300 mb-1">
+                            {member.role}
+                          </h3>
+                          <p className="text-sm text-green-200/70">
+                            {member.description}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* CTA Section */}
+          <section className="py-20 lg:py-32 border-t border-green-400/10">
+            <div className="container mx-auto max-w-5xl px-4">
+              <Card className="bg-gradient-to-r from-green-600/20 via-emerald-600/10 to-green-600/20 border-green-500/50 overflow-hidden relative">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.1)_0%,transparent_70%)]" />
+                <CardContent className="p-12 lg:p-16 text-center space-y-8 relative z-10">
+                  <div className="space-y-4">
+                    <h2 className="text-4xl md:text-5xl font-black text-white">
+                      Ready to Ship Your First Game?
+                    </h2>
+                    <p className="text-xl text-green-100 max-w-2xl mx-auto">
+                      Join the next GameForge cohort and build your portfolio with real, shipped games.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button
+                      size="lg"
+                      className="bg-green-400 text-black hover:bg-green-300 shadow-[0_0_40px_rgba(34,197,94,0.4)] h-14 px-8 text-lg"
+                      onClick={() => window.location.href = 'https://aethex.foundation/gameforge'}
+                    >
+                      <Rocket className="mr-2 h-5 w-5" />
+                      Join GameForge Now
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="border-green-400/50 text-green-300 hover:bg-green-500/10 h-14 px-8 text-lg"
+                      onClick={() => window.location.href = 'https://aethex.foundation'}
+                    >
+                      Learn About Foundation
+                    </Button>
+                  </div>
+
+                  <p className="text-sm text-green-300/60 pt-4">
+                    Part of the AeThex Foundation 501(c)(3) non-profit
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </section>
         </main>
       </div>
+
+      {/* Exit Intent Modal */}
+      {showExitModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-gradient-to-br from-green-950 to-black border-2 border-green-400/50 rounded-xl p-8 max-w-lg mx-4 shadow-2xl shadow-green-500/20 animate-slide-up">
+            <div className="text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="w-20 h-20 rounded-full bg-green-400/20 flex items-center justify-center">
+                  <Rocket className="h-10 w-10 text-green-400" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-black text-green-300">Ready to Ship Games?</h3>
+                <p className="text-green-100/80">
+                  Join GameForge and start building your portfolio with real, shipped games in 30-day sprints.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1 bg-green-400 text-black hover:bg-green-300 h-12"
+                  onClick={() => window.location.href = 'https://aethex.foundation/gameforge'}
+                >
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Visit GameForge
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 border-green-400/50 text-green-300 hover:bg-green-500/10 h-12"
+                  onClick={() => setShowExitModal(false)}
+                >
+                  Keep Reading
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

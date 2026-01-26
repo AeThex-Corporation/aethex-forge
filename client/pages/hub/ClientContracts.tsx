@@ -128,20 +128,21 @@ export default function ClientContracts() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-blue-950/20 to-black py-8">
-        <div className="container mx-auto px-4 max-w-7xl space-y-6">
-          {/* Header */}
-          <div className="space-y-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/hub/client")}
-              className="text-slate-400 hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Portal
-            </Button>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="relative min-h-screen bg-black text-white overflow-hidden pb-12">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#3b82f6_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+
+        <main className="relative z-10">
+          <section className="border-b border-slate-800 py-8">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/hub/client")}
+                className="mb-4 text-slate-400"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Portal
+              </Button>
               <div className="flex items-center gap-3">
                 <FileText className="h-10 w-10 text-blue-400" />
                 <div>
@@ -152,32 +153,15 @@ export default function ClientContracts() {
                 </div>
               </div>
             </div>
+          </section>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-500/20">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-400 uppercase">Total Contracts</p>
-                  <p className="text-2xl font-bold text-white">{stats.total}</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-400 uppercase">Active</p>
-                  <p className="text-2xl font-bold text-green-400">{stats.active}</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-400 uppercase">Completed</p>
-                  <p className="text-2xl font-bold text-cyan-400">{stats.completed}</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-400 uppercase">Total Value</p>
-                  <p className="text-2xl font-bold text-purple-400">
-                    ${(stats.totalValue / 1000).toFixed(0)}k
+          <section className="py-12">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-12 text-center">
+                  <FileText className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-400 mb-6">
+                    Contract management coming soon
                   </p>
                 </CardContent>
               </Card>

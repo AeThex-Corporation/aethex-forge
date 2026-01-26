@@ -23,6 +23,8 @@ export default function Labs() {
   const { theme } = useArmTheme();
   const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [showTldr, setShowTldr] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
   const toastShownRef = useRef(false);
 
   useEffect(() => {
@@ -36,6 +38,18 @@ export default function Labs() {
 
     return () => clearTimeout(timer);
   }, [armToast]);
+
+  // Exit intent detection
+  useEffect(() => {
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !showExitModal) {
+        setShowExitModal(true);
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [showExitModal]);
 
   if (isLoading) {
     return (
@@ -112,6 +126,31 @@ export default function Labs() {
   return (
     <Layout>
       <div className="relative min-h-screen bg-black text-white overflow-hidden">
+        {/* Persistent Info Banner */}
+        <div className="bg-yellow-500/10 border-b border-yellow-400/30 py-3 sticky top-0 z-50 backdrop-blur-sm">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <ExternalLink className="h-5 w-5 text-yellow-400" />
+                <p className="text-sm text-yellow-200">
+                  Labs is hosted at{" "}
+                  <a href="https://aethex.studio" className="underline font-semibold hover:text-yellow-300">
+                    aethex.studio
+                  </a>
+                </p>
+              </div>
+              <Button
+                size="sm"
+                className="bg-yellow-400 text-black hover:bg-yellow-300"
+                onClick={() => window.location.href = 'https://aethex.studio'}
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Visit Studio
+              </Button>
+            </div>
+          </div>
+        </div>
+
         {/* Cyberpunk Background Effects */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#facc15_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(250,204,21,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
@@ -120,81 +159,74 @@ export default function Labs() {
         <div className="pointer-events-none absolute bottom-20 right-10 w-96 h-96 bg-yellow-600/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
 
         <main className="relative z-10">
-          {/* Hero Section - L.A.B.S. Interface */}
-          <section className="relative overflow-hidden py-20 lg:py-28 border-b border-yellow-400/10">
-            <div className="container mx-auto max-w-6xl px-4 text-center">
-              <div className="mx-auto flex max-w-3xl flex-col items-center gap-8">
-                <div className="flex justify-center mb-4">
+          {/* Hero Section */}
+          <section className="relative overflow-hidden py-20 lg:py-32">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="text-center space-y-8">
+                <div className="flex justify-center mb-6">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2Ffc53d607e21d497595ac97e0637001a1%2Fd93f7113d34347469e74421c3a3412e5?format=webp&width=800"
                     alt="Labs Logo"
-                    className="h-24 w-24 object-contain drop-shadow-lg filter drop-shadow-[0_0_20px_rgba(251,191,36,0.4)]"
+                    className="h-32 w-32 object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.6)]"
                   />
                 </div>
 
-                <Badge className="border-yellow-400/40 bg-yellow-500/10 text-yellow-300 shadow-[0_0_20px_rgba(250,204,21,0.2)]">
-                  <span className="mr-2 inline-flex h-2 w-2 animate-pulse rounded-full bg-yellow-300" />
-                  Research & Development Uplink
-                </Badge>
+                <div className="space-y-6 max-w-5xl mx-auto">
+                  <Badge className="border-yellow-400/50 bg-yellow-500/10 text-yellow-300 text-base px-4 py-1.5">
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Advanced Research & Development
+                  </Badge>
 
-                <div>
-                  <h1 className={`text-5xl lg:text-7xl font-black text-yellow-300 leading-tight mb-4 ${theme.fontClass}`}>
+                  <h1 className={`text-5xl md:text-6xl lg:text-7xl font-black text-yellow-300 leading-tight ${theme.fontClass}`}>
                     The Innovation Engine
                   </h1>
-                  <p className="text-lg text-yellow-100/90 mb-4">
-                    Real-time window into the AeThex Labs mainframe.
-                    Breakthrough R&D pushing the boundaries of what's possible.
+
+                  <p className="text-xl md:text-2xl text-yellow-100/80 max-w-3xl mx-auto leading-relaxed">
+                    Breakthrough R&D pushing the boundaries of what's possible in software, AI, games, and digital experiences.
                   </p>
+
+                  {/* TL;DR Section */}
+                  <div className="max-w-3xl mx-auto">
+                    <button
+                      onClick={() => setShowTldr(!showTldr)}
+                      className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors mx-auto"
+                    >
+                      <Zap className="h-5 w-5" />
+                      <span className="font-semibold">{showTldr ? 'Hide' : 'Show'} Quick Summary</span>
+                      <ArrowRight className={`h-4 w-4 transition-transform ${showTldr ? 'rotate-90' : ''}`} />
+                    </button>
+                    {showTldr && (
+                      <div className="mt-4 p-6 bg-yellow-950/40 border border-yellow-400/30 rounded-lg text-left space-y-3 animate-slide-down">
+                        <h3 className="text-lg font-bold text-yellow-300">TL;DR</h3>
+                        <ul className="space-y-2 text-yellow-100/90">
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Cutting-edge R&D across AI, games, and web tech</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>PhD-level researchers and innovative engineers</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Published research and open-source contributions</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Technology powering GameForge and platform tools</span></li>
+                          <li className="flex gap-3"><span className="text-yellow-400">✦</span> <span>Visit aethex.studio for research papers & demos</span></li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <p className="text-xl text-yellow-100/80 max-w-3xl">
-                  AeThex Labs is our dedicated R&D pillar, focused on
-                  breakthrough technologies that create lasting competitive
-                  advantage. Applied R&D pushing the boundaries of what's
-                  possible in software, games, and digital experiences.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
                   <Button
-                    className="bg-yellow-400 text-black hover:bg-yellow-300 shadow-[0_0_30px_rgba(250,204,21,0.35)]"
-                    onClick={() => navigate("/labs/explore-research")}
+                    size="lg"
+                    className="bg-yellow-400 text-black hover:bg-yellow-300 shadow-[0_0_40px_rgba(250,204,21,0.4)] h-14 px-8 text-lg"
+                    onClick={() => window.location.href = 'https://aethex.studio'}
                   >
-                    <Microscope className="mr-2 h-5 w-5" />
-                    Explore Research
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ExternalLink className="mr-2 h-5 w-5" />
+                    Visit Labs Studio
                   </Button>
                   <Button
+                    size="lg"
                     variant="outline"
-                    className="border-yellow-400/40 text-yellow-300 hover:bg-yellow-500/10"
+                    className="border-yellow-400/50 text-yellow-300 hover:bg-yellow-500/10 h-14 px-8 text-lg"
                     onClick={() => navigate("/careers")}
                   >
-                    Join Our Team
+                    Join Research Team
                   </Button>
-                </div>
-
-                {/* Creator Network CTAs */}
-                <div className="pt-8 border-t border-yellow-400/20 w-full">
-                  <p className="text-sm text-yellow-200/70 mb-4">
-                    Explore our creator community:
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
-                      onClick={() => navigate("/creators?arm=labs")}
-                    >
-                      Browse Labs Creators
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/10"
-                      onClick={() => navigate("/opportunities?arm=labs")}
-                    >
-                      View Labs Opportunities
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -416,6 +448,45 @@ export default function Labs() {
           </section>
         </main>
       </div>
+
+      {/* Exit Intent Modal */}
+      {showExitModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-gradient-to-br from-yellow-950 to-black border-2 border-yellow-400/50 rounded-xl p-8 max-w-lg mx-4 shadow-2xl shadow-yellow-500/20 animate-slide-up">
+            <div className="text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="w-20 h-20 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                  <Sparkles className="h-10 w-10 text-yellow-400" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-black text-yellow-300">Explore Labs Research</h3>
+                <p className="text-yellow-100/80">
+                  Dive into cutting-edge research, technical papers, and innovation demos at AeThex Labs Studio.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1 bg-yellow-400 text-black hover:bg-yellow-300 h-12"
+                  onClick={() => window.location.href = 'https://aethex.studio'}
+                >
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Visit Labs Studio
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 border-yellow-400/50 text-yellow-300 hover:bg-yellow-500/10 h-12"
+                  onClick={() => setShowExitModal(false)}
+                >
+                  Keep Reading
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

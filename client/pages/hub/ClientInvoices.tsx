@@ -160,20 +160,21 @@ export default function ClientInvoices() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-cyan-950/20 to-black py-8">
-        <div className="container mx-auto px-4 max-w-7xl space-y-6">
-          {/* Header */}
-          <div className="space-y-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/hub/client")}
-              className="text-slate-400 hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Portal
-            </Button>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="relative min-h-screen bg-black text-white overflow-hidden pb-12">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#3b82f6_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+
+        <main className="relative z-10">
+          <section className="border-b border-slate-800 py-8">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/hub/client")}
+                className="mb-4 text-slate-400"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Portal
+              </Button>
               <div className="flex items-center gap-3">
                 <Receipt className="h-10 w-10 text-cyan-400" />
                 <div>
@@ -184,25 +185,22 @@ export default function ClientInvoices() {
                 </div>
               </div>
             </div>
+          </section>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-400 uppercase">Total Billed</p>
-                  <p className="text-2xl font-bold text-white">${(stats.total / 1000).toFixed(1)}k</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-400 uppercase">Paid</p>
-                  <p className="text-2xl font-bold text-green-400">${(stats.paid / 1000).toFixed(1)}k</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gradient-to-br from-yellow-950/40 to-yellow-900/20 border-yellow-500/20">
-                <CardContent className="p-4">
-                  <p className="text-xs text-gray-400 uppercase">Pending</p>
-                  <p className="text-2xl font-bold text-yellow-400">${(stats.pending / 1000).toFixed(1)}k</p>
+          <section className="py-12">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-12 text-center">
+                  <FileText className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-400 mb-6">
+                    Invoice tracking coming soon
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/hub/client")}
+                  >
+                    Back to Portal
+                  </Button>
                 </CardContent>
               </Card>
               <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">

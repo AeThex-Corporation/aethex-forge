@@ -136,7 +136,7 @@ export default function ClientProjects() {
         <main className="relative z-10">
           {/* Header */}
           <section className="border-b border-slate-800 py-8">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <Button
                 variant="ghost"
                 size="sm"
@@ -158,7 +158,7 @@ export default function ClientProjects() {
 
           {/* Filters */}
           <section className="border-b border-slate-800 py-6">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               <div className="space-y-4">
                 {/* Search */}
                 <div className="relative">
@@ -207,7 +207,7 @@ export default function ClientProjects() {
 
           {/* Projects Grid */}
           <section className="py-12">
-            <div className="container mx-auto max-w-7xl px-4">
+            <div className="container mx-auto max-w-6xl px-4">
               {filteredProjects.length === 0 ? (
                 <Card className="bg-slate-800/30 border-slate-700">
                   <CardContent className="p-12 text-center">

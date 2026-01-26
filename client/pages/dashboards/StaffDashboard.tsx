@@ -164,7 +164,7 @@ export default function StaffDashboard() {
         className={`min-h-screen bg-gradient-to-b from-black to-black py-8 ${theme.fontClass}`}
         style={{ backgroundImage: theme.wallpaperPattern }}
       >
-        <div className="container mx-auto px-4 max-w-7xl space-y-8">
+        <div className="container mx-auto px-4 max-w-6xl space-y-8">
           {/* Header */}
           <div className="space-y-4 animate-slide-down">
             <h1

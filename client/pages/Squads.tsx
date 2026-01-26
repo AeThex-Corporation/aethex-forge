@@ -86,8 +86,8 @@ export default function Squads() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)] py-10">
-        <div className="mx-auto w-full max-w-6xl px-4 lg:px-6 space-y-6">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(110,141,255,0.12),transparent_60%)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl space-y-8">
           {/* Header */}
           <section className="rounded-3xl border border-border/40 bg-background/80 p-6 shadow-2xl backdrop-blur">
             <div className="flex items-start justify-between">
@@ -107,7 +107,7 @@ export default function Squads() {
           </section>
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="border-border/40 bg-background/80 backdrop-blur">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -228,7 +228,7 @@ export default function Squads() {
                 </p>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {squads.map((squad) => (
                   <Card
                     key={squad.id}
@@ -285,7 +285,7 @@ export default function Squads() {
             <h2 className="text-2xl font-bold text-foreground mb-6">
               Squad Features
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-4 rounded-xl bg-aethex-500/5 border border-aethex-500/20">
                 <div className="flex items-center gap-3 mb-2">
                   <Zap className="h-5 w-5 text-aethex-400" />

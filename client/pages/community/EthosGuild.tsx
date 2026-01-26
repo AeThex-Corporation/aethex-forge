@@ -137,7 +137,7 @@ export default function EthosGuild() {
       <div className="pointer-events-none absolute top-40 right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-blob" />
       <div className="pointer-events-none absolute bottom-40 left-20 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl animate-blob animation-delay-2000" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 space-y-16">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-16 space-y-16">
         {/* Hero Section */}
         <section className="space-y-6 text-center animate-slide-up">
           <div className="space-y-3">

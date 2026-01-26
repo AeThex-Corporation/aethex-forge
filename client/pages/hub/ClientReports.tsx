@@ -156,20 +156,21 @@ export default function ClientReports() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-black via-purple-950/20 to-black py-8">
-        <div className="container mx-auto px-4 max-w-7xl space-y-6">
-          {/* Header */}
-          <div className="space-y-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/hub/client")}
-              className="text-slate-400 hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Portal
-            </Button>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="relative min-h-screen bg-black text-white overflow-hidden pb-12">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#3b82f6_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
+
+        <main className="relative z-10">
+          <section className="border-b border-slate-800 py-8">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/hub/client")}
+                className="mb-4 text-slate-400"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Portal
+              </Button>
               <div className="flex items-center gap-3">
                 <TrendingUp className="h-10 w-10 text-purple-400" />
                 <div>
@@ -198,195 +199,19 @@ export default function ClientReports() {
                 </Button>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* Key Metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase">Total Projects</p>
-                    <p className="text-2xl font-bold text-white">{analytics?.total_projects || projects.length}</p>
-                  </div>
-                  <BarChart3 className="h-6 w-6 text-purple-400 opacity-50" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-green-950/40 to-green-900/20 border-green-500/20">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase">Completion Rate</p>
-                    <p className="text-2xl font-bold text-green-400">
-                      {analytics?.average_completion_rate?.toFixed(0) || 0}%
-                    </p>
-                  </div>
-                  <Target className="h-6 w-6 text-green-400 opacity-50" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase">Total Hours</p>
-                    <p className="text-2xl font-bold text-cyan-400">
-                      {analytics?.total_hours || projects.reduce((a, p) => a + p.hours_logged, 0)}
-                    </p>
-                  </div>
-                  <Clock className="h-6 w-6 text-cyan-400 opacity-50" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-pink-950/40 to-pink-900/20 border-pink-500/20">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase">On-Time Rate</p>
-                    <p className="text-2xl font-bold text-pink-400">
-                      {analytics?.on_time_delivery_rate || 85}%
-                    </p>
-                  </div>
-                  <CheckCircle className="h-6 w-6 text-pink-400 opacity-50" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="bg-slate-800/50 border border-slate-700">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="projects">Project Reports</TabsTrigger>
-              <TabsTrigger value="budget">Budget Analysis</TabsTrigger>
-              <TabsTrigger value="time">Time Tracking</TabsTrigger>
-            </TabsList>
-
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Budget Overview */}
-                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <DollarSign className="h-5 w-5 text-purple-400" />
-                      Budget Overview
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Budget Utilization</span>
-                      <span className="text-white font-semibold">{budgetUtilization}%</span>
-                    </div>
-                    <Progress value={budgetUtilization} className="h-3" />
-                    <div className="grid grid-cols-2 gap-4 pt-4">
-                      <div>
-                        <p className="text-xs text-gray-400 uppercase">Total Budget</p>
-                        <p className="text-xl font-bold text-white">
-                          ${((analytics?.total_budget || 0) / 1000).toFixed(0)}k
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-400 uppercase">Spent</p>
-                        <p className="text-xl font-bold text-purple-400">
-                          ${((analytics?.total_spent || 0) / 1000).toFixed(0)}k
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Project Status */}
-                <Card className="bg-gradient-to-br from-cyan-950/40 to-cyan-900/20 border-cyan-500/20">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <PieChart className="h-5 w-5 text-cyan-400" />
-                      Project Status
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-400">Active</span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-32 bg-black/30 rounded-full h-2">
-                            <div
-                              className="bg-green-500 h-2 rounded-full"
-                              style={{ width: `${(analytics?.active_projects || 0) / (analytics?.total_projects || 1) * 100}%` }}
-                            />
-                          </div>
-                          <span className="text-white font-semibold w-8">{analytics?.active_projects || 0}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-400">Completed</span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-32 bg-black/30 rounded-full h-2">
-                            <div
-                              className="bg-cyan-500 h-2 rounded-full"
-                              style={{ width: `${(analytics?.completed_projects || 0) / (analytics?.total_projects || 1) * 100}%` }}
-                            />
-                          </div>
-                          <span className="text-white font-semibold w-8">{analytics?.completed_projects || 0}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Recent Activity */}
-              <Card className="bg-gradient-to-br from-slate-900/40 to-slate-800/20 border-slate-700/50">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-blue-400" />
-                    Recent Project Activity
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {projects.slice(0, 5).map((project) => (
-                      <div
-                        key={project.id}
-                        className="p-4 bg-black/30 rounded-lg border border-slate-700/50 flex items-center justify-between"
-                      >
-                        <div>
-                          <p className="font-semibold text-white">{project.title}</p>
-                          <p className="text-sm text-gray-400">
-                            {project.milestones_completed} of {project.milestones_total} milestones
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <div className="text-right">
-                            <p className="text-sm text-gray-400">Progress</p>
-                            <p className="font-semibold text-white">{project.progress}%</p>
-                          </div>
-                          <div className="w-20">
-                            <Progress value={project.progress} className="h-2" />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Project Reports Tab */}
-            <TabsContent value="projects" className="space-y-4">
-              {projects.length === 0 ? (
-                <Card className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20">
-                  <CardContent className="p-12 text-center">
-                    <BarChart3 className="h-12 w-12 mx-auto text-gray-500 mb-4" />
-                    <p className="text-gray-400">No project data available</p>
-                  </CardContent>
-                </Card>
-              ) : (
-                projects.map((project) => (
-                  <Card
-                    key={project.id}
-                    className="bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-500/20"
+          <section className="py-12">
+            <div className="container mx-auto max-w-6xl px-4">
+              <Card className="bg-slate-800/30 border-slate-700">
+                <CardContent className="p-12 text-center">
+                  <TrendingUp className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+                  <p className="text-slate-400 mb-6">
+                    Detailed project reports and analytics coming soon
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/hub/client")}
                   >
                     <CardHeader>
                       <div className="flex items-start justify-between">
