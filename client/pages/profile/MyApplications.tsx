@@ -138,7 +138,7 @@ export default function MyApplications() {
                   }
                   className="mb-8"
                 >
-                  <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 border-slate-700">
+                  <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 bg-slate-800/50 border-slate-700">
                     <TabsTrigger value="all">
                       All ({applications.length})
                     </TabsTrigger>

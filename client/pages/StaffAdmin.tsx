@@ -74,7 +74,7 @@ export default function StaffAdmin() {
           <Card className="bg-slate-900/50 border-purple-500/20">
             <CardContent className="pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-5 bg-slate-800/50">
+                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 bg-slate-800/50">
                   <TabsTrigger value="users" className="gap-2">
                     <Users className="w-4 h-4" />
                     <span className="hidden sm:inline">Users</span>

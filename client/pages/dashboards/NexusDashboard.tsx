@@ -421,7 +421,7 @@ export default function NexusDashboard() {
                 onValueChange={setActiveTab}
                 className="w-full"
               >
-                <TabsList className="grid w-full grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
+                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="applications">Applications</TabsTrigger>
                   <TabsTrigger value="contracts">Contracts</TabsTrigger>
@@ -876,7 +876,7 @@ export default function NexusDashboard() {
                 onValueChange={setActiveTab}
                 className="w-full"
               >
-                <TabsList className="grid w-full grid-cols-4 bg-blue-950/30 border border-blue-500/20 p-1">
+                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-blue-950/30 border border-blue-500/20 p-1">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
                   <TabsTrigger value="applicants">Applicants</TabsTrigger>

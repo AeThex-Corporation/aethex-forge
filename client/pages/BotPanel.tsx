@@ -347,7 +347,7 @@ export default function BotPanel() {
                     </div>
                   )}
                   <Separator className="bg-gray-700" />
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-gray-400">Commands</p>
                       <p className="text-lg font-semibold text-white">
@@ -379,7 +379,7 @@ export default function BotPanel() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-gray-700/30 rounded-lg">
                       <p className="text-2xl font-bold text-white">{feedStats?.totalPosts || 0}</p>
                       <p className="text-sm text-gray-400">Total Posts</p>

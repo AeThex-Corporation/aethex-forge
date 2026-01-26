@@ -205,7 +205,7 @@ export default function CommentsModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] flex flex-col h-[600px]">
+      <DialogContent className="sm:max-w-[500px] flex flex-col h-[80vh] sm:h-[600px] max-h-[600px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <MessageCircle className="h-5 w-5" />

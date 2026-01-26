@@ -155,7 +155,7 @@ export default function StaffDashboard() {
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-4 bg-slate-800/50">
+                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-slate-800/50">
                   <TabsTrigger value="overview" className="gap-2">
                     <BarChart3 className="w-4 h-4" />
                     <span className="hidden sm:inline">Overview</span>

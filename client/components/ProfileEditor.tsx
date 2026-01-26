@@ -196,7 +196,7 @@ export function ProfileEditor({
 
   return (
     <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="grid w-full grid-cols-5">
+      <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
         <TabsTrigger value="basic">Basic</TabsTrigger>
         <TabsTrigger value="social">Social</TabsTrigger>
         <TabsTrigger value="skills">Skills</TabsTrigger>

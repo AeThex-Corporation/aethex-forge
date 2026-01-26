@@ -306,7 +306,7 @@ export default function LabsDashboard() {
             className="w-full"
           >
             <TabsList
-              className="grid w-full grid-cols-4 bg-amber-950/30 border border-amber-500/20 p-1"
+              className="grid w-full grid-cols-2 sm:grid-cols-4 bg-amber-950/30 border border-amber-500/20 p-1"
               style={{ fontFamily: "Monaco, Courier New, monospace" }}
             >
               <TabsTrigger value="overview">Overview</TabsTrigger>

@@ -260,6 +260,22 @@ const App = () => (
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/admin/feed" element={<AdminFeed />} />
                         <Route path="/admin/docs-sync" element={<DocsSync />} />
+                        <Route
+                          path="/admin/moderation"
+                          element={
+                            <RequireAccess>
+                              <AdminModeration />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/admin/analytics"
+                          element={
+                            <RequireAccess>
+                              <AdminAnalytics />
+                            </RequireAccess>
+                          }
+                        />
                         <Route path="/arms" element={<Arms />} />
                         <Route path="/feed" element={<Navigate to="/community/feed" replace />} />
                         <Route path="/teams" element={<Teams />} />
@@ -430,6 +446,24 @@ const App = () => (
                           }
                         />
 
+                        {/* Staff Onboarding Routes */}
+                        <Route
+                          path="/staff/onboarding"
+                          element={
+                            <RequireAccess>
+                              <StaffOnboarding />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/staff/onboarding/checklist"
+                          element={
+                            <RequireAccess>
+                              <StaffOnboardingChecklist />
+                            </RequireAccess>
+                          }
+                        />
+
                         {/* Staff Management Routes */}
                         <Route
                           path="/staff/directory"
@@ -536,6 +570,56 @@ const App = () => (
                           element={
                             <RequireAccess>
                               <StaffTeamHandbook />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/staff/okrs"
+                          element={
+                            <RequireAccess>
+                              <StaffOKRs />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/staff/time-tracking"
+                          element={
+                            <RequireAccess>
+                              <StaffTimeTracking />
+                            </RequireAccess>
+                          }
+                        />
+
+                        {/* Candidate Portal Routes */}
+                        <Route
+                          path="/candidate"
+                          element={
+                            <RequireAccess>
+                              <CandidatePortal />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/candidate/profile"
+                          element={
+                            <RequireAccess>
+                              <CandidateProfile />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/candidate/interviews"
+                          element={
+                            <RequireAccess>
+                              <CandidateInterviews />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/candidate/offers"
+                          element={
+                            <RequireAccess>
+                              <CandidateOffers />
                             </RequireAccess>
                           }
                         />

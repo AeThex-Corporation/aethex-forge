@@ -393,7 +393,7 @@ export default function Dashboard() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-purple-950/30 border border-purple-500/20 p-1">
               <TabsTrigger value="realms" className="text-sm md:text-base">
                 <span className="hidden sm:inline">Realms</span>
                 <span className="sm:hidden">Arms</span>
