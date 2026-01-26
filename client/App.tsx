@@ -165,6 +165,8 @@ import CandidatePortal from "./pages/candidate/CandidatePortal";
 import CandidateProfile from "./pages/candidate/CandidateProfile";
 import CandidateInterviews from "./pages/candidate/CandidateInterviews";
 import CandidateOffers from "./pages/candidate/CandidateOffers";
+import StaffOKRs from "./pages/staff/StaffOKRs";
+import StaffTimeTracking from "./pages/staff/StaffTimeTracking";
 
 const queryClient = new QueryClient();
 
@@ -542,6 +544,22 @@ const App = () => (
                           element={
                             <RequireAccess>
                               <StaffTeamHandbook />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/staff/okrs"
+                          element={
+                            <RequireAccess>
+                              <StaffOKRs />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/staff/time-tracking"
+                          element={
+                            <RequireAccess>
+                              <StaffTimeTracking />
                             </RequireAccess>
                           }
                         />
