@@ -159,6 +159,8 @@ import StaffLearningPortal from "./pages/staff/StaffLearningPortal";
 import StaffPerformanceReviews from "./pages/staff/StaffPerformanceReviews";
 import StaffProjectTracking from "./pages/staff/StaffProjectTracking";
 import StaffTeamHandbook from "./pages/staff/StaffTeamHandbook";
+import StaffOnboarding from "./pages/staff/StaffOnboarding";
+import StaffOnboardingChecklist from "./pages/staff/StaffOnboardingChecklist";
 
 const queryClient = new QueryClient();
 
@@ -408,6 +410,24 @@ const App = () => (
                           element={
                             <RequireAccess>
                               <StaffDashboard />
+                            </RequireAccess>
+                          }
+                        />
+
+                        {/* Staff Onboarding Routes */}
+                        <Route
+                          path="/staff/onboarding"
+                          element={
+                            <RequireAccess>
+                              <StaffOnboarding />
+                            </RequireAccess>
+                          }
+                        />
+                        <Route
+                          path="/staff/onboarding/checklist"
+                          element={
+                            <RequireAccess>
+                              <StaffOnboardingChecklist />
                             </RequireAccess>
                           }
                         />
