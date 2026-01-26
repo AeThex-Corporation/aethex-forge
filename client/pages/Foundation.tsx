@@ -1,44 +1,52 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useArmTheme } from "@/contexts/ArmThemeContext";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Heart,
-  BookOpen,
-  Code,
-  Users,
-  Zap,
+  ExternalLink,
   ArrowRight,
-  GraduationCap,
   Gamepad2,
+  Users,
+  Code,
+  GraduationCap,
   Sparkles,
-  Trophy,
-  Compass,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
-import { useArmToast } from "@/hooks/use-arm-toast";
 
 export default function Foundation() {
-  const navigate = useNavigate();
-  const { theme } = useArmTheme();
-  const armToast = useArmToast();
   const [isLoading, setIsLoading] = useState(true);
-  const toastShownRef = useRef(false);
+  const [countdown, setCountdown] = useState(10);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      if (!toastShownRef.current) {
-        armToast.system("Foundation network connected");
-        toastShownRef.current = true;
-      }
     }, 900);
 
     return () => clearTimeout(timer);
-  }, [armToast]);
+  }, []);
+
+  // Countdown timer for auto-redirect
+  useEffect(() => {
+    if (isLoading) return;
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          window.location.href = "https://aethex.foundation";
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isLoading]);
+
+  const handleRedirect = () => {
+    window.location.href = "https://aethex.foundation";
+  };
 
   if (isLoading) {
     return (
@@ -55,359 +63,146 @@ export default function Foundation() {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-black via-red-950/20 to-black py-8">
-        <div className="container mx-auto px-4 max-w-7xl space-y-12">
-          {/* Hero Section */}
-          <div className="space-y-6 animate-slide-down">
-            <div className="space-y-2">
-              <Badge className="w-fit bg-red-600/50 text-red-100">
-                Non-Profit Guardian
-              </Badge>
-              <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-red-300 via-pink-300 to-red-300 bg-clip-text text-transparent">
-                AeThex Foundation
-              </h1>
-            </div>
-            <p className="text-xl text-gray-300 max-w-2xl leading-relaxed">
-              The heart of our ecosystem. We believe in building community,
-              empowering developers, and advancing game development through
-              open-source innovation and mentorship.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button
-                onClick={() => navigate("/gameforge")}
-                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 h-12 text-base"
-              >
-                <Gamepad2 className="h-5 w-5 mr-2" />
-                Join GameForge
-              </Button>
-              <Button
-                onClick={() => navigate("/mentorship")}
-                variant="outline"
-                className="border-red-500/30 text-red-300 hover:bg-red-500/10 h-12 text-base"
-              >
-                <GraduationCap className="h-5 w-5 mr-2" />
-                Explore Programs
-              </Button>
-            </div>
-          </div>
-
-          {/* Flagship: GameForge Section */}
-          <Card className="bg-gradient-to-br from-green-950/40 via-emerald-950/30 to-green-950/40 border-green-500/40 overflow-hidden">
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-3">
-                <Gamepad2 className="h-8 w-8 text-green-400" />
-                <div>
-                  <CardTitle className="text-2xl text-white">
-                    🚀 GameForge: Our Flagship Program
-                  </CardTitle>
-                  <p className="text-sm text-gray-400 mt-1">
-                    30-day mentorship sprints where developers ship real games
-                  </p>
+        <div className="container mx-auto px-4 max-w-4xl">
+          {/* Main Card */}
+          <Card className="bg-gradient-to-br from-red-950/40 via-red-900/20 to-red-950/40 border-red-500/30 overflow-hidden">
+            <CardContent className="p-8 md:p-12 space-y-8">
+              {/* Header */}
+              <div className="text-center space-y-4">
+                <div className="flex justify-center">
+                  <div className="p-4 rounded-full bg-red-500/20 border border-red-500/30">
+                    <Heart className="h-12 w-12 text-red-400" />
+                  </div>
                 </div>
+                <Badge className="bg-red-600/50 text-red-100">
+                  Non-Profit Guardian
+                </Badge>
+                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-300 via-pink-300 to-red-300 bg-clip-text text-transparent">
+                  AeThex Foundation
+                </h1>
+                <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                  The heart of our ecosystem. Dedicated to community, mentorship,
+                  and advancing game development through open-source innovation.
+                </p>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* What is GameForge? */}
+
+              {/* Redirect Notice */}
+              <div className="bg-black/40 rounded-xl p-6 border border-red-500/20 text-center space-y-4">
+                <div className="flex items-center justify-center gap-2 text-red-300">
+                  <Sparkles className="h-5 w-5" />
+                  <span className="font-semibold">Foundation Has Moved</span>
+                </div>
+                <p className="text-gray-300">
+                  The AeThex Foundation now has its own dedicated home. Visit our
+                  new site for programs, resources, and community updates.
+                </p>
+                <Button
+                  onClick={handleRedirect}
+                  className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 h-12 px-8 text-base"
+                >
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Visit aethex.foundation
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Button>
+                <p className="text-sm text-gray-500">
+                  Redirecting automatically in {countdown} seconds...
+                </p>
+              </div>
+
+              {/* Quick Links */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Compass className="h-5 w-5 text-green-400" />
-                  What is GameForge?
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  GameForge is the Foundation's flagship "master-apprentice"
-                  mentorship program. It's our "gym" where developers
-                  collaborate on focused, high-impact game projects within
-                  30-day sprints. Teams of 5 (1 mentor + 4 mentees) tackle real
-                  game development challenges and ship playable games to our
-                  community arcade.
-                </p>
-              </div>
-
-              {/* The Triple Win */}
-              <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-green-400" />
-                  Why GameForge Matters
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="p-4 bg-black/40 rounded-lg border border-green-500/20 space-y-2">
-                    <p className="font-semibold text-green-300">
-                      Role 1: Community
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Our "campfire" where developers meet, collaborate, and
-                      build their `aethex.me` passports through real project
-                      work.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-black/40 rounded-lg border border-green-500/20 space-y-2">
-                    <p className="font-semibold text-green-300">
-                      Role 2: Education
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Learn professional development practices: Code Review
-                      (SOP-102), Scope Management (KND-001), and shipping
-                      excellence.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-black/40 rounded-lg border border-green-500/20 space-y-2">
-                    <p className="font-semibold text-green-300">
-                      Role 3: Pipeline
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Top performers become "Architects" ready to work on
-                      high-value projects. Your GameForge portfolio proves you
-                      can execute.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* How It Works */}
-              <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-green-400" />
-                  How It Works
-                </h3>
-                <div className="space-y-2">
-                  <div className="flex gap-3 p-3 bg-black/30 rounded-lg border border-green-500/10">
-                    <span className="text-green-400 font-bold shrink-0">
-                      1.
-                    </span>
-                    <div>
-                      <p className="font-semibold text-white text-sm">
-                        Join a 5-Person Team
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        1 Forge Master (Mentor) + 4 Apprentices (Scripter,
-                        Builder, Sound, Narrative)
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 p-3 bg-black/30 rounded-lg border border-green-500/10">
-                    <span className="text-green-400 font-bold shrink-0">
-                      2.
-                    </span>
-                    <div>
-                      <p className="font-semibold text-white text-sm">
-                        Ship in 30 Days
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        Focused sprint with a strict 1-paragraph GDD. No scope
-                        creep. Execute with excellence.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 p-3 bg-black/30 rounded-lg border border-green-500/10">
-                    <span className="text-green-400 font-bold shrink-0">
-                      3.
-                    </span>
-                    <div>
-                      <p className="font-semibold text-white text-sm">
-                        Ship to the Arcade
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        Your finished game goes live on aethex.fun. Add it to
-                        your Passport portfolio.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 p-3 bg-black/30 rounded-lg border border-green-500/10">
-                    <span className="text-green-400 font-bold shrink-0">
-                      4.
-                    </span>
-                    <div>
-                      <p className="font-semibold text-white text-sm">
-                        Level Up Your Career
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        3 shipped games = Architect status. Qualify for premium
-                        opportunities on NEXUS.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* CTA Button */}
-              <Button
-                onClick={() => navigate("/gameforge")}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 h-12 text-base font-semibold"
-              >
-                <Gamepad2 className="h-5 w-5 mr-2" />
-                Join the Next GameForge Cohort
-                <ArrowRight className="h-5 w-5 ml-auto" />
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Foundation Mission & Values */}
-          <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-white flex items-center gap-2">
-              <Heart className="h-8 w-8 text-red-400" />
-              Our Mission
-            </h2>
-            <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20">
-              <CardContent className="p-6 space-y-4">
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  The AeThex Foundation is a non-profit organization dedicated
-                  to advancing game development through community-driven
-                  mentorship, open-source innovation, and educational
-                  excellence. We believe that great developers are built, not
-                  born—and that the future of gaming lies in collaboration,
-                  transparency, and shared knowledge.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <h3 className="font-semibold text-red-300 flex items-center gap-2">
-                      <Users className="h-5 w-5" />
-                      Community is Our Core
-                    </h3>
-                    <p className="text-sm text-gray-400">
-                      Building lasting relationships and support networks within
-                      game development.
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="font-semibold text-red-300 flex items-center gap-2">
-                      <Code className="h-5 w-5" />
-                      Open Innovation
-                    </h3>
-                    <p className="text-sm text-gray-400">
-                      Advancing the industry through open-source Axiom Protocol
-                      and shared tools.
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="font-semibold text-red-300 flex items-center gap-2">
-                      <GraduationCap className="h-5 w-5" />
-                      Excellence & Growth
-                    </h3>
-                    <p className="text-sm text-gray-400">
-                      Mentoring developers to ship real products and achieve
-                      their potential.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Other Programs */}
-          <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-white flex items-center gap-2">
-              <BookOpen className="h-8 w-8 text-red-400" />
-              Foundation Programs
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Mentorship Program */}
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20 hover:border-red-500/40 transition">
-                <CardHeader>
-                  <CardTitle className="text-xl">Mentorship Network</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    Learn from industry veterans. Our mentors bring real-world
-                    experience from studios, indie teams, and AAA development.
-                  </p>
-                  <Button
-                    onClick={() => navigate("/mentorship")}
-                    variant="outline"
-                    className="w-full border-red-500/30 text-red-300 hover:bg-red-500/10"
-                  >
-                    Learn More <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Open Source */}
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20 hover:border-red-500/40 transition">
-                <CardHeader>
-                  <CardTitle className="text-xl">Axiom Protocol</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    Our open-source protocol for game development. Contribute,
-                    learn, and help shape the future of the industry.
-                  </p>
-                  <Button
-                    onClick={() => navigate("/docs")}
-                    variant="outline"
-                    className="w-full border-red-500/30 text-red-300 hover:bg-red-500/10"
-                  >
-                    Explore Protocol <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Courses */}
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20 hover:border-red-500/40 transition">
-                <CardHeader>
-                  <CardTitle className="text-xl">Learning Paths</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    Structured curricula covering game design, programming, art,
-                    sound, and narrative design from basics to advanced.
-                  </p>
-                  <Button
-                    onClick={() => navigate("/docs/curriculum")}
-                    variant="outline"
-                    className="w-full border-red-500/30 text-red-300 hover:bg-red-500/10"
-                  >
-                    Start Learning <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Community */}
-              <Card className="bg-gradient-to-br from-red-950/40 to-red-900/20 border-red-500/20 hover:border-red-500/40 transition">
-                <CardHeader>
-                  <CardTitle className="text-xl">Community Hub</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    Connect with developers, share projects, get feedback, and
-                    build lasting professional relationships.
-                  </p>
-                  <Button
-                    onClick={() => navigate("/community")}
-                    variant="outline"
-                    className="w-full border-red-500/30 text-red-300 hover:bg-red-500/10"
-                  >
-                    Join Community <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Call to Action */}
-          <Card className="bg-gradient-to-r from-red-600/20 via-pink-600/10 to-red-600/20 border-red-500/40">
-            <CardContent className="p-12 text-center space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold text-white">
-                  Ready to Join the Foundation?
+                <h2 className="text-lg font-semibold text-white text-center">
+                  Foundation Highlights
                 </h2>
-                <p className="text-gray-300 text-lg">
-                  Whether you're looking to learn, mentor others, or contribute
-                  to open-source game development, there's a place for you here.
-                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <a
+                    href="https://aethex.foundation/gameforge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 rounded-lg bg-black/30 border border-green-500/20 hover:border-green-500/40 transition-all group"
+                  >
+                    <div className="p-2 rounded bg-green-500/20 text-green-400">
+                      <Gamepad2 className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-white group-hover:text-green-300 transition-colors">
+                        GameForge Program
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        30-day mentorship sprints
+                      </p>
+                    </div>
+                    <ExternalLink className="h-4 w-4 text-gray-500 group-hover:text-green-400" />
+                  </a>
+
+                  <a
+                    href="https://aethex.foundation/mentorship"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 rounded-lg bg-black/30 border border-red-500/20 hover:border-red-500/40 transition-all group"
+                  >
+                    <div className="p-2 rounded bg-red-500/20 text-red-400">
+                      <GraduationCap className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-white group-hover:text-red-300 transition-colors">
+                        Mentorship Network
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Learn from industry veterans
+                      </p>
+                    </div>
+                    <ExternalLink className="h-4 w-4 text-gray-500 group-hover:text-red-400" />
+                  </a>
+
+                  <a
+                    href="https://aethex.foundation/community"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 rounded-lg bg-black/30 border border-blue-500/20 hover:border-blue-500/40 transition-all group"
+                  >
+                    <div className="p-2 rounded bg-blue-500/20 text-blue-400">
+                      <Users className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-white group-hover:text-blue-300 transition-colors">
+                        Community Hub
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Connect with developers
+                      </p>
+                    </div>
+                    <ExternalLink className="h-4 w-4 text-gray-500 group-hover:text-blue-400" />
+                  </a>
+
+                  <a
+                    href="https://aethex.foundation/axiom"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 rounded-lg bg-black/30 border border-purple-500/20 hover:border-purple-500/40 transition-all group"
+                  >
+                    <div className="p-2 rounded bg-purple-500/20 text-purple-400">
+                      <Code className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-white group-hover:text-purple-300 transition-colors">
+                        Axiom Protocol
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Open-source innovation
+                      </p>
+                    </div>
+                    <ExternalLink className="h-4 w-4 text-gray-500 group-hover:text-purple-400" />
+                  </a>
+                </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  onClick={() => navigate("/gameforge")}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 h-12 px-8 text-base"
-                >
-                  <Gamepad2 className="h-5 w-5 mr-2" />
-                  Join GameForge Now
-                </Button>
-                <Button
-                  onClick={() => navigate("/login")}
-                  variant="outline"
-                  className="border-red-500/30 text-red-300 hover:bg-red-500/10 h-12 px-8 text-base"
-                >
-                  Sign In
-                </Button>
+
+              {/* Footer Note */}
+              <div className="text-center pt-4 border-t border-red-500/10">
+                <p className="text-sm text-gray-500">
+                  The AeThex Foundation is a 501(c)(3) non-profit organization
+                  dedicated to advancing game development education and community.
+                </p>
               </div>
             </CardContent>
           </Card>
