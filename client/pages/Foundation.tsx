@@ -17,6 +17,7 @@ import {
   Compass,
   ExternalLink,
 } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -303,17 +304,17 @@ export default function Foundation() {
                 </div>
               </div>
 
-              {/* CTA Button */}
-              <Button
-                onClick={() => navigate("/gameforge")}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 h-12 text-base font-semibold"
-              >
-                <Gamepad2 className="h-5 w-5 mr-2" />
-                Join the Next GameForge Cohort
-                <ArrowRight className="h-5 w-5 ml-auto" />
-              </Button>
-            </CardContent>
-          </Card>
+            {/* CTA Button */}
+            <Button
+              onClick={() => navigate("/gameforge")}
+              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 h-12 text-base font-semibold"
+            >
+              <Gamepad2 className="h-5 w-5 mr-2" />
+              Join the Next GameForge Cohort
+              <ArrowRight className="h-5 w-5 ml-auto" />
+            </Button>
+          </CardContent>
+        </Card>
 
           {/* Foundation Mission & Values */}
           <div className="space-y-4">
