@@ -45,8 +45,12 @@ ALTER TABLE public.ethos_ecosystem_licenses ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies: ethos_ecosystem_licenses
 CREATE POLICY "Artists can view their own ecosystem licenses" ON public.ethos_ecosystem_licenses
+DROP POLICY IF EXISTS "Artists can view their own ecosystem licenses" ON public.ethos_ecosystem_licenses;
+CREATE POLICY "Artists can view their own ecosystem licenses" ON public.ethos_ecosystem_licenses
   FOR SELECT USING (auth.uid() = artist_id);
 
+CREATE POLICY "Admins can view all ecosystem licenses" ON public.ethos_ecosystem_licenses
+DROP POLICY IF EXISTS "Admins can view all ecosystem licenses" ON public.ethos_ecosystem_licenses;
 CREATE POLICY "Admins can view all ecosystem licenses" ON public.ethos_ecosystem_licenses
   FOR SELECT USING (
     EXISTS(
@@ -55,6 +59,8 @@ CREATE POLICY "Admins can view all ecosystem licenses" ON public.ethos_ecosystem
     )
   );
 
+CREATE POLICY "Artists can create ecosystem license records" ON public.ethos_ecosystem_licenses
+DROP POLICY IF EXISTS "Artists can create ecosystem license records" ON public.ethos_ecosystem_licenses;
 CREATE POLICY "Artists can create ecosystem license records" ON public.ethos_ecosystem_licenses
   FOR INSERT WITH CHECK (auth.uid() = artist_id);
 

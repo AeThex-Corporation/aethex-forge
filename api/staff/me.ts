@@ -16,10 +16,10 @@ export default async (req: Request) => {
       return new Response("Unauthorized", { status: 401 });
     }
 
+    const start = Date.now();
     const { data: staffMember, error } = await supabase
       .from("staff_members")
-      .select(
-        `
+      .select(`
         id,
         user_id,
         full_name,
@@ -31,10 +31,11 @@ export default async (req: Request) => {
         salary,
         avatar_url,
         created_at
-      `,
-      )
+      `)
       .eq("user_id", userData.user.id)
       .single();
+    const elapsed = Date.now() - start;
+    console.log(`[staff/me] Query took ${elapsed}ms`);
 
     if (error && error.code !== "PGRST116") {
       console.error("Staff member fetch error:", error);

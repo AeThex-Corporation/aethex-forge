@@ -86,33 +86,45 @@ alter table public.ethos_artist_profiles enable row level security;
 alter table public.ethos_guild_members enable row level security;
 alter table public.ethos_licensing_agreements enable row level security;
 
--- RLS Policies: ethos_tracks
+drop policy if exists "Ethos tracks are readable by all authenticated users" on public.ethos_tracks;
 create policy "Ethos tracks are readable by all authenticated users" on public.ethos_tracks
   for select using (auth.role() = 'authenticated');
 
 create policy "Users can insert their own tracks" on public.ethos_tracks
+drop policy if exists "Users can insert their own tracks" on public.ethos_tracks;
+create policy "Users can insert their own tracks" on public.ethos_tracks
   for insert with check (auth.uid() = user_id);
 
+create policy "Users can update their own tracks" on public.ethos_tracks
+drop policy if exists "Users can update their own tracks" on public.ethos_tracks;
 create policy "Users can update their own tracks" on public.ethos_tracks
   for update using (auth.uid() = user_id);
 
 create policy "Users can delete their own tracks" on public.ethos_tracks
+drop policy if exists "Users can delete their own tracks" on public.ethos_tracks;
+create policy "Users can delete their own tracks" on public.ethos_tracks
   for delete using (auth.uid() = user_id);
 
--- RLS Policies: ethos_artist_profiles
+drop policy if exists "Ethos artist profiles are readable by all authenticated users" on public.ethos_artist_profiles;
 create policy "Ethos artist profiles are readable by all authenticated users" on public.ethos_artist_profiles
   for select using (auth.role() = 'authenticated');
 
 create policy "Users can insert their own artist profile" on public.ethos_artist_profiles
+drop policy if exists "Users can insert their own artist profile" on public.ethos_artist_profiles;
+create policy "Users can insert their own artist profile" on public.ethos_artist_profiles
   for insert with check (auth.uid() = user_id);
 
 create policy "Users can update their own artist profile" on public.ethos_artist_profiles
+drop policy if exists "Users can update their own artist profile" on public.ethos_artist_profiles;
+create policy "Users can update their own artist profile" on public.ethos_artist_profiles
   for update using (auth.uid() = user_id);
 
--- RLS Policies: ethos_guild_members
+drop policy if exists "Guild membership is readable by all authenticated users" on public.ethos_guild_members;
 create policy "Guild membership is readable by all authenticated users" on public.ethos_guild_members
   for select using (auth.role() = 'authenticated');
 
+create policy "Admins can manage guild members" on public.ethos_guild_members
+drop policy if exists "Admins can manage guild members" on public.ethos_guild_members;
 create policy "Admins can manage guild members" on public.ethos_guild_members
   for all using (
     exists(
@@ -122,9 +134,11 @@ create policy "Admins can manage guild members" on public.ethos_guild_members
   );
 
 create policy "Users can see their own membership" on public.ethos_guild_members
+drop policy if exists "Users can see their own membership" on public.ethos_guild_members;
+create policy "Users can see their own membership" on public.ethos_guild_members
   for select using (auth.uid() = user_id or auth.role() = 'authenticated');
 
--- RLS Policies: ethos_licensing_agreements
+drop policy if exists "Licensing agreements readable by involved parties" on public.ethos_licensing_agreements;
 create policy "Licensing agreements readable by involved parties" on public.ethos_licensing_agreements
   for select using (
     auth.uid() in (

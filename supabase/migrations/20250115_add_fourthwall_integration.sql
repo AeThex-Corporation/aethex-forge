@@ -48,22 +48,25 @@ ALTER TABLE fourthwall_products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE fourthwall_orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE fourthwall_webhook_logs ENABLE ROW LEVEL SECURITY;
 
--- Create RLS policies - allow authenticated users to read, admins to manage
+DROP POLICY IF EXISTS "Allow authenticated users to read fourthwall products" ON fourthwall_products;
 CREATE POLICY "Allow authenticated users to read fourthwall products"
   ON fourthwall_products
   FOR SELECT
   USING (true);
 
+DROP POLICY IF EXISTS "Allow service role to manage fourthwall products" ON fourthwall_products;
 CREATE POLICY "Allow service role to manage fourthwall products"
   ON fourthwall_products
   FOR ALL
   USING (auth.role() = 'service_role');
 
+DROP POLICY IF EXISTS "Allow service role to manage fourthwall orders" ON fourthwall_orders;
 CREATE POLICY "Allow service role to manage fourthwall orders"
   ON fourthwall_orders
   FOR ALL
   USING (auth.role() = 'service_role');
 
+DROP POLICY IF EXISTS "Allow service role to manage webhook logs" ON fourthwall_webhook_logs;
 CREATE POLICY "Allow service role to manage webhook logs"
   ON fourthwall_webhook_logs
   FOR ALL

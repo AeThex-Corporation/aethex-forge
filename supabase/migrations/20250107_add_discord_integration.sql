@@ -36,6 +36,7 @@ CREATE INDEX IF NOT EXISTS idx_discord_linking_sessions_token ON discord_linking
 CREATE INDEX IF NOT EXISTS idx_discord_linking_sessions_expires ON discord_linking_sessions(expires_at);
 
 ALTER TABLE discord_linking_sessions ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "discord_linking_sessions_service_role" ON discord_linking_sessions;
 CREATE POLICY "discord_linking_sessions_service_role" ON discord_linking_sessions
   FOR ALL TO service_role USING (true);
 
@@ -73,35 +74,42 @@ CREATE INDEX IF NOT EXISTS idx_discord_user_roles_server ON discord_user_roles(s
 -- RLS Policies
 
 ALTER TABLE discord_links ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "discord_links_users_select" ON discord_links;
 CREATE POLICY "discord_links_users_select" ON discord_links
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "discord_links_service_role" ON discord_links;
 CREATE POLICY "discord_links_service_role" ON discord_links
   FOR ALL TO service_role
   USING (true);
 
 ALTER TABLE discord_verifications ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "discord_verifications_service_role" ON discord_verifications;
 CREATE POLICY "discord_verifications_service_role" ON discord_verifications
   FOR ALL TO service_role
   USING (true);
 
 ALTER TABLE discord_role_mappings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "discord_role_mappings_public_read" ON discord_role_mappings;
 CREATE POLICY "discord_role_mappings_public_read" ON discord_role_mappings
   FOR SELECT
   USING (true);
 
+DROP POLICY IF EXISTS "discord_role_mappings_admin_write" ON discord_role_mappings;
 CREATE POLICY "discord_role_mappings_admin_write" ON discord_role_mappings
   FOR INSERT
   TO service_role
   WITH CHECK (true);
 
+DROP POLICY IF EXISTS "discord_role_mappings_admin_update" ON discord_role_mappings;
 CREATE POLICY "discord_role_mappings_admin_update" ON discord_role_mappings
   FOR UPDATE
   TO service_role
   USING (true);
 
 ALTER TABLE discord_user_roles ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "discord_user_roles_service_role" ON discord_user_roles;
 CREATE POLICY "discord_user_roles_service_role" ON discord_user_roles
   FOR ALL TO service_role
   USING (true);

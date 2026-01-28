@@ -16,10 +16,15 @@ export default async (req: Request) => {
       return new Response("Unauthorized", { status: 401 });
     }
 
+    // Add a limit to prevent timeouts
+    const url = new URL(req.url);
+    const limit = Math.max(1, Math.min(100, parseInt(url.searchParams.get("limit") || "50")));
+    const offset = Math.max(0, parseInt(url.searchParams.get("offset") || "0"));
+
+    const start = Date.now();
     const { data: invoices, error } = await supabase
       .from("contractor_invoices")
-      .select(
-        `
+      .select(`
         id,
         user_id,
         invoice_number,
@@ -29,10 +34,12 @@ export default async (req: Request) => {
         due_date,
         description,
         created_at
-      `,
-      )
+      `)
       .eq("user_id", userData.user.id)
-      .order("date", { ascending: false });
+      .order("date", { ascending: false })
+      .range(offset, offset + limit - 1);
+    const elapsed = Date.now() - start;
+    console.log(`[staff/invoices] Query took ${elapsed}ms (limit=${limit}, offset=${offset})`);
 
     if (error) {
       console.error("Invoices fetch error:", error);

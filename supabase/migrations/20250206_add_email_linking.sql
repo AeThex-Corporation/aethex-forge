@@ -18,7 +18,7 @@ CREATE INDEX idx_user_email_links_primary ON user_email_links(user_id, is_primar
 -- Enable RLS
 ALTER TABLE user_email_links ENABLE ROW LEVEL SECURITY;
 
--- RLS: Users can view their own linked emails
+DROP POLICY IF EXISTS "Users can view own email links" ON user_email_links;
 CREATE POLICY "Users can view own email links"
   ON user_email_links
   FOR SELECT
@@ -29,7 +29,7 @@ CREATE POLICY "Users can view own email links"
     )
   );
 
--- RLS: Service role can do anything (for backend operations)
+DROP POLICY IF EXISTS "Service role full access" ON user_email_links;
 CREATE POLICY "Service role full access"
   ON user_email_links
   FOR ALL

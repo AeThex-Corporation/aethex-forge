@@ -16,10 +16,15 @@ export default async (req: Request) => {
       return new Response("Unauthorized", { status: 401 });
     }
 
+    // Pagination support
+    const url = new URL(req.url);
+    const limit = Math.max(1, Math.min(100, parseInt(url.searchParams.get("limit") || "50")));
+    const offset = Math.max(0, parseInt(url.searchParams.get("offset") || "0"));
+
+    const start = Date.now();
     const { data: directory, error } = await supabase
       .from("staff_members")
-      .select(
-        `
+      .select(`
         id,
         user_id,
         full_name,
@@ -32,9 +37,11 @@ export default async (req: Request) => {
         location,
         username,
         created_at
-      `,
-      )
-      .order("full_name", { ascending: true });
+      `)
+      .order("full_name", { ascending: true })
+      .range(offset, offset + limit - 1);
+    const elapsed = Date.now() - start;
+    console.log(`[staff/directory] Query took ${elapsed}ms (limit=${limit}, offset=${offset})`);
 
     if (error) {
       console.error("Directory fetch error:", error);

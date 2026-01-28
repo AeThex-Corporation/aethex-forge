@@ -54,18 +54,18 @@ ALTER TABLE staff_contractors ENABLE ROW LEVEL SECURITY;
 
 -- Staff members policies
 
--- Allow authenticated users to read all staff members (directory)
+DROP POLICY IF EXISTS "staff_members_select_authenticated" ON staff_members;
 CREATE POLICY "staff_members_select_authenticated" ON staff_members
   FOR SELECT
   USING (auth.role() = 'authenticated');
 
--- Allow staff members to update their own record
+DROP POLICY IF EXISTS "staff_members_update_own" ON staff_members;
 CREATE POLICY "staff_members_update_own" ON staff_members
   FOR UPDATE
   USING (auth.uid() = user_id OR auth.role() = 'service_role')
   WITH CHECK (auth.uid() = user_id OR auth.role() = 'service_role');
 
--- Allow admins to do anything
+DROP POLICY IF EXISTS "staff_members_admin_all" ON staff_members;
 CREATE POLICY "staff_members_admin_all" ON staff_members
   FOR ALL
   USING (
@@ -79,18 +79,18 @@ CREATE POLICY "staff_members_admin_all" ON staff_members
 
 -- Staff contractors policies
 
--- Allow authenticated users to read all contractors (directory)
+DROP POLICY IF EXISTS "staff_contractors_select_authenticated" ON staff_contractors;
 CREATE POLICY "staff_contractors_select_authenticated" ON staff_contractors
   FOR SELECT
   USING (auth.role() = 'authenticated');
 
--- Allow contractors to update their own record
+DROP POLICY IF EXISTS "staff_contractors_update_own" ON staff_contractors;
 CREATE POLICY "staff_contractors_update_own" ON staff_contractors
   FOR UPDATE
   USING (auth.uid() = user_id OR auth.role() = 'service_role')
   WITH CHECK (auth.uid() = user_id OR auth.role() = 'service_role');
 
--- Allow admins to do anything
+DROP POLICY IF EXISTS "staff_contractors_admin_all" ON staff_contractors;
 CREATE POLICY "staff_contractors_admin_all" ON staff_contractors
   FOR ALL
   USING (

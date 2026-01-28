@@ -16,10 +16,15 @@ export default async (req: Request) => {
       return new Response("Unauthorized", { status: 401 });
     }
 
+    // Add a limit to prevent timeouts
+    const url = new URL(req.url);
+    const limit = Math.max(1, Math.min(100, parseInt(url.searchParams.get("limit") || "50")));
+    const offset = Math.max(0, parseInt(url.searchParams.get("offset") || "0"));
+
+    const start = Date.now();
     const { data: okrs, error } = await supabase
       .from("staff_okrs")
-      .select(
-        `
+      .select(`
         id,
         user_id,
         objective,
@@ -34,10 +39,12 @@ export default async (req: Request) => {
           target_value
         ),
         created_at
-      `,
-      )
+      `)
       .eq("user_id", userData.user.id)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
+    const elapsed = Date.now() - start;
+    console.log(`[staff/okrs] Query took ${elapsed}ms (limit=${limit}, offset=${offset})`);
 
     if (error) {
       console.error("OKRs fetch error:", error);

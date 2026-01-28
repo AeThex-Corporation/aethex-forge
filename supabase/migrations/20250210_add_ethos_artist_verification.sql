@@ -44,8 +44,12 @@ alter table public.ethos_verification_audit_log enable row level security;
 
 -- RLS Policies: ethos_verification_requests
 create policy "Artists can view their own verification request" on public.ethos_verification_requests
+drop policy if exists "Artists can view their own verification request" on public.ethos_verification_requests;
+create policy "Artists can view their own verification request" on public.ethos_verification_requests
   for select using (auth.uid() = user_id);
 
+create policy "Admins can view all verification requests" on public.ethos_verification_requests
+drop policy if exists "Admins can view all verification requests" on public.ethos_verification_requests;
 create policy "Admins can view all verification requests" on public.ethos_verification_requests
   for select using (
     exists(
@@ -55,8 +59,12 @@ create policy "Admins can view all verification requests" on public.ethos_verifi
   );
 
 create policy "Artists can submit verification request" on public.ethos_verification_requests
+drop policy if exists "Artists can submit verification request" on public.ethos_verification_requests;
+create policy "Artists can submit verification request" on public.ethos_verification_requests
   for insert with check (auth.uid() = user_id);
 
+create policy "Admins can update verification status" on public.ethos_verification_requests
+drop policy if exists "Admins can update verification status" on public.ethos_verification_requests;
 create policy "Admins can update verification status" on public.ethos_verification_requests
   for update using (
     exists(
@@ -67,6 +75,8 @@ create policy "Admins can update verification status" on public.ethos_verificati
 
 -- RLS Policies: ethos_verification_audit_log
 create policy "Admins can view audit log" on public.ethos_verification_audit_log
+drop policy if exists "Admins can view audit log" on public.ethos_verification_audit_log;
+create policy "Admins can view audit log" on public.ethos_verification_audit_log
   for select using (
     exists(
       select 1 from public.user_profiles
@@ -74,6 +84,8 @@ create policy "Admins can view audit log" on public.ethos_verification_audit_log
     )
   );
 
+create policy "System can write audit logs" on public.ethos_verification_audit_log
+drop policy if exists "System can write audit logs" on public.ethos_verification_audit_log;
 create policy "System can write audit logs" on public.ethos_verification_audit_log
   for insert with check (true);
 

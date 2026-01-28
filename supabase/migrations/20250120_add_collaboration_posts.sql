@@ -47,17 +47,19 @@ ALTER TABLE public.collaboration_posts_authors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.collaboration_post_likes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.collaboration_comments ENABLE ROW LEVEL SECURITY;
 
--- Policies for collaboration_posts
+DROP POLICY IF EXISTS "collaboration_posts_read" ON public.collaboration_posts;
 CREATE POLICY "collaboration_posts_read" ON public.collaboration_posts
   FOR SELECT TO authenticated USING (is_published = true);
 
+DROP POLICY IF EXISTS "collaboration_posts_manage_own" ON public.collaboration_posts;
 CREATE POLICY "collaboration_posts_manage_own" ON public.collaboration_posts
   FOR ALL TO authenticated USING (created_by = auth.uid()) WITH CHECK (created_by = auth.uid());
 
--- Policies for collaboration_posts_authors
+DROP POLICY IF EXISTS "collaboration_posts_authors_read" ON public.collaboration_posts_authors;
 CREATE POLICY "collaboration_posts_authors_read" ON public.collaboration_posts_authors
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "collaboration_posts_authors_manage" ON public.collaboration_posts_authors;
 CREATE POLICY "collaboration_posts_authors_manage" ON public.collaboration_posts_authors
   FOR ALL TO authenticated
   USING (
@@ -73,17 +75,19 @@ CREATE POLICY "collaboration_posts_authors_manage" ON public.collaboration_posts
     )
   );
 
--- Policies for collaboration_post_likes
+DROP POLICY IF EXISTS "collaboration_post_likes_read" ON public.collaboration_post_likes;
 CREATE POLICY "collaboration_post_likes_read" ON public.collaboration_post_likes
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "collaboration_post_likes_manage_self" ON public.collaboration_post_likes;
 CREATE POLICY "collaboration_post_likes_manage_self" ON public.collaboration_post_likes
   FOR ALL TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
 
--- Policies for collaboration_comments
+DROP POLICY IF EXISTS "collaboration_comments_read" ON public.collaboration_comments;
 CREATE POLICY "collaboration_comments_read" ON public.collaboration_comments
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "collaboration_comments_manage_self" ON public.collaboration_comments;
 CREATE POLICY "collaboration_comments_manage_self" ON public.collaboration_comments
   FOR ALL TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
 

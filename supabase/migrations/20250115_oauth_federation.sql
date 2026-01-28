@@ -44,27 +44,27 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON public.provider_identities TO service_ro
 -- Enable RLS
 ALTER TABLE public.provider_identities ENABLE ROW LEVEL SECURITY;
 
--- Users can only see their own provider identities
+DROP POLICY IF EXISTS "Users can view own provider identities" ON public.provider_identities;
 CREATE POLICY "Users can view own provider identities"
   ON public.provider_identities FOR SELECT
   USING (auth.uid() = user_id);
 
--- Users can only insert their own provider identities
+DROP POLICY IF EXISTS "Users can insert own provider identities" ON public.provider_identities;
 CREATE POLICY "Users can insert own provider identities"
   ON public.provider_identities FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
--- Users can only update their own provider identities
+DROP POLICY IF EXISTS "Users can update own provider identities" ON public.provider_identities;
 CREATE POLICY "Users can update own provider identities"
   ON public.provider_identities FOR UPDATE
   USING (auth.uid() = user_id);
 
--- Users can only delete their own provider identities
+DROP POLICY IF EXISTS "Users can delete own provider identities" ON public.provider_identities;
 CREATE POLICY "Users can delete own provider identities"
   ON public.provider_identities FOR DELETE
   USING (auth.uid() = user_id);
 
--- Service role can do anything for OAuth flows
+DROP POLICY IF EXISTS "Service role can manage all provider identities" ON public.provider_identities;
 CREATE POLICY "Service role can manage all provider identities"
   ON public.provider_identities
   FOR ALL

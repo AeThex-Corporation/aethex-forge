@@ -109,14 +109,14 @@ CREATE TABLE notifications (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Insert default achievements
-INSERT INTO achievements (name, description, icon, xp_reward, badge_color) VALUES
-('Welcome to AeThex', 'Complete your profile setup', '🎉', 100, '#10B981'),
-('First Project', 'Create your first project', '🚀', 150, '#3B82F6'),
-('Community Contributor', 'Make your first community post', '💬', 75, '#8B5CF6'),
-('Level Up', 'Reach level 5', '⭐', 200, '#F59E0B'),
-('Experienced Developer', 'Complete 5 projects', '👨‍💻', 300, '#EF4444'),
-('Community Leader', 'Get 100 likes on your posts', '👑', 500, '#F97316');
+
+-- Insert core achievements with deterministic UUIDs to match activate.ts
+INSERT INTO achievements (id, name, description, icon, xp_reward, badge_color) VALUES
+    ('b6e2e1e2-2e2e-5e2e-8e2e-e2e2e2e2e2e2', 'Welcome to AeThex', 'Completed onboarding and joined the AeThex network.', '🎉', 250, '#7C3AED'),
+    ('c1e2e1e2-2e2e-5e2e-8e2e-e2e2e2e2e2e2', 'AeThex Explorer', 'Engaged with community initiatives and posted first update.', '🧭', 400, '#0EA5E9'),
+    ('d1e2e1e2-2e2e-5e2e-8e2e-e2e2e2e2e2e2', 'Community Champion', 'Contributed feedback, resolved bugs, and mentored squads.', '🏆', 750, '#22C55E'),
+    ('e1e2e1e2-2e2e-5e2e-8e2e-e2e2e2e2e2e2', 'Workshop Architect', 'Published a high-impact mod or toolkit adopted by teams.', '🛠️', 1200, '#F97316'),
+    ('f1e2e1e2-2e2e-5e2e-8e2e-e2e2e2e2e2e2', 'GOD Mode', 'Legendary status awarded by AeThex studio leadership.', '⚡', 5000, '#FACC15');
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;

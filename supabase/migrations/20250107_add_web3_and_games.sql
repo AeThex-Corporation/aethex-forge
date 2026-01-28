@@ -94,28 +94,32 @@ ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE roblox_links ENABLE ROW LEVEL SECURITY;
 ALTER TABLE web3_wallets ENABLE ROW LEVEL SECURITY;
 
--- Public tables for game auth (service role only for inserts)
+DROP POLICY IF EXISTS "game_auth_tokens_service_insert" ON game_auth_tokens;
 CREATE POLICY "game_auth_tokens_service_insert" ON game_auth_tokens
   FOR INSERT TO anon, authenticated
   WITH CHECK (false);
 
+DROP POLICY IF EXISTS "game_sessions_service_insert" ON game_sessions;
 CREATE POLICY "game_sessions_service_insert" ON game_sessions
   FOR INSERT TO anon, authenticated
   WITH CHECK (false);
 
--- Allow authenticated users to view their own game data
+DROP POLICY IF EXISTS "game_auth_tokens_user_select" ON game_auth_tokens;
 CREATE POLICY "game_auth_tokens_user_select" ON game_auth_tokens
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "game_sessions_user_select" ON game_sessions;
 CREATE POLICY "game_sessions_user_select" ON game_sessions
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "roblox_links_user_select" ON roblox_links;
 CREATE POLICY "roblox_links_user_select" ON roblox_links
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "web3_wallets_user_select" ON web3_wallets;
 CREATE POLICY "web3_wallets_user_select" ON web3_wallets
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());

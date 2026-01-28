@@ -158,15 +158,15 @@ ALTER TABLE api_keys ENABLE ROW LEVEL SECURITY;
 ALTER TABLE api_usage_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE developer_profiles ENABLE ROW LEVEL SECURITY;
 
--- Users can only see their own API keys
+DROP POLICY IF EXISTS api_keys_user_policy ON api_keys;
 CREATE POLICY api_keys_user_policy ON api_keys
   FOR ALL USING (auth.uid() = user_id);
 
--- Users can only see their own usage logs
+DROP POLICY IF EXISTS api_usage_logs_user_policy ON api_usage_logs;
 CREATE POLICY api_usage_logs_user_policy ON api_usage_logs
   FOR ALL USING (auth.uid() = user_id);
 
--- Users can only see their own developer profile
+DROP POLICY IF EXISTS developer_profiles_user_policy ON developer_profiles;
 CREATE POLICY developer_profiles_user_policy ON developer_profiles
   FOR ALL USING (auth.uid() = user_id);
 

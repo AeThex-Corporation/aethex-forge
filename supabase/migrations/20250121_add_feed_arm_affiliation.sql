@@ -23,11 +23,11 @@ CREATE INDEX IF NOT EXISTS idx_user_followed_arms_arm_id ON public.user_followed
 -- Enable RLS on user_followed_arms
 ALTER TABLE public.user_followed_arms ENABLE ROW LEVEL SECURITY;
 
--- Policy: Users can read all followed arms data
+DROP POLICY IF EXISTS "user_followed_arms_read" ON public.user_followed_arms;
 CREATE POLICY "user_followed_arms_read" ON public.user_followed_arms
   FOR SELECT TO authenticated USING (true);
 
--- Policy: Users can manage their own followed arms
+DROP POLICY IF EXISTS "user_followed_arms_manage_self" ON public.user_followed_arms;
 CREATE POLICY "user_followed_arms_manage_self" ON public.user_followed_arms
   FOR ALL TO authenticated USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
 

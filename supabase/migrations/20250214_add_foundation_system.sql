@@ -212,12 +212,18 @@ alter table public.foundation_contributions enable row level security;
 
 -- Courses: Published courses readable by all, all ops by instructor/admin
 create policy "Published courses readable by all" on public.foundation_courses
+drop policy if exists "Published courses readable by all" on public.foundation_courses;
+create policy "Published courses readable by all" on public.foundation_courses
   for select using (is_published = true or auth.uid() = instructor_id or exists(select 1 from public.user_profiles where id = auth.uid() and user_type = 'admin'));
 
+create policy "Instructors manage own courses" on public.foundation_courses
+drop policy if exists "Instructors manage own courses" on public.foundation_courses;
 create policy "Instructors manage own courses" on public.foundation_courses
   for all using (auth.uid() = instructor_id) with check (auth.uid() = instructor_id);
 
 -- Course modules: same as courses (published visible, instructor/admin manage)
+create policy "Published modules readable by all" on public.foundation_course_modules
+drop policy if exists "Published modules readable by all" on public.foundation_course_modules;
 create policy "Published modules readable by all" on public.foundation_course_modules
   for select using (
     is_published = true or
@@ -226,9 +232,13 @@ create policy "Published modules readable by all" on public.foundation_course_mo
   );
 
 create policy "Instructors manage course modules" on public.foundation_course_modules
+drop policy if exists "Instructors manage course modules" on public.foundation_course_modules;
+create policy "Instructors manage course modules" on public.foundation_course_modules
   for all using (exists(select 1 from public.foundation_courses where id = course_id and instructor_id = auth.uid()));
 
 -- Lessons: same pattern
+create policy "Published lessons readable by all" on public.foundation_course_lessons
+drop policy if exists "Published lessons readable by all" on public.foundation_course_lessons;
 create policy "Published lessons readable by all" on public.foundation_course_lessons
   for select using (
     is_published = true or
@@ -237,68 +247,106 @@ create policy "Published lessons readable by all" on public.foundation_course_le
   );
 
 create policy "Instructors manage course lessons" on public.foundation_course_lessons
+drop policy if exists "Instructors manage course lessons" on public.foundation_course_lessons;
+create policy "Instructors manage course lessons" on public.foundation_course_lessons
   for all using (exists(select 1 from public.foundation_courses where id = course_id and instructor_id = auth.uid()));
 
 -- Enrollments: users see own, instructors see their course enrollments
+create policy "Users see own enrollments" on public.foundation_enrollments
+drop policy if exists "Users see own enrollments" on public.foundation_enrollments;
 create policy "Users see own enrollments" on public.foundation_enrollments
   for select using (auth.uid() = user_id or
     exists(select 1 from public.foundation_courses where id = course_id and instructor_id = auth.uid()));
 
 create policy "Users manage own enrollments" on public.foundation_enrollments
+drop policy if exists "Users manage own enrollments" on public.foundation_enrollments;
+create policy "Users manage own enrollments" on public.foundation_enrollments
   for insert with check (auth.uid() = user_id);
 
+create policy "Users update own enrollments" on public.foundation_enrollments
+drop policy if exists "Users update own enrollments" on public.foundation_enrollments;
 create policy "Users update own enrollments" on public.foundation_enrollments
   for update using (auth.uid() = user_id);
 
 -- Lesson progress: users see own
 create policy "Users see own lesson progress" on public.foundation_lesson_progress
+drop policy if exists "Users see own lesson progress" on public.foundation_lesson_progress;
+create policy "Users see own lesson progress" on public.foundation_lesson_progress
   for select using (auth.uid() = user_id);
 
 create policy "Users update own lesson progress" on public.foundation_lesson_progress
+drop policy if exists "Users update own lesson progress" on public.foundation_lesson_progress;
+create policy "Users update own lesson progress" on public.foundation_lesson_progress
   for insert with check (auth.uid() = user_id);
 
+create policy "Users update own lesson completion" on public.foundation_lesson_progress
+drop policy if exists "Users update own lesson completion" on public.foundation_lesson_progress;
 create policy "Users update own lesson completion" on public.foundation_lesson_progress
   for update using (auth.uid() = user_id);
 
 -- Achievements: all readable, admin/system manages
 create policy "Achievements readable by all" on public.foundation_achievements
+drop policy if exists "Achievements readable by all" on public.foundation_achievements;
+create policy "Achievements readable by all" on public.foundation_achievements
   for select using (true);
 
 -- User achievements: users see own, admin manages
+create policy "Users see own achievements" on public.foundation_user_achievements
+drop policy if exists "Users see own achievements" on public.foundation_user_achievements;
 create policy "Users see own achievements" on public.foundation_user_achievements
   for select using (auth.uid() = user_id or exists(select 1 from public.user_profiles where id = auth.uid() and user_type = 'admin'));
 
 -- Mentors: approved mentors visible, mentors manage own
 create policy "Approved mentors visible to all" on public.foundation_mentors
+drop policy if exists "Approved mentors visible to all" on public.foundation_mentors;
+create policy "Approved mentors visible to all" on public.foundation_mentors
   for select using (approval_status = 'approved' or auth.uid() = user_id or exists(select 1 from public.user_profiles where id = auth.uid() and user_type = 'admin'));
 
+create policy "Users manage own mentor profile" on public.foundation_mentors
+drop policy if exists "Users manage own mentor profile" on public.foundation_mentors;
 create policy "Users manage own mentor profile" on public.foundation_mentors
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 -- Mentorship requests: involved parties can see
 create policy "Mentorship requests visible to involved" on public.foundation_mentorship_requests
+drop policy if exists "Mentorship requests visible to involved" on public.foundation_mentorship_requests;
+create policy "Mentorship requests visible to involved" on public.foundation_mentorship_requests
   for select using (auth.uid() = mentor_id or auth.uid() = mentee_id or exists(select 1 from public.user_profiles where id = auth.uid() and user_type = 'admin'));
 
 create policy "Mentees request mentorship" on public.foundation_mentorship_requests
+drop policy if exists "Mentees request mentorship" on public.foundation_mentorship_requests;
+create policy "Mentees request mentorship" on public.foundation_mentorship_requests
   for insert with check (auth.uid() = mentee_id);
 
+create policy "Mentors respond to requests" on public.foundation_mentorship_requests
+drop policy if exists "Mentors respond to requests" on public.foundation_mentorship_requests;
 create policy "Mentors respond to requests" on public.foundation_mentorship_requests
   for update using (auth.uid() = mentor_id);
 
 -- Mentorship sessions: involved parties can see/manage
 create policy "Sessions visible to involved" on public.foundation_mentorship_sessions
+drop policy if exists "Sessions visible to involved" on public.foundation_mentorship_sessions;
+create policy "Sessions visible to involved" on public.foundation_mentorship_sessions
   for select using (auth.uid() = mentor_id or auth.uid() = mentee_id);
 
 create policy "Mentorship sessions insert" on public.foundation_mentorship_sessions
+drop policy if exists "Mentorship sessions insert" on public.foundation_mentorship_sessions;
+create policy "Mentorship sessions insert" on public.foundation_mentorship_sessions
   for insert with check (auth.uid() = mentor_id or auth.uid() = mentee_id);
 
+create policy "Mentorship sessions update" on public.foundation_mentorship_sessions
+drop policy if exists "Mentorship sessions update" on public.foundation_mentorship_sessions;
 create policy "Mentorship sessions update" on public.foundation_mentorship_sessions
   for update using (auth.uid() = mentor_id or auth.uid() = mentee_id);
 
 -- Contributions: users see own, admin sees all
 create policy "Contributions visible to user and admin" on public.foundation_contributions
+drop policy if exists "Contributions visible to user and admin" on public.foundation_contributions;
+create policy "Contributions visible to user and admin" on public.foundation_contributions
   for select using (auth.uid() = user_id or exists(select 1 from public.user_profiles where id = auth.uid() and user_type = 'admin'));
 
+create policy "System logs contributions" on public.foundation_contributions
+drop policy if exists "System logs contributions" on public.foundation_contributions;
 create policy "System logs contributions" on public.foundation_contributions
   for insert with check (true);
 

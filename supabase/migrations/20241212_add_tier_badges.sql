@@ -47,19 +47,14 @@ CREATE INDEX IF NOT EXISTS idx_user_profiles_stripe_customer ON user_profiles(st
 ALTER TABLE badges ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_badges ENABLE ROW LEVEL SECURITY;
 
--- 7. RLS Policies for badges (read-only for authenticated users)
-CREATE POLICY IF NOT EXISTS "Badges are viewable by everyone" 
-ON badges FOR SELECT 
-USING (true);
+DROP POLICY IF EXISTS "Badges are viewable by everyone" ON badges;
+CREATE POLICY "Badges are viewable by everyone" ON badges FOR SELECT USING (true);
 
--- 8. RLS Policies for user_badges
-CREATE POLICY IF NOT EXISTS "Users can view their own badges" 
-ON user_badges FOR SELECT 
-USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can view their own badges" ON user_badges;
+CREATE POLICY "Users can view their own badges" ON user_badges FOR SELECT USING (auth.uid() = user_id);
 
-CREATE POLICY IF NOT EXISTS "Users can view others badges" 
-ON user_badges FOR SELECT 
-USING (true);
+DROP POLICY IF EXISTS "Users can view others badges" ON user_badges;
+CREATE POLICY "Users can view others badges" ON user_badges FOR SELECT USING (true);
 
 -- 9. Seed initial badges that unlock AI personas
 INSERT INTO badges (name, slug, description, icon, unlock_criteria, unlocks_persona) VALUES

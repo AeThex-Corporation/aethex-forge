@@ -13,11 +13,9 @@ export default async function handler(req: any, res: any) {
     if (method === "GET") {
       const { user_id, project_id, role, limit = 50, offset = 0 } = query;
 
+      // Fix: Use correct join syntax for Supabase/Postgres foreign table
       let dbQuery = supabase.from("gameforge_team_members").select(
-        `
-          *,
-          user_profiles(id, full_name, avatar_url, email)
-        `,
+        `*,user_profiles:users(id, full_name, avatar_url, email)`,
         { count: "exact" },
       );
 
@@ -30,7 +28,10 @@ export default async function handler(req: any, res: any) {
         .order("joined_date", { ascending: false })
         .range(Number(offset), Number(offset) + Number(limit) - 1);
 
-      if (error) throw error;
+      if (error) {
+        console.error("[GameForge Team SQL]", error);
+        throw error;
+      }
       return res.json({
         data: user_id ? data : data,
         total: count,
