@@ -1038,6 +1038,211 @@ export function createServer() {
     }
   });
 
+  // =====================================================
+  // Foundation OAuth Callback Routes
+  // =====================================================
+  const FOUNDATION_URL = process.env.VITE_FOUNDATION_URL || "https://aethex.foundation";
+  const FOUNDATION_CLIENT_ID = process.env.FOUNDATION_OAUTH_CLIENT_ID || "aethex_corp";
+  const FOUNDATION_CLIENT_SECRET = process.env.FOUNDATION_OAUTH_CLIENT_SECRET;
+  const API_BASE = process.env.VITE_API_BASE || "https://aethex.dev";
+
+  // GET /auth/callback - Receives authorization code from Foundation
+  app.get("/auth/callback", async (req, res) => {
+    const { code, state, error, error_description } = req.query;
+
+    // Handle Foundation errors
+    if (error) {
+      const message = error_description
+        ? decodeURIComponent(String(error_description))
+        : String(error);
+      return res.redirect(`/login?error=${error}&message=${encodeURIComponent(message)}`);
+    }
+
+    if (!code) {
+      return res.redirect(`/login?error=no_code&message=${encodeURIComponent("No authorization code received")}`);
+    }
+
+    try {
+      console.log("[Foundation OAuth] Received authorization code, initiating token exchange");
+
+      // Exchange code for token
+      if (!FOUNDATION_CLIENT_SECRET) {
+        throw new Error("FOUNDATION_OAUTH_CLIENT_SECRET not configured");
+      }
+
+      const tokenEndpoint = `${FOUNDATION_URL}/api/oauth/token`;
+      const params = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("code", String(code));
+      params.append("client_id", FOUNDATION_CLIENT_ID);
+      params.append("client_secret", FOUNDATION_CLIENT_SECRET);
+      params.append("redirect_uri", `${API_BASE}/auth/callback`);
+
+      const tokenResponse = await fetch(tokenEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
+      });
+
+      if (!tokenResponse.ok) {
+        const errorData = await tokenResponse.json().catch(() => ({}));
+        console.error("[Foundation OAuth] Token exchange failed:", errorData);
+        throw new Error(`Token exchange failed: ${tokenResponse.status}`);
+      }
+
+      const tokenData = await tokenResponse.json();
+      if (!tokenData.access_token) {
+        throw new Error("No access token in Foundation response");
+      }
+
+      // Fetch user info from Foundation
+      const userInfoResponse = await fetch(`${FOUNDATION_URL}/api/oauth/userinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${tokenData.access_token}`,
+          Accept: "application/json",
+        },
+      });
+
+      if (!userInfoResponse.ok) {
+        throw new Error(`Failed to fetch user info: ${userInfoResponse.status}`);
+      }
+
+      const userInfo = await userInfoResponse.json();
+      if (!userInfo.id || !userInfo.email) {
+        throw new Error("Invalid user info from Foundation");
+      }
+
+      console.log("[Foundation OAuth] User authenticated:", userInfo.id);
+
+      // Sync user to local database
+      const now = new Date().toISOString();
+      const cacheValidUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+      await adminSupabase.from("user_profiles").upsert({
+        id: userInfo.id,
+        email: userInfo.email,
+        username: userInfo.username || null,
+        full_name: userInfo.full_name || null,
+        avatar_url: userInfo.avatar_url || null,
+        profile_completed: userInfo.profile_complete || false,
+        foundation_synced_at: now,
+        cache_valid_until: cacheValidUntil,
+        updated_at: now,
+      });
+
+      // Set session cookies
+      res.cookie("foundation_access_token", tokenData.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: (tokenData.expires_in || 3600) * 1000,
+      });
+      res.cookie("auth_user_id", userInfo.id, {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+
+      // Redirect to dashboard or stored destination
+      const redirectTo = (req.query.redirect_to as string) || "/dashboard";
+      return res.redirect(redirectTo);
+    } catch (err: any) {
+      console.error("[Foundation OAuth] Callback error:", err);
+      const message = err?.message || "Authentication failed";
+      return res.redirect(`/login?error=auth_failed&message=${encodeURIComponent(message)}`);
+    }
+  });
+
+  // POST /auth/callback/exchange - Exchange code for token (called from frontend)
+  app.post("/auth/callback/exchange", async (req, res) => {
+    const { code } = req.body || {};
+
+    if (!code) {
+      return res.status(400).json({ error: "Authorization code is required" });
+    }
+
+    try {
+      if (!FOUNDATION_CLIENT_SECRET) {
+        throw new Error("FOUNDATION_OAUTH_CLIENT_SECRET not configured");
+      }
+
+      const tokenEndpoint = `${FOUNDATION_URL}/api/oauth/token`;
+      const params = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("code", code);
+      params.append("client_id", FOUNDATION_CLIENT_ID);
+      params.append("client_secret", FOUNDATION_CLIENT_SECRET);
+      params.append("redirect_uri", `${API_BASE}/auth/callback`);
+
+      const tokenResponse = await fetch(tokenEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
+      });
+
+      if (!tokenResponse.ok) {
+        const errorData = await tokenResponse.json().catch(() => ({}));
+        throw new Error(`Token exchange failed: ${tokenResponse.status}`);
+      }
+
+      const tokenData = await tokenResponse.json();
+      if (!tokenData.access_token) {
+        throw new Error("No access token in Foundation response");
+      }
+
+      // Fetch user info from Foundation
+      const userInfoResponse = await fetch(`${FOUNDATION_URL}/api/oauth/userinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${tokenData.access_token}`,
+          Accept: "application/json",
+        },
+      });
+
+      if (!userInfoResponse.ok) {
+        throw new Error(`Failed to fetch user info: ${userInfoResponse.status}`);
+      }
+
+      const userInfo = await userInfoResponse.json();
+
+      // Sync user to local database
+      const now = new Date().toISOString();
+      const cacheValidUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+      await adminSupabase.from("user_profiles").upsert({
+        id: userInfo.id,
+        email: userInfo.email,
+        username: userInfo.username || null,
+        full_name: userInfo.full_name || null,
+        avatar_url: userInfo.avatar_url || null,
+        profile_completed: userInfo.profile_complete || false,
+        foundation_synced_at: now,
+        cache_valid_until: cacheValidUntil,
+        updated_at: now,
+      });
+
+      // Set session cookies
+      res.cookie("foundation_access_token", tokenData.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: (tokenData.expires_in || 3600) * 1000,
+      });
+      res.cookie("auth_user_id", userInfo.id, {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+
+      console.log("[Foundation OAuth] Token exchange successful for:", userInfo.id);
+      return res.json({ accessToken: tokenData.access_token, user: userInfo });
+    } catch (err: any) {
+      console.error("[Foundation OAuth] Token exchange error:", err);
+      return res.status(400).json({ error: err?.message || "Token exchange failed" });
+    }
+  });
+
   // Admin-backed API (service role)
   try {
     const ownerEmail = (

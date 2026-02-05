@@ -27,11 +27,11 @@ export function DevConnectLinkModal({
 }: DevConnectLinkModalProps) {
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useAethexToast();
+  const toast = useAethexToast();
 
   const handleLink = async () => {
     if (!username.trim()) {
-      toast("Please enter your DevConnect username", "error");
+      toast.error({ title: "Please enter your DevConnect username" });
       return;
     }
 
@@ -41,17 +41,16 @@ export function DevConnectLinkModal({
         devconnect_username: username.trim(),
         devconnect_profile_url: `https://devconnect.sbs/${username.trim()}`,
       });
-      toast("DevConnect account linked successfully!", "success");
+      toast.success({ title: "DevConnect account linked successfully!" });
       setUsername("");
       onOpenChange(false);
       onSuccess?.();
     } catch (error) {
-      toast(
-        error instanceof Error
+      toast.error({
+        title: error instanceof Error
           ? error.message
           : "Failed to link DevConnect account",
-        "error",
-      );
+      });
     } finally {
       setIsLoading(false);
     }

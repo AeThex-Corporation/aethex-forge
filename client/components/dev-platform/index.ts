@@ -1,21 +1,21 @@
 // Export layout components
-export { default as DevPlatformLayout } from './layouts/DevPlatformLayout';
-export { default as ThreeColumnLayout } from './layouts/ThreeColumnLayout';
+export { DevPlatformLayout } from './layouts/DevPlatformLayout';
+export { ThreeColumnLayout } from './layouts/ThreeColumnLayout';
 
 // Export UI components
-export { default as CodeBlock } from './ui/CodeBlock';
-export { default as Callout } from './ui/Callout';
-export { default as StatCard } from './ui/StatCard';
-export { default as ApiEndpointCard } from './ui/ApiEndpointCard';
+export { CodeBlock } from './ui/CodeBlock';
+export { Callout } from './ui/Callout';
+export { StatCard } from './ui/StatCard';
+export { ApiEndpointCard } from './ui/ApiEndpointCard';
 
 // Export feature components
-export { default as DevPlatformNav } from './DevPlatformNav';
-export { default as DevPlatformFooter } from './DevPlatformFooter';
-export { default as Breadcrumbs } from './Breadcrumbs';
-export { default as CodeTabs } from './CodeTabs';
-export { default as TemplateCard } from './TemplateCard';
-export { default as MarketplaceCard } from './MarketplaceCard';
-export { default as ExampleCard } from './ExampleCard';
-export { default as ApiKeyCard } from './ApiKeyCard';
-export { default as CreateApiKeyDialog } from './CreateApiKeyDialog';
-export { default as UsageChart } from './UsageChart';
+export { DevPlatformNav } from './DevPlatformNav';
+export { DevPlatformFooter } from './DevPlatformFooter';
+export { Breadcrumbs } from './Breadcrumbs';
+export { CodeTabs } from './CodeTabs';
+export { TemplateCard } from './TemplateCard';
+export { MarketplaceCard } from './MarketplaceCard';
+export { ExampleCard } from './ExampleCard';
+export { ApiKeyCard } from './ApiKeyCard';
+export { CreateApiKeyDialog } from './CreateApiKeyDialog';
+export { UsageChart } from './UsageChart';

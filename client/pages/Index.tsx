@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SEO from "@/components/SEO";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -115,16 +115,7 @@ const features = [
 ];
 
 export default function Index() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
   
   return (
     <Layout hideFooter>
@@ -141,10 +132,10 @@ export default function Index() {
       {/* Animated Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <motion.div
-          className="absolute w-[800px] h-[800px] rounded-full blur-[128px] opacity-20 bg-primary/30"
+          className="absolute w-[600px] h-[600px] rounded-full blur-[100px] opacity-15 bg-primary/30"
           style={{
-            left: mousePosition.x - 400,
-            top: mousePosition.y - 400,
+            left: '10%',
+            top: '20%',
           }}
           animate={{
             x: [0, 50, 0],

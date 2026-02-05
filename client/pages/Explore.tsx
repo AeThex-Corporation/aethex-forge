@@ -26,7 +26,7 @@ import {
   TrendingUp,
   Heart,
   MessageSquare,
-  Avatar,
+  User,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import {

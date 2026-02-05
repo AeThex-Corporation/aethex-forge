@@ -47,20 +47,20 @@ export const WalletVerification = ({
 
   const handleConnect = async () => {
     if (!walletInput.trim()) {
-      aethexToast.warning("Please enter a wallet address");
+      aethexToast.warning({ title: "Please enter a wallet address" });
       return;
     }
 
     const normalized = walletInput.trim().toLowerCase();
     if (!isValidEthereumAddress(normalized)) {
-      aethexToast.warning(
-        "Invalid Ethereum address. Must be 0x followed by 40 hexadecimal characters.",
-      );
+      aethexToast.warning({
+        title: "Invalid Ethereum address. Must be 0x followed by 40 hexadecimal characters.",
+      });
       return;
     }
 
     if (!user?.id) {
-      aethexToast.error("User not authenticated");
+      aethexToast.error({ title: "User not authenticated" });
       return;
     }
 
@@ -86,16 +86,16 @@ export const WalletVerification = ({
       const data = await response.json();
       setConnectedWallet(normalized);
       setWalletInput("");
-      aethexToast.success("✅ Wallet connected successfully!");
+      aethexToast.success({ title: "✅ Wallet connected successfully!" });
 
       if (onWalletUpdated) {
         onWalletUpdated(normalized);
       }
     } catch (error: any) {
       console.error("[Wallet Verification] Error:", error?.message);
-      aethexToast.error(
-        error?.message || "Failed to connect wallet. Please try again.",
-      );
+      aethexToast.error({
+        title: error?.message || "Failed to connect wallet. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -123,16 +123,16 @@ export const WalletVerification = ({
       }
 
       setConnectedWallet(null);
-      aethexToast.success("Wallet disconnected");
+      aethexToast.success({ title: "Wallet disconnected" });
 
       if (onWalletUpdated) {
         onWalletUpdated(null);
       }
     } catch (error: any) {
       console.error("[Wallet Verification] Error:", error?.message);
-      aethexToast.error(
-        error?.message || "Failed to disconnect wallet. Please try again.",
-      );
+      aethexToast.error({
+        title: error?.message || "Failed to disconnect wallet. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }

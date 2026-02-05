@@ -105,7 +105,7 @@ export default function AdminNexusManager() {
       const data = await response.json();
       setOpportunities(data || []);
     } catch (error) {
-      aethexToast.error("Failed to load opportunities");
+      aethexToast.error({ title: "Failed to load opportunities" });
       console.error(error);
     } finally {
       setLoadingOpp(false);
@@ -120,7 +120,7 @@ export default function AdminNexusManager() {
       const data = await response.json();
       setDisputes(data || []);
     } catch (error) {
-      aethexToast.error("Failed to load disputes");
+      aethexToast.error({ title: "Failed to load disputes" });
       console.error(error);
     } finally {
       setLoadingDisputes(false);
@@ -135,7 +135,7 @@ export default function AdminNexusManager() {
       const data = await response.json();
       setCommissions(data || []);
     } catch (error) {
-      aethexToast.error("Failed to load commissions");
+      aethexToast.error({ title: "Failed to load commissions" });
       console.error(error);
     } finally {
       setLoadingCommissions(false);
@@ -157,10 +157,10 @@ export default function AdminNexusManager() {
       );
 
       if (!response.ok) throw new Error("Failed to update opportunity");
-      aethexToast.success(`Opportunity marked as ${status}`);
+      aethexToast.success({ title: `Opportunity marked as ${status}` });
       fetchOpportunities();
     } catch (error) {
-      aethexToast.error("Failed to update opportunity");
+      aethexToast.error({ title: "Failed to update opportunity" });
       console.error(error);
     }
   };
@@ -180,12 +180,12 @@ export default function AdminNexusManager() {
       );
 
       if (!response.ok) throw new Error("Failed to update opportunity");
-      aethexToast.success(
-        `Opportunity ${featured ? "featured" : "unfeatured"}`,
-      );
+      aethexToast.success({
+        title: `Opportunity ${featured ? "featured" : "unfeatured"}`,
+      });
       fetchOpportunities();
     } catch (error) {
-      aethexToast.error("Failed to update opportunity");
+      aethexToast.error({ title: "Failed to update opportunity" });
       console.error(error);
     }
   };
@@ -207,15 +207,15 @@ export default function AdminNexusManager() {
       );
 
       if (!response.ok) throw new Error("Failed to update dispute");
-      aethexToast.success(
-        `Dispute ${disputeAction === "resolve" ? "resolved" : "escalated"}`,
-      );
+      aethexToast.success({
+        title: `Dispute ${disputeAction === "resolve" ? "resolved" : "escalated"}`,
+      });
       setDisputeDialogOpen(false);
       setSelectedDispute(null);
       setDisputeResolution("");
       fetchDisputes();
     } catch (error) {
-      aethexToast.error("Failed to update dispute");
+      aethexToast.error({ title: "Failed to update dispute" });
       console.error(error);
     }
   };

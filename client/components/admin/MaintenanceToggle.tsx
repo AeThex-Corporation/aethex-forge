@@ -12,20 +12,20 @@ export default function MaintenanceToggle() {
 
   const handleToggle = async () => {
     if (!canBypass) {
-      aethexToast.error("Only admins can toggle maintenance mode");
+      aethexToast.error({ title: "Only admins can toggle maintenance mode" });
       return;
     }
 
     setToggling(true);
     try {
       await toggleMaintenanceMode();
-      aethexToast.success(
-        isMaintenanceMode 
+      aethexToast.success({
+        title: isMaintenanceMode 
           ? "Maintenance mode disabled - site is now live" 
           : "Maintenance mode enabled - visitors will see maintenance page"
-      );
+      });
     } catch (error: any) {
-      aethexToast.error(error?.message || "Failed to toggle maintenance mode");
+      aethexToast.error({ title: error?.message || "Failed to toggle maintenance mode" });
     } finally {
       setToggling(false);
     }

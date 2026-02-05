@@ -101,7 +101,7 @@ export default function AdminFoundationManager() {
       const data = await response.json();
       setMentors(data || []);
     } catch (error) {
-      aethexToast.error("Failed to load mentors");
+      aethexToast.error({ title: "Failed to load mentors" });
       console.error(error);
     } finally {
       setLoadingMentors(false);
@@ -116,7 +116,7 @@ export default function AdminFoundationManager() {
       const data = await response.json();
       setCourses(data || []);
     } catch (error) {
-      aethexToast.error("Failed to load courses");
+      aethexToast.error({ title: "Failed to load courses" });
       console.error(error);
     } finally {
       setLoadingCourses(false);
@@ -133,7 +133,7 @@ export default function AdminFoundationManager() {
       const data = await response.json();
       setAchievements(data || []);
     } catch (error) {
-      aethexToast.error("Failed to load achievements");
+      aethexToast.error({ title: "Failed to load achievements" });
       console.error(error);
     } finally {
       setLoadingAchievements(false);
@@ -154,14 +154,14 @@ export default function AdminFoundationManager() {
       );
 
       if (!response.ok) throw new Error("Failed to update mentor");
-      aethexToast.success(
-        `Mentor ${approvalAction === "approve" ? "approved" : "rejected"}`,
-      );
+      aethexToast.success({
+        title: `Mentor ${approvalAction === "approve" ? "approved" : "rejected"}`,
+      });
       setApprovalDialogOpen(false);
       setSelectedMentor(null);
       fetchMentors();
     } catch (error) {
-      aethexToast.error("Failed to update mentor");
+      aethexToast.error({ title: "Failed to update mentor" });
       console.error(error);
     }
   };
@@ -178,10 +178,10 @@ export default function AdminFoundationManager() {
       );
 
       if (!response.ok) throw new Error("Failed to update course");
-      aethexToast.success(`Course ${publish ? "published" : "unpublished"}`);
+      aethexToast.success({ title: `Course ${publish ? "published" : "unpublished"}` });
       fetchCourses();
     } catch (error) {
-      aethexToast.error("Failed to update course");
+      aethexToast.error({ title: "Failed to update course" });
       console.error(error);
     }
   };
@@ -196,10 +196,10 @@ export default function AdminFoundationManager() {
       );
 
       if (!response.ok) throw new Error("Failed to delete course");
-      aethexToast.success("Course deleted");
+      aethexToast.success({ title: "Course deleted" });
       fetchCourses();
     } catch (error) {
-      aethexToast.error("Failed to delete course");
+      aethexToast.error({ title: "Failed to delete course" });
       console.error(error);
     }
   };

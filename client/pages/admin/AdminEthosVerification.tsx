@@ -86,7 +86,7 @@ export default function AdminEthosVerification() {
       setRequests(data);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to load verification requests");
+      toast.error({ title: "Failed to load verification requests" });
     } finally {
       setLoading(false);
     }
@@ -124,11 +124,11 @@ export default function AdminEthosVerification() {
 
       if (!response.ok) throw new Error(`Failed to ${confirmAction} artist`);
 
-      toast.success(
-        confirmAction === "approve"
+      toast.success({
+        title: confirmAction === "approve"
           ? "Artist verified successfully! Email sent."
           : "Artist application rejected. Email sent.",
-      );
+      });
 
       setIsConfirming(false);
       setSelectedRequest(null);
@@ -136,7 +136,7 @@ export default function AdminEthosVerification() {
       fetchRequests();
     } catch (error) {
       console.error(error);
-      toast.error(`Failed to ${confirmAction} artist`);
+      toast.error({ title: `Failed to ${confirmAction} artist` });
     }
   };
 

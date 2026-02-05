@@ -67,7 +67,7 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
 
   const handlePublish = async () => {
     if (!title.trim() || !html.trim()) {
-      toast.error("Title and body are required");
+      toast.error({ title: "Title and body are required" });
       return;
     }
 
@@ -95,7 +95,7 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
       }
 
       const data = await response.json();
-      toast.success(`Post published: ${data.url}`);
+      toast.success({ title: `Post published: ${data.url}` });
       onPublish?.(true);
 
       // Reset form
@@ -108,7 +108,7 @@ const BlogEditor = ({ onPublish, initialData }: BlogEditorProps) => {
       setMetaTitle("");
       setMetaDescription("");
     } catch (error: any) {
-      toast.error(error.message || "Failed to publish post");
+      toast.error({ title: error.message || "Failed to publish post" });
       onPublish?.(false);
     } finally {
       setIsLoading(false);

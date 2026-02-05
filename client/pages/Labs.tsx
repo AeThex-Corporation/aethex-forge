@@ -154,9 +154,9 @@ export default function Labs() {
         {/* Cyberpunk Background Effects */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_top,#facc15_0,rgba(0,0,0,0.45)_55%,rgba(0,0,0,0.9)_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_0,transparent_calc(100%-1px),rgba(250,204,21,0.05)_calc(100%-1px))] bg-[length:100%_32px]" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(251,191,36,0.1)_1px,transparent_1px),linear-gradient(0deg,rgba(251,191,36,0.1)_1px,transparent_1px)] [background-size:50px_50px] animate-pulse" />
-        <div className="pointer-events-none absolute top-20 left-10 w-96 h-96 bg-yellow-500/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
-        <div className="pointer-events-none absolute bottom-20 right-10 w-96 h-96 bg-yellow-600/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(90deg,rgba(251,191,36,0.1)_1px,transparent_1px),linear-gradient(0deg,rgba(251,191,36,0.1)_1px,transparent_1px)] [background-size:50px_50px]" />
+        <div className="pointer-events-none absolute top-20 left-10 w-96 h-96 bg-yellow-500/20 rounded-full mix-blend-multiply filter blur-3xl" />
+        <div className="pointer-events-none absolute bottom-20 right-10 w-96 h-96 bg-yellow-600/10 rounded-full mix-blend-multiply filter blur-3xl" />
 
         <main className="relative z-10">
           {/* Hero Section */}
