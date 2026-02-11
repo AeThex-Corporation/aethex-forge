@@ -56,6 +56,11 @@ import GameJoltIntegration from "./pages/docs/integrations/GameJolt";
 import ItchIoIntegration from "./pages/docs/integrations/ItchIo";
 import DocsCurriculum from "./pages/docs/DocsCurriculum";
 import DocsCurriculumEthos from "./pages/docs/DocsCurriculumEthos";
+import DocsLangOverview from "./pages/docs/lang/DocsLangOverview";
+import DocsLangQuickstart from "./pages/docs/lang/DocsLangQuickstart";
+import DocsLangSyntax from "./pages/docs/lang/DocsLangSyntax";
+import DocsLangCli from "./pages/docs/lang/DocsLangCli";
+import DocsLangExamples from "./pages/docs/lang/DocsLangExamples";
 import EthosGuild from "./pages/community/EthosGuild";
 import TrackLibrary from "./pages/ethos/TrackLibrary";
 import ArtistProfile from "./pages/ethos/ArtistProfile";
@@ -179,6 +184,7 @@ import MarketplaceItemDetail from "./pages/dev-platform/MarketplaceItemDetail";
 import CodeExamples from "./pages/dev-platform/CodeExamples";
 import ExampleDetail from "./pages/dev-platform/ExampleDetail";
 import DeveloperPlatform from "./pages/dev-platform/DeveloperPlatform";
+import AethexLang from "./pages/dev-platform/AethexLang";
 
 const queryClient = new QueryClient();
 
@@ -663,6 +669,12 @@ const App = () => (
                             path="integrations/itchio"
                             element={<ItchIoIntegration />}
                           />
+                          {/* AeThex Language Docs */}
+                          <Route path="lang" element={<DocsLangOverview />} />
+                          <Route path="lang/quickstart" element={<DocsLangQuickstart />} />
+                          <Route path="lang/syntax" element={<DocsLangSyntax />} />
+                          <Route path="lang/cli" element={<DocsLangCli />} />
+                          <Route path="lang/examples" element={<DocsLangExamples />} />
                         </Route>
                         <Route path="/tutorials" element={<Tutorials />} />
                         <Route path="/community/*" element={<Community />} />
@@ -891,6 +903,7 @@ const App = () => (
                         <Route path="/dev-platform/marketplace/:id" element={<MarketplaceItemDetail />} />
                         <Route path="/dev-platform/examples" element={<CodeExamples />} />
                         <Route path="/dev-platform/examples/:id" element={<ExampleDetail />} />
+                        <Route path="/lang" element={<AethexLang />} />
 
                         {/* Explicit 404 route for static hosting fallbacks */}
                         <Route path="/404" element={<FourOhFourPage />} />

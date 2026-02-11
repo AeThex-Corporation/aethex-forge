@@ -81,6 +81,12 @@ const docNavigation: DocNavItem[] = [
     icon: <BookOpen className="h-5 w-5" />,
     description: "Learning paths",
   },
+  {
+    title: "AeThex Language",
+    path: "/docs/lang",
+    icon: <Code2 className="h-5 w-5" />,
+    description: "AeThex programming language",
+  },
 ];
 
 interface DocsLayoutProps {
